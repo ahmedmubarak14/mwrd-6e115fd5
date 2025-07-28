@@ -12,6 +12,9 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 const translations = {
   en: {
+    // Language
+    'language': 'en',
+    
     // Navigation
     'nav.dashboard': 'Dashboard',
     'nav.requests': 'Service Requests',
@@ -76,6 +79,8 @@ const translations = {
     'category.flowers': 'Flowers',
   },
   ar: {
+    // Language
+    'language': 'ar',
     // Navigation
     'nav.dashboard': 'لوحة التحكم',
     'nav.requests': 'طلبات الخدمة',
