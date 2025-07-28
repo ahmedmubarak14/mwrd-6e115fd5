@@ -48,6 +48,29 @@ export const Landing = () => {
 
   const plans = [
     {
+      name: "الباقة المجانية",
+      englishName: "Free Plan",
+      price: "0",
+      currency: "ر.س",
+      period: "/شهر",
+      englishPeriod: "/month",
+      description: "ابدأ مجاناً واستكشف منصة سبلايفي",
+      englishDescription: "Start free and explore Supplify platform",
+      features: [
+        "طلب خدمة واحد شهرياً",
+        "وصول محدود لمقدمي الخدمات",
+        "دعم فني أساسي",
+        "تقارير بسيطة"
+      ],
+      englishFeatures: [
+        "1 service request per month",
+        "Limited supplier access",
+        "Basic support",
+        "Simple reports"
+      ],
+      popular: false
+    },
+    {
       name: "الباقة الأساسية",
       englishName: "Basic Package",
       price: "299",
@@ -60,13 +83,15 @@ export const Landing = () => {
         "حتى 5 طلبات خدمة شهرياً",
         "ربط أساسي مع مقدمي الخدمات",
         "دعم فني عبر البريد الإلكتروني",
-        "تقارير أساسية"
+        "تقارير ربع سنوية للأداء (QPR)",
+        "رؤى عمل أساسية"
       ],
       englishFeatures: [
         "Up to 5 service requests per month",
         "Basic supplier matching",
         "Email support",
-        "Basic analytics"
+        "Quarterly Performance Report (QPR)",
+        "Basic business insights"
       ],
       popular: false
     },
@@ -83,17 +108,17 @@ export const Landing = () => {
         "حتى 25 طلب خدمة شهرياً",
         "ربط متقدم مع مقدمي الخدمات",
         "دعم فني ذو أولوية",
-        "تحليلات متقدمة",
-        "علامة تجارية مخصصة",
-        "مدير حساب مخصص"
+        "تقارير ربع سنوية للأداء (QPR)",
+        "تحليلات متقدمة ورؤى عمل شاملة",
+        "علامة تجارية مخصصة"
       ],
       englishFeatures: [
         "Up to 25 service requests per month",
         "Advanced supplier matching",
         "Priority support",
-        "Advanced analytics",
-        "Custom branding",
-        "Dedicated account manager"
+        "Quarterly Performance Report (QPR)",
+        "Advanced analytics & comprehensive business insights",
+        "Custom branding"
       ],
       popular: true
     },
@@ -111,16 +136,18 @@ export const Landing = () => {
         "طلبات خدمة غير محدودة",
         "حل بعلامة تجارية خاصة",
         "دعم مخصص على مدار الساعة",
+        "تقارير أداء شهرية ورؤى متقدمة",
+        "مدير حساب مخصص",
         "تكاملات مخصصة",
-        "تقارير متقدمة",
         "ضمانات مستوى الخدمة"
       ],
       englishFeatures: [
         "Unlimited service requests",
         "White-label solution",
         "24/7 dedicated support",
+        "Monthly performance reports & advanced insights",
+        "Dedicated account manager",
         "Custom integrations",
-        "Advanced reporting",
         "SLA guarantees"
       ],
       popular: false
@@ -274,7 +301,7 @@ export const Landing = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {plans.map((plan, index) => (
               <Card key={index} className={`relative group ${plan.popular ? 'ring-2 ring-primary scale-105 shadow-xl' : 'hover:shadow-lg'} transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm`}>
                 {plan.popular && (
