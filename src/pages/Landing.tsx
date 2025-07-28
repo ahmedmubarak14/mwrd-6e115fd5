@@ -211,13 +211,10 @@ export const Landing = () => {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img 
-              src="/lovable-uploads/dbfa227c-ea00-42f4-9f7e-544c2b0bde60.png" 
+              src="/lovable-uploads/b443f385-9fd2-4ecc-8763-b6ed9bd406f8.png" 
               alt="Supplify Logo" 
               className="h-8 w-auto"
             />
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              سبلايفي
-            </span>
           </div>
           
           <nav className="hidden md:flex items-center gap-8">
@@ -506,13 +503,10 @@ export const Landing = () => {
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-6">
                 <img 
-                  src="/lovable-uploads/dbfa227c-ea00-42f4-9f7e-544c2b0bde60.png" 
+                  src="/lovable-uploads/b443f385-9fd2-4ecc-8763-b6ed9bd406f8.png" 
                   alt="Supplify Logo" 
                   className="h-10 w-auto"
                 />
-                <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                  سبلايفي
-                </span>
               </div>
               <p className="text-muted-foreground mb-6 max-w-md leading-relaxed text-lg">
                 {t('language') === 'ar' ? 
