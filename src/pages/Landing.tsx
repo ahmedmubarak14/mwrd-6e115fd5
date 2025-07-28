@@ -213,7 +213,7 @@ export const Landing = () => {
             <img 
               src="/lovable-uploads/b443f385-9fd2-4ecc-8763-b6ed9bd406f8.png" 
               alt="Supplify Logo" 
-              className="h-8 w-auto"
+              className="h-12 w-auto"
             />
           </div>
           
@@ -262,31 +262,22 @@ export const Landing = () => {
             <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-6 py-2 mb-8 animate-fade-in">
               <Sparkles className="h-4 w-4 text-primary" />
               <span className="text-sm font-medium text-primary">
-                {t('language') === 'ar' ? 'ثورة في عالم تنظيم الفعاليات' : 'Revolutionizing Event Organization'}
+                ثورة في عالم تنظيم الفعاليات
               </span>
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight animate-fade-in">
               <span className="bg-gradient-to-r from-primary via-accent to-lime bg-clip-text text-transparent">
-                {t('language') === 'ar' ? 
-                  'مستقبل تجارة الفعاليات' : 
-                  'The Future of Event Commerce'
-                }
+                مستقبل تجارة الفعاليات
               </span>
               <br />
               <span className="text-foreground/80 text-3xl md:text-4xl font-normal">
-                {t('language') === 'ar' ? 
-                  'يبدأ هنا' : 
-                  'Starts Here'
-                }
+                يبدأ هنا
               </span>
             </h1>
             
             <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-in delay-200">
-              {t('language') === 'ar' ? 
-                'منصة ذكية تعيد تعريف كيفية ربط منظمي الفعاليات بمقدمي الخدمات المتميزين في المملكة العربية السعودية' :
-                'An intelligent platform redefining how event organizers connect with exceptional service providers across Saudi Arabia'
-              }
+              منصة ذكية تعيد تعريف كيفية ربط منظمي الفعاليات بمقدمي الخدمات المتميزين في المملكة العربية السعودية
             </p>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16 animate-fade-in delay-300">
@@ -505,7 +496,7 @@ export const Landing = () => {
                 <img 
                   src="/lovable-uploads/b443f385-9fd2-4ecc-8763-b6ed9bd406f8.png" 
                   alt="Supplify Logo" 
-                  className="h-10 w-auto"
+                  className="h-16 w-auto"
                 />
               </div>
               <p className="text-muted-foreground mb-6 max-w-md leading-relaxed text-lg">
