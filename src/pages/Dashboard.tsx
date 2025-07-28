@@ -13,18 +13,20 @@ export const Dashboard = () => {
       <Header />
       <div className="flex">
         <Sidebar userRole={userRole} />
-        <main className="flex-1 p-6">
-          {/* Role Switcher for Demo */}
-          <div className="mb-6 flex gap-2">
+        <main className="flex-1 p-8">
+          {/* Enhanced Role Switcher */}
+          <div className="mb-8 flex gap-3">
             <Button 
               variant={userRole === 'client' ? 'default' : 'outline'}
               onClick={() => setUserRole('client')}
+              className={`hover-scale ${userRole === 'client' ? 'bg-gradient-to-r from-primary to-accent shadow-lg' : ''}`}
             >
               Client View
             </Button>
             <Button 
               variant={userRole === 'supplier' ? 'default' : 'outline'}
               onClick={() => setUserRole('supplier')}
+              className={`hover-scale ${userRole === 'supplier' ? 'bg-gradient-to-r from-primary to-accent shadow-lg' : ''}`}
             >
               Supplier View
             </Button>
