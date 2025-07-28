@@ -2,11 +2,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Check, ArrowRight, Star, Users, Shield, Zap, Globe, Award, TrendingUp, Clock } from "lucide-react";
+import { Check, ArrowRight, Users, Shield, Zap, Award, TrendingUp, Clock, Star, Play } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export const Landing = () => {
   const { t } = useLanguage();
+
+  const stats = [
+    { number: "500+", label: "مقدم خدمة معتمد", englishLabel: "Certified Providers" },
+    { number: "10,000+", label: "فعالية ناجحة", englishLabel: "Successful Events" },
+    { number: "13", label: "منطقة في المملكة", englishLabel: "Regions in KSA" },
+    { number: "98%", label: "رضا العملاء", englishLabel: "Client Satisfaction" }
+  ];
 
   const features = [
     { 
@@ -37,13 +44,6 @@ export const Landing = () => {
       englishTitle: "Quality Assurance",
       englishDescription: "Certified suppliers with verified reviews from previous clients"
     }
-  ];
-
-  const stats = [
-    { number: "500+", label: "مقدم خدمة معتمد", englishLabel: "Certified Providers" },
-    { number: "10,000+", label: "فعالية ناجحة", englishLabel: "Successful Events" },
-    { number: "13", label: "منطقة في المملكة", englishLabel: "Regions in KSA" },
-    { number: "98%", label: "رضا العملاء", englishLabel: "Client Satisfaction" }
   ];
 
   const plans = [
@@ -129,10 +129,10 @@ export const Landing = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b bg-card sticky top-0 z-50">
+      {/* Navigation */}
+      <header className="border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <img 
               src="/lovable-uploads/dbfa227c-ea00-42f4-9f7e-544c2b0bde60.png" 
               alt="Supplify Logo" 
@@ -141,59 +141,83 @@ export const Landing = () => {
             <span className="text-xl font-bold text-primary">سبلايفي</span>
           </div>
           
-          <nav className="hidden md:flex items-center gap-6">
-            <a href="#features" className="text-muted-foreground hover:text-primary transition-colors">الميزات</a>
-            <a href="#pricing" className="text-muted-foreground hover:text-primary transition-colors">الأسعار</a>
-            <a href="#about" className="text-muted-foreground hover:text-primary transition-colors">عن سبلايفي</a>
+          <nav className="hidden md:flex items-center gap-8">
+            <a href="#features" className="text-muted-foreground hover:text-primary transition-colors">
+              {t('language') === 'ar' ? 'الميزات' : 'Features'}
+            </a>
+            <a href="#pricing" className="text-muted-foreground hover:text-primary transition-colors">
+              {t('language') === 'ar' ? 'الأسعار' : 'Pricing'}
+            </a>
+            <a href="#about" className="text-muted-foreground hover:text-primary transition-colors">
+              {t('language') === 'ar' ? 'عن سبلايفي' : 'About'}
+            </a>
           </nav>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <LanguageSwitcher />
-            <Link to="/login">
-              <Button variant="ghost">{t('auth.login')}</Button>
+            <Link to="/home">
+              <Button variant="ghost" size="sm">
+                {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
+              </Button>
             </Link>
             <Link to="/home">
-              <Button className="bg-primary hover:bg-primary/90">{t('auth.register')}</Button>
+              <Button size="sm">
+                {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Get Started'}
+              </Button>
             </Link>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative py-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-lime/5"></div>
+      <section className="relative py-24 px-4 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5"></div>
+          <div className="absolute top-1/4 right-1/4 w-72 h-72 bg-primary/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl"></div>
+        </div>
+        
         <div className="container mx-auto text-center relative z-10">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-primary/80 to-lime bg-clip-text text-transparent leading-tight">
-              المنصة الموثوقة والمتكاملة لتجارة الفعاليات
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+              <span className="bg-gradient-to-r from-primary via-primary/80 to-accent bg-clip-text text-transparent">
+                {t('language') === 'ar' ? 
+                  'المنصة الموثوقة لتجارة الفعاليات' : 
+                  'The Trusted Platform for Event Commerce'
+                }
+              </span>
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-              تواصل مع مقدمي الخدمات المعتمدين في المملكة العربية السعودية واحصل على أفضل العروض لفعالياتك
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
+              {t('language') === 'ar' ? 
+                'تواصل مع مقدمي الخدمات المعتمدين في المملكة العربية السعودية واحصل على أفضل العروض لفعالياتك' :
+                'Connect with certified service providers across Saudi Arabia and get the best offers for your events'
+              }
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link to="/home">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-4 text-lg">
-                  ابدأ مجاناً <ArrowRight className="ml-2 h-5 w-5" />
+                <Button size="lg" className="px-8 py-4 text-lg font-semibold shadow-lg">
+                  {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Start Free Trial'}
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <Button size="lg" variant="outline" className="px-8 py-4 text-lg">
-                شاهد العرض التوضيحي
+              <Button size="lg" variant="outline" className="px-8 py-4 text-lg border-2">
+                <Play className="mr-2 h-5 w-5" />
+                {t('language') === 'ar' ? 'شاهد العرض' : 'Watch Demo'}
               </Button>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Stats Section */}
-      <section className="py-16 px-4 bg-gradient-to-r from-primary to-primary/80 text-white">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {stats.map((stat, index) => (
-              <div key={index}>
-                <div className="text-3xl md:text-4xl font-bold mb-2">{stat.number}</div>
-                <div className="text-white/80">{t('language') === 'ar' ? stat.label : stat.englishLabel}</div>
-              </div>
-            ))}
+            {/* Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
+              {stats.map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-primary mb-1">{stat.number}</div>
+                  <div className="text-sm text-muted-foreground">
+                    {t('language') === 'ar' ? stat.label : stat.englishLabel}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -212,11 +236,12 @@ export const Landing = () => {
               }
             </p>
           </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
-              <Card key={index} className="text-center hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20">
+              <Card key={index} className="text-center group hover:shadow-lg transition-all duration-300 border-0 bg-card/50 backdrop-blur-sm">
                 <CardHeader className="pb-4">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+                  <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-2xl flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                     <feature.icon className="h-8 w-8 text-primary" />
                   </div>
                   <CardTitle className="text-lg">
@@ -249,33 +274,33 @@ export const Landing = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {plans.map((plan, index) => (
-              <Card key={index} className={`relative ${plan.popular ? 'ring-2 ring-primary scale-105' : ''} hover:shadow-xl transition-all duration-300`}>
+              <Card key={index} className={`relative group ${plan.popular ? 'ring-2 ring-primary scale-105 shadow-xl' : 'hover:shadow-lg'} transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm`}>
                 {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-primary to-lime text-white px-6 py-2 rounded-full text-sm font-medium">
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <div className="bg-gradient-to-r from-primary to-accent text-white px-6 py-2 rounded-full text-sm font-medium shadow-lg">
                       {t('language') === 'ar' ? 'الأكثر شعبية' : 'Most Popular'}
-                    </span>
+                    </div>
                   </div>
                 )}
                 
-                <CardHeader className="text-center pb-8">
-                  <CardTitle className="text-xl font-bold">
+                <CardHeader className="text-center pb-8 pt-8">
+                  <CardTitle className="text-xl font-bold mb-4">
                     {t('language') === 'ar' ? plan.name : plan.englishName}
                   </CardTitle>
-                  <div className="py-4">
+                  <div className="mb-4">
                     <div className="flex items-baseline justify-center gap-1">
                       <span className="text-4xl font-bold text-primary">
                         {t('language') === 'ar' ? plan.price : (plan.englishPrice || plan.price)}
                       </span>
-                      <span className="text-muted-foreground">
-                        {plan.currency}
-                      </span>
+                      <span className="text-muted-foreground text-lg">{plan.currency}</span>
                     </div>
-                    <span className="text-muted-foreground">
-                      {t('language') === 'ar' ? plan.period : plan.englishPeriod}
-                    </span>
+                    {plan.period && (
+                      <span className="text-muted-foreground">
+                        {t('language') === 'ar' ? plan.period : plan.englishPeriod}
+                      </span>
+                    )}
                   </div>
                   <CardDescription className="text-base">
                     {t('language') === 'ar' ? plan.description : plan.englishDescription}
@@ -294,7 +319,7 @@ export const Landing = () => {
                   
                   <Link to="/home">
                     <Button 
-                      className={`w-full py-3 ${plan.popular ? 'bg-gradient-to-r from-primary to-lime hover:from-primary/90 hover:to-lime/90' : ''}`}
+                      className={`w-full py-3 ${plan.popular ? 'bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-lg' : ''}`}
                       variant={plan.popular ? 'default' : 'outline'}
                       size="lg"
                     >
@@ -312,8 +337,14 @@ export const Landing = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-primary via-primary/90 to-lime text-white">
-        <div className="container mx-auto text-center">
+      <section className="py-20 px-4 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-accent"></div>
+        <div className="absolute inset-0">
+          <div className="absolute top-1/4 right-1/3 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div className="container mx-auto text-center relative z-10 text-white">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             {t('language') === 'ar' ? 'جاهز لتطوير فعالياتك؟' : 'Ready to Transform Your Events?'}
           </h2>
@@ -324,7 +355,7 @@ export const Landing = () => {
             }
           </p>
           <Link to="/home">
-            <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold px-8 py-4 text-lg">
+            <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold px-8 py-4 text-lg shadow-xl">
               {t('language') === 'ar' ? 'ابدأ تجربتك المجانية' : 'Start Your Free Trial'} 
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
@@ -345,7 +376,7 @@ export const Landing = () => {
                 />
                 <span className="text-xl font-bold text-primary">سبلايفي</span>
               </div>
-              <p className="text-muted-foreground mb-4 max-w-md">
+              <p className="text-muted-foreground mb-4 max-w-md leading-relaxed">
                 {t('language') === 'ar' ? 
                   'المنصة الرائدة في المملكة العربية السعودية لربط منظمي الفعاليات مع مقدمي الخدمات المعتمدين.' : 
                   'The leading platform in Saudi Arabia connecting event organizers with certified service providers.'
@@ -354,34 +385,34 @@ export const Landing = () => {
             </div>
             
             <div>
-              <h3 className="font-semibold mb-3">
+              <h3 className="font-semibold mb-3 text-foreground">
                 {t('language') === 'ar' ? 'الشركة' : 'Company'}
               </h3>
               <ul className="space-y-2 text-muted-foreground">
-                <li><a href="#" className="hover:text-primary">
+                <li><a href="#" className="hover:text-primary transition-colors">
                   {t('language') === 'ar' ? 'عن سبلايفي' : 'About Supplify'}
                 </a></li>
-                <li><a href="#" className="hover:text-primary">
+                <li><a href="#" className="hover:text-primary transition-colors">
                   {t('language') === 'ar' ? 'الوظائف' : 'Careers'}
                 </a></li>
-                <li><a href="#" className="hover:text-primary">
+                <li><a href="#" className="hover:text-primary transition-colors">
                   {t('language') === 'ar' ? 'اتصل بنا' : 'Contact Us'}
                 </a></li>
               </ul>
             </div>
             
             <div>
-              <h3 className="font-semibold mb-3">
+              <h3 className="font-semibold mb-3 text-foreground">
                 {t('language') === 'ar' ? 'الدعم' : 'Support'}
               </h3>
               <ul className="space-y-2 text-muted-foreground">
-                <li><a href="#" className="hover:text-primary">
+                <li><a href="#" className="hover:text-primary transition-colors">
                   {t('language') === 'ar' ? 'مركز المساعدة' : 'Help Center'}
                 </a></li>
-                <li><a href="#" className="hover:text-primary">
+                <li><a href="#" className="hover:text-primary transition-colors">
                   {t('language') === 'ar' ? 'الشروط والأحكام' : 'Terms & Conditions'}
                 </a></li>
-                <li><a href="#" className="hover:text-primary">
+                <li><a href="#" className="hover:text-primary transition-colors">
                   {t('language') === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}
                 </a></li>
               </ul>
