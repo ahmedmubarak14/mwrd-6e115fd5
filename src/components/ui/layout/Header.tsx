@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Link } from "react-router-dom";
 import { User, LogOut } from "lucide-react";
 
 export const Header = () => {
@@ -9,11 +10,14 @@ export const Header = () => {
   return (
     <header className="h-16 border-b bg-card flex items-center justify-between px-6">
       <div className="flex items-center gap-4">
-        <img 
-          src="/lovable-uploads/dbfa227c-ea00-42f4-9f7e-544c2b0bde60.png" 
-          alt="Supplify Logo" 
-          className="h-8 w-auto"
-        />
+        <Link to="/home" className="flex items-center gap-2">
+          <img 
+            src="/lovable-uploads/dbfa227c-ea00-42f4-9f7e-544c2b0bde60.png" 
+            alt="Supplify Logo" 
+            className="h-8 w-auto"
+          />
+          <span className="text-xl font-bold text-primary">Supplify</span>
+        </Link>
       </div>
       
       <div className="flex items-center gap-4">
