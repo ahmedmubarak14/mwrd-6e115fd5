@@ -12,61 +12,81 @@ export const Suppliers = () => {
   const suppliers = [
     {
       id: 1,
-      name: "Elite Events Co.",
-      category: "AVL (Audio-Visual-Lighting)",
+      name: "شركة الفعاليات المتميزة",
+      category: "الصوت والصورة والإضاءة",
       rating: 4.8,
       reviews: 24,
-      location: "Dubai, UAE",
-      description: "Professional audio-visual and lighting solutions for corporate events and exhibitions.",
+      location: "الرياض، المملكة العربية السعودية",
+      description: "حلول احترافية للصوت والصورة والإضاءة للفعاليات الشركاتية والمعارض في المملكة.",
       completedProjects: 150,
-      responseTime: "2 hours"
+      responseTime: "ساعتان",
+      englishName: "Elite Events Co.",
+      englishCategory: "AVL (Audio-Visual-Lighting)",
+      englishLocation: "Riyadh, Saudi Arabia",
+      englishDescription: "Professional audio-visual and lighting solutions for corporate events and exhibitions.",
+      englishResponseTime: "2 hours"
     },
     {
       id: 2,
-      name: "Premium Catering Services",
-      category: "Hospitality",
+      name: "خدمات الضيافة المتميزة",
+      category: "الضيافة",
       rating: 4.9,
       reviews: 18,
-      location: "Abu Dhabi, UAE",
-      description: "High-quality catering services for corporate events, conferences, and exhibitions.",
+      location: "جدة، المملكة العربية السعودية",
+      description: "خدمات ضيافة عالية الجودة للفعاليات الشركاتية والمؤتمرات والمعارض.",
       completedProjects: 200,
-      responseTime: "1 hour"
+      responseTime: "ساعة واحدة",
+      englishName: "Premium Catering Services",
+      englishCategory: "Hospitality",
+      englishLocation: "Jeddah, Saudi Arabia",
+      englishDescription: "High-quality catering services for corporate events, conferences, and exhibitions.",
+      englishResponseTime: "1 hour"
     },
     {
       id: 3,
-      name: "Creative Booth Designs",
-      category: "Booth Stands",
+      name: "تصاميم الأكشاك الإبداعية",
+      category: "أكشاك العرض",
       rating: 4.7,
       reviews: 32,
-      location: "Dubai, UAE",
-      description: "Custom booth design and construction for trade shows and exhibitions.",
+      location: "الدمام، المملكة العربية السعودية",
+      description: "تصميم وإنشاء أكشاك مخصصة للمعارض التجارية والفعاليات في المملكة.",
       completedProjects: 120,
-      responseTime: "3 hours"
+      responseTime: "3 ساعات",
+      englishName: "Creative Booth Designs",
+      englishCategory: "Booth Stands",
+      englishLocation: "Dammam, Saudi Arabia",
+      englishDescription: "Custom booth design and construction for trade shows and exhibitions.",
+      englishResponseTime: "3 hours"
     },
     {
       id: 4,
-      name: "PrintMaster Pro",
-      category: "Printing",
+      name: "مطبعة الخبراء المحترفة",
+      category: "الطباعة",
       rating: 4.6,
       reviews: 45,
-      location: "Sharjah, UAE",
-      description: "Complete printing solutions including banners, brochures, and promotional materials.",
+      location: "مكة المكرمة، المملكة العربية السعودية",
+      description: "حلول طباعة شاملة تشمل اللافتات والكتيبات والمواد الترويجية.",
       completedProjects: 300,
-      responseTime: "30 minutes"
+      responseTime: "30 دقيقة",
+      englishName: "PrintMaster Pro",
+      englishCategory: "Printing",
+      englishLocation: "Makkah, Saudi Arabia",
+      englishDescription: "Complete printing solutions including banners, brochures, and promotional materials.",
+      englishResponseTime: "30 minutes"
     }
   ];
 
   const categories = [
-    "All Categories",
-    "AVL (Audio-Visual-Lighting)",
-    "Booth Stands",
-    "Printing",
-    "Furniture",
-    "Equipment",
-    "Giveaways",
-    "Logistics",
-    "Hospitality",
-    "Manpower"
+    "جميع الفئات",
+    "الصوت والصورة والإضاءة",
+    "أكشاك العرض",
+    "الطباعة",
+    "الأثاث",
+    "المعدات",
+    "الهدايا الترويجية",
+    "اللوجستيات",
+    "الضيافة",
+    "العمالة"
   ];
 
   return (
@@ -101,10 +121,14 @@ export const Suppliers = () => {
                     ))}
                   </select>
                   <select className="px-3 py-2 border rounded-md bg-background">
-                    <option>All Locations</option>
-                    <option>Dubai</option>
-                    <option>Abu Dhabi</option>
-                    <option>Sharjah</option>
+                    <option>جميع المواقع</option>
+                    <option>الرياض</option>
+                    <option>جدة</option>
+                    <option>الدمام</option>
+                    <option>مكة المكرمة</option>
+                    <option>المدينة المنورة</option>
+                    <option>الطائف</option>
+                    <option>تبوك</option>
                   </select>
                 </div>
               </CardContent>
@@ -117,9 +141,11 @@ export const Suppliers = () => {
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <div>
-                        <CardTitle className="text-xl">{supplier.name}</CardTitle>
+                        <CardTitle className="text-xl">
+                          {t('language') === 'ar' ? supplier.name : supplier.englishName}
+                        </CardTitle>
                         <CardDescription className="text-primary font-medium">
-                          {supplier.category}
+                          {t('language') === 'ar' ? supplier.category : supplier.englishCategory}
                         </CardDescription>
                       </div>
                       <div className="text-right">
@@ -130,23 +156,31 @@ export const Suppliers = () => {
                         </div>
                         <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
                           <MapPin className="h-4 w-4" />
-                          {supplier.location}
+                          {t('language') === 'ar' ? supplier.location : supplier.englishLocation}
                         </div>
                       </div>
                     </div>
                   </CardHeader>
                   
                   <CardContent className="space-y-4">
-                    <p className="text-muted-foreground">{supplier.description}</p>
+                    <p className="text-muted-foreground">
+                      {t('language') === 'ar' ? supplier.description : supplier.englishDescription}
+                    </p>
                     
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
-                        <span className="text-muted-foreground">Completed Projects:</span>
+                        <span className="text-muted-foreground">
+                          {t('language') === 'ar' ? 'المشاريع المكتملة:' : 'Completed Projects:'}
+                        </span>
                         <p className="font-semibold">{supplier.completedProjects}+</p>
                       </div>
                       <div>
-                        <span className="text-muted-foreground">Response Time:</span>
-                        <p className="font-semibold text-lime">{supplier.responseTime}</p>
+                        <span className="text-muted-foreground">
+                          {t('language') === 'ar' ? 'وقت الاستجابة:' : 'Response Time:'}
+                        </span>
+                        <p className="font-semibold text-lime">
+                          {t('language') === 'ar' ? supplier.responseTime : supplier.englishResponseTime}
+                        </p>
                       </div>
                     </div>
                     

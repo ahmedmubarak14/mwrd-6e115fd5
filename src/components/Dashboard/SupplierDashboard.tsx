@@ -16,30 +16,48 @@ export const SupplierDashboard = () => {
   const availableRequests = [
     { 
       id: 1, 
-      title: "Conference AVL Setup", 
-      category: "AVL", 
-      budget: "$5,000 - $8,000", 
-      deadline: "Mar 20, 2024",
-      location: "Dubai",
-      posted: "2 hours ago"
+      title: "إعداد الصوت والصورة للمؤتمر", 
+      englishTitle: "Conference AVL Setup",
+      category: "الصوت والصورة والإضاءة", 
+      englishCategory: "AVL",
+      budget: "20,000 - 30,000 ر.س", 
+      englishBudget: "5,000 - 8,000 SAR",
+      deadline: "20 مارس 2024",
+      englishDeadline: "Mar 20, 2024",
+      location: "الرياض",
+      englishLocation: "Riyadh",
+      posted: "منذ ساعتين",
+      englishPosted: "2 hours ago"
     },
     { 
       id: 2, 
-      title: "Corporate Event Catering", 
-      category: "Hospitality", 
-      budget: "$3,000 - $5,000", 
-      deadline: "Mar 25, 2024",
-      location: "Abu Dhabi",
-      posted: "5 hours ago"
+      title: "ضيافة الفعاليات الشركاتية", 
+      englishTitle: "Corporate Event Catering",
+      category: "الضيافة", 
+      englishCategory: "Hospitality",
+      budget: "11,000 - 19,000 ر.س", 
+      englishBudget: "3,000 - 5,000 SAR",
+      deadline: "25 مارس 2024",
+      englishDeadline: "Mar 25, 2024",
+      location: "جدة",
+      englishLocation: "Jeddah",
+      posted: "منذ 5 ساعات",
+      englishPosted: "5 hours ago"
     },
     { 
       id: 3, 
-      title: "Trade Show Booth Design", 
-      category: "Booth Stands", 
-      budget: "$10,000 - $15,000", 
-      deadline: "Apr 1, 2024",
-      location: "Dubai",
-      posted: "1 day ago"
+      title: "تصميم كشك المعرض التجاري", 
+      englishTitle: "Trade Show Booth Design",
+      category: "أكشاك العرض", 
+      englishCategory: "Booth Stands",
+      budget: "37,000 - 56,000 ر.س", 
+      englishBudget: "10,000 - 15,000 SAR",
+      deadline: "1 أبريل 2024",
+      englishDeadline: "Apr 1, 2024",
+      location: "الدمام",
+      englishLocation: "Dammam",
+      posted: "منذ يوم واحد",
+      englishPosted: "1 day ago"
     }
   ];
 
