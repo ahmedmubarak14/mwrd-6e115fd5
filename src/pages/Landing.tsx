@@ -94,7 +94,7 @@ export const Landing = () => {
             <img 
               src="/lovable-uploads/15bb5f5e-0a37-4ca9-81a8-ff8ec8a25b9d.png" 
               alt="Supplify Logo" 
-              className="h-20 w-auto hover:scale-105 transition-transform"
+              className="h-24 w-auto hover:scale-105 transition-transform"
             />
           </Link>
           
@@ -287,13 +287,13 @@ export const Landing = () => {
 
           <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {/* Management Benefits */}
-            <div className="space-y-8">
+            <div className="flex flex-col h-full">
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold mb-4">
                   {t('language') === 'ar' ? 'للإدارة' : 'For Management'}
                 </h3>
               </div>
-              <div className="space-y-6">
+              <div className="space-y-6 flex-1">
                 <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
                   <div className="bg-primary/10 p-3 rounded-lg">
                     <BarChart3 className="h-6 w-6 text-primary" />
@@ -395,13 +395,13 @@ export const Landing = () => {
             </div>
 
             {/* Procurement Benefits */}
-            <div className="space-y-8">
+            <div className="flex flex-col h-full">
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold mb-4">
                   {t('language') === 'ar' ? 'للمشتريات' : 'For Procurement'}
                 </h3>
               </div>
-              <div className="space-y-6">
+              <div className="space-y-6 flex-1">
                 <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
                   <div className="bg-accent/10 p-3 rounded-lg">
                     <Zap className="h-6 w-6 text-accent" />

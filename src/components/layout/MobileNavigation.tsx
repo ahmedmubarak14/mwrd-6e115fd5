@@ -64,7 +64,7 @@ export const MobileNavigation = () => {
                 <img 
                   src="/lovable-uploads/15bb5f5e-0a37-4ca9-81a8-ff8ec8a25b9d.png" 
                   alt="Supplify Logo" 
-                  className="h-12 w-auto"
+                  className="h-14 w-auto"
                 />
               </Link>
             </SheetTitle>
