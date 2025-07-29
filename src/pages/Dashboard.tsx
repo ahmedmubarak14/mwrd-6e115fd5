@@ -5,11 +5,13 @@ import { SupplierDashboard } from "@/components/Dashboard/SupplierDashboard";
 import { useAuth } from "@/contexts/AuthContext";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 export const Dashboard = () => {
   const { user, userProfile, loading } = useAuth();
   const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     if (!user && !loading) {
@@ -35,10 +37,22 @@ export const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
+      
+      {/* Mobile Sidebar */}
+      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+        <SheetContent side="left" className="w-64 p-0">
+          <Sidebar userRole={userProfile.role} />
+        </SheetContent>
+      </Sheet>
+
       <div className="flex">
-        <Sidebar userRole={userProfile.role} />
-        <main className="flex-1 p-8">
+        {/* Desktop Sidebar */}
+        <div className="hidden lg:block">
+          <Sidebar userRole={userProfile.role} />
+        </div>
+        
+        <main className="flex-1 p-4 lg:p-8">
           {userProfile.role === 'client' ? <ClientDashboard /> : <SupplierDashboard />}
         </main>
       </div>

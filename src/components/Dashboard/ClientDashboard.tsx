@@ -21,15 +21,15 @@ export const ClientDashboard = () => {
   return (
     <div className="space-y-8">
       {/* Enhanced Welcome Header */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-primary via-accent to-lime text-white rounded-2xl p-8">
+      <div className="relative overflow-hidden bg-gradient-to-r from-primary via-accent to-lime text-white rounded-2xl p-6 lg:p-8">
         <div className="absolute inset-0">
-          <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/4 right-1/4 w-32 h-32 lg:w-64 lg:h-64 bg-white/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-1/4 left-1/4 w-40 h-40 lg:w-80 lg:h-80 bg-white/5 rounded-full blur-3xl"></div>
         </div>
         <div className="relative z-10">
-          <h1 className="text-4xl font-bold mb-3">{t('dashboard.welcome')}</h1>
-          <p className="text-xl opacity-90 mb-8 max-w-2xl">{t('dashboard.subtitle')}</p>
-          <Button className="bg-white text-primary hover:bg-white/90 font-semibold px-8 py-3 shadow-lg hover-scale">
+          <h1 className="text-2xl lg:text-4xl font-bold mb-3">{t('dashboard.welcome')}</h1>
+          <p className="text-base lg:text-xl opacity-90 mb-6 lg:mb-8 max-w-2xl">{t('dashboard.subtitle')}</p>
+          <Button className="bg-white text-primary hover:bg-white/90 font-semibold px-6 lg:px-8 py-3 shadow-lg hover-scale w-full sm:w-auto">
             <Plus className="h-5 w-5 mr-2" />
             {t('dashboard.createRequest')}
           </Button>
@@ -37,7 +37,7 @@ export const ClientDashboard = () => {
       </div>
 
       {/* Enhanced Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
         {stats.map((stat, index) => (
           <Card key={index} className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -56,7 +56,7 @@ export const ClientDashboard = () => {
       </div>
 
       {/* Enhanced Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
         <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer">
           <CardHeader className="pb-4">
             <div className="w-16 h-16 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300 mb-4">
@@ -109,20 +109,20 @@ export const ClientDashboard = () => {
         <CardContent>
           <div className="space-y-4">
             {recentRequests.map((request) => (
-              <div key={request.id} className="flex items-center justify-between p-6 border rounded-xl hover:shadow-lg transition-all duration-300 bg-background/50">
-                <div>
-                  <h4 className="font-semibold text-lg">{request.title}</h4>
-                  <p className="text-muted-foreground">{request.offers} offers received</p>
+              <div key={request.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 lg:p-6 border rounded-xl hover:shadow-lg transition-all duration-300 bg-background/50 gap-4">
+                <div className="flex-1">
+                  <h4 className="font-semibold text-base lg:text-lg">{request.title}</h4>
+                  <p className="text-muted-foreground text-sm lg:text-base">{request.offers} offers received</p>
                 </div>
-                <div className="flex items-center gap-4">
-                  <span className={`px-4 py-2 rounded-full text-sm font-medium ${
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+                  <span className={`px-3 py-1.5 rounded-full text-xs lg:text-sm font-medium ${
                     request.status === 'active' ? 'bg-lime/20 text-lime-foreground border border-lime/20' :
                     request.status === 'pending' ? 'bg-accent/20 text-accent-foreground border border-accent/20' :
                     'bg-primary/20 text-primary-foreground border border-primary/20'
                   }`}>
                     {request.status}
                   </span>
-                  <Button variant="outline" size="sm" className="hover-scale">
+                  <Button variant="outline" size="sm" className="hover-scale w-full sm:w-auto">
                     {t('common.view')}
                   </Button>
                 </div>

@@ -51,23 +51,23 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
   const isActive = (href: string) => location.pathname === href;
 
   return (
-    <div className="w-64 h-screen bg-card border-r flex flex-col">
-      <div className="p-6">
+    <div className="w-full lg:w-64 h-full lg:h-screen bg-card border-r flex flex-col">
+      <div className="p-6 border-b lg:border-b-0">
         <h2 className="text-lg font-semibold text-primary">Supplify</h2>
       </div>
       
-      <nav className="flex-1 px-4 space-y-2">
+      <nav className="flex-1 px-4 py-4 space-y-2">
         {getMenuItems().map((item, index) => (
           <Link key={index} to={item.href}>
             <Button
               variant="ghost"
               className={cn(
-                "w-full justify-start gap-3 h-12",
+                "w-full justify-start gap-3 h-12 text-left",
                 isActive(item.href) && "bg-primary/10 text-primary hover:bg-primary/20"
               )}
             >
-              <item.icon className="h-5 w-5" />
-              {item.label}
+              <item.icon className="h-5 w-5 flex-shrink-0" />
+              <span className="truncate">{item.label}</span>
             </Button>
           </Link>
         ))}

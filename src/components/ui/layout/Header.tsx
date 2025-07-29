@@ -4,10 +4,16 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Link } from "react-router-dom";
-import { User, LogOut, Settings, Bell, Search } from "lucide-react";
+import { User, LogOut, Settings, Bell, Search, Menu } from "lucide-react";
+import { MobileNavigation } from "@/components/layout/MobileNavigation";
 
-export const Header = () => {
+interface HeaderProps {
+  onMobileMenuOpen?: () => void;
+}
+
+export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
   const { t } = useLanguage();
   const { userProfile, signOut } = useAuth();
 
@@ -27,17 +33,28 @@ export const Header = () => {
 
   return (
     <header className="h-16 border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
-      <div className="container mx-auto px-6 h-full flex items-center justify-between">
-        <Link to="/" className="flex items-center">
-          <img 
-            src="/lovable-uploads/15bb5f5e-0a37-4ca9-81a8-ff8ec8a25b9d.png" 
-            alt="Supplify Logo" 
-            className="h-18 w-auto hover:scale-105 transition-transform"
-          />
-        </Link>
-        
+      <div className="container mx-auto px-4 lg:px-6 h-full flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="relative hidden lg:block">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden"
+            onClick={onMobileMenuOpen}
+          >
+            <Menu className="h-5 w-5" />
+          </Button>
+          
+          <Link to="/" className="flex items-center">
+            <img 
+              src="/lovable-uploads/15bb5f5e-0a37-4ca9-81a8-ff8ec8a25b9d.png" 
+              alt="Supplify Logo" 
+              className="h-12 lg:h-18 w-auto hover:scale-105 transition-transform"
+            />
+          </Link>
+        </div>
+        
+        <div className="flex items-center gap-2 lg:gap-4">
+          <div className="relative hidden xl:block">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <input
               type="text"
@@ -46,9 +63,15 @@ export const Header = () => {
             />
           </div>
           
-          <LanguageSwitcher />
+          <Button variant="ghost" size="icon" className="hidden sm:flex xl:hidden">
+            <Search className="h-5 w-5" />
+          </Button>
           
-          <Button variant="ghost" size="icon" className="relative">
+          <div className="hidden sm:block">
+            <LanguageSwitcher />
+          </div>
+          
+          <Button variant="ghost" size="icon" className="relative hidden sm:flex">
             <Bell className="h-5 w-5" />
             <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
               3
@@ -57,7 +80,7 @@ export const Header = () => {
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="flex items-center gap-2 px-3 rounded-lg">
+              <Button variant="ghost" className="flex items-center gap-2 px-2 lg:px-3 rounded-lg">
                 <Avatar className="h-8 w-8">
                   <AvatarFallback className="text-sm bg-primary/10 text-primary">
                     {getUserInitials(userProfile?.full_name)}
@@ -70,6 +93,12 @@ export const Header = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuItem asChild>
+                <Link to="/profile" className="flex items-center">
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem>
                 <Settings className="mr-2 h-4 w-4" />
                 <span>Settings</span>
