@@ -71,6 +71,20 @@ export const MobileNavigation = () => {
             <SheetDescription className="sr-only">
               Navigation menu
             </SheetDescription>
+            
+            {/* Login and Start buttons below logo */}
+            <div className="flex gap-3 pt-4">
+              <Link to="/home" onClick={handleLinkClick} className="flex-1">
+                <Button variant="ghost" size="sm" className="w-full">
+                  {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
+                </Button>
+              </Link>
+              <Link to="/home" onClick={handleLinkClick} className="flex-1">
+                <Button size="sm" className="w-full bg-gradient-to-r from-primary to-accent">
+                  {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
+                </Button>
+              </Link>
+            </div>
           </SheetHeader>
           
           <div className="flex flex-col h-full">
@@ -91,21 +105,9 @@ export const MobileNavigation = () => {
               </ul>
             </nav>
             
-            <div className="border-t p-6 space-y-4">
+            <div className="border-t p-6">
               <div className="flex justify-center">
                 <LanguageSwitcher />
-              </div>
-              <div className="space-y-3">
-                <Link to="/home" onClick={handleLinkClick}>
-                  <Button variant="ghost" size="sm" className="w-full">
-                    {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
-                  </Button>
-                </Link>
-                <Link to="/home" onClick={handleLinkClick}>
-                  <Button size="sm" className="w-full bg-gradient-to-r from-primary to-accent">
-                    {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
-                  </Button>
-                </Link>
               </div>
             </div>
           </div>
