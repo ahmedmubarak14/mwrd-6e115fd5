@@ -75,12 +75,12 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
         ))}
       </nav>
 
-      {/* Language Switcher for Mobile */}
-      <div className="p-4 border-t lg:hidden">
-        <div className="flex items-center justify-between">
-          <span className="text-sm text-muted-foreground">Language</span>
-          <LanguageSwitcher />
+      {/* Language Switcher for Mobile - More prominent */}
+      <div className="p-4 border-t lg:hidden bg-muted/30">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium text-foreground">🌐 Language</span>
         </div>
+        <LanguageSwitcher />
       </div>
     </div>
   );
