@@ -516,6 +516,45 @@ export const Landing = () => {
                 'Carefully designed packages to suit your journey in the events world, from humble beginnings to great heights'
               }
             </p>
+            
+            {/* Role Selection Toggle - Similar to Zid's Annual Pricing Toggle */}
+            <div className="flex justify-center items-center gap-4 mt-12 mb-12">
+              <div className="flex items-center gap-4">
+                <span className={`text-lg font-medium transition-colors ${selectedRole === 'client' ? 'text-foreground' : 'text-muted-foreground'}`}>
+                  {t('language') === 'ar' ? 'العملاء' : 'Clients'}
+                </span>
+                
+                <div className="relative">
+                  <input
+                    type="checkbox"
+                    id="roleToggle"
+                    checked={selectedRole === 'supplier'}
+                    onChange={(e) => setSelectedRole(e.target.checked ? 'supplier' : 'client')}
+                    className="sr-only"
+                  />
+                  <label
+                    htmlFor="roleToggle"
+                    className="block w-14 h-7 bg-primary rounded-full cursor-pointer relative transition-all duration-300 hover:bg-primary/90"
+                  >
+                    <div
+                      className={`absolute top-0.5 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-300 ${
+                        selectedRole === 'supplier' ? 'translate-x-7' : 'translate-x-0.5'
+                      }`}
+                    />
+                  </label>
+                </div>
+                
+                <span className={`text-lg font-medium transition-colors ${selectedRole === 'supplier' ? 'text-foreground' : 'text-muted-foreground'}`}>
+                  {t('language') === 'ar' ? 'مقدمي الخدمات' : 'Suppliers'}
+                </span>
+                
+                {selectedRole === 'supplier' && (
+                  <div className="bg-gradient-to-r from-accent to-primary text-white px-4 py-1.5 rounded-full text-sm font-medium animate-fade-in">
+                    {t('language') === 'ar' ? 'نظام عمولات مرن' : 'Flexible Commission System'}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
           
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
