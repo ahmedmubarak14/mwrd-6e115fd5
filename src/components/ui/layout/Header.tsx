@@ -27,27 +27,27 @@ export const Header = () => {
 
   return (
     <header className="h-16 border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
-      <div className="flex items-center justify-between px-6 h-full">
+      <div className="container mx-auto px-6 h-full flex items-center justify-between">
+        <Link to="/" className="flex items-center">
+          <img 
+            src="/lovable-uploads/b443f385-9fd2-4ecc-8763-b6ed9bd406f8.png" 
+            alt="Supplify Logo" 
+            className="h-14 w-auto hover:scale-105 transition-transform"
+          />
+        </Link>
+        
         <div className="flex items-center gap-4">
-          <Link to="/" className="flex items-center gap-3">
-            <img 
-              src="/lovable-uploads/b443f385-9fd2-4ecc-8763-b6ed9bd406f8.png" 
-              alt="Supplify Logo" 
-              className="h-12 w-auto hover:scale-105 transition-transform"
-            />
-          </Link>
-          <div className="relative hidden md:block">
+          <div className="relative hidden lg:block">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <input
               type="text"
               placeholder={t('dashboard.search')}
-              className="pl-10 pr-4 py-2 border rounded-lg w-80 bg-background text-foreground placeholder:text-muted-foreground"
+              className="pl-10 pr-4 py-2 border rounded-lg w-80 bg-background/50 text-foreground placeholder:text-muted-foreground focus:bg-background transition-colors"
             />
           </div>
-        </div>
-        
-        <div className="flex items-center gap-4">
+          
           <LanguageSwitcher />
+          
           <Button variant="ghost" size="icon" className="relative">
             <Bell className="h-5 w-5" />
             <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -57,13 +57,13 @@ export const Header = () => {
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="flex items-center gap-2 px-3">
+              <Button variant="ghost" className="flex items-center gap-2 px-3 rounded-lg">
                 <Avatar className="h-8 w-8">
-                  <AvatarFallback className="text-sm">
+                  <AvatarFallback className="text-sm bg-primary/10 text-primary">
                     {getUserInitials(userProfile?.full_name)}
                   </AvatarFallback>
                 </Avatar>
-                <div className="text-left hidden md:block">
+                <div className="text-left hidden lg:block">
                   <p className="text-sm font-medium">{userProfile?.full_name || 'User'}</p>
                   <p className="text-xs text-muted-foreground capitalize">{userProfile?.role}</p>
                 </div>
