@@ -2,12 +2,17 @@ import { Header } from "@/components/ui/layout/Header";
 import { Sidebar } from "@/components/ui/layout/Sidebar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Search, Star, MapPin, Eye, MessageCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
 export const Suppliers = () => {
   const { t } = useLanguage();
+  const { userProfile } = useAuth();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const suppliers = [
     {
@@ -91,91 +96,107 @@ export const Suppliers = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
+      
+      {/* Mobile Sidebar */}
+      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+        <SheetContent side="left" className="w-80 p-0 flex flex-col">
+          <Sidebar userRole={userProfile?.role || 'client'} />
+        </SheetContent>
+      </Sheet>
+
       <div className="flex">
-        <Sidebar userRole="client" />
-        <main className="flex-1 p-6">
-          <div className="space-y-6">
+        {/* Desktop Sidebar */}
+        <div className="hidden lg:block">
+          <Sidebar userRole={userProfile?.role || 'client'} />
+        </div>
+        
+        <main className="flex-1 p-3 sm:p-4 lg:p-6 max-w-full overflow-hidden">
+          <div className="space-y-4 sm:space-y-6">
             {/* Header */}
             <div>
-              <h1 className="text-3xl font-bold">{t('nav.suppliers')}</h1>
-              <p className="text-muted-foreground">Discover vetted service providers for your events</p>
+              <h1 className="text-2xl sm:text-3xl font-bold">{t('nav.suppliers')}</h1>
+              <p className="text-muted-foreground text-sm sm:text-base">Discover vetted service providers for your events</p>
             </div>
 
             {/* Search and Filters */}
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex flex-col md:flex-row gap-4">
+            <Card className="border-0 bg-card/70 backdrop-blur-sm">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex flex-col gap-3 sm:gap-4">
                   <div className="flex-1">
                     <div className="relative">
                       <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input 
                         placeholder="Search suppliers by name, category, or location..."
-                        className="pl-10"
+                        className="pl-10 text-sm sm:text-base"
                       />
                     </div>
                   </div>
-                  <select className="px-3 py-2 border rounded-md bg-background">
-                    {categories.map((category, index) => (
-                      <option key={index} value={category}>{category}</option>
-                    ))}
-                  </select>
-                  <select className="px-3 py-2 border rounded-md bg-background">
-                    <option>جميع المواقع</option>
-                    <option>الرياض</option>
-                    <option>جدة</option>
-                    <option>الدمام</option>
-                    <option>مكة المكرمة</option>
-                    <option>المدينة المنورة</option>
-                    <option>الطائف</option>
-                    <option>تبوك</option>
-                  </select>
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                    <select className="px-3 py-2 border rounded-md bg-background text-sm sm:text-base flex-1">
+                      {categories.map((category, index) => (
+                        <option key={index} value={category}>{category}</option>
+                      ))}
+                    </select>
+                    <select className="px-3 py-2 border rounded-md bg-background text-sm sm:text-base flex-1">
+                      <option>جميع المواقع</option>
+                      <option>الرياض</option>
+                      <option>جدة</option>
+                      <option>الدمام</option>
+                      <option>مكة المكرمة</option>
+                      <option>المدينة المنورة</option>
+                      <option>الطائف</option>
+                      <option>تبوك</option>
+                    </select>
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Suppliers Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               {suppliers.map((supplier) => (
-                <Card key={supplier.id} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle className="text-xl">
+                <Card key={supplier.id} className="hover:shadow-lg transition-shadow border-0 bg-card/70 backdrop-blur-sm">
+                  <CardHeader className="p-4 sm:p-6">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-0">
+                      <div className="flex-1 min-w-0">
+                        <CardTitle className="text-lg sm:text-xl truncate">
                           {t('language') === 'ar' ? supplier.name : supplier.englishName}
                         </CardTitle>
-                        <CardDescription className="text-primary font-medium">
+                        <CardDescription className="text-primary font-medium text-sm sm:text-base">
                           {t('language') === 'ar' ? supplier.category : supplier.englishCategory}
                         </CardDescription>
                       </div>
-                      <div className="text-right">
+                      <div className="text-left sm:text-right flex-shrink-0">
                         <div className="flex items-center gap-1">
                           <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                          <span className="font-semibold">{supplier.rating}</span>
-                          <span className="text-sm text-muted-foreground">({supplier.reviews})</span>
+                          <span className="font-semibold text-sm sm:text-base">{supplier.rating}</span>
+                          <span className="text-xs sm:text-sm text-muted-foreground">({supplier.reviews})</span>
                         </div>
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
-                          <MapPin className="h-4 w-4" />
-                          {t('language') === 'ar' ? supplier.location : supplier.englishLocation}
+                        <div className="flex items-center gap-1 text-xs sm:text-sm text-muted-foreground mt-1">
+                          <MapPin className="h-3 w-3 sm:h-4 sm:w-4" />
+                          <span className="truncate">
+                            {t('language') === 'ar' ? supplier.location : supplier.englishLocation}
+                          </span>
                         </div>
                       </div>
                     </div>
                   </CardHeader>
                   
-                  <CardContent className="space-y-4">
-                    <p className="text-muted-foreground">
+                  <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6 pt-0">
+                    <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
                       {t('language') === 'ar' ? supplier.description : supplier.englishDescription}
                     </p>
                     
-                    <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm sm:text-base">
                       <div>
-                        <span className="text-muted-foreground">
+                        <span className="text-muted-foreground text-xs sm:text-sm">
                           {t('language') === 'ar' ? 'المشاريع المكتملة:' : 'Completed Projects:'}
                         </span>
                         <p className="font-semibold">{supplier.completedProjects}+</p>
                       </div>
                       <div>
-                        <span className="text-muted-foreground">
+                        <span className="text-muted-foreground text-xs sm:text-sm">
                           {t('language') === 'ar' ? 'وقت الاستجابة:' : 'Response Time:'}
                         </span>
                         <p className="font-semibold text-lime">
@@ -184,13 +205,13 @@ export const Suppliers = () => {
                       </div>
                     </div>
                     
-                    <div className="flex gap-2 pt-2">
-                      <Button className="flex-1">
-                        <Eye className="h-4 w-4 mr-2" />
+                    <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                      <Button className="flex-1 text-xs sm:text-sm">
+                        <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
                         View Profile
                       </Button>
-                      <Button variant="outline">
-                        <MessageCircle className="h-4 w-4 mr-2" />
+                      <Button variant="outline" className="flex-1 sm:flex-initial text-xs sm:text-sm">
+                        <MessageCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
                         Contact
                       </Button>
                     </div>
@@ -201,7 +222,7 @@ export const Suppliers = () => {
 
             {/* Load More */}
             <div className="text-center">
-              <Button variant="outline" size="lg">
+              <Button variant="outline" size="lg" className="w-full sm:w-auto">
                 Load More Suppliers
               </Button>
             </div>
