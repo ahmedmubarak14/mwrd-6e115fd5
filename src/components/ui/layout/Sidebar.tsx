@@ -53,22 +53,22 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
   const isActive = (href: string) => location.pathname === href;
 
   return (
-    <div className="w-full lg:w-64 h-full lg:h-screen bg-card border-r flex flex-col">
-      <div className="p-6 border-b lg:border-b-0">
-        <h2 className="text-lg font-semibold text-primary">{t('app.name')}</h2>
+    <div className="w-full h-full bg-card border-r flex flex-col">
+      <div className="p-4 sm:p-6 border-b">
+        <h2 className="text-base sm:text-lg font-semibold text-primary">{t('app.name')}</h2>
       </div>
       
-      <nav className="flex-1 px-4 py-4 space-y-2">
+      <nav className="flex-1 px-3 sm:px-4 py-4 space-y-1 sm:space-y-2">
         {getMenuItems().map((item, index) => (
           <Link key={index} to={item.href}>
             <Button
               variant="ghost"
               className={cn(
-                "w-full justify-start gap-3 h-12 text-left",
+                "w-full justify-start gap-3 h-10 sm:h-12 text-left text-sm sm:text-base",
                 isActive(item.href) && "bg-primary/10 text-primary hover:bg-primary/20"
               )}
             >
-              <item.icon className="h-5 w-5 flex-shrink-0" />
+              <item.icon className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
               <span className="truncate">{item.label}</span>
             </Button>
           </Link>
@@ -76,14 +76,14 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
       </nav>
 
       {/* Language Switcher for Mobile - ALWAYS VISIBLE */}
-      <div className="mt-auto p-4 border-t bg-primary/5">
+      <div className="mt-auto p-3 sm:p-4 border-t bg-primary/5">
         <div className="space-y-2">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Language / اللغة</p>
           <Button
             variant="outline"
             size="sm"
             onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
-            className="w-full"
+            className="w-full text-xs sm:text-sm"
           >
             🌐 {language === 'en' ? 'العربية' : 'English'}
           </Button>

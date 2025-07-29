@@ -32,28 +32,28 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
   };
 
   return (
-    <header className="h-16 border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
-      <div className="container mx-auto px-4 lg:px-6 h-full flex items-center justify-between">
-        <div className="flex items-center gap-4">
+    <header className="h-14 sm:h-16 border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 h-full flex items-center justify-between">
+        <div className="flex items-center gap-2 sm:gap-4">
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden"
+            className="lg:hidden h-8 w-8 sm:h-10 sm:w-10"
             onClick={onMobileMenuOpen}
           >
-            <Menu className="h-5 w-5" />
+            <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
           
           <Link to="/" className="flex items-center">
             <img 
               src="/lovable-uploads/15bb5f5e-0a37-4ca9-81a8-ff8ec8a25b9d.png" 
               alt="Supplify Logo" 
-              className="h-12 lg:h-18 w-auto hover:scale-105 transition-transform"
+              className="h-8 sm:h-10 lg:h-12 w-auto hover:scale-105 transition-transform"
             />
           </Link>
         </div>
         
-        <div className="flex items-center gap-2 lg:gap-4">
+        <div className="flex items-center gap-1 sm:gap-2 lg:gap-4">
           <div className="relative hidden xl:block">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <input
@@ -63,26 +63,26 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
             />
           </div>
           
-          <Button variant="ghost" size="icon" className="hidden sm:flex xl:hidden">
-            <Search className="h-5 w-5" />
+          <Button variant="ghost" size="icon" className="hidden sm:flex xl:hidden h-8 w-8 sm:h-10 sm:w-10">
+            <Search className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
           
           <div className="hidden sm:block">
             <LanguageSwitcher />
           </div>
           
-          <Button variant="ghost" size="icon" className="relative hidden sm:flex">
-            <Bell className="h-5 w-5" />
-            <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
+          <Button variant="ghost" size="icon" className="relative hidden sm:flex h-8 w-8 sm:h-10 sm:w-10">
+            <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center text-[10px] sm:text-xs">
               3
             </span>
           </Button>
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="flex items-center gap-2 px-2 lg:px-3 rounded-lg">
-                <Avatar className="h-8 w-8">
-                  <AvatarFallback className="text-sm bg-primary/10 text-primary">
+              <Button variant="ghost" className="flex items-center gap-1 sm:gap-2 px-1 sm:px-2 lg:px-3 rounded-lg h-8 sm:h-10">
+                <Avatar className="h-6 w-6 sm:h-8 sm:w-8">
+                  <AvatarFallback className="text-xs sm:text-sm bg-primary/10 text-primary">
                     {getUserInitials(userProfile?.full_name)}
                   </AvatarFallback>
                 </Avatar>

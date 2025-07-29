@@ -52,6 +52,7 @@ const translations = {
     'dashboard.welcome': 'Welcome to Supplify',
     'dashboard.subtitle': 'Connect with vetted service providers for your events',
     'dashboard.createRequest': 'Create Service Request',
+    'dashboard.search': 'Search...',
     'dashboard.viewRequests': 'View My Requests',
     'dashboard.browseSuppliers': 'Browse Suppliers',
     
@@ -120,6 +121,7 @@ const translations = {
     'dashboard.welcome': 'مرحباً بك في سبلفاي',
     'dashboard.subtitle': 'تواصل مع مقدمي الخدمات المعتمدين لفعالياتك',
     'dashboard.createRequest': 'إنشاء طلب خدمة',
+    'dashboard.search': 'بحث...',
     'dashboard.viewRequests': 'عرض طلباتي',
     'dashboard.browseSuppliers': 'تصفح مقدمي الخدمات',
     
