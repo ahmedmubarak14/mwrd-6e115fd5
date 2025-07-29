@@ -91,9 +91,21 @@ export const MobileNavigation = () => {
               </ul>
             </nav>
             
-            <div className="border-t p-6">
+            <div className="border-t p-6 space-y-4">
               <div className="flex justify-center">
                 <LanguageSwitcher />
+              </div>
+              <div className="space-y-3">
+                <Link to="/home" onClick={handleLinkClick}>
+                  <Button variant="ghost" size="sm" className="w-full">
+                    {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
+                  </Button>
+                </Link>
+                <Link to="/home" onClick={handleLinkClick}>
+                  <Button size="sm" className="w-full bg-gradient-to-r from-primary to-accent">
+                    {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
