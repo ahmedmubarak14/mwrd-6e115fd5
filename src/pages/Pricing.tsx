@@ -422,7 +422,7 @@ export const Pricing = () => {
             </h2>
             <p className="text-xl md:text-2xl opacity-90 mb-12 leading-relaxed">
               {t('language') === 'ar' ? 
-                'انضم إلى آلاف الشركات الرائدة التي اختارت سبلايفي لتحقيق أحلامها في عالم الفعاليات' : 
+                'انضم إلى آلاف الشركات الرائدة التي اختارت سبلفاي لتحقيق أحلامها في عالم الفعاليات' : 
                 'Join thousands of leading companies that chose Supplify to achieve their dreams in the events world'
               }
             </p>

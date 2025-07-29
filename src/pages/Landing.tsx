@@ -222,7 +222,7 @@ export const Landing = () => {
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              {t('language') === 'ar' ? 'لماذا سبلايفي هو الخيار الأذكى؟' : 'Why is Supplify the Smartest Choice?'}
+              {t('language') === 'ar' ? 'لماذا سبلفاي هو الخيار الأذكى؟' : 'Why is Supplify the Smartest Choice?'}
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               {t('language') === 'ar' ? 
@@ -272,7 +272,7 @@ export const Landing = () => {
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              {t('language') === 'ar' ? 'لماذا تختار سبلايفي؟' : 'Why Choose Supplify?'}
+              {t('language') === 'ar' ? 'لماذا تختار سبلفاي؟' : 'Why Choose Supplify?'}
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               {t('language') === 'ar' ? 
@@ -664,7 +664,7 @@ export const Landing = () => {
             </h2>
             <p className="text-xl md:text-2xl opacity-90 mb-12 leading-relaxed">
               {t('language') === 'ar' ? 
-                'انضم إلى آلاف الشركات الرائدة التي اختارت سبلايفي لتحقيق أحلامها في عالم الفعاليات' : 
+                'انضم إلى آلاف الشركات الرائدة التي اختارت سبلفاي لتحقيق أحلامها في عالم الفعاليات' : 
                 'Join thousands of leading companies that chose Supplify to achieve their dreams in the events world'
               }
             </p>
@@ -737,7 +737,7 @@ export const Landing = () => {
           <div className="border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-muted-foreground text-sm">
               {t('language') === 'ar' ? 
-                '© 2024 سبلايفي. جميع الحقوق محفوظة.' : 
+                '© 2024 سبلفاي. جميع الحقوق محفوظة.' : 
                 '© 2024 Supplify. All rights reserved.'
               }
             </p>

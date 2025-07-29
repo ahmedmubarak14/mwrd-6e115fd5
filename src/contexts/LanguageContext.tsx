@@ -12,6 +12,8 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 const translations = {
   en: {
+    // App name
+    'app.name': 'Supplify',
     // Language
     'language': 'en',
     
@@ -79,6 +81,8 @@ const translations = {
     'category.flowers': 'Flowers',
   },
   ar: {
+    // App name
+    'app.name': 'سبلفاي',
     // Language
     'language': 'ar',
     // Navigation
@@ -113,7 +117,7 @@ const translations = {
     'auth.supplier': 'مقدم خدمة',
     
     // Dashboard
-    'dashboard.welcome': 'مرحباً بك في سبلايفي',
+    'dashboard.welcome': 'مرحباً بك في سبلفاي',
     'dashboard.subtitle': 'تواصل مع مقدمي الخدمات المعتمدين لفعالياتك',
     'dashboard.createRequest': 'إنشاء طلب خدمة',
     'dashboard.viewRequests': 'عرض طلباتي',

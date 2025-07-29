@@ -112,7 +112,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
 
           toast({
             title: language === 'ar' ? "تم إنشاء الحساب بنجاح" : "Account created successfully",
-            description: language === 'ar' ? "مرحباً بك في سبلايفي!" : "Welcome to Supplify!",
+            description: language === 'ar' ? "مرحباً بك في سبلفاي!" : "Welcome to Supplify!",
           });
         }
       }
@@ -139,7 +139,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
             />
           </Link>
           <CardTitle className="text-2xl">
-            {language === 'ar' ? 'مرحباً بك في سبلايفي' : 'Welcome to Supplify'}
+            {language === 'ar' ? 'مرحباً بك في سبلفاي' : 'Welcome to Supplify'}
           </CardTitle>
           <CardDescription>
             {language === 'ar' ? 'سجل دخولك أو أنشئ حساباً جديداً' : 'Sign in to your account or create a new one'}

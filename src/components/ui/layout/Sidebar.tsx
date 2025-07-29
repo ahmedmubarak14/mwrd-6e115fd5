@@ -55,7 +55,7 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
   return (
     <div className="w-full lg:w-64 h-full lg:h-screen bg-card border-r flex flex-col">
       <div className="p-6 border-b lg:border-b-0">
-        <h2 className="text-lg font-semibold text-primary">Supplify</h2>
+        <h2 className="text-lg font-semibold text-primary">{t('app.name')}</h2>
       </div>
       
       <nav className="flex-1 px-4 py-4 space-y-2">
