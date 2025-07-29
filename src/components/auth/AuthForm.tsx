@@ -69,12 +69,26 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/home`
+          }
         });
 
         if (error) throw error;
 
-        // Create user profile
-        if (data.user) {
+        if (data.user && !data.session) {
+          // User needs to confirm email
+          toast({
+            title: language === 'ar' ? "تأكيد البريد الإلكتروني مطلوب" : "Email confirmation required",
+            description: language === 'ar' ? 
+              "يرجى فتح بريدك الإلكتروني والنقر على رابط التأكيد لإكمال إنشاء الحساب" : 
+              "Please check your email and click the confirmation link to complete account creation",
+          });
+          return;
+        }
+
+        // Create user profile only if user is authenticated
+        if (data.user && data.session) {
           const { error: profileError } = await supabase
             .from('user_profiles')
             .insert({
@@ -85,7 +99,18 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
               company_name: role === 'supplier' ? companyName : null,
             });
 
-          if (profileError) throw profileError;
+          if (profileError) {
+            console.error('Profile creation error:', profileError);
+            // If profile creation fails, we should still proceed as the user is authenticated
+            toast({
+              variant: "destructive",
+              title: language === 'ar' ? "خطأ في إنشاء الملف الشخصي" : "Profile creation error",
+              description: language === 'ar' ? 
+                "تم إنشاء الحساب ولكن حدث خطأ في إنشاء الملف الشخصي" : 
+                "Account created but there was an error creating the profile",
+            });
+            return;
+          }
 
           onAuthSuccess({
             id: data.user.id,
