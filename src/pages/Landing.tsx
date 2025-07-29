@@ -83,251 +83,6 @@ export const Landing = () => {
     }
   ];
 
-  const [selectedRole, setSelectedRole] = useState<'client' | 'supplier'>('client');
-
-  const clientPricingPlans = [
-    {
-      name: "استكشف مجاناً",
-      englishName: "Explore Free",
-      price: "0",
-      currency: "ر.س",
-      period: "/شهر",
-      englishPeriod: "/month",
-      description: "ابدأ رحلتك معنا واستكشف إمكانيات لا محدودة",
-      englishDescription: "Start your journey with us and explore unlimited possibilities",
-      features: [
-        "طلب خدمة واحد شهرياً",
-        "تصفح مقدمي الخدمات",
-        "دعم مجتمعي",
-        "موارد تعليمية أساسية"
-      ],
-      englishFeatures: [
-        "1 service request per month",
-        "Browse service providers",
-        "Community support",
-        "Basic educational resources"
-      ],
-      popular: false,
-      badge: "مجاني",
-      englishBadge: "Free"
-    },
-    {
-      name: "نمو الأعمال",
-      englishName: "Business Growth", 
-      price: "299",
-      currency: "ر.س",
-      period: "/شهر",
-      englishPeriod: "/month",
-      description: "حلول متكاملة للشركات النامية وطموحاتها",
-      englishDescription: "Integrated solutions for growing businesses and their ambitions",
-      features: [
-        "حتى 8 طلبات خدمة شهرياً",
-        "أولوية في المطابقة الذكية",
-        "دعم فني متخصص",
-        "تقارير أداء ربع سنوية",
-        "رؤى تحليلية للنمو",
-        "ورش عمل تطويرية"
-      ],
-      englishFeatures: [
-        "Up to 8 service requests per month",
-        "Priority smart matching",
-        "Specialist technical support",
-        "Quarterly Performance Reports",
-        "Growth analytical insights",
-        "Development workshops"
-      ],
-      popular: false,
-      badge: "أكثر قيمة",
-      englishBadge: "Best Value"
-    },
-    {
-      name: "التميز المهني",
-      englishName: "Professional Excellence",
-      price: "799",
-      currency: "ر.س",
-      period: "/شهر",
-      englishPeriod: "/month",
-      description: "للشركات الرائدة التي تسعى للتفوق والابتكار",
-      englishDescription: "For leading companies pursuing excellence and innovation",
-      features: [
-        "حتى 30 طلب خدمة شهرياً",
-        "مطابقة ذكية متقدمة بالذكاء الاصطناعي",
-        "فريق دعم مخصص",
-        "تقارير أداء ربع سنوية متقدمة",
-        "استشارات استراتيجية",
-        "علامة تجارية مخصصة",
-        "تدريبات متخصصة"
-      ],
-      englishFeatures: [
-        "Up to 30 service requests per month",
-        "Advanced AI-powered smart matching",
-        "Dedicated support team",
-        "Advanced quarterly performance reports",
-        "Strategic consultations",
-        "Custom branding",
-        "Specialized training"
-      ],
-      popular: true,
-      badge: "الأكثر شعبية",
-      englishBadge: "Most Popular"
-    },
-    {
-      name: "قيادة المؤسسات",
-      englishName: "Enterprise Leadership",
-      price: "حسب الطلب",
-      englishPrice: "Custom",
-      currency: "",
-      period: "",
-      englishPeriod: "",
-      description: "حلول مؤسسية متكاملة لقادة الصناعة",
-      englishDescription: "Complete enterprise solutions for industry leaders",
-      features: [
-        "طلبات خدمة غير محدودة",
-        "منصة بعلامة تجارية خاصة",
-        "فريق إدارة حسابات مخصص",
-        "تقارير أداء شهرية متطورة",
-        "مدير حساب مخصص",
-        "تكاملات تقنية مخصصة",
-        "ضمانات مستوى خدمة متميز",
-        "استشارات تحول رقمي"
-      ],
-      englishFeatures: [
-        "Unlimited service requests",
-        "White-label platform",
-        "Dedicated account management team",
-        "Advanced monthly performance reports",
-        "Dedicated account manager",
-        "Custom technical integrations",
-        "Premium SLA guarantees",
-        "Digital transformation consultancy"
-      ],
-      popular: false,
-      badge: "حلول مؤسسية",
-      englishBadge: "Enterprise"
-    }
-  ];
-
-  const supplierPricingPlans = [
-    {
-      name: "مقدم خدمة مبتدئ",
-      englishName: "Starter Provider",
-      price: "0",
-      currency: "ر.س",
-      period: "/شهر",
-      englishPeriod: "/month",
-      description: "ابدأ كمقدم خدمة وانضم لشبكتنا",
-      englishDescription: "Start as a service provider and join our network",
-      features: [
-        "ملف شخصي أساسي",
-        "استقبال حتى 3 طلبات شهرياً",
-        "عمولة 8% على كل صفقة",
-        "دعم مجتمعي"
-      ],
-      englishFeatures: [
-        "Basic profile setup",
-        "Receive up to 3 requests monthly",
-        "8% commission per deal",
-        "Community support"
-      ],
-      popular: false,
-      badge: "مجاني",
-      englishBadge: "Free"
-    },
-    {
-      name: "مقدم خدمة محترف",
-      englishName: "Professional Provider",
-      price: "199",
-      currency: "ر.س",
-      period: "/شهر",
-      englishPeriod: "/month",
-      description: "حلول متقدمة للمقدمين المحترفين",
-      englishDescription: "Advanced solutions for professional providers",
-      features: [
-        "ملف شخصي متقدم مع معرض أعمال",
-        "استقبال حتى 15 طلب شهرياً",
-        "عمولة 5% على كل صفقة",
-        "أولوية في نتائج البحث",
-        "تقارير أداء شهرية",
-        "دعم فني متخصص"
-      ],
-      englishFeatures: [
-        "Advanced profile with portfolio gallery",
-        "Receive up to 15 requests monthly",
-        "5% commission per deal",
-        "Priority in search results",
-        "Monthly performance reports",
-        "Specialist technical support"
-      ],
-      popular: true,
-      badge: "الأكثر شعبية",
-      englishBadge: "Most Popular"
-    },
-    {
-      name: "مقدم خدمة متميز",
-      englishName: "Premium Provider",
-      price: "399",
-      currency: "ر.س",
-      period: "/شهر",
-      englishPeriod: "/month",
-      description: "للمقدمين الرائدين في السوق",
-      englishDescription: "For leading providers in the market",
-      features: [
-        "ملف شخصي مخصص بالكامل",
-        "طلبات غير محدودة",
-        "عمولة 3% على كل صفقة",
-        "شارة 'مقدم متميز'",
-        "إدارة حساب مخصصة",
-        "تقارير تحليلية متقدمة",
-        "دعم أولوية على مدار الساعة"
-      ],
-      englishFeatures: [
-        "Fully customized profile",
-        "Unlimited requests",
-        "3% commission per deal",
-        "'Premium Provider' badge",
-        "Dedicated account management",
-        "Advanced analytics reports",
-        "24/7 priority support"
-      ],
-      popular: false,
-      badge: "متميز",
-      englishBadge: "Premium"
-    },
-    {
-      name: "شريك مؤسسي",
-      englishName: "Enterprise Partner",
-      price: "حسب الطلب",
-      englishPrice: "Custom",
-      currency: "",
-      period: "",
-      englishPeriod: "",
-      description: "شراكة استراتيجية للمؤسسات الكبرى",
-      englishDescription: "Strategic partnership for large enterprises",
-      features: [
-        "حلول مخصصة بالكامل",
-        "عمولة تفاوضية",
-        "فريق دعم مخصص",
-        "تكاملات تقنية خاصة",
-        "تدريب وتطوير الفريق",
-        "اتفاقيات مستوى خدمة مخصصة",
-        "استشارات نمو الأعمال"
-      ],
-      englishFeatures: [
-        "Fully customized solutions",
-        "Negotiable commission rates",
-        "Dedicated support team",
-        "Custom technical integrations",
-        "Team training and development",
-        "Custom SLA agreements",
-        "Business growth consultancy"
-      ],
-      popular: false,
-      badge: "شراكة",
-      englishBadge: "Partnership"
-    }
-  ];
-
-  const currentPricingPlans = selectedRole === 'client' ? clientPricingPlans : supplierPricingPlans;
 
   return (
     <div className="min-h-screen bg-background">
@@ -346,14 +101,14 @@ export const Landing = () => {
             <a href="#platform" className="text-muted-foreground hover:text-primary transition-colors story-link">
               {t('language') === 'ar' ? 'المنصة' : 'Platform'}
             </a>
-            <a href="#solutions" className="text-muted-foreground hover:text-primary transition-colors story-link">
-              {t('language') === 'ar' ? 'الحلول' : 'Solutions'}
+            <a href="#benefits" className="text-muted-foreground hover:text-primary transition-colors story-link">
+              {t('language') === 'ar' ? 'المزايا' : 'Benefits'}
             </a>
-            <a href="#pricing" className="text-muted-foreground hover:text-primary transition-colors story-link">
-              {t('language') === 'ar' ? 'الأسعار' : 'Pricing'}
+            <a href="#services" className="text-muted-foreground hover:text-primary transition-colors story-link">
+              {t('language') === 'ar' ? 'خدماتنا' : 'Our Services'}
             </a>
-            <a href="#impact" className="text-muted-foreground hover:text-primary transition-colors story-link">
-              {t('language') === 'ar' ? 'التأثير' : 'Impact'}
+            <a href="#uvp" className="text-muted-foreground hover:text-primary transition-colors story-link">
+              {t('language') === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
             </a>
           </nav>
           
@@ -497,124 +252,368 @@ export const Landing = () => {
         </div>
       </section>
 
-      {/* Revolutionary Pricing Section */}
-      <section id="pricing" className="py-24 px-4">
+      {/* Benefits Section */}
+      <section id="benefits" className="py-24 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-20">
             <div className="inline-flex items-center gap-2 bg-lime/10 rounded-full px-6 py-2 mb-6">
               <Star className="h-4 w-4 text-lime" />
               <span className="text-sm font-medium text-lime">
-                {t('language') === 'ar' ? 'حلول مرنة' : 'Flexible Solutions'}
+                {t('language') === 'ar' ? 'المزايا والفوائد' : 'Benefits & Advantages'}
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              {t('language') === 'ar' ? 'استثمر في نجاح فعالياتك' : 'Invest in Your Events Success'}
+              {t('language') === 'ar' ? 'لماذا تختار سبلايفي؟' : 'Why Choose Supplify?'}
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               {t('language') === 'ar' ? 
-                'باقات مصممة بعناية لتناسب رحلتك في عالم الفعاليات، من البداية المتواضعة إلى القمم العالية' : 
-                'Carefully designed packages to suit your journey in the events world, from humble beginnings to great heights'
+                'منصة شاملة تلبي احتياجات الإدارة والمشتريات بكفاءة عالية' : 
+                'A comprehensive platform that efficiently meets management and procurement needs'
               }
             </p>
-            
-            {/* Role Selection Toggle - Similar to Zid's Annual Pricing Toggle */}
-            <div className="flex justify-center items-center gap-4 mt-12 mb-12">
-              <div className="flex items-center gap-4">
-                <span className={`text-lg font-medium transition-colors ${selectedRole === 'client' ? 'text-foreground' : 'text-muted-foreground'}`}>
-                  {t('language') === 'ar' ? 'العملاء' : 'Clients'}
-                </span>
-                
-                <div className="relative">
-                  <input
-                    type="checkbox"
-                    id="roleToggle"
-                    checked={selectedRole === 'supplier'}
-                    onChange={(e) => setSelectedRole(e.target.checked ? 'supplier' : 'client')}
-                    className="sr-only"
-                  />
-                  <label
-                    htmlFor="roleToggle"
-                    className="block w-14 h-7 bg-primary rounded-full cursor-pointer relative transition-all duration-300 hover:bg-primary/90"
-                  >
-                    <div
-                      className={`absolute top-0.5 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-300 ${
-                        selectedRole === 'supplier' ? 'translate-x-7' : 'translate-x-0.5'
-                      }`}
-                    />
-                  </label>
-                </div>
-                
-                <span className={`text-lg font-medium transition-colors ${selectedRole === 'supplier' ? 'text-foreground' : 'text-muted-foreground'}`}>
-                  {t('language') === 'ar' ? 'مقدمي الخدمات' : 'Suppliers'}
-                </span>
-                
-                {selectedRole === 'supplier' && (
-                  <div className="bg-gradient-to-r from-accent to-primary text-white px-4 py-1.5 rounded-full text-sm font-medium animate-fade-in">
-                    {t('language') === 'ar' ? 'نظام عمولات مرن' : 'Flexible Commission System'}
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+            {/* Management Benefits */}
+            <div className="space-y-8">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold mb-4">
+                  {t('language') === 'ar' ? 'للإدارة' : 'For Management'}
+                </h3>
+              </div>
+              <div className="space-y-6">
+                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
+                  <div className="bg-primary/10 p-3 rounded-lg">
+                    <BarChart3 className="h-6 w-6 text-primary" />
                   </div>
-                )}
+                  <div>
+                    <h4 className="font-semibold mb-2">
+                      {t('language') === 'ar' ? 'الرؤية الواضحة' : 'Visibility'}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t('language') === 'ar' ? 'رؤية شاملة لجميع العمليات والمشاريع' : 'Complete visibility of all operations and projects'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
+                  <div className="bg-accent/10 p-3 rounded-lg">
+                    <TrendingUp className="h-6 w-6 text-accent" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">
+                      {t('language') === 'ar' ? 'رؤى تحليلية' : 'Insights'}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t('language') === 'ar' ? 'تحليلات متقدمة لاتخاذ قرارات مدروسة' : 'Advanced analytics for informed decision making'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
+                  <div className="bg-lime/10 p-3 rounded-lg">
+                    <Award className="h-6 w-6 text-lime" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">
+                      {t('language') === 'ar' ? 'الأداء المتميز' : 'Performance'}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t('language') === 'ar' ? 'مراقبة الأداء وتحسين النتائج' : 'Performance monitoring and result optimization'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
+                  <div className="bg-primary/10 p-3 rounded-lg">
+                    <CheckCircle className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">
+                      {t('language') === 'ar' ? 'المشتريات القابلة للتتبع' : 'Trackable Procurement'}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t('language') === 'ar' ? 'تتبع كامل لعمليات الشراء والتوريد' : 'Complete tracking of purchasing and supply operations'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Procurement Benefits */}
+            <div className="space-y-8">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold mb-4">
+                  {t('language') === 'ar' ? 'للمشتريات' : 'For Procurement'}
+                </h3>
+              </div>
+              <div className="space-y-6">
+                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
+                  <div className="bg-accent/10 p-3 rounded-lg">
+                    <Zap className="h-6 w-6 text-accent" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">
+                      {t('language') === 'ar' ? 'الكفاءة' : 'Efficiency'}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t('language') === 'ar' ? 'تبسيط العمليات وتوفير الوقت' : 'Streamlined processes and time savings'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
+                  <div className="bg-primary/10 p-3 rounded-lg">
+                    <Shield className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">
+                      {t('language') === 'ar' ? 'الامتثال' : 'Compliance'}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t('language') === 'ar' ? 'ضمان الامتثال للمعايير والقوانين' : 'Ensuring compliance with standards and regulations'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
+                  <div className="bg-lime/10 p-3 rounded-lg">
+                    <CheckCircle className="h-6 w-6 text-lime" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">
+                      {t('language') === 'ar' ? 'التحكم' : 'Control'}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t('language') === 'ar' ? 'سيطرة كاملة على عمليات الشراء' : 'Complete control over purchasing operations'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
+                  <div className="bg-accent/10 p-3 rounded-lg">
+                    <Star className="h-6 w-6 text-accent" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">
+                      {t('language') === 'ar' ? 'أخطاء أقل' : 'Less Errors'}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t('language') === 'ar' ? 'تقليل الأخطاء وزيادة الدقة' : 'Reduced errors and increased accuracy'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
+                  <div className="bg-primary/10 p-3 rounded-lg">
+                    <Clock className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">
+                      {t('language') === 'ar' ? 'التوريد السريع' : 'Fast Supply'}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t('language') === 'ar' ? 'توريد سريع وموثوق' : 'Fast and reliable supply'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
+                  <div className="bg-lime/10 p-3 rounded-lg">
+                    <Users className="h-6 w-6 text-lime" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">
+                      {t('language') === 'ar' ? 'قاعدة موردين ضخمة' : 'Huge Suppliers Database'}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t('language') === 'ar' ? 'وصول لآلاف الموردين المعتمدين' : 'Access to thousands of certified suppliers'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
+                  <div className="bg-accent/10 p-3 rounded-lg">
+                    <TrendingUp className="h-6 w-6 text-accent" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">
+                      {t('language') === 'ar' ? 'أفضل سعر في السوق' : 'Best Price in Market'}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t('language') === 'ar' ? 'الحصول على أفضل الأسعار التنافسية' : 'Get the best competitive prices'}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          
-           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-             {currentPricingPlans.map((plan, index) => (
-              <Card key={index} className={`relative group ${plan.popular ? 'ring-2 ring-primary scale-105 shadow-2xl bg-gradient-to-b from-card to-primary/5' : 'hover:shadow-xl bg-card/70'} transition-all duration-500 border-0 backdrop-blur-sm hover-scale`}>
-                {plan.badge && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <div className={`${plan.popular ? 'bg-gradient-to-r from-primary to-accent' : 'bg-accent'} text-white px-4 py-2 rounded-full text-xs font-medium shadow-lg`}>
-                      {t('language') === 'ar' ? plan.badge : plan.englishBadge}
-                    </div>
-                  </div>
-                )}
-                
-                <CardHeader className="text-center pb-6 pt-8">
-                  <CardTitle className="text-xl font-bold mb-4">
-                    {t('language') === 'ar' ? plan.name : plan.englishName}
-                  </CardTitle>
-                  <div className="mb-4">
-                    <div className="flex items-baseline justify-center gap-1">
-                      <span className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                        {t('language') === 'ar' ? plan.price : (plan.englishPrice || plan.price)}
-                      </span>
-                      <span className="text-muted-foreground text-lg">{plan.currency}</span>
-                    </div>
-                    {plan.period && (
-                      <span className="text-muted-foreground text-sm">
-                        {t('language') === 'ar' ? plan.period : plan.englishPeriod}
-                      </span>
-                    )}
-                  </div>
-                  <CardDescription className="text-sm leading-relaxed">
-                    {t('language') === 'ar' ? plan.description : plan.englishDescription}
-                  </CardDescription>
-                </CardHeader>
-                
-                <CardContent className="space-y-6">
-                  <ul className="space-y-3">
-                    {(t('language') === 'ar' ? plan.features : plan.englishFeatures).map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-start gap-3">
-                        <Check className="h-4 w-4 text-lime shrink-0 mt-1" />
-                        <span className="text-sm leading-relaxed">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <Link to="/home">
-                    <Button 
-                      className={`w-full py-3 hover-scale ${plan.popular ? 'bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-lg' : ''}`}
-                      variant={plan.popular ? 'default' : 'outline'}
-                      size="lg"
-                    >
-                      {plan.price === 'حسب الطلب' || plan.price === 'Custom' ? 
-                        (t('language') === 'ar' ? 'تواصل للاستفسار' : 'Contact for Inquiry') : 
-                        (t('language') === 'ar' ? 'ابدأ الآن' : 'Start Now')
-                      }
-                    </Button>
-                  </Link>
-                </CardContent>
+        </div>
+      </section>
+
+      {/* What We Cover Section */}
+      <section id="services" className="py-24 px-4 bg-muted/30">
+        <div className="container mx-auto">
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-6 py-2 mb-6">
+              <Building2 className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium text-primary">
+                {t('language') === 'ar' ? 'خدماتنا' : 'Our Services'}
+              </span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              {t('language') === 'ar' ? 'ما نغطيه' : 'What We Cover'}
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              {t('language') === 'ar' ? 
+                'خدمات شاملة تغطي جميع احتياجات الفعاليات والعلاقات العامة' : 
+                'Comprehensive services covering all event and public relations needs'
+              }
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            {[
+              { name: 'اللوجستيات', english: 'Logistics', icon: '🚚' },
+              { name: 'العمالة', english: 'Manpower', icon: '👥' },
+              { name: 'الطباعة', english: 'Printing', icon: '🖨️' },
+              { name: 'الأثاث', english: 'Furniture', icon: '🪑' },
+              { name: 'أجنحة المعارض', english: 'Booth Stands', icon: '🏢' },
+              { name: 'المعدات', english: 'Equipment', icon: '⚙️' },
+              { name: 'الهدايا التذكارية', english: 'Giveaways', icon: '🎁' },
+              { name: 'التموين', english: 'Catering', icon: '🍽️' },
+            ].map((service, index) => (
+              <Card key={index} className="text-center p-6 hover:shadow-lg transition-all duration-300 hover-scale bg-card/70">
+                <div className="text-4xl mb-4">{service.icon}</div>
+                <h3 className="font-semibold mb-2">
+                  {t('language') === 'ar' ? service.name : service.english}
+                </h3>
               </Card>
             ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-lg text-muted-foreground">
+              {t('language') === 'ar' ? 
+                'وكل ما يتعلق بالعلاقات العامة وإدارة الفعاليات وأكثر' : 
+                'And everything related to PR and Event management and more'
+              }
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* UVP Section */}
+      <section id="uvp" className="py-24 px-4">
+        <div className="container mx-auto">
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 bg-accent/10 rounded-full px-6 py-2 mb-6">
+              <Sparkles className="h-4 w-4 text-accent" />
+              <span className="text-sm font-medium text-accent">
+                {t('language') === 'ar' ? 'مقترحات القيمة الفريدة' : 'Unique Value Propositions'}
+              </span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              {t('language') === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              {t('language') === 'ar' ? 
+                'مقترحات قيمة فريدة تجعلنا الخيار الأول في صناعة الفعاليات' : 
+                'Unique value propositions that make us the first choice in the events industry'
+              }
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <Card className="p-8 text-center hover:shadow-xl transition-all duration-300 hover-scale bg-gradient-to-br from-primary/5 to-accent/5">
+              <div className="bg-primary/10 p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                <Building2 className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-bold mb-4">
+                {t('language') === 'ar' ? 'سوق مركزي' : 'Centralized Marketplace'}
+              </h3>
+              <p className="text-muted-foreground">
+                {t('language') === 'ar' ? 
+                  'منصة موحدة تجمع جميع مقدمي الخدمات في مكان واحد' : 
+                  'Unified platform bringing all service providers together in one place'
+                }
+              </p>
+            </Card>
+
+            <Card className="p-8 text-center hover:shadow-xl transition-all duration-300 hover-scale bg-gradient-to-br from-accent/5 to-lime/5">
+              <div className="bg-accent/10 p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                <TrendingUp className="h-8 w-8 text-accent" />
+              </div>
+              <h3 className="text-xl font-bold mb-4">
+                {t('language') === 'ar' ? 'تحسين التكاليف' : 'Cost Optimization'}
+              </h3>
+              <p className="text-muted-foreground">
+                {t('language') === 'ar' ? 
+                  'حلول ذكية لتقليل التكاليف وزيادة العائد على الاستثمار' : 
+                  'Smart solutions to reduce costs and increase return on investment'
+                }
+              </p>
+            </Card>
+
+            <Card className="p-8 text-center hover:shadow-xl transition-all duration-300 hover-scale bg-gradient-to-br from-lime/5 to-primary/5">
+              <div className="bg-lime/10 p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                <Shield className="h-8 w-8 text-lime" />
+              </div>
+              <h3 className="text-xl font-bold mb-4">
+                {t('language') === 'ar' ? 'شفافية المشتريات' : 'Procurement Transparency'}
+              </h3>
+              <p className="text-muted-foreground">
+                {t('language') === 'ar' ? 
+                  'شفافية كاملة في جميع عمليات الشراء والتوريد' : 
+                  'Complete transparency in all purchasing and supply operations'
+                }
+              </p>
+            </Card>
+
+            <Card className="p-8 text-center hover:shadow-xl transition-all duration-300 hover-scale bg-gradient-to-br from-primary/5 to-accent/5">
+              <div className="bg-primary/10 p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                <Users className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="text-xl font-bold mb-4">
+                {t('language') === 'ar' ? 'موردون موثوقون' : 'Trusted Suppliers'}
+              </h3>
+              <p className="text-muted-foreground">
+                {t('language') === 'ar' ? 
+                  'شبكة من الموردين المعتمدين والموثوقين' : 
+                  'Network of certified and trusted suppliers'
+                }
+              </p>
+            </Card>
+
+            <Card className="p-8 text-center hover:shadow-xl transition-all duration-300 hover-scale bg-gradient-to-br from-accent/5 to-lime/5">
+              <div className="bg-accent/10 p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                <Clock className="h-8 w-8 text-accent" />
+              </div>
+              <h3 className="text-xl font-bold mb-4">
+                {t('language') === 'ar' ? 'توفير الوقت' : 'Time Savings'}
+              </h3>
+              <p className="text-muted-foreground">
+                {t('language') === 'ar' ? 
+                  'تقليل الوقت المطلوب لإنجاز المشاريع بشكل كبير' : 
+                  'Significantly reduce time required for project completion'
+                }
+              </p>
+            </Card>
+
+            <Card className="p-8 text-center hover:shadow-xl transition-all duration-300 hover-scale bg-gradient-to-br from-lime/5 to-primary/5">
+              <div className="bg-lime/10 p-4 rounded-full w-16 h-16 mx-auto mb-6 flex items-center justify-center">
+                <Sparkles className="h-8 w-8 text-lime" />
+              </div>
+              <h3 className="text-xl font-bold mb-4">
+                {t('language') === 'ar' ? 'والمزيد' : 'And More'}
+              </h3>
+              <p className="text-muted-foreground">
+                {t('language') === 'ar' ? 
+                  'ميزات ومقترحات قيمة إضافية نكتشفها معاً' : 
+                  'Additional features and value propositions we discover together'
+                }
+              </p>
+            </Card>
           </div>
         </div>
       </section>
