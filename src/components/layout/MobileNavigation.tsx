@@ -94,10 +94,9 @@ export const MobileNavigation = () => {
                   </li>
                 ))}
               </ul>
-            </nav>
-            
-            <div className="border-t p-6">
-              <div className="flex gap-3">
+              
+              {/* Login and Start Free buttons after navigation */}
+              <div className="flex gap-3 mt-6 pt-4 border-t">
                 <Link to="/home" onClick={handleLinkClick} className="flex-1">
                   <Button variant="ghost" size="sm" className="w-full">
                     {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
@@ -109,7 +108,8 @@ export const MobileNavigation = () => {
                   </Button>
                 </Link>
               </div>
-            </div>
+            </nav>
+            
           </div>
         </SheetContent>
       </Sheet>
