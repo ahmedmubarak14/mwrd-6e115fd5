@@ -57,7 +57,7 @@ export const MobileNavigation = () => {
             <Menu className="h-6 w-6" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="right" className="w-80 p-0 bg-gradient-to-r from-primary to-accent">
+        <SheetContent side="right" className="w-80 p-0">
           <SheetHeader className="p-6 border-b">
             <SheetTitle className="flex items-center gap-3">
               <Link to="/" onClick={handleLinkClick}>
