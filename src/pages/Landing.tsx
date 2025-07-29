@@ -98,18 +98,26 @@ export const Landing = () => {
           </div>
           
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#platform" className="text-muted-foreground hover:text-primary transition-colors story-link">
+            <a href="#platform" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors story-link">
+              <Zap className="h-4 w-4" />
               {t('language') === 'ar' ? 'المنصة' : 'Platform'}
             </a>
-            <a href="#benefits" className="text-muted-foreground hover:text-primary transition-colors story-link">
+            <a href="#benefits" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors story-link">
+              <TrendingUp className="h-4 w-4" />
               {t('language') === 'ar' ? 'المزايا' : 'Benefits'}
             </a>
-            <a href="#services" className="text-muted-foreground hover:text-primary transition-colors story-link">
+            <a href="#services" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors story-link">
+              <Building2 className="h-4 w-4" />
               {t('language') === 'ar' ? 'خدماتنا' : 'Our Services'}
             </a>
-            <a href="#uvp" className="text-muted-foreground hover:text-primary transition-colors story-link">
+            <a href="#uvp" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors story-link">
+              <Sparkles className="h-4 w-4" />
               {t('language') === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
             </a>
+            <Link to="/pricing" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors story-link">
+              <Star className="h-4 w-4" />
+              {t('language') === 'ar' ? 'الأسعار' : 'Pricing'}
+            </Link>
           </nav>
           
           <div className="flex items-center gap-3">
@@ -334,6 +342,48 @@ export const Landing = () => {
                     </h4>
                     <p className="text-muted-foreground">
                       {t('language') === 'ar' ? 'تتبع كامل لعمليات الشراء والتوريد' : 'Complete tracking of purchasing and supply operations'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
+                  <div className="bg-accent/10 p-3 rounded-lg">
+                    <Shield className="h-6 w-6 text-accent" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">
+                      {t('language') === 'ar' ? 'إدارة المخاطر' : 'Risk Management'}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t('language') === 'ar' ? 'تقييم وإدارة المخاطر بشكل استباقي' : 'Proactive risk assessment and management'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
+                  <div className="bg-lime/10 p-3 rounded-lg">
+                    <Users className="h-6 w-6 text-lime" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">
+                      {t('language') === 'ar' ? 'تعاون الفرق' : 'Team Collaboration'}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t('language') === 'ar' ? 'تحسين التعاون والتواصل بين الفرق' : 'Enhanced team collaboration and communication'}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
+                  <div className="bg-primary/10 p-3 rounded-lg">
+                    <Clock className="h-6 w-6 text-primary" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">
+                      {t('language') === 'ar' ? 'إدارة الوقت' : 'Time Management'}
+                    </h4>
+                    <p className="text-muted-foreground">
+                      {t('language') === 'ar' ? 'تحسين إدارة الوقت والجدولة' : 'Improved time management and scheduling'}
                     </p>
                   </div>
                 </div>
