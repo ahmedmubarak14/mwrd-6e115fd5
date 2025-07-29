@@ -30,9 +30,9 @@ export const Header = () => {
       <div className="container mx-auto px-6 h-full flex items-center justify-between">
         <Link to="/" className="flex items-center">
           <img 
-            src="/lovable-uploads/b443f385-9fd2-4ecc-8763-b6ed9bd406f8.png" 
+            src="/lovable-uploads/15bb5f5e-0a37-4ca9-81a8-ff8ec8a25b9d.png" 
             alt="Supplify Logo" 
-            className="h-14 w-auto hover:scale-105 transition-transform"
+            className="h-16 w-auto hover:scale-105 transition-transform"
           />
         </Link>
         

@@ -92,31 +92,31 @@ export const Landing = () => {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
             <img 
-              src="/lovable-uploads/b443f385-9fd2-4ecc-8763-b6ed9bd406f8.png" 
+              src="/lovable-uploads/15bb5f5e-0a37-4ca9-81a8-ff8ec8a25b9d.png" 
               alt="Supplify Logo" 
-              className="h-16 w-auto hover:scale-105 transition-transform"
+              className="h-20 w-auto hover:scale-105 transition-transform"
             />
           </Link>
           
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#platform" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors story-link">
-              <Zap className="h-4 w-4" />
+            <a href="#platform" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link">
+              <Zap className="h-3 w-3" />
               {t('language') === 'ar' ? 'المنصة' : 'Platform'}
             </a>
-            <a href="#benefits" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors story-link">
-              <TrendingUp className="h-4 w-4" />
+            <a href="#benefits" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link">
+              <TrendingUp className="h-3 w-3" />
               {t('language') === 'ar' ? 'المزايا' : 'Benefits'}
             </a>
-            <a href="#services" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors story-link">
-              <Building2 className="h-4 w-4" />
+            <a href="#services" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link">
+              <Building2 className="h-3 w-3" />
               {t('language') === 'ar' ? 'خدماتنا' : 'Our Services'}
             </a>
-            <a href="#uvp" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors story-link">
-              <Sparkles className="h-4 w-4" />
+            <a href="#uvp" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link">
+              <Sparkles className="h-3 w-3" />
               {t('language') === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
             </a>
-            <Link to="/pricing" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors story-link">
-              <Star className="h-4 w-4" />
+            <Link to="/pricing" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link">
+              <Star className="h-3 w-3" />
               {t('language') === 'ar' ? 'الأسعار' : 'Pricing'}
             </Link>
           </nav>

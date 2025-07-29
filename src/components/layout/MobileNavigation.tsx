@@ -62,9 +62,9 @@ export const MobileNavigation = () => {
             <SheetTitle className="flex items-center gap-3">
               <Link to="/" onClick={handleLinkClick}>
                 <img 
-                  src="/lovable-uploads/b443f385-9fd2-4ecc-8763-b6ed9bd406f8.png" 
+                  src="/lovable-uploads/15bb5f5e-0a37-4ca9-81a8-ff8ec8a25b9d.png" 
                   alt="Supplify Logo" 
-                  className="h-10 w-auto"
+                  className="h-12 w-auto"
                 />
               </Link>
             </SheetTitle>
@@ -91,21 +91,9 @@ export const MobileNavigation = () => {
               </ul>
             </nav>
             
-            <div className="border-t p-6 space-y-4">
+            <div className="border-t p-6">
               <div className="flex justify-center">
                 <LanguageSwitcher />
-              </div>
-              <div className="space-y-3">
-                <Link to="/home" onClick={handleLinkClick}>
-                  <Button variant="ghost" size="sm" className="w-full">
-                    {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
-                  </Button>
-                </Link>
-                <Link to="/home" onClick={handleLinkClick}>
-                  <Button size="sm" className="w-full bg-gradient-to-r from-primary to-accent">
-                    {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
-                  </Button>
-                </Link>
               </div>
             </div>
           </div>
