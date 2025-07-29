@@ -154,7 +154,7 @@ export const Landing = () => {
             <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-6 py-2 mb-8 animate-fade-in">
               <Sparkles className="h-4 w-4 text-primary" />
               <span className="text-sm font-medium text-primary">
-                {language === 'ar' ? 'ثورة في عالم تنظيم الفعاليات' : 'Revolutionizing Event Organization'}
+                {language === 'ar' ? 'تمكين الشركات من جميع الأشكال والأحجام' : 'EMPOWERING BUSINESSES OF ALL SHAPES AND SIZES'}
               </span>
             </div>
             
@@ -374,20 +374,6 @@ export const Landing = () => {
                     </h4>
                     <p className="text-muted-foreground">
                       {t('language') === 'ar' ? 'تحسين التعاون والتواصل بين الفرق' : 'Enhanced team collaboration and communication'}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
-                  <div className="bg-primary/10 p-3 rounded-lg">
-                    <Clock className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">
-                      {t('language') === 'ar' ? 'إدارة الوقت' : 'Time Management'}
-                    </h4>
-                    <p className="text-muted-foreground">
-                      {t('language') === 'ar' ? 'تحسين إدارة الوقت والجدولة' : 'Improved time management and scheduling'}
                     </p>
                   </div>
                 </div>
@@ -699,7 +685,7 @@ export const Landing = () => {
                   <ArrowRight className="ml-2 h-6 w-6" />
                 </Button>
               </Link>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 px-10 py-5 text-lg hover-scale">
+              <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold px-10 py-5 text-lg shadow-2xl hover-scale">
                 {t('language') === 'ar' ? 'تحدث مع خبير' : 'Talk to Expert'}
               </Button>
             </div>
