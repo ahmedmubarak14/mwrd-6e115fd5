@@ -53,7 +53,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
         onAuthSuccess({
           id: data.user.id,
           email: data.user.email!,
-          role: profileData.role
+          role: profileData.role as 'client' | 'supplier'
         });
 
         toast({
