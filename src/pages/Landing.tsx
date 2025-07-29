@@ -232,33 +232,30 @@ export const Landing = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {platformAdvantages.map((advantage, index) => (
-              <Card key={index} className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale">
-                <CardHeader className="pb-4">
-                  <div className="flex items-start gap-4">
-                    <div className="w-16 h-16 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300">
-                      <advantage.icon className="h-8 w-8 text-primary" />
+              <div key={index} className="group relative bg-card/80 backdrop-blur-sm border border-border/50 rounded-3xl p-8 hover:shadow-2xl hover:border-primary/30 transition-all duration-500 hover-scale">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-lime/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300">
+                      <advantage.icon className="h-7 w-7 text-primary" />
                     </div>
-                    <div className="flex-1">
-                      <CardTitle className="text-xl mb-2">
-                        {t('language') === 'ar' ? advantage.title : advantage.englishTitle}
-                      </CardTitle>
-                      <div className="inline-flex items-center gap-2 bg-lime/10 rounded-full px-3 py-1">
-                        <CheckCircle className="h-3 w-3 text-lime" />
-                        <span className="text-xs font-medium text-lime">
-                          {t('language') === 'ar' ? advantage.metric : advantage.englishMetric}
-                        </span>
-                      </div>
+                    <div className="inline-flex items-center gap-2 bg-lime/10 rounded-full px-3 py-1.5">
+                      <CheckCircle className="h-3 w-3 text-lime" />
+                      <span className="text-xs font-medium text-lime">
+                        {t('language') === 'ar' ? advantage.metric : advantage.englishMetric}
+                      </span>
                     </div>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base leading-relaxed">
+                  <h3 className="text-xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
+                    {t('language') === 'ar' ? advantage.title : advantage.englishTitle}
+                  </h3>
+                  <p className="text-muted-foreground leading-relaxed">
                     {t('language') === 'ar' ? advantage.description : advantage.englishDescription}
-                  </CardDescription>
-                </CardContent>
-              </Card>
+                  </p>
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -520,23 +517,18 @@ export const Landing = () => {
               { name: 'المعدات', english: 'Equipment', icon: '⚙️' },
               { name: 'الهدايا التذكارية', english: 'Giveaways', icon: '🎁' },
               { name: 'التموين', english: 'Catering', icon: '🍽️' },
+              { name: 'العلاقات العامة وإدارة الفعاليات', english: 'PR & Event Management', icon: '📋' },
             ].map((service, index) => (
-              <Card key={index} className="text-center p-6 hover:shadow-lg transition-all duration-300 hover-scale bg-card/70">
-                <div className="text-4xl mb-4">{service.icon}</div>
-                <h3 className="font-semibold mb-2">
-                  {t('language') === 'ar' ? service.name : service.english}
-                </h3>
-              </Card>
+              <div key={index} className="group relative bg-gradient-to-br from-card via-card/95 to-primary/5 border border-border/50 rounded-2xl p-6 text-center hover:shadow-xl hover:shadow-primary/10 hover:border-primary/30 transition-all duration-300 hover-scale">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-lime/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative z-10">
+                  <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">{service.icon}</div>
+                  <h3 className="font-semibold text-sm leading-relaxed group-hover:text-primary transition-colors duration-300">
+                    {t('language') === 'ar' ? service.name : service.english}
+                  </h3>
+                </div>
+              </div>
             ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <p className="text-lg text-muted-foreground">
-              {t('language') === 'ar' ? 
-                'وكل ما يتعلق بالعلاقات العامة وإدارة الفعاليات وأكثر' : 
-                'And everything related to PR and Event management and more'
-              }
-            </p>
           </div>
         </div>
       </section>
