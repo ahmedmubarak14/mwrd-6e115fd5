@@ -285,94 +285,100 @@ export const Landing = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 max-w-7xl mx-auto">
             {/* Management Benefits */}
-            <div className="flex flex-col h-full">
+            <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-8 border border-border/50 shadow-sm">
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold mb-4">
+                <div className="bg-primary/10 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <BarChart3 className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-2xl font-bold mb-2">
                   {t('language') === 'ar' ? 'للإدارة' : 'For Management'}
                 </h3>
+                <p className="text-muted-foreground text-sm">
+                  {t('language') === 'ar' ? 'حلول متكاملة لإدارة فعالة' : 'Integrated solutions for effective management'}
+                </p>
               </div>
-              <div className="space-y-6 flex-1">
-                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
-                  <div className="bg-primary/10 p-3 rounded-lg">
-                    <BarChart3 className="h-6 w-6 text-primary" />
+              <div className="grid gap-4">
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-background/80 border border-border/30 hover:shadow-md transition-all duration-300">
+                  <div className="bg-primary/10 p-2 rounded-lg flex-shrink-0">
+                    <BarChart3 className="h-5 w-5 text-primary" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">
-                      {t('language') === 'ar' ? 'الرؤية الواضحة' : 'Visibility'}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold mb-1 text-sm">
+                      {t('language') === 'ar' ? 'الرؤية الواضحة' : 'Clear Visibility'}
                     </h4>
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground text-xs leading-relaxed">
                       {t('language') === 'ar' ? 'رؤية شاملة لجميع العمليات والمشاريع' : 'Complete visibility of all operations and projects'}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
-                  <div className="bg-accent/10 p-3 rounded-lg">
-                    <TrendingUp className="h-6 w-6 text-accent" />
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-background/80 border border-border/30 hover:shadow-md transition-all duration-300">
+                  <div className="bg-accent/10 p-2 rounded-lg flex-shrink-0">
+                    <TrendingUp className="h-5 w-5 text-accent" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">
-                      {t('language') === 'ar' ? 'رؤى تحليلية' : 'Insights'}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold mb-1 text-sm">
+                      {t('language') === 'ar' ? 'رؤى تحليلية' : 'Analytics Insights'}
                     </h4>
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground text-xs leading-relaxed">
                       {t('language') === 'ar' ? 'تحليلات متقدمة لاتخاذ قرارات مدروسة' : 'Advanced analytics for informed decision making'}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
-                  <div className="bg-lime/10 p-3 rounded-lg">
-                    <Award className="h-6 w-6 text-lime" />
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-background/80 border border-border/30 hover:shadow-md transition-all duration-300">
+                  <div className="bg-lime/10 p-2 rounded-lg flex-shrink-0">
+                    <Award className="h-5 w-5 text-lime" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">
-                      {t('language') === 'ar' ? 'الأداء المتميز' : 'Performance'}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold mb-1 text-sm">
+                      {t('language') === 'ar' ? 'الأداء المتميز' : 'Superior Performance'}
                     </h4>
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground text-xs leading-relaxed">
                       {t('language') === 'ar' ? 'مراقبة الأداء وتحسين النتائج' : 'Performance monitoring and result optimization'}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
-                  <div className="bg-primary/10 p-3 rounded-lg">
-                    <CheckCircle className="h-6 w-6 text-primary" />
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-background/80 border border-border/30 hover:shadow-md transition-all duration-300">
+                  <div className="bg-primary/10 p-2 rounded-lg flex-shrink-0">
+                    <CheckCircle className="h-5 w-5 text-primary" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">
-                      {t('language') === 'ar' ? 'المشتريات القابلة للتتبع' : 'Trackable Procurement'}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold mb-1 text-sm">
+                      {t('language') === 'ar' ? 'التتبع الذكي' : 'Smart Tracking'}
                     </h4>
-                    <p className="text-muted-foreground">
-                      {t('language') === 'ar' ? 'تتبع كامل لعمليات الشراء والتوريد' : 'Complete tracking of purchasing and supply operations'}
+                    <p className="text-muted-foreground text-xs leading-relaxed">
+                      {t('language') === 'ar' ? 'تتبع كامل لجميع العمليات والمهام' : 'Complete tracking of all operations and tasks'}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
-                  <div className="bg-accent/10 p-3 rounded-lg">
-                    <Shield className="h-6 w-6 text-accent" />
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-background/80 border border-border/30 hover:shadow-md transition-all duration-300">
+                  <div className="bg-accent/10 p-2 rounded-lg flex-shrink-0">
+                    <Shield className="h-5 w-5 text-accent" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold mb-1 text-sm">
                       {t('language') === 'ar' ? 'إدارة المخاطر' : 'Risk Management'}
                     </h4>
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground text-xs leading-relaxed">
                       {t('language') === 'ar' ? 'تقييم وإدارة المخاطر بشكل استباقي' : 'Proactive risk assessment and management'}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
-                  <div className="bg-lime/10 p-3 rounded-lg">
-                    <Users className="h-6 w-6 text-lime" />
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-background/80 border border-border/30 hover:shadow-md transition-all duration-300">
+                  <div className="bg-lime/10 p-2 rounded-lg flex-shrink-0">
+                    <Users className="h-5 w-5 text-lime" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold mb-1 text-sm">
                       {t('language') === 'ar' ? 'تعاون الفرق' : 'Team Collaboration'}
                     </h4>
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground text-xs leading-relaxed">
                       {t('language') === 'ar' ? 'تحسين التعاون والتواصل بين الفرق' : 'Enhanced team collaboration and communication'}
                     </p>
                   </div>
@@ -381,106 +387,98 @@ export const Landing = () => {
             </div>
 
             {/* Procurement Benefits */}
-            <div className="flex flex-col h-full">
+            <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-8 border border-border/50 shadow-sm">
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold mb-4">
+                <div className="bg-accent/10 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <Zap className="h-8 w-8 text-accent" />
+                </div>
+                <h3 className="text-2xl font-bold mb-2">
                   {t('language') === 'ar' ? 'للمشتريات' : 'For Procurement'}
                 </h3>
+                <p className="text-muted-foreground text-sm">
+                  {t('language') === 'ar' ? 'حلول متطورة للمشتريات الذكية' : 'Advanced solutions for smart procurement'}
+                </p>
               </div>
-              <div className="space-y-6 flex-1">
-                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
-                  <div className="bg-accent/10 p-3 rounded-lg">
-                    <Zap className="h-6 w-6 text-accent" />
+              <div className="grid gap-4">
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-background/80 border border-border/30 hover:shadow-md transition-all duration-300">
+                  <div className="bg-accent/10 p-2 rounded-lg flex-shrink-0">
+                    <Zap className="h-5 w-5 text-accent" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">
-                      {t('language') === 'ar' ? 'الكفاءة' : 'Efficiency'}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold mb-1 text-sm">
+                      {t('language') === 'ar' ? 'الكفاءة العالية' : 'High Efficiency'}
                     </h4>
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground text-xs leading-relaxed">
                       {t('language') === 'ar' ? 'تبسيط العمليات وتوفير الوقت' : 'Streamlined processes and time savings'}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
-                  <div className="bg-primary/10 p-3 rounded-lg">
-                    <Shield className="h-6 w-6 text-primary" />
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-background/80 border border-border/30 hover:shadow-md transition-all duration-300">
+                  <div className="bg-primary/10 p-2 rounded-lg flex-shrink-0">
+                    <Shield className="h-5 w-5 text-primary" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">
-                      {t('language') === 'ar' ? 'الامتثال' : 'Compliance'}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold mb-1 text-sm">
+                      {t('language') === 'ar' ? 'الامتثال الكامل' : 'Full Compliance'}
                     </h4>
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground text-xs leading-relaxed">
                       {t('language') === 'ar' ? 'ضمان الامتثال للمعايير والقوانين' : 'Ensuring compliance with standards and regulations'}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
-                  <div className="bg-lime/10 p-3 rounded-lg">
-                    <CheckCircle className="h-6 w-6 text-lime" />
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-background/80 border border-border/30 hover:shadow-md transition-all duration-300">
+                  <div className="bg-lime/10 p-2 rounded-lg flex-shrink-0">
+                    <CheckCircle className="h-5 w-5 text-lime" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">
-                      {t('language') === 'ar' ? 'التحكم' : 'Control'}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold mb-1 text-sm">
+                      {t('language') === 'ar' ? 'التحكم الذكي' : 'Smart Control'}
                     </h4>
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground text-xs leading-relaxed">
                       {t('language') === 'ar' ? 'سيطرة كاملة على عمليات الشراء' : 'Complete control over purchasing operations'}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
-                  <div className="bg-accent/10 p-3 rounded-lg">
-                    <Star className="h-6 w-6 text-accent" />
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-background/80 border border-border/30 hover:shadow-md transition-all duration-300">
+                  <div className="bg-accent/10 p-2 rounded-lg flex-shrink-0">
+                    <Star className="h-5 w-5 text-accent" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">
-                      {t('language') === 'ar' ? 'أخطاء أقل' : 'Less Errors'}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold mb-1 text-sm">
+                      {t('language') === 'ar' ? 'دقة متناهية' : 'Ultimate Precision'}
                     </h4>
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground text-xs leading-relaxed">
                       {t('language') === 'ar' ? 'تقليل الأخطاء وزيادة الدقة' : 'Reduced errors and increased accuracy'}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
-                  <div className="bg-primary/10 p-3 rounded-lg">
-                    <Clock className="h-6 w-6 text-primary" />
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-background/80 border border-border/30 hover:shadow-md transition-all duration-300">
+                  <div className="bg-primary/10 p-2 rounded-lg flex-shrink-0">
+                    <Clock className="h-5 w-5 text-primary" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">
-                      {t('language') === 'ar' ? 'التوريد السريع' : 'Fast Supply'}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold mb-1 text-sm">
+                      {t('language') === 'ar' ? 'التوريد السريع' : 'Fast Delivery'}
                     </h4>
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground text-xs leading-relaxed">
                       {t('language') === 'ar' ? 'توريد سريع وموثوق' : 'Fast and reliable supply'}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
-                  <div className="bg-lime/10 p-3 rounded-lg">
-                    <Users className="h-6 w-6 text-lime" />
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-background/80 border border-border/30 hover:shadow-md transition-all duration-300">
+                  <div className="bg-lime/10 p-2 rounded-lg flex-shrink-0">
+                    <TrendingUp className="h-5 w-5 text-lime" />
                   </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">
-                      {t('language') === 'ar' ? 'قاعدة موردين ضخمة' : 'Huge Suppliers Database'}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold mb-1 text-sm">
+                      {t('language') === 'ar' ? 'أسعار تنافسية' : 'Competitive Pricing'}
                     </h4>
-                    <p className="text-muted-foreground">
-                      {t('language') === 'ar' ? 'وصول لآلاف الموردين المعتمدين' : 'Access to thousands of certified suppliers'}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4 p-6 rounded-xl bg-card/70 hover:bg-card transition-colors">
-                  <div className="bg-accent/10 p-3 rounded-lg">
-                    <TrendingUp className="h-6 w-6 text-accent" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">
-                      {t('language') === 'ar' ? 'أفضل سعر في السوق' : 'Best Price in Market'}
-                    </h4>
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground text-xs leading-relaxed">
                       {t('language') === 'ar' ? 'الحصول على أفضل الأسعار التنافسية' : 'Get the best competitive prices'}
                     </p>
                   </div>
