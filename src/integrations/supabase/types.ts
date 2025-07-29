@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       user_profiles: {
         Row: {
+          avatar_url: string | null
           company_name: string | null
           created_at: string | null
           email: string
@@ -25,6 +26,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          avatar_url?: string | null
           company_name?: string | null
           created_at?: string | null
           email: string
@@ -34,6 +36,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          avatar_url?: string | null
           company_name?: string | null
           created_at?: string | null
           email?: string
@@ -49,7 +52,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_statistics: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          total_users: number
+          total_clients: number
+          total_suppliers: number
+          total_admins: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

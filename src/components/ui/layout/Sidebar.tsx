@@ -21,24 +21,25 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
   const location = useLocation();
 
   const clientMenu = [
-    { icon: Home, label: t('nav.dashboard'), href: '/home' },
+    { icon: Home, label: t('nav.dashboard'), href: '/dashboard' },
     { icon: FileText, label: t('nav.requests'), href: '/requests' },
     { icon: Users, label: t('nav.suppliers'), href: '/suppliers' },
     { icon: Settings, label: t('nav.profile'), href: '/profile' },
   ];
 
   const supplierMenu = [
-    { icon: Home, label: t('nav.dashboard'), href: '/home' },
+    { icon: Home, label: t('nav.dashboard'), href: '/dashboard' },
     { icon: FileText, label: t('nav.requests'), href: '/browse-requests' },
     { icon: Package, label: t('nav.offers'), href: '/my-offers' },
     { icon: Settings, label: t('nav.profile'), href: '/profile' },
   ];
 
   const adminMenu = [
-    { icon: Home, label: t('nav.dashboard'), href: '/home' },
-    { icon: BarChart3, label: t('nav.admin'), href: '/admin' },
-    { icon: Users, label: t('nav.suppliers'), href: '/manage-suppliers' },
-    { icon: FileText, label: t('nav.requests'), href: '/all-requests' },
+    { icon: Home, label: t('nav.dashboard'), href: '/dashboard' },
+    { icon: BarChart3, label: 'Admin Panel', href: '/admin' },
+    { icon: Users, label: t('nav.suppliers'), href: '/suppliers' },
+    { icon: FileText, label: t('nav.requests'), href: '/requests' },
+    { icon: Settings, label: t('nav.profile'), href: '/profile' },
   ];
 
   const getMenuItems = () => {
