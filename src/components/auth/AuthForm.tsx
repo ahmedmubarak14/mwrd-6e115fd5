@@ -87,29 +87,20 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
           return;
         }
 
-        // Create user profile only if user is authenticated
+        // If user is immediately authenticated (email confirmation disabled)
         if (data.user && data.session) {
-          const { error: profileError } = await supabase
+          // Update the profile with additional details since trigger only creates basic profile
+          const { error: updateError } = await supabase
             .from('user_profiles')
-            .insert({
-              id: data.user.id,
-              email: data.user.email!,
+            .update({
               role,
               full_name: fullName,
               company_name: role === 'supplier' ? companyName : null,
-            });
+            })
+            .eq('id', data.user.id);
 
-          if (profileError) {
-            console.error('Profile creation error:', profileError);
-            // If profile creation fails, we should still proceed as the user is authenticated
-            toast({
-              variant: "destructive",
-              title: language === 'ar' ? "خطأ في إنشاء الملف الشخصي" : "Profile creation error",
-              description: language === 'ar' ? 
-                "تم إنشاء الحساب ولكن حدث خطأ في إنشاء الملف الشخصي" : 
-                "Account created but there was an error creating the profile",
-            });
-            return;
+          if (updateError) {
+            console.error('Profile update error:', updateError);
           }
 
           onAuthSuccess({
