@@ -108,56 +108,64 @@ export const SupplierDashboard = () => {
 
   return (
     <div className="space-y-6">
-      {/* Welcome Header */}
-      <div className="bg-gradient-to-r from-primary to-primary/80 text-white rounded-lg p-8">
-        <h1 className="text-3xl font-bold mb-2">Supplier Dashboard</h1>
-        <p className="text-xl opacity-90 mb-6">Manage your offers and grow your business</p>
-        <Button className="bg-lime hover:bg-lime/90 text-black font-semibold">
-          <Eye className="h-5 w-5 mr-2" />
-          Browse New Requests
-        </Button>
+      {/* Enhanced Supplier Welcome Header */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-accent via-lime to-primary text-white rounded-2xl p-6 lg:p-8">
+        <div className="absolute inset-0">
+          <div className="absolute top-1/4 right-1/4 w-32 h-32 lg:w-64 lg:h-64 bg-white/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-1/4 left-1/4 w-40 h-40 lg:w-80 lg:h-80 bg-white/5 rounded-full blur-3xl"></div>
+        </div>
+        <div className="relative z-10">
+          <h1 className="text-2xl lg:text-4xl font-bold mb-3">🏪 Supplier Portal</h1>
+          <p className="text-base lg:text-xl opacity-90 mb-6 lg:mb-8 max-w-2xl">Grow your business and connect with premium clients</p>
+          <Button className="bg-white text-accent hover:bg-white/90 font-semibold px-6 lg:px-8 py-3 shadow-lg hover-scale w-full sm:w-auto">
+            <Eye className="h-5 w-5 mr-2" />
+            Browse New Opportunities
+          </Button>
+        </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      {/* Enhanced Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         {stats.map((stat, index) => (
-          <Card key={index}>
+          <Card key={index} className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 {stat.title}
               </CardTitle>
-              <stat.icon className={`h-5 w-5 ${stat.color}`} />
+              <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
+                <stat.icon className={`h-5 w-5 ${stat.color}`} />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">{stat.value}</div>
+              <div className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-accent to-lime bg-clip-text text-transparent">{stat.value}</div>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 lg:gap-6">
         {/* Available Requests */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
+        <Card className="border-0 bg-card/70 backdrop-blur-sm">
+          <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <CardTitle>Available Requests</CardTitle>
-              <CardDescription>New opportunities matching your services</CardDescription>
+              <CardTitle className="text-xl">🔍 Available Requests</CardTitle>
+              <CardDescription className="text-base">New opportunities matching your expertise</CardDescription>
             </div>
-            <Button variant="outline" size="sm">View All</Button>
+            <Button variant="outline" size="sm" className="w-full sm:w-auto">View All</Button>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {availableRequests.map((request) => (
-                <div key={request.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h4 className="font-medium">{request.title}</h4>
+                <div key={request.id} className="border rounded-xl p-4 lg:p-6 hover:shadow-lg transition-all duration-300 bg-background/50">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 gap-2">
+                    <div className="flex-1">
+                      <h4 className="font-medium text-base lg:text-lg">{request.title}</h4>
                       <p className="text-sm text-muted-foreground">{request.category} • {request.location}</p>
                     </div>
-                    <span className="text-sm text-muted-foreground">{request.posted}</span>
+                    <span className="text-xs lg:text-sm text-muted-foreground">{request.posted}</span>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-4 mb-3 text-sm">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 text-sm">
                     <div>
                       <span className="text-muted-foreground">Budget: </span>
                       <span className="font-medium text-lime">{request.budget}</span>
@@ -168,11 +176,11 @@ export const SupplierDashboard = () => {
                     </div>
                   </div>
                   
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <Button size="sm" className="flex-1">
-                      Submit Offer
+                      💰 Submit Offer
                     </Button>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" className="sm:w-auto">
                       <Eye className="h-4 w-4" />
                     </Button>
                   </div>
@@ -183,37 +191,37 @@ export const SupplierDashboard = () => {
         </Card>
 
         {/* My Offers */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
+        <Card className="border-0 bg-card/70 backdrop-blur-sm">
+          <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <CardTitle>My Offers</CardTitle>
-              <CardDescription>Track your submitted proposals</CardDescription>
+              <CardTitle className="text-xl">📋 My Offers</CardTitle>
+              <CardDescription className="text-base">Track your submitted proposals</CardDescription>
             </div>
-            <Button variant="outline" size="sm">View All</Button>
+            <Button variant="outline" size="sm" className="w-full sm:w-auto">View All</Button>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {myOffers.map((offer) => (
-                <div key={offer.id} className="border rounded-lg p-4">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h4 className="font-medium">{offer.title}</h4>
+                <div key={offer.id} className="border rounded-xl p-4 lg:p-6 bg-background/50">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 gap-2">
+                    <div className="flex-1">
+                      <h4 className="font-medium text-base lg:text-lg">{offer.title}</h4>
                       <p className="text-sm text-muted-foreground">{offer.client}</p>
                     </div>
-                    <div className="text-right">
-                      <p className="font-semibold text-lime">{offer.amount}</p>
+                    <div className="text-left sm:text-right">
+                      <p className="font-semibold text-lime text-lg">{offer.amount}</p>
                       <p className="text-xs text-muted-foreground">{offer.submitted}</p>
                     </div>
                   </div>
                   
-                  <div className="flex items-center justify-between">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(offer.status)}`}>
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <span className={`px-3 py-1.5 rounded-full text-xs font-medium w-fit ${getStatusColor(offer.status)}`}>
                       {getStatusText(offer.status)}
                     </span>
                     <div className="flex gap-2">
                       {offer.status === 'pending' && (
-                        <Button size="sm" variant="outline">
-                          Edit Offer
+                        <Button size="sm" variant="outline" className="flex-1 sm:flex-none">
+                          ✏️ Edit Offer
                         </Button>
                       )}
                       <Button size="sm" variant="outline">
@@ -229,7 +237,7 @@ export const SupplierDashboard = () => {
       </div>
 
       {/* Performance Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">

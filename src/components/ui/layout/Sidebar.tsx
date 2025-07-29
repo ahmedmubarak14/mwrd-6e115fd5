@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Link, useLocation } from "react-router-dom";
 import { 
   Home, 
@@ -72,6 +73,14 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
           </Link>
         ))}
       </nav>
+
+      {/* Language Switcher for Mobile */}
+      <div className="p-4 border-t lg:hidden">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">Language</span>
+          <LanguageSwitcher />
+        </div>
+      </div>
     </div>
   );
 };
