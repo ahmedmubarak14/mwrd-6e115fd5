@@ -17,7 +17,7 @@ interface SidebarProps {
 }
 
 export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
-  const { t } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
   const location = useLocation();
 
   const clientMenu = [
@@ -75,13 +75,18 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
         ))}
       </nav>
 
-      {/* Language Switcher for Mobile - Always visible */}
-      <div className="p-4 border-t">
-        <div className="flex flex-col gap-3">
-          <span className="text-sm font-medium text-foreground">🌐 Language / اللغة</span>
-          <div className="w-full">
-            <LanguageSwitcher />
-          </div>
+      {/* Language Switcher for Mobile - ALWAYS VISIBLE */}
+      <div className="mt-auto p-4 border-t bg-primary/5">
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Language / اللغة</p>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
+            className="w-full"
+          >
+            🌐 {language === 'en' ? 'العربية' : 'English'}
+          </Button>
         </div>
       </div>
     </div>
