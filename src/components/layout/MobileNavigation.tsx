@@ -86,7 +86,7 @@ export const MobileNavigation = () => {
                     <Link
                       to={item.href}
                       onClick={handleLinkClick}
-                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors [&>*]:rtl:flex-row-reverse"
                     >
                       <item.icon className="h-5 w-5 text-primary" />
                       <span className="font-medium">{item.label}</span>
