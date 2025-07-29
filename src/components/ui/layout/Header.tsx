@@ -29,11 +29,11 @@ export const Header = () => {
     <header className="h-16 border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
       <div className="flex items-center justify-between px-6 h-full">
         <div className="flex items-center gap-4">
-          <Link to="/dashboard" className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-3">
             <img 
               src="/lovable-uploads/b443f385-9fd2-4ecc-8763-b6ed9bd406f8.png" 
               alt="Supplify Logo" 
-              className="h-8 w-auto"
+              className="h-12 w-auto hover:scale-105 transition-transform"
             />
           </Link>
           <div className="relative hidden md:block">

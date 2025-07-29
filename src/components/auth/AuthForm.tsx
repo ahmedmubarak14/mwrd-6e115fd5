@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Eye, EyeOff, User, Building2, Mail, Lock } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface AuthFormProps {
   onAuthSuccess: (userData: { id: string; email: string; role: 'client' | 'supplier' }) => void;
@@ -130,11 +131,13 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-accent/10 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <img 
-            src="/lovable-uploads/b443f385-9fd2-4ecc-8763-b6ed9bd406f8.png" 
-            alt="Supplify Logo" 
-            className="h-12 w-auto mx-auto mb-4"
-          />
+          <Link to="/" className="inline-block">
+            <img 
+              src="/lovable-uploads/b443f385-9fd2-4ecc-8763-b6ed9bd406f8.png" 
+              alt="Supplify Logo" 
+              className="h-16 w-auto mx-auto mb-4 hover:scale-105 transition-transform"
+            />
+          </Link>
           <CardTitle className="text-2xl">
             {language === 'ar' ? 'مرحباً بك في سبلايفي' : 'Welcome to Supplify'}
           </CardTitle>

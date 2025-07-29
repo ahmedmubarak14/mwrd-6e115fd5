@@ -5,6 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Check, ArrowRight, Star } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { MobileNavigation } from "@/components/layout/MobileNavigation";
 
 export const Pricing = () => {
   const { t } = useLanguage();
@@ -263,22 +264,25 @@ export const Pricing = () => {
             <img 
               src="/lovable-uploads/b443f385-9fd2-4ecc-8763-b6ed9bd406f8.png" 
               alt="Supplify Logo" 
-              className="h-12 w-auto"
+              className="h-16 w-auto hover:scale-105 transition-transform"
             />
           </Link>
           
           <div className="flex items-center gap-3">
-            <LanguageSwitcher />
-            <Link to="/home">
+            <div className="hidden md:block">
+              <LanguageSwitcher />
+            </div>
+            <Link to="/home" className="hidden md:block">
               <Button variant="ghost" size="sm" className="hover-scale">
                 {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
               </Button>
             </Link>
-            <Link to="/home">
+            <Link to="/home" className="hidden md:block">
               <Button size="sm" className="hover-scale bg-gradient-to-r from-primary to-accent">
                 {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
               </Button>
             </Link>
+            <MobileNavigation />
           </div>
         </div>
       </header>

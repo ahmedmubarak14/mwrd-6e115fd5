@@ -5,6 +5,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Check, ArrowRight, Users, Shield, Zap, Award, TrendingUp, Clock, Star, Play, ChevronDown, Building2, Calendar, CheckCircle, BarChart3, HeartHandshake, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { MobileNavigation } from "@/components/layout/MobileNavigation";
 
 export const Landing = () => {
   const { t, language } = useLanguage();
@@ -89,13 +90,13 @@ export const Landing = () => {
       {/* Enhanced Navigation */}
       <header className="border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-3">
             <img 
               src="/lovable-uploads/b443f385-9fd2-4ecc-8763-b6ed9bd406f8.png" 
               alt="Supplify Logo" 
-              className="h-12 w-auto"
+              className="h-16 w-auto hover:scale-105 transition-transform"
             />
-          </div>
+          </Link>
           
           <nav className="hidden md:flex items-center gap-8">
             <a href="#platform" className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors story-link">
@@ -121,17 +122,20 @@ export const Landing = () => {
           </nav>
           
           <div className="flex items-center gap-3">
-            <LanguageSwitcher />
-            <Link to="/home">
+            <div className="hidden md:block">
+              <LanguageSwitcher />
+            </div>
+            <Link to="/home" className="hidden md:block">
               <Button variant="ghost" size="sm" className="hover-scale">
                 {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
               </Button>
             </Link>
-            <Link to="/home">
+            <Link to="/home" className="hidden md:block">
               <Button size="sm" className="hover-scale bg-gradient-to-r from-primary to-accent">
                 {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
               </Button>
             </Link>
+            <MobileNavigation />
           </div>
         </div>
       </header>
