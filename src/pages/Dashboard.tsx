@@ -1,7 +1,6 @@
 import { Header } from "@/components/ui/layout/Header";
 import { Sidebar } from "@/components/ui/layout/Sidebar";
 import { ClientDashboard } from "@/components/Dashboard/ClientDashboard";
-import { SupplierDashboard } from "@/components/Dashboard/SupplierDashboard";
 import { useAuth } from "@/contexts/AuthContext";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { useNavigate } from "react-router-dom";
@@ -53,7 +52,7 @@ export const Dashboard = () => {
         </div>
         
         <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden">
-          {userProfile.role === 'client' ? <ClientDashboard /> : <SupplierDashboard />}
+          <ClientDashboard />
         </main>
       </div>
     </div>
