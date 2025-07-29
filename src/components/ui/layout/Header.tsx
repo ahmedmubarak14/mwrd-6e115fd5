@@ -32,7 +32,7 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
   };
 
   return (
-    <header className="h-14 sm:h-16 border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
+    <header className="h-20 sm:h-24 lg:h-28 border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 h-full flex items-center justify-between">
         <div className="flex items-center gap-2 sm:gap-4">
           <Button
@@ -48,7 +48,7 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
             <img 
               src="/lovable-uploads/15bb5f5e-0a37-4ca9-81a8-ff8ec8a25b9d.png" 
               alt="Supplify Logo" 
-              className="h-8 sm:h-10 lg:h-12 w-auto hover:scale-105 transition-transform"
+              className="h-16 sm:h-20 lg:h-24 w-auto hover:scale-105 transition-transform"
             />
           </Link>
         </div>
