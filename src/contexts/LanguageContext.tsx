@@ -24,6 +24,9 @@ const translations = {
     'nav.suppliers': 'Suppliers',
     'nav.profile': 'Profile',
     'nav.admin': 'Admin Panel',
+    'nav.home': 'Home',
+    'nav.pricing': 'Pricing',
+    'nav.consultation': 'Expert Consultation',
     
     // Common
     'common.submit': 'Submit',
@@ -36,6 +39,16 @@ const translations = {
     'common.accepted': 'Accepted',
     'common.rejected': 'Rejected',
     'common.completed': 'Completed',
+    'common.active': 'Active',
+    'common.offers': 'offers',
+    'common.viewAll': 'View All',
+    'common.recent': 'Recent',
+    'common.createNew': 'Create New',
+    'common.profile': 'Profile',
+    'common.settings': 'Settings',
+    'common.signOut': 'Sign out',
+    'common.notifications': 'Notifications',
+    'common.search': 'Search...',
     
     // Auth
     'auth.login': 'Login',
@@ -47,6 +60,17 @@ const translations = {
     'auth.role': 'Role',
     'auth.client': 'Client',
     'auth.supplier': 'Supplier',
+    'auth.welcomeBack': 'Welcome back!',
+    'auth.welcomeToSupplify': 'Welcome to Supplify!',
+    'auth.signInDescription': 'Sign in to your account or create a new one',
+    'auth.enterEmail': 'Enter your email',
+    'auth.enterPassword': 'Enter your password',
+    'auth.confirmPassword': 'Confirm Password',
+    'auth.enterCompanyName': 'Enter your company name',
+    'auth.signInButton': 'Sign In',
+    'auth.createAccountButton': 'Create Account',
+    'auth.showPassword': 'Show password',
+    'auth.hidePassword': 'Hide password',
     
     // Dashboard
     'dashboard.welcome': 'Welcome to Supplify',
@@ -55,6 +79,13 @@ const translations = {
     'dashboard.search': 'Search...',
     'dashboard.viewRequests': 'View My Requests',
     'dashboard.browseSuppliers': 'Browse Suppliers',
+    'dashboard.createOffer': 'Create New Offer',
+    'dashboard.recentOffers': 'Recent Offers',
+    'dashboard.recentRequests': 'Recent Service Requests',
+    'dashboard.totalRequests': 'Total Requests',
+    'dashboard.activeOffers': 'Active Offers',
+    'dashboard.completedProjects': 'Completed Projects',
+    'dashboard.totalEarnings': 'Total Earnings',
     
     // Requests
     'request.create': 'Create New Request',
@@ -83,7 +114,7 @@ const translations = {
   },
   ar: {
     // App name
-    'app.name': 'سبلفاي',
+    'app.name': 'سبلايفي',
     // Language
     'language': 'ar',
     // Navigation
@@ -93,6 +124,9 @@ const translations = {
     'nav.suppliers': 'مقدمو الخدمات',
     'nav.profile': 'الملف الشخصي',
     'nav.admin': 'لوحة الإدارة',
+    'nav.home': 'الرئيسية',
+    'nav.pricing': 'الأسعار',
+    'nav.consultation': 'استشارة خبير',
     
     // Common
     'common.submit': 'إرسال',
@@ -105,6 +139,16 @@ const translations = {
     'common.accepted': 'مقبول',
     'common.rejected': 'مرفوض',
     'common.completed': 'مكتمل',
+    'common.active': 'نشط',
+    'common.offers': 'عروض',
+    'common.viewAll': 'عرض الكل',
+    'common.recent': 'الحديث',
+    'common.createNew': 'إنشاء جديد',
+    'common.profile': 'الملف الشخصي',
+    'common.settings': 'الإعدادات',
+    'common.signOut': 'تسجيل الخروج',
+    'common.notifications': 'الإشعارات',
+    'common.search': 'بحث...',
     
     // Auth
     'auth.login': 'تسجيل الدخول',
@@ -116,14 +160,32 @@ const translations = {
     'auth.role': 'الدور',
     'auth.client': 'عميل',
     'auth.supplier': 'مقدم خدمة',
+    'auth.welcomeBack': 'مرحباً بك مرة أخرى!',
+    'auth.welcomeToSupplify': 'مرحباً بك في سبلايفي!',
+    'auth.signInDescription': 'سجل دخولك أو أنشئ حساباً جديداً',
+    'auth.enterEmail': 'أدخل بريدك الإلكتروني',
+    'auth.enterPassword': 'أدخل كلمة المرور',
+    'auth.confirmPassword': 'تأكيد كلمة المرور',
+    'auth.enterCompanyName': 'أدخل اسم شركتك',
+    'auth.signInButton': 'تسجيل الدخول',
+    'auth.createAccountButton': 'إنشاء حساب',
+    'auth.showPassword': 'إظهار كلمة المرور',
+    'auth.hidePassword': 'إخفاء كلمة المرور',
     
     // Dashboard
-    'dashboard.welcome': 'مرحباً بك في سبلفاي',
+    'dashboard.welcome': 'مرحباً بك في سبلايفي',
     'dashboard.subtitle': 'تواصل مع مقدمي الخدمات المعتمدين لفعالياتك',
     'dashboard.createRequest': 'إنشاء طلب خدمة',
     'dashboard.search': 'بحث...',
     'dashboard.viewRequests': 'عرض طلباتي',
     'dashboard.browseSuppliers': 'تصفح مقدمي الخدمات',
+    'dashboard.createOffer': 'إنشاء عرض جديد',
+    'dashboard.recentOffers': 'العروض الحديثة',
+    'dashboard.recentRequests': 'طلبات الخدمة الحديثة',
+    'dashboard.totalRequests': 'إجمالي الطلبات',
+    'dashboard.activeOffers': 'العروض النشطة',
+    'dashboard.completedProjects': 'المشاريع المكتملة',
+    'dashboard.totalEarnings': 'إجمالي الأرباح',
     
     // Requests
     'request.create': 'إنشاء طلب جديد',

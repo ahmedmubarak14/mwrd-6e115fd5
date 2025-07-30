@@ -92,7 +92,7 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
                   </AvatarFallback>
                 </Avatar>
                 <div className="text-left hidden lg:block">
-                  <p className="text-sm font-medium">{userProfile?.full_name || userProfile?.email?.split('@')[0] || 'Welcome'}</p>
+                  <p className="text-sm font-medium">{userProfile?.full_name || userProfile?.email?.split('@')[0] || t('dashboard.welcome').replace('Welcome to Supplify', 'Welcome').replace('مرحباً بك في سبلايفي', 'مرحباً')}</p>
                   <p className="text-xs text-muted-foreground capitalize">{userProfile?.role}</p>
                 </div>
               </Button>
@@ -101,16 +101,16 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
               <DropdownMenuItem asChild>
                 <Link to="/profile" className="flex items-center">
                   <User className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
+                  <span>{t('common.profile')}</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
+                <span>{t('common.settings')}</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleSignOut}>
                 <LogOut className="mr-2 h-4 w-4" />
-                <span>Sign out</span>
+                <span>{t('common.signOut')}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -10,12 +10,12 @@ export const ClientDashboard = () => {
 
   // Universal stats that work for both clients and suppliers
   const stats = userProfile?.role === 'supplier' ? [
-    { title: "Active Offers", value: "12", icon: Package, color: "text-primary" },
-    { title: "Monthly Revenue", value: "92,000", icon: Banknote, color: "text-lime", currency: true },
+    { title: t('dashboard.activeOffers'), value: "12", icon: Package, color: "text-primary" },
+    { title: t('dashboard.totalEarnings'), value: "92,000", icon: Banknote, color: "text-lime", currency: true },
     { title: "Success Rate", value: "85%", icon: TrendingUp, color: "text-primary" },
     { title: "Client Rating", value: "4.8", icon: Star, color: "text-lime" }
   ] : [
-    { title: "Active Requests", value: "3", icon: FileText, color: "text-primary" },
+    { title: t('dashboard.totalRequests'), value: "3", icon: FileText, color: "text-primary" },
     { title: "Pending Offers", value: "8", icon: TrendingUp, color: "text-lime" },
     { title: "Suppliers Connected", value: "12", icon: Users, color: "text-primary" }
   ];
@@ -43,13 +43,13 @@ export const ClientDashboard = () => {
           <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3">{t('dashboard.welcome')}</h1>
           <p className="text-sm sm:text-base lg:text-xl opacity-90 mb-4 sm:mb-6 lg:mb-8 max-w-2xl leading-relaxed">
             {userProfile?.role === 'supplier' 
-              ? 'Manage your offers, connect with clients, and grow your business' 
+              ? t('dashboard.subtitle').replace('Connect with vetted service providers for your events', 'Manage your offers, connect with clients, and grow your business').replace('تواصل مع مقدمي الخدمات المعتمدين لفعالياتك', 'إدارة عروضك والتواصل مع العملاء وتنمية أعمالك')
               : t('dashboard.subtitle')
             }
           </p>
           <Button className="bg-white text-primary hover:bg-white/90 font-semibold px-4 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg hover-scale w-full sm:w-auto text-sm sm:text-base">
             <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-            {userProfile?.role === 'supplier' ? 'Create New Offer' : t('dashboard.createRequest')}
+            {userProfile?.role === 'supplier' ? t('dashboard.createOffer') : t('dashboard.createRequest')}
           </Button>
         </div>
       </div>
@@ -167,7 +167,7 @@ export const ClientDashboard = () => {
       <Card className="border-0 bg-card/70 backdrop-blur-sm">
         <CardHeader className="p-4 sm:p-6">
           <CardTitle className="text-xl sm:text-2xl">
-            {userProfile?.role === 'supplier' ? 'Recent Offers' : 'Recent Service Requests'}
+            {userProfile?.role === 'supplier' ? t('dashboard.recentOffers') : t('dashboard.recentRequests')}
           </CardTitle>
           <CardDescription className="text-sm sm:text-base">
             {userProfile?.role === 'supplier' 
