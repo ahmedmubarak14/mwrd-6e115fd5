@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Play, Eye } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { InteractiveDemo } from './InteractiveDemo';
+import { SimpleDemo } from './SimpleDemo';
 
 interface DemoButtonProps {
   variant?: 'default' | 'outline' | 'ghost';
@@ -31,7 +31,7 @@ export const DemoButton = ({ variant = 'default', size = 'default', className }:
         </div>
       </Button>
 
-      <InteractiveDemo 
+      <SimpleDemo 
         isOpen={isDemoOpen}
         onClose={() => setIsDemoOpen(false)}
       />
