@@ -237,7 +237,7 @@ export const Profile = () => {
                   </div>
                   <div className="text-center sm:text-left flex-1">
                     <h1 className="text-3xl lg:text-4xl font-bold mb-2">
-                      {userProfile?.full_name || 'User Profile'}
+                      {userProfile?.full_name || userProfile?.email?.split('@')[0] || 'Welcome'}
                     </h1>
                     <div className="flex flex-col sm:flex-row items-center gap-2 mb-4">
                       <div className="flex items-center gap-2">
