@@ -516,18 +516,24 @@ export const Landing = () => {
               { name: 'أجنحة المعارض', english: 'Booth Stands', icon: '🏢' },
               { name: 'المعدات', english: 'Equipment', icon: '⚙️' },
               { name: 'الهدايا التذكارية', english: 'Giveaways', icon: '🎁' },
-              { name: 'التموين', english: 'Catering', icon: '🍽️' },
-              { name: 'العلاقات العامة وإدارة الفعاليات', english: 'PR & Event Management', icon: '📋' },
+              { name: 'التموين والضيافة', english: 'Catering & Hospitality', icon: '🍽️' },
+              { name: 'تخطيط وإدارة الفعاليات', english: 'Event Planning & Management', icon: '📋' },
               { name: 'المعدات السمعية والبصرية', english: 'AVL', icon: '🎵' },
-              { name: 'الموسيقيون', english: 'Musicians', icon: '🎸' },
+              { name: 'الترفيه والأنشطة', english: 'Entertainment & Activities', icon: '🎸', subtitle: 'DJs, bands, performers, games, and guest engagement activities', subtitleAr: 'دي جي، فرق موسيقية، عروض، ألعاب، وأنشطة تفاعل الضيوف' },
+              { name: 'خدمات ما بعد الفعالية', english: 'Post-event Services', icon: '🧹', subtitle: 'Cleanup, feedback collection, and reporting', subtitleAr: 'التنظيف، جمع التغذية الراجعة، والتقارير' },
             ].map((service, index) => (
               <div key={index} className="group relative bg-gradient-to-br from-card via-card/95 to-primary/5 border border-border/50 rounded-2xl p-6 text-center hover:shadow-xl hover:shadow-primary/10 hover:border-primary/30 transition-all duration-300 hover-scale">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-lime/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative z-10">
                   <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">{service.icon}</div>
-                  <h3 className="font-semibold text-sm leading-relaxed group-hover:text-primary transition-colors duration-300">
+                  <h3 className="font-semibold text-sm leading-relaxed group-hover:text-primary transition-colors duration-300 mb-2">
                     {t('language') === 'ar' ? service.name : service.english}
                   </h3>
+                  {service.subtitle && (
+                    <p className="text-xs text-muted-foreground leading-tight">
+                      {t('language') === 'ar' ? service.subtitleAr : service.subtitle}
+                    </p>
+                  )}
                 </div>
               </div>
             ))}
