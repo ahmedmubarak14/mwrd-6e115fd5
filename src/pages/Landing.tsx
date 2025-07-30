@@ -90,7 +90,7 @@ export const Landing = () => {
     <div className="min-h-screen bg-background">
       {/* Enhanced Navigation */}
       <header className="border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <div className={`container mx-auto px-4 h-16 flex items-center justify-between ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
           <Link to="/" className="flex items-center gap-3">
             <img 
               src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
@@ -99,30 +99,30 @@ export const Landing = () => {
             />
           </Link>
           
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="#platform" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link">
+          <nav className={`hidden md:flex items-center gap-8 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <a href="#platform" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Zap className="h-3 w-3" />
               {t('language') === 'ar' ? 'المنصة' : 'Platform'}
             </a>
-            <a href="#benefits" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link">
+            <a href="#benefits" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <TrendingUp className="h-3 w-3" />
               {t('language') === 'ar' ? 'المزايا' : 'Benefits'}
             </a>
-            <a href="#services" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link">
+            <a href="#services" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Building2 className="h-3 w-3" />
               {t('language') === 'ar' ? 'خدماتنا' : 'Our Services'}
             </a>
-            <a href="#uvp" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link">
+            <a href="#uvp" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Sparkles className="h-3 w-3" />
               {t('language') === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
             </a>
-            <Link to="/pricing" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link">
+            <Link to="/pricing" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Star className="h-3 w-3" />
               {t('language') === 'ar' ? 'الأسعار' : 'Pricing'}
             </Link>
           </nav>
           
-          <div className="flex items-center gap-3">
+          <div className={`flex items-center gap-3 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>
