@@ -8,6 +8,8 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { Landing } from "./pages/Landing";
 import { Home } from "./pages/Home";
 import { Dashboard } from "./pages/Dashboard";
+import { WhyStartWithSupplify } from "./pages/WhyStartWithSupplify";
+import { WhyMoveToSupplify } from "./pages/WhyMoveToSupplify";
 import { Requests } from "./pages/Requests";
 import { Suppliers } from "./pages/Suppliers";
 import { Pricing } from "./pages/Pricing";
@@ -31,6 +33,8 @@ const App = () => (
               <Route path="/" element={<Landing />} />
               <Route path="/home" element={<Home />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/why-start-with-supplify" element={<WhyStartWithSupplify />} />
+              <Route path="/why-move-to-supplify" element={<WhyMoveToSupplify />} />
               <Route path="/requests" element={<Requests />} />
               <Route path="/suppliers" element={<Suppliers />} />
               <Route path="/pricing" element={<Pricing />} />

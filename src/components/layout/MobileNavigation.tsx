@@ -24,19 +24,19 @@ export const MobileNavigation = () => {
       label: t('language') === 'ar' ? 'المنصة' : 'Platform'
     },
     {
-      href: "/#benefits", 
+      href: "/why-start-with-supplify",
       icon: TrendingUp,
-      label: t('language') === 'ar' ? 'المزايا' : 'Benefits'
+      label: t('language') === 'ar' ? 'لماذا تبدأ معنا' : 'Why Start with Us'
+    },
+    {
+      href: "/why-move-to-supplify",
+      icon: Building2,
+      label: t('language') === 'ar' ? 'لماذا تنتقل إلينا' : 'Why Move to Us'
     },
     {
       href: "/#services",
-      icon: Building2,
-      label: t('language') === 'ar' ? 'خدماتنا' : 'Our Services'
-    },
-    {
-      href: "/#uvp",
       icon: Sparkles,
-      label: t('language') === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'
+      label: t('language') === 'ar' ? 'خدماتنا' : 'Our Services'
     },
     {
       href: "/pricing",
