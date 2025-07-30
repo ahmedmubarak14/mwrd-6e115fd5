@@ -161,7 +161,7 @@ const translations = {
     'auth.client': 'عميل',
     'auth.supplier': 'مقدم خدمة',
     'auth.welcomeBack': 'مرحباً بك مرة أخرى!',
-    'auth.welcomeToSupplify': 'مرحباً بك في سبلايفي!',
+    'auth.welcomeToSupplify': 'مرحباً بك في سبلفاي!',
     'auth.signInDescription': 'سجل دخولك أو أنشئ حساباً جديداً',
     'auth.enterEmail': 'أدخل بريدك الإلكتروني',
     'auth.enterPassword': 'أدخل كلمة المرور',
@@ -173,7 +173,7 @@ const translations = {
     'auth.hidePassword': 'إخفاء كلمة المرور',
     
     // Dashboard
-    'dashboard.welcome': 'مرحباً بك في سبلايفي',
+    'dashboard.welcome': 'مرحباً بك في سبلفاي',
     'dashboard.subtitle': 'تواصل مع مقدمي الخدمات المعتمدين لفعالياتك',
     'dashboard.createRequest': 'إنشاء طلب خدمة',
     'dashboard.search': 'بحث...',

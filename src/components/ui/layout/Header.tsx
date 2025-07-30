@@ -52,16 +52,12 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
             <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
           
-          <Link to="/" className="flex items-center gap-3">
+          <Link to="/" className="flex items-center">
             <img 
               src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
               alt="Supplify Logo"
               className="h-12 sm:h-20 lg:h-24 w-auto hover:scale-105 transition-transform"
             />
-            {/* Arabic/English text logo */}
-            <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-primary">
-              {isRTL ? 'سبلفاي' : 'Supplify'}
-            </span>
           </Link>
         </div>
         
@@ -100,7 +96,7 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
                   </AvatarFallback>
                 </Avatar>
                 <div className={`${isRTL ? 'text-right' : 'text-left'} hidden lg:block`}>
-                  <p className="text-sm font-medium">{userProfile?.full_name || userProfile?.email?.split('@')[0] || t('dashboard.welcome').replace('Welcome to Supplify', 'Welcome').replace('مرحباً بك في سبلايفي', 'مرحباً')}</p>
+                  <p className="text-sm font-medium">{userProfile?.full_name || userProfile?.email?.split('@')[0] || t('dashboard.welcome').replace('Welcome to Supplify', 'Welcome').replace('مرحباً بك في سبلفاي', 'مرحباً')}</p>
                   <p className="text-xs text-muted-foreground capitalize">{userProfile?.role}</p>
                 </div>
               </Button>
