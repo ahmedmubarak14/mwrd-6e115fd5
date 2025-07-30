@@ -173,14 +173,19 @@ export const Profile = () => {
     }
   };
 
-  const getUserInitials = (name?: string) => {
-    if (!name) return 'U';
-    return name
-      .split(' ')
-      .map(n => n[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
+  const getUserInitials = (name?: string, email?: string) => {
+    if (name) {
+      return name
+        .split(' ')
+        .map(n => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2);
+    }
+    if (email) {
+      return email[0].toUpperCase();
+    }
+    return 'U';
   };
 
   if (loading) {
@@ -216,7 +221,7 @@ export const Profile = () => {
                     <Avatar className="h-24 w-24 lg:h-32 lg:w-32 border-4 border-white shadow-lg">
                       <AvatarImage src={userProfile?.avatar_url} />
                       <AvatarFallback className="text-2xl bg-primary/10 text-primary">
-                        {getUserInitials(userProfile?.full_name)}
+                        {getUserInitials(userProfile?.full_name, userProfile?.email)}
                       </AvatarFallback>
                     </Avatar>
                     <Button
