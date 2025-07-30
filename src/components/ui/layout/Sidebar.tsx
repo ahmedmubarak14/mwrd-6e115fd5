@@ -53,7 +53,7 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
   const isActive = (href: string) => location.pathname === href;
 
   return (
-    <div className={`w-full lg:w-64 h-full bg-card border-r flex flex-col ${language === 'ar' ? 'border-l border-r-0' : ''}`}>
+    <div className={`w-full lg:w-64 h-full bg-card flex flex-col ${language === 'ar' ? 'border-l' : 'border-r'}`}>
       <div className={`p-4 sm:p-6 border-b flex items-center ${language === 'ar' ? 'justify-start' : 'justify-center'}`}>
         <img 
           src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
@@ -68,7 +68,7 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
             <Button
               variant="ghost"
               className={cn(
-                `w-full gap-3 h-10 sm:h-12 text-left text-sm sm:text-base ${language === 'ar' ? 'justify-end flex-row-reverse text-right' : 'justify-start'}`,
+                `w-full gap-3 h-10 sm:h-12 text-sm sm:text-base ${language === 'ar' ? 'justify-end flex-row-reverse text-right' : 'justify-start text-left'}`,
                 isActive(item.href) && "bg-primary/10 text-primary hover:bg-primary/20"
               )}
             >
