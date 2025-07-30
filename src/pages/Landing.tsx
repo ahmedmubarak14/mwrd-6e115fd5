@@ -518,6 +518,8 @@ export const Landing = () => {
               { name: 'الهدايا التذكارية', english: 'Giveaways', icon: '🎁' },
               { name: 'التموين', english: 'Catering', icon: '🍽️' },
               { name: 'العلاقات العامة وإدارة الفعاليات', english: 'PR & Event Management', icon: '📋' },
+              { name: 'المعدات السمعية والبصرية', english: 'AVL', icon: '🎵' },
+              { name: 'الموسيقيون', english: 'Musicians', icon: '🎸' },
             ].map((service, index) => (
               <div key={index} className="group relative bg-gradient-to-br from-card via-card/95 to-primary/5 border border-border/50 rounded-2xl p-6 text-center hover:shadow-xl hover:shadow-primary/10 hover:border-primary/30 transition-all duration-300 hover-scale">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-lime/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
