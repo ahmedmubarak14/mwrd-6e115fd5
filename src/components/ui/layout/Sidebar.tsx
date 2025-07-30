@@ -56,8 +56,8 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
     <div className="w-full lg:w-64 h-full bg-card border-r flex flex-col">
       <div className="p-4 sm:p-6 border-b flex items-center justify-center">
         <img 
-          src="/lovable-uploads/dbfa227c-ea00-42f4-9f7e-544c2b0bde60.png" 
-          alt="Saudi Riyal Logo"
+          src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
+          alt="Supplify Logo"
           className="h-12 sm:h-16 w-auto"
         />
       </div>

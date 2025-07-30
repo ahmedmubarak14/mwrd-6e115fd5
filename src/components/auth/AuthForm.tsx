@@ -133,8 +133,8 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
         <CardHeader className="text-center">
           <Link to="/" className="inline-block">
             <img 
-              src="/lovable-uploads/dbfa227c-ea00-42f4-9f7e-544c2b0bde60.png" 
-              alt="Saudi Riyal Logo"
+              src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
+              alt="Supplify Logo"
               className="h-16 w-auto mx-auto mb-4 hover:scale-105 transition-transform"
             />
           </Link>

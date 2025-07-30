@@ -62,8 +62,8 @@ export const MobileNavigation = () => {
             <SheetTitle className="flex items-center gap-3">
               <Link to="/" onClick={handleLinkClick}>
                 <img 
-                  src="/lovable-uploads/dbfa227c-ea00-42f4-9f7e-544c2b0bde60.png" 
-                  alt="Saudi Riyal Logo"
+                  src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
+                  alt="Supplify Logo"
                   className="h-14 w-auto"
                 />
               </Link>
