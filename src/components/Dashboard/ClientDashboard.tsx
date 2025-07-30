@@ -9,6 +9,9 @@ export const ClientDashboard = () => {
   const { userProfile } = useAuth();
   const isRTL = language === 'ar';
 
+  console.log('ClientDashboard rendering with userProfile:', userProfile);
+  console.log('Language:', language, 'isRTL:', isRTL);
+
   // Universal stats that work for both clients and suppliers
   const stats = userProfile?.role === 'supplier' ? [
     { title: t('dashboard.activeOffers'), value: "12", icon: Package, color: "text-primary" },
