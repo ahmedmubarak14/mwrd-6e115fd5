@@ -90,16 +90,20 @@ export const WhyMoveToSupplify = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
-        <div className={`container mx-auto px-4 h-16 flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-          <Link to="/" className="flex items-center gap-3">
-            <img 
-              src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
-              alt="Supplify Logo"
-              className="h-16 w-auto hover:scale-105 transition-transform"
-            />
-          </Link>
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+          {/* Logo - positioned based on language */}
+          <div className={`${isRTL ? 'order-2' : 'order-1'}`}>
+            <Link to="/" className="flex items-center gap-3">
+              <img 
+                src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
+                alt="Supplify Logo"
+                className="h-16 w-auto hover:scale-105 transition-transform"
+              />
+            </Link>
+          </div>
           
-          <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          {/* Actions - positioned based on language */}
+          <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse order-1' : 'order-2'}`}>
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>

@@ -90,16 +90,20 @@ export const Landing = () => {
     <div className="min-h-screen bg-background">
       {/* Enhanced Navigation */}
       <header className="border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
-        <div className={`container mx-auto px-4 h-16 flex items-center justify-between ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
-          <Link to="/" className="flex items-center gap-3">
-            <img 
-              src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
-              alt="Supplify Logo"
-              className="h-24 w-auto hover:scale-105 transition-transform"
-            />
-          </Link>
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+          {/* Logo - Always positioned based on language */}
+          <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
+            <Link to="/" className="flex items-center gap-3">
+              <img 
+                src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
+                alt="Supplify Logo"
+                className="h-24 w-auto hover:scale-105 transition-transform"
+              />
+            </Link>
+          </div>
           
-          <nav className={`hidden md:flex items-center gap-8 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+          {/* Navigation - Center */}
+          <nav className={`hidden md:flex items-center gap-8 ${language === 'ar' ? 'order-2' : 'order-2'}`}>
             <a href="#platform" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Zap className="h-3 w-3" />
               {t('language') === 'ar' ? 'المنصة' : 'Platform'}
@@ -122,7 +126,8 @@ export const Landing = () => {
             </Link>
           </nav>
           
-          <div className={`flex items-center gap-3 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+          {/* Actions - Right/Left based on language */}
+          <div className={`flex items-center gap-3 ${language === 'ar' ? 'flex-row-reverse order-1' : 'order-3'}`}>
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>
