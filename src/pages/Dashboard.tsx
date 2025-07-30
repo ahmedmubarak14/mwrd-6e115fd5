@@ -2,6 +2,7 @@ import { Header } from "@/components/ui/layout/Header";
 import { Sidebar } from "@/components/ui/layout/Sidebar";
 import { ClientDashboard } from "@/components/Dashboard/ClientDashboard";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -9,8 +10,11 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 export const Dashboard = () => {
   const { user, userProfile, loading } = useAuth();
+  const { language } = useLanguage();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const isRTL = language === 'ar';
 
   useEffect(() => {
     if (!user && !loading) {
@@ -40,12 +44,12 @@ export const Dashboard = () => {
       
       {/* Mobile Sidebar */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side="left" className="w-80 p-0 flex flex-col">
+        <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
           <Sidebar userRole={userProfile.role} />
         </SheetContent>
       </Sheet>
 
-      <div className="flex">
+      <div className={`flex ${isRTL ? 'flex-row-reverse' : ''}`}>
         {/* Desktop Sidebar */}
         <div className="hidden lg:block">
           <Sidebar userRole={userProfile.role} />
