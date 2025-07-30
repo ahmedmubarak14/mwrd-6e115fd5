@@ -370,7 +370,7 @@ export const Pricing = () => {
                       <span className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                         {t('language') === 'ar' ? plan.price : (plan.englishPrice || plan.price)}
                       </span>
-                      {plan.price !== 'حسب الطلب' && plan.price !== 'Custom' && plan.price !== '0' && (
+                      {plan.price !== 'حسب الطلب' && plan.price !== 'Custom' && (
                         <img 
                           src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
                           alt="Riyal" 
