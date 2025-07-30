@@ -11,7 +11,7 @@ export const ClientDashboard = () => {
   // Universal stats that work for both clients and suppliers
   const stats = userProfile?.role === 'supplier' ? [
     { title: "Active Offers", value: "12", icon: Package, color: "text-primary" },
-    { title: "Monthly Revenue", value: "$24,500", icon: DollarSign, color: "text-lime" },
+    { title: "Monthly Revenue", value: "92,000 ر.س", icon: DollarSign, color: "text-lime" },
     { title: "Success Rate", value: "85%", icon: TrendingUp, color: "text-primary" },
     { title: "Client Rating", value: "4.8", icon: Star, color: "text-lime" }
   ] : [
@@ -22,9 +22,9 @@ export const ClientDashboard = () => {
 
   // Universal recent items that work for both user types
   const recentItems = userProfile?.role === 'supplier' ? [
-    { id: 1, title: "Wedding Photography Package", description: "Happy Events Co.", value: "$2,500", status: "pending" },
-    { id: 2, title: "Corporate Meeting Setup", description: "Tech Solutions Ltd.", value: "$1,800", status: "accepted" },
-    { id: 3, title: "Exhibition Booth Furniture", description: "Global Exhibitions", value: "$4,200", status: "in_progress" }
+    { id: 1, title: "Wedding Photography Package", description: "Happy Events Co.", value: "9,400 ر.س", status: "pending" },
+    { id: 2, title: "Corporate Meeting Setup", description: "Tech Solutions Ltd.", value: "6,800 ر.س", status: "accepted" },
+    { id: 3, title: "Exhibition Booth Furniture", description: "Global Exhibitions", value: "15,800 ر.س", status: "in_progress" }
   ] : [
     { id: 1, title: "AVL Equipment for Conference", status: "pending", value: "3 offers" },
     { id: 2, title: "Catering Services", status: "active", value: "5 offers" },

@@ -262,8 +262,8 @@ export const Pricing = () => {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
             <img 
-              src="/lovable-uploads/b443f385-9fd2-4ecc-8763-b6ed9bd406f8.png" 
-              alt="Supplify Logo" 
+              src="/lovable-uploads/dbfa227c-ea00-42f4-9f7e-544c2b0bde60.png" 
+              alt="Saudi Riyal Logo"
               className="h-16 w-auto hover:scale-105 transition-transform"
             />
           </Link>

@@ -44,11 +44,11 @@ export const ExpertConsultation = () => {
   ];
 
   const budgetRanges = [
-    { value: "under-10k", label: t('language') === 'ar' ? 'أقل من 10,000 ريال' : 'Under $2,700' },
-    { value: "10k-50k", label: t('language') === 'ar' ? '10,000 - 50,000 ريال' : '$2,700 - $13,300' },
-    { value: "50k-100k", label: t('language') === 'ar' ? '50,000 - 100,000 ريال' : '$13,300 - $26,700' },
-    { value: "100k-500k", label: t('language') === 'ar' ? '100,000 - 500,000 ريال' : '$26,700 - $133,300' },
-    { value: "500k-plus", label: t('language') === 'ar' ? 'أكثر من 500,000 ريال' : '$133,300+' }
+    { value: "under-10k", label: t('language') === 'ar' ? 'أقل من 10,000 ريال' : 'Under 10,000 SAR' },
+    { value: "10k-50k", label: t('language') === 'ar' ? '10,000 - 50,000 ريال' : '10,000 - 50,000 SAR' },
+    { value: "50k-100k", label: t('language') === 'ar' ? '50,000 - 100,000 ريال' : '50,000 - 100,000 SAR' },
+    { value: "100k-500k", label: t('language') === 'ar' ? '100,000 - 500,000 ريال' : '100,000 - 500,000 SAR' },
+    { value: "500k-plus", label: t('language') === 'ar' ? 'أكثر من 500,000 ريال' : '500,000+ SAR' }
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -164,13 +164,14 @@ export const ExpertConsultation = () => {
                 <div className="space-y-2">
                   <Label htmlFor="phone" className="flex items-center gap-2">
                     <Phone className="h-4 w-4" />
-                    {t('language') === 'ar' ? 'رقم الهاتف' : 'Phone Number'}
+                    {t('language') === 'ar' ? 'رقم الهاتف' : 'Phone Number'} *
                   </Label>
                   <Input
                     id="phone"
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
                     placeholder={t('language') === 'ar' ? '+966 50 123 4567' : '+966 50 123 4567'}
+                    required
                     className="h-12"
                   />
                 </div>
