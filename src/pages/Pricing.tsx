@@ -309,7 +309,7 @@ export const Pricing = () => {
           
           {/* Role Selection Toggle */}
           <div className="flex justify-center items-center gap-4 mb-12">
-            <div className="flex items-center gap-4">
+            <div className={`flex items-center gap-4 ${t('language') === 'ar' ? 'flex-row-reverse' : ''}`}>
               <span className={`text-lg font-medium transition-colors ${selectedRole === 'client' ? 'text-foreground' : 'text-muted-foreground'}`}>
                 {t('language') === 'ar' ? 'العملاء' : 'Clients'}
               </span>
