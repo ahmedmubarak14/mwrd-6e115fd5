@@ -20,7 +20,7 @@ export const Requests = () => {
       category: "AVL", 
       status: "active", 
       offers: 3, 
-      budget: "$5,000 - $8,000",
+      budget: "18,800 - 30,000 ر.س",
       deadline: "Mar 20, 2024"
     },
     { 
@@ -29,7 +29,7 @@ export const Requests = () => {
       category: "Hospitality", 
       status: "pending", 
       offers: 0, 
-      budget: "$3,000 - $5,000",
+      budget: "11,300 - 18,800 ر.س",
       deadline: "Mar 25, 2024"
     },
     { 
@@ -38,7 +38,7 @@ export const Requests = () => {
       category: "Booth Stands", 
       status: "completed", 
       offers: 5, 
-      budget: "$10,000 - $15,000",
+      budget: "37,500 - 56,300 ر.س",
       deadline: "Mar 15, 2024"
     }
   ];
@@ -166,7 +166,7 @@ export const Requests = () => {
                         {/* Details grid */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pl-5">
                           <div className="flex items-center gap-2 p-3 bg-lime/5 rounded-lg">
-                            <div className="text-lime text-lg font-bold">$</div>
+                            <div className="text-lime text-lg font-bold">ر.س</div>
                             <div>
                               <p className="text-xs text-muted-foreground">Budget</p>
                               <p className="font-semibold text-sm">{request.budget}</p>

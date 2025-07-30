@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon, MessageSquare, User, Mail, Phone, Building, DollarSign, Calendar as CalendarIconLucide } from "lucide-react";
+import { CalendarIcon, MessageSquare, User, Mail, Phone, Building, Banknote, Calendar as CalendarIconLucide } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -251,7 +251,7 @@ export const ExpertConsultation = () => {
                 {/* Budget Range */}
                 <div className="space-y-2 md:col-span-2">
                   <Label className="flex items-center gap-2">
-                    <DollarSign className="h-4 w-4" />
+                    <Banknote className="h-4 w-4" />
                     {t('language') === 'ar' ? 'نطاق الميزانية' : 'Budget Range'}
                   </Label>
                   <Select value={formData.budget_range} onValueChange={(value) => handleInputChange('budget_range', value)}>

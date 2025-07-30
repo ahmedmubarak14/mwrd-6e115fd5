@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
-import { Plus, FileText, Users, TrendingUp, Package, DollarSign, Star, Eye, Clock } from "lucide-react";
+import { Plus, FileText, Users, TrendingUp, Package, Banknote, Star, Eye, Clock } from "lucide-react";
 
 export const ClientDashboard = () => {
   const { t } = useLanguage();
@@ -11,7 +11,7 @@ export const ClientDashboard = () => {
   // Universal stats that work for both clients and suppliers
   const stats = userProfile?.role === 'supplier' ? [
     { title: "Active Offers", value: "12", icon: Package, color: "text-primary" },
-    { title: "Monthly Revenue", value: "92,000 ر.س", icon: DollarSign, color: "text-lime" },
+    { title: "Monthly Revenue", value: "92,000 ر.س", icon: Banknote, color: "text-lime" },
     { title: "Success Rate", value: "85%", icon: TrendingUp, color: "text-primary" },
     { title: "Client Rating", value: "4.8", icon: Star, color: "text-lime" }
   ] : [
