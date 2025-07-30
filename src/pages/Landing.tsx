@@ -723,12 +723,12 @@ export const Landing = () => {
             
             <div>
               <h3 className="font-semibold mb-4 text-lg">
-                {t('language') === 'ar' ? 'الحلول' : 'Solutions'}
+                {t('language') === 'ar' ? 'الشركة' : 'Company'}
               </h3>
               <ul className="space-y-3 text-muted-foreground">
-                <li><a href="#" className="hover:text-primary transition-colors story-link">{t('language') === 'ar' ? 'للشركات' : 'For Businesses'}</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors story-link">{t('language') === 'ar' ? 'لمقدمي الخدمات' : 'For Providers'}</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors story-link">{t('language') === 'ar' ? 'للمؤسسات' : 'For Enterprises'}</a></li>
+                <li><Link to="/why-start-with-supplify" className="hover:text-primary transition-colors story-link">{t('language') === 'ar' ? 'لماذا تبدأ معنا' : 'Why Start with Us'}</Link></li>
+                <li><Link to="/why-move-to-supplify" className="hover:text-primary transition-colors story-link">{t('language') === 'ar' ? 'لماذا تنتقل إلينا' : 'Why Move to Us'}</Link></li>
+                <li><Link to="/pricing" className="hover:text-primary transition-colors story-link">{t('language') === 'ar' ? 'الأسعار' : 'Pricing'}</Link></li>
               </ul>
             </div>
             
