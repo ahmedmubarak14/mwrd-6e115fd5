@@ -18,7 +18,13 @@ import {
   MoreVertical,
   Edit,
   Trash2,
-  Key
+  Key,
+  MessageSquare,
+  Calendar,
+  Phone,
+  Building,
+  Clock,
+  Mail
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -59,17 +65,36 @@ interface UserProfile {
   avatar_url?: string;
 }
 
+interface ExpertConsultation {
+  id: string;
+  user_id: string | null;
+  full_name: string;
+  email: string;
+  phone: string | null;
+  company_name: string | null;
+  event_type: string | null;
+  event_date: string | null;
+  budget_range: string | null;
+  message: string;
+  status: 'pending' | 'contacted' | 'completed' | 'cancelled';
+  created_at: string;
+  updated_at: string;
+}
+
 export const AdminDashboard = () => {
   const { userProfile, loading } = useAuth();
   const { t } = useLanguage();
   const { toast } = useToast();
   const [stats, setStats] = useState<UserStats | null>(null);
   const [users, setUsers] = useState<UserProfile[]>([]);
+  const [consultations, setConsultations] = useState<ExpertConsultation[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedRole, setSelectedRole] = useState<string>("all");
+  const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [isAddUserOpen, setIsAddUserOpen] = useState(false);
   const [isResetPasswordOpen, setIsResetPasswordOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
+  const [activeTab, setActiveTab] = useState<'users' | 'consultations'>('users');
   const [newUser, setNewUser] = useState({
     email: "",
     password: "",
@@ -82,6 +107,7 @@ export const AdminDashboard = () => {
     if (userProfile?.role === 'admin') {
       fetchStats();
       fetchUsers();
+      fetchConsultations();
     }
   }, [userProfile]);
 
@@ -116,6 +142,25 @@ export const AdminDashboard = () => {
       toast({
         title: "Error",
         description: "Failed to fetch users.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const fetchConsultations = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('expert_consultations')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setConsultations((data || []) as ExpertConsultation[]);
+    } catch (error) {
+      console.error('Error fetching consultations:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch expert consultations.",
         variant: "destructive",
       });
     }
@@ -219,12 +264,44 @@ export const AdminDashboard = () => {
     }
   };
 
+  const updateConsultationStatus = async (id: string, status: 'pending' | 'contacted' | 'completed' | 'cancelled') => {
+    try {
+      const { error } = await supabase
+        .from('expert_consultations')
+        .update({ status })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Consultation status updated successfully.",
+      });
+
+      fetchConsultations();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to update status.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          user.company_name?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesRole = selectedRole === "all" || user.role === selectedRole;
     return matchesSearch && matchesRole;
+  });
+
+  const filteredConsultations = consultations.filter(consultation => {
+    const matchesSearch = consultation.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         consultation.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         consultation.company_name?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = selectedStatus === "all" || consultation.status === selectedStatus;
+    return matchesSearch && matchesStatus;
   });
 
   if (loading) {
@@ -373,7 +450,36 @@ export const AdminDashboard = () => {
               </Card>
             </div>
 
+            {/* Tab Navigation */}
+            <div className="border-b">
+              <div className="flex space-x-8">
+                <button
+                  onClick={() => setActiveTab('users')}
+                  className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                    activeTab === 'users' 
+                      ? 'border-primary text-primary' 
+                      : 'border-transparent text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <Users className="h-4 w-4 inline mr-2" />
+                  User Management
+                </button>
+                <button
+                  onClick={() => setActiveTab('consultations')}
+                  className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                    activeTab === 'consultations' 
+                      ? 'border-primary text-primary' 
+                      : 'border-transparent text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <MessageSquare className="h-4 w-4 inline mr-2" />
+                  Expert Consultations
+                </button>
+              </div>
+            </div>
+
             {/* Users Management */}
+            {activeTab === 'users' && (
             <Card>
               <CardHeader>
                 <CardTitle>User Management</CardTitle>
@@ -460,6 +566,143 @@ export const AdminDashboard = () => {
                 </div>
               </CardContent>
             </Card>
+            )}
+
+            {/* Expert Consultations */}
+            {activeTab === 'consultations' && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Expert Consultations</CardTitle>
+                <CardDescription>Manage consultation requests from potential clients</CardDescription>
+                <div className="flex flex-col sm:flex-row gap-4 mt-4">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                    <Input
+                      placeholder="Search consultations..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                  <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                    <SelectTrigger className="w-full sm:w-48">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="pending">Pending</SelectItem>
+                      <SelectItem value="contacted">Contacted</SelectItem>
+                      <SelectItem value="completed">Completed</SelectItem>
+                      <SelectItem value="cancelled">Cancelled</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {filteredConsultations.map((consultation) => (
+                    <div key={consultation.id} className="border rounded-lg p-6 space-y-4">
+                      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                        <div className="flex-1 space-y-3">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                              <span className="text-sm font-medium">
+                                {consultation.full_name.charAt(0).toUpperCase()}
+                              </span>
+                            </div>
+                            <div>
+                              <p className="font-semibold text-lg">{consultation.full_name}</p>
+                              <p className="text-sm text-muted-foreground flex items-center gap-1">
+                                <Mail className="h-3 w-3" />
+                                {consultation.email}
+                              </p>
+                            </div>
+                          </div>
+                          
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
+                            {consultation.phone && (
+                              <div className="flex items-center gap-2 text-muted-foreground">
+                                <Phone className="h-3 w-3" />
+                                {consultation.phone}
+                              </div>
+                            )}
+                            {consultation.company_name && (
+                              <div className="flex items-center gap-2 text-muted-foreground">
+                                <Building className="h-3 w-3" />
+                                {consultation.company_name}
+                              </div>
+                            )}
+                            {consultation.event_date && (
+                              <div className="flex items-center gap-2 text-muted-foreground">
+                                <Calendar className="h-3 w-3" />
+                                {new Date(consultation.event_date).toLocaleDateString()}
+                              </div>
+                            )}
+                            {consultation.event_type && (
+                              <div className="flex items-center gap-2 text-muted-foreground">
+                                <MessageSquare className="h-3 w-3" />
+                                {consultation.event_type}
+                              </div>
+                            )}
+                            {consultation.budget_range && (
+                              <div className="flex items-center gap-2 text-muted-foreground">
+                                <span className="text-xs">💰</span>
+                                {consultation.budget_range}
+                              </div>
+                            )}
+                            <div className="flex items-center gap-2 text-muted-foreground">
+                              <Clock className="h-3 w-3" />
+                              {new Date(consultation.created_at).toLocaleDateString()}
+                            </div>
+                          </div>
+
+                          <div className="bg-muted/50 rounded-lg p-3">
+                            <p className="text-sm"><strong>Message:</strong></p>
+                            <p className="text-sm text-muted-foreground mt-1">{consultation.message}</p>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col gap-2">
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium text-center ${
+                            consultation.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                            consultation.status === 'contacted' ? 'bg-blue-100 text-blue-800' :
+                            consultation.status === 'completed' ? 'bg-green-100 text-green-800' :
+                            'bg-red-100 text-red-800'
+                          }`}>
+                            {consultation.status}
+                          </span>
+                          
+                          <Select 
+                            value={consultation.status} 
+                            onValueChange={(value: 'pending' | 'contacted' | 'completed' | 'cancelled') => 
+                              updateConsultationStatus(consultation.id, value)
+                            }
+                          >
+                            <SelectTrigger className="w-32">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="pending">Pending</SelectItem>
+                              <SelectItem value="contacted">Contacted</SelectItem>
+                              <SelectItem value="completed">Completed</SelectItem>
+                              <SelectItem value="cancelled">Cancelled</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {filteredConsultations.length === 0 && (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <p>No consultation requests found.</p>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+            )}
           </div>
         </main>
       </div>

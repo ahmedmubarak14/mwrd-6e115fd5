@@ -683,9 +683,11 @@ export const Landing = () => {
                   <ArrowRight className="ml-2 h-6 w-6" />
                 </Button>
               </Link>
-              <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold px-10 py-5 text-lg shadow-2xl hover-scale">
-                {t('language') === 'ar' ? 'تحدث مع خبير' : 'Talk to Expert'}
-              </Button>
+              <Link to="/expert-consultation">
+                <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold px-10 py-5 text-lg shadow-2xl hover-scale">
+                  {t('language') === 'ar' ? 'تحدث مع خبير' : 'Talk to Expert'}
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

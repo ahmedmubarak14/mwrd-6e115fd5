@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      expert_consultations: {
+        Row: {
+          budget_range: string | null
+          company_name: string | null
+          created_at: string
+          email: string
+          event_date: string | null
+          event_type: string | null
+          full_name: string
+          id: string
+          message: string
+          phone: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          budget_range?: string | null
+          company_name?: string | null
+          created_at?: string
+          email: string
+          event_date?: string | null
+          event_type?: string | null
+          full_name: string
+          id?: string
+          message: string
+          phone?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          budget_range?: string | null
+          company_name?: string | null
+          created_at?: string
+          email?: string
+          event_date?: string | null
+          event_type?: string | null
+          full_name?: string
+          id?: string
+          message?: string
+          phone?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       user_profiles: {
         Row: {
           avatar_url: string | null
