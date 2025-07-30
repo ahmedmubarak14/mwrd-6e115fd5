@@ -53,7 +53,7 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
   const isActive = (href: string) => location.pathname === href;
 
   return (
-    <div className="w-full h-full bg-card border-r flex flex-col">
+    <div className="w-full lg:w-64 h-full bg-card border-r flex flex-col">
       <div className="p-4 sm:p-6 border-b">
         <h2 className="text-base sm:text-lg font-semibold text-primary">{t('app.name')}</h2>
       </div>
