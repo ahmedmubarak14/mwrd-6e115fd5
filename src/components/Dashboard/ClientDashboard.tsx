@@ -11,7 +11,7 @@ export const ClientDashboard = () => {
   // Universal stats that work for both clients and suppliers
   const stats = userProfile?.role === 'supplier' ? [
     { title: "Active Offers", value: "12", icon: Package, color: "text-primary" },
-    { title: "Monthly Revenue", value: "92,000 ر.س", icon: Banknote, color: "text-lime" },
+    { title: "Monthly Revenue", value: "92,000", icon: Banknote, color: "text-lime", currency: true },
     { title: "Success Rate", value: "85%", icon: TrendingUp, color: "text-primary" },
     { title: "Client Rating", value: "4.8", icon: Star, color: "text-lime" }
   ] : [
@@ -22,9 +22,9 @@ export const ClientDashboard = () => {
 
   // Universal recent items that work for both user types
   const recentItems = userProfile?.role === 'supplier' ? [
-    { id: 1, title: "Wedding Photography Package", description: "Happy Events Co.", value: "9,400 ر.س", status: "pending" },
-    { id: 2, title: "Corporate Meeting Setup", description: "Tech Solutions Ltd.", value: "6,800 ر.س", status: "accepted" },
-    { id: 3, title: "Exhibition Booth Furniture", description: "Global Exhibitions", value: "15,800 ر.س", status: "in_progress" }
+    { id: 1, title: "Wedding Photography Package", description: "Happy Events Co.", value: "9,400", status: "pending", currency: true },
+    { id: 2, title: "Corporate Meeting Setup", description: "Tech Solutions Ltd.", value: "6,800", status: "accepted", currency: true },
+    { id: 3, title: "Exhibition Booth Furniture", description: "Global Exhibitions", value: "15,800", status: "in_progress", currency: true }
   ] : [
     { id: 1, title: "AVL Equipment for Conference", status: "pending", value: "3 offers" },
     { id: 2, title: "Catering Services", status: "active", value: "5 offers" },
@@ -67,7 +67,16 @@ export const ClientDashboard = () => {
               </div>
             </CardHeader>
             <CardContent className="p-4 sm:p-6 pt-0">
-              <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{stat.value}</div>
+              <div className="flex items-center gap-2">
+                <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{stat.value}</div>
+                {stat.currency && (
+                  <img 
+                    src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
+                    alt="SAR" 
+                    className="h-5 w-5 sm:h-6 sm:w-6 opacity-80"
+                  />
+                )}
+              </div>
             </CardContent>
           </Card>
         ))}
@@ -173,9 +182,21 @@ export const ClientDashboard = () => {
               <div key={item.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 lg:p-6 border rounded-lg sm:rounded-xl hover:shadow-lg transition-all duration-300 bg-background/50 gap-3 sm:gap-4">
                 <div className="flex-1 min-w-0">
                   <h4 className="font-semibold text-sm sm:text-base lg:text-lg truncate">{item.title}</h4>
-                  <p className="text-muted-foreground text-xs sm:text-sm lg:text-base">
-                    {userProfile?.role === 'supplier' ? item.description : `${item.value}`}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-muted-foreground text-xs sm:text-sm lg:text-base">
+                      {userProfile?.role === 'supplier' ? item.description : `${item.value}`}
+                    </p>
+                    {userProfile?.role === 'supplier' && item.currency && (
+                      <div className="flex items-center gap-1">
+                        <span className="text-muted-foreground text-xs sm:text-sm lg:text-base">{item.value}</span>
+                        <img 
+                          src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
+                          alt="SAR" 
+                          className="h-3 w-3 sm:h-4 sm:w-4 opacity-70"
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 lg:gap-4 flex-shrink-0">
                   <span className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium self-start sm:self-auto ${

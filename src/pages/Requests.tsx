@@ -20,7 +20,7 @@ export const Requests = () => {
       category: "AVL", 
       status: "active", 
       offers: 3, 
-      budget: "18,800 - 30,000 ر.س",
+      budget: "18,800 - 30,000",
       deadline: "Mar 20, 2024"
     },
     { 
@@ -29,7 +29,7 @@ export const Requests = () => {
       category: "Hospitality", 
       status: "pending", 
       offers: 0, 
-      budget: "11,300 - 18,800 ر.س",
+      budget: "11,300 - 18,800",
       deadline: "Mar 25, 2024"
     },
     { 
@@ -38,7 +38,7 @@ export const Requests = () => {
       category: "Booth Stands", 
       status: "completed", 
       offers: 5, 
-      budget: "37,500 - 56,300 ر.س",
+      budget: "37,500 - 56,300",
       deadline: "Mar 15, 2024"
     }
   ];
@@ -166,11 +166,14 @@ export const Requests = () => {
                         {/* Details grid */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pl-5">
                           <div className="flex items-center gap-2 p-3 bg-lime/5 rounded-lg">
-                            <div className="text-lime text-lg font-bold">ر.س</div>
-                            <div>
-                              <p className="text-xs text-muted-foreground">Budget</p>
-                              <p className="font-semibold text-sm">{request.budget}</p>
-                            </div>
+                          <div className="flex items-center gap-1">
+                            <span className="text-lime text-lg font-bold">{request.budget}</span>
+                            <img 
+                              src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
+                              alt="SAR" 
+                              className="h-4 w-4 opacity-80"
+                            />
+                          </div>
                           </div>
                           
                           <div className="flex items-center gap-2 p-3 bg-accent/5 rounded-lg">

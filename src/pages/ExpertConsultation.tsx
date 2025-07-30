@@ -251,7 +251,11 @@ export const ExpertConsultation = () => {
                 {/* Budget Range */}
                 <div className="space-y-2 md:col-span-2">
                   <Label className="flex items-center gap-2">
-                    <Banknote className="h-4 w-4" />
+                    <img 
+                      src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
+                      alt="SAR" 
+                      className="h-4 w-4"
+                    />
                     {t('language') === 'ar' ? 'نطاق الميزانية' : 'Budget Range'}
                   </Label>
                   <Select value={formData.budget_range} onValueChange={(value) => handleInputChange('budget_range', value)}>
