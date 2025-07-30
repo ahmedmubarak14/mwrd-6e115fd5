@@ -39,8 +39,10 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
 
   return (
     <header className="h-20 sm:h-24 lg:h-28 border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
-      <div className={`container mx-auto px-3 sm:px-4 lg:px-6 h-full flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-        <div className={`flex items-center gap-2 sm:gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 h-full flex items-center justify-between">
+        
+        {/* Logo - positioned based on language */}
+        <div className={`${isRTL ? 'order-3' : 'order-1'} flex items-center gap-2 sm:gap-4`}>
           <Button
             variant="ghost"
             size="icon"
@@ -50,16 +52,21 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
             <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
           
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex items-center gap-3">
             <img 
               src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
               alt="Supplify Logo"
               className="h-12 sm:h-20 lg:h-24 w-auto hover:scale-105 transition-transform"
             />
+            {/* Arabic/English text logo */}
+            <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-primary">
+              {isRTL ? 'سبلفاي' : 'Supplify'}
+            </span>
           </Link>
         </div>
         
-        <div className={`flex items-center gap-1 sm:gap-2 lg:gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+        {/* Actions - positioned based on language */}
+        <div className={`${isRTL ? 'order-1' : 'order-3'} flex items-center gap-1 sm:gap-2 lg:gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
           <div className="relative hidden xl:block">
             <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4`} />
             <input
