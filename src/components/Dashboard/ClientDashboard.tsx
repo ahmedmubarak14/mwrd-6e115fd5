@@ -5,8 +5,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Plus, FileText, Users, TrendingUp, Package, Banknote, Star, Eye, Clock } from "lucide-react";
 
 export const ClientDashboard = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { userProfile } = useAuth();
+  const isRTL = language === 'ar';
 
   // Universal stats that work for both clients and suppliers
   const stats = userProfile?.role === 'supplier' ? [
@@ -32,7 +33,7 @@ export const ClientDashboard = () => {
   ];
 
   return (
-    <div className="space-y-4 sm:space-y-6 lg:space-y-8">
+    <div className={`space-y-4 sm:space-y-6 lg:space-y-8 ${isRTL ? 'text-right' : 'text-left'}`}>
       {/* Enhanced Welcome Header */}
       <div className="relative overflow-hidden bg-gradient-to-r from-primary via-accent to-lime text-white rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-6 lg:p-8">
         <div className="absolute inset-0">
@@ -47,8 +48,8 @@ export const ClientDashboard = () => {
               : t('dashboard.subtitle')
             }
           </p>
-          <Button className="bg-white text-primary hover:bg-white/90 font-semibold px-4 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg hover-scale w-full sm:w-auto text-sm sm:text-base">
-            <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+          <Button className={`bg-white text-primary hover:bg-white/90 font-semibold px-4 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg hover-scale w-full sm:w-auto text-sm sm:text-base ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <Plus className={`h-4 w-4 sm:h-5 sm:w-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
             {userProfile?.role === 'supplier' ? t('dashboard.createOffer') : t('dashboard.createRequest')}
           </Button>
         </div>
@@ -58,7 +59,7 @@ export const ClientDashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
         {stats.map((stat, index) => (
           <Card key={index} className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
+            <CardHeader className={`flex ${isRTL ? 'flex-row-reverse' : 'flex-row'} items-center justify-between space-y-0 pb-2 p-4 sm:p-6`}>
               <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
                 {stat.title}
               </CardTitle>
@@ -67,7 +68,7 @@ export const ClientDashboard = () => {
               </div>
             </CardHeader>
             <CardContent className="p-4 sm:p-6 pt-0">
-              <div className="flex items-center gap-2">
+              <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{stat.value}</div>
                 {stat.currency && (
                   <img 

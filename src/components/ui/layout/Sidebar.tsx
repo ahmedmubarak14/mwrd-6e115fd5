@@ -53,8 +53,8 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
   const isActive = (href: string) => location.pathname === href;
 
   return (
-    <div className="w-full lg:w-64 h-full bg-card border-r flex flex-col">
-      <div className="p-4 sm:p-6 border-b flex items-center justify-center">
+    <div className={`w-full lg:w-64 h-full bg-card border-r flex flex-col ${language === 'ar' ? 'border-l border-r-0' : ''}`}>
+      <div className={`p-4 sm:p-6 border-b flex items-center ${language === 'ar' ? 'justify-start' : 'justify-center'}`}>
         <img 
           src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
           alt="Supplify Logo"
@@ -68,7 +68,7 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
             <Button
               variant="ghost"
               className={cn(
-                "w-full justify-start gap-3 h-10 sm:h-12 text-left text-sm sm:text-base",
+                `w-full gap-3 h-10 sm:h-12 text-left text-sm sm:text-base ${language === 'ar' ? 'justify-end flex-row-reverse text-right' : 'justify-start'}`,
                 isActive(item.href) && "bg-primary/10 text-primary hover:bg-primary/20"
               )}
             >
@@ -79,15 +79,17 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
         ))}
       </nav>
 
-      {/* Language Switcher for Mobile - ALWAYS VISIBLE */}
-      <div className="mt-auto p-3 sm:p-4 border-t bg-primary/5">
+      {/* Language Switcher - Always visible with proper RTL support */}
+      <div className={`mt-auto p-3 sm:p-4 border-t bg-primary/5 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
         <div className="space-y-2">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Language / اللغة</p>
+          <p className={`text-xs font-medium text-muted-foreground uppercase tracking-wide ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+            Language / اللغة
+          </p>
           <Button
             variant="outline"
             size="sm"
             onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
-            className="w-full text-xs sm:text-sm"
+            className={`w-full text-xs sm:text-sm ${language === 'ar' ? 'flex-row-reverse' : ''}`}
           >
             🌐 {language === 'en' ? 'العربية' : 'English'}
           </Button>
