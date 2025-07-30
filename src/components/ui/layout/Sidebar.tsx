@@ -54,8 +54,12 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
 
   return (
     <div className="w-full lg:w-64 h-full bg-card border-r flex flex-col">
-      <div className="p-4 sm:p-6 border-b">
-        <h2 className="text-base sm:text-lg font-semibold text-primary">{t('app.name')}</h2>
+      <div className="p-4 sm:p-6 border-b flex items-center justify-center">
+        <img 
+          src="/lovable-uploads/15bb5f5e-0a37-4ca9-81a8-ff8ec8a25b9d.png" 
+          alt="Supplify Logo" 
+          className="h-12 sm:h-16 w-auto"
+        />
       </div>
       
       <nav className="flex-1 px-3 sm:px-4 py-4 space-y-1 sm:space-y-2">

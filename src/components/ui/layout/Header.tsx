@@ -21,14 +21,19 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
     await signOut();
   };
 
-  const getUserInitials = (name?: string) => {
-    if (!name) return 'U';
-    return name
-      .split(' ')
-      .map(n => n[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
+  const getUserInitials = (name?: string, email?: string) => {
+    if (name) {
+      return name
+        .split(' ')
+        .map(n => n[0])
+        .join('')
+        .toUpperCase()
+        .slice(0, 2);
+    }
+    if (email) {
+      return email[0].toUpperCase();
+    }
+    return 'U';
   };
 
   return (
@@ -83,11 +88,11 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
               <Button variant="ghost" className="flex items-center gap-1 sm:gap-2 px-1 sm:px-2 lg:px-3 rounded-lg h-8 sm:h-10">
                 <Avatar className="h-6 w-6 sm:h-8 sm:w-8">
                   <AvatarFallback className="text-xs sm:text-sm bg-primary/10 text-primary">
-                    {getUserInitials(userProfile?.full_name)}
+                    {getUserInitials(userProfile?.full_name, userProfile?.email)}
                   </AvatarFallback>
                 </Avatar>
                 <div className="text-left hidden lg:block">
-                  <p className="text-sm font-medium">{userProfile?.full_name || 'User'}</p>
+                  <p className="text-sm font-medium">{userProfile?.full_name || userProfile?.email?.split('@')[0] || 'Welcome'}</p>
                   <p className="text-xs text-muted-foreground capitalize">{userProfile?.role}</p>
                 </div>
               </Button>
