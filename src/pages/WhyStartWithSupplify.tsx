@@ -5,6 +5,7 @@ import { ShoppingCart, FileCheck, Handshake, Shield, CheckCircle, Clock, Users, 
 import { Link } from "react-router-dom";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
+import { DemoButton } from "@/components/demo/DemoButton";
 
 export const WhyStartWithSupplify = () => {
   const { t, language } = useLanguage();
@@ -121,11 +122,11 @@ export const WhyStartWithSupplify = () => {
                   {isRTL ? 'ابدأ مع Supplify' : 'Start with Supplify'}
                 </Button>
               </Link>
-              <Link to="/pricing">
-                <Button variant="outline" size="lg" className="px-8 py-3 hover-scale">
-                  {isRTL ? 'شاهد كيف تعمل المنصة' : 'See How It Works'}
-                </Button>
-              </Link>
+              <DemoButton 
+                variant="outline" 
+                size="lg" 
+                className="px-8 py-3"
+              />
             </div>
           </div>
         </div>

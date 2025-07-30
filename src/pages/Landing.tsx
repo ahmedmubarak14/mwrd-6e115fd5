@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { DemoButton } from "@/components/demo/DemoButton";
 import { Check, ArrowRight, Users, Shield, Zap, Award, TrendingUp, Clock, Star, Play, ChevronDown, Building2, Calendar, CheckCircle, BarChart3, HeartHandshake, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -182,10 +183,11 @@ export const Landing = () => {
                   <ArrowRight className="ml-2 h-6 w-6" />
                 </Button>
               </Link>
-              <Button size="lg" variant="outline" className="px-10 py-5 text-lg border-2 hover-scale">
-                <Play className="mr-2 h-6 w-6" />
-                {t('language') === 'ar' ? 'شاهد التجربة' : 'Watch Experience'}
-              </Button>
+              <DemoButton 
+                size="lg" 
+                variant="outline" 
+                className="px-10 py-5 text-lg border-2"
+              />
             </div>
 
             {/* Enhanced Impact Stats */}
