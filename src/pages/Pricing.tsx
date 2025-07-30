@@ -4,6 +4,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Check, ArrowRight, Star } from "lucide-react";
 import { useState } from "react";
+import { Switch } from "@/components/ui/switch";
 import { Link } from "react-router-dom";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
 
@@ -313,25 +314,12 @@ export const Pricing = () => {
                 {t('language') === 'ar' ? 'العملاء' : 'Clients'}
               </span>
               
-              <div className="relative">
-                <input
-                  type="checkbox"
-                  id="roleToggle"
-                  checked={selectedRole === 'supplier'}
-                  onChange={(e) => setSelectedRole(e.target.checked ? 'supplier' : 'client')}
-                  className="sr-only"
-                />
-                <label
-                  htmlFor="roleToggle"
-                  className="block w-14 h-7 bg-primary rounded-full cursor-pointer relative transition-all duration-300 hover:bg-primary/90"
-                >
-                  <div
-                    className={`absolute top-0.5 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-300 ${
-                      selectedRole === 'supplier' ? 'translate-x-7' : 'translate-x-0.5'
-                    }`}
-                  />
-                </label>
-              </div>
+              <Switch
+                id="roleToggle"
+                checked={selectedRole === 'supplier'}
+                onCheckedChange={(checked) => setSelectedRole(checked ? 'supplier' : 'client')}
+                className="scale-125"
+              />
               
               <span className={`text-lg font-medium transition-colors ${selectedRole === 'supplier' ? 'text-foreground' : 'text-muted-foreground'}`}>
                 {t('language') === 'ar' ? 'مقدمي الخدمات' : 'Suppliers'}
