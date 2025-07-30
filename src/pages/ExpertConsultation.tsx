@@ -44,11 +44,51 @@ export const ExpertConsultation = () => {
   ];
 
   const budgetRanges = [
-    { value: "under-10k", label: t('language') === 'ar' ? 'أقل من 10,000 ريال' : 'Under 10,000 SAR' },
-    { value: "10k-50k", label: t('language') === 'ar' ? '10,000 - 50,000 ريال' : '10,000 - 50,000 SAR' },
-    { value: "50k-100k", label: t('language') === 'ar' ? '50,000 - 100,000 ريال' : '50,000 - 100,000 SAR' },
-    { value: "100k-500k", label: t('language') === 'ar' ? '100,000 - 500,000 ريال' : '100,000 - 500,000 SAR' },
-    { value: "500k-plus", label: t('language') === 'ar' ? 'أكثر من 500,000 ريال' : '500,000+ SAR' }
+    { 
+      value: "under-10k", 
+      label: t('language') === 'ar' ? 'أقل من 10,000 ريال' : (
+        <div className="flex items-center gap-2">
+          <span>Under 10,000</span>
+          <img src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" alt="Riyal" className="h-4 w-4" />
+        </div>
+      )
+    },
+    { 
+      value: "10k-50k", 
+      label: t('language') === 'ar' ? '10,000 - 50,000 ريال' : (
+        <div className="flex items-center gap-2">
+          <span>10,000 - 50,000</span>
+          <img src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" alt="Riyal" className="h-4 w-4" />
+        </div>
+      )
+    },
+    { 
+      value: "50k-100k", 
+      label: t('language') === 'ar' ? '50,000 - 100,000 ريال' : (
+        <div className="flex items-center gap-2">
+          <span>50,000 - 100,000</span>
+          <img src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" alt="Riyal" className="h-4 w-4" />
+        </div>
+      )
+    },
+    { 
+      value: "100k-500k", 
+      label: t('language') === 'ar' ? '100,000 - 500,000 ريال' : (
+        <div className="flex items-center gap-2">
+          <span>100,000 - 500,000</span>
+          <img src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" alt="Riyal" className="h-4 w-4" />
+        </div>
+      )
+    },
+    { 
+      value: "500k-plus", 
+      label: t('language') === 'ar' ? 'أكثر من 500,000 ريال' : (
+        <div className="flex items-center gap-2">
+          <span>500,000+</span>
+          <img src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" alt="Riyal" className="h-4 w-4" />
+        </div>
+      )
+    }
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {

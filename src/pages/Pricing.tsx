@@ -16,7 +16,7 @@ export const Pricing = () => {
       name: "استكشف مجاناً",
       englishName: "Explore Free",
       price: "0",
-      currency: "ر.س",
+      currency: "",
       period: "/شهر",
       englishPeriod: "/month",
       description: "ابدأ رحلتك معنا واستكشف إمكانيات لا محدودة",
@@ -41,7 +41,7 @@ export const Pricing = () => {
       name: "نمو الأعمال",
       englishName: "Business Growth", 
       price: "299",
-      currency: "ر.س",
+      currency: "",
       period: "/شهر",
       englishPeriod: "/month",
       description: "حلول متكاملة للشركات النامية وطموحاتها",
@@ -70,7 +70,7 @@ export const Pricing = () => {
       name: "التميز المهني",
       englishName: "Professional Excellence",
       price: "799",
-      currency: "ر.س",
+      currency: "",
       period: "/شهر",
       englishPeriod: "/month",
       description: "للشركات الرائدة التي تسعى للتفوق والابتكار",
@@ -138,7 +138,7 @@ export const Pricing = () => {
       name: "مقدم خدمة مبتدئ",
       englishName: "Starter Provider",
       price: "0",
-      currency: "ر.س",
+      currency: "",
       period: "/شهر",
       englishPeriod: "/month",
       description: "ابدأ كمقدم خدمة وانضم لشبكتنا",
@@ -163,7 +163,7 @@ export const Pricing = () => {
       name: "مقدم خدمة محترف",
       englishName: "Professional Provider",
       price: "199",
-      currency: "ر.س",
+      currency: "",
       period: "/شهر",
       englishPeriod: "/month",
       description: "حلول متقدمة للمقدمين المحترفين",
@@ -192,7 +192,7 @@ export const Pricing = () => {
       name: "مقدم خدمة متميز",
       englishName: "Premium Provider",
       price: "399",
-      currency: "ر.س",
+      currency: "",
       period: "/شهر",
       englishPeriod: "/month",
       description: "للمقدمين الرائدين في السوق",
@@ -366,11 +366,17 @@ export const Pricing = () => {
                     {t('language') === 'ar' ? plan.name : plan.englishName}
                   </CardTitle>
                   <div className="mb-4">
-                    <div className="flex items-baseline justify-center gap-1">
+                    <div className="flex items-baseline justify-center gap-2">
                       <span className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                         {t('language') === 'ar' ? plan.price : (plan.englishPrice || plan.price)}
                       </span>
-                      <span className="text-muted-foreground text-lg">{plan.currency}</span>
+                      {plan.price !== 'حسب الطلب' && plan.price !== 'Custom' && plan.price !== '0' && (
+                        <img 
+                          src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
+                          alt="Riyal" 
+                          className="h-6 w-6 opacity-80"
+                        />
+                      )}
                     </div>
                     {plan.period && (
                       <span className="text-muted-foreground text-sm">
