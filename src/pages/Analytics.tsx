@@ -3,18 +3,26 @@ import { Header } from "@/components/ui/layout/Header";
 import { Sidebar } from "@/components/ui/layout/Sidebar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { BarChart3, TrendingUp, Users, Eye, Calendar, Activity } from "lucide-react";
+import { BarChart3, TrendingUp, Users, Eye, Calendar, Activity, Download, Filter, RefreshCw } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useToast } from "@/hooks/use-toast";
+import { dummyApi } from "@/utils/dummyApi";
 import { useState } from "react";
 
 export const Analytics = () => {
   const { userProfile } = useAuth();
   const { language } = useLanguage();
+  const { toast } = useToast();
   const isRTL = language === 'ar';
   const isMobile = useIsMobile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dateRange, setDateRange] = useState("30");
+  const [isExporting, setIsExporting] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Mock analytics data based on user role
   const getAnalyticsData = () => {
@@ -101,6 +109,64 @@ export const Analytics = () => {
 
   const analyticsData = getAnalyticsData();
 
+  const handleExportAnalytics = async () => {
+    setIsExporting(true);
+    try {
+      const endDate = new Date().toISOString().split('T')[0];
+      const startDate = new Date(Date.now() - parseInt(dateRange) * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      
+      const response = await dummyApi.exportAnalytics({
+        start: startDate,
+        end: endDate
+      });
+
+      if (response.success) {
+        toast({
+          title: isRTL ? "تم تصدير التحليلات" : "Analytics Exported",
+          description: isRTL ? "تم تصدير بيانات التحليلات بنجاح" : "Analytics data exported successfully",
+        });
+        window.open(response.data?.downloadUrl || '#', '_blank');
+      }
+    } catch (error) {
+      toast({
+        title: isRTL ? "خطأ في التصدير" : "Export Error",
+        description: isRTL ? "حدث خطأ أثناء تصدير البيانات" : "Error exporting analytics data",
+        variant: "destructive"
+      });
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleRefreshData = async () => {
+    setIsRefreshing(true);
+    try {
+      // Simulate API call to refresh data
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      toast({
+        title: isRTL ? "تم تحديث البيانات" : "Data Refreshed",
+        description: isRTL ? "تم تحديث بيانات التحليلات بنجاح" : "Analytics data refreshed successfully",
+      });
+    } catch (error) {
+      toast({
+        title: isRTL ? "خطأ في التحديث" : "Refresh Error",
+        description: isRTL ? "حدث خطأ أثناء تحديث البيانات" : "Error refreshing data",
+        variant: "destructive"
+      });
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  const handleDrillDown = (cardTitle: string) => {
+    toast({
+      title: isRTL ? "عرض التفاصيل" : "Drill Down",
+      description: isRTL ? `عرض تفاصيل ${cardTitle}` : `Viewing details for ${cardTitle}`,
+    });
+    // In a real app, this would navigate to a detailed view
+  };
+
   return (
     <div className={`min-h-screen bg-background ${isRTL ? 'font-arabic' : ''}`}>
       <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
@@ -123,19 +189,58 @@ export const Analytics = () => {
         <main className="flex-1 p-6">
           <div className="max-w-7xl mx-auto space-y-6">
             {/* Header */}
-            <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
-              <h1 className="text-3xl font-bold mb-2">
-                {isRTL ? 'تحليلات الأداء' : 'Performance Analytics'}
-              </h1>
-              <p className="text-muted-foreground">
-                {isRTL ? 'راقب أداءك واحصل على رؤى قيمة لتحسين نتائجك' : 'Monitor your performance and gain valuable insights to improve your results'}
-              </p>
+            <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
+                <h1 className="text-3xl font-bold mb-2">
+                  {isRTL ? 'تحليلات الأداء' : 'Performance Analytics'}
+                </h1>
+                <p className="text-muted-foreground">
+                  {isRTL ? 'راقب أداءك واحصل على رؤى قيمة لتحسين نتائجك' : 'Monitor your performance and gain valuable insights to improve your results'}
+                </p>
+              </div>
+              <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <Select value={dateRange} onValueChange={setDateRange}>
+                  <SelectTrigger className="w-32">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="7">{isRTL ? '7 أيام' : '7 days'}</SelectItem>
+                    <SelectItem value="30">{isRTL ? '30 يوم' : '30 days'}</SelectItem>
+                    <SelectItem value="90">{isRTL ? '90 يوم' : '90 days'}</SelectItem>
+                    <SelectItem value="365">{isRTL ? 'سنة' : '1 year'}</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleRefreshData}
+                  disabled={isRefreshing}
+                  className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
+                >
+                  <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                  {isRTL ? 'تحديث' : 'Refresh'}
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleExportAnalytics}
+                  disabled={isExporting}
+                  className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
+                >
+                  <Download className="h-4 w-4" />
+                  {isExporting ? (isRTL ? 'جاري التصدير...' : 'Exporting...') : (isRTL ? 'تصدير' : 'Export')}
+                </Button>
+              </div>
             </div>
 
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {analyticsData.cards.map((card, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow">
+                <Card 
+                  key={index} 
+                  className="hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => handleDrillDown(card.title)}
+                >
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">
                       {card.title}
@@ -147,6 +252,17 @@ export const Analytics = () => {
                     <p className="text-xs text-muted-foreground">
                       {card.description}
                     </p>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="mt-2 p-0 h-auto text-xs text-primary hover:text-primary/80"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDrillDown(card.title);
+                      }}
+                    >
+                      {isRTL ? 'عرض التفاصيل' : 'View Details'} →
+                    </Button>
                   </CardContent>
                 </Card>
               ))}
@@ -193,16 +309,28 @@ export const Analytics = () => {
               </Card>
 
               <Card>
-                <CardHeader>
-                  <CardTitle>{analyticsData.charts[0].title}</CardTitle>
-                  <CardDescription>{analyticsData.charts[0].description}</CardDescription>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <div>
+                    <CardTitle>{analyticsData.charts[0].title}</CardTitle>
+                    <CardDescription>{analyticsData.charts[0].description}</CardDescription>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => handleDrillDown(analyticsData.charts[0].title)}
+                    className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
+                  >
+                    <Eye className="h-4 w-4" />
+                    {isRTL ? 'تفاصيل' : 'Details'}
+                  </Button>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-48 flex items-center justify-center bg-muted/20 rounded-lg">
+                  <div className="h-48 flex items-center justify-center bg-muted/20 rounded-lg cursor-pointer hover:bg-muted/30 transition-colors"
+                       onClick={() => handleDrillDown(analyticsData.charts[0].title)}>
                     <div className="text-center">
                       <BarChart3 className="h-12 w-12 text-muted-foreground mx-auto mb-2" />
                       <p className="text-sm text-muted-foreground">
-                        {isRTL ? 'المخططات قريباً' : 'Charts coming soon'}
+                        {isRTL ? 'انقر لعرض المخططات التفاعلية' : 'Click to view interactive charts'}
                       </p>
                     </div>
                   </div>

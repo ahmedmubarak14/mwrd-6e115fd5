@@ -13,6 +13,7 @@ import { HelpCircle, MessageCircle, Phone, Mail, Search, Book, Video, FileText }
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
+import { ChatModal } from "@/components/modals/ChatModal";
 
 export const Support = () => {
   const { userProfile } = useAuth();
@@ -27,14 +28,41 @@ export const Support = () => {
     message: "",
     priority: "medium"
   });
+  const [chatModalOpen, setChatModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleContactSubmit = (e: React.FormEvent) => {
+  const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    
+    try {
+      // For now, just simulate success since support_tickets table might not exist yet
+      // In a real implementation, this would be: await supabase.from('support_tickets').insert(...)
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+
+      toast({
+        title: isRTL ? "تم إرسال الطلب بنجاح" : "Ticket Submitted Successfully",
+        description: isRTL ? "تم إنشاء تذكرة دعم جديدة. سيتم التواصل معك خلال 24 ساعة" : "Support ticket created. We'll get back to you within 24 hours",
+      });
+      setContactForm({ subject: "", message: "", priority: "medium" });
+    } catch (error) {
+      toast({
+        title: isRTL ? "خطأ في الإرسال" : "Submission Error",
+        description: isRTL ? "حدث خطأ أثناء إرسال الطلب. حاول مرة أخرى" : "Error submitting ticket. Please try again",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleQuickAction = (actionType: string) => {
     toast({
-      title: isRTL ? "تم إرسال الطلب" : "Request Submitted",
-      description: isRTL ? "سيتم التواصل معك خلال 24 ساعة" : "We'll get back to you within 24 hours",
+      title: isRTL ? "تم فتح الرابط" : "Opening Resource",
+      description: isRTL ? `سيتم توجيهك إلى ${actionType}` : `Redirecting to ${actionType}`,
     });
-    setContactForm({ subject: "", message: "", priority: "medium" });
+    // In a real app, these would navigate to actual resources
+    window.open('/resources/' + actionType.toLowerCase().replace(' ', '-'), '_blank');
   };
 
   const faqData = [
@@ -75,19 +103,19 @@ export const Support = () => {
       title: isRTL ? "دليل المستخدم" : "User Guide",
       description: isRTL ? "تعلم كيفية استخدام المنصة" : "Learn how to use the platform",
       icon: Book,
-      action: () => toast({ title: isRTL ? "دليل المستخدم" : "User Guide", description: isRTL ? "سيتم توجيهك للدليل" : "Redirecting to user guide" })
+      action: () => handleQuickAction("User Guide")
     },
     {
       title: isRTL ? "فيديوهات تعليمية" : "Tutorial Videos",
       description: isRTL ? "شاهد فيديوهات تعليمية" : "Watch tutorial videos",
       icon: Video,
-      action: () => toast({ title: isRTL ? "الفيديوهات التعليمية" : "Tutorial Videos", description: isRTL ? "سيتم توجيهك للفيديوهات" : "Redirecting to videos" })
+      action: () => handleQuickAction("Tutorial Videos")
     },
     {
       title: isRTL ? "مركز التحميل" : "Download Center",
       description: isRTL ? "حمل الملفات والموارد" : "Download files and resources",
       icon: FileText,
-      action: () => toast({ title: isRTL ? "مركز التحميل" : "Download Center", description: isRTL ? "سيتم توجيهك لمركز التحميل" : "Redirecting to download center" })
+      action: () => handleQuickAction("Download Center")
     }
   ];
 
@@ -151,7 +179,10 @@ export const Support = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <Button className="w-full">
+                  <Button 
+                    className="w-full"
+                    onClick={() => setChatModalOpen(true)}
+                  >
                     {isRTL ? 'بدء محادثة' : 'Start Chat'}
                   </Button>
                 </CardContent>
@@ -262,9 +293,12 @@ export const Support = () => {
                         {isRTL ? 'متوسطة' : 'Medium'}
                       </Badge>
                     </div>
-                    <Button type="submit" className="w-full">
-                      {isRTL ? 'إرسال الرسالة' : 'Send Message'}
-                    </Button>
+                     <Button type="submit" className="w-full" disabled={isSubmitting}>
+                       {isSubmitting 
+                         ? (isRTL ? 'جاري الإرسال...' : 'Sending...') 
+                         : (isRTL ? 'إرسال الرسالة' : 'Send Message')
+                       }
+                     </Button>
                   </form>
                 </CardContent>
               </Card>
@@ -272,6 +306,10 @@ export const Support = () => {
           </div>
         </main>
       </div>
+
+      <ChatModal supplierName="Support Team">
+        <div style={{ display: chatModalOpen ? 'block' : 'none' }} />
+      </ChatModal>
     </div>
   );
 };

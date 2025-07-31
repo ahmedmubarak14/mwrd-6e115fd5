@@ -8,10 +8,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Package, Search, Filter, Eye, Download, Calendar } from "lucide-react";
+import { Package, Search, Filter, Eye, Download, Calendar, FileText, CreditCard } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
+import { useToast } from "@/hooks/use-toast";
+import { dummyApi } from "@/utils/dummyApi";
 
 interface Order {
   id: string;
@@ -28,12 +30,14 @@ interface Order {
 export const Orders = () => {
   const { userProfile } = useAuth();
   const { language } = useLanguage();
+  const { toast } = useToast();
   const isRTL = language === 'ar';
   const isMobile = useIsMobile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [isExporting, setIsExporting] = useState(false);
 
   // Mock orders data
   const orders: Order[] = [
@@ -123,6 +127,73 @@ export const Orders = () => {
     return matchesSearch && matchesStatus;
   });
 
+  const handleExportOrders = async () => {
+    setIsExporting(true);
+    try {
+      const response = await dummyApi.exportAnalytics({
+        start: "2024-01-01",
+        end: new Date().toISOString().split('T')[0]
+      });
+
+      if (response.success) {
+        toast({
+          title: isRTL ? "تم تصدير البيانات" : "Export Successful",
+          description: isRTL ? "تم تصدير الطلبات بنجاح" : "Orders exported successfully",
+        });
+        // In a real app, this would trigger a download
+        window.open(response.data?.downloadUrl || '#', '_blank');
+      }
+    } catch (error) {
+      toast({
+        title: isRTL ? "خطأ في التصدير" : "Export Error",
+        description: isRTL ? "حدث خطأ أثناء تصدير البيانات" : "Error exporting data",
+        variant: "destructive"
+      });
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleGenerateInvoice = async (orderId: string) => {
+    try {
+      const response = await dummyApi.generateInvoice(orderId);
+      
+      if (response.success) {
+        toast({
+          title: isRTL ? "تم إنشاء الفاتورة" : "Invoice Generated",
+          description: isRTL ? "تم إنشاء الفاتورة بنجاح" : "Invoice generated successfully",
+        });
+        window.open(response.data?.invoiceUrl || '#', '_blank');
+      }
+    } catch (error) {
+      toast({
+        title: isRTL ? "خطأ في الفاتورة" : "Invoice Error",
+        description: isRTL ? "حدث خطأ أثناء إنشاء الفاتورة" : "Error generating invoice",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleUpdateOrderStatus = async (orderId: string, newStatus: string) => {
+    try {
+      const response = await dummyApi.updateOrderStatus(orderId, newStatus);
+      
+      if (response.success) {
+        toast({
+          title: isRTL ? "تم تحديث الحالة" : "Status Updated",
+          description: isRTL ? "تم تحديث حالة الطلب بنجاح" : "Order status updated successfully",
+        });
+        // In a real app, this would update the local state or refetch data
+      }
+    } catch (error) {
+      toast({
+        title: isRTL ? "خطأ في التحديث" : "Update Error",
+        description: isRTL ? "حدث خطأ أثناء تحديث الحالة" : "Error updating status",
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
     <div className={`min-h-screen bg-background ${isRTL ? 'font-arabic' : ''}`}>
       <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
@@ -154,9 +225,13 @@ export const Orders = () => {
                   {isRTL ? 'تتبع وإدارة جميع طلباتك وعروضك' : 'Track and manage all your orders and offers'}
                 </p>
               </div>
-              <Button className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}>
+              <Button 
+                className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
+                onClick={handleExportOrders}
+                disabled={isExporting}
+              >
                 <Download className="h-4 w-4" />
-                {isRTL ? 'تصدير' : 'Export'}
+                {isExporting ? (isRTL ? 'جاري التصدير...' : 'Exporting...') : (isRTL ? 'تصدير' : 'Export')}
               </Button>
             </div>
 
@@ -225,10 +300,12 @@ export const Orders = () => {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''} mb-4`}>
                       <p className="text-sm text-muted-foreground">
                         {order.description}
                       </p>
+                    </div>
+                    <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''} flex-wrap`}>
                       <Button 
                         variant="outline" 
                         size="sm"
@@ -238,6 +315,26 @@ export const Orders = () => {
                         <Eye className="h-4 w-4" />
                         {isRTL ? 'عرض التفاصيل' : 'View Details'}
                       </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleGenerateInvoice(order.id)}
+                        className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
+                      >
+                        <FileText className="h-4 w-4" />
+                        {isRTL ? 'إنشاء فاتورة' : 'Generate Invoice'}
+                      </Button>
+                      {order.status !== 'completed' && (
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleUpdateOrderStatus(order.id, order.status === 'pending' ? 'confirmed' : 'in-progress')}
+                          className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
+                        >
+                          <CreditCard className="h-4 w-4" />
+                          {isRTL ? 'تحديث الحالة' : 'Update Status'}
+                        </Button>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
