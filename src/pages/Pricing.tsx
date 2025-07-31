@@ -1,336 +1,234 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { Check, ArrowRight, Star } from "lucide-react";
 import { useState } from "react";
-import { Switch } from "@/components/ui/switch";
-import { Link } from "react-router-dom";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Check, Menu, X, Loader2 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
+import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
-export const Pricing = () => {
-  const { t } = useLanguage();
+const Pricing = () => {
+  const { language } = useLanguage();
+  const { user } = useAuth();
+  const { toast } = useToast();
   const [selectedRole, setSelectedRole] = useState<'client' | 'supplier'>('client');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  
+  const isArabic = language === 'ar';
 
+  const handlePayment = async (planName: string, amount: number) => {
+    if (!user) {
+      toast({
+        title: isArabic ? "يجب تسجيل الدخول أولاً" : "Please log in first",
+        description: isArabic ? "يجب تسجيل الدخول للاشتراك في الخطط" : "You need to log in to subscribe to plans",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setLoadingPlan(planName);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('create-payment', {
+        body: { planName, amount }
+      });
+
+      if (error) throw error;
+
+      if (data.skipPayment) {
+        toast({
+          title: isArabic ? "تم تفعيل الخطة المجانية" : "Free plan activated",
+          description: isArabic ? "يمكنك الآن الاستفادة من الخطة المجانية" : "You can now enjoy the free plan features"
+        });
+      } else {
+        // Open Stripe checkout in a new tab
+        window.open(data.url, '_blank');
+      }
+    } catch (error) {
+      console.error('Payment error:', error);
+      toast({
+        title: isArabic ? "خطأ في الدفع" : "Payment error",
+        description: isArabic ? "حدث خطأ أثناء معالجة الدفع" : "An error occurred while processing payment",
+        variant: "destructive"
+      });
+    } finally {
+      setLoadingPlan(null);
+    }
+  };
+
+  // Client pricing plans
   const clientPricingPlans = [
     {
-      name: "استكشف مجاناً",
-      englishName: "Explore Free",
-      price: "0",
-      currency: "",
-      period: "/شهر",
-      englishPeriod: "/month",
-      description: "ابدأ رحلتك معنا واستكشف إمكانيات لا محدودة",
-      englishDescription: "Start your journey with us and explore unlimited possibilities",
-      features: [
-        "طلب خدمة واحد شهرياً",
-        "تصفح مقدمي الخدمات",
-        "دعم مجتمعي",
-        "موارد تعليمية أساسية"
-      ],
-      englishFeatures: [
-        "1 service request per month",
-        "Browse service providers",
-        "Community support",
-        "Basic educational resources"
-      ],
+      name: isArabic ? "استكشاف مجاني" : "Explore Free",
+      price: isArabic ? "0 ريال سعودي" : "0 SAR",
+      amount: 0,
       popular: false,
-      badge: "مجاني",
-      englishBadge: "Free"
+      features: [
+        isArabic ? "تصفح مقدمي الخدمات" : "Browse service providers",
+        isArabic ? "مشاهدة المعارض" : "View portfolios",
+        isArabic ? "الدعم الأساسي" : "Basic support"
+      ]
     },
     {
-      name: "نمو الأعمال",
-      englishName: "Business Growth", 
-      price: "299",
-      currency: "",
-      period: "/شهر",
-      englishPeriod: "/month",
-      description: "حلول متكاملة للشركات النامية وطموحاتها",
-      englishDescription: "Integrated solutions for growing businesses and their ambitions",
-      features: [
-        "حتى 8 طلبات خدمة شهرياً",
-        "أولوية في المطابقة الذكية",
-        "دعم فني متخصص",
-        "تقارير أداء ربع سنوية",
-        "رؤى تحليلية للنمو",
-        "ورش عمل تطويرية"
-      ],
-      englishFeatures: [
-        "Up to 8 service requests per month",
-        "Priority smart matching",
-        "Specialist technical support",
-        "Quarterly Performance Reports",
-        "Growth analytical insights",
-        "Development workshops"
-      ],
-      popular: false,
-      badge: "أكثر قيمة",
-      englishBadge: "Best Value"
-    },
-    {
-      name: "التميز المهني",
-      englishName: "Professional Excellence",
-      price: "799",
-      currency: "",
-      period: "/شهر",
-      englishPeriod: "/month",
-      description: "للشركات الرائدة التي تسعى للتفوق والابتكار",
-      englishDescription: "For leading companies pursuing excellence and innovation",
-      features: [
-        "حتى 30 طلب خدمة شهرياً",
-        "مطابقة ذكية متقدمة بالذكاء الاصطناعي",
-        "فريق دعم مخصص",
-        "تقارير أداء ربع سنوية متقدمة",
-        "استشارات استراتيجية",
-        "علامة تجارية مخصصة",
-        "تدريبات متخصصة"
-      ],
-      englishFeatures: [
-        "Up to 30 service requests per month",
-        "Advanced AI-powered smart matching",
-        "Dedicated support team",
-        "Advanced quarterly performance reports",
-        "Strategic consultations",
-        "Custom branding",
-        "Specialized training"
-      ],
+      name: isArabic ? "نمو الأعمال" : "Business Growth", 
+      price: isArabic ? "299 ريال سعودي" : "299 SAR",
+      amount: 299,
       popular: true,
-      badge: "الأكثر شعبية",
-      englishBadge: "Most Popular"
+      features: [
+        isArabic ? "جميع مميزات الخطة المجانية" : "All free plan features",
+        isArabic ? "إرسال 5 طلبات شهرياً" : "Send 5 requests per month",
+        isArabic ? "الدعم ذو الأولوية" : "Priority support",
+        isArabic ? "تحليلات متقدمة" : "Advanced analytics"
+      ]
     },
     {
-      name: "قيادة المؤسسات",
-      englishName: "Enterprise Leadership",
-      price: "حسب الطلب",
-      englishPrice: "Custom",
-      currency: "",
-      period: "",
-      englishPeriod: "",
-      description: "حلول مؤسسية متكاملة لقادة الصناعة",
-      englishDescription: "Complete enterprise solutions for industry leaders",
-      features: [
-        "طلبات خدمة غير محدودة",
-        "منصة بعلامة تجارية خاصة",
-        "فريق إدارة حسابات مخصص",
-        "تقارير أداء شهرية متطورة",
-        "مدير حساب مخصص",
-        "تكاملات تقنية مخصصة",
-        "ضمانات مستوى خدمة متميز",
-        "استشارات تحول رقمي"
-      ],
-      englishFeatures: [
-        "Unlimited service requests",
-        "White-label platform",
-        "Dedicated account management team",
-        "Advanced monthly performance reports",
-        "Dedicated account manager",
-        "Custom technical integrations",
-        "Premium SLA guarantees",
-        "Digital transformation consultancy"
-      ],
+      name: isArabic ? "التميز المهني" : "Professional Excellence",
+      price: isArabic ? "799 ريال سعودي" : "799 SAR",
+      amount: 799,
       popular: false,
-      badge: "حلول مؤسسية",
-      englishBadge: "Enterprise"
+      features: [
+        isArabic ? "جميع مميزات خطة نمو الأعمال" : "All Business Growth features",
+        isArabic ? "طلبات غير محدودة" : "Unlimited requests",
+        isArabic ? "مدير حساب مخصص" : "Dedicated account manager",
+        isArabic ? "تقارير مخصصة" : "Custom reports",
+        isArabic ? "دعم على مدار الساعة" : "24/7 support"
+      ]
     }
   ];
 
+  // Supplier pricing plans
   const supplierPricingPlans = [
     {
-      name: "مقدم خدمة مبتدئ",
-      englishName: "Starter Provider",
-      price: "0",
-      currency: "",
-      period: "/شهر",
-      englishPeriod: "/month",
-      description: "ابدأ كمقدم خدمة وانضم لشبكتنا",
-      englishDescription: "Start as a service provider and join our network",
-      features: [
-        "ملف شخصي أساسي",
-        "استقبال حتى 3 طلبات شهرياً",
-        "عمولة 8% على كل صفقة",
-        "دعم مجتمعي"
-      ],
-      englishFeatures: [
-        "Basic profile setup",
-        "Receive up to 3 requests monthly",
-        "8% commission per deal",
-        "Community support"
-      ],
+      name: isArabic ? "استكشاف مجاني" : "Explore Free",
+      price: isArabic ? "0 ريال سعودي" : "0 SAR",
+      amount: 0,
       popular: false,
-      badge: "مجاني",
-      englishBadge: "Free"
+      features: [
+        isArabic ? "إنشاء ملف تعريفي أساسي" : "Create basic profile",
+        isArabic ? "عرض 3 خدمات" : "Display 3 services",
+        isArabic ? "الدعم الأساسي" : "Basic support"
+      ]
     },
     {
-      name: "مقدم خدمة محترف",
-      englishName: "Professional Provider",
-      price: "199",
-      currency: "",
-      period: "/شهر",
-      englishPeriod: "/month",
-      description: "حلول متقدمة للمقدمين المحترفين",
-      englishDescription: "Advanced solutions for professional providers",
-      features: [
-        "ملف شخصي متقدم مع معرض أعمال",
-        "استقبال حتى 15 طلب شهرياً",
-        "عمولة 5% على كل صفقة",
-        "أولوية في نتائج البحث",
-        "تقارير أداء شهرية",
-        "دعم فني متخصص"
-      ],
-      englishFeatures: [
-        "Advanced profile with portfolio gallery",
-        "Receive up to 15 requests monthly",
-        "5% commission per deal",
-        "Priority in search results",
-        "Monthly performance reports",
-        "Specialist technical support"
-      ],
+      name: isArabic ? "نمو الأعمال" : "Business Growth",
+      price: isArabic ? "299 ريال سعودي" : "299 SAR",
+      amount: 299,
       popular: true,
-      badge: "الأكثر شعبية",
-      englishBadge: "Most Popular"
+      features: [
+        isArabic ? "جميع مميزات الخطة المجانية" : "All free plan features",
+        isArabic ? "عرض خدمات غير محدودة" : "Unlimited service listings",
+        isArabic ? "أدوات التسويق" : "Marketing tools",
+        isArabic ? "تحليلات الأداء" : "Performance analytics"
+      ]
     },
     {
-      name: "مقدم خدمة متميز",
-      englishName: "Premium Provider",
-      price: "399",
-      currency: "",
-      period: "/شهر",
-      englishPeriod: "/month",
-      description: "للمقدمين الرائدين في السوق",
-      englishDescription: "For leading providers in the market",
-      features: [
-        "ملف شخصي مخصص بالكامل",
-        "طلبات غير محدودة",
-        "عمولة 3% على كل صفقة",
-        "شارة 'مقدم متميز'",
-        "إدارة حساب مخصصة",
-        "تقارير تحليلية متقدمة",
-        "دعم أولوية على مدار الساعة"
-      ],
-      englishFeatures: [
-        "Fully customized profile",
-        "Unlimited requests",
-        "3% commission per deal",
-        "'Premium Provider' badge",
-        "Dedicated account management",
-        "Advanced analytics reports",
-        "24/7 priority support"
-      ],
+      name: isArabic ? "التميز المهني" : "Professional Excellence",
+      price: isArabic ? "799 ريال سعودي" : "799 SAR",
+      amount: 799,
       popular: false,
-      badge: "متميز",
-      englishBadge: "Premium"
-    },
-    {
-      name: "شريك مؤسسي",
-      englishName: "Enterprise Partner",
-      price: "حسب الطلب",
-      englishPrice: "Custom",
-      currency: "",
-      period: "",
-      englishPeriod: "",
-      description: "شراكة استراتيجية للمؤسسات الكبرى",
-      englishDescription: "Strategic partnership for large enterprises",
       features: [
-        "حلول مخصصة بالكامل",
-        "عمولة تفاوضية",
-        "فريق دعم مخصص",
-        "تكاملات تقنية خاصة",
-        "تدريب وتطوير الفريق",
-        "اتفاقيات مستوى خدمة مخصصة",
-        "استشارات نمو الأعمال"
-      ],
-      englishFeatures: [
-        "Fully customized solutions",
-        "Negotiable commission rates",
-        "Dedicated support team",
-        "Custom technical integrations",
-        "Team training and development",
-        "Custom SLA agreements",
-        "Business growth consultancy"
-      ],
-      popular: false,
-      badge: "شراكة",
-      englishBadge: "Partnership"
+        isArabic ? "جميع مميزات خطة نمو الأعمال" : "All Business Growth features",
+        isArabic ? "ترتيب أولوية في البحث" : "Priority search ranking",
+        isArabic ? "شارة التحقق" : "Verified badge",
+        isArabic ? "دعم مخصص" : "Dedicated support",
+        isArabic ? "إعلانات مميزة" : "Featured listings"
+      ]
     }
   ];
 
   const currentPricingPlans = selectedRole === 'client' ? clientPricingPlans : supplierPricingPlans;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
       {/* Header */}
-      <header className="border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b bg-card/95 backdrop-blur-md sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-2">
             <img 
-              src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
-              alt="Supplify Logo"
-              className="h-16 w-auto hover:scale-105 transition-transform"
+              src="/lovable-uploads/supplify-logo-white-bg.png" 
+              alt="Supplify"
+              className="h-8 w-auto"
             />
           </Link>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>
             <Link to="/home" className="hidden md:block">
-              <Button variant="ghost" size="sm" className="hover-scale">
-                {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
+              <Button variant="ghost" size="sm">
+                {isArabic ? 'تسجيل الدخول' : 'Login'}
               </Button>
             </Link>
             <Link to="/home" className="hidden md:block">
-              <Button size="sm" className="hover-scale bg-gradient-to-r from-primary to-accent">
-                {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
+              <Button size="sm">
+                {isArabic ? 'إنشاء حساب' : 'Sign Up'}
               </Button>
             </Link>
-            <MobileNavigation />
+            
+            {/* Mobile menu button */}
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="md:hidden"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
           </div>
         </div>
+
+        {/* Mobile menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden border-t bg-card/95 backdrop-blur-md p-4 space-y-3">
+            <LanguageSwitcher />
+            <Link to="/home" className="block">
+              <Button variant="ghost" size="sm" className="w-full justify-start">
+                {isArabic ? 'تسجيل الدخول' : 'Login'}
+              </Button>
+            </Link>
+            <Link to="/home" className="block">
+              <Button size="sm" className="w-full">
+                {isArabic ? 'إنشاء حساب' : 'Sign Up'}
+              </Button>
+            </Link>
+          </div>
+        )}
       </header>
 
       {/* Hero Section */}
-      <section className="py-24 px-4">
-        <div className="container mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-lime/10 rounded-full px-6 py-2 mb-6">
-            <Star className="h-4 w-4 text-lime" />
-            <span className="text-sm font-medium text-lime">
-              {t('language') === 'ar' ? 'حلول مرنة' : 'Flexible Solutions'}
-            </span>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            {t('language') === 'ar' ? 'استثمر في نجاح فعالياتك' : 'Invest in Your Events Success'}
+      <section className="py-20 px-4 text-center">
+        <div className="container mx-auto max-w-4xl">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            {isArabic ? 'خطط مرنة لكل احتياجاتك' : 'Flexible Plans for Every Need'}
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-12">
-            {t('language') === 'ar' ? 
-              'باقات مصممة بعناية لتناسب رحلتك في عالم الفعاليات، من البداية المتواضعة إلى القمم العالية' : 
-              'Carefully designed packages to suit your journey in the events world, from humble beginnings to great heights'
+          <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+            {isArabic 
+              ? 'اختر الخطة المناسبة لك واستمتع بمميزات لا محدودة'
+              : 'Choose the plan that fits your needs and enjoy unlimited features'
             }
           </p>
           
-          {/* Role Selection Toggle */}
-          <div className="flex justify-center items-center gap-4 mb-12">
-            <div className={`flex items-center gap-4 ${t('language') === 'ar' ? 'flex-row-reverse' : ''}`}>
-              <span className={`text-lg font-medium transition-colors ${selectedRole === 'client' ? 'text-foreground' : 'text-muted-foreground'}`}>
-                {t('language') === 'ar' ? 'العملاء' : 'Clients'}
-              </span>
-              
-              <Switch
-                id="roleToggle"
-                checked={selectedRole === 'supplier'}
-                onCheckedChange={(checked) => setSelectedRole(checked ? 'supplier' : 'client')}
-                className="scale-125"
-              />
-              
-              <span className={`text-lg font-medium transition-colors ${selectedRole === 'supplier' ? 'text-foreground' : 'text-muted-foreground'}`}>
-                {t('language') === 'ar' ? 'مقدمي الخدمات' : 'Suppliers'}
-              </span>
-              
-              {selectedRole === 'supplier' && (
-                <div className="bg-gradient-to-r from-accent to-primary text-white px-4 py-1.5 rounded-full text-sm font-medium animate-fade-in">
-                  {t('language') === 'ar' ? 'نظام عمولات مرن' : 'Flexible Commission System'}
-                </div>
-              )}
-            </div>
+          {/* Role Selection */}
+          <div className="flex justify-center items-center gap-6 mb-12">
+            <Button
+              variant={selectedRole === 'client' ? 'default' : 'outline'}
+              onClick={() => setSelectedRole('client')}
+              className="px-8 py-3"
+            >
+              {isArabic ? 'العملاء' : 'Clients'}
+            </Button>
+            <Button
+              variant={selectedRole === 'supplier' ? 'default' : 'outline'}
+              onClick={() => setSelectedRole('supplier')}
+              className="px-8 py-3"
+            >
+              {isArabic ? 'مقدمي الخدمات' : 'Suppliers'}
+            </Button>
           </div>
         </div>
       </section>
@@ -338,67 +236,51 @@ export const Pricing = () => {
       {/* Pricing Cards */}
       <section className="py-12 px-4">
         <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {currentPricingPlans.map((plan, index) => (
-              <Card key={index} className={`relative group ${plan.popular ? 'ring-2 ring-primary scale-105 shadow-2xl bg-gradient-to-b from-card to-primary/5' : 'hover:shadow-xl bg-card/70'} transition-all duration-500 border-0 backdrop-blur-sm hover-scale`}>
-                {plan.badge && (
+              <Card 
+                key={index} 
+                className={`relative ${plan.popular ? 'ring-2 ring-primary scale-105 shadow-xl' : 'shadow-lg'} transition-all duration-300 hover:shadow-xl`}
+              >
+                {plan.popular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <div className={`${plan.popular ? 'bg-gradient-to-r from-primary to-accent' : 'bg-accent'} text-white px-4 py-2 rounded-full text-xs font-medium shadow-lg`}>
-                      {t('language') === 'ar' ? plan.badge : plan.englishBadge}
+                    <div className="bg-primary text-primary-foreground px-4 py-2 rounded-full text-sm font-medium">
+                      {isArabic ? 'الأكثر شعبية' : 'Most Popular'}
                     </div>
                   </div>
                 )}
                 
-                <CardHeader className="text-center pb-6 pt-8">
-                  <CardTitle className="text-xl font-bold mb-4">
-                    {t('language') === 'ar' ? plan.name : plan.englishName}
-                  </CardTitle>
-                  <div className="mb-4">
-                    <div className="flex items-baseline justify-center gap-2">
-                      <span className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                        {t('language') === 'ar' ? plan.price : (plan.englishPrice || plan.price)}
-                      </span>
-                      {plan.price !== 'حسب الطلب' && plan.price !== 'Custom' && (
-                        <img 
-                          src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
-                          alt="Riyal" 
-                          className="h-6 w-6 opacity-80"
-                        />
-                      )}
-                    </div>
-                    {plan.period && (
-                      <span className="text-muted-foreground text-sm">
-                        {t('language') === 'ar' ? plan.period : plan.englishPeriod}
-                      </span>
-                    )}
-                  </div>
-                  <CardDescription className="text-sm leading-relaxed">
-                    {t('language') === 'ar' ? plan.description : plan.englishDescription}
-                  </CardDescription>
+                <CardHeader className="text-center pb-6">
+                  <CardTitle className="text-2xl font-bold mb-4">{plan.name}</CardTitle>
+                  <div className="text-4xl font-bold text-primary mb-4">{plan.price}</div>
                 </CardHeader>
                 
                 <CardContent className="space-y-6">
                   <ul className="space-y-3">
-                    {(t('language') === 'ar' ? plan.features : plan.englishFeatures).map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-start gap-3">
-                        <Check className="h-4 w-4 text-lime shrink-0 mt-1" />
-                        <span className="text-sm leading-relaxed">{feature}</span>
+                    {plan.features.map((feature, featureIndex) => (
+                      <li key={featureIndex} className="flex items-center gap-3">
+                        <Check className="h-5 w-5 text-green-500 flex-shrink-0" />
+                        <span className="text-sm">{feature}</span>
                       </li>
                     ))}
                   </ul>
                   
-                  <Link to="/home">
-                    <Button 
-                      className={`w-full py-3 hover-scale ${plan.popular ? 'bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-lg' : ''}`}
-                      variant={plan.popular ? 'default' : 'outline'}
-                      size="lg"
-                    >
-                      {plan.price === 'حسب الطلب' || plan.price === 'Custom' ? 
-                        (t('language') === 'ar' ? 'تواصل للاستفسار' : 'Contact for Inquiry') : 
-                        (t('language') === 'ar' ? 'ابدأ الآن' : 'Start Now')
-                      }
-                    </Button>
-                  </Link>
+                  <Button 
+                    size="lg" 
+                    className="w-full"
+                    variant={plan.popular ? "default" : "outline"}
+                    onClick={() => handlePayment(plan.name, plan.amount)}
+                    disabled={loadingPlan === plan.name}
+                  >
+                    {loadingPlan === plan.name ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        {isArabic ? "جاري المعالجة..." : "Processing..."}
+                      </>
+                    ) : (
+                      isArabic ? "ابدأ الآن" : "Get Started"
+                    )}
+                  </Button>
                 </CardContent>
               </Card>
             ))}
@@ -407,30 +289,26 @@ export const Pricing = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-lime"></div>
-        <div className="container mx-auto text-center relative z-10 text-white">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              {t('language') === 'ar' ? 'هل أنت مستعد لتحويل فعالياتك؟' : 'Are You Ready to Transform Your Events?'}
-            </h2>
-            <p className="text-xl md:text-2xl opacity-90 mb-12 leading-relaxed">
-              {t('language') === 'ar' ? 
-                'انضم إلى آلاف الشركات الرائدة التي اختارت سبلفاي لتحقيق أحلامها في عالم الفعاليات' : 
-                'Join thousands of leading companies that chose Supplify to achieve their dreams in the events world'
-              }
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Link to="/home">
-                <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold px-10 py-5 text-lg shadow-2xl hover-scale">
-                  {t('language') === 'ar' ? 'ابدأ تجربتك المجانية الآن' : 'Start Your Free Trial Now'} 
-                  <ArrowRight className="ml-2 h-6 w-6" />
-                </Button>
-              </Link>
-            </div>
-          </div>
+      <section className="py-20 px-4 bg-gradient-to-r from-primary to-accent text-white">
+        <div className="container mx-auto text-center max-w-4xl">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            {isArabic ? 'هل لديك أسئلة؟' : 'Have Questions?'}
+          </h2>
+          <p className="text-xl mb-8 opacity-90">
+            {isArabic 
+              ? 'فريقنا جاهز لمساعدتك في اختيار الخطة المناسبة'
+              : 'Our team is ready to help you choose the right plan'
+            }
+          </p>
+          <Link to="/expert-consultation">
+            <Button size="lg" variant="secondary" className="px-8 py-3">
+              {isArabic ? 'تواصل معنا' : 'Contact Us'}
+            </Button>
+          </Link>
         </div>
       </section>
     </div>
   );
 };
+
+export default Pricing;
