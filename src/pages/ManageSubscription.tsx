@@ -1,0 +1,436 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { Header } from "@/components/ui/layout/Header";
+import { Sidebar } from "@/components/ui/layout/Sidebar";
+import { AuthForm } from "@/components/auth/AuthForm";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { TrendingUp, Eye, Clock, CreditCard, Calendar, DollarSign, CheckCircle } from "lucide-react";
+
+export const ManageSubscription = () => {
+  const { user, userProfile, loading } = useAuth();
+  const { t, language } = useLanguage();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeView, setActiveView] = useState<'overview' | 'upgrade' | 'billing' | 'payment'>('overview');
+  const isRTL = language === 'ar';
+
+  const handleAuthSuccess = (userData: { id: string; email: string; role: 'client' | 'supplier' }) => {
+    // Already handled by useEffect
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (!user || !userProfile) {
+    return <AuthForm onAuthSuccess={handleAuthSuccess} />;
+  }
+
+  const renderUpgradeView = () => (
+    <Card className="border-0 bg-card/70 backdrop-blur-sm">
+      <CardHeader className="p-4 sm:p-6">
+        <CardTitle className="text-xl sm:text-2xl flex items-center gap-3">
+          <TrendingUp className="h-6 w-6 text-primary" />
+          {isRTL ? 'ترقية الاشتراك' : 'Upgrade Subscription'}
+        </CardTitle>
+        <CardDescription className="text-sm sm:text-base">
+          {isRTL ? 'اختر خطة جديدة لتحسين تجربتك' : 'Choose a new plan to enhance your experience'}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="p-4 sm:p-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Basic Plan */}
+          <Card className="border-2 border-muted">
+            <CardHeader className="text-center">
+              <CardTitle className="text-lg">Basic</CardTitle>
+              <div className="text-3xl font-bold">$29<span className="text-sm text-muted-foreground">/month</span></div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                <span className="text-sm">Up to 5 requests per month</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                <span className="text-sm">Basic supplier matching</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                <span className="text-sm">Email support</span>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Premium Plan - Current */}
+          <Card className="border-2 border-primary bg-primary/5">
+            <CardHeader className="text-center">
+              <CardTitle className="text-lg text-primary">Premium</CardTitle>
+              <div className="text-3xl font-bold">$79<span className="text-sm text-muted-foreground">/month</span></div>
+              <span className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs">Current Plan</span>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                <span className="text-sm">Unlimited requests</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                <span className="text-sm">Advanced supplier matching</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                <span className="text-sm">Priority support</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                <span className="text-sm">Analytics dashboard</span>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Enterprise Plan */}
+          <Card className="border-2 border-accent">
+            <CardHeader className="text-center">
+              <CardTitle className="text-lg">Enterprise</CardTitle>
+              <div className="text-3xl font-bold">$199<span className="text-sm text-muted-foreground">/month</span></div>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                <span className="text-sm">Everything in Premium</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                <span className="text-sm">Dedicated account manager</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                <span className="text-sm">Custom integrations</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-green-500" />
+                <span className="text-sm">24/7 phone support</span>
+              </div>
+              <Button className="w-full mt-4 bg-gradient-to-r from-accent to-primary">
+                {isRTL ? 'ترقية للمؤسسات' : 'Upgrade to Enterprise'}
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  const renderBillingView = () => (
+    <Card className="border-0 bg-card/70 backdrop-blur-sm">
+      <CardHeader className="p-4 sm:p-6">
+        <CardTitle className="text-xl sm:text-2xl flex items-center gap-3">
+          <Eye className="h-6 w-6 text-primary" />
+          {isRTL ? 'تفاصيل الفوترة' : 'Billing Details'}
+        </CardTitle>
+        <CardDescription className="text-sm sm:text-base">
+          {isRTL ? 'تاريخ الفوترة والمدفوعات' : 'Your billing history and payment details'}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="p-4 sm:p-6">
+        <div className="space-y-6">
+          {/* Current Period */}
+          <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+            <h4 className="font-semibold text-lg mb-3 text-primary">
+              {isRTL ? 'الفترة الحالية' : 'Current Billing Period'}
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <span className="text-muted-foreground text-sm">
+                  {isRTL ? 'بداية الفترة:' : 'Period Start:'}
+                </span>
+                <p className="font-medium">February 15, 2024</p>
+              </div>
+              <div>
+                <span className="text-muted-foreground text-sm">
+                  {isRTL ? 'نهاية الفترة:' : 'Period End:'}
+                </span>
+                <p className="font-medium">March 15, 2024</p>
+              </div>
+              <div>
+                <span className="text-muted-foreground text-sm">
+                  {isRTL ? 'المبلغ:' : 'Amount:'}
+                </span>
+                <p className="font-medium">$79.00</p>
+              </div>
+              <div>
+                <span className="text-muted-foreground text-sm">
+                  {isRTL ? 'الحالة:' : 'Status:'}
+                </span>
+                <p className="font-medium text-green-600">Paid</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Billing History */}
+          <div>
+            <h4 className="font-semibold text-lg mb-4">
+              {isRTL ? 'تاريخ الفوترة' : 'Billing History'}
+            </h4>
+            <div className="space-y-3">
+              {[
+                { date: 'January 15, 2024', amount: '$79.00', status: 'Paid', invoice: 'INV-001' },
+                { date: 'December 15, 2023', amount: '$79.00', status: 'Paid', invoice: 'INV-002' },
+                { date: 'November 15, 2023', amount: '$79.00', status: 'Paid', invoice: 'INV-003' },
+              ].map((bill) => (
+                <div key={bill.invoice} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div>
+                    <p className="font-medium">{bill.date}</p>
+                    <p className="text-sm text-muted-foreground">{bill.invoice}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-medium">{bill.amount}</p>
+                    <span className="text-sm text-green-600">{bill.status}</span>
+                  </div>
+                  <Button variant="outline" size="sm">
+                    {isRTL ? 'تحميل' : 'Download'}
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  const renderPaymentView = () => (
+    <Card className="border-0 bg-card/70 backdrop-blur-sm">
+      <CardHeader className="p-4 sm:p-6">
+        <CardTitle className="text-xl sm:text-2xl flex items-center gap-3">
+          <CreditCard className="h-6 w-6 text-primary" />
+          {isRTL ? 'طرق الدفع' : 'Payment Methods'}
+        </CardTitle>
+        <CardDescription className="text-sm sm:text-base">
+          {isRTL ? 'إدارة طرق الدفع المحفوظة' : 'Manage your saved payment methods'}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="p-4 sm:p-6">
+        <div className="space-y-6">
+          {/* Primary Payment Method */}
+          <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="font-semibold text-lg text-primary">
+                {isRTL ? 'طريقة الدفع الأساسية' : 'Primary Payment Method'}
+              </h4>
+              <span className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs">
+                {isRTL ? 'افتراضي' : 'Default'}
+              </span>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-8 bg-gradient-to-r from-blue-600 to-blue-800 rounded flex items-center justify-center text-white text-xs font-bold">
+                VISA
+              </div>
+              <div>
+                <p className="font-medium">•••• •••• •••• 4242</p>
+                <p className="text-sm text-muted-foreground">Expires 12/2027</p>
+              </div>
+            </div>
+            <div className="flex gap-2 mt-4">
+              <Button variant="outline" size="sm">
+                {isRTL ? 'تحديث' : 'Update'}
+              </Button>
+              <Button variant="outline" size="sm">
+                {isRTL ? 'حذف' : 'Remove'}
+              </Button>
+            </div>
+          </div>
+
+          {/* Add New Payment Method */}
+          <div className="p-4 border-2 border-dashed border-muted rounded-lg text-center">
+            <CreditCard className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+            <p className="text-muted-foreground mb-4">
+              {isRTL ? 'إضافة طريقة دفع جديدة' : 'Add a new payment method'}
+            </p>
+            <Button variant="outline">
+              <CreditCard className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {isRTL ? 'إضافة بطاقة' : 'Add Card'}
+            </Button>
+          </div>
+
+          {/* Auto-renewal Settings */}
+          <div className="p-4 bg-accent/5 rounded-lg border border-accent/20">
+            <h4 className="font-semibold text-lg mb-3 text-accent">
+              {isRTL ? 'إعدادات التجديد التلقائي' : 'Auto-renewal Settings'}
+            </h4>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium">
+                  {isRTL ? 'التجديد التلقائي مفعل' : 'Auto-renewal enabled'}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {isRTL ? 'سيتم تجديد اشتراكك تلقائياً في 15 مارس 2024' : 'Your subscription will automatically renew on March 15, 2024'}
+                </p>
+              </div>
+              <Button variant="outline" size="sm">
+                {isRTL ? 'تعطيل' : 'Disable'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  const renderOverview = () => (
+    <div className="space-y-6">
+      {/* Subscription Management Section */}
+      <Card className="border-0 bg-card/70 backdrop-blur-sm">
+        <CardHeader className="p-4 sm:p-6">
+          <CardTitle className="text-xl sm:text-2xl flex items-center gap-3">
+            <TrendingUp className="h-6 w-6 text-primary" />
+            {isRTL ? 'إدارة الاشتراك' : 'Manage Subscription'}
+          </CardTitle>
+          <CardDescription className="text-sm sm:text-base">
+            {isRTL ? 'معلومات اشتراكك الحالي والتحكم فيه' : 'Your current subscription details and management options'}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="p-4 sm:p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Current Subscription Info */}
+            <div className="space-y-4">
+              <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+                <h4 className="font-semibold text-lg mb-3 text-primary">
+                  {isRTL ? 'الاشتراك الحالي' : 'Current Subscription'}
+                </h4>
+                <div className="space-y-3">
+                  <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <span className="text-muted-foreground text-sm">
+                      {isRTL ? 'الخطة:' : 'Plan:'}
+                    </span>
+                    <span className="font-medium">Premium Plan</span>
+                  </div>
+                  <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <span className="text-muted-foreground text-sm">
+                      {isRTL ? 'مدة الاشتراك:' : 'Duration:'}
+                    </span>
+                    <span className="font-medium">Monthly</span>
+                  </div>
+                  <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <span className="text-muted-foreground text-sm">
+                      {isRTL ? 'تاريخ التجديد:' : 'Next Billing:'}
+                    </span>
+                    <span className="font-medium">March 15, 2024</span>
+                  </div>
+                  <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <span className="text-muted-foreground text-sm">
+                      {isRTL ? 'الوقت المتبقي:' : 'Time Remaining:'}
+                    </span>
+                    <span className="font-medium text-lime">23 days</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Subscription Actions */}
+            <div className="space-y-4">
+              <div className="p-4 bg-accent/5 rounded-lg border border-accent/20">
+                <h4 className="font-semibold text-lg mb-3 text-accent">
+                  {isRTL ? 'خيارات الإدارة' : 'Management Options'}
+                </h4>
+                <div className="space-y-3">
+                  <Button 
+                    className="w-full bg-gradient-to-r from-primary to-accent hover-scale"
+                    onClick={() => setActiveView('upgrade')}
+                  >
+                    <TrendingUp className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                    {isRTL ? 'ترقية الاشتراك' : 'Upgrade Subscription'}
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full hover-scale"
+                    onClick={() => setActiveView('billing')}
+                  >
+                    <Eye className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                    {isRTL ? 'عرض تفاصيل الفوترة' : 'View Billing Details'}
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full hover-scale"
+                    onClick={() => setActiveView('payment')}
+                  >
+                    <Clock className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                    {isRTL ? 'تغيير طريقة الدفع' : 'Change Payment Method'}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
+      
+      {/* Mobile Sidebar */}
+      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+        <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
+          <Sidebar userRole={userProfile.role} />
+        </SheetContent>
+      </Sheet>
+
+      <div className={`flex ${isRTL ? 'flex-row-reverse' : ''}`}>
+        {/* Desktop Sidebar */}
+        <div className={`hidden lg:block ${isRTL ? 'order-2' : 'order-1'}`}>
+          <Sidebar userRole={userProfile.role} />
+        </div>
+        
+        <main className={`flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden ${isRTL ? 'order-1' : 'order-2'}`}>
+          <div className="space-y-6">
+            {/* Navigation Tabs */}
+            <div className="flex gap-2 mb-6 overflow-x-auto">
+              <Button 
+                variant={activeView === 'overview' ? 'default' : 'outline'}
+                onClick={() => setActiveView('overview')}
+                className="whitespace-nowrap"
+              >
+                {isRTL ? 'نظرة عامة' : 'Overview'}
+              </Button>
+              <Button 
+                variant={activeView === 'upgrade' ? 'default' : 'outline'}
+                onClick={() => setActiveView('upgrade')}
+                className="whitespace-nowrap"
+              >
+                {isRTL ? 'ترقية الاشتراك' : 'Upgrade Plan'}
+              </Button>
+              <Button 
+                variant={activeView === 'billing' ? 'default' : 'outline'}
+                onClick={() => setActiveView('billing')}
+                className="whitespace-nowrap"
+              >
+                {isRTL ? 'تفاصيل الفوترة' : 'Billing History'}
+              </Button>
+              <Button 
+                variant={activeView === 'payment' ? 'default' : 'outline'}
+                onClick={() => setActiveView('payment')}
+                className="whitespace-nowrap"
+              >
+                {isRTL ? 'طرق الدفع' : 'Payment Methods'}
+              </Button>
+            </div>
+
+            {/* Content Views */}
+            {activeView === 'overview' && renderOverview()}
+            {activeView === 'upgrade' && renderUpgradeView()}
+            {activeView === 'billing' && renderBillingView()}
+            {activeView === 'payment' && renderPaymentView()}
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+};

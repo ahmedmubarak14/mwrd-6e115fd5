@@ -16,6 +16,7 @@ import { Pricing } from "./pages/Pricing";
 import { Profile } from "./pages/Profile";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { ExpertConsultation } from "./pages/ExpertConsultation";
+import { ManageSubscription } from "./pages/ManageSubscription";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -40,6 +41,7 @@ const App = () => (
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/manage-subscription" element={<ManageSubscription />} />
               <Route path="/expert-consultation" element={<ExpertConsultation />} />
               <Route path="/client-dashboard" element={<Index />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
