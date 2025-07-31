@@ -337,7 +337,11 @@ const Pricing = () => {
                     <span className="text-4xl font-bold text-gray-900">{plan.price}</span>
                     {plan.price !== (isArabic ? "مخصص" : "Custom") && (
                       <>
-                        <span className="text-2xl font-medium text-gray-600">ريال</span>
+                        <img 
+                          src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
+                          alt="Riyal" 
+                          className="w-6 h-6"
+                        />
                         <span className="text-gray-500 text-sm">/{isArabic ? 'شهر' : 'month'}</span>
                       </>
                     )}
