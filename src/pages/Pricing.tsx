@@ -356,76 +356,68 @@ const Pricing = () => {
       {/* Pricing Cards */}
       <section className="py-16 px-4 bg-white">
         <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
             {currentPricingPlans.map((plan, index) => (
               <Card 
                 key={index} 
-                className={`relative bg-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 ${
-                  plan.popular ? 'ring-2 ring-emerald-500 scale-105' : ''
+                className={`relative bg-white border transition-all duration-300 ${
+                  plan.popular ? 'border-2 border-green-500 shadow-xl' : 'border-gray-200 shadow-lg hover:shadow-xl'
                 }`}
               >
                 {/* Badge */}
-                <div className={`${plan.badgeColor} text-white px-3 py-1 rounded-full text-xs font-medium absolute -top-3 left-4`}>
+                <div className={`${plan.badgeColor} text-white px-3 py-1 rounded-full text-xs font-medium absolute -top-3 left-1/2 transform -translate-x-1/2`}>
                   {plan.badge}
                 </div>
                 
-                <CardHeader className="text-center pb-4 pt-8">
-                  <CardTitle className="text-xl font-bold mb-4 text-gray-900">
+                <CardHeader className="text-center pb-6 pt-12">
+                  <CardTitle className="text-lg font-semibold mb-6 text-gray-900">
                     {plan.name}
                   </CardTitle>
                   
-                  <div className="flex items-center justify-center gap-2 mb-4">
-                    <span className={`text-4xl font-bold ${
-                      plan.popular 
-                        ? 'text-blue-900' 
-                        : plan.price === '0' 
-                          ? 'text-gray-900' 
-                          : 'text-blue-700'
-                    }`}>
-                      {plan.price}
-                    </span>
-                    {plan.price !== (isArabic ? "مخصص" : "Custom") && (
-                      <>
+                  <div className="mb-6">
+                    <div className="flex items-center justify-center gap-1">
+                      <span className="text-5xl font-bold text-gray-900">
+                        {plan.price}
+                      </span>
+                      {plan.price !== (isArabic ? "مخصص" : "Custom") && (
                         <img 
                           src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
                           alt="Riyal" 
-                          className="w-6 h-6"
+                          className="w-8 h-8 ml-1"
                         />
-                        <span className="text-gray-500 text-sm">/{isArabic ? 'شهر' : 'month'}</span>
-                      </>
+                      )}
+                    </div>
+                    {plan.price !== (isArabic ? "مخصص" : "Custom") && (
+                      <p className="text-gray-500 text-sm mt-1">/{isArabic ? 'شهر' : 'month'}</p>
                     )}
                   </div>
                   
                   {selectedRole === 'supplier' && (plan as any).commission && (
-                    <div className="flex items-center justify-center gap-2 mb-4">
-                      <span className="text-lg font-semibold text-accent">
+                    <div className="mb-4">
+                      <span className="text-lg font-semibold text-green-600">
                         {isArabic ? 'عمولة: ' : 'Commission: '}{(plan as any).commission}
                       </span>
                     </div>
                   )}
                   
-                  <p className="text-sm text-gray-600 leading-relaxed px-2">
+                  <p className="text-sm text-gray-600 leading-relaxed">
                     {plan.description}
                   </p>
                 </CardHeader>
                 
-                <CardContent className="space-y-6 px-6 pb-6">
-                  <ul className="space-y-3">
+                <CardContent className="px-6 pb-8">
+                  <ul className="space-y-4 mb-8">
                     {plan.features.map((feature, featureIndex) => (
                       <li key={featureIndex} className="flex items-start gap-3">
-                        <Check className="h-5 w-5 text-teal-600 flex-shrink-0 mt-0.5" />
+                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
                         <span className="text-sm text-gray-700">{feature}</span>
                       </li>
                     ))}
                   </ul>
                   
-                   <Button 
-                     size="lg" 
-                     className={`w-full ${
-                       plan.popular 
-                         ? 'bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white' 
-                         : 'bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white'
-                     }`}
+                  <Button 
+                    size="lg" 
+                    className="w-full bg-gray-900 hover:bg-gray-800 text-white"
                     onClick={() => (plan as any).isEnterprise ? setIsContactSalesOpen(true) : handlePayment(plan.name, plan.amount)}
                     disabled={loadingPlan === plan.name}
                   >
