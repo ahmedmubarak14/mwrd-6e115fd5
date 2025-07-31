@@ -417,7 +417,11 @@ const Pricing = () => {
                   
                   <Button 
                     size="lg" 
-                    className="w-full bg-gray-900 hover:bg-gray-800 text-white"
+                    className={`w-full text-white ${
+                      plan.popular 
+                        ? 'bg-teal-600 hover:bg-teal-700' 
+                        : 'bg-gray-900 hover:bg-gray-800'
+                    }`}
                     onClick={() => (plan as any).isEnterprise ? setIsContactSalesOpen(true) : handlePayment(plan.name, plan.amount)}
                     disabled={loadingPlan === plan.name}
                   >
@@ -440,19 +444,19 @@ const Pricing = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gray-50 text-gray-900">
+      <section className="py-20 px-4 bg-gradient-to-r from-blue-600 to-teal-500 text-white">
         <div className="container mx-auto text-center max-w-4xl">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             {isArabic ? 'هل أنت جاهز لتحويل فعالياتك؟' : 'Are You Ready to Transform Your Events?'}
           </h2>
-          <p className="text-xl mb-8 text-gray-600">
+          <p className="text-xl mb-8 text-white/90">
             {isArabic 
               ? 'انضم لآلاف الشركات الرائدة التي اختارت سبلفاي لتحقيق أحلامها في عالم الفعاليات'
               : 'Join thousands of leading companies that chose Supplify to achieve their dreams in the events world'
             }
           </p>
           <Link to="/home">
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 px-8 py-3">
+            <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-50 px-8 py-3">
               {isArabic ? 'ابدأ تجربتك المجانية الآن' : 'Start Your Free Trial Now'}
             </Button>
           </Link>
