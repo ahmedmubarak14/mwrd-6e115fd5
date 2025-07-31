@@ -9,8 +9,10 @@ import { Search, Star, MapPin, Eye, MessageCircle, Clock, Plus } from "lucide-re
 import { Input } from "@/components/ui/input";
 import { useState, useMemo } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { ChatModal } from "@/components/modals/ChatModal";
+import { EnhancedChatModal } from "@/components/modals/EnhancedChatModal";
 import { SupplierProfileModal } from "@/components/modals/SupplierProfileModal";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export const Suppliers = () => {
   const { t } = useLanguage();
@@ -18,14 +20,33 @@ export const Suppliers = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("All Categories");
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [favoriteSuppliers, setFavoriteSuppliers] = useLocalStorage<number[]>('favorite-suppliers', []);
   const { toast } = useToast();
 
   const handleFilterClick = (category: string) => {
     setActiveFilter(category);
+    // Remove toast notification - just apply filter silently
+  };
+
+  const handleLoadMore = async () => {
+    setIsLoadingMore(true);
+    // Simulate loading delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsLoadingMore(false);
+    // Show realistic feedback
     toast({
-      title: "Filter Applied",
-      description: `Showing suppliers in: ${category}`,
+      title: "More suppliers loaded",
+      description: "Found 12 additional suppliers in your area.",
     });
+  };
+
+  const toggleFavorite = (supplierId: number) => {
+    setFavoriteSuppliers(prev => 
+      prev.includes(supplierId) 
+        ? prev.filter(id => id !== supplierId)
+        : [...prev, supplierId]
+    );
   };
 
   const suppliers = [
@@ -303,8 +324,9 @@ export const Suppliers = () => {
                           View Profile
                         </Button>
                       </SupplierProfileModal>
-                      <ChatModal 
+                      <EnhancedChatModal 
                         supplierName={t('language') === 'ar' ? supplier.name : supplier.englishName}
+                        supplierId={supplier.id.toString()}
                       >
                         <Button 
                           variant="outline" 
@@ -313,7 +335,7 @@ export const Suppliers = () => {
                           <MessageCircle className="h-4 w-4 mr-2" />
                           Contact
                         </Button>
-                      </ChatModal>
+                      </EnhancedChatModal>
                     </div>
                   </CardContent>
                 </Card>
@@ -327,13 +349,15 @@ export const Suppliers = () => {
                 variant="outline" 
                 size="lg" 
                 className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-primary/5 to-accent/5 border-primary/20 hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10 hover-scale"
-                onClick={() => toast({
-                  title: "Loading More Suppliers",
-                  description: "Fetching additional suppliers in your area...",
-                })}
+                onClick={handleLoadMore}
+                disabled={isLoadingMore}
               >
-                <Plus className="h-4 w-4 mr-2" />
-                Load More Suppliers
+                {isLoadingMore ? (
+                  <LoadingSpinner size="sm" className="mr-2" />
+                ) : (
+                  <Plus className="h-4 w-4 mr-2" />
+                )}
+                {isLoadingMore ? "Loading..." : "Load More Suppliers"}
               </Button>
             </div>
           </div>

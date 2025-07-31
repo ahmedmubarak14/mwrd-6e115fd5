@@ -7,10 +7,13 @@ import { Header } from "@/components/ui/layout/Header";
 import { Sidebar } from "@/components/ui/layout/Sidebar";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { TrendingUp, Eye, Clock, CreditCard, Calendar, DollarSign, CheckCircle } from "lucide-react";
+import { TrendingUp, Eye, Clock, CreditCard, Calendar, DollarSign, CheckCircle, AlertCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { EnterpriseConsultationModal } from "@/components/modals/EnterpriseConsultationModal";
+import { dummyApi } from "@/utils/dummyApi";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export const ManageSubscription = () => {
   const { user, userProfile, loading } = useAuth();
@@ -18,7 +21,15 @@ export const ManageSubscription = () => {
   const { toast } = useToast();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeView, setActiveView] = useState<'overview' | 'upgrade' | 'billing' | 'payment'>('overview');
-  const [subscriptionData, setSubscriptionData] = useState<any>(null);
+  const [subscriptionData, setSubscriptionData] = useLocalStorage<any>('subscription-data', {
+    subscribed: true,
+    subscription_tier: 'Professional',
+    subscription_end: '2024-03-15T00:00:00Z',
+    next_billing_date: '2024-03-15',
+    current_period_start: '2024-02-15',
+    amount: 799,
+    status: 'active'
+  });
   const [isLoading, setIsLoading] = useState(false);
   const isRTL = language === 'ar';
 
@@ -47,23 +58,39 @@ export const ManageSubscription = () => {
   const handleUpgrade = async (plan: string) => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('create-checkout', {
-        body: { plan }
-      });
-      if (error) throw error;
+      const response = await dummyApi.upgradeSubscription(plan);
       
-      // Open checkout in new tab (dummy functionality)
-      window.open(data.url, '_blank');
-      
-      toast({
-        title: "Redirecting to Checkout",
-        description: `Processing upgrade to ${plan} plan...`,
-      });
+      if (response.success) {
+        // Simulate successful upgrade
+        toast({
+          title: "Redirecting to Checkout",
+          description: `Processing upgrade to ${plan} plan...`,
+        });
+        
+        // Open dummy checkout in new tab
+        window.open(response.data!.checkoutUrl, '_blank');
+        
+        // Simulate successful upgrade after 3 seconds
+        setTimeout(() => {
+          setSubscriptionData(prev => ({
+            ...prev,
+            subscription_tier: plan,
+            amount: plan === 'Basic' ? 299 : plan === 'Professional' ? 799 : 1299
+          }));
+          
+          toast({
+            title: "Upgrade Successful",
+            description: `Your subscription has been upgraded to ${plan}!`,
+          });
+        }, 3000);
+      } else {
+        throw new Error(response.error);
+      }
     } catch (error: any) {
       console.error('Error creating checkout:', error);
       toast({
-        title: "Error",
-        description: "Failed to process upgrade",
+        title: "Upgrade Failed",
+        description: error.message || "Failed to process upgrade. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -74,15 +101,19 @@ export const ManageSubscription = () => {
   const handleManageSubscription = async () => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('customer-portal');
-      if (error) throw error;
-      
-      // Open customer portal in new tab (dummy functionality)
-      window.open(data.url, '_blank');
-      
+      // Simulate opening customer portal
       toast({
         title: "Opening Customer Portal",
         description: "Redirecting to subscription management...",
+      });
+      
+      // Open dummy portal
+      const portalUrl = `https://billing.stripe.com/p/customer_portal/${Date.now()}`;
+      window.open(portalUrl, '_blank');
+      
+      toast({
+        title: "Portal Opened",
+        description: "Customer portal opened in new tab. You can manage your subscription there.",
       });
     } catch (error: any) {
       console.error('Error opening customer portal:', error);
@@ -100,20 +131,27 @@ export const ManageSubscription = () => {
     try {
       setIsLoading(true);
       
-      // Simulate downgrade process
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const response = await dummyApi.cancelSubscription();
       
-      toast({
-        title: isRTL ? "تم تخفيض الاشتراك" : "Subscription Downgraded",
-        description: isRTL ? "سيتم تطبيق التغيير في الفترة القادمة" : "Changes will take effect in the next billing period",
-      });
-      
-      // Refresh subscription data
-      await checkSubscription();
+      if (response.success) {
+        setSubscriptionData(prev => ({
+          ...prev,
+          subscription_tier: 'Basic',
+          amount: 299,
+          status: 'downgrading'
+        }));
+        
+        toast({
+          title: isRTL ? "تم تخفيض الاشتراك" : "Subscription Downgraded", 
+          description: isRTL ? "سيتم تطبيق التغيير في الفترة القادمة" : "Downgrade will take effect at the end of current billing period",
+        });
+      } else {
+        throw new Error(response.error);
+      }
     } catch (error: any) {
       toast({
         title: "Error",
-        description: "Failed to downgrade subscription",
+        description: error.message || "Failed to downgrade subscription",
         variant: "destructive",
       });
     } finally {
@@ -125,20 +163,50 @@ export const ManageSubscription = () => {
     try {
       setIsLoading(true);
       
-      // Simulate cancellation process
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const response = await dummyApi.cancelSubscription();
       
-      toast({
-        title: isRTL ? "تم إلغاء الاشتراك" : "Subscription Cancelled",
-        description: isRTL ? "ستحتفظ بالوصول حتى نهاية الفترة الحالية" : "You'll retain access until the end of your current billing period",
-      });
-      
-      // Refresh subscription data
-      await checkSubscription();
+      if (response.success) {
+        setSubscriptionData(prev => ({
+          ...prev,
+          status: 'cancelled',
+          subscription_end: prev.subscription_end // Keep current end date
+        }));
+        
+        toast({
+          title: isRTL ? "تم إلغاء الاشتراك" : "Subscription Cancelled",
+          description: isRTL ? "ستحتفظ بالوصول حتى نهاية الفترة الحالية" : "You'll retain access until the end of your current billing period",
+        });
+      } else {
+        throw new Error(response.error);
+      }
     } catch (error: any) {
       toast({
-        title: "Error", 
-        description: "Failed to cancel subscription",
+        title: "Error",
+        description: error.message || "Failed to cancel subscription",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleUpdatePaymentMethod = async () => {
+    setIsLoading(true);
+    try {
+      const response = await dummyApi.updatePaymentMethod({ cardNumber: '4242' });
+      
+      if (response.success) {
+        toast({
+          title: "Payment Method Updated",
+          description: "Your payment method has been updated successfully.",
+        });
+      } else {
+        throw new Error(response.error);
+      }
+    } catch (error: any) {
+      toast({
+        title: "Update Failed",
+        description: error.message || "Failed to update payment method",
         variant: "destructive",
       });
     } finally {
@@ -367,8 +435,35 @@ export const ManageSubscription = () => {
                     </div>
                     <span className="text-sm text-green-600">{bill.status}</span>
                   </div>
-                  <Button variant="outline" size="sm">
-                    {isRTL ? 'تحميل' : 'Download'}
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={async () => {
+                      setIsLoading(true);
+                      try {
+                        const response = await dummyApi.generateInvoice(bill.invoice);
+                        if (response.success) {
+                          window.open(response.data!.invoiceUrl, '_blank');
+                          toast({
+                            title: "Invoice Downloaded",
+                            description: `Invoice ${bill.invoice} has been downloaded.`,
+                          });
+                        } else {
+                          throw new Error(response.error);
+                        }
+                      } catch (error) {
+                        toast({
+                          title: "Download Failed",
+                          description: "Failed to download invoice. Please try again.",
+                          variant: "destructive",
+                        });
+                      } finally {
+                        setIsLoading(false);
+                      }
+                    }}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? <LoadingSpinner size="sm" /> : (isRTL ? 'تحميل' : 'Download')}
                   </Button>
                 </div>
               ))}
@@ -412,10 +507,24 @@ export const ManageSubscription = () => {
               </div>
             </div>
             <div className="flex gap-2 mt-4">
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={handleUpdatePaymentMethod}
+                disabled={isLoading}
+              >
+                {isLoading ? <LoadingSpinner size="sm" className="mr-1" /> : null}
                 {isRTL ? 'تحديث' : 'Update'}
               </Button>
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => toast({
+                  title: "Payment Method Removed",
+                  description: "Primary payment method cannot be removed. Add another method first.",
+                  variant: "destructive"
+                })}
+              >
                 {isRTL ? 'حذف' : 'Remove'}
               </Button>
             </div>
@@ -427,7 +536,13 @@ export const ManageSubscription = () => {
             <p className="text-muted-foreground mb-4">
               {isRTL ? 'إضافة طريقة دفع جديدة' : 'Add a new payment method'}
             </p>
-            <Button variant="outline">
+            <Button 
+              variant="outline"
+              onClick={() => toast({
+                title: "Add Payment Method",
+                description: "Redirecting to secure payment form...",
+              })}
+            >
               <CreditCard className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
               {isRTL ? 'إضافة بطاقة' : 'Add Card'}
             </Button>
@@ -447,7 +562,14 @@ export const ManageSubscription = () => {
                   {isRTL ? 'سيتم تجديد اشتراكك تلقائياً في 15 مارس 2024' : 'Your subscription will automatically renew on March 15, 2024'}
                 </p>
               </div>
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => toast({
+                  title: "Auto-renewal Settings",
+                  description: "Auto-renewal has been disabled. You can re-enable it anytime.",
+                })}
+              >
                 {isRTL ? 'تعطيل' : 'Disable'}
               </Button>
             </div>

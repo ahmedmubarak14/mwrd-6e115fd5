@@ -19,6 +19,10 @@ import {
   Video
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useState } from "react";
+import { dummyApi } from "@/utils/dummyApi";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { useToast } from "@/hooks/use-toast";
 
 interface SupplierProfileModalProps {
   children: React.ReactNode;
@@ -42,7 +46,10 @@ interface SupplierProfileModalProps {
 
 export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModalProps) => {
   const { t } = useLanguage();
+  const { toast } = useToast();
   const isArabic = t('language') === 'ar';
+  const [isLoadingCall, setIsLoadingCall] = useState(false);
+  const [isLoadingMessage, setIsLoadingMessage] = useState(false);
 
   const supplierInfo = {
     name: isArabic ? supplier.name : supplier.englishName,
@@ -73,6 +80,59 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
     "Event Management Professional",
     "Audio-Visual Technology Specialist"
   ];
+
+  const handleSendMessage = async () => {
+    setIsLoadingMessage(true);
+    try {
+      const response = await dummyApi.sendChatMessage("Hello, I'm interested in your services.", supplier.id.toString());
+      if (response.success) {
+        toast({
+          title: "Message Sent",
+          description: `Your message has been sent to ${supplierInfo.name}. They typically respond within ${supplierInfo.responseTime}.`,
+        });
+      } else {
+        throw new Error(response.error);
+      }
+    } catch (error) {
+      toast({
+        title: "Failed to Send Message",
+        description: "Please try again or use the chat feature.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoadingMessage(false);
+    }
+  };
+
+  const handleVideoCall = async () => {
+    setIsLoadingCall(true);
+    try {
+      const response = await dummyApi.initiateVideoCall(supplierInfo.name);
+      if (response.success) {
+        toast({
+          title: "Video Call Initiated",
+          description: `Connecting to ${supplierInfo.name}... They will be notified of your call request.`,
+        });
+        // Simulate opening video call interface
+        setTimeout(() => {
+          toast({
+            title: "Call Connected",
+            description: "Video call is now active. The supplier has joined the call.",
+          });
+        }, 3000);
+      } else {
+        throw new Error(response.error);
+      }
+    } catch (error) {
+      toast({
+        title: "Call Failed",
+        description: error instanceof Error ? error.message : "Failed to connect call. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoadingCall(false);
+    }
+  };
 
   return (
     <Dialog>
@@ -105,12 +165,28 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
               </div>
             </div>
             <div className="flex flex-col gap-2">
-              <Button className="bg-gradient-to-r from-primary to-accent">
-                <MessageCircle className="h-4 w-4 mr-2" />
+              <Button 
+                className="bg-gradient-to-r from-primary to-accent"
+                onClick={handleSendMessage}
+                disabled={isLoadingMessage}
+              >
+                {isLoadingMessage ? (
+                  <LoadingSpinner size="sm" className="mr-2" />
+                ) : (
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                )}
                 Send Message
               </Button>
-              <Button variant="outline">
-                <Video className="h-4 w-4 mr-2" />
+              <Button 
+                variant="outline"
+                onClick={handleVideoCall}
+                disabled={isLoadingCall}
+              >
+                {isLoadingCall ? (
+                  <LoadingSpinner size="sm" className="mr-2" />
+                ) : (
+                  <Video className="h-4 w-4 mr-2" />
+                )}
                 Video Call
               </Button>
             </div>
@@ -223,12 +299,29 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
                 All communication with this supplier happens within the Supplify platform to ensure security and transparency.
               </p>
               <div className="flex gap-2">
-                <Button className="flex-1">
-                  <MessageCircle className="h-4 w-4 mr-2" />
+                <Button 
+                  className="flex-1"
+                  onClick={handleSendMessage}
+                  disabled={isLoadingMessage}
+                >
+                  {isLoadingMessage ? (
+                    <LoadingSpinner size="sm" className="mr-2" />
+                  ) : (
+                    <MessageCircle className="h-4 w-4 mr-2" />
+                  )}
                   Chat Now
                 </Button>
-                <Button variant="outline" className="flex-1">
-                  <Video className="h-4 w-4 mr-2" />
+                <Button 
+                  variant="outline" 
+                  className="flex-1"
+                  onClick={handleVideoCall}
+                  disabled={isLoadingCall}
+                >
+                  {isLoadingCall ? (
+                    <LoadingSpinner size="sm" className="mr-2" />
+                  ) : (
+                    <Video className="h-4 w-4 mr-2" />
+                  )}
                   Video Call
                 </Button>
               </div>
