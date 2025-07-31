@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { DemoButton } from "@/components/demo/DemoButton";
 import { Check, ArrowRight, Users, Shield, Zap, Award, TrendingUp, Clock, Star, Play, ChevronDown, Building2, Calendar, CheckCircle, BarChart3, HeartHandshake, Sparkles } from "lucide-react";
 import { useState } from "react";
@@ -11,6 +12,7 @@ import { SmartLogoLink } from "@/components/SmartLogoLink";
 
 export const Landing = () => {
   const { t, language } = useLanguage();
+  const { user, userProfile } = useAuth();
 
   const impactStats = [
     { 
@@ -132,16 +134,40 @@ export const Landing = () => {
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>
-            <Link to="/home" className="hidden md:block">
-              <Button variant="ghost" size="sm" className="hover-scale">
-                {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
-              </Button>
-            </Link>
-            <Link to="/home" className="hidden md:block">
-              <Button size="sm" className="hover-scale bg-gradient-to-r from-primary to-accent">
-                {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
-              </Button>
-            </Link>
+            
+            {user && userProfile ? (
+              // Show user info when logged in
+              <div className="flex items-center gap-3">
+                <div className="hidden md:block text-right">
+                  <p className="text-sm font-medium text-gray-900">
+                    {userProfile.full_name || userProfile.email}
+                  </p>
+                  <p className="text-xs text-gray-500 capitalize">
+                    {userProfile.role} {userProfile.company_name && `• ${userProfile.company_name}`}
+                  </p>
+                </div>
+                <Link to="/dashboard">
+                  <Button size="sm" className="hover-scale bg-blue-600 hover:bg-blue-700">
+                    {t('language') === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
+                  </Button>
+                </Link>
+              </div>
+            ) : (
+              // Show login/signup when not logged in
+              <>
+                <Link to="/home" className="hidden md:block">
+                  <Button variant="ghost" size="sm" className="hover-scale">
+                    {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
+                  </Button>
+                </Link>
+                <Link to="/home" className="hidden md:block">
+                  <Button size="sm" className="hover-scale bg-gradient-to-r from-primary to-accent">
+                    {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
+                  </Button>
+                </Link>
+              </>
+            )}
+            
             <MobileNavigation />
           </div>
         </div>

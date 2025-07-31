@@ -377,9 +377,9 @@ const Pricing = () => {
                   <div className="flex items-center justify-center gap-2 mb-4">
                     <span className={`text-4xl font-bold ${
                       plan.popular 
-                        ? 'text-emerald-600' 
+                        ? 'text-blue-900' 
                         : plan.price === '0' 
-                          ? 'text-blue-600' 
+                          ? 'text-gray-900' 
                           : 'text-blue-700'
                     }`}>
                       {plan.price}
@@ -404,7 +404,7 @@ const Pricing = () => {
                     </div>
                   )}
                   
-                  <p className="text-sm text-gray-600 leading-relaxed">
+                  <p className="text-sm text-gray-600 leading-relaxed px-2">
                     {plan.description}
                   </p>
                 </CardHeader>
