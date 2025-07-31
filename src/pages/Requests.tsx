@@ -7,11 +7,29 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Plus, FileText, Clock, Eye } from "lucide-react";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
+import { CreateRequestModal } from "@/components/modals/CreateRequestModal";
 
 export const Requests = () => {
   const { t } = useLanguage();
   const { userProfile } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { toast } = useToast();
+
+  const handleEditRequest = (requestTitle: string) => {
+    toast({
+      title: "Edit Request",
+      description: `Opening editor for: ${requestTitle}`,
+    });
+  };
+
+  const handleViewOffers = (offersCount: number) => {
+    toast({
+      title: "View Offers",
+      description: `Showing ${offersCount} offers received for this request`,
+    });
+  };
 
   const requests = [
     { 
@@ -78,10 +96,12 @@ export const Requests = () => {
                   <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">{t('nav.requests')}</h1>
                   <p className="text-muted-foreground text-sm sm:text-base">Manage your service requests and track offers</p>
                 </div>
-                <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold px-6 py-3 shadow-lg hover-scale w-full sm:w-auto">
-                  <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                  {t('request.create')}
-                </Button>
+                <CreateRequestModal>
+                  <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold px-6 py-3 shadow-lg hover-scale w-full sm:w-auto">
+                    <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                    {t('request.create')}
+                  </Button>
+                </CreateRequestModal>
               </div>
             </div>
 
@@ -195,17 +215,38 @@ export const Requests = () => {
                         
                         {/* Action buttons */}
                         <div className="flex flex-col sm:flex-row gap-2 pl-5">
-                          <Button size="sm" className="flex-1 sm:flex-initial bg-gradient-to-r from-primary to-accent hover-scale">
-                            <Eye className="h-4 w-4 mr-2" />
-                            {t('common.view')}
-                          </Button>
+                          <ViewDetailsModal 
+                            item={{
+                              id: request.id,
+                              title: request.title,
+                              description: `Category: ${request.category}`,
+                              value: request.budget,
+                              status: request.status
+                            }}
+                            userRole={userProfile?.role as any}
+                          >
+                            <Button size="sm" className="flex-1 sm:flex-initial bg-gradient-to-r from-primary to-accent hover-scale">
+                              <Eye className="h-4 w-4 mr-2" />
+                              {t('common.view')}
+                            </Button>
+                          </ViewDetailsModal>
                           {request.status === 'pending' && (
-                            <Button size="sm" variant="outline" className="flex-1 sm:flex-initial hover-scale">
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              className="flex-1 sm:flex-initial hover-scale"
+                              onClick={() => handleEditRequest(request.title)}
+                            >
                               {t('common.edit')}
                             </Button>
                           )}
                           {request.offers > 0 && (
-                            <Button size="sm" variant="outline" className="flex-1 sm:flex-initial bg-lime/10 border-lime/20 text-lime hover:bg-lime/20 hover-scale">
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              className="flex-1 sm:flex-initial bg-lime/10 border-lime/20 text-lime hover:bg-lime/20 hover-scale"
+                              onClick={() => handleViewOffers(request.offers)}
+                            >
                               View Offers ({request.offers})
                             </Button>
                           )}

@@ -8,11 +8,28 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Search, Star, MapPin, Eye, MessageCircle, Clock, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 
 export const Suppliers = () => {
   const { t } = useLanguage();
   const { userProfile } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { toast } = useToast();
+
+  const handleContactSupplier = (supplierName: string) => {
+    toast({
+      title: "Contact Initiated",
+      description: `A message has been sent to ${supplierName}. They will respond within their typical response time.`,
+    });
+  };
+
+  const handleFilterClick = (category: string) => {
+    toast({
+      title: "Filter Applied",
+      description: `Showing suppliers in: ${category}`,
+    });
+  };
 
   const suppliers = [
     {
@@ -146,16 +163,36 @@ export const Suppliers = () => {
                   
                   {/* Filter chips */}
                   <div className="flex flex-wrap gap-2">
-                    <Button variant="outline" size="sm" className="bg-primary/10 border-primary/20 text-primary hover:bg-primary/20">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="bg-primary/10 border-primary/20 text-primary hover:bg-primary/20"
+                      onClick={() => handleFilterClick("All Categories")}
+                    >
                       All Categories
                     </Button>
-                    <Button variant="outline" size="sm" className="hover:bg-accent/10">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="hover:bg-accent/10"
+                      onClick={() => handleFilterClick("AVL Equipment")}
+                    >
                       AVL Equipment
                     </Button>
-                    <Button variant="outline" size="sm" className="hover:bg-lime/10">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="hover:bg-lime/10"
+                      onClick={() => handleFilterClick("Catering")}
+                    >
                       Catering
                     </Button>
-                    <Button variant="outline" size="sm" className="hover:bg-accent/10">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="hover:bg-accent/10"
+                      onClick={() => handleFilterClick("Booth Design")}
+                    >
                       Booth Design
                     </Button>
                   </div>
@@ -240,11 +277,26 @@ export const Suppliers = () => {
                     
                     {/* Action buttons */}
                     <div className="flex flex-col sm:flex-row gap-2 pt-2">
-                      <Button className="flex-1 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-lg hover-scale group-hover:shadow-xl transition-all duration-300">
-                        <Eye className="h-4 w-4 mr-2" />
-                        View Profile
-                      </Button>
-                      <Button variant="outline" className="flex-1 sm:flex-initial bg-lime/10 border-lime/20 text-lime hover:bg-lime/20 hover-scale">
+                      <ViewDetailsModal 
+                        item={{
+                          id: supplier.id,
+                          title: t('language') === 'ar' ? supplier.name : supplier.englishName,
+                          description: t('language') === 'ar' ? supplier.description : supplier.englishDescription,
+                          value: `${supplier.completedProjects}+ projects completed`,
+                          status: "Active"
+                        }}
+                        userRole={userProfile?.role as any}
+                      >
+                        <Button className="flex-1 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-lg hover-scale group-hover:shadow-xl transition-all duration-300">
+                          <Eye className="h-4 w-4 mr-2" />
+                          View Profile
+                        </Button>
+                      </ViewDetailsModal>
+                      <Button 
+                        variant="outline" 
+                        className="flex-1 sm:flex-initial bg-lime/10 border-lime/20 text-lime hover:bg-lime/20 hover-scale"
+                        onClick={() => handleContactSupplier(t('language') === 'ar' ? supplier.name : supplier.englishName)}
+                      >
                         <MessageCircle className="h-4 w-4 mr-2" />
                         Contact
                       </Button>
@@ -256,7 +308,15 @@ export const Suppliers = () => {
 
             {/* Load More with better styling */}
             <div className="text-center pt-4">
-              <Button variant="outline" size="lg" className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-primary/5 to-accent/5 border-primary/20 hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10 hover-scale">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-primary/5 to-accent/5 border-primary/20 hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10 hover-scale"
+                onClick={() => toast({
+                  title: "Loading More Suppliers",
+                  description: "Fetching additional suppliers in your area...",
+                })}
+              >
                 <Plus className="h-4 w-4 mr-2" />
                 Load More Suppliers
               </Button>
