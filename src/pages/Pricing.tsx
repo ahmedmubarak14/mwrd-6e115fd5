@@ -66,7 +66,7 @@ const Pricing = () => {
   const clientPricingPlans = [
     {
       name: isArabic ? "استكشاف مجاني" : "Explore Free",
-      price: isArabic ? "0 ر.س" : "0 SAR",
+      price: isArabic ? "0 ﷼" : "0 SAR",
       amount: 0,
       popular: false,
       features: [
@@ -77,7 +77,7 @@ const Pricing = () => {
     },
     {
       name: isArabic ? "نمو الأعمال" : "Business Growth", 
-      price: isArabic ? "299 ر.س" : "299 SAR",
+      price: isArabic ? "299 ﷼" : "299 SAR",
       amount: 299,
       popular: true,
       features: [
@@ -89,7 +89,7 @@ const Pricing = () => {
     },
     {
       name: isArabic ? "التميز المهني" : "Professional Excellence",
-      price: isArabic ? "799 ر.س" : "799 SAR",
+      price: isArabic ? "799 ﷼" : "799 SAR",
       amount: 799,
       popular: false,
       features: [
@@ -121,7 +121,7 @@ const Pricing = () => {
   const supplierPricingPlans = [
     {
       name: isArabic ? "استكشاف مجاني" : "Explore Free",
-      price: isArabic ? "0 ر.س" : "0 SAR",
+      price: isArabic ? "0 ﷼" : "0 SAR",
       amount: 0,
       popular: false,
       features: [
@@ -132,7 +132,7 @@ const Pricing = () => {
     },
     {
       name: isArabic ? "نمو الأعمال" : "Business Growth",
-      price: isArabic ? "299 ر.س" : "299 SAR",
+      price: isArabic ? "299 ﷼" : "299 SAR",
       amount: 299,
       popular: true,
       features: [
@@ -144,7 +144,7 @@ const Pricing = () => {
     },
     {
       name: isArabic ? "التميز المهني" : "Professional Excellence",
-      price: isArabic ? "799 ر.س" : "799 SAR",
+      price: isArabic ? "799 ﷼" : "799 SAR",
       amount: 799,
       popular: false,
       features: [
