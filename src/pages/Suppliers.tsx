@@ -7,24 +7,21 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Search, Star, MapPin, Eye, MessageCircle, Clock, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
+import { ChatModal } from "@/components/modals/ChatModal";
+import { SupplierProfileModal } from "@/components/modals/SupplierProfileModal";
 
 export const Suppliers = () => {
   const { t } = useLanguage();
   const { userProfile } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activeFilter, setActiveFilter] = useState("All Categories");
   const { toast } = useToast();
 
-  const handleContactSupplier = (supplierName: string) => {
-    toast({
-      title: "Contact Initiated",
-      description: `A message has been sent to ${supplierName}. They will respond within their typical response time.`,
-    });
-  };
-
   const handleFilterClick = (category: string) => {
+    setActiveFilter(category);
     toast({
       title: "Filter Applied",
       description: `Showing suppliers in: ${category}`,
@@ -99,17 +96,43 @@ export const Suppliers = () => {
   ];
 
   const categories = [
-    "جميع الفئات",
-    "الصوت والصورة والإضاءة",
-    "أكشاك العرض",
-    "الطباعة",
-    "الأثاث",
-    "المعدات",
-    "الهدايا الترويجية",
-    "اللوجستيات",
-    "الضيافة",
-    "العمالة"
+    { ar: "جميع الفئات", en: "All Categories" },
+    { ar: "الصوت والصورة والإضاءة", en: "AVL Equipment" },
+    { ar: "أكشاك العرض", en: "Booth Design" },
+    { ar: "الطباعة", en: "Printing" },
+    { ar: "الأثاث", en: "Furniture" },
+    { ar: "المعدات", en: "Equipment" },
+    { ar: "الهدايا الترويجية", en: "Promotional Gifts" },
+    { ar: "اللوجستيات", en: "Logistics" },
+    { ar: "الضيافة", en: "Catering" },
+    { ar: "العمالة", en: "Manpower" }
   ];
+
+  // Filter and search logic
+  const filteredSuppliers = useMemo(() => {
+    return suppliers.filter(supplier => {
+      // Search filter
+      const searchLower = searchTerm.toLowerCase();
+      const matchesSearch = searchTerm === "" || 
+        supplier.name.toLowerCase().includes(searchLower) ||
+        supplier.englishName.toLowerCase().includes(searchLower) ||
+        supplier.category.toLowerCase().includes(searchLower) ||
+        supplier.englishCategory.toLowerCase().includes(searchLower) ||
+        supplier.location.toLowerCase().includes(searchLower) ||
+        supplier.englishLocation.toLowerCase().includes(searchLower) ||
+        supplier.description.toLowerCase().includes(searchLower) ||
+        supplier.englishDescription.toLowerCase().includes(searchLower);
+
+      // Category filter
+      const matchesCategory = activeFilter === "All Categories" || 
+        (t('language') === 'ar' ? supplier.category : supplier.englishCategory) === 
+        (t('language') === 'ar' 
+          ? categories.find(cat => cat.en === activeFilter)?.ar || activeFilter
+          : activeFilter);
+
+      return matchesSearch && matchesCategory;
+    });
+  }, [suppliers, searchTerm, activeFilter, t]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -158,43 +181,31 @@ export const Suppliers = () => {
                     <Input 
                       placeholder="Search by company name, services, or location..."
                       className="pl-10 h-12 text-sm sm:text-base bg-background/50 border-primary/20 focus:border-primary/50"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
                   
                   {/* Filter chips */}
                   <div className="flex flex-wrap gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="bg-primary/10 border-primary/20 text-primary hover:bg-primary/20"
-                      onClick={() => handleFilterClick("All Categories")}
-                    >
-                      All Categories
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="hover:bg-accent/10"
-                      onClick={() => handleFilterClick("AVL Equipment")}
-                    >
-                      AVL Equipment
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="hover:bg-lime/10"
-                      onClick={() => handleFilterClick("Catering")}
-                    >
-                      Catering
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="hover:bg-accent/10"
-                      onClick={() => handleFilterClick("Booth Design")}
-                    >
-                      Booth Design
-                    </Button>
+                    {categories.slice(0, 5).map((category) => {
+                      const categoryName = t('language') === 'ar' ? category.ar : category.en;
+                      const isActive = activeFilter === category.en;
+                      return (
+                        <Button 
+                          key={category.en}
+                          variant="outline" 
+                          size="sm" 
+                          className={`${isActive 
+                            ? 'bg-primary text-primary-foreground border-primary' 
+                            : 'hover:bg-accent/10'
+                          }`}
+                          onClick={() => handleFilterClick(category.en)}
+                        >
+                          {categoryName}
+                        </Button>
+                      );
+                    })}
                   </div>
                 </div>
               </CardContent>
@@ -202,7 +213,16 @@ export const Suppliers = () => {
 
             {/* Enhanced Suppliers Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-              {suppliers.map((supplier) => (
+              {filteredSuppliers.length === 0 ? (
+                <div className="col-span-full text-center py-12">
+                  <div className="text-muted-foreground">
+                    <Search className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <h3 className="text-lg font-semibold mb-2">No suppliers found</h3>
+                    <p>Try adjusting your search terms or filters</p>
+                  </div>
+                </div>
+              ) : (
+                filteredSuppliers.map((supplier) => (
                 <Card key={supplier.id} className="group hover:shadow-2xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale overflow-hidden">
                   {/* Supplier card header with better visual hierarchy */}
                   <CardHeader className="relative p-4 sm:p-6 bg-gradient-to-r from-primary/5 to-accent/5">
@@ -277,33 +297,28 @@ export const Suppliers = () => {
                     
                     {/* Action buttons */}
                     <div className="flex flex-col sm:flex-row gap-2 pt-2">
-                      <ViewDetailsModal 
-                        item={{
-                          id: supplier.id,
-                          title: t('language') === 'ar' ? supplier.name : supplier.englishName,
-                          description: t('language') === 'ar' ? supplier.description : supplier.englishDescription,
-                          value: `${supplier.completedProjects}+ projects completed`,
-                          status: "Active"
-                        }}
-                        userRole={userProfile?.role as any}
-                      >
+                      <SupplierProfileModal supplier={supplier}>
                         <Button className="flex-1 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-lg hover-scale group-hover:shadow-xl transition-all duration-300">
                           <Eye className="h-4 w-4 mr-2" />
                           View Profile
                         </Button>
-                      </ViewDetailsModal>
-                      <Button 
-                        variant="outline" 
-                        className="flex-1 sm:flex-initial bg-lime/10 border-lime/20 text-lime hover:bg-lime/20 hover-scale"
-                        onClick={() => handleContactSupplier(t('language') === 'ar' ? supplier.name : supplier.englishName)}
+                      </SupplierProfileModal>
+                      <ChatModal 
+                        supplierName={t('language') === 'ar' ? supplier.name : supplier.englishName}
                       >
-                        <MessageCircle className="h-4 w-4 mr-2" />
-                        Contact
-                      </Button>
+                        <Button 
+                          variant="outline" 
+                          className="flex-1 sm:flex-initial bg-lime/10 border-lime/20 text-lime hover:bg-lime/20 hover-scale"
+                        >
+                          <MessageCircle className="h-4 w-4 mr-2" />
+                          Contact
+                        </Button>
+                      </ChatModal>
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+                ))
+              )}
             </div>
 
             {/* Load More with better styling */}
