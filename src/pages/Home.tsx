@@ -58,7 +58,7 @@ export const Home = () => {
               </span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              {isRTL ? 'مرحباً، ' : 'Hello, '}{userProfile.full_name || userProfile.email}
+              {isRTL ? 'مرحباً، ' : 'Hello, '}{userProfile.full_name || userProfile.email.split('@')[0]}
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-12">
               {isRTL ? 
