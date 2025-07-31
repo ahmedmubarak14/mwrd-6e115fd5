@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import ContactSalesForm from "@/components/ContactSalesForm";
 
 const Pricing = () => {
   const { language } = useLanguage();
@@ -17,6 +18,7 @@ const Pricing = () => {
   const [selectedRole, setSelectedRole] = useState<'client' | 'supplier'>('client');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const [isContactSalesOpen, setIsContactSalesOpen] = useState(false);
   
   const isArabic = language === 'ar';
 
@@ -64,7 +66,7 @@ const Pricing = () => {
   const clientPricingPlans = [
     {
       name: isArabic ? "استكشاف مجاني" : "Explore Free",
-      price: isArabic ? "0 ريال سعودي" : "0 SAR",
+      price: isArabic ? "0 ﷼" : "0 ﷼",
       amount: 0,
       popular: false,
       features: [
@@ -75,7 +77,7 @@ const Pricing = () => {
     },
     {
       name: isArabic ? "نمو الأعمال" : "Business Growth", 
-      price: isArabic ? "299 ريال سعودي" : "299 SAR",
+      price: isArabic ? "299 ﷼" : "299 ﷼",
       amount: 299,
       popular: true,
       features: [
@@ -87,7 +89,7 @@ const Pricing = () => {
     },
     {
       name: isArabic ? "التميز المهني" : "Professional Excellence",
-      price: isArabic ? "799 ريال سعودي" : "799 SAR",
+      price: isArabic ? "799 ﷼" : "799 ﷼",
       amount: 799,
       popular: false,
       features: [
@@ -97,6 +99,21 @@ const Pricing = () => {
         isArabic ? "تقارير مخصصة" : "Custom reports",
         isArabic ? "دعم على مدار الساعة" : "24/7 support"
       ]
+    },
+    {
+      name: isArabic ? "المؤسسات" : "Enterprise",
+      price: isArabic ? "خطة مخصصة" : "Custom Plan",
+      amount: 0,
+      popular: false,
+      isEnterprise: true,
+      features: [
+        isArabic ? "جميع مميزات الخطط السابقة" : "All previous plan features",
+        isArabic ? "حلول مخصصة حسب الطلب" : "Custom solutions on demand",
+        isArabic ? "دعم مخصص على مدار الساعة" : "Dedicated 24/7 support",
+        isArabic ? "تدريب الفريق" : "Team training",
+        isArabic ? "تكامل مخصص مع الأنظمة" : "Custom system integrations",
+        isArabic ? "مدير نجاح العملاء" : "Customer success manager"
+      ]
     }
   ];
 
@@ -104,7 +121,7 @@ const Pricing = () => {
   const supplierPricingPlans = [
     {
       name: isArabic ? "استكشاف مجاني" : "Explore Free",
-      price: isArabic ? "0 ريال سعودي" : "0 SAR",
+      price: isArabic ? "0 ﷼" : "0 ﷼",
       amount: 0,
       popular: false,
       features: [
@@ -115,7 +132,7 @@ const Pricing = () => {
     },
     {
       name: isArabic ? "نمو الأعمال" : "Business Growth",
-      price: isArabic ? "299 ريال سعودي" : "299 SAR",
+      price: isArabic ? "299 ﷼" : "299 ﷼",
       amount: 299,
       popular: true,
       features: [
@@ -127,7 +144,7 @@ const Pricing = () => {
     },
     {
       name: isArabic ? "التميز المهني" : "Professional Excellence",
-      price: isArabic ? "799 ريال سعودي" : "799 SAR",
+      price: isArabic ? "799 ﷼" : "799 ﷼",
       amount: 799,
       popular: false,
       features: [
@@ -136,6 +153,21 @@ const Pricing = () => {
         isArabic ? "شارة التحقق" : "Verified badge",
         isArabic ? "دعم مخصص" : "Dedicated support",
         isArabic ? "إعلانات مميزة" : "Featured listings"
+      ]
+    },
+    {
+      name: isArabic ? "المؤسسات" : "Enterprise",
+      price: isArabic ? "خطة مخصصة" : "Custom Plan",
+      amount: 0,
+      popular: false,
+      isEnterprise: true,
+      features: [
+        isArabic ? "جميع مميزات الخطط السابقة" : "All previous plan features",
+        isArabic ? "حلول مخصصة حسب الطلب" : "Custom solutions on demand",
+        isArabic ? "دعم مخصص على مدار الساعة" : "Dedicated 24/7 support",
+        isArabic ? "تدريب الفريق" : "Team training",
+        isArabic ? "تكامل مخصص مع الأنظمة" : "Custom system integrations",
+        isArabic ? "مدير نجاح العملاء" : "Customer success manager"
       ]
     }
   ];
@@ -236,7 +268,7 @@ const Pricing = () => {
       {/* Pricing Cards */}
       <section className="py-12 px-4">
         <div className="container mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
             {currentPricingPlans.map((plan, index) => (
               <Card 
                 key={index} 
@@ -269,7 +301,7 @@ const Pricing = () => {
                     size="lg" 
                     className="w-full"
                     variant={plan.popular ? "default" : "outline"}
-                    onClick={() => handlePayment(plan.name, plan.amount)}
+                    onClick={() => (plan as any).isEnterprise ? setIsContactSalesOpen(true) : handlePayment(plan.name, plan.amount)}
                     disabled={loadingPlan === plan.name}
                   >
                     {loadingPlan === plan.name ? (
@@ -277,6 +309,8 @@ const Pricing = () => {
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         {isArabic ? "جاري المعالجة..." : "Processing..."}
                       </>
+                    ) : (plan as any).isEnterprise ? (
+                      isArabic ? "تواصل مع المبيعات" : "Contact Sales"
                     ) : (
                       isArabic ? "ابدأ الآن" : "Get Started"
                     )}
@@ -307,6 +341,12 @@ const Pricing = () => {
           </Link>
         </div>
       </section>
+
+      {/* Contact Sales Form */}
+      <ContactSalesForm 
+        isOpen={isContactSalesOpen} 
+        onClose={() => setIsContactSalesOpen(false)} 
+      />
     </div>
   );
 };
