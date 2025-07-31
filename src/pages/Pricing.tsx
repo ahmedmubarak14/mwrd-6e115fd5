@@ -65,11 +65,11 @@ const Pricing = () => {
   // Client pricing plans matching the reference website exactly
   const clientPricingPlans = [
     {
-      name: isArabic ? "استكشاف مجاني" : "Freemium",
+      name: isArabic ? "استكشاف مجاني" : "Explore Free",
       price: "0",
       amount: 0,
       badge: isArabic ? "مجاني" : "Free",
-      badgeColor: "bg-blue-600",
+      badgeColor: "bg-blue-500",
       description: isArabic ? "ابدأ رحلتك معنا واستكشف إمكانيات لا محدودة" : "Start your journey with us and explore unlimited possibilities",
       features: [
         isArabic ? "طلب خدمة واحد شهرياً" : "1 service request per month",
@@ -79,11 +79,11 @@ const Pricing = () => {
       ]
     },
     {
-      name: isArabic ? "نمو الأعمال" : "Business",
+      name: isArabic ? "نمو الأعمال" : "Business Growth",
       price: "299",
       amount: 299,
       badge: isArabic ? "أفضل قيمة" : "Best Value", 
-      badgeColor: "bg-teal-600",
+      badgeColor: "bg-teal-500",
       description: isArabic ? "حلول متكاملة للشركات النامية وطموحاتها" : "Integrated solutions for growing businesses and their ambitions",
       features: [
         isArabic ? "حتى 8 طلبات خدمة شهرياً" : "Up to 8 service requests per month",
@@ -95,11 +95,11 @@ const Pricing = () => {
       ]
     },
     {
-      name: isArabic ? "التميز المهني" : "Professional",
+      name: isArabic ? "التميز المهني" : "Professional Excellence",
       price: "799",
       amount: 799,
       badge: isArabic ? "الأكثر شعبية" : "Most Popular",
-      badgeColor: "bg-emerald-700",
+      badgeColor: "bg-teal-600",
       popular: true,
       description: isArabic ? "للشركات الرائدة التي تسعى للتميز والابتكار" : "For leading companies pursuing excellence and innovation",
       features: [
@@ -419,13 +419,13 @@ const Pricing = () => {
                     ))}
                   </ul>
                   
-                  <Button 
-                    size="lg" 
-                    className={`w-full ${
-                      plan.popular 
-                        ? 'bg-emerald-600 hover:bg-emerald-700' 
-                        : 'bg-gray-900 hover:bg-gray-800'
-                    }`}
+                   <Button 
+                     size="lg" 
+                     className={`w-full ${
+                       plan.popular 
+                         ? 'bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white' 
+                         : 'bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white'
+                     }`}
                     onClick={() => (plan as any).isEnterprise ? setIsContactSalesOpen(true) : handlePayment(plan.name, plan.amount)}
                     disabled={loadingPlan === plan.name}
                   >
