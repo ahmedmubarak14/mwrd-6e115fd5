@@ -211,9 +211,9 @@ const Pricing = () => {
   const currentPricingPlans = selectedRole === 'client' ? clientPricingPlans : supplierPricingPlans;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-background to-muted/30">
       {/* Header */}
-      <header className="border-b bg-white/95 backdrop-blur-md sticky top-0 z-50">
+      <header className="border-b border-border bg-card/95 backdrop-blur-md sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <SmartLogoLink className="flex items-center gap-2">
             <img 
@@ -231,19 +231,19 @@ const Pricing = () => {
             {user && userProfile ? (
               // Show user info when logged in
               <div className="flex items-center gap-3">
-                <div className="hidden md:block text-right">
-                  <p className="text-sm font-medium text-gray-900">
-                    {userProfile.full_name || userProfile.email}
-                  </p>
-                  <p className="text-xs text-gray-500 capitalize">
-                    {userProfile.role} {userProfile.company_name && `• ${userProfile.company_name}`}
-                  </p>
-                </div>
-                <Link to="/dashboard">
-                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                    {isArabic ? 'لوحة التحكم' : 'Dashboard'}
-                  </Button>
-                </Link>
+                 <div className="hidden md:block text-right">
+                   <p className="text-sm font-medium text-foreground">
+                     {userProfile.full_name || userProfile.email}
+                   </p>
+                   <p className="text-xs text-muted-foreground capitalize">
+                     {userProfile.role} {userProfile.company_name && `• ${userProfile.company_name}`}
+                   </p>
+                 </div>
+                 <Link to="/dashboard">
+                   <Button size="sm" variant="premium">
+                     {isArabic ? 'لوحة التحكم' : 'Dashboard'}
+                   </Button>
+                 </Link>
               </div>
             ) : (
               // Show login/signup when not logged in
@@ -253,11 +253,11 @@ const Pricing = () => {
                     {isArabic ? 'تسجيل الدخول' : 'Login'}
                   </Button>
                 </Link>
-                <Link to="/home" className="hidden md:block">
-                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                    {isArabic ? 'ابدأ مجاناً' : 'Start Free'}
-                  </Button>
-                </Link>
+                 <Link to="/home" className="hidden md:block">
+                   <Button size="sm" variant="premium">
+                     {isArabic ? 'ابدأ مجاناً' : 'Start Free'}
+                   </Button>
+                 </Link>
               </>
             )}
             
@@ -272,22 +272,22 @@ const Pricing = () => {
           </div>
         </div>
 
-        {isMobileMenuOpen && (
-          <div className="md:hidden border-t bg-white/95 backdrop-blur-md p-4 space-y-3">
+         {isMobileMenuOpen && (
+           <div className="md:hidden border-t border-border bg-card/95 backdrop-blur-md p-4 space-y-3">
             <LanguageSwitcher />
             {user && userProfile ? (
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-900">
-                  {userProfile.full_name || userProfile.email}
-                </p>
-                <p className="text-xs text-gray-500 capitalize">
-                  {userProfile.role} {userProfile.company_name && `• ${userProfile.company_name}`}
-                </p>
-                <Link to="/dashboard" className="block">
-                  <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700">
-                    {isArabic ? 'لوحة التحكم' : 'Dashboard'}
-                  </Button>
-                </Link>
+               <div className="space-y-2">
+                 <p className="text-sm font-medium text-foreground">
+                   {userProfile.full_name || userProfile.email}
+                 </p>
+                 <p className="text-xs text-muted-foreground capitalize">
+                   {userProfile.role} {userProfile.company_name && `• ${userProfile.company_name}`}
+                 </p>
+                 <Link to="/dashboard" className="block">
+                   <Button size="sm" variant="premium" className="w-full">
+                     {isArabic ? 'لوحة التحكم' : 'Dashboard'}
+                   </Button>
+                 </Link>
               </div>
             ) : (
               <>
@@ -296,11 +296,11 @@ const Pricing = () => {
                     {isArabic ? 'تسجيل الدخول' : 'Login'}
                   </Button>
                 </Link>
-                <Link to="/home" className="block">
-                  <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700">
-                    {isArabic ? 'ابدأ مجاناً' : 'Start Free'}
-                  </Button>
-                </Link>
+                 <Link to="/home" className="block">
+                   <Button size="sm" variant="premium" className="w-full">
+                     {isArabic ? 'ابدأ مجاناً' : 'Start Free'}
+                   </Button>
+                 </Link>
               </>
             )}
           </div>
@@ -308,77 +308,77 @@ const Pricing = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="py-24 px-4 text-center bg-white">
+      <section className="py-24 px-4 text-center bg-card">
         <div className="container mx-auto max-w-4xl">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-teal-50 text-teal-700 rounded-full px-4 py-2 mb-8 text-sm font-medium">
-            <span>✨</span>
-            {isArabic ? 'حلول مرنة' : 'Flexible Solutions'}
-          </div>
+           {/* Badge */}
+           <div className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground rounded-full px-4 py-2 mb-8 text-sm font-medium">
+             <span>✨</span>
+             {isArabic ? 'حلول مرنة' : 'Flexible Solutions'}
+           </div>
           
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-gray-900">
-            {isArabic ? 'استثمر في نجاح فعالياتك' : 'Invest in Your Events Success'}
-          </h1>
-          
-          <p className="text-xl text-gray-600 mb-12 leading-relaxed max-w-3xl mx-auto">
+           <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">
+             {isArabic ? 'استثمر في نجاح فعالياتك' : 'Invest in Your Events Success'}
+           </h1>
+           
+           <p className="text-xl text-muted-foreground mb-12 leading-relaxed max-w-3xl mx-auto">
             {isArabic 
               ? 'حزم مصممة بعناية لتناسب رحلتك في عالم الفعاليات، من البدايات المتواضعة إلى القمم العالية'
               : 'Carefully designed packages to suit your journey in the events world, from humble beginnings to great heights'
             }
           </p>
           
-          {/* Role Toggle */}
-          <div className="flex justify-center items-center gap-1 mb-16 bg-gray-100 rounded-full p-1 max-w-xs mx-auto">
-            <button
-              onClick={() => setSelectedRole('client')}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
-                selectedRole === 'client' 
-                  ? 'bg-white text-gray-900 shadow-sm' 
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              {isArabic ? 'العملاء' : 'Clients'}
-            </button>
-            <button
-              onClick={() => setSelectedRole('supplier')}
-              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
-                selectedRole === 'supplier' 
-                  ? 'bg-white text-gray-900 shadow-sm' 
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
-            >
-              {isArabic ? 'المقدمين' : 'Suppliers'}
-            </button>
-          </div>
+           {/* Role Toggle */}
+           <div className="flex justify-center items-center gap-1 mb-16 bg-muted rounded-full p-1 max-w-xs mx-auto">
+             <button
+               onClick={() => setSelectedRole('client')}
+               className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
+                 selectedRole === 'client' 
+                   ? 'bg-card text-foreground shadow-sm' 
+                   : 'text-muted-foreground hover:text-foreground'
+               }`}
+             >
+               {isArabic ? 'العملاء' : 'Clients'}
+             </button>
+             <button
+               onClick={() => setSelectedRole('supplier')}
+               className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
+                 selectedRole === 'supplier' 
+                   ? 'bg-card text-foreground shadow-sm' 
+                   : 'text-muted-foreground hover:text-foreground'
+               }`}
+             >
+               {isArabic ? 'المقدمين' : 'Suppliers'}
+             </button>
+           </div>
         </div>
       </section>
 
-      {/* Pricing Cards */}
-      <section className="py-16 px-4 bg-white">
+       {/* Pricing Cards */}
+       <section className="py-16 px-4 bg-card">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
             {currentPricingPlans.map((plan, index) => (
-              <Card 
-                key={index} 
-                className={`relative bg-white border transition-all duration-300 ${
-                  plan.popular ? 'border-2 border-teal-500 shadow-xl' : 'border-gray-200 shadow-lg hover:shadow-xl'
-                }`}
-              >
+               <Card 
+                 key={index} 
+                 className={`relative bg-card border transition-all duration-300 ${
+                   plan.popular ? 'border-2 border-primary shadow-[var(--shadow-elegant)]' : 'border-border shadow-lg hover:shadow-xl'
+                 }`}
+               >
                 {/* Badge */}
                 <div className={`${plan.badgeColor} text-white px-3 py-1 rounded-full text-xs font-medium absolute -top-3 left-1/2 transform -translate-x-1/2`}>
                   {plan.badge}
                 </div>
                 
-                <CardHeader className="text-center pb-6 pt-12">
-                  <CardTitle className="text-lg font-semibold mb-6 text-gray-900">
-                    {plan.name}
-                  </CardTitle>
+                 <CardHeader className="text-center pb-6 pt-12">
+                   <CardTitle className="text-lg font-semibold mb-6 text-card-foreground">
+                     {plan.name}
+                   </CardTitle>
                   
                   <div className="mb-6">
                     <div className="flex items-center justify-center gap-1">
-                      <span className="text-5xl font-bold text-gray-900">
-                        {plan.price}
-                      </span>
+                       <span className="text-5xl font-bold text-card-foreground">
+                         {plan.price}
+                       </span>
                       {plan.price !== (isArabic ? "مخصص" : "Custom") && (
                         <img 
                           src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
@@ -387,41 +387,38 @@ const Pricing = () => {
                         />
                       )}
                     </div>
-                    {plan.price !== (isArabic ? "مخصص" : "Custom") && (
-                      <p className="text-gray-500 text-sm mt-1">/{isArabic ? 'شهر' : 'month'}</p>
-                    )}
+                     {plan.price !== (isArabic ? "مخصص" : "Custom") && (
+                       <p className="text-muted-foreground text-sm mt-1">/{isArabic ? 'شهر' : 'month'}</p>
+                     )}
                   </div>
                   
                   {selectedRole === 'supplier' && (plan as any).commission && (
-                    <div className="mb-4">
-                      <span className="text-lg font-semibold text-teal-600">
-                        {isArabic ? 'عمولة: ' : 'Commission: '}{(plan as any).commission}
-                      </span>
-                    </div>
+                     <div className="mb-4">
+                       <span className="text-lg font-semibold text-primary">
+                         {isArabic ? 'عمولة: ' : 'Commission: '}{(plan as any).commission}
+                       </span>
+                     </div>
                   )}
                   
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {plan.description}
-                  </p>
+                   <p className="text-sm text-muted-foreground leading-relaxed">
+                     {plan.description}
+                   </p>
                 </CardHeader>
                 
                 <CardContent className="px-6 pb-8">
                   <ul className="space-y-4 mb-8">
                     {plan.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-start gap-3">
-                        <Check className="h-5 w-5 text-teal-500 flex-shrink-0 mt-0.5" />
-                        <span className="text-sm text-gray-700">{feature}</span>
-                      </li>
+                       <li key={featureIndex} className="flex items-start gap-3">
+                         <Check className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                         <span className="text-sm text-card-foreground">{feature}</span>
+                       </li>
                     ))}
                   </ul>
                   
-                  <Button 
-                    size="lg" 
-                    className={`w-full text-white ${
-                      plan.popular 
-                        ? 'bg-teal-600 hover:bg-teal-700' 
-                        : 'bg-gray-900 hover:bg-gray-800'
-                    }`}
+                   <Button 
+                     size="lg" 
+                     variant={plan.popular ? "premium" : (plan as any).isEnterprise ? "enterprise" : "default"}
+                     className="w-full"
                     onClick={() => (plan as any).isEnterprise ? setIsContactSalesOpen(true) : handlePayment(plan.name, plan.amount)}
                     disabled={loadingPlan === plan.name}
                   >
@@ -443,23 +440,23 @@ const Pricing = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-blue-600 to-teal-500 text-white">
+       {/* CTA Section */}
+       <section className="py-20 px-4 bg-gradient-to-r from-accent to-primary text-primary-foreground">
         <div className="container mx-auto text-center max-w-4xl">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             {isArabic ? 'هل أنت جاهز لتحويل فعالياتك؟' : 'Are You Ready to Transform Your Events?'}
           </h2>
-          <p className="text-xl mb-8 text-white/90">
+          <p className="text-xl mb-8 text-primary-foreground/90">
             {isArabic 
               ? 'انضم لآلاف الشركات الرائدة التي اختارت سبلفاي لتحقيق أحلامها في عالم الفعاليات'
               : 'Join thousands of leading companies that chose Supplify to achieve their dreams in the events world'
             }
           </p>
-          <Link to="/home">
-            <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-50 px-8 py-3">
-              {isArabic ? 'ابدأ تجربتك المجانية الآن' : 'Start Your Free Trial Now'}
-            </Button>
-          </Link>
+           <Link to="/home">
+             <Button size="lg" variant="secondary" className="px-8 py-3">
+               {isArabic ? 'ابدأ تجربتك المجانية الآن' : 'Start Your Free Trial Now'}
+             </Button>
+           </Link>
         </div>
       </section>
 
