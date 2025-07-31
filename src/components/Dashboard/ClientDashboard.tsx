@@ -3,11 +3,34 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { Plus, FileText, Users, TrendingUp, Package, Banknote, Star, Eye, Clock } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export const ClientDashboard = () => {
   const { t, language } = useLanguage();
   const { userProfile } = useAuth();
+  const { toast } = useToast();
   const isRTL = language === 'ar';
+
+  const handleUpgradeSubscription = () => {
+    toast({
+      title: isRTL ? "ميزة تجريبية" : "Demo Feature",
+      description: isRTL ? "هذه ميزة تجريبية - ترقية الاشتراك ستكون متاحة قريباً" : "This is a demo feature - subscription upgrade will be available soon",
+    });
+  };
+
+  const handleViewBilling = () => {
+    toast({
+      title: isRTL ? "ميزة تجريبية" : "Demo Feature", 
+      description: isRTL ? "هذه ميزة تجريبية - عرض تفاصيل الفوترة سيكون متاح قريباً" : "This is a demo feature - billing details view will be available soon",
+    });
+  };
+
+  const handleChangePayment = () => {
+    toast({
+      title: isRTL ? "ميزة تجريبية" : "Demo Feature",
+      description: isRTL ? "هذه ميزة تجريبية - تغيير طريقة الدفع سيكون متاح قريباً" : "This is a demo feature - payment method change will be available soon", 
+    });
+  };
 
   console.log('ClientDashboard rendering with userProfile:', userProfile);
   console.log('Language:', language, 'isRTL:', isRTL);
@@ -168,7 +191,7 @@ export const ClientDashboard = () => {
       </div>
 
       {/* Subscription Management Section */}
-      <Card className="border-0 bg-card/70 backdrop-blur-sm">
+      <Card id="subscription" className="border-0 bg-card/70 backdrop-blur-sm scroll-mt-8">
         <CardHeader className="p-4 sm:p-6">
           <CardTitle className="text-xl sm:text-2xl flex items-center gap-3">
             <TrendingUp className="h-6 w-6 text-primary" />
@@ -222,15 +245,26 @@ export const ClientDashboard = () => {
                   {isRTL ? 'خيارات الإدارة' : 'Management Options'}
                 </h4>
                 <div className="space-y-3">
-                  <Button className="w-full bg-gradient-to-r from-primary to-accent hover-scale">
+                  <Button 
+                    className="w-full bg-gradient-to-r from-primary to-accent hover-scale"
+                    onClick={handleUpgradeSubscription}
+                  >
                     <TrendingUp className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                     {isRTL ? 'ترقية الاشتراك' : 'Upgrade Subscription'}
                   </Button>
-                  <Button variant="outline" className="w-full hover-scale">
+                  <Button 
+                    variant="outline" 
+                    className="w-full hover-scale"
+                    onClick={handleViewBilling}
+                  >
                     <Eye className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                     {isRTL ? 'عرض تفاصيل الفوترة' : 'View Billing Details'}
                   </Button>
-                  <Button variant="outline" className="w-full hover-scale">
+                  <Button 
+                    variant="outline" 
+                    className="w-full hover-scale"
+                    onClick={handleChangePayment}
+                  >
                     <Clock className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                     {isRTL ? 'تغيير طريقة الدفع' : 'Change Payment Method'}
                   </Button>
