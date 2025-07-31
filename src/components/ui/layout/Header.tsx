@@ -8,6 +8,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Link } from "react-router-dom";
 import { User, LogOut, Settings, Bell, Search, Menu } from "lucide-react";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
+import { SearchModal } from "@/components/modals/SearchModal";
+import { NotificationsModal } from "@/components/modals/NotificationsModal";
+import { useToast } from "@/hooks/use-toast";
 
 interface HeaderProps {
   onMobileMenuOpen?: () => void;
@@ -16,10 +19,18 @@ interface HeaderProps {
 export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
   const { t, language } = useLanguage();
   const { userProfile, signOut } = useAuth();
+  const { toast } = useToast();
   const isRTL = language === 'ar';
 
   const handleSignOut = async () => {
     await signOut();
+  };
+
+  const handleSettingsClick = () => {
+    toast({
+      title: isRTL ? "الإعدادات" : "Settings",
+      description: isRTL ? "صفحة الإعدادات ستكون متاحة قريباً" : "Settings page will be available soon",
+    });
   };
 
   const getUserInitials = (name?: string, email?: string) => {
@@ -63,29 +74,36 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
         
         {/* Actions - positioned based on language */}
         <div className={`${isRTL ? 'order-1' : 'order-3'} flex items-center gap-1 sm:gap-2 lg:gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-          <div className="relative hidden xl:block">
-            <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4`} />
-            <input
-              type="text"
-              placeholder={t('dashboard.search')}
-              className={`${isRTL ? 'pr-10 pl-4' : 'pl-10 pr-4'} py-2 border rounded-lg w-80 bg-background/50 text-foreground placeholder:text-muted-foreground focus:bg-background transition-colors ${isRTL ? 'text-right' : 'text-left'}`}
-            />
-          </div>
+          <SearchModal>
+            <div className="relative hidden xl:block cursor-pointer">
+              <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4`} />
+              <input
+                type="text"
+                placeholder={t('dashboard.search')}
+                className={`${isRTL ? 'pr-10 pl-4' : 'pl-10 pr-4'} py-2 border rounded-lg w-80 bg-background/50 text-foreground placeholder:text-muted-foreground focus:bg-background transition-colors ${isRTL ? 'text-right' : 'text-left'} cursor-pointer`}
+                readOnly
+              />
+            </div>
+          </SearchModal>
           
-          <Button variant="ghost" size="icon" className="hidden sm:flex xl:hidden h-8 w-8 sm:h-10 sm:w-10">
-            <Search className="h-4 w-4 sm:h-5 sm:w-5" />
-          </Button>
+          <SearchModal>
+            <Button variant="ghost" size="icon" className="hidden sm:flex xl:hidden h-8 w-8 sm:h-10 sm:w-10">
+              <Search className="h-4 w-4 sm:h-5 sm:w-5" />
+            </Button>
+          </SearchModal>
           
           <div className="hidden sm:block">
             <LanguageSwitcher />
           </div>
           
-          <Button variant="ghost" size="icon" className="relative hidden sm:flex h-8 w-8 sm:h-10 sm:w-10">
-            <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
-            <span className={`absolute -top-1 ${isRTL ? '-left-1' : '-right-1'} bg-destructive text-destructive-foreground text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center text-[10px] sm:text-xs`}>
-              3
-            </span>
-          </Button>
+          <NotificationsModal>
+            <Button variant="ghost" size="icon" className="relative hidden sm:flex h-8 w-8 sm:h-10 sm:w-10">
+              <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
+              <span className={`absolute -top-1 ${isRTL ? '-left-1' : '-right-1'} bg-destructive text-destructive-foreground text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center text-[10px] sm:text-xs`}>
+                3
+              </span>
+            </Button>
+          </NotificationsModal>
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -108,7 +126,7 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
                   <span>{t('common.profile')}</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem className={isRTL ? 'flex-row-reverse' : ''}>
+              <DropdownMenuItem className={isRTL ? 'flex-row-reverse' : ''} onClick={handleSettingsClick}>
                 <Settings className={`${isRTL ? 'ml-2' : 'mr-2'} h-4 w-4`} />
                 <span>{t('common.settings')}</span>
               </DropdownMenuItem>

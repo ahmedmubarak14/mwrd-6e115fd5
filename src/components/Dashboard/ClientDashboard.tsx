@@ -4,6 +4,9 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { Plus, FileText, Users, TrendingUp, Package, Banknote, Star, Eye, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { CreateRequestModal } from "@/components/modals/CreateRequestModal";
+import { CreateOfferModal } from "@/components/modals/CreateOfferModal";
+import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 
 export const ClientDashboard = () => {
   const { t, language } = useLanguage();
@@ -74,10 +77,21 @@ export const ClientDashboard = () => {
               : t('dashboard.subtitle')
             }
           </p>
-          <Button className={`bg-white text-primary hover:bg-white/90 font-semibold px-4 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg hover-scale w-full sm:w-auto text-sm sm:text-base ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <Plus className={`h-4 w-4 sm:h-5 sm:w-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-            {userProfile?.role === 'supplier' ? t('dashboard.createOffer') : t('dashboard.createRequest')}
-          </Button>
+          {userProfile?.role === 'supplier' ? (
+            <CreateOfferModal>
+              <Button className={`bg-white text-primary hover:bg-white/90 font-semibold px-4 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg hover-scale w-full sm:w-auto text-sm sm:text-base ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <Plus className={`h-4 w-4 sm:h-5 sm:w-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t('dashboard.createOffer')}
+              </Button>
+            </CreateOfferModal>
+          ) : (
+            <CreateRequestModal>
+              <Button className={`bg-white text-primary hover:bg-white/90 font-semibold px-4 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg hover-scale w-full sm:w-auto text-sm sm:text-base ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <Plus className={`h-4 w-4 sm:h-5 sm:w-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t('dashboard.createRequest')}
+              </Button>
+            </CreateRequestModal>
+          )}
         </div>
       </div>
 
@@ -113,19 +127,21 @@ export const ClientDashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
         {userProfile?.role === 'supplier' ? (
           <>
-            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer">
-              <CardHeader className="pb-4 p-4 sm:p-6">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-primary/20 to-accent/20 rounded-xl sm:rounded-2xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300 mb-3 sm:mb-4">
-                  <Plus className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
-                </div>
-                <CardTitle className="text-lg sm:text-xl">Create New Offer</CardTitle>
-                <CardDescription className="text-sm sm:text-base leading-relaxed">
-                  Submit offers for client requests and grow your business
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            <CreateOfferModal>
+              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer">
+                <CardHeader className="pb-4 p-4 sm:p-6">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-primary/20 to-accent/20 rounded-xl sm:rounded-2xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300 mb-3 sm:mb-4">
+                    <Plus className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
+                  </div>
+                  <CardTitle className="text-lg sm:text-xl">Create New Offer</CardTitle>
+                  <CardDescription className="text-sm sm:text-base leading-relaxed">
+                    Submit offers for client requests and grow your business
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </CreateOfferModal>
 
-            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer">
+            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={() => window.location.href = '/my-offers'}>
               <CardHeader className="pb-4 p-4 sm:p-6">
                 <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-accent/20 to-lime/20 rounded-xl sm:rounded-2xl flex items-center justify-center group-hover:from-accent/30 group-hover:to-lime/30 transition-all duration-300 mb-3 sm:mb-4">
                   <Package className="h-6 w-6 sm:h-8 sm:w-8 text-accent" />
@@ -137,7 +153,7 @@ export const ClientDashboard = () => {
               </CardHeader>
             </Card>
 
-            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer sm:col-span-2 lg:col-span-1">
+            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer sm:col-span-2 lg:col-span-1" onClick={() => window.location.href = '/browse-requests'}>
               <CardHeader className="pb-4 p-4 sm:p-6">
                 <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-lime/20 to-primary/20 rounded-xl sm:rounded-2xl flex items-center justify-center group-hover:from-lime/30 group-hover:to-primary/30 transition-all duration-300 mb-3 sm:mb-4">
                   <FileText className="h-6 w-6 sm:h-8 sm:w-8 text-lime" />
@@ -151,19 +167,21 @@ export const ClientDashboard = () => {
           </>
         ) : (
           <>
-            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer">
-              <CardHeader className="pb-4 p-4 sm:p-6">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-primary/20 to-accent/20 rounded-xl sm:rounded-2xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300 mb-3 sm:mb-4">
-                  <Plus className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
-                </div>
-                <CardTitle className="text-lg sm:text-xl">{t('dashboard.createRequest')}</CardTitle>
-                <CardDescription className="text-sm sm:text-base leading-relaxed">
-                  Post a new service request and get offers from suppliers
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            <CreateRequestModal>
+              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer">
+                <CardHeader className="pb-4 p-4 sm:p-6">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-primary/20 to-accent/20 rounded-xl sm:rounded-2xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300 mb-3 sm:mb-4">
+                    <Plus className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
+                  </div>
+                  <CardTitle className="text-lg sm:text-xl">{t('dashboard.createRequest')}</CardTitle>
+                  <CardDescription className="text-sm sm:text-base leading-relaxed">
+                    Post a new service request and get offers from suppliers
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </CreateRequestModal>
 
-            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer">
+            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={() => window.location.href = '/requests'}>
               <CardHeader className="pb-4 p-4 sm:p-6">
                 <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-accent/20 to-lime/20 rounded-xl sm:rounded-2xl flex items-center justify-center group-hover:from-accent/30 group-hover:to-lime/30 transition-all duration-300 mb-3 sm:mb-4">
                   <FileText className="h-6 w-6 sm:h-8 sm:w-8 text-accent" />
@@ -175,7 +193,7 @@ export const ClientDashboard = () => {
               </CardHeader>
             </Card>
 
-            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer sm:col-span-2 lg:col-span-1">
+            <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer sm:col-span-2 lg:col-span-1" onClick={() => window.location.href = '/suppliers'}>
               <CardHeader className="pb-4 p-4 sm:p-6">
                 <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-lime/20 to-primary/20 rounded-xl sm:rounded-2xl flex items-center justify-center group-hover:from-lime/30 group-hover:to-primary/30 transition-all duration-300 mb-3 sm:mb-4">
                   <Users className="h-6 w-6 sm:h-8 sm:w-8 text-lime" />
@@ -305,9 +323,12 @@ export const ClientDashboard = () => {
                   }`}>
                     {item.status === 'in_progress' ? 'In Progress' : item.status}
                   </span>
-                  <Button variant="outline" size="sm" className="hover-scale w-full sm:w-auto text-xs sm:text-sm">
-                    {t('common.view')}
-                  </Button>
+                  <ViewDetailsModal item={item} userRole={userProfile?.role}>
+                    <Button variant="outline" size="sm" className="hover-scale w-full sm:w-auto text-xs sm:text-sm">
+                      <Eye className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                      {isRTL ? 'عرض' : 'View'}
+                    </Button>
+                  </ViewDetailsModal>
                 </div>
               </div>
             ))}
