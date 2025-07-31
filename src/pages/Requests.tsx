@@ -5,9 +5,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Plus, FileText, Clock, Eye } from "lucide-react";
-import { useState } from "react";
+import { Plus, FileText, Clock, Eye, Search, Filter, Calendar, DollarSign, MapPin } from "lucide-react";
+import { useState, useMemo } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 import { CreateRequestModal } from "@/components/modals/CreateRequestModal";
 
@@ -15,6 +18,9 @@ export const Requests = () => {
   const { t } = useLanguage();
   const { userProfile } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [categoryFilter, setCategoryFilter] = useState("all");
   const { toast } = useToast();
 
   const handleEditRequest = (requestTitle: string) => {
@@ -39,7 +45,10 @@ export const Requests = () => {
       status: "active", 
       offers: 3, 
       budget: "18,800 - 30,000",
-      deadline: "Mar 20, 2024"
+      deadline: "Mar 20, 2024",
+      description: "Professional audio-visual equipment for a 500-person corporate conference",
+      urgency: "High",
+      location: "Riyadh"
     },
     { 
       id: 2, 
@@ -48,7 +57,10 @@ export const Requests = () => {
       status: "pending", 
       offers: 0, 
       budget: "11,300 - 18,800",
-      deadline: "Mar 25, 2024"
+      deadline: "Mar 25, 2024",
+      description: "Full catering service for corporate event with 200 attendees",
+      urgency: "Medium",
+      location: "Jeddah"
     },
     { 
       id: 3, 
@@ -57,7 +69,34 @@ export const Requests = () => {
       status: "completed", 
       offers: 5, 
       budget: "37,500 - 56,300",
-      deadline: "Mar 15, 2024"
+      deadline: "Mar 15, 2024",
+      description: "Custom booth design and setup for international trade exhibition",
+      urgency: "Low",
+      location: "Dammam"
+    },
+    {
+      id: 4,
+      title: "Photography Services",
+      category: "Photography",
+      status: "active",
+      offers: 2,
+      budget: "5,000 - 8,000",
+      deadline: "Apr 5, 2024",
+      description: "Professional photography for product launch event",
+      urgency: "Medium",
+      location: "Riyadh"
+    },
+    {
+      id: 5,
+      title: "Event Security Services",
+      category: "Security",
+      status: "pending",
+      offers: 1,
+      budget: "15,000 - 25,000",
+      deadline: "Apr 12, 2024",
+      description: "Security personnel for large outdoor event",
+      urgency: "High",
+      location: "Mecca"
     }
   ];
 
@@ -69,6 +108,36 @@ export const Requests = () => {
       default: return 'bg-gray-100 text-gray-800';
     }
   };
+
+  const getUrgencyColor = (urgency: string) => {
+    switch (urgency) {
+      case 'High': return 'destructive';
+      case 'Medium': return 'default';
+      case 'Low': return 'secondary';
+      default: return 'default';
+    }
+  };
+
+  // Filter and search logic
+  const filteredRequests = useMemo(() => {
+    return requests.filter(request => {
+      // Search filter
+      const searchLower = searchTerm.toLowerCase();
+      const matchesSearch = searchTerm === "" || 
+        request.title.toLowerCase().includes(searchLower) ||
+        request.category.toLowerCase().includes(searchLower) ||
+        request.description.toLowerCase().includes(searchLower) ||
+        request.location.toLowerCase().includes(searchLower);
+
+      // Status filter
+      const matchesStatus = statusFilter === "all" || request.status === statusFilter;
+
+      // Category filter
+      const matchesCategory = categoryFilter === "all" || request.category === categoryFilter;
+
+      return matchesSearch && matchesStatus && matchesCategory;
+    });
+  }, [requests, searchTerm, statusFilter, categoryFilter]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -105,6 +174,62 @@ export const Requests = () => {
               </div>
             </div>
 
+            {/* Enhanced Search and Filters */}
+            <Card className="border-0 bg-card/70 backdrop-blur-sm overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5 p-4 sm:p-6">
+                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Search className="h-5 w-5 text-primary" />
+                  </div>
+                  Search & Filter Requests
+                </CardTitle>
+                <CardDescription className="text-sm sm:text-base">Find specific requests quickly</CardDescription>
+              </CardHeader>
+              <CardContent className="p-4 sm:p-6">
+                <div className="space-y-4">
+                  {/* Search bar */}
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input 
+                      placeholder="Search by title, category, or location..."
+                      className="pl-10 h-12 text-sm sm:text-base bg-background/50 border-primary/20 focus:border-primary/50"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </div>
+                  
+                  {/* Filter selects */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <Select value={statusFilter} onValueChange={setStatusFilter}>
+                      <SelectTrigger className="h-12 bg-background/50 border-primary/20">
+                        <SelectValue placeholder="Filter by status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Statuses</SelectItem>
+                        <SelectItem value="active">Active</SelectItem>
+                        <SelectItem value="pending">Pending</SelectItem>
+                        <SelectItem value="completed">Completed</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    
+                    <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                      <SelectTrigger className="h-12 bg-background/50 border-primary/20">
+                        <SelectValue placeholder="Filter by category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Categories</SelectItem>
+                        <SelectItem value="AVL">AVL Equipment</SelectItem>
+                        <SelectItem value="Hospitality">Hospitality</SelectItem>
+                        <SelectItem value="Booth Stands">Booth Stands</SelectItem>
+                        <SelectItem value="Photography">Photography</SelectItem>
+                        <SelectItem value="Security">Security</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Enhanced Stats - Dashboard style */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
               <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
@@ -115,8 +240,10 @@ export const Requests = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="p-4 sm:p-6 pt-0">
-                  <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">3</div>
-                  <p className="text-xs text-muted-foreground mt-1">+2 from last month</p>
+                  <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                    {filteredRequests.filter(r => r.status === 'active').length}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">Currently active</p>
                 </CardContent>
               </Card>
               
@@ -128,8 +255,10 @@ export const Requests = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="p-4 sm:p-6 pt-0">
-                  <div className="text-3xl font-bold bg-gradient-to-r from-lime to-primary bg-clip-text text-transparent">8</div>
-                  <p className="text-xs text-muted-foreground mt-1">Received this month</p>
+                  <div className="text-3xl font-bold bg-gradient-to-r from-lime to-primary bg-clip-text text-transparent">
+                    {filteredRequests.reduce((sum, r) => sum + r.offers, 0)}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">Total offers received</p>
                 </CardContent>
               </Card>
               
@@ -141,7 +270,9 @@ export const Requests = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="p-4 sm:p-6 pt-0">
-                  <div className="text-3xl font-bold bg-gradient-to-r from-accent to-lime bg-clip-text text-transparent">2</div>
+                  <div className="text-3xl font-bold bg-gradient-to-r from-accent to-lime bg-clip-text text-transparent">
+                    {filteredRequests.filter(r => r.status === 'completed').length}
+                  </div>
                   <p className="text-xs text-muted-foreground mt-1">Successfully completed</p>
                 </CardContent>
               </Card>
@@ -159,8 +290,17 @@ export const Requests = () => {
                 <CardDescription className="text-sm sm:text-base">Track and manage all your requests in one place</CardDescription>
               </CardHeader>
               <CardContent className="p-0">
-                <div className="divide-y">
-                  {requests.map((request, index) => (
+                {filteredRequests.length === 0 ? (
+                  <div className="text-center py-12">
+                    <div className="text-muted-foreground">
+                      <Search className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <h3 className="text-lg font-semibold mb-2">No requests found</h3>
+                      <p>Try adjusting your search terms or filters</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="divide-y">
+                    {filteredRequests.map((request, index) => (
                     <div key={request.id} className="p-4 sm:p-6 hover:bg-muted/50 transition-all duration-200">
                       {/* Mobile-first layout */}
                       <div className="space-y-4">
@@ -173,8 +313,20 @@ export const Requests = () => {
                                 request.status === 'pending' ? 'bg-accent' : 'bg-primary'
                               }`}></div>
                               <div className="flex-1">
-                                <h3 className="text-base sm:text-lg font-semibold mb-1 line-clamp-1">{request.title}</h3>
-                                <p className="text-sm text-muted-foreground mb-2">{request.category}</p>
+                                <div className="flex items-start justify-between mb-2">
+                                  <h3 className="text-base sm:text-lg font-semibold line-clamp-1">{request.title}</h3>
+                                  <Badge variant={getUrgencyColor(request.urgency) as any} className="ml-2 text-xs">
+                                    {request.urgency}
+                                  </Badge>
+                                </div>
+                                <p className="text-sm text-muted-foreground mb-2">{request.description}</p>
+                                <div className="flex items-center gap-4 mb-2">
+                                  <span className="text-sm text-primary font-medium">{request.category}</span>
+                                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                                    <MapPin className="h-3 w-3" />
+                                    <span>{request.location}</span>
+                                  </div>
+                                </div>
                                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(request.status)}`}>
                                   {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
                                 </span>
@@ -253,8 +405,9 @@ export const Requests = () => {
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
