@@ -10,6 +10,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import ContactSalesForm from "@/components/ContactSalesForm";
+import { SmartLogoLink } from "@/components/SmartLogoLink";
 
 const Pricing = () => {
   const { language } = useLanguage();
@@ -66,7 +67,7 @@ const Pricing = () => {
   const clientPricingPlans = [
     {
       name: isArabic ? "استكشاف مجاني" : "Explore Free",
-      price: isArabic ? "0 ﷼" : "0 SAR",
+      price: isArabic ? "0 ر.س" : "0 SAR",
       amount: 0,
       popular: false,
       features: [
@@ -77,7 +78,7 @@ const Pricing = () => {
     },
     {
       name: isArabic ? "نمو الأعمال" : "Business Growth", 
-      price: isArabic ? "299 ﷼" : "299 SAR",
+      price: isArabic ? "299 ر.س" : "299 SAR",
       amount: 299,
       popular: true,
       features: [
@@ -89,7 +90,7 @@ const Pricing = () => {
     },
     {
       name: isArabic ? "التميز المهني" : "Professional Excellence",
-      price: isArabic ? "799 ﷼" : "799 SAR",
+      price: isArabic ? "799 ر.س" : "799 SAR",
       amount: 799,
       popular: false,
       features: [
@@ -121,7 +122,7 @@ const Pricing = () => {
   const supplierPricingPlans = [
     {
       name: isArabic ? "استكشاف مجاني" : "Explore Free",
-      price: isArabic ? "0 ﷼" : "0 SAR",
+      price: isArabic ? "0 ر.س" : "0 SAR",
       amount: 0,
       popular: false,
       features: [
@@ -132,7 +133,7 @@ const Pricing = () => {
     },
     {
       name: isArabic ? "نمو الأعمال" : "Business Growth",
-      price: isArabic ? "299 ﷼" : "299 SAR",
+      price: isArabic ? "299 ر.س" : "299 SAR",
       amount: 299,
       popular: true,
       features: [
@@ -144,7 +145,7 @@ const Pricing = () => {
     },
     {
       name: isArabic ? "التميز المهني" : "Professional Excellence",
-      price: isArabic ? "799 ﷼" : "799 SAR",
+      price: isArabic ? "799 ر.س" : "799 SAR",
       amount: 799,
       popular: false,
       features: [
@@ -179,13 +180,13 @@ const Pricing = () => {
       {/* Header */}
       <header className="border-b bg-card/95 backdrop-blur-md sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
+          <SmartLogoLink className="flex items-center gap-2">
             <img 
               src="/lovable-uploads/supplify-logo-white-bg.png" 
               alt="Supplify"
               className="h-8 w-auto"
             />
-          </Link>
+          </SmartLogoLink>
           
           <div className="flex items-center gap-4">
             <div className="hidden md:block">

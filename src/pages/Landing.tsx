@@ -7,6 +7,7 @@ import { Check, ArrowRight, Users, Shield, Zap, Award, TrendingUp, Clock, Star, 
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
+import { SmartLogoLink } from "@/components/SmartLogoLink";
 
 export const Landing = () => {
   const { t, language } = useLanguage();
@@ -93,13 +94,13 @@ export const Landing = () => {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo - Always positioned based on language */}
           <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
-            <Link to="/" className="flex items-center gap-3">
+            <SmartLogoLink className="flex items-center gap-3">
               <img 
                 src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
                 alt="Supplify Logo"
                 className="h-24 w-auto hover:scale-105 transition-transform"
               />
-            </Link>
+            </SmartLogoLink>
           </div>
           
           {/* Navigation - Center */}
