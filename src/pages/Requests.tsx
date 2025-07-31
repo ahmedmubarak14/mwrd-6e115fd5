@@ -6,32 +6,12 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Plus, FileText, Clock, Eye } from "lucide-react";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export const Requests = () => {
   const { t } = useLanguage();
-  const { user, userProfile, loading } = useAuth();
-  const navigate = useNavigate();
+  const { userProfile } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    if (!user && !loading) {
-      navigate('/home', { replace: true });
-    }
-  }, [user, loading, navigate]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  if (!user || !userProfile) {
-    return null; // Will redirect via useEffect
-  }
 
   const requests = [
     { 

@@ -12,12 +12,10 @@ import { WhyStartWithSupplify } from "./pages/WhyStartWithSupplify";
 import { WhyMoveToSupplify } from "./pages/WhyMoveToSupplify";
 import { Requests } from "./pages/Requests";
 import { Suppliers } from "./pages/Suppliers";
-import Pricing from "./pages/Pricing";
+import { Pricing } from "./pages/Pricing";
 import { Profile } from "./pages/Profile";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { ExpertConsultation } from "./pages/ExpertConsultation";
-import PaymentSuccess from "./pages/PaymentSuccess";
-import PaymentCancelled from "./pages/PaymentCancelled";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -43,8 +41,6 @@ const App = () => (
               <Route path="/profile" element={<Profile />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/expert-consultation" element={<ExpertConsultation />} />
-              <Route path="/payment-success" element={<PaymentSuccess />} />
-              <Route path="/payment-cancelled" element={<PaymentCancelled />} />
               <Route path="/client-dashboard" element={<Index />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
