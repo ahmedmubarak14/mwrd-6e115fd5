@@ -238,37 +238,22 @@ export const ClientDashboard = () => {
               </div>
             </div>
 
-            {/* Subscription Actions */}
+            {/* Quick Access to Full Management */}
             <div className="space-y-4">
-              <div className="p-4 bg-accent/5 rounded-lg border border-accent/20">
+              <div className="p-4 bg-accent/5 rounded-lg border border-accent/20 text-center">
                 <h4 className="font-semibold text-lg mb-3 text-accent">
-                  {isRTL ? 'خيارات الإدارة' : 'Management Options'}
+                  {isRTL ? 'إدارة شاملة' : 'Full Management'}
                 </h4>
-                <div className="space-y-3">
-                  <Button 
-                    className="w-full bg-gradient-to-r from-primary to-accent hover-scale"
-                    onClick={handleUpgradeSubscription}
-                  >
-                    <TrendingUp className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                    {isRTL ? 'ترقية الاشتراك' : 'Upgrade Subscription'}
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="w-full hover-scale"
-                    onClick={handleViewBilling}
-                  >
-                    <Eye className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                    {isRTL ? 'عرض تفاصيل الفوترة' : 'View Billing Details'}
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="w-full hover-scale"
-                    onClick={handleChangePayment}
-                  >
-                    <Clock className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                    {isRTL ? 'تغيير طريقة الدفع' : 'Change Payment Method'}
-                  </Button>
-                </div>
+                <p className="text-muted-foreground mb-4 text-sm">
+                  {isRTL ? 'للوصول إلى جميع خيارات إدارة الاشتراك' : 'Access all subscription management options'}
+                </p>
+                <Button 
+                  className="w-full bg-gradient-to-r from-primary to-accent hover-scale"
+                  onClick={() => window.location.href = '/manage-subscription'}
+                >
+                  <TrendingUp className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                  {isRTL ? 'إدارة الاشتراك' : 'Manage Subscription'}
+                </Button>
               </div>
             </div>
           </div>
