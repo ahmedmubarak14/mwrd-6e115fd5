@@ -15,7 +15,8 @@ import {
   Users, 
   Calendar,
   CheckCircle,
-  MessageCircle
+  MessageCircle,
+  Video
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -106,11 +107,11 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
             <div className="flex flex-col gap-2">
               <Button className="bg-gradient-to-r from-primary to-accent">
                 <MessageCircle className="h-4 w-4 mr-2" />
-                Contact Now
+                Send Message
               </Button>
               <Button variant="outline">
-                <Phone className="h-4 w-4 mr-2" />
-                Call
+                <Video className="h-4 w-4 mr-2" />
+                Video Call
               </Button>
             </div>
           </div>
@@ -212,23 +213,24 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
             </CardContent>
           </Card>
 
-          {/* Contact Information */}
+          {/* Communication Section */}
           <Card>
             <CardHeader>
-              <CardTitle>Contact Information</CardTitle>
+              <CardTitle>Communication</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="flex items-center gap-3">
-                <Phone className="h-4 w-4 text-muted-foreground" />
-                <span>+966 50 123 4567</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Mail className="h-4 w-4 text-muted-foreground" />
-                <span>contact@{supplierInfo.name.toLowerCase().replace(/\s+/g, '')}.com</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Globe className="h-4 w-4 text-muted-foreground" />
-                <span>www.{supplierInfo.name.toLowerCase().replace(/\s+/g, '')}.com</span>
+              <p className="text-sm text-muted-foreground mb-4">
+                All communication with this supplier happens within the Supplify platform to ensure security and transparency.
+              </p>
+              <div className="flex gap-2">
+                <Button className="flex-1">
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                  Chat Now
+                </Button>
+                <Button variant="outline" className="flex-1">
+                  <Video className="h-4 w-4 mr-2" />
+                  Video Call
+                </Button>
               </div>
             </CardContent>
           </Card>

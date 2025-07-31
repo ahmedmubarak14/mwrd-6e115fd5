@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -8,13 +8,93 @@ import { Sidebar } from "@/components/ui/layout/Sidebar";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { TrendingUp, Eye, Clock, CreditCard, Calendar, DollarSign, CheckCircle } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { EnterpriseConsultationModal } from "@/components/modals/EnterpriseConsultationModal";
 
 export const ManageSubscription = () => {
   const { user, userProfile, loading } = useAuth();
   const { t, language } = useLanguage();
+  const { toast } = useToast();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeView, setActiveView] = useState<'overview' | 'upgrade' | 'billing' | 'payment'>('overview');
+  const [subscriptionData, setSubscriptionData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const isRTL = language === 'ar';
+
+  // Check subscription status on component load
+  useEffect(() => {
+    if (user) {
+      checkSubscription();
+    }
+  }, [user]);
+
+  const checkSubscription = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('check-subscription');
+      if (error) throw error;
+      setSubscriptionData(data);
+    } catch (error: any) {
+      console.error('Error checking subscription:', error);
+      toast({
+        title: "Error",
+        description: "Failed to check subscription status",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleUpgrade = async (plan: string) => {
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: { plan }
+      });
+      if (error) throw error;
+      
+      // Open checkout in new tab (dummy functionality)
+      window.open(data.url, '_blank');
+      
+      toast({
+        title: "Redirecting to Checkout",
+        description: `Processing upgrade to ${plan} plan...`,
+      });
+    } catch (error: any) {
+      console.error('Error creating checkout:', error);
+      toast({
+        title: "Error",
+        description: "Failed to process upgrade",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleManageSubscription = async () => {
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('customer-portal');
+      if (error) throw error;
+      
+      // Open customer portal in new tab (dummy functionality)
+      window.open(data.url, '_blank');
+      
+      toast({
+        title: "Opening Customer Portal",
+        description: "Redirecting to subscription management...",
+      });
+    } catch (error: any) {
+      console.error('Error opening customer portal:', error);
+      toast({
+        title: "Error",
+        description: "Failed to open customer portal",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleAuthSuccess = (userData: { id: string; email: string; role: 'client' | 'supplier' }) => {
     // Already handled by useEffect
@@ -45,35 +125,43 @@ export const ManageSubscription = () => {
       </CardHeader>
       <CardContent className="p-4 sm:p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Basic Plan */}
-          <Card className="border-2 border-muted">
-            <CardHeader className="text-center">
-              <CardTitle className="text-lg">{isRTL ? 'نمو الأعمال' : 'Business Growth'}</CardTitle>
-              <div className="text-3xl font-bold flex items-baseline justify-center gap-2">
-                299
-                <img 
-                  src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
-                  alt="SAR" 
-                  className="h-6 w-6 opacity-80"
-                />
-                <span className="text-sm text-muted-foreground">{isRTL ? '/شهر' : '/month'}</span>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
-                <span className="text-sm">{isRTL ? 'حتى 8 طلبات خدمة شهرياً' : 'Up to 8 service requests per month'}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
-                <span className="text-sm">{isRTL ? 'أولوية في المطابقة الذكية' : 'Priority smart matching'}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
-                <span className="text-sm">{isRTL ? 'دعم فني متخصص' : 'Specialist technical support'}</span>
-              </div>
-            </CardContent>
-          </Card>
+            {/* Basic Plan */}
+            <Card className="border-2 border-muted">
+              <CardHeader className="text-center">
+                <CardTitle className="text-lg">{isRTL ? 'نمو الأعمال' : 'Business Growth'}</CardTitle>
+                <div className="text-3xl font-bold flex items-baseline justify-center gap-2">
+                  299
+                  <img 
+                    src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
+                    alt="SAR" 
+                    className="h-6 w-6 opacity-80"
+                  />
+                  <span className="text-sm text-muted-foreground">{isRTL ? '/شهر' : '/month'}</span>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <span className="text-sm">{isRTL ? 'حتى 8 طلبات خدمة شهرياً' : 'Up to 8 service requests per month'}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <span className="text-sm">{isRTL ? 'أولوية في المطابقة الذكية' : 'Priority smart matching'}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <span className="text-sm">{isRTL ? 'دعم فني متخصص' : 'Specialist technical support'}</span>
+                </div>
+                <Button 
+                  className="w-full mt-4"
+                  variant="outline"
+                  onClick={() => handleUpgrade('Basic')}
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Processing..." : (isRTL ? 'الترقية للأساسي' : 'Upgrade to Basic')}
+                </Button>
+              </CardContent>
+            </Card>
 
           {/* Premium Plan - Current */}
           <Card className="border-2 border-primary bg-primary/5">
@@ -137,9 +225,11 @@ export const ManageSubscription = () => {
                 <CheckCircle className="h-4 w-4 text-green-500" />
                 <span className="text-sm">{isRTL ? 'استشارات تحول رقمي' : 'Digital transformation consultancy'}</span>
               </div>
-              <Button className="w-full mt-4 bg-gradient-to-r from-accent to-primary">
-                {isRTL ? 'ترقية للمؤسسات' : 'Upgrade to Enterprise'}
-              </Button>
+              <EnterpriseConsultationModal>
+                <Button className="w-full mt-4 bg-gradient-to-r from-accent to-primary">
+                  {isRTL ? 'طلب استشارة مؤسسات' : 'Request Enterprise Consultation'}
+                </Button>
+              </EnterpriseConsultationModal>
             </CardContent>
           </Card>
         </div>
@@ -396,6 +486,15 @@ export const ManageSubscription = () => {
                   >
                     <Clock className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                     {isRTL ? 'تغيير طريقة الدفع' : 'Change Payment Method'}
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full hover-scale"
+                    onClick={handleManageSubscription}
+                    disabled={isLoading}
+                  >
+                    <CreditCard className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                    {isLoading ? "Opening..." : (isRTL ? 'إدارة الاشتراك' : 'Manage Subscription')}
                   </Button>
                 </div>
               </div>
