@@ -14,7 +14,7 @@ interface ViewDetailsModalProps {
     status: string;
     currency?: boolean;
   };
-  userRole?: 'client' | 'supplier';
+  userRole?: 'client' | 'supplier' | 'admin';
 }
 
 export const ViewDetailsModal = ({ children, item, userRole = 'client' }: ViewDetailsModalProps) => {
@@ -39,6 +39,24 @@ export const ViewDetailsModal = ({ children, item, userRole = 'client' }: ViewDe
         budget: item.value,
         clientRating: "4.8",
         responseDeadline: "March 10, 2024"
+      };
+    } else if (userRole === 'admin') {
+      // Admin view combines both client and supplier perspectives
+      return {
+        description: "Administrative view of request with full details",
+        client: "Happy Events Co.",
+        supplier: "TechAudio Pro", 
+        offers: [
+          { supplier: "TechAudio Pro", price: "12,500", rating: "4.9", delivery: "2 days" },
+          { supplier: "Event Solutions", price: "11,800", rating: "4.7", delivery: "3 days" }
+        ],
+        location: "Riyadh International Convention Center",
+        eventDate: "March 25, 2024",
+        budget: item.value,
+        clientRating: "4.8",
+        category: "Audio, Visual & Lighting",
+        urgency: "Medium",
+        createdDate: "March 5, 2024"
       };
     } else {
       return {
@@ -85,6 +103,8 @@ export const ViewDetailsModal = ({ children, item, userRole = 'client' }: ViewDe
           <DialogDescription className={isRTL ? "text-right" : "text-left"}>
             {userRole === 'supplier' 
               ? (isRTL ? "تفاصيل طلب العميل" : "Client Request Details")
+              : userRole === 'admin'
+              ? (isRTL ? "عرض إداري للطلب" : "Administrative Request View")
               : (isRTL ? "تفاصيل الطلب والعروض" : "Request Details and Offers")
             }
           </DialogDescription>
@@ -127,7 +147,7 @@ export const ViewDetailsModal = ({ children, item, userRole = 'client' }: ViewDe
               </div>
             )}
 
-            {userRole === 'supplier' && 'budget' in details && (
+            {(userRole === 'supplier' || userRole === 'admin') && 'budget' in details && (
               <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm">
@@ -162,8 +182,8 @@ export const ViewDetailsModal = ({ children, item, userRole = 'client' }: ViewDe
             </div>
           )}
 
-          {/* Offers for Clients */}
-          {userRole === 'client' && 'offers' in details && (
+          {/* Offers for Clients and Admins */}
+          {(userRole === 'client' || userRole === 'admin') && 'offers' in details && (
             <div>
               <h4 className={`font-semibold mb-3 ${isRTL ? 'text-right' : 'text-left'}`}>
                 {isRTL ? "العروض المتاحة" : "Available Offers"}
@@ -193,8 +213,8 @@ export const ViewDetailsModal = ({ children, item, userRole = 'client' }: ViewDe
             </div>
           )}
 
-          {/* Client Rating for Suppliers */}
-          {userRole === 'supplier' && 'clientRating' in details && (
+          {/* Client Rating for Suppliers and Admins */}
+          {(userRole === 'supplier' || userRole === 'admin') && 'clientRating' in details && (
             <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <User className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">
@@ -216,6 +236,15 @@ export const ViewDetailsModal = ({ children, item, userRole = 'client' }: ViewDe
               </Button>
               <Button className="flex-1">
                 {isRTL ? "إرسال عرض" : "Submit Offer"}
+              </Button>
+            </>
+          ) : userRole === 'admin' ? (
+            <>
+              <Button variant="outline" className="flex-1">
+                {isRTL ? "تعديل" : "Edit"}
+              </Button>
+              <Button className="flex-1">
+                {isRTL ? "إجراءات إدارية" : "Admin Actions"}
               </Button>
             </>
           ) : (
