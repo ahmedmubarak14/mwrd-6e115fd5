@@ -2,14 +2,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { DemoButton } from "@/components/demo/DemoButton";
-import { Check, ArrowRight, Users, Shield, Zap, Award, TrendingUp, Clock, Star, Play, ChevronDown, Building2, Calendar, CheckCircle, BarChart3, HeartHandshake, Sparkles } from "lucide-react";
+import { Check, ArrowRight, Users, Shield, Zap, Award, TrendingUp, Clock, Star, Play, ChevronDown, Building2, Calendar, CheckCircle, BarChart3, HeartHandshake, Sparkles, User, Mail } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
 
 export const Landing = () => {
   const { t, language } = useLanguage();
+  const { user, userProfile, loading } = useAuth();
 
   const impactStats = [
     { 
@@ -85,6 +87,13 @@ export const Landing = () => {
     }
   ];
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -131,16 +140,26 @@ export const Landing = () => {
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>
-            <Link to="/home" className="hidden md:block">
-              <Button variant="ghost" size="sm" className="hover-scale">
-                {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
-              </Button>
-            </Link>
-            <Link to="/home" className="hidden md:block">
-              <Button size="sm" className="hover-scale bg-gradient-to-r from-primary to-accent">
-                {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
-              </Button>
-            </Link>
+            {user && userProfile ? (
+              <Link to="/dashboard" className="hidden md:block">
+                <Button size="sm" className="hover-scale bg-gradient-to-r from-primary to-accent">
+                  {t('language') === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
+                </Button>
+              </Link>
+            ) : (
+              <>
+                <Link to="/home" className="hidden md:block">
+                  <Button variant="ghost" size="sm" className="hover-scale">
+                    {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
+                  </Button>
+                </Link>
+                <Link to="/home" className="hidden md:block">
+                  <Button size="sm" className="hover-scale bg-gradient-to-r from-primary to-accent">
+                    {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
+                  </Button>
+                </Link>
+              </>
+            )}
             <MobileNavigation />
           </div>
         </div>
@@ -157,45 +176,140 @@ export const Landing = () => {
         
         <div className="container mx-auto text-center relative z-10">
           <div className="max-w-5xl mx-auto">
-            <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-6 py-2 mb-8 animate-fade-in">
-              <Sparkles className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-primary">
-                {language === 'ar' ? 'تمكين الشركات من جميع الأشكال والأحجام' : 'EMPOWERING BUSINESSES OF ALL SHAPES AND SIZES'}
-              </span>
-            </div>
-            
-            <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight animate-fade-in">
-              <span className="bg-gradient-to-r from-primary via-accent to-lime bg-clip-text text-transparent">
-                {language === 'ar' ? 'مستقبل تجارة الفعاليات' : 'The Future of Event Commerce'}
-              </span>
-              <br />
-              <span className="text-foreground/80 text-3xl md:text-4xl font-normal">
-                {language === 'ar' ? 'يبدأ هنا' : 'Starts Here'}
-              </span>
-            </h1>
-            
-            <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-in delay-200">
-              {language === 'ar' ? 
-                'منصة ذكية تعيد تعريف كيفية ربط منظمي الفعاليات بمقدمي الخدمات المتميزين في المملكة العربية السعودية' :
-                'An intelligent platform redefining how event organizers connect with exceptional service providers across Saudi Arabia'
-              }
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16 animate-fade-in delay-300">
-              <Link to="/home">
-                <Button size="lg" className="px-10 py-5 text-lg font-semibold shadow-xl hover-scale bg-gradient-to-r from-primary to-accent">
-                  {t('language') === 'ar' ? 'ابدأ رحلتك مجاناً' : 'Start Your Journey Free'}
-                  <ArrowRight className="ml-2 h-6 w-6" />
-                </Button>
-              </Link>
-              <DemoButton 
-                size="lg" 
-                variant="outline" 
-                className="px-10 py-5 text-lg border-2"
-              />
-            </div>
+            {user && userProfile ? (
+              // Logged-in user experience
+              <>
+                <div className="inline-flex items-center gap-2 bg-lime/10 rounded-full px-6 py-2 mb-8 animate-fade-in">
+                  <Shield className="h-4 w-4 text-lime" />
+                  <span className="text-sm font-medium text-lime">
+                    {language === 'ar' ? 'مرحباً بك' : 'Welcome Back'}
+                  </span>
+                </div>
+                
+                <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight animate-fade-in">
+                  <span className="bg-gradient-to-r from-primary via-accent to-lime bg-clip-text text-transparent">
+                    {language === 'ar' ? 'مرحباً، ' : 'Hello, '}{userProfile.full_name || userProfile.email}
+                  </span>
+                </h1>
+                
+                <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-in delay-200">
+                  {language === 'ar' ? 
+                    'أهلاً بك في حسابك الشخصي. يمكنك إدارة طلباتك وتصفح الخدمات من هنا' : 
+                    'Welcome to your personal account. You can manage your requests and browse services from here'
+                  }
+                </p>
 
-            {/* Enhanced Impact Stats */}
+                {/* User Details Card */}
+                <div className="max-w-2xl mx-auto mb-12">
+                  <Card className="bg-card/70 backdrop-blur-sm hover:shadow-xl transition-all duration-500 border-0">
+                    <CardHeader className="text-center pb-6">
+                      <CardTitle className="text-2xl font-bold mb-4 flex items-center justify-center gap-3">
+                        <User className="h-6 w-6 text-primary" />
+                        {language === 'ar' ? 'تفاصيل الحساب' : 'Account Details'}
+                      </CardTitle>
+                      <CardDescription className="text-base">
+                        {language === 'ar' ? 'معلومات حسابك الشخصي' : 'Your personal account information'}
+                      </CardDescription>
+                    </CardHeader>
+                    
+                    <CardContent className="space-y-4">
+                      <div className={`flex items-center gap-3 p-4 bg-primary/5 rounded-lg ${language === 'ar' ? 'flex-row-reverse text-right' : ''}`}>
+                        <Mail className="h-5 w-5 text-primary" />
+                        <div className="flex-1">
+                          <p className="text-sm text-muted-foreground">
+                            {language === 'ar' ? 'البريد الإلكتروني' : 'Email'}
+                          </p>
+                          <p className="font-medium">{userProfile.email}</p>
+                        </div>
+                      </div>
+                      
+                      {userProfile.company_name && (
+                        <div className={`flex items-center gap-3 p-4 bg-accent/5 rounded-lg ${language === 'ar' ? 'flex-row-reverse text-right' : ''}`}>
+                          <Building2 className="h-5 w-5 text-accent" />
+                          <div className="flex-1">
+                            <p className="text-sm text-muted-foreground">
+                              {language === 'ar' ? 'اسم الشركة' : 'Company Name'}
+                            </p>
+                            <p className="font-medium">{userProfile.company_name}</p>
+                          </div>
+                        </div>
+                      )}
+                      
+                      <div className={`flex items-center gap-3 p-4 bg-lime/5 rounded-lg ${language === 'ar' ? 'flex-row-reverse text-right' : ''}`}>
+                        <Shield className="h-5 w-5 text-lime" />
+                        <div className="flex-1">
+                          <p className="text-sm text-muted-foreground">
+                            {language === 'ar' ? 'نوع الحساب' : 'Account Type'}
+                          </p>
+                          <p className="font-medium capitalize">
+                            {userProfile.role === 'client' ? (language === 'ar' ? 'عميل' : 'Client') : 
+                             userProfile.role === 'supplier' ? (language === 'ar' ? 'مقدم خدمة' : 'Supplier') :
+                             userProfile.role === 'admin' ? (language === 'ar' ? 'مدير' : 'Admin') : userProfile.role}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+                
+                <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16 animate-fade-in delay-300">
+                  <Link to="/dashboard">
+                    <Button size="lg" className="px-10 py-5 text-lg font-semibold shadow-xl hover-scale bg-gradient-to-r from-primary to-accent">
+                      {language === 'ar' ? 'انتقل إلى لوحة التحكم' : 'Go to Dashboard'}
+                      <ArrowRight className="ml-2 h-6 w-6" />
+                    </Button>
+                  </Link>
+                  <Link to="/pricing">
+                    <Button variant="outline" size="lg" className="px-10 py-5 text-lg border-2 hover-scale">
+                      {language === 'ar' ? 'إدارة الاشتراك' : 'Manage Subscription'}
+                    </Button>
+                  </Link>
+                </div>
+              </>
+            ) : (
+              // Anonymous user experience
+              <>
+                <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-6 py-2 mb-8 animate-fade-in">
+                  <Sparkles className="h-4 w-4 text-primary" />
+                  <span className="text-sm font-medium text-primary">
+                    {language === 'ar' ? 'تمكين الشركات من جميع الأشكال والأحجام' : 'EMPOWERING BUSINESSES OF ALL SHAPES AND SIZES'}
+                  </span>
+                </div>
+                
+                <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight animate-fade-in">
+                  <span className="bg-gradient-to-r from-primary via-accent to-lime bg-clip-text text-transparent">
+                    {language === 'ar' ? 'مستقبل تجارة الفعاليات' : 'The Future of Event Commerce'}
+                  </span>
+                  <br />
+                  <span className="text-foreground/80 text-3xl md:text-4xl font-normal">
+                    {language === 'ar' ? 'يبدأ هنا' : 'Starts Here'}
+                  </span>
+                </h1>
+                
+                <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-in delay-200">
+                  {language === 'ar' ? 
+                    'منصة ذكية تعيد تعريف كيفية ربط منظمي الفعاليات بمقدمي الخدمات المتميزين في المملكة العربية السعودية' :
+                    'An intelligent platform redefining how event organizers connect with exceptional service providers across Saudi Arabia'
+                  }
+                </p>
+                
+                <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16 animate-fade-in delay-300">
+                  <Link to="/home">
+                    <Button size="lg" className="px-10 py-5 text-lg font-semibold shadow-xl hover-scale bg-gradient-to-r from-primary to-accent">
+                      {t('language') === 'ar' ? 'ابدأ رحلتك مجاناً' : 'Start Your Journey Free'}
+                      <ArrowRight className="ml-2 h-6 w-6" />
+                    </Button>
+                  </Link>
+                  <DemoButton 
+                    size="lg" 
+                    variant="outline" 
+                    className="px-10 py-5 text-lg border-2"
+                  />
+                </div>
+              </>
+            )}
+
+            {/* Enhanced Impact Stats - Always visible */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto animate-fade-in delay-500">
               {impactStats.map((stat, index) => (
                 <Card key={index} className="text-center group hover:shadow-xl transition-all duration-300 border-0 bg-card/50 backdrop-blur-sm hover-scale">
