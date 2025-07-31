@@ -167,6 +167,80 @@ export const ClientDashboard = () => {
         )}
       </div>
 
+      {/* Subscription Management Section */}
+      <Card className="border-0 bg-card/70 backdrop-blur-sm">
+        <CardHeader className="p-4 sm:p-6">
+          <CardTitle className="text-xl sm:text-2xl flex items-center gap-3">
+            <TrendingUp className="h-6 w-6 text-primary" />
+            {isRTL ? 'إدارة الاشتراك' : 'Manage Subscription'}
+          </CardTitle>
+          <CardDescription className="text-sm sm:text-base">
+            {isRTL ? 'معلومات اشتراكك الحالي والتحكم فيه' : 'Your current subscription details and management options'}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="p-4 sm:p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Current Subscription Info */}
+            <div className="space-y-4">
+              <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+                <h4 className="font-semibold text-lg mb-3 text-primary">
+                  {isRTL ? 'الاشتراك الحالي' : 'Current Subscription'}
+                </h4>
+                <div className="space-y-3">
+                  <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <span className="text-muted-foreground text-sm">
+                      {isRTL ? 'الخطة:' : 'Plan:'}
+                    </span>
+                    <span className="font-medium">Premium Plan</span>
+                  </div>
+                  <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <span className="text-muted-foreground text-sm">
+                      {isRTL ? 'مدة الاشتراك:' : 'Duration:'}
+                    </span>
+                    <span className="font-medium">Monthly</span>
+                  </div>
+                  <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <span className="text-muted-foreground text-sm">
+                      {isRTL ? 'تاريخ التجديد:' : 'Next Billing:'}
+                    </span>
+                    <span className="font-medium">March 15, 2024</span>
+                  </div>
+                  <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <span className="text-muted-foreground text-sm">
+                      {isRTL ? 'الوقت المتبقي:' : 'Time Remaining:'}
+                    </span>
+                    <span className="font-medium text-lime">23 days</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Subscription Actions */}
+            <div className="space-y-4">
+              <div className="p-4 bg-accent/5 rounded-lg border border-accent/20">
+                <h4 className="font-semibold text-lg mb-3 text-accent">
+                  {isRTL ? 'خيارات الإدارة' : 'Management Options'}
+                </h4>
+                <div className="space-y-3">
+                  <Button className="w-full bg-gradient-to-r from-primary to-accent hover-scale">
+                    <TrendingUp className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                    {isRTL ? 'ترقية الاشتراك' : 'Upgrade Subscription'}
+                  </Button>
+                  <Button variant="outline" className="w-full hover-scale">
+                    <Eye className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                    {isRTL ? 'عرض تفاصيل الفوترة' : 'View Billing Details'}
+                  </Button>
+                  <Button variant="outline" className="w-full hover-scale">
+                    <Clock className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                    {isRTL ? 'تغيير طريقة الدفع' : 'Change Payment Method'}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Enhanced Recent Items - Universal for both user types */}
       <Card className="border-0 bg-card/70 backdrop-blur-sm">
         <CardHeader className="p-4 sm:p-6">

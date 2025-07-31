@@ -121,15 +121,10 @@ export const Home = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex justify-center items-center">
               <Link to="/dashboard">
                 <Button size="lg" className="hover-scale bg-gradient-to-r from-primary to-accent px-8">
                   {isRTL ? 'انتقل إلى لوحة التحكم' : 'Go to Dashboard'}
-                </Button>
-              </Link>
-              <Link to="/pricing">
-                <Button variant="outline" size="lg" className="hover-scale px-8">
-                  {isRTL ? 'إدارة الاشتراك' : 'Manage Subscription'}
                 </Button>
               </Link>
             </div>
