@@ -9,7 +9,8 @@ import {
   Package, 
   Users, 
   Settings,
-  BarChart3
+  BarChart3,
+  CreditCard
 } from "lucide-react";
 
 interface SidebarProps {
@@ -24,13 +25,15 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
     { icon: Home, label: t('nav.dashboard'), href: '/dashboard' },
     { icon: FileText, label: t('nav.requests'), href: '/requests' },
     { icon: Users, label: t('nav.suppliers'), href: '/suppliers' },
+    { icon: CreditCard, label: t('language') === 'ar' ? 'إدارة الاشتراك' : 'Manage Subscription', href: '/manage-subscription' },
     { icon: Settings, label: t('common.settings'), href: '/settings' },
   ];
 
   const supplierMenu = [
     { icon: Home, label: t('nav.dashboard'), href: '/dashboard' },
-    { icon: FileText, label: t('nav.requests'), href: '/browse-requests' },
+    { icon: FileText, label: t('language') === 'ar' ? 'تصفح الطلبات' : 'Browse Requests', href: '/browse-requests' },
     { icon: Package, label: t('nav.offers'), href: '/my-offers' },
+    { icon: CreditCard, label: t('language') === 'ar' ? 'إدارة الاشتراك' : 'Manage Subscription', href: '/manage-subscription' },
     { icon: Settings, label: t('common.settings'), href: '/settings' },
   ];
 
