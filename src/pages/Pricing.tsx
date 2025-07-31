@@ -62,10 +62,10 @@ const Pricing = () => {
     }
   };
 
-  // Client pricing plans matching the reference design exactly
+  // Client pricing plans matching the reference website exactly
   const clientPricingPlans = [
     {
-      name: isArabic ? "استكشاف مجاني" : "Explore Free",
+      name: isArabic ? "استكشاف مجاني" : "Freemium",
       price: "0",
       amount: 0,
       badge: isArabic ? "مجاني" : "Free",
@@ -79,7 +79,7 @@ const Pricing = () => {
       ]
     },
     {
-      name: isArabic ? "نمو الأعمال" : "Business Growth",
+      name: isArabic ? "نمو الأعمال" : "Business",
       price: "299",
       amount: 299,
       badge: isArabic ? "أفضل قيمة" : "Best Value", 
@@ -95,7 +95,7 @@ const Pricing = () => {
       ]
     },
     {
-      name: isArabic ? "التميز المهني" : "Professional Excellence",
+      name: isArabic ? "التميز المهني" : "Professional",
       price: "799",
       amount: 799,
       badge: isArabic ? "الأكثر شعبية" : "Most Popular",
@@ -113,7 +113,7 @@ const Pricing = () => {
       ]
     },
     {
-      name: isArabic ? "قيادة المؤسسات" : "Enterprise Leadership",
+      name: isArabic ? "قيادة المؤسسات" : "Enterprise",
       price: isArabic ? "مخصص" : "Custom",
       amount: 0,
       badge: isArabic ? "المؤسسات" : "Enterprise",
@@ -133,16 +133,18 @@ const Pricing = () => {
     }
   ];
 
-  // Supplier plans would be similar structure but different features
+  // Supplier plans with commission system as per reference website
   const supplierPricingPlans = [
     {
-      name: isArabic ? "استكشاف مجاني" : "Explore Free",
+      name: isArabic ? "البداية" : "Starter",
       price: "0",
       amount: 0,
+      commission: "15%",
       badge: isArabic ? "مجاني" : "Free",
       badgeColor: "bg-blue-600",
       description: isArabic ? "ابدأ رحلتك معنا واستكشف إمكانيات لا محدودة" : "Start your journey with us and explore unlimited possibilities",
       features: [
+        isArabic ? "عمولة 15% على كل عملية بيع" : "15% commission on each sale",
         isArabic ? "ملف تعريفي أساسي" : "Basic profile",
         isArabic ? "عرض 3 خدمات" : "Display 3 services",
         isArabic ? "دعم المجتمع" : "Community support",
@@ -150,13 +152,15 @@ const Pricing = () => {
       ]
     },
     {
-      name: isArabic ? "نمو الأعمال" : "Business Growth",
+      name: isArabic ? "الاحتراف" : "Professional",
       price: "299",
       amount: 299,
+      commission: "10%",
       badge: isArabic ? "أفضل قيمة" : "Best Value",
       badgeColor: "bg-teal-600",
       description: isArabic ? "حلول متكاملة للشركات النامية وطموحاتها" : "Integrated solutions for growing businesses and their ambitions",
       features: [
+        isArabic ? "عمولة 10% على كل عملية بيع" : "10% commission on each sale",
         isArabic ? "خدمات غير محدودة" : "Unlimited services",
         isArabic ? "أدوات تسويق" : "Marketing tools",
         isArabic ? "دعم تقني متخصص" : "Specialist technical support",
@@ -165,14 +169,16 @@ const Pricing = () => {
       ]
     },
     {
-      name: isArabic ? "التميز المهني" : "Professional Excellence",
+      name: isArabic ? "المتميز" : "Premium",
       price: "799",
       amount: 799,
+      commission: "5%",
       badge: isArabic ? "الأكثر شعبية" : "Most Popular",
       badgeColor: "bg-emerald-700",
       popular: true,
       description: isArabic ? "للشركات الرائدة التي تسعى للتميز والابتكار" : "For leading companies pursuing excellence and innovation",
       features: [
+        isArabic ? "عمولة 5% على كل عملية بيع" : "5% commission on each sale",
         isArabic ? "ترتيب أولوية في البحث" : "Priority search ranking",
         isArabic ? "شارة التحقق" : "Verified badge",
         isArabic ? "فريق دعم مخصص" : "Dedicated support team",
@@ -182,14 +188,16 @@ const Pricing = () => {
       ]
     },
     {
-      name: isArabic ? "قيادة المؤسسات" : "Enterprise Leadership",
+      name: isArabic ? "المؤسسات" : "Enterprise",
       price: isArabic ? "مخصص" : "Custom",
       amount: 0,
+      commission: isArabic ? "مخصص" : "Custom",
       badge: isArabic ? "المؤسسات" : "Enterprise",
       badgeColor: "bg-blue-600",
       isEnterprise: true,
       description: isArabic ? "حلول مؤسسية شاملة لقادة الصناعة" : "Complete enterprise solutions for industry leaders",
       features: [
+        isArabic ? "عمولة مخصصة حسب الحجم" : "Custom commission based on volume",
         isArabic ? "حلول مؤسسية شاملة" : "Complete enterprise solutions",
         isArabic ? "منصة بعلامة تجارية بيضاء" : "White-label platform",
         isArabic ? "فريق إدارة حساب مخصص" : "Dedicated account management team",
@@ -209,9 +217,9 @@ const Pricing = () => {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <SmartLogoLink className="flex items-center gap-2">
             <img 
-              src="/lovable-uploads/supplify-logo-white-bg.png" 
+              src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
               alt="Supplify"
-              className="h-8 w-auto"
+              className="h-12 w-auto"
             />
           </SmartLogoLink>
           
@@ -329,15 +337,19 @@ const Pricing = () => {
                     <span className="text-4xl font-bold text-gray-900">{plan.price}</span>
                     {plan.price !== (isArabic ? "مخصص" : "Custom") && (
                       <>
-                        <img 
-                          src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
-                          alt="Riyal" 
-                          className="w-6 h-6"
-                        />
+                        <span className="text-2xl font-medium text-gray-600">ريال</span>
                         <span className="text-gray-500 text-sm">/{isArabic ? 'شهر' : 'month'}</span>
                       </>
                     )}
                   </div>
+                  
+                  {selectedRole === 'supplier' && (plan as any).commission && (
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                      <span className="text-lg font-semibold text-accent">
+                        {isArabic ? 'عمولة: ' : 'Commission: '}{(plan as any).commission}
+                      </span>
+                    </div>
+                  )}
                   
                   <p className="text-sm text-gray-600 leading-relaxed">
                     {plan.description}

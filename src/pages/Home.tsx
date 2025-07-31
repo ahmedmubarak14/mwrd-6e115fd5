@@ -10,12 +10,12 @@ export const Home = () => {
 
   useEffect(() => {
     if (user && userProfile) {
-      navigate('/dashboard');
+      navigate('/dashboard', { replace: true });
     }
   }, [user, userProfile, navigate]);
 
   const handleAuthSuccess = (userData: { id: string; email: string; role: 'client' | 'supplier' }) => {
-    navigate('/dashboard');
+    navigate('/dashboard', { replace: true });
   };
 
   if (loading) {
@@ -26,9 +26,6 @@ export const Home = () => {
     );
   }
 
-  if (user && userProfile) {
-    return <Dashboard />;
-  }
-
+  // Only show auth form if not authenticated - don't render Dashboard here
   return <AuthForm onAuthSuccess={handleAuthSuccess} />;
 };

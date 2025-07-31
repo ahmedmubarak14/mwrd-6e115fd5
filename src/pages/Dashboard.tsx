@@ -18,7 +18,7 @@ export const Dashboard = () => {
 
   useEffect(() => {
     if (!user && !loading) {
-      navigate('/home');
+      navigate('/home', { replace: true });
     }
   }, [user, loading, navigate]);
 
