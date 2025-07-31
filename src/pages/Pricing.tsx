@@ -14,7 +14,7 @@ import ContactSalesForm from "@/components/ContactSalesForm";
 
 const Pricing = () => {
   const { language } = useLanguage();
-  const { user } = useAuth();
+  const { user, userProfile } = useAuth();
   const { toast } = useToast();
   const [selectedRole, setSelectedRole] = useState<'client' | 'supplier'>('client');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -211,7 +211,7 @@ const Pricing = () => {
   const currentPricingPlans = selectedRole === 'client' ? clientPricingPlans : supplierPricingPlans;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
       {/* Header */}
       <header className="border-b bg-white/95 backdrop-blur-md sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -227,16 +227,39 @@ const Pricing = () => {
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>
-            <Link to="/home" className="hidden md:block">
-              <Button variant="ghost" size="sm">
-                {isArabic ? 'تسجيل الدخول' : 'Login'}
-              </Button>
-            </Link>
-            <Link to="/home" className="hidden md:block">
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                {isArabic ? 'ابدأ مجاناً' : 'Start Free'}
-              </Button>
-            </Link>
+            
+            {user && userProfile ? (
+              // Show user info when logged in
+              <div className="flex items-center gap-3">
+                <div className="hidden md:block text-right">
+                  <p className="text-sm font-medium text-gray-900">
+                    {userProfile.full_name || userProfile.email}
+                  </p>
+                  <p className="text-xs text-gray-500 capitalize">
+                    {userProfile.role} {userProfile.company_name && `• ${userProfile.company_name}`}
+                  </p>
+                </div>
+                <Link to="/dashboard">
+                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                    {isArabic ? 'لوحة التحكم' : 'Dashboard'}
+                  </Button>
+                </Link>
+              </div>
+            ) : (
+              // Show login/signup when not logged in
+              <>
+                <Link to="/home" className="hidden md:block">
+                  <Button variant="ghost" size="sm">
+                    {isArabic ? 'تسجيل الدخول' : 'Login'}
+                  </Button>
+                </Link>
+                <Link to="/home" className="hidden md:block">
+                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                    {isArabic ? 'ابدأ مجاناً' : 'Start Free'}
+                  </Button>
+                </Link>
+              </>
+            )}
             
             <Button 
               variant="ghost" 
@@ -252,16 +275,34 @@ const Pricing = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden border-t bg-white/95 backdrop-blur-md p-4 space-y-3">
             <LanguageSwitcher />
-            <Link to="/home" className="block">
-              <Button variant="ghost" size="sm" className="w-full justify-start">
-                {isArabic ? 'تسجيل الدخول' : 'Login'}
-              </Button>
-            </Link>
-            <Link to="/home" className="block">
-              <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700">
-                {isArabic ? 'ابدأ مجاناً' : 'Start Free'}
-              </Button>
-            </Link>
+            {user && userProfile ? (
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-gray-900">
+                  {userProfile.full_name || userProfile.email}
+                </p>
+                <p className="text-xs text-gray-500 capitalize">
+                  {userProfile.role} {userProfile.company_name && `• ${userProfile.company_name}`}
+                </p>
+                <Link to="/dashboard" className="block">
+                  <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700">
+                    {isArabic ? 'لوحة التحكم' : 'Dashboard'}
+                  </Button>
+                </Link>
+              </div>
+            ) : (
+              <>
+                <Link to="/home" className="block">
+                  <Button variant="ghost" size="sm" className="w-full justify-start">
+                    {isArabic ? 'تسجيل الدخول' : 'Login'}
+                  </Button>
+                </Link>
+                <Link to="/home" className="block">
+                  <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700">
+                    {isArabic ? 'ابدأ مجاناً' : 'Start Free'}
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         )}
       </header>
@@ -313,7 +354,7 @@ const Pricing = () => {
       </section>
 
       {/* Pricing Cards */}
-      <section className="py-16 px-4 bg-gray-50">
+      <section className="py-16 px-4 bg-white">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {currentPricingPlans.map((plan, index) => (
