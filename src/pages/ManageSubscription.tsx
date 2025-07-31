@@ -48,21 +48,29 @@ export const ManageSubscription = () => {
           {/* Basic Plan */}
           <Card className="border-2 border-muted">
             <CardHeader className="text-center">
-              <CardTitle className="text-lg">Basic</CardTitle>
-              <div className="text-3xl font-bold">$29<span className="text-sm text-muted-foreground">/month</span></div>
+              <CardTitle className="text-lg">{isRTL ? 'نمو الأعمال' : 'Business Growth'}</CardTitle>
+              <div className="text-3xl font-bold flex items-baseline justify-center gap-2">
+                299
+                <img 
+                  src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
+                  alt="SAR" 
+                  className="h-6 w-6 opacity-80"
+                />
+                <span className="text-sm text-muted-foreground">{isRTL ? '/شهر' : '/month'}</span>
+              </div>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
-                <span className="text-sm">Up to 5 requests per month</span>
+                <span className="text-sm">{isRTL ? 'حتى 8 طلبات خدمة شهرياً' : 'Up to 8 service requests per month'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
-                <span className="text-sm">Basic supplier matching</span>
+                <span className="text-sm">{isRTL ? 'أولوية في المطابقة الذكية' : 'Priority smart matching'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
-                <span className="text-sm">Email support</span>
+                <span className="text-sm">{isRTL ? 'دعم فني متخصص' : 'Specialist technical support'}</span>
               </div>
             </CardContent>
           </Card>
@@ -70,26 +78,36 @@ export const ManageSubscription = () => {
           {/* Premium Plan - Current */}
           <Card className="border-2 border-primary bg-primary/5">
             <CardHeader className="text-center">
-              <CardTitle className="text-lg text-primary">Premium</CardTitle>
-              <div className="text-3xl font-bold">$79<span className="text-sm text-muted-foreground">/month</span></div>
-              <span className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs">Current Plan</span>
+              <CardTitle className="text-lg text-primary">{isRTL ? 'التميز المهني' : 'Professional Excellence'}</CardTitle>
+              <div className="text-3xl font-bold flex items-baseline justify-center gap-2">
+                799
+                <img 
+                  src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
+                  alt="SAR" 
+                  className="h-6 w-6 opacity-80"
+                />
+                <span className="text-sm text-muted-foreground">{isRTL ? '/شهر' : '/month'}</span>
+              </div>
+              <span className="bg-primary text-primary-foreground px-2 py-1 rounded-full text-xs">
+                {isRTL ? 'الخطة الحالية' : 'Current Plan'}
+              </span>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
-                <span className="text-sm">Unlimited requests</span>
+                <span className="text-sm">{isRTL ? 'حتى 30 طلب خدمة شهرياً' : 'Up to 30 service requests per month'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
-                <span className="text-sm">Advanced supplier matching</span>
+                <span className="text-sm">{isRTL ? 'مطابقة ذكية متقدمة بالذكاء الاصطناعي' : 'Advanced AI-powered smart matching'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
-                <span className="text-sm">Priority support</span>
+                <span className="text-sm">{isRTL ? 'فريق دعم مخصص' : 'Dedicated support team'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
-                <span className="text-sm">Analytics dashboard</span>
+                <span className="text-sm">{isRTL ? 'استشارات استراتيجية' : 'Strategic consultations'}</span>
               </div>
             </CardContent>
           </Card>
@@ -97,25 +115,27 @@ export const ManageSubscription = () => {
           {/* Enterprise Plan */}
           <Card className="border-2 border-accent">
             <CardHeader className="text-center">
-              <CardTitle className="text-lg">Enterprise</CardTitle>
-              <div className="text-3xl font-bold">$199<span className="text-sm text-muted-foreground">/month</span></div>
+              <CardTitle className="text-lg">{isRTL ? 'قيادة المؤسسات' : 'Enterprise Leadership'}</CardTitle>
+              <div className="text-3xl font-bold">
+                {isRTL ? 'حسب الطلب' : 'Custom'}
+              </div>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
-                <span className="text-sm">Everything in Premium</span>
+                <span className="text-sm">{isRTL ? 'طلبات خدمة غير محدودة' : 'Unlimited service requests'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
-                <span className="text-sm">Dedicated account manager</span>
+                <span className="text-sm">{isRTL ? 'مدير حساب مخصص' : 'Dedicated account manager'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
-                <span className="text-sm">Custom integrations</span>
+                <span className="text-sm">{isRTL ? 'تكاملات تقنية مخصصة' : 'Custom technical integrations'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
-                <span className="text-sm">24/7 phone support</span>
+                <span className="text-sm">{isRTL ? 'استشارات تحول رقمي' : 'Digital transformation consultancy'}</span>
               </div>
               <Button className="w-full mt-4 bg-gradient-to-r from-accent to-primary">
                 {isRTL ? 'ترقية للمؤسسات' : 'Upgrade to Enterprise'}
@@ -162,7 +182,14 @@ export const ManageSubscription = () => {
                 <span className="text-muted-foreground text-sm">
                   {isRTL ? 'المبلغ:' : 'Amount:'}
                 </span>
-                <p className="font-medium">$79.00</p>
+                <div className="flex items-center gap-1">
+                  <p className="font-medium">799</p>
+                  <img 
+                    src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
+                    alt="SAR" 
+                    className="h-4 w-4 opacity-80"
+                  />
+                </div>
               </div>
               <div>
                 <span className="text-muted-foreground text-sm">
@@ -180,9 +207,9 @@ export const ManageSubscription = () => {
             </h4>
             <div className="space-y-3">
               {[
-                { date: 'January 15, 2024', amount: '$79.00', status: 'Paid', invoice: 'INV-001' },
-                { date: 'December 15, 2023', amount: '$79.00', status: 'Paid', invoice: 'INV-002' },
-                { date: 'November 15, 2023', amount: '$79.00', status: 'Paid', invoice: 'INV-003' },
+                { date: 'January 15, 2024', amount: '799', status: 'Paid', invoice: 'INV-001' },
+                { date: 'December 15, 2023', amount: '799', status: 'Paid', invoice: 'INV-002' },
+                { date: 'November 15, 2023', amount: '799', status: 'Paid', invoice: 'INV-003' },
               ].map((bill) => (
                 <div key={bill.invoice} className="flex items-center justify-between p-4 border rounded-lg">
                   <div>
@@ -190,7 +217,14 @@ export const ManageSubscription = () => {
                     <p className="text-sm text-muted-foreground">{bill.invoice}</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-medium">{bill.amount}</p>
+                    <div className="flex items-center gap-1 font-medium">
+                      <span>{bill.amount}</span>
+                      <img 
+                        src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
+                        alt="SAR" 
+                        className="h-3 w-3 opacity-70"
+                      />
+                    </div>
                     <span className="text-sm text-green-600">{bill.status}</span>
                   </div>
                   <Button variant="outline" size="sm">
@@ -309,7 +343,7 @@ export const ManageSubscription = () => {
                     <span className="text-muted-foreground text-sm">
                       {isRTL ? 'الخطة:' : 'Plan:'}
                     </span>
-                    <span className="font-medium">Premium Plan</span>
+                    <span className="font-medium">Professional Excellence Plan</span>
                   </div>
                   <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <span className="text-muted-foreground text-sm">
