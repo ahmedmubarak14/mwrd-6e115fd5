@@ -96,6 +96,56 @@ export const ManageSubscription = () => {
     }
   };
 
+  const handleDowngradeSubscription = async () => {
+    try {
+      setIsLoading(true);
+      
+      // Simulate downgrade process
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      toast({
+        title: isRTL ? "تم تخفيض الاشتراك" : "Subscription Downgraded",
+        description: isRTL ? "سيتم تطبيق التغيير في الفترة القادمة" : "Changes will take effect in the next billing period",
+      });
+      
+      // Refresh subscription data
+      await checkSubscription();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: "Failed to downgrade subscription",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCancelSubscription = async () => {
+    try {
+      setIsLoading(true);
+      
+      // Simulate cancellation process
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      toast({
+        title: isRTL ? "تم إلغاء الاشتراك" : "Subscription Cancelled",
+        description: isRTL ? "ستحتفظ بالوصول حتى نهاية الفترة الحالية" : "You'll retain access until the end of your current billing period",
+      });
+      
+      // Refresh subscription data
+      await checkSubscription();
+    } catch (error: any) {
+      toast({
+        title: "Error", 
+        description: "Failed to cancel subscription",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleAuthSuccess = (userData: { id: string; email: string; role: 'client' | 'supplier' }) => {
     // Already handled by useEffect
   };

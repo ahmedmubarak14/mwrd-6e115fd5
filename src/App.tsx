@@ -20,6 +20,9 @@ import { ManageSubscription } from "./pages/ManageSubscription";
 import { BrowseRequests } from "./pages/BrowseRequests";
 import { MyOffers } from "./pages/MyOffers";
 import { Settings } from "./pages/Settings";
+import { Analytics } from "./pages/Analytics";
+import { Orders } from "./pages/Orders";
+import { Support } from "./pages/Support";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
@@ -49,6 +52,9 @@ const App = () => (
               <Route path="/expert-consultation" element={<ExpertConsultation />} />
               <Route path="/browse-requests" element={<BrowseRequests />} />
               <Route path="/my-offers" element={<MyOffers />} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/support" element={<Support />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/payment-success" element={<PaymentSuccess />} />
               <Route path="/client-dashboard" element={<Index />} />

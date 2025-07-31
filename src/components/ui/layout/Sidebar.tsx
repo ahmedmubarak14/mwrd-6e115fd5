@@ -10,7 +10,10 @@ import {
   Users, 
   Settings,
   BarChart3,
-  CreditCard
+  CreditCard,
+  TrendingUp,
+  ShoppingCart,
+  HelpCircle
 } from "lucide-react";
 
 interface SidebarProps {
@@ -25,7 +28,10 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
     { icon: Home, label: t('nav.dashboard'), href: '/dashboard' },
     { icon: FileText, label: t('nav.requests'), href: '/requests' },
     { icon: Users, label: t('nav.suppliers'), href: '/suppliers' },
+    { icon: TrendingUp, label: t('language') === 'ar' ? 'تحليلات' : 'Analytics', href: '/analytics' },
+    { icon: ShoppingCart, label: t('language') === 'ar' ? 'الطلبات' : 'Orders', href: '/orders' },
     { icon: CreditCard, label: t('language') === 'ar' ? 'إدارة الاشتراك' : 'Manage Subscription', href: '/manage-subscription' },
+    { icon: HelpCircle, label: t('language') === 'ar' ? 'الدعم' : 'Support', href: '/support' },
     { icon: Settings, label: t('common.settings'), href: '/settings' },
   ];
 
@@ -33,7 +39,10 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
     { icon: Home, label: t('nav.dashboard'), href: '/dashboard' },
     { icon: FileText, label: t('language') === 'ar' ? 'تصفح الطلبات' : 'Browse Requests', href: '/browse-requests' },
     { icon: Package, label: t('nav.offers'), href: '/my-offers' },
+    { icon: TrendingUp, label: t('language') === 'ar' ? 'تحليلات' : 'Analytics', href: '/analytics' },
+    { icon: ShoppingCart, label: t('language') === 'ar' ? 'الطلبات' : 'Orders', href: '/orders' },
     { icon: CreditCard, label: t('language') === 'ar' ? 'إدارة الاشتراك' : 'Manage Subscription', href: '/manage-subscription' },
+    { icon: HelpCircle, label: t('language') === 'ar' ? 'الدعم' : 'Support', href: '/support' },
     { icon: Settings, label: t('common.settings'), href: '/settings' },
   ];
 
@@ -42,6 +51,9 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
     { icon: BarChart3, label: 'Admin Panel', href: '/admin' },
     { icon: Users, label: t('nav.suppliers'), href: '/suppliers' },
     { icon: FileText, label: t('nav.requests'), href: '/requests' },
+    { icon: TrendingUp, label: t('language') === 'ar' ? 'تحليلات' : 'Analytics', href: '/analytics' },
+    { icon: ShoppingCart, label: t('language') === 'ar' ? 'الطلبات' : 'Orders', href: '/orders' },
+    { icon: HelpCircle, label: t('language') === 'ar' ? 'الدعم' : 'Support', href: '/support' },
     { icon: Settings, label: t('common.settings'), href: '/settings' },
   ];
 
