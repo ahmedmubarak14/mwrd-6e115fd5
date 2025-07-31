@@ -361,7 +361,7 @@ const Pricing = () => {
               <Card 
                 key={index} 
                 className={`relative bg-white border transition-all duration-300 ${
-                  plan.popular ? 'border-2 border-green-500 shadow-xl' : 'border-gray-200 shadow-lg hover:shadow-xl'
+                  plan.popular ? 'border-2 border-teal-500 shadow-xl' : 'border-gray-200 shadow-lg hover:shadow-xl'
                 }`}
               >
                 {/* Badge */}
@@ -394,7 +394,7 @@ const Pricing = () => {
                   
                   {selectedRole === 'supplier' && (plan as any).commission && (
                     <div className="mb-4">
-                      <span className="text-lg font-semibold text-green-600">
+                      <span className="text-lg font-semibold text-teal-600">
                         {isArabic ? 'عمولة: ' : 'Commission: '}{(plan as any).commission}
                       </span>
                     </div>
@@ -409,7 +409,7 @@ const Pricing = () => {
                   <ul className="space-y-4 mb-8">
                     {plan.features.map((feature, featureIndex) => (
                       <li key={featureIndex} className="flex items-start gap-3">
-                        <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <Check className="h-5 w-5 text-teal-500 flex-shrink-0 mt-0.5" />
                         <span className="text-sm text-gray-700">{feature}</span>
                       </li>
                     ))}
