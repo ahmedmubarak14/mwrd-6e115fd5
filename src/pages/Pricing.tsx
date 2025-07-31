@@ -375,7 +375,15 @@ const Pricing = () => {
                   </CardTitle>
                   
                   <div className="flex items-center justify-center gap-2 mb-4">
-                    <span className="text-4xl font-bold text-gray-900">{plan.price}</span>
+                    <span className={`text-4xl font-bold ${
+                      plan.popular 
+                        ? 'text-emerald-600' 
+                        : plan.price === '0' 
+                          ? 'text-blue-600' 
+                          : 'text-blue-700'
+                    }`}>
+                      {plan.price}
+                    </span>
                     {plan.price !== (isArabic ? "مخصص" : "Custom") && (
                       <>
                         <img 
@@ -440,19 +448,19 @@ const Pricing = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gray-900 text-white">
+      <section className="py-20 px-4 bg-gray-50 text-gray-900">
         <div className="container mx-auto text-center max-w-4xl">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             {isArabic ? 'هل أنت جاهز لتحويل فعالياتك؟' : 'Are You Ready to Transform Your Events?'}
           </h2>
-          <p className="text-xl mb-8 opacity-90">
+          <p className="text-xl mb-8 text-gray-600">
             {isArabic 
               ? 'انضم لآلاف الشركات الرائدة التي اختارت سبلفاي لتحقيق أحلامها في عالم الفعاليات'
               : 'Join thousands of leading companies that chose Supplify to achieve their dreams in the events world'
             }
           </p>
           <Link to="/home">
-            <Button size="lg" className="bg-teal-600 hover:bg-teal-700 px-8 py-3">
+            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 px-8 py-3">
               {isArabic ? 'ابدأ تجربتك المجانية الآن' : 'Start Your Free Trial Now'}
             </Button>
           </Link>
