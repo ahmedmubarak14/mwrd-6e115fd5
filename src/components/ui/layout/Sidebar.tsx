@@ -24,6 +24,7 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
     { icon: Home, label: t('nav.dashboard'), href: '/dashboard' },
     { icon: FileText, label: t('nav.requests'), href: '/requests' },
     { icon: Users, label: t('nav.suppliers'), href: '/suppliers' },
+    { icon: BarChart3, label: t('language') === 'ar' ? 'إدارة الاشتراك' : 'Manage Subscription', href: '/pricing' },
     { icon: Settings, label: t('nav.profile'), href: '/profile' },
   ];
 
@@ -31,6 +32,7 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
     { icon: Home, label: t('nav.dashboard'), href: '/dashboard' },
     { icon: FileText, label: t('nav.requests'), href: '/browse-requests' },
     { icon: Package, label: t('nav.offers'), href: '/my-offers' },
+    { icon: BarChart3, label: t('language') === 'ar' ? 'إدارة الاشتراك' : 'Manage Subscription', href: '/pricing' },
     { icon: Settings, label: t('nav.profile'), href: '/profile' },
   ];
 
