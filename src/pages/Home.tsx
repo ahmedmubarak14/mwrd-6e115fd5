@@ -5,20 +5,27 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { User, Mail, Building2, Shield } from "lucide-react";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { useToastFeedback } from "@/hooks/useToastFeedback";
 
 export const Home = () => {
   const { user, userProfile, loading } = useAuth();
   const { t, language } = useLanguage();
+  const { showSuccess } = useToastFeedback();
   const isRTL = language === 'ar';
 
   const handleAuthSuccess = (userData: { id: string; email: string; role: 'client' | 'supplier' }) => {
-    // User will stay on home page showing their details
+    showSuccess(isRTL ? 'مرحباً بك! تم تسجيل الدخول بنجاح' : 'Welcome! Successfully logged in');
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <LoadingSpinner 
+          size="lg" 
+          text={isRTL ? 'جاري تحميل حسابك...' : 'Loading your account...'}
+          className="animate-fade-in"
+        />
       </div>
     );
   }
@@ -68,8 +75,8 @@ export const Home = () => {
             </p>
 
             {/* User Details Card */}
-            <div className="max-w-2xl mx-auto mb-12">
-              <Card className="bg-card/70 backdrop-blur-sm hover:shadow-xl transition-all duration-500 border-0">
+            <div className="max-w-2xl mx-auto mb-12 animate-fade-in-up">
+              <Card className="bg-card/70 backdrop-blur-sm hover-lift transition-all duration-500 border-0 shadow-lg">
                 <CardHeader className="text-center pb-6">
                   <CardTitle className="text-2xl font-bold mb-4 flex items-center justify-center gap-3">
                     <User className="h-6 w-6 text-primary" />

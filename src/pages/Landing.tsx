@@ -8,6 +8,9 @@ import { Check, ArrowRight, Users, Shield, Zap, Award, TrendingUp, Clock, Star, 
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
+import { BackToTop } from "@/components/ui/BackToTop";
+import { SmoothScroll } from "@/components/ui/SmoothScroll";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export const Landing = () => {
   const { t, language } = useLanguage();
@@ -89,14 +92,19 @@ export const Landing = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <LoadingSpinner 
+          size="lg" 
+          text={language === 'ar' ? 'جاري التحميل...' : 'Loading...'}
+          className="animate-fade-in"
+        />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-background">
+      <SmoothScroll />
       {/* Enhanced Navigation */}
       <header className="border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -310,15 +318,15 @@ export const Landing = () => {
             )}
 
             {/* Enhanced Impact Stats - Always visible */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto animate-fade-in delay-500">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto animate-fade-in-up delay-500">
               {impactStats.map((stat, index) => (
-                <Card key={index} className="text-center group hover:shadow-xl transition-all duration-300 border-0 bg-card/50 backdrop-blur-sm hover-scale">
+                <Card key={index} className="text-center group hover:shadow-xl transition-all duration-500 border-0 bg-card/60 backdrop-blur-sm hover-lift">
                   <CardContent className="pt-6">
-                    <div className="w-12 h-12 mx-auto mb-3 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                      <stat.icon className="h-6 w-6 text-primary" />
+                    <div className="w-14 h-14 mx-auto mb-4 bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300 group-hover:scale-110">
+                      <stat.icon className="h-7 w-7 text-primary group-hover:text-accent transition-colors" />
                     </div>
-                    <div className="text-3xl font-bold text-primary mb-2">{stat.number}</div>
-                    <div className="text-sm font-medium text-foreground mb-1">
+                    <div className="text-3xl font-bold gradient-text mb-2 animate-bounce-subtle">{stat.number}</div>
+                    <div className="text-sm font-semibold text-foreground mb-1">
                       {t('language') === 'ar' ? stat.label : stat.englishLabel}
                     </div>
                     <div className="text-xs text-muted-foreground">
@@ -879,6 +887,8 @@ export const Landing = () => {
           </div>
         </div>
       </footer>
+      
+      <BackToTop />
     </div>
   );
 };

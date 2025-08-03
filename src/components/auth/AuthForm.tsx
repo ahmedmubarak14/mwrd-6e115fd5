@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Eye, EyeOff, User, Building2, Mail, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 interface AuthFormProps {
   onAuthSuccess: (userData: { id: string; email: string; role: 'client' | 'supplier' }) => void;
@@ -203,10 +204,14 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
                 </div>
                 <Button 
                   type="submit" 
-                  className="w-full bg-gradient-to-r from-primary to-accent"
+                  className="w-full bg-gradient-to-r from-primary to-accent hover-scale"
                   disabled={isLoading}
                 >
-                  {isLoading ? (language === 'ar' ? 'جاري التحميل...' : 'Loading...') : (language === 'ar' ? 'تسجيل الدخول' : 'Sign In')}
+                  {isLoading ? (
+                    <LoadingSpinner size="sm" />
+                  ) : (
+                    language === 'ar' ? 'تسجيل الدخول' : 'Sign In'
+                  )}
                 </Button>
               </form>
             </TabsContent>
@@ -324,10 +329,14 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
 
                 <Button 
                   type="submit" 
-                  className="w-full bg-gradient-to-r from-primary to-accent"
+                  className="w-full bg-gradient-to-r from-primary to-accent hover-scale"
                   disabled={isLoading}
                 >
-                  {isLoading ? (language === 'ar' ? 'جاري التحميل...' : 'Loading...') : (language === 'ar' ? 'إنشاء حساب' : 'Create Account')}
+                  {isLoading ? (
+                    <LoadingSpinner size="sm" />
+                  ) : (
+                    language === 'ar' ? 'إنشاء حساب' : 'Create Account'
+                  )}
                 </Button>
               </form>
             </TabsContent>
