@@ -881,8 +881,8 @@ export const Landing = () => {
               }
             </p>
             <div className="flex gap-6 text-sm text-muted-foreground">
-              <a href="#" className="hover:text-primary transition-colors">{t('language') === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}</a>
-              <a href="#" className="hover:text-primary transition-colors">{t('language') === 'ar' ? 'شروط الخدمة' : 'Terms of Service'}</a>
+              <Link to="/privacy-policy" className="hover:text-primary transition-colors">{t('language') === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}</Link>
+              <Link to="/terms-and-conditions" className="hover:text-primary transition-colors">{t('language') === 'ar' ? 'شروط الخدمة' : 'Terms of Service'}</Link>
             </div>
           </div>
         </div>
