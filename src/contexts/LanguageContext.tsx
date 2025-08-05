@@ -12,8 +12,9 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 const translations = {
   en: {
-    // App name
+    // App name and slogan
     'app.name': 'Supplify',
+    'app.slogan': 'All Event Needs in One Place',
     // Language
     'language': 'en',
     
@@ -203,8 +204,9 @@ const translations = {
     'privacyContactAddress': 'Address: Riyadh, Kingdom of Saudi Arabia',
   },
   ar: {
-    // App name
+    // App name and slogan
     'app.name': 'سبلايفي',
+    'app.slogan': 'جميع احتياجات الفعاليات في مكان واحد',
     // Language
     'language': 'ar',
     // Navigation
@@ -422,7 +424,7 @@ const translations = {
 };
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useState<Language>('ar');
 
   const t = (key: string): string => {
     return translations[language][key as keyof typeof translations['en']] || key;

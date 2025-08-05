@@ -286,11 +286,11 @@ export const Landing = () => {
                 
                 <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight animate-fade-in">
                   <span className="bg-gradient-to-r from-primary via-accent to-lime bg-clip-text text-transparent">
-                    {language === 'ar' ? 'مستقبل تجارة الفعاليات' : 'The Future of Event Commerce'}
+                    {t('app.slogan')}
                   </span>
                   <br />
                   <span className="text-foreground/80 text-3xl md:text-4xl font-normal">
-                    {language === 'ar' ? 'يبدأ هنا' : 'Starts Here'}
+                    {language === 'ar' ? 'مع سبلايفي' : 'with Supplify'}
                   </span>
                 </h1>
                 
