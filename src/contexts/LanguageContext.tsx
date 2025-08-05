@@ -430,6 +430,12 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     return translations[language][key as keyof typeof translations['en']] || key;
   };
 
+  // Set document dir attribute for proper RTL support
+  React.useEffect(() => {
+    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.className = language === 'ar' ? 'font-arabic' : '';
+  }, [language]);
+
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>
       <div dir={language === 'ar' ? 'rtl' : 'ltr'} className={language === 'ar' ? 'font-arabic' : ''}>

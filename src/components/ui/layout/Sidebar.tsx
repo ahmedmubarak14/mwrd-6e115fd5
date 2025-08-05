@@ -105,10 +105,10 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
   };
 
   return (
-    <div className={`w-full lg:w-64 h-full bg-card flex flex-col border-border ${language === 'ar' ? 'border-l border-l-border' : 'border-r border-r-border'}`}>
+    <div className="w-full lg:w-64 h-full bg-card flex flex-col sidebar-border">
       {/* User Profile Section */}
-      <div className={`p-4 sm:p-6 border-b border-border ${language === 'ar' ? 'text-right' : 'text-left'}`}>
-        <div className={`flex items-center gap-3 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+      <div className="p-4 sm:p-6 border-b border-border">
+        <div className="rtl-flex items-center gap-3">
           <Avatar className="h-12 w-12">
             <AvatarImage 
               src={userProfile?.avatar_url} 
@@ -119,7 +119,7 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <div className={`flex items-center gap-2 mb-1 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <div className="rtl-flex items-center gap-2 mb-1">
               <h3 className="font-semibold text-sm truncate">
                 {userProfile?.company_name || userProfile?.full_name || 'User'}
               </h3>
@@ -140,7 +140,7 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
             <Button
               variant="ghost"
               className={cn(
-                `w-full gap-3 h-10 sm:h-12 text-sm sm:text-base ${language === 'ar' ? 'justify-end flex-row-reverse text-right' : 'justify-start text-left'}`,
+                "w-full gap-3 h-10 sm:h-12 text-sm sm:text-base rtl-justify-start rtl-flex",
                 isActive(item.href) && "bg-primary/10 text-primary hover:bg-primary/20"
               )}
             >
@@ -152,16 +152,16 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
       </nav>
 
       {/* Language Switcher - Always visible with proper RTL support */}
-      <div className={`mt-auto p-3 sm:p-4 border-t bg-primary/5 ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+      <div className="mt-auto p-3 sm:p-4 border-t bg-primary/5">
         <div className="space-y-2">
-          <p className={`text-xs font-medium text-muted-foreground uppercase tracking-wide ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
             Language / اللغة
           </p>
           <Button
             variant="outline"
             size="sm"
             onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
-            className={`w-full text-xs sm:text-sm ${language === 'ar' ? 'flex-row-reverse' : ''}`}
+            className="w-full text-xs sm:text-sm rtl-flex"
           >
             🌐 {language === 'en' ? 'العربية' : 'English'}
           </Button>

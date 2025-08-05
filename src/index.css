@@ -304,4 +304,31 @@ All colors MUST be HSL.
   html {
     scroll-behavior: smooth;
   }
+
+  /* RTL-aware sidebar borders */
+  .sidebar-border {
+    @apply border-r border-border;
+  }
+
+  [dir="rtl"] .sidebar-border {
+    @apply border-l border-r-0 border-border;
+  }
+
+  /* RTL-aware flex direction */
+  .rtl-flex {
+    @apply flex;
+  }
+
+  [dir="rtl"] .rtl-flex {
+    @apply flex-row-reverse;
+  }
+
+  /* RTL-aware justification */
+  .rtl-justify-start {
+    @apply justify-start text-left;
+  }
+
+  [dir="rtl"] .rtl-justify-start {
+    @apply justify-end text-right;
+  }
 }
