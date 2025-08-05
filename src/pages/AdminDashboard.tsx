@@ -1,6 +1,7 @@
 import { Header } from "@/components/ui/layout/Header";
 import { Sidebar } from "@/components/ui/layout/Sidebar";
 import { useAuth } from "@/contexts/AuthContext";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -85,7 +86,9 @@ interface ExpertConsultation {
 
 export const AdminDashboard = () => {
   const { userProfile, loading } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isRTL = language === 'ar';
   const { toast } = useToast();
   const [stats, setStats] = useState<UserStats | null>(null);
   const [users, setUsers] = useState<UserProfile[]>([]);
@@ -491,14 +494,24 @@ export const AdminDashboard = () => {
     );
   }
 
+
   return (
     <div className="min-h-screen bg-background">
-      <Header />
-      <div className="flex">
-        <div className="hidden lg:block">
-          <Sidebar userRole={userProfile?.role} />
+      <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
+      
+      {/* Mobile Sidebar */}
+      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+        <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
+          <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
+        </SheetContent>
+      </Sheet>
+
+      <div className="rtl-flex">
+        {/* Desktop Sidebar - position based on language */}
+        <div className="hidden lg:block rtl-order-1">
+          <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
         </div>
-        <main className="flex-1 p-4 lg:p-8">
+        <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
           <div className="space-y-6">
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

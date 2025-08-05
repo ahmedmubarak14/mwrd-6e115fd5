@@ -198,22 +198,20 @@ export const Orders = () => {
     <div className={`min-h-screen bg-background ${isRTL ? 'font-arabic' : ''}`}>
       <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
       
-      <div className={`flex ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-        {!isMobile && (
-          <div className="w-64 flex-shrink-0">
-            <Sidebar userRole={userProfile?.role} />
-          </div>
-        )}
+      {/* Mobile Sidebar */}
+      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+        <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
+          <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
+        </SheetContent>
+      </Sheet>
 
-        {isMobile && (
-          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <SheetContent side={isRTL ? "right" : "left"} className="p-0 w-64">
-              <Sidebar userRole={userProfile?.role} />
-            </SheetContent>
-          </Sheet>
-        )}
-
-        <main className="flex-1 p-6">
+      <div className="rtl-flex">
+        {/* Desktop Sidebar - position based on language */}
+        <div className="hidden lg:block rtl-order-1">
+          <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
+        </div>
+        
+        <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
           <div className="max-w-7xl mx-auto space-y-6">
             {/* Header */}
             <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>

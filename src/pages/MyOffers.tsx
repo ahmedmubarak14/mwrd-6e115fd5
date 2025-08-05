@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, MapPin, Calendar, DollarSign, Clock, Package } from "lucide-react";
 import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
+import { useState } from "react";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 export const MyOffers = () => {
   const { userProfile } = useAuth();
@@ -86,12 +88,26 @@ export const MyOffers = () => {
     }
   };
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <div className={`min-h-screen bg-background ${isRTL ? 'rtl' : 'ltr'}`}>
-      <Header />
-      <div className="flex">
-        <Sidebar userRole={userProfile?.role as any} />
-        <main className="flex-1 p-6">
+      <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
+      
+      {/* Mobile Sidebar */}
+      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+        <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
+          <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
+        </SheetContent>
+      </Sheet>
+
+      <div className="rtl-flex">
+        {/* Desktop Sidebar - position based on language */}
+        <div className="hidden lg:block rtl-order-1">
+          <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
+        </div>
+        
+        <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
           <div className="max-w-7xl mx-auto">
             <div className={`mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
               <h1 className="text-3xl font-bold mb-2">

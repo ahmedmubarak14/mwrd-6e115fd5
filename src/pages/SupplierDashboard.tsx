@@ -43,8 +43,9 @@ interface Offer {
 }
 
 export const SupplierDashboard = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { userProfile } = useAuth();
+  const isRTL = language === 'ar';
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
@@ -144,18 +145,18 @@ export const SupplierDashboard = () => {
       
       {/* Mobile Sidebar */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side="left" className="w-80 p-0 flex flex-col">
-          <Sidebar userRole={userProfile?.role || 'supplier'} />
+        <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
+          <Sidebar userRole={userProfile?.role || 'supplier'} userProfile={userProfile} />
         </SheetContent>
       </Sheet>
 
-      <div className="flex">
-        {/* Desktop Sidebar */}
-        <div className="hidden lg:block">
-          <Sidebar userRole={userProfile?.role || 'supplier'} />
+      <div className="rtl-flex">
+        {/* Desktop Sidebar - position based on language */}
+        <div className="hidden lg:block rtl-order-1">
+          <Sidebar userRole={userProfile?.role || 'supplier'} userProfile={userProfile} />
         </div>
         
-        <main className="flex-1 p-4 lg:p-8 max-w-full overflow-hidden">
+        <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
           <div className="max-w-6xl mx-auto space-y-6">
             {/* Header */}
             <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-accent/10 to-lime/10 rounded-xl p-6">

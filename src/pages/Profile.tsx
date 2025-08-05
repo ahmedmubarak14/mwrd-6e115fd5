@@ -23,7 +23,8 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 export const Profile = () => {
   const { userProfile, loading } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const isRTL = language === 'ar';
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -202,16 +203,18 @@ export const Profile = () => {
       
       {/* Mobile Sidebar */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side="left" className="w-64 p-0">
-          <Sidebar userRole={userProfile?.role} />
+        <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
+          <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
         </SheetContent>
       </Sheet>
 
-      <div className="flex">
-        <div className="hidden lg:block">
-          <Sidebar userRole={userProfile?.role} />
+      <div className="rtl-flex">
+        {/* Desktop Sidebar - position based on language */}
+        <div className="hidden lg:block rtl-order-1">
+          <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
         </div>
-        <main className="flex-1 p-4 lg:p-8">
+        
+        <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
           <div className="max-w-4xl mx-auto space-y-6">
             {/* Profile Header - Salla/Zid Style */}
             <Card className="border-0 bg-gradient-to-r from-primary/10 via-accent/10 to-lime/10">
