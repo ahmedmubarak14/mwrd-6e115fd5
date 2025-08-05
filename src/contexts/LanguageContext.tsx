@@ -277,6 +277,33 @@ const translations = {
     'dashboard.completedProjects': 'المشاريع المكتملة',
     'dashboard.totalEarnings': 'إجمالي الأرباح',
     
+    // Approval system
+    'approval.pending': 'قيد المراجعة',
+    'approval.approved': 'موافق عليه',
+    'approval.rejected': 'مرفوض',
+    'approval.approve': 'موافقة',
+    'approval.reject': 'رفض',
+    'approval.notes': 'ملاحظات الموافقة',
+    'approval.addNotes': 'أضف ملاحظات حول قرار الموافقة...',
+    'approval.processedOn': 'تمت المعالجة في:',
+    'approval.approvalWorkflow': 'سير عمل الموافقات',
+    'approval.requestApproval': 'موافقة الطلبات',
+    'approval.offerApproval': 'موافقة العروض',
+    
+    // Status labels
+    'status.pending': 'قيد الانتظار',
+    'status.inProgress': 'قيد التنفيذ',
+    'status.completed': 'مكتمل',
+    'status.cancelled': 'ملغي',
+    'status.open': 'مفتوح',
+    'status.closed': 'مغلق',
+    
+    // Real-time features
+    'realtime.connected': 'متصل',
+    'realtime.disconnected': 'غير متصل',
+    'realtime.newNotification': 'إشعار جديد',
+    'realtime.updating': 'جاري التحديث...',
+    
     // Requests
     'request.create': 'إنشاء طلب جديد',
     'request.title': 'طلب الخدمة',

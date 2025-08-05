@@ -10,6 +10,7 @@ import { User, LogOut, Settings, Bell, Search, Menu } from "lucide-react";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
 import { SearchModal } from "@/components/modals/SearchModal";
 import { NotificationsModal } from "@/components/modals/NotificationsModal";
+import { useNotifications } from "@/hooks/useNotifications";
 import { useToast } from "@/hooks/use-toast";
 
 interface HeaderProps {
@@ -19,6 +20,7 @@ interface HeaderProps {
 export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
   const { t, language } = useLanguage();
   const { userProfile, signOut } = useAuth();
+  const { unreadCount } = useNotifications();
   const { toast } = useToast();
   const isRTL = language === 'ar';
 
@@ -99,9 +101,11 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
           <NotificationsModal>
             <Button variant="ghost" size="icon" className="relative hidden sm:flex h-8 w-8 sm:h-10 sm:w-10">
               <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span className={`absolute -top-1 ${isRTL ? '-left-1' : '-right-1'} bg-destructive text-destructive-foreground text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center text-[10px] sm:text-xs`}>
-                3
-              </span>
+              {unreadCount > 0 && (
+                <span className={`absolute -top-1 ${isRTL ? '-left-1' : '-right-1'} bg-destructive text-destructive-foreground text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center text-[10px] sm:text-xs`}>
+                  {unreadCount > 99 ? '99+' : unreadCount}
+                </span>
+              )}
             </Button>
           </NotificationsModal>
           

@@ -47,6 +47,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { RequestApprovalCard } from "@/components/admin/RequestApprovalCard";
+import { OfferApprovalCard } from "@/components/admin/OfferApprovalCard";
 
 interface UserStats {
   total_users: number;
@@ -94,7 +96,9 @@ export const AdminDashboard = () => {
   const [isAddUserOpen, setIsAddUserOpen] = useState(false);
   const [isResetPasswordOpen, setIsResetPasswordOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
-  const [activeTab, setActiveTab] = useState<'users' | 'consultations'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'consultations' | 'approvals'>('users');
+  const [requests, setRequests] = useState<any[]>([]);
+  const [offers, setOffers] = useState<any[]>([]);
   const [newUser, setNewUser] = useState({
     email: "",
     password: "",
@@ -108,6 +112,8 @@ export const AdminDashboard = () => {
       fetchStats();
       fetchUsers();
       fetchConsultations();
+      fetchRequests();
+      fetchOffers();
     }
   }, [userProfile]);
 
@@ -161,6 +167,50 @@ export const AdminDashboard = () => {
       toast({
         title: "Error",
         description: "Failed to fetch expert consultations.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const fetchRequests = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('requests')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setRequests(data || []);
+    } catch (error) {
+      console.error('Error fetching requests:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch requests.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const fetchOffers = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('offers')
+        .select(`
+          *,
+          requests (
+            title,
+            user_id
+          )
+        `)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setOffers(data || []);
+    } catch (error) {
+      console.error('Error fetching offers:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch offers.",
         variant: "destructive",
       });
     }
@@ -283,6 +333,120 @@ export const AdminDashboard = () => {
       toast({
         title: "Error",
         description: error.message || "Failed to update status.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const approveRequest = async (id: string, notes: string) => {
+    try {
+      const { error } = await supabase
+        .from('requests')
+        .update({
+          admin_approval_status: 'approved',
+          admin_approved_by: userProfile?.id,
+          admin_approval_notes: notes,
+          admin_approval_date: new Date().toISOString()
+        })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Request approved successfully.",
+      });
+
+      fetchRequests();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to approve request.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const rejectRequest = async (id: string, notes: string) => {
+    try {
+      const { error } = await supabase
+        .from('requests')
+        .update({
+          admin_approval_status: 'rejected',
+          admin_approved_by: userProfile?.id,
+          admin_approval_notes: notes,
+          admin_approval_date: new Date().toISOString()
+        })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Request rejected.",
+      });
+
+      fetchRequests();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to reject request.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const approveOffer = async (id: string, notes: string) => {
+    try {
+      const { error } = await supabase
+        .from('offers')
+        .update({
+          client_approval_status: 'approved',
+          client_approval_notes: notes,
+          client_approval_date: new Date().toISOString()
+        })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Offer approved successfully.",
+      });
+
+      fetchOffers();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to approve offer.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const rejectOffer = async (id: string, notes: string) => {
+    try {
+      const { error } = await supabase
+        .from('offers')
+        .update({
+          client_approval_status: 'rejected',
+          client_approval_notes: notes,
+          client_approval_date: new Date().toISOString()
+        })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Offer rejected.",
+      });
+
+      fetchOffers();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to reject offer.",
         variant: "destructive",
       });
     }
