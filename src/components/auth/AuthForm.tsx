@@ -72,7 +72,12 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/home`
+            emailRedirectTo: `${window.location.origin}/home`,
+            data: {
+              role,
+              full_name: fullName,
+              company_name: role === 'supplier' ? companyName : null,
+            }
           }
         });
 
@@ -91,20 +96,6 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
 
         // If user is immediately authenticated (email confirmation disabled)
         if (data.user && data.session) {
-          // Update the profile with additional details since trigger only creates basic profile
-          const { error: updateError } = await supabase
-            .from('user_profiles')
-            .update({
-              role,
-              full_name: fullName,
-              company_name: role === 'supplier' ? companyName : null,
-            })
-            .eq('id', data.user.id);
-
-          if (updateError) {
-            console.error('Profile update error:', updateError);
-          }
-
           onAuthSuccess({
             id: data.user.id,
             email: data.user.email!,
