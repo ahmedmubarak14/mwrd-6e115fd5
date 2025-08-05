@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -7,45 +7,131 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CreateOfferModalProps {
   children: React.ReactNode;
+  requestId?: string;
 }
 
-export const CreateOfferModal = ({ children }: CreateOfferModalProps) => {
+export const CreateOfferModal = ({ children, requestId }: CreateOfferModalProps) => {
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [requests, setRequests] = useState<any[]>([]);
   const { toast } = useToast();
   const { t, language } = useLanguage();
+  const { user } = useAuth();
   const isRTL = language === 'ar';
 
   const [formData, setFormData] = useState({
     title: "",
-    clientRequest: "",
+    requestId: requestId || "",
     description: "",
     price: "",
-    deliveryTime: "",
-    category: ""
+    deliveryTime: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Fetch available requests when modal opens
+  useEffect(() => {
+    if (open && !requestId) {
+      fetchAvailableRequests();
+    }
+  }, [open, requestId]);
+
+  const fetchAvailableRequests = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('requests')
+        .select('id, title, description, category')
+        .eq('status', 'open')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setRequests(data || []);
+    } catch (error: any) {
+      console.error('Error fetching requests:', error);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Simulate API call
-    setTimeout(() => {
+    if (!user) {
+      toast({
+        title: isRTL ? "خطأ" : "Error",
+        description: isRTL ? "يجب تسجيل الدخول أولاً" : "Please log in to create an offer",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!formData.requestId) {
+      toast({
+        title: isRTL ? "خطأ" : "Error", 
+        description: isRTL ? "يرجى اختيار طلب العميل" : "Please select a client request",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    
+    try {
+      const { error } = await supabase
+        .from('offers')
+        .insert({
+          request_id: formData.requestId,
+          supplier_id: user.id,
+          title: formData.title,
+          description: formData.description,
+          price: parseInt(formData.price),
+          delivery_time_days: parseInt(formData.deliveryTime)
+        });
+
+      if (error) throw error;
+
+      // Create notification for the client
+      const { data: request } = await supabase
+        .from('requests')
+        .select('user_id, title')
+        .eq('id', formData.requestId)
+        .single();
+
+      if (request) {
+        await supabase
+          .from('notifications')
+          .insert({
+            user_id: request.user_id,
+            title: isRTL ? "عرض جديد" : "New Offer",
+            message: isRTL ? `تم استلام عرض جديد على طلبك: ${request.title}` : `New offer received for your request: ${request.title}`,
+            type: 'new_offer',
+            reference_id: formData.requestId
+          });
+      }
+
       toast({
         title: isRTL ? "تم إنشاء العرض بنجاح" : "Offer Created Successfully",
         description: isRTL ? "تم إرسال عرضك وسيتم إشعار العميل" : "Your offer has been submitted and the client will be notified",
       });
+      
       setOpen(false);
       setFormData({
         title: "",
-        clientRequest: "",
+        requestId: requestId || "",
         description: "",
         price: "",
-        deliveryTime: "",
-        category: ""
+        deliveryTime: ""
       });
-    }, 1000);
+    } catch (error: any) {
+      toast({
+        title: isRTL ? "خطأ في إنشاء العرض" : "Error Creating Offer",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -61,19 +147,23 @@ export const CreateOfferModal = ({ children }: CreateOfferModalProps) => {
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="clientRequest">{isRTL ? "طلب العميل" : "Client Request"}</Label>
-            <Select value={formData.clientRequest} onValueChange={(value) => setFormData({...formData, clientRequest: value})}>
-              <SelectTrigger>
-                <SelectValue placeholder={isRTL ? "اختر طلب العميل" : "Select Client Request"} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="req1">{isRTL ? "معدات صوت للمؤتمر - شركة التقنيات" : "Audio Equipment for Conference - Tech Solutions"}</SelectItem>
-                <SelectItem value="req2">{isRTL ? "خدمات طعام للحفل - الفعاليات السعيدة" : "Catering Services for Event - Happy Events"}</SelectItem>
-                <SelectItem value="req3">{isRTL ? "أثاث للمعرض - المعارض العالمية" : "Furniture for Exhibition - Global Exhibitions"}</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          {!requestId && (
+            <div className="space-y-2">
+              <Label htmlFor="requestId">{isRTL ? "طلب العميل" : "Client Request"}</Label>
+              <Select value={formData.requestId} onValueChange={(value) => setFormData({...formData, requestId: value})}>
+                <SelectTrigger>
+                  <SelectValue placeholder={isRTL ? "اختر طلب العميل" : "Select Client Request"} />
+                </SelectTrigger>
+                <SelectContent>
+                  {requests.map((request) => (
+                    <SelectItem key={request.id} value={request.id}>
+                      {request.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
 
           <div className="space-y-2">
             <Label htmlFor="title">{isRTL ? "عنوان العرض" : "Offer Title"}</Label>
@@ -86,22 +176,6 @@ export const CreateOfferModal = ({ children }: CreateOfferModalProps) => {
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="category">{isRTL ? "الفئة" : "Category"}</Label>
-            <Select value={formData.category} onValueChange={(value) => setFormData({...formData, category: value})}>
-              <SelectTrigger>
-                <SelectValue placeholder={isRTL ? "اختر الفئة" : "Select Category"} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="avl">{isRTL ? "الصوت والإضاءة والمرئيات" : "Audio, Visual & Lighting"}</SelectItem>
-                <SelectItem value="catering">{isRTL ? "خدمات الطعام" : "Catering Services"}</SelectItem>
-                <SelectItem value="decoration">{isRTL ? "الديكور والتزيين" : "Decoration & Design"}</SelectItem>
-                <SelectItem value="furniture">{isRTL ? "الأثاث" : "Furniture"}</SelectItem>
-                <SelectItem value="security">{isRTL ? "الأمن" : "Security"}</SelectItem>
-                <SelectItem value="transportation">{isRTL ? "النقل" : "Transportation"}</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
 
           <div className="space-y-2">
             <Label htmlFor="description">{isRTL ? "تفاصيل العرض" : "Offer Details"}</Label>
@@ -144,8 +218,8 @@ export const CreateOfferModal = ({ children }: CreateOfferModalProps) => {
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               {isRTL ? "إلغاء" : "Cancel"}
             </Button>
-            <Button type="submit">
-              {isRTL ? "إرسال العرض" : "Submit Offer"}
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? (isRTL ? "جارٍ الإرسال..." : "Submitting...") : (isRTL ? "إرسال العرض" : "Submit Offer")}
             </Button>
           </div>
         </form>

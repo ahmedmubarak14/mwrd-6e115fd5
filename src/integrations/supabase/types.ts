@@ -62,6 +62,140 @@ export type Database = {
         }
         Relationships: []
       }
+      messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          message_type: string | null
+          offer_id: string | null
+          read_at: string | null
+          recipient_id: string
+          request_id: string | null
+          sender_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          message_type?: string | null
+          offer_id?: string | null
+          read_at?: string | null
+          recipient_id: string
+          request_id?: string | null
+          sender_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          message_type?: string | null
+          offer_id?: string | null
+          read_at?: string | null
+          recipient_id?: string
+          request_id?: string | null
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          read_at: string | null
+          reference_id: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          read_at?: string | null
+          reference_id?: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          read_at?: string | null
+          reference_id?: string | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      offers: {
+        Row: {
+          created_at: string
+          currency: string | null
+          delivery_time_days: number
+          description: string
+          id: string
+          price: number
+          request_id: string
+          status: string | null
+          supplier_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string | null
+          delivery_time_days: number
+          description: string
+          id?: string
+          price: number
+          request_id: string
+          status?: string | null
+          supplier_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string | null
+          delivery_time_days?: number
+          description?: string
+          id?: string
+          price?: number
+          request_id?: string
+          status?: string | null
+          supplier_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "offers_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           amount: number | null
@@ -95,6 +229,57 @@ export type Database = {
           stripe_session_id?: string | null
           updated_at?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      requests: {
+        Row: {
+          budget_max: number | null
+          budget_min: number | null
+          category: string
+          created_at: string
+          currency: string | null
+          deadline: string | null
+          description: string
+          id: string
+          location: string | null
+          status: string | null
+          title: string
+          updated_at: string
+          urgency: string | null
+          user_id: string
+        }
+        Insert: {
+          budget_max?: number | null
+          budget_min?: number | null
+          category: string
+          created_at?: string
+          currency?: string | null
+          deadline?: string | null
+          description: string
+          id?: string
+          location?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string
+          urgency?: string | null
+          user_id: string
+        }
+        Update: {
+          budget_max?: number | null
+          budget_min?: number | null
+          category?: string
+          created_at?: string
+          currency?: string | null
+          deadline?: string | null
+          description?: string
+          id?: string
+          location?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string
+          urgency?: string | null
+          user_id?: string
         }
         Relationships: []
       }

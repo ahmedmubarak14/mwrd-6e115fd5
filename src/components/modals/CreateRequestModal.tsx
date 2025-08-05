@@ -7,11 +7,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CreateRequestModalProps {
   children: React.ReactNode;
@@ -20,41 +22,78 @@ interface CreateRequestModalProps {
 export const CreateRequestModal = ({ children }: CreateRequestModalProps) => {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date>();
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const { t, language } = useLanguage();
+  const { user } = useAuth();
   const isRTL = language === 'ar';
 
   const [formData, setFormData] = useState({
     title: "",
     category: "",
     description: "",
-    budget: "",
+    budgetMin: "",
+    budgetMax: "",
     location: "",
-    eventDate: date,
     urgency: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Simulate API call
-    setTimeout(() => {
+    if (!user) {
+      toast({
+        title: isRTL ? "خطأ" : "Error",
+        description: isRTL ? "يجب تسجيل الدخول أولاً" : "Please log in to create a request",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    
+    try {
+      const { error } = await supabase
+        .from('requests')
+        .insert({
+          user_id: user.id,
+          title: formData.title,
+          description: formData.description,
+          category: formData.category,
+          budget_min: formData.budgetMin ? parseInt(formData.budgetMin) : null,
+          budget_max: formData.budgetMax ? parseInt(formData.budgetMax) : null,
+          location: formData.location,
+          deadline: date ? date.toISOString().split('T')[0] : null,
+          urgency: formData.urgency || 'medium'
+        });
+
+      if (error) throw error;
+
       toast({
         title: isRTL ? "تم إنشاء الطلب بنجاح" : "Request Created Successfully",
         description: isRTL ? "تم إرسال طلبك وسيتم مراجعته قريباً" : "Your request has been submitted and will be reviewed soon",
       });
+      
       setOpen(false);
       setFormData({
         title: "",
         category: "",
         description: "",
-        budget: "",
+        budgetMin: "",
+        budgetMax: "",
         location: "",
-        eventDate: undefined,
         urgency: ""
       });
       setDate(undefined);
-    }, 1000);
+    } catch (error: any) {
+      toast({
+        title: isRTL ? "خطأ في إنشاء الطلب" : "Error Creating Request",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -111,42 +150,53 @@ export const CreateRequestModal = ({ children }: CreateRequestModalProps) => {
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="budget">{isRTL ? "الميزانية (ريال)" : "Budget (SAR)"}</Label>
+              <Label htmlFor="budgetMin">{isRTL ? "الحد الأدنى للميزانية (ريال)" : "Min Budget (SAR)"}</Label>
               <Input
-                id="budget"
+                id="budgetMin"
                 type="number"
-                placeholder={isRTL ? "مثل: 5000" : "e.g., 5000"}
-                value={formData.budget}
-                onChange={(e) => setFormData({...formData, budget: e.target.value})}
+                placeholder={isRTL ? "مثل: 3000" : "e.g., 3000"}
+                value={formData.budgetMin}
+                onChange={(e) => setFormData({...formData, budgetMin: e.target.value})}
               />
             </div>
-
+            
             <div className="space-y-2">
-              <Label>{isRTL ? "تاريخ الفعالية" : "Event Date"}</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !date && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {date ? format(date, "PPP") : <span>{isRTL ? "اختر التاريخ" : "Pick date"}</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={date}
-                    onSelect={setDate}
-                    initialFocus
-                    className="pointer-events-auto"
-                  />
-                </PopoverContent>
-              </Popover>
+              <Label htmlFor="budgetMax">{isRTL ? "الحد الأقصى للميزانية (ريال)" : "Max Budget (SAR)"}</Label>
+              <Input
+                id="budgetMax"
+                type="number"
+                placeholder={isRTL ? "مثل: 8000" : "e.g., 8000"}
+                value={formData.budgetMax}
+                onChange={(e) => setFormData({...formData, budgetMax: e.target.value})}
+              />
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label>{isRTL ? "تاريخ الفعالية" : "Event Date"}</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal",
+                    !date && "text-muted-foreground"
+                  )}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  {date ? format(date, "PPP") : <span>{isRTL ? "اختر التاريخ" : "Pick date"}</span>}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  initialFocus
+                  className="pointer-events-auto"
+                />
+              </PopoverContent>
+            </Popover>
           </div>
 
           <div className="space-y-2">
@@ -179,8 +229,8 @@ export const CreateRequestModal = ({ children }: CreateRequestModalProps) => {
             <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               {isRTL ? "إلغاء" : "Cancel"}
             </Button>
-            <Button type="submit">
-              {isRTL ? "إنشاء الطلب" : "Create Request"}
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? (isRTL ? "جارٍ الإنشاء..." : "Creating...") : (isRTL ? "إنشاء الطلب" : "Create Request")}
             </Button>
           </div>
         </form>

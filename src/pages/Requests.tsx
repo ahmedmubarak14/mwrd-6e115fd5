@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Plus, FileText, Clock, Eye, Search, Filter, Calendar, DollarSign, MapPin } from "lucide-react";
+import { Plus, FileText, Clock, Eye, Search, Filter, Calendar, DollarSign, MapPin, RefreshCw } from "lucide-react";
 import { useState, useMemo } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 import { CreateRequestModal } from "@/components/modals/CreateRequestModal";
+import { useRequests } from "@/hooks/useRequests";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export const Requests = () => {
   const { t } = useLanguage();
@@ -22,6 +24,7 @@ export const Requests = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const { toast } = useToast();
+  const { requests, loading, refetch, formatBudget, getOffersCount } = useRequests();
 
   const handleEditRequest = (requestTitle: string) => {
     toast({
@@ -37,83 +40,22 @@ export const Requests = () => {
     });
   };
 
-  const requests = [
-    { 
-      id: 1, 
-      title: "Conference AVL Equipment", 
-      category: "AVL", 
-      status: "active", 
-      offers: 3, 
-      budget: "18,800 - 30,000",
-      deadline: "Mar 20, 2024",
-      description: "Professional audio-visual equipment for a 500-person corporate conference",
-      urgency: "High",
-      location: "Riyadh"
-    },
-    { 
-      id: 2, 
-      title: "Corporate Event Catering", 
-      category: "Hospitality", 
-      status: "pending", 
-      offers: 0, 
-      budget: "11,300 - 18,800",
-      deadline: "Mar 25, 2024",
-      description: "Full catering service for corporate event with 200 attendees",
-      urgency: "Medium",
-      location: "Jeddah"
-    },
-    { 
-      id: 3, 
-      title: "Trade Show Booth Setup", 
-      category: "Booth Stands", 
-      status: "completed", 
-      offers: 5, 
-      budget: "37,500 - 56,300",
-      deadline: "Mar 15, 2024",
-      description: "Custom booth design and setup for international trade exhibition",
-      urgency: "Low",
-      location: "Dammam"
-    },
-    {
-      id: 4,
-      title: "Photography Services",
-      category: "Photography",
-      status: "active",
-      offers: 2,
-      budget: "5,000 - 8,000",
-      deadline: "Apr 5, 2024",
-      description: "Professional photography for product launch event",
-      urgency: "Medium",
-      location: "Riyadh"
-    },
-    {
-      id: 5,
-      title: "Event Security Services",
-      category: "Security",
-      status: "pending",
-      offers: 1,
-      budget: "15,000 - 25,000",
-      deadline: "Apr 12, 2024",
-      description: "Security personnel for large outdoor event",
-      urgency: "High",
-      location: "Mecca"
-    }
-  ];
-
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-lime/20 text-lime-foreground';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
+      case 'open': return 'bg-lime/20 text-lime-foreground';
+      case 'in_progress': return 'bg-yellow-100 text-yellow-800';
       case 'completed': return 'bg-green-100 text-green-800';
+      case 'cancelled': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getUrgencyColor = (urgency: string) => {
-    switch (urgency) {
-      case 'High': return 'destructive';
-      case 'Medium': return 'default';
-      case 'Low': return 'secondary';
+    switch (urgency.toLowerCase()) {
+      case 'urgent': return 'destructive';
+      case 'high': return 'destructive';
+      case 'medium': return 'default';
+      case 'low': return 'secondary';
       default: return 'default';
     }
   };
@@ -206,8 +148,8 @@ export const Requests = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">All Statuses</SelectItem>
-                        <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="pending">Pending</SelectItem>
+                        <SelectItem value="open">Open</SelectItem>
+                        <SelectItem value="in_progress">In Progress</SelectItem>
                         <SelectItem value="completed">Completed</SelectItem>
                       </SelectContent>
                     </Select>
@@ -241,9 +183,9 @@ export const Requests = () => {
                 </CardHeader>
                 <CardContent className="p-4 sm:p-6 pt-0">
                   <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                    {filteredRequests.filter(r => r.status === 'active').length}
+                    {filteredRequests.filter(r => r.status === 'open').length}
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">Currently active</p>
+                  <p className="text-xs text-muted-foreground mt-1">Currently open</p>
                 </CardContent>
               </Card>
               
@@ -256,7 +198,7 @@ export const Requests = () => {
                 </CardHeader>
                 <CardContent className="p-4 sm:p-6 pt-0">
                   <div className="text-3xl font-bold bg-gradient-to-r from-lime to-primary bg-clip-text text-transparent">
-                    {filteredRequests.reduce((sum, r) => sum + r.offers, 0)}
+                    {filteredRequests.reduce((sum, r) => sum + getOffersCount(r), 0)}
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">Total offers received</p>
                 </CardContent>
