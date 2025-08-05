@@ -49,13 +49,13 @@ export const Dashboard = () => {
         </SheetContent>
       </Sheet>
 
-      <div className={`flex ${isRTL ? 'flex-row-reverse' : ''}`}>
+      <div className="rtl-flex">
         {/* Desktop Sidebar - position based on language */}
-        <div className={`hidden lg:block ${isRTL ? 'order-2' : 'order-1'}`}>
+        <div className="hidden lg:block rtl-order-1">
           <Sidebar userRole={userProfile.role} userProfile={userProfile} />
         </div>
         
-        <main className={`flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden ${isRTL ? 'order-1' : 'order-2'}`}>
+        <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
           <ClientDashboard />
         </main>
       </div>

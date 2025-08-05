@@ -310,7 +310,7 @@ All colors MUST be HSL.
     @apply border-r border-border;
   }
 
-  [dir="rtl"] .sidebar-border {
+  :dir(rtl) .sidebar-border {
     @apply border-l border-r-0 border-border;
   }
 
@@ -319,7 +319,7 @@ All colors MUST be HSL.
     @apply flex;
   }
 
-  [dir="rtl"] .rtl-flex {
+  :dir(rtl) .rtl-flex {
     @apply flex-row-reverse;
   }
 
@@ -328,7 +328,145 @@ All colors MUST be HSL.
     @apply justify-start text-left;
   }
 
-  [dir="rtl"] .rtl-justify-start {
+  :dir(rtl) .rtl-justify-start {
     @apply justify-end text-right;
+  }
+
+  /* RTL-aware spacing */
+  .rtl-ml-2 {
+    @apply ml-2;
+  }
+
+  :dir(rtl) .rtl-ml-2 {
+    @apply mr-2 ml-0;
+  }
+
+  .rtl-mr-2 {
+    @apply mr-2;
+  }
+
+  :dir(rtl) .rtl-mr-2 {
+    @apply ml-2 mr-0;
+  }
+
+  .rtl-pl-4 {
+    @apply pl-4;
+  }
+
+  :dir(rtl) .rtl-pl-4 {
+    @apply pr-4 pl-0;
+  }
+
+  .rtl-pr-4 {
+    @apply pr-4;
+  }
+
+  :dir(rtl) .rtl-pr-4 {
+    @apply pl-4 pr-0;
+  }
+
+  /* RTL-aware positioning */
+  .rtl-left-3 {
+    @apply left-3;
+  }
+
+  :dir(rtl) .rtl-left-3 {
+    @apply right-3 left-auto;
+  }
+
+  .rtl-right-3 {
+    @apply right-3;
+  }
+
+  :dir(rtl) .rtl-right-3 {
+    @apply left-3 right-auto;
+  }
+
+  .rtl--right-1 {
+    @apply -right-1;
+  }
+
+  :dir(rtl) .rtl--right-1 {
+    @apply -left-1 right-auto;
+  }
+
+  /* RTL-aware text alignment */
+  .rtl-text-left {
+    @apply text-left;
+  }
+
+  :dir(rtl) .rtl-text-left {
+    @apply text-right;
+  }
+
+  .rtl-text-right {
+    @apply text-right;
+  }
+
+  :dir(rtl) .rtl-text-right {
+    @apply text-left;
+  }
+
+  /* Enhanced grid layout for RTL */
+  .rtl-grid {
+    @apply grid;
+  }
+
+  :dir(rtl) .rtl-grid {
+    direction: rtl;
+  }
+
+  /* RTL-aware order utilities */
+  .rtl-order-1 {
+    @apply order-1;
+  }
+
+  :dir(rtl) .rtl-order-1 {
+    @apply order-3;
+  }
+
+  .rtl-order-3 {
+    @apply order-3;
+  }
+
+  :dir(rtl) .rtl-order-3 {
+    @apply order-1;
+  }
+
+  /* Enhanced Arabic typography */
+  .font-arabic {
+    font-family: 'Cairo', 'Noto Sans Arabic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.7;
+    letter-spacing: 0.025em;
+  }
+
+  .font-arabic .text-2xl,
+  .font-arabic .text-3xl,
+  .font-arabic .text-4xl {
+    line-height: 1.4;
+  }
+
+  /* Improved button spacing for RTL */
+  .rtl-button-gap {
+    @apply gap-2;
+  }
+
+  :dir(rtl) .rtl-button-gap {
+    @apply gap-2;
+    flex-direction: row-reverse;
+  }
+
+  /* RTL-aware card layout */
+  .rtl-card-header {
+    @apply flex-row items-center justify-between;
+  }
+
+  :dir(rtl) .rtl-card-header {
+    @apply flex-row-reverse;
+  }
+
+  /* Smooth transitions for direction changes */
+  .rtl-transition {
+    @apply transition-all duration-300;
   }
 }

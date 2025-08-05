@@ -55,7 +55,7 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 h-full flex items-center justify-between">
         
         {/* Logo - positioned based on language */}
-        <div className={`${isRTL ? 'order-3' : 'order-1'} flex items-center gap-2 sm:gap-4`}>
+        <div className="rtl-order-1 flex items-center gap-2 sm:gap-4">
           <Button
             variant="ghost"
             size="icon"
@@ -75,14 +75,14 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
         </div>
         
         {/* Actions - positioned based on language */}
-        <div className={`${isRTL ? 'order-1' : 'order-3'} flex items-center gap-1 sm:gap-2 lg:gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <div className="rtl-order-3 rtl-flex items-center gap-1 sm:gap-2 lg:gap-4">
           <SearchModal>
             <div className="relative hidden xl:block cursor-pointer">
-              <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4`} />
+              <Search className="absolute rtl-left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <input
                 type="text"
                 placeholder={t('dashboard.search')}
-                className={`${isRTL ? 'pr-10 pl-4' : 'pl-10 pr-4'} py-2 border rounded-lg w-80 bg-background/50 text-foreground placeholder:text-muted-foreground focus:bg-background transition-colors ${isRTL ? 'text-right' : 'text-left'} cursor-pointer`}
+                className="rtl-pl-4 rtl-pr-4 py-2 border rounded-lg w-80 bg-background/50 text-foreground placeholder:text-muted-foreground focus:bg-background transition-colors rtl-text-left cursor-pointer"
                 readOnly
               />
             </div>
@@ -102,7 +102,7 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
             <Button variant="ghost" size="icon" className="relative hidden sm:flex h-8 w-8 sm:h-10 sm:w-10">
               <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
               {unreadCount > 0 && (
-                <span className={`absolute -top-1 ${isRTL ? '-left-1' : '-right-1'} bg-destructive text-destructive-foreground text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center text-[10px] sm:text-xs`}>
+                <span className="absolute -top-1 rtl--right-1 bg-destructive text-destructive-foreground text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center text-[10px] sm:text-xs">
                   {unreadCount > 99 ? '99+' : unreadCount}
                 </span>
               )}
@@ -111,13 +111,13 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className={`flex items-center gap-1 sm:gap-2 px-1 sm:px-2 lg:px-3 rounded-lg h-8 sm:h-10 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Button variant="ghost" className="rtl-flex items-center gap-1 sm:gap-2 px-1 sm:px-2 lg:px-3 rounded-lg h-8 sm:h-10">
                 <Avatar className="h-6 w-6 sm:h-8 sm:w-8">
                   <AvatarFallback className="text-xs sm:text-sm bg-primary/10 text-primary">
                     {getUserInitials(userProfile?.full_name, userProfile?.email)}
                   </AvatarFallback>
                 </Avatar>
-                <div className={`${isRTL ? 'text-right' : 'text-left'} hidden lg:block`}>
+                <div className="rtl-text-left hidden lg:block">
                   <p className="text-sm font-medium">{userProfile?.full_name || userProfile?.email?.split('@')[0] || t('dashboard.welcome').replace('Welcome to Supplify', 'Welcome').replace('مرحباً بك في سبلفاي', 'مرحباً')}</p>
                   <p className="text-xs text-muted-foreground capitalize">{userProfile?.role}</p>
                 </div>
@@ -125,17 +125,17 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent align={isRTL ? "start" : "end"} className="w-56">
               <DropdownMenuItem asChild>
-                <Link to="/profile" className={`flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <User className={`${isRTL ? 'ml-2' : 'mr-2'} h-4 w-4`} />
+                <Link to="/profile" className="rtl-flex items-center">
+                  <User className="rtl-mr-2 h-4 w-4" />
                   <span>{t('common.profile')}</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem className={isRTL ? 'flex-row-reverse' : ''} onClick={handleSettingsClick}>
-                <Settings className={`${isRTL ? 'ml-2' : 'mr-2'} h-4 w-4`} />
+              <DropdownMenuItem className="rtl-flex" onClick={handleSettingsClick}>
+                <Settings className="rtl-mr-2 h-4 w-4" />
                 <span>{t('common.settings')}</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleSignOut} className={isRTL ? 'flex-row-reverse' : ''}>
-                <LogOut className={`${isRTL ? 'ml-2' : 'mr-2'} h-4 w-4`} />
+              <DropdownMenuItem onClick={handleSignOut} className="rtl-flex">
+                <LogOut className="rtl-mr-2 h-4 w-4" />
                 <span>{t('common.signOut')}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
