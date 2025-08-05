@@ -109,10 +109,27 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
         }
       }
     } catch (error: any) {
+      // Handle specific error cases
+      let errorMessage = error.message;
+      let errorTitle = language === 'ar' ? "خطأ في المصادقة" : "Authentication error";
+      
+      if (error.message.includes('User already registered') || error.message.includes('already been registered')) {
+        if (isLogin) {
+          errorMessage = language === 'ar' 
+            ? 'بريد إلكتروني أو كلمة مرور غير صحيحة. حاول مرة أخرى أو اعد تعيين كلمة المرور.'
+            : 'Invalid email or password. Please try again or reset your password.';
+        } else {
+          errorMessage = language === 'ar'
+            ? 'يوجد حساب بهذا البريد الإلكتروني بالفعل. يرجى تسجيل الدخول بدلاً من ذلك.'
+            : 'An account with this email already exists. Please try logging in instead.';
+          errorTitle = language === 'ar' ? "البريد الإلكتروني مستخدم" : "Email already exists";
+        }
+      }
+      
       toast({
         variant: "destructive",
-        title: language === 'ar' ? "خطأ في المصادقة" : "Authentication error",
-        description: error.message,
+        title: errorTitle,
+        description: errorMessage,
       });
     } finally {
       setIsLoading(false);
