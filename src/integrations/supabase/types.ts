@@ -148,6 +148,9 @@ export type Database = {
       }
       offers: {
         Row: {
+          client_approval_date: string | null
+          client_approval_notes: string | null
+          client_approval_status: string | null
           created_at: string
           currency: string | null
           delivery_time_days: number
@@ -161,6 +164,9 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          client_approval_date?: string | null
+          client_approval_notes?: string | null
+          client_approval_status?: string | null
           created_at?: string
           currency?: string | null
           delivery_time_days: number
@@ -174,6 +180,9 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          client_approval_date?: string | null
+          client_approval_notes?: string | null
+          client_approval_status?: string | null
           created_at?: string
           currency?: string | null
           delivery_time_days?: number
@@ -234,6 +243,10 @@ export type Database = {
       }
       requests: {
         Row: {
+          admin_approval_date: string | null
+          admin_approval_notes: string | null
+          admin_approval_status: string | null
+          admin_approved_by: string | null
           budget_max: number | null
           budget_min: number | null
           category: string
@@ -250,6 +263,10 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          admin_approval_date?: string | null
+          admin_approval_notes?: string | null
+          admin_approval_status?: string | null
+          admin_approved_by?: string | null
           budget_max?: number | null
           budget_min?: number | null
           category: string
@@ -266,6 +283,10 @@ export type Database = {
           user_id: string
         }
         Update: {
+          admin_approval_date?: string | null
+          admin_approval_notes?: string | null
+          admin_approval_status?: string | null
+          admin_approved_by?: string | null
           budget_max?: number | null
           budget_min?: number | null
           category?: string
@@ -357,6 +378,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_notification: {
+        Args: {
+          p_user_id: string
+          p_type: string
+          p_title: string
+          p_message: string
+          p_reference_id?: string
+        }
+        Returns: string
+      }
       get_user_statistics: {
         Args: Record<PropertyKey, never>
         Returns: {
