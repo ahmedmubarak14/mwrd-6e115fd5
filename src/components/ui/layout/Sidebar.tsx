@@ -101,9 +101,9 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
   };
 
   return (
-    <div className={`w-full lg:w-64 h-full bg-card flex flex-col ${language === 'ar' ? 'border-l' : 'border-r'}`}>
+    <div className={`w-full lg:w-64 h-full bg-card flex flex-col border-border ${language === 'ar' ? 'border-l border-l-border' : 'border-r border-r-border'}`}>
       {/* User Profile Section */}
-      <div className={`p-4 sm:p-6 border-b ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+      <div className={`p-4 sm:p-6 border-b border-border ${language === 'ar' ? 'text-right' : 'text-left'}`}>
         <div className={`flex items-center gap-3 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
           <Avatar className="h-12 w-12">
             <AvatarImage 

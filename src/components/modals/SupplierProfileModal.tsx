@@ -27,7 +27,7 @@ import { useToast } from "@/hooks/use-toast";
 interface SupplierProfileModalProps {
   children: React.ReactNode;
   supplier: {
-    id: number;
+    id: string | number;
     name: string;
     category: string;
     rating: number;
@@ -41,6 +41,7 @@ interface SupplierProfileModalProps {
     englishLocation: string;
     englishDescription: string;
     englishResponseTime: string;
+    avatar_url?: string;
   };
 }
 

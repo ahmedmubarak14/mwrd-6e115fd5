@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from '@/components/ui/layout/Header';
 import { Sidebar } from '@/components/ui/layout/Sidebar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,6 +13,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRealTimeChat } from '@/hooks/useRealTimeChat';
 import { RealTimeChatModal } from '@/components/modals/RealTimeChatModal';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useUserProfiles } from '@/hooks/useUserProfiles';
 import { 
   Search, 
   MessageCircle, 
@@ -32,23 +33,42 @@ export default function Messages() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const { language, t } = useLanguage();
-  const { user } = useAuth();
+  const { user, userProfile } = useAuth();
   const isMobile = useIsMobile();
   const {
     conversations,
-    loading,
+    loading: chatLoading,
     getUnreadCount,
     getOtherParticipant
   } = useRealTimeChat();
+  
+  const { getProfile, fetchUserProfile, fetchMultipleProfiles } = useUserProfiles();
 
-  // Mock user profiles data - in real app, fetch from user_profiles table
-  const getUserProfile = (userId: string) => {
-    // This would be fetched from your user_profiles table
-    return {
+  // Fetch profiles for all conversation participants
+  useEffect(() => {
+    if (conversations.length > 0) {
+      const participantIds = conversations
+        .map(conv => getOtherParticipant(conv))
+        .filter((id): id is string => id !== null);
+      
+      if (participantIds.length > 0) {
+        fetchMultipleProfiles(participantIds);
+      }
+    }
+  }, [conversations, getOtherParticipant, fetchMultipleProfiles]);
+
+  // Fetch user profile with proper fallback
+  const getUserProfile = async (userId: string) => {
+    const profile = getProfile(userId);
+    if (profile) return profile;
+    
+    const fetchedProfile = await fetchUserProfile(userId);
+    return fetchedProfile || {
       id: userId,
-      full_name: 'User Name',
-      avatar_url: null,
-      role: 'client'
+      email: '',
+      role: 'client' as const,
+      full_name: 'Unknown User',
+      avatar_url: undefined
     };
   };
 
@@ -59,8 +79,14 @@ export default function Messages() {
     return true;
   }).filter(conversation => {
     if (!searchQuery) return true;
-    const otherParticipant = getUserProfile(getOtherParticipant(conversation) || '');
-    return otherParticipant.full_name.toLowerCase().includes(searchQuery.toLowerCase());
+    const otherParticipantId = getOtherParticipant(conversation);
+    if (!otherParticipantId) return false;
+    
+    const profile = getProfile(otherParticipantId);
+    if (!profile) return false;
+    
+    return (profile.full_name || profile.company_name || profile.email || '')
+      .toLowerCase().includes(searchQuery.toLowerCase());
   });
 
   const formatLastMessageTime = (timestamp: string) => {
@@ -83,11 +109,11 @@ export default function Messages() {
     }
   };
 
-  if (loading) {
+  if (chatLoading) {
     return (
       <div className="min-h-screen flex">
         <Header />
-        {!isMobile && <Sidebar />}
+        {!isMobile && <Sidebar userRole={userProfile?.role} userProfile={userProfile} />}
         <main className="flex-1 p-6 pt-20">
           <div className="flex items-center justify-center h-64">
             <div className="text-center">
@@ -103,9 +129,9 @@ export default function Messages() {
   }
 
   return (
-    <div className="min-h-screen flex">
+    <div className={`min-h-screen flex ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
       <Header />
-      {!isMobile && <Sidebar />}
+      {!isMobile && <Sidebar userRole={userProfile?.role} userProfile={userProfile} />}
       
       <main className="flex-1 p-6 pt-20">
         <div className="max-w-6xl mx-auto space-y-6">
@@ -180,36 +206,41 @@ export default function Messages() {
                   ) : (
                     <div className="divide-y">
                       {filteredConversations.map((conversation) => {
-                        const otherParticipant = getUserProfile(getOtherParticipant(conversation) || '');
+                        const otherParticipantId = getOtherParticipant(conversation);
                         const unreadCount = getUnreadCount(conversation.id);
+                        const profile = otherParticipantId ? getProfile(otherParticipantId) : null;
+                        
+                        if (!profile || !otherParticipantId) return null;
+                        
+                        const displayName = profile.company_name || profile.full_name || profile.email || 'Unknown User';
                         
                         return (
                           <RealTimeChatModal
                             key={conversation.id}
                             conversationId={conversation.id}
-                            recipientId={getOtherParticipant(conversation) || ''}
-                            recipientName={otherParticipant.full_name}
-                            recipientAvatar={otherParticipant.avatar_url || undefined}
+                            recipientId={otherParticipantId}
+                            recipientName={displayName}
+                            recipientAvatar={profile.avatar_url}
                           >
                             <div className="p-4 hover:bg-muted/50 cursor-pointer transition-colors">
                               <div className="flex items-center gap-3">
                                 <Avatar className="h-10 w-10">
                                   <AvatarImage 
-                                    src={otherParticipant.avatar_url || undefined} 
-                                    alt={otherParticipant.full_name} 
+                                    src={profile.avatar_url} 
+                                    alt={displayName} 
                                   />
                                   <AvatarFallback>
-                                    {otherParticipant.full_name.charAt(0).toUpperCase()}
+                                    {displayName.charAt(0).toUpperCase()}
                                   </AvatarFallback>
                                 </Avatar>
                                 
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-center justify-between">
                                     <h4 className="font-medium text-sm truncate">
-                                      {otherParticipant.full_name}
+                                      {displayName}
                                     </h4>
                                     <span className="text-xs text-muted-foreground">
-                                      {formatLastMessageTime(conversation.last_message_at)}
+                                      {conversation.last_message_at && formatLastMessageTime(conversation.last_message_at)}
                                     </span>
                                   </div>
                                   

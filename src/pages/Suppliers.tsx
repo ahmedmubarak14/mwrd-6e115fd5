@@ -13,6 +13,7 @@ import { EnhancedChatModal } from "@/components/modals/EnhancedChatModal";
 import { SupplierProfileModal } from "@/components/modals/SupplierProfileModal";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { useSuppliers } from "@/hooks/useSuppliers";
 
 export const Suppliers = () => {
   const { t } = useLanguage();
@@ -21,8 +22,9 @@ export const Suppliers = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeFilter, setActiveFilter] = useState("All Categories");
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  const [favoriteSuppliers, setFavoriteSuppliers] = useLocalStorage<number[]>('favorite-suppliers', []);
+  const [favoriteSuppliers, setFavoriteSuppliers] = useLocalStorage<string[]>('favorite-suppliers', []);
   const { toast } = useToast();
+  const { suppliers: realSuppliers, loading: suppliersLoading, error: suppliersError } = useSuppliers();
 
   const handleFilterClick = (category: string) => {
     setActiveFilter(category);
@@ -41,7 +43,7 @@ export const Suppliers = () => {
     });
   };
 
-  const toggleFavorite = (supplierId: number) => {
+  const toggleFavorite = (supplierId: string) => {
     setFavoriteSuppliers(prev => 
       prev.includes(supplierId) 
         ? prev.filter(id => id !== supplierId)
@@ -49,72 +51,24 @@ export const Suppliers = () => {
     );
   };
 
-  const suppliers = [
-    {
-      id: 1,
-      name: "شركة الفعاليات المتميزة",
-      category: "الصوت والصورة والإضاءة",
-      rating: 4.8,
-      reviews: 24,
-      location: "الرياض، المملكة العربية السعودية",
-      description: "حلول احترافية للصوت والصورة والإضاءة للفعاليات الشركاتية والمعارض في المملكة.",
-      completedProjects: 150,
-      responseTime: "ساعتان",
-      englishName: "Elite Events Co.",
-      englishCategory: "AVL (Audio-Visual-Lighting)",
-      englishLocation: "Riyadh, Saudi Arabia",
-      englishDescription: "Professional audio-visual and lighting solutions for corporate events and exhibitions.",
-      englishResponseTime: "2 hours"
-    },
-    {
-      id: 2,
-      name: "خدمات الضيافة المتميزة",
-      category: "الضيافة",
-      rating: 4.9,
-      reviews: 18,
-      location: "جدة، المملكة العربية السعودية",
-      description: "خدمات ضيافة عالية الجودة للفعاليات الشركاتية والمؤتمرات والمعارض.",
-      completedProjects: 200,
-      responseTime: "ساعة واحدة",
-      englishName: "Premium Catering Services",
-      englishCategory: "Hospitality",
-      englishLocation: "Jeddah, Saudi Arabia",
-      englishDescription: "High-quality catering services for corporate events, conferences, and exhibitions.",
-      englishResponseTime: "1 hour"
-    },
-    {
-      id: 3,
-      name: "تصاميم الأكشاك الإبداعية",
-      category: "أكشاك العرض",
-      rating: 4.7,
-      reviews: 32,
-      location: "الدمام، المملكة العربية السعودية",
-      description: "تصميم وإنشاء أكشاك مخصصة للمعارض التجارية والفعاليات في المملكة.",
-      completedProjects: 120,
-      responseTime: "3 ساعات",
-      englishName: "Creative Booth Designs",
-      englishCategory: "Booth Stands",
-      englishLocation: "Dammam, Saudi Arabia",
-      englishDescription: "Custom booth design and construction for trade shows and exhibitions.",
-      englishResponseTime: "3 hours"
-    },
-    {
-      id: 4,
-      name: "مطبعة الخبراء المحترفة",
-      category: "الطباعة",
-      rating: 4.6,
-      reviews: 45,
-      location: "مكة المكرمة، المملكة العربية السعودية",
-      description: "حلول طباعة شاملة تشمل اللافتات والكتيبات والمواد الترويجية.",
-      completedProjects: 300,
-      responseTime: "30 دقيقة",
-      englishName: "PrintMaster Pro",
-      englishCategory: "Printing",
-      englishLocation: "Makkah, Saudi Arabia",
-      englishDescription: "Complete printing solutions including banners, brochures, and promotional materials.",
-      englishResponseTime: "30 minutes"
-    }
-  ];
+  // Transform real suppliers to match the expected interface
+  const suppliers = realSuppliers.map(supplier => ({
+    id: supplier.id,
+    name: supplier.company_name || supplier.full_name || 'Unknown Company',
+    category: supplier.categories?.[0] || 'General Services',
+    rating: supplier.rating || 4.5,
+    reviews: supplier.reviews_count || 0,
+    location: supplier.location || 'Saudi Arabia',
+    description: supplier.description || 'Professional services provider',
+    completedProjects: supplier.completed_projects || 0,
+    responseTime: supplier.response_time || '2 hours',
+    englishName: supplier.company_name || supplier.full_name || 'Unknown Company',
+    englishCategory: supplier.categories?.[0] || 'General Services',
+    englishLocation: supplier.location || 'Saudi Arabia',
+    englishDescription: supplier.description || 'Professional services provider',
+    englishResponseTime: supplier.response_time || '2 hours',
+    avatar_url: supplier.avatar_url
+  }));
 
   const categories = [
     { ar: "جميع الفئات", en: "All Categories" },
@@ -154,6 +108,28 @@ export const Suppliers = () => {
       return matchesSearch && matchesCategory;
     });
   }, [suppliers, searchTerm, activeFilter, t]);
+
+  if (suppliersLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <LoadingSpinner className="mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading suppliers...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (suppliersError) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-destructive mb-2">Error loading suppliers</p>
+          <p className="text-muted-foreground text-sm">{suppliersError}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -248,11 +224,19 @@ export const Suppliers = () => {
                   {/* Supplier card header with better visual hierarchy */}
                   <CardHeader className="relative p-4 sm:p-6 bg-gradient-to-r from-primary/5 to-accent/5">
                     <div className="flex items-start gap-4">
-                      {/* Company avatar/logo placeholder */}
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
-                        <div className="text-white font-bold text-lg sm:text-xl">
-                          {(t('language') === 'ar' ? supplier.name : supplier.englishName).charAt(0)}
-                        </div>
+                      {/* Company avatar/logo */}
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg overflow-hidden">
+                        {supplier.avatar_url ? (
+                          <img 
+                            src={supplier.avatar_url} 
+                            alt={supplier.name} 
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="text-white font-bold text-lg sm:text-xl">
+                            {(t('language') === 'ar' ? supplier.name : supplier.englishName).charAt(0)}
+                          </div>
+                        )}
                       </div>
                       
                       <div className="flex-1 min-w-0">
@@ -326,7 +310,7 @@ export const Suppliers = () => {
                       </SupplierProfileModal>
                       <EnhancedChatModal 
                         supplierName={t('language') === 'ar' ? supplier.name : supplier.englishName}
-                        supplierId={supplier.id.toString()}
+                        supplierId={supplier.id}
                       >
                         <Button 
                           variant="outline" 
