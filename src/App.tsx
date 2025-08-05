@@ -29,6 +29,7 @@ import NotFound from "./pages/NotFound";
 import { TermsAndConditions } from "./pages/TermsAndConditions";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { SupplierDashboard } from "./pages/SupplierDashboard";
+import Messages from "./pages/Messages";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +58,7 @@ const App = () => (
               <Route path="/my-offers" element={<MyOffers />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/orders" element={<Orders />} />
+              <Route path="/messages" element={<Messages />} />
               <Route path="/support" element={<Support />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/payment-success" element={<PaymentSuccess />} />
