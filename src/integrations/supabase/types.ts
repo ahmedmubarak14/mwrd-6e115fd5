@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      conversations: {
+        Row: {
+          client_id: string
+          created_at: string
+          id: string
+          last_message_at: string | null
+          offer_id: string | null
+          request_id: string | null
+          status: string | null
+          supplier_id: string
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          offer_id?: string | null
+          request_id?: string | null
+          status?: string | null
+          supplier_id: string
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          offer_id?: string | null
+          request_id?: string | null
+          status?: string | null
+          supplier_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversations_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversations_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       expert_consultations: {
         Row: {
           budget_range: string | null
@@ -64,35 +115,50 @@ export type Database = {
       }
       messages: {
         Row: {
+          attachment_type: string | null
+          attachment_url: string | null
           content: string
+          conversation_id: string | null
           created_at: string
           id: string
+          message_status: string | null
           message_type: string | null
           offer_id: string | null
           read_at: string | null
           recipient_id: string
+          reply_to_id: string | null
           request_id: string | null
           sender_id: string
         }
         Insert: {
+          attachment_type?: string | null
+          attachment_url?: string | null
           content: string
+          conversation_id?: string | null
           created_at?: string
           id?: string
+          message_status?: string | null
           message_type?: string | null
           offer_id?: string | null
           read_at?: string | null
           recipient_id: string
+          reply_to_id?: string | null
           request_id?: string | null
           sender_id: string
         }
         Update: {
+          attachment_type?: string | null
+          attachment_url?: string | null
           content?: string
+          conversation_id?: string | null
           created_at?: string
           id?: string
+          message_status?: string | null
           message_type?: string | null
           offer_id?: string | null
           read_at?: string | null
           recipient_id?: string
+          reply_to_id?: string | null
           request_id?: string | null
           sender_id?: string
         }
@@ -102,6 +168,13 @@ export type Database = {
             columns: ["offer_id"]
             isOneToOne: false
             referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_reply_to_id_fkey"
+            columns: ["reply_to_id"]
+            isOneToOne: false
+            referencedRelation: "messages"
             referencedColumns: ["id"]
           },
           {
@@ -400,6 +473,15 @@ export type Database = {
       is_admin: {
         Args: Record<PropertyKey, never>
         Returns: boolean
+      }
+      start_conversation: {
+        Args: {
+          p_request_id: string
+          p_offer_id: string
+          p_client_id: string
+          p_supplier_id: string
+        }
+        Returns: string
       }
     }
     Enums: {
