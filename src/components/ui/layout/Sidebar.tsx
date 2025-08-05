@@ -1,5 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Link, useLocation } from "react-router-dom";
@@ -16,11 +18,21 @@ import {
   HelpCircle
 } from "lucide-react";
 
-interface SidebarProps {
-  userRole?: 'client' | 'supplier' | 'admin';
+interface UserProfile {
+  id: string;
+  email: string;
+  role: 'client' | 'supplier' | 'admin';
+  full_name?: string;
+  company_name?: string;
+  avatar_url?: string;
 }
 
-export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
+interface SidebarProps {
+  userRole?: 'client' | 'supplier' | 'admin';
+  userProfile?: UserProfile;
+}
+
+export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
   const { t, language, setLanguage } = useLanguage();
   const location = useLocation();
 
@@ -67,14 +79,55 @@ export const Sidebar = ({ userRole = 'client' }: SidebarProps) => {
 
   const isActive = (href: string) => location.pathname === href;
 
+  const getRoleBadgeColor = (role: string) => {
+    switch (role) {
+      case 'admin': return 'destructive';
+      case 'supplier': return 'secondary';
+      default: return 'default';
+    }
+  };
+
+  const getRoleDisplayName = (role: string) => {
+    const roleNames = {
+      en: { admin: 'Admin', supplier: 'Supplier', client: 'Client' },
+      ar: { admin: 'مدير', supplier: 'مورد', client: 'عميل' }
+    };
+    return roleNames[language as keyof typeof roleNames]?.[role as keyof typeof roleNames.en] || role;
+  };
+
+  const getInitials = (name?: string) => {
+    if (!name) return '?';
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  };
+
   return (
     <div className={`w-full lg:w-64 h-full bg-card flex flex-col ${language === 'ar' ? 'border-l' : 'border-r'}`}>
-      <div className={`p-4 sm:p-6 border-b flex items-center ${language === 'ar' ? 'justify-start' : 'justify-center'}`}>
-        <img 
-          src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
-          alt="Supplify Logo"
-          className="h-12 sm:h-16 w-auto"
-        />
+      {/* User Profile Section */}
+      <div className={`p-4 sm:p-6 border-b ${language === 'ar' ? 'text-right' : 'text-left'}`}>
+        <div className={`flex items-center gap-3 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+          <Avatar className="h-12 w-12">
+            <AvatarImage 
+              src={userProfile?.avatar_url} 
+              alt={userProfile?.full_name || userProfile?.email || 'User'} 
+            />
+            <AvatarFallback>
+              {getInitials(userProfile?.full_name || userProfile?.email)}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1 min-w-0">
+            <div className={`flex items-center gap-2 mb-1 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <h3 className="font-semibold text-sm truncate">
+                {userProfile?.company_name || userProfile?.full_name || 'User'}
+              </h3>
+              <Badge variant={getRoleBadgeColor(userProfile?.role || 'client')} className="text-xs">
+                {getRoleDisplayName(userProfile?.role || 'client')}
+              </Badge>
+            </div>
+            <p className="text-xs text-muted-foreground truncate">
+              ID: {userProfile?.id?.slice(0, 8) || 'N/A'}
+            </p>
+          </div>
+        </div>
       </div>
       
       <nav className="flex-1 px-3 sm:px-4 py-4 space-y-1 sm:space-y-2">
