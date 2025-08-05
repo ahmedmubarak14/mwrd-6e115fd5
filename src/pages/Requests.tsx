@@ -17,9 +17,11 @@ import { useRequests } from "@/hooks/useRequests";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export const Requests = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { userProfile } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const isRTL = language === 'ar';
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
@@ -87,18 +89,18 @@ export const Requests = () => {
       
       {/* Mobile Sidebar */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side="left" className="w-80 p-0 flex flex-col">
-          <Sidebar userRole={userProfile?.role || 'client'} />
+        <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
+          <Sidebar userRole={userProfile?.role || 'client'} userProfile={userProfile} />
         </SheetContent>
       </Sheet>
 
-      <div className="flex">
-        {/* Desktop Sidebar */}
-        <div className="hidden lg:block">
-          <Sidebar userRole={userProfile?.role || 'client'} />
+      <div className="rtl-flex">
+        {/* Desktop Sidebar - position based on language */}
+        <div className="hidden lg:block rtl-order-1">
+          <Sidebar userRole={userProfile?.role || 'client'} userProfile={userProfile} />
         </div>
         
-        <main className="flex-1 p-4 lg:p-8 max-w-full overflow-hidden">
+        <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
           <div className="max-w-6xl mx-auto space-y-6">
             {/* Enhanced Header with gradient background like dashboard */}
             <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-accent/10 to-lime/10 rounded-xl p-6">

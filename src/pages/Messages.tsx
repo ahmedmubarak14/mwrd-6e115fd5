@@ -1,297 +1,318 @@
-import React, { useState, useEffect } from 'react';
-import { Header } from '@/components/ui/layout/Header';
-import { Sidebar } from '@/components/ui/layout/Sidebar';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { useAuth } from '@/contexts/AuthContext';
-import { useRealTimeChat } from '@/hooks/useRealTimeChat';
-import { RealTimeChatModal } from '@/components/modals/RealTimeChatModal';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { useUserProfiles } from '@/hooks/useUserProfiles';
+import { Header } from "@/components/ui/layout/Header";
+import { Sidebar } from "@/components/ui/layout/Sidebar";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
+import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useRealTimeChat, type Conversation } from "@/hooks/useRealTimeChat";
+import { useUserProfiles } from "@/hooks/useUserProfiles";
+import { RealTimeChatModal } from "@/components/modals/RealTimeChatModal";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { 
   Search, 
   MessageCircle, 
-  Video, 
-  Phone,
-  MoreVertical,
-  Pin,
-  Archive,
-  Trash2,
-  Filter
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
+  Clock, 
+  Star, 
+  MoreVertical, 
+  Send,
+  Filter,
+  Users,
+  MessageSquare
+} from "lucide-react";
+import { useState, useMemo } from "react";
 
-export default function Messages() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedTab, setSelectedTab] = useState('all');
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
-  const { language, t } = useLanguage();
-  const { user, userProfile } = useAuth();
+const Messages = () => {
+  const { t, language } = useLanguage();
+  const { user, userProfile, loading } = useAuth();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTab, setSelectedTab] = useState<'all' | 'unread'>('all');
   const isMobile = useIsMobile();
-  const {
-    conversations,
-    loading: chatLoading,
-    getUnreadCount,
-    getOtherParticipant
+  const { 
+    conversations, 
+    loading: chatLoading 
   } = useRealTimeChat();
+  const { fetchMultipleProfiles } = useUserProfiles();
   
-  const { getProfile, fetchUserProfile, fetchMultipleProfiles } = useUserProfiles();
+  const isRTL = language === 'ar';
 
-  // Fetch profiles for all conversation participants
-  useEffect(() => {
-    if (conversations.length > 0) {
-      const participantIds = conversations
-        .map(conv => getOtherParticipant(conv))
-        .filter((id): id is string => id !== null);
-      
-      if (participantIds.length > 0) {
-        fetchMultipleProfiles(participantIds);
-      }
-    }
-  }, [conversations, getOtherParticipant, fetchMultipleProfiles]);
+  // Fetch user profiles for conversations
+  const [userProfiles, setUserProfiles] = useState<Record<string, any>>({});
 
-  // Fetch user profile with proper fallback
   const getUserProfile = async (userId: string) => {
-    const profile = getProfile(userId);
-    if (profile) return profile;
+    if (userProfiles[userId]) return userProfiles[userId];
     
-    const fetchedProfile = await fetchUserProfile(userId);
-    return fetchedProfile || {
-      id: userId,
-      email: '',
-      role: 'client' as const,
-      full_name: 'Unknown User',
-      avatar_url: undefined
-    };
+    try {
+      const profiles = await fetchMultipleProfiles([userId]);
+      const profile = profiles[0];
+      setUserProfiles(prev => ({ ...prev, [userId]: profile }));
+      return profile;
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+      return { name: 'Unknown User', email: '', avatar_url: null };
+    }
   };
 
-  const filteredConversations = conversations.filter(conversation => {
-    if (selectedTab === 'unread') {
-      return getUnreadCount(conversation.id) > 0;
-    }
-    return true;
-  }).filter(conversation => {
-    if (!searchQuery) return true;
-    const otherParticipantId = getOtherParticipant(conversation);
-    if (!otherParticipantId) return false;
+  // Filter conversations based on search and tab
+  const filteredConversations = useMemo(() => {
+    if (!conversations) return [];
     
-    const profile = getProfile(otherParticipantId);
-    if (!profile) return false;
-    
-    return (profile.full_name || profile.company_name || profile.email || '')
-      .toLowerCase().includes(searchQuery.toLowerCase());
-  });
+    return conversations.filter(conversation => {
+      const otherUserId = conversation.client_id === user?.id ? conversation.supplier_id : conversation.client_id;
+      const userProfile = userProfiles[otherUserId || ''];
+      const matchesSearch = searchQuery === "" || 
+        (userProfile?.name?.toLowerCase().includes(searchQuery.toLowerCase()));
+      
+      const matchesTab = selectedTab === 'all' || 
+        (selectedTab === 'unread' && false); // TODO: Implement unread count when DB schema is ready
+      
+      return matchesSearch && matchesTab;
+    });
+  }, [conversations, searchQuery, selectedTab, userProfiles, user?.id]);
 
   const formatLastMessageTime = (timestamp: string) => {
+    const date = new Date(timestamp);
     const now = new Date();
-    const messageTime = new Date(timestamp);
-    const diffInHours = (now.getTime() - messageTime.getTime()) / (1000 * 60 * 60);
+    const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
     
-    if (diffInHours < 24) {
-      return messageTime.toLocaleTimeString([], { 
+    if (diffInHours < 1) {
+      return date.toLocaleTimeString(language === 'ar' ? 'ar-SA' : 'en-US', { 
         hour: '2-digit', 
         minute: '2-digit' 
       });
-    } else if (diffInHours < 168) {
-      return messageTime.toLocaleDateString([], { weekday: 'short' });
+    } else if (diffInHours < 24) {
+      return date.toLocaleTimeString(language === 'ar' ? 'ar-SA' : 'en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+      });
+    } else if (diffInHours < 48) {
+      return 'Yesterday';
     } else {
-      return messageTime.toLocaleDateString([], { 
+      return date.toLocaleDateString(language === 'ar' ? 'ar-SA' : 'en-US', { 
         month: 'short', 
         day: 'numeric' 
       });
     }
   };
 
-  if (chatLoading) {
+  if (loading) {
     return (
-      <div className="min-h-screen flex">
-        <Header />
-        {!isMobile && <Sidebar userRole={userProfile?.role} userProfile={userProfile} />}
-        <main className="flex-1 p-6 pt-20">
-          <div className="flex items-center justify-center h-64">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-              <p className="text-muted-foreground">
-                {language === 'ar' ? 'جاري التحميل...' : 'Loading...'}
-              </p>
-            </div>
-          </div>
-        </main>
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner />
       </div>
     );
   }
 
   return (
-    <div className={`min-h-screen flex ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
-      <Header />
-      {!isMobile && <Sidebar userRole={userProfile?.role} userProfile={userProfile} />}
+    <div className="min-h-screen bg-background">
+      <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
       
-      <main className="flex-1 p-6 pt-20">
-        <div className="max-w-6xl mx-auto space-y-6">
-          {/* Header */}
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">
-                {language === 'ar' ? 'الرسائل' : 'Messages'}
-              </h1>
-              <p className="text-muted-foreground">
-                {language === 'ar' 
-                  ? 'تواصل مع العملاء والموردين' 
-                  : 'Communicate with clients and suppliers'
-                }
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm">
-                <Filter className="h-4 w-4 mr-2" />
-                {language === 'ar' ? 'تصفية' : 'Filter'}
-              </Button>
-            </div>
-          </div>
+      {/* Mobile Sidebar */}
+      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+        <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
+          <Sidebar userRole={userProfile?.role || 'client'} userProfile={userProfile} />
+        </SheetContent>
+      </Sheet>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Conversations List */}
-            <Card className="lg:col-span-1">
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">
-                    {language === 'ar' ? 'المحادثات' : 'Conversations'}
-                  </CardTitle>
-                  <Badge variant="secondary">
-                    {conversations.length}
-                  </Badge>
+      <div className="rtl-flex">
+        {/* Desktop Sidebar - position based on language */}
+        <div className="hidden lg:block rtl-order-1">
+          <Sidebar userRole={userProfile?.role || 'client'} userProfile={userProfile} />
+        </div>
+        
+        <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
+          <div className="max-w-7xl mx-auto h-[calc(100vh-120px)]">
+            
+            {/* Enhanced Header with gradient background */}
+            <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-accent/10 to-lime/10 rounded-xl p-6 mb-6">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
+                    Messages
+                  </h1>
+                  <p className="text-muted-foreground text-sm sm:text-base">
+                    Connect and communicate with clients and suppliers
+                  </p>
                 </div>
-                
-                {/* Search */}
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder={language === 'ar' ? 'البحث في المحادثات...' : 'Search conversations...'}
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-9"
-                    dir={language === 'ar' ? 'rtl' : 'ltr'}
-                  />
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                    <MessageCircle className="h-5 w-5 text-primary" />
+                  </div>
+                  <div className="text-right rtl:text-left">
+                    <p className="text-2xl font-bold text-primary">
+                      {filteredConversations.length}
+                    </p>
+                    <p className="text-xs text-muted-foreground">Active chats</p>
+                  </div>
                 </div>
+              </div>
+            </div>
 
-                {/* Tabs */}
-                <Tabs value={selectedTab} onValueChange={setSelectedTab}>
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="all">
-                      {language === 'ar' ? 'الكل' : 'All'}
-                    </TabsTrigger>
-                    <TabsTrigger value="unread">
-                      {language === 'ar' ? 'غير مقروءة' : 'Unread'}
-                    </TabsTrigger>
-                  </TabsList>
-                </Tabs>
-              </CardHeader>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
               
-              <CardContent className="p-0">
-                <ScrollArea className="h-[500px]">
-                  {filteredConversations.length === 0 ? (
-                    <div className="p-6 text-center">
-                      <MessageCircle className="h-12 w-12 text-muted-foreground mx-auto mb-2" />
-                      <p className="text-muted-foreground">
-                        {language === 'ar' ? 'لا توجد محادثات' : 'No conversations'}
-                      </p>
+              {/* Conversations List */}
+              <Card className="lg:col-span-1 border-0 bg-card/70 backdrop-blur-sm h-full flex flex-col">
+                <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5 p-4 sm:p-6">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <Users className="h-4 w-4 text-primary" />
                     </div>
-                  ) : (
-                    <div className="divide-y">
-                      {filteredConversations.map((conversation) => {
-                        const otherParticipantId = getOtherParticipant(conversation);
-                        const unreadCount = getUnreadCount(conversation.id);
-                        const profile = otherParticipantId ? getProfile(otherParticipantId) : null;
-                        
-                        if (!profile || !otherParticipantId) return null;
-                        
-                        const displayName = profile.company_name || profile.full_name || profile.email || 'Unknown User';
-                        
-                        return (
-                          <RealTimeChatModal
-                            key={conversation.id}
-                            conversationId={conversation.id}
-                            recipientId={otherParticipantId}
-                            recipientName={displayName}
-                            recipientAvatar={profile.avatar_url}
-                          >
-                            <div className="p-4 hover:bg-muted/50 cursor-pointer transition-colors">
-                              <div className="flex items-center gap-3">
-                                <Avatar className="h-10 w-10">
-                                  <AvatarImage 
-                                    src={profile.avatar_url} 
-                                    alt={displayName} 
-                                  />
-                                  <AvatarFallback>
-                                    {displayName.charAt(0).toUpperCase()}
-                                  </AvatarFallback>
-                                </Avatar>
-                                
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center justify-between">
-                                    <h4 className="font-medium text-sm truncate">
-                                      {displayName}
-                                    </h4>
-                                    <span className="text-xs text-muted-foreground">
-                                      {conversation.last_message_at && formatLastMessageTime(conversation.last_message_at)}
-                                    </span>
+                    Conversations
+                  </CardTitle>
+                  <CardDescription className="text-sm">
+                    Manage your communications
+                  </CardDescription>
+                </CardHeader>
+                
+                <CardContent className="flex-1 p-0 flex flex-col">
+                  {/* Search and Filters */}
+                  <div className="p-4 space-y-3 border-b">
+                    <div className="relative">
+                      <Search className="absolute left-3 rtl:left-auto rtl:right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input 
+                        placeholder="Search conversations..."
+                        className="pl-10 rtl:pl-3 rtl:pr-10 h-10 bg-background/50 border-primary/20 focus:border-primary/50"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                    </div>
+                    
+                    {/* Tab filters */}
+                    <div className="flex gap-2">
+                      <Button
+                        variant={selectedTab === 'all' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSelectedTab('all')}
+                        className="flex-1 h-8"
+                      >
+                        All ({conversations?.length || 0})
+                      </Button>
+                      <Button
+                        variant={selectedTab === 'unread' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSelectedTab('unread')}
+                        className="flex-1 h-8"
+                      >
+                        Unread (0)
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  {/* Conversations List */}
+                  <div className="flex-1 overflow-y-auto">
+                    {chatLoading ? (
+                      <div className="p-8 text-center">
+                        <LoadingSpinner />
+                      </div>
+                    ) : filteredConversations.length === 0 ? (
+                      <div className="p-8 text-center">
+                        <MessageSquare className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
+                        <h3 className="text-lg font-semibold mb-2">No conversations</h3>
+                        <p className="text-muted-foreground text-sm">
+                          {searchQuery ? 'No conversations match your search' : 'Start a conversation to get connected'}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="divide-y">
+                        {filteredConversations.map((conversation) => {
+                          const otherUserId = conversation.client_id === user?.id ? conversation.supplier_id : conversation.client_id;
+                          const profile = userProfiles[otherUserId || ''];
+                          const unreadCount = 0; // TODO: Implement when DB schema includes unread_count
+                          
+                          // Fetch profile if not already loaded
+                          if (!profile && otherUserId) {
+                            getUserProfile(otherUserId);
+                          }
+                          
+                          return (
+                            <RealTimeChatModal
+                              key={conversation.id}
+                              recipientId={otherUserId || ''}
+                            >
+                              <div className="p-4 hover:bg-muted/50 transition-colors cursor-pointer">
+                                <div className="flex items-start gap-3">
+                                  <div className="relative">
+                                    <Avatar className="h-12 w-12">
+                                      <AvatarImage src={profile?.avatar_url} />
+                                      <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                                        {profile?.name ? profile.name.charAt(0).toUpperCase() : '?'}
+                                      </AvatarFallback>
+                                    </Avatar>
+                                    {unreadCount > 0 && (
+                                      <div className="absolute -top-1 -right-1 rtl:-right-auto rtl:-left-1 bg-destructive text-destructive-foreground rounded-full min-w-[1.25rem] h-5 flex items-center justify-center text-xs font-medium">
+                                        {unreadCount > 99 ? '99+' : unreadCount}
+                                      </div>
+                                    )}
                                   </div>
                                   
-                                  <div className="flex items-center justify-between mt-1">
-                                    <p className="text-xs text-muted-foreground truncate">
-                                      {conversation.request_id 
-                                        ? (language === 'ar' ? 'طلب خدمة' : 'Service Request')
-                                        : conversation.offer_id
-                                        ? (language === 'ar' ? 'عرض' : 'Offer')
-                                        : (language === 'ar' ? 'محادثة عامة' : 'General Chat')
-                                      }
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-start justify-between mb-1">
+                                      <h4 className="font-semibold text-sm truncate">
+                                        {profile?.name || 'Loading...'}
+                                      </h4>
+                                      <span className="text-xs text-muted-foreground">
+                                        {conversation.last_message_at && formatLastMessageTime(conversation.last_message_at)}
+                                      </span>
+                                    </div>
+                                    
+                                    <p className="text-sm text-muted-foreground truncate">
+                                      No messages yet
                                     </p>
                                     
-                                    {unreadCount > 0 && (
-                                      <Badge variant="default" className="h-5 w-5 p-0 text-xs">
-                                        {unreadCount}
-                                      </Badge>
+                                    {profile?.company && (
+                                      <p className="text-xs text-primary mt-1 truncate">
+                                        {profile.company}
+                                      </p>
                                     )}
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          </RealTimeChatModal>
-                        );
-                      })}
-                    </div>
-                  )}
-                </ScrollArea>
-              </CardContent>
-            </Card>
+                            </RealTimeChatModal>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
 
-            {/* Chat Area */}
-            <Card className="lg:col-span-2">
-              <CardContent className="h-[600px] flex items-center justify-center">
-                <div className="text-center">
-                  <MessageCircle className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="font-medium mb-2">
-                    {language === 'ar' ? 'اختر محادثة للبدء' : 'Select a conversation to start'}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {language === 'ar' 
-                      ? 'اختر محادثة من القائمة على اليسار لبدء المراسلة'
-                      : 'Choose a conversation from the list on the left to start messaging'
-                    }
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+              {/* Chat Area Placeholder */}
+              <Card className="lg:col-span-2 border-0 bg-card/70 backdrop-blur-sm h-full flex flex-col">
+                <CardContent className="flex-1 flex items-center justify-center p-8">
+                  <div className="text-center max-w-md">
+                    <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <MessageCircle className="h-10 w-10 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-2">Select a conversation</h3>
+                    <p className="text-muted-foreground mb-6">
+                      Choose a conversation from the list to start messaging
+                    </p>
+                    <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-2">
+                        <Send className="h-4 w-4" />
+                        <span>Real-time messaging</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Star className="h-4 w-4" />
+                        <span>File sharing</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+            </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
-}
+};
+
+export default Messages;
