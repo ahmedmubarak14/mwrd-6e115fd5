@@ -251,8 +251,8 @@ export const Requests = () => {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-start gap-3">
                               <div className={`w-2 h-12 rounded-full ${
-                                request.status === 'active' ? 'bg-lime' :
-                                request.status === 'pending' ? 'bg-accent' : 'bg-primary'
+                                request.status === 'open' ? 'bg-lime' :
+                                request.status === 'in_progress' ? 'bg-accent' : 'bg-primary'
                               }`}></div>
                               <div className="flex-1">
                                 <div className="flex items-start justify-between mb-2">
@@ -281,12 +281,8 @@ export const Requests = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pl-5">
                           <div className="flex items-center gap-2 p-3 bg-lime/5 rounded-lg">
                           <div className="flex items-center gap-1">
-                            <span className="text-lime text-lg font-bold">{request.budget}</span>
-                            <img 
-                              src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
-                              alt="SAR" 
-                              className="h-4 w-4 opacity-80"
-                            />
+                            <span className="text-lime text-lg font-bold">{formatBudget(request)}</span>
+                            <span className="text-lime text-sm">{request.currency}</span>
                           </div>
                           </div>
                           
@@ -302,7 +298,7 @@ export const Requests = () => {
                             <Eye className="h-4 w-4 text-primary" />
                             <div>
                               <p className="text-xs text-muted-foreground">Offers</p>
-                              <p className="font-semibold text-sm">{request.offers} received</p>
+                              <p className="font-semibold text-sm">{getOffersCount(request)} received</p>
                             </div>
                           </div>
                         </div>
@@ -311,10 +307,10 @@ export const Requests = () => {
                         <div className="flex flex-col sm:flex-row gap-2 pl-5">
                           <ViewDetailsModal 
                             item={{
-                              id: request.id,
+                              id: parseInt(request.id.slice(-8), 16),
                               title: request.title,
                               description: `Category: ${request.category}`,
-                              value: request.budget,
+                              value: formatBudget(request),
                               status: request.status
                             }}
                             userRole={userProfile?.role as any}
@@ -324,7 +320,7 @@ export const Requests = () => {
                               {t('common.view')}
                             </Button>
                           </ViewDetailsModal>
-                          {request.status === 'pending' && (
+                          {request.status === 'open' && (
                             <Button 
                               size="sm" 
                               variant="outline" 
@@ -334,14 +330,14 @@ export const Requests = () => {
                               {t('common.edit')}
                             </Button>
                           )}
-                          {request.offers > 0 && (
+                          {getOffersCount(request) > 0 && (
                             <Button 
                               size="sm" 
                               variant="outline" 
                               className="flex-1 sm:flex-initial bg-lime/10 border-lime/20 text-lime hover:bg-lime/20 hover-scale"
-                              onClick={() => handleViewOffers(request.offers)}
+                              onClick={() => handleViewOffers(getOffersCount(request))}
                             >
-                              View Offers ({request.offers})
+                              View Offers ({getOffersCount(request)})
                             </Button>
                           )}
                         </div>
