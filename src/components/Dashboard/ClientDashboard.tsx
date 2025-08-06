@@ -42,12 +42,12 @@ export const ClientDashboard = () => {
   const stats = userProfile?.role === 'supplier' ? [
     { title: t('dashboard.activeOffers'), value: "12", icon: Package, color: "text-primary" },
     { title: t('dashboard.totalEarnings'), value: "92,000", icon: Banknote, color: "text-lime", currency: true },
-    { title: "Success Rate", value: "85%", icon: TrendingUp, color: "text-primary" },
-    { title: "Client Rating", value: "4.8", icon: Star, color: "text-lime" }
+    { title: t('dashboard.successRate'), value: "85%", icon: TrendingUp, color: "text-primary" },
+    { title: t('dashboard.clientRating'), value: "4.8", icon: Star, color: "text-lime" }
   ] : [
     { title: t('dashboard.totalRequests'), value: "3", icon: FileText, color: "text-primary" },
-    { title: "Pending Offers", value: "8", icon: TrendingUp, color: "text-lime" },
-    { title: "Suppliers Connected", value: "12", icon: Users, color: "text-primary" }
+    { title: t('dashboard.pendingOffers'), value: "8", icon: TrendingUp, color: "text-lime" },
+    { title: t('dashboard.suppliersConnected'), value: "12", icon: Users, color: "text-primary" }
   ];
 
   // Universal recent items that work for both user types
@@ -73,7 +73,7 @@ export const ClientDashboard = () => {
           <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3">{t('dashboard.welcome')}</h1>
           <p className="text-sm sm:text-base lg:text-xl opacity-90 mb-4 sm:mb-6 lg:mb-8 max-w-2xl leading-relaxed">
             {userProfile?.role === 'supplier' 
-              ? t('dashboard.subtitle').replace('Connect with vetted service providers for your events', 'Manage your offers, connect with clients, and grow your business').replace('تواصل مع مقدمي الخدمات المعتمدين لفعالياتك', 'إدارة عروضك والتواصل مع العملاء وتنمية أعمالك')
+              ? t('dashboard.supplierSubtitle')
               : t('dashboard.subtitle')
             }
           </p>
@@ -133,9 +133,9 @@ export const ClientDashboard = () => {
                   <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-primary/20 to-accent/20 rounded-xl sm:rounded-2xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300 mb-3 sm:mb-4">
                     <Plus className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
                   </div>
-                  <CardTitle className="text-lg sm:text-xl">Create New Offer</CardTitle>
+                  <CardTitle className="text-lg sm:text-xl">{t('dashboard.createNewOffer')}</CardTitle>
                   <CardDescription className="text-sm sm:text-base leading-relaxed">
-                    Submit offers for client requests and grow your business
+                    {t('dashboard.submitOffers')}
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -146,9 +146,9 @@ export const ClientDashboard = () => {
                 <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-accent/20 to-lime/20 rounded-xl sm:rounded-2xl flex items-center justify-center group-hover:from-accent/30 group-hover:to-lime/30 transition-all duration-300 mb-3 sm:mb-4">
                   <Package className="h-6 w-6 sm:h-8 sm:w-8 text-accent" />
                 </div>
-                <CardTitle className="text-lg sm:text-xl">My Offers</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">{t('dashboard.myOffers')}</CardTitle>
                 <CardDescription className="text-sm sm:text-base leading-relaxed">
-                  Track and manage all your submitted offers
+                  {t('dashboard.trackOffers')}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -158,9 +158,9 @@ export const ClientDashboard = () => {
                 <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-lime/20 to-primary/20 rounded-xl sm:rounded-2xl flex items-center justify-center group-hover:from-lime/30 group-hover:to-primary/30 transition-all duration-300 mb-3 sm:mb-4">
                   <FileText className="h-6 w-6 sm:h-8 sm:w-8 text-lime" />
                 </div>
-                <CardTitle className="text-lg sm:text-xl">Browse Requests</CardTitle>
+                <CardTitle className="text-lg sm:text-xl">{t('dashboard.browseRequests')}</CardTitle>
                 <CardDescription className="text-sm sm:text-base leading-relaxed">
-                  Find new opportunities and submit offers
+                  {t('dashboard.findOpportunities')}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -175,7 +175,7 @@ export const ClientDashboard = () => {
                   </div>
                   <CardTitle className="text-lg sm:text-xl">{t('dashboard.createRequest')}</CardTitle>
                   <CardDescription className="text-sm sm:text-base leading-relaxed">
-                    Post a new service request and get offers from suppliers
+                    {t('dashboard.postRequest')}
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -188,7 +188,7 @@ export const ClientDashboard = () => {
                 </div>
                 <CardTitle className="text-lg sm:text-xl">{t('dashboard.viewRequests')}</CardTitle>
                 <CardDescription className="text-sm sm:text-base leading-relaxed">
-                  View and manage your existing service requests
+                  {t('dashboard.manageRequests')}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -200,7 +200,7 @@ export const ClientDashboard = () => {
                 </div>
                 <CardTitle className="text-lg sm:text-xl">{t('dashboard.browseSuppliers')}</CardTitle>
                 <CardDescription className="text-sm sm:text-base leading-relaxed">
-                  Discover vetted suppliers for your events
+                  {t('dashboard.discoverSuppliers')}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -216,8 +216,8 @@ export const ClientDashboard = () => {
           </CardTitle>
           <CardDescription className="text-sm sm:text-base">
             {userProfile?.role === 'supplier' 
-              ? 'Your latest offers and their current status' 
-              : 'Your latest service requests and their status'
+              ? t('dashboard.recentOffersDesc')
+              : t('dashboard.recentRequestsDesc')
             }
           </CardDescription>
         </CardHeader>
@@ -251,12 +251,12 @@ export const ClientDashboard = () => {
                       ? 'bg-accent/20 text-accent-foreground border border-accent/20' :
                     'bg-primary/20 text-primary-foreground border border-primary/20'
                   }`}>
-                    {item.status === 'in_progress' ? 'In Progress' : item.status}
+                    {item.status === 'in_progress' ? t('dashboard.inProgress') : item.status}
                   </span>
                   <ViewDetailsModal item={item} userRole={userProfile?.role}>
                     <Button variant="outline" size="sm" className="hover-scale w-full sm:w-auto text-xs sm:text-sm rtl-button-gap">
                       <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
-                      {isRTL ? 'عرض' : 'View'}
+                      {t('dashboard.view')}
                     </Button>
                   </ViewDetailsModal>
                 </div>

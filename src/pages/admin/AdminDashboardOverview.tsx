@@ -31,6 +31,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface DashboardStats {
   total_users: number;
@@ -56,6 +57,8 @@ export const AdminDashboardOverview = () => {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { t, language } = useLanguage();
+  const isRTL = language === 'ar';
 
   useEffect(() => {
     fetchDashboardData();
@@ -107,7 +110,7 @@ export const AdminDashboardOverview = () => {
 
   const statCards = [
     {
-      title: "Total Users",
+      title: t('admin.totalUsers'),
       value: stats?.total_users || 0,
       change: "+12%",
       changeType: "positive" as const,
@@ -116,7 +119,7 @@ export const AdminDashboardOverview = () => {
       action: () => navigate('/admin/users')
     },
     {
-      title: "Active Subscriptions",
+      title: t('admin.activeSubscriptions'),
       value: stats?.active_subscriptions || 0,
       change: "+8%",
       changeType: "positive" as const,
@@ -125,7 +128,7 @@ export const AdminDashboardOverview = () => {
       action: () => navigate('/admin/financial/subscriptions')
     },
     {
-      title: "Monthly Revenue",
+      title: t('admin.monthlyRevenue'),
       value: `$${(stats?.monthly_revenue || 0).toLocaleString()}`,
       change: "+23%",
       changeType: "positive" as const,
@@ -134,7 +137,7 @@ export const AdminDashboardOverview = () => {
       action: () => navigate('/admin/financial')
     },
     {
-      title: "Total Requests",
+      title: t('admin.pendingRequests'),
       value: stats?.total_requests || 0,
       change: "+15%",
       changeType: "positive" as const,
@@ -163,7 +166,7 @@ export const AdminDashboardOverview = () => {
   ];
 
   return (
-    <div className="space-y-4 sm:space-y-6 lg:space-y-8">
+    <div className={`space-y-4 sm:space-y-6 lg:space-y-8 ${isRTL ? 'font-arabic' : ''}`}>
       {/* Enhanced Welcome Header */}
       <div className="relative overflow-hidden bg-gradient-to-r from-primary via-accent to-lime text-white rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-6 lg:p-8">
         <div className="absolute inset-0">
@@ -171,23 +174,23 @@ export const AdminDashboardOverview = () => {
           <div className="absolute bottom-1/4 left-1/4 w-24 h-24 sm:w-40 sm:h-40 lg:w-80 lg:h-80 bg-white/5 rounded-full blur-3xl"></div>
         </div>
         <div className="relative z-10">
-          <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3">Admin Dashboard</h1>
+          <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3">{t('admin.welcome')}</h1>
           <p className="text-sm sm:text-base lg:text-xl opacity-90 mb-4 sm:mb-6 lg:mb-8 max-w-2xl leading-relaxed">
-            Monitor platform performance, manage users, and oversee all operations
+            {t('admin.subtitle')}
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+          <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
             <Dialog>
               <DialogTrigger asChild>
-                <Button className="bg-white text-primary hover:bg-white/90 font-semibold px-4 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg hover-scale w-full sm:w-auto text-sm sm:text-base">
-                  <UserPlus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                  Add User
+                <Button className={`bg-white text-primary hover:bg-white/90 font-semibold px-4 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg hover-scale w-full sm:w-auto text-sm sm:text-base ${isRTL ? 'rtl-button-gap' : ''}`}>
+                  <UserPlus className="h-4 w-4 sm:h-5 sm:w-5" />
+                  {t('admin.addNewUser')}
                 </Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>Quick Add User</DialogTitle>
+                  <DialogTitle>{t('admin.addUserTitle')}</DialogTitle>
                   <DialogDescription>
-                    Create a new user account quickly. For advanced options, use the User Management page.
+                    {t('admin.addUserDesc')}
                   </DialogDescription>
                 </DialogHeader>
                 <p className="text-sm text-muted-foreground">
@@ -198,10 +201,10 @@ export const AdminDashboardOverview = () => {
             <Button 
               variant="outline" 
               onClick={fetchDashboardData}
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20 font-medium px-4 sm:px-6 py-2 sm:py-3 hover-scale w-full sm:w-auto text-sm sm:text-base"
+              className={`bg-white/10 border-white/20 text-white hover:bg-white/20 font-medium px-4 sm:px-6 py-2 sm:py-3 hover-scale w-full sm:w-auto text-sm sm:text-base ${isRTL ? 'rtl-button-gap' : ''}`}
             >
-              <RotateCcw className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-              Refresh
+              <RotateCcw className="h-4 w-4 sm:h-5 sm:w-5" />
+              {t('admin.refreshData')}
             </Button>
           </div>
         </div>
@@ -250,7 +253,7 @@ export const AdminDashboardOverview = () => {
               <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                 <Activity className="h-5 w-5 text-primary" />
               </div>
-              Recent Activity
+              {t('analytics.recentActivity')}
             </CardTitle>
             <CardDescription className="text-sm sm:text-base">
               Latest actions performed on the platform
@@ -297,7 +300,7 @@ export const AdminDashboardOverview = () => {
               <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
                 <Zap className="h-5 w-5 text-accent" />
               </div>
-              Quick Actions
+              {t('quickActions')}
             </CardTitle>
             <CardDescription className="text-sm sm:text-base">
               Common administrative tasks

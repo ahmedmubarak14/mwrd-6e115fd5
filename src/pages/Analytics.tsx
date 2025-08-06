@@ -15,7 +15,7 @@ import { useState } from "react";
 
 export const Analytics = () => {
   const { userProfile } = useAuth();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const { toast } = useToast();
   const isRTL = language === 'ar';
   const isMobile = useIsMobile();
@@ -190,10 +190,10 @@ export const Analytics = () => {
             <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
               <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
                 <h1 className="text-3xl font-bold mb-2">
-                  {isRTL ? 'تحليلات الأداء' : 'Performance Analytics'}
+                  {t('analytics.title')}
                 </h1>
                 <p className="text-muted-foreground">
-                  {isRTL ? 'راقب أداءك واحصل على رؤى قيمة لتحسين نتائجك' : 'Monitor your performance and gain valuable insights to improve your results'}
+                  {t('analytics.subtitle')}
                 </p>
               </div>
               <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
@@ -202,9 +202,9 @@ export const Analytics = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="7">{isRTL ? '7 أيام' : '7 days'}</SelectItem>
-                    <SelectItem value="30">{isRTL ? '30 يوم' : '30 days'}</SelectItem>
-                    <SelectItem value="90">{isRTL ? '90 يوم' : '90 days'}</SelectItem>
+                    <SelectItem value="7">{t('analytics.last7Days')}</SelectItem>
+                    <SelectItem value="30">{t('analytics.last30Days')}</SelectItem>
+                    <SelectItem value="90">{t('analytics.last90Days')}</SelectItem>
                     <SelectItem value="365">{isRTL ? 'سنة' : '1 year'}</SelectItem>
                   </SelectContent>
                 </Select>
@@ -216,7 +216,7 @@ export const Analytics = () => {
                   className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
                 >
                   <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-                  {isRTL ? 'تحديث' : 'Refresh'}
+                  {t('analytics.refresh')}
                 </Button>
                 <Button 
                   variant="outline" 
@@ -226,7 +226,7 @@ export const Analytics = () => {
                   className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
                 >
                   <Download className="h-4 w-4" />
-                  {isExporting ? (isRTL ? 'جاري التصدير...' : 'Exporting...') : (isRTL ? 'تصدير' : 'Export')}
+                  {isExporting ? 'Exporting...' : t('analytics.export')}
                 </Button>
               </div>
             </div>
@@ -272,7 +272,7 @@ export const Analytics = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Activity className="h-5 w-5" />
-                    {isRTL ? 'نظرة عامة على الأداء' : 'Performance Overview'}
+                    {t('analytics.performanceOverview')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -328,7 +328,7 @@ export const Analytics = () => {
                     <div className="text-center">
                       <BarChart3 className="h-12 w-12 text-muted-foreground mx-auto mb-2" />
                       <p className="text-sm text-muted-foreground">
-                        {isRTL ? 'انقر لعرض المخططات التفاعلية' : 'Click to view interactive charts'}
+                        {t('analytics.viewCharts')}
                       </p>
                     </div>
                   </div>
@@ -340,7 +340,7 @@ export const Analytics = () => {
             <Card>
               <CardHeader>
                 <CardTitle>
-                  {isRTL ? 'النشاط الأخير' : 'Recent Activity'}
+                  {t('analytics.recentActivity')}
                 </CardTitle>
               </CardHeader>
               <CardContent>

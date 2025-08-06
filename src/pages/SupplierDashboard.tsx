@@ -162,8 +162,8 @@ export const SupplierDashboard = () => {
             <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-accent/10 to-lime/10 rounded-xl p-6">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                 <div>
-                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">Supplier Dashboard</h1>
-                  <p className="text-muted-foreground text-sm sm:text-base">Browse requests and manage your offers</p>
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">{t('supplier.welcome')}</h1>
+                  <p className="text-muted-foreground text-sm sm:text-base">{t('supplier.subtitle')}</p>
                 </div>
               </div>
             </div>
@@ -172,7 +172,7 @@ export const SupplierDashboard = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
               <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Available Requests</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">{t('supplier.availableRequests')}</CardTitle>
                   <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                     <Package className="h-5 w-5 text-primary" />
                   </div>
@@ -187,7 +187,7 @@ export const SupplierDashboard = () => {
               
               <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">My Offers</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">{t('supplier.totalOffers')}</CardTitle>
                   <div className="w-10 h-10 bg-lime/10 rounded-full flex items-center justify-center">
                     <TrendingUp className="h-5 w-5 text-lime" />
                   </div>
@@ -202,7 +202,7 @@ export const SupplierDashboard = () => {
               
               <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Pending</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">{t('supplier.pendingOffers')}</CardTitle>
                   <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
                     <Clock className="h-5 w-5 text-accent" />
                   </div>
@@ -217,7 +217,7 @@ export const SupplierDashboard = () => {
 
               <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">Accepted</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">{t('supplier.acceptedOffers')}</CardTitle>
                   <div className="w-10 h-10 bg-green-500/10 rounded-full flex items-center justify-center">
                     <Eye className="h-5 w-5 text-green-500" />
                   </div>
