@@ -1,10 +1,12 @@
 
 import { useState, useEffect } from 'react';
+import { Header } from "@/components/ui/layout/Header";
+import { Sidebar } from "@/components/ui/layout/Sidebar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { 
@@ -16,6 +18,7 @@ import {
   Video
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Message {
   id: string;
@@ -52,7 +55,8 @@ interface UserProfile {
 }
 
 export default function Messages() {
-  const { user } = useAuth();
+  const { user, userProfile } = useAuth();
+  const { language } = useLanguage();
   const { toast } = useToast();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
@@ -61,6 +65,9 @@ export default function Messages() {
   const [userProfiles, setUserProfiles] = useState<{[key: string]: UserProfile}>({});
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const isRTL = language === 'ar';
 
   useEffect(() => {
     if (user) {
@@ -216,155 +223,273 @@ export default function Messages() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      <div className="min-h-screen bg-background">
+        <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
+        <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="h-screen flex bg-background">
-      {/* Conversations List */}
-      <div className="w-1/3 border-r bg-card">
-        <div className="p-4 border-b">
-          <h2 className="text-xl font-semibold mb-4">Messages</h2>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input
-              placeholder="Search conversations..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
+    <div className="min-h-screen bg-background">
+      <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
+      
+      {/* Mobile Sidebar */}
+      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+        <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
+          <Sidebar userRole={userProfile?.role || 'client'} userProfile={userProfile} />
+        </SheetContent>
+      </Sheet>
+
+      <div className="rtl-flex">
+        {/* Desktop Sidebar - position based on language */}
+        <div className="hidden lg:block rtl-order-1">
+          <Sidebar userRole={userProfile?.role || 'client'} userProfile={userProfile} />
         </div>
         
-        <div className="overflow-y-auto h-full">
-          {filteredConversations.length === 0 ? (
-            <div className="p-4 text-center text-muted-foreground">
-              No conversations found
-            </div>
-          ) : (
-            filteredConversations.map((conversation) => {
-              const otherParticipant = getOtherParticipant(conversation);
-              return (
-                <div
-                  key={conversation.id}
-                  onClick={() => setSelectedConversation(conversation)}
-                  className={`p-4 border-b cursor-pointer hover:bg-accent transition-colors ${
-                    selectedConversation?.id === conversation.id ? 'bg-accent' : ''
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                      <MessageCircle className="h-5 w-5 text-primary" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-medium truncate">
-                          {otherParticipant?.full_name || 'Unknown User'}
-                        </h3>
-                        <span className="text-xs text-muted-foreground">
-                          {new Date(conversation.last_message_at).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground truncate">
-                        {otherParticipant?.company_name || 'No company'}
-                      </p>
-                      <Badge variant="outline" className="mt-1 text-xs">
-                        {conversation.status}
-                      </Badge>
-                    </div>
-                  </div>
-                </div>
-              );
-            })
-          )}
-        </div>
-      </div>
-
-      {/* Chat Area */}
-      <div className="flex-1 flex flex-col">
-        {selectedConversation ? (
-          <>
-            {/* Chat Header */}
-            <div className="p-4 border-b bg-card flex items-center justify-between">
+        <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
+          <div className="max-w-6xl mx-auto">
+            {/* Messages Header */}
+            <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-accent/10 to-lime/10 rounded-xl p-6 mb-6">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <MessageCircle className="h-4 w-4 text-primary" />
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                  <MessageCircle className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-medium">
-                    {getOtherParticipant(selectedConversation)?.full_name || 'Unknown User'}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {getOtherParticipant(selectedConversation)?.company_name || 'No company'}
-                  </p>
+                  <h1 className="text-2xl sm:text-3xl font-bold">Messages</h1>
+                  <p className="text-muted-foreground">Connect with suppliers and clients</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <Button variant="ghost" size="sm">
-                  <Phone className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="sm">
-                  <Video className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="sm">
-                  <MoreVertical className="h-4 w-4" />
-                </Button>
-              </div>
             </div>
 
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map((message) => {
-                const isOwnMessage = message.sender_id === user?.id;
-                return (
-                  <div
-                    key={message.id}
-                    className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}
-                  >
-                    <div
-                      className={`max-w-[70%] rounded-lg p-3 ${
-                        isOwnMessage
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-muted'
-                      }`}
-                    >
-                      <p className="text-sm">{message.content}</p>
-                      <p className="text-xs opacity-70 mt-1">
-                        {new Date(message.created_at).toLocaleTimeString()}
-                      </p>
+            {/* Chat Interface */}
+            <Card className="border-0 bg-card/70 backdrop-blur-sm overflow-hidden">
+              <div className="h-[calc(100vh-16rem)] flex">
+                {/* Conversations List */}
+                <div className="w-full lg:w-1/3 border-r bg-card/50">
+                  <div className="p-4 border-b">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                      <Input
+                        placeholder="Search conversations..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="pl-10"
+                      />
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                  
+                  <div className="overflow-y-auto h-full">
+                    {filteredConversations.length === 0 ? (
+                      <div className="p-4 text-center text-muted-foreground">
+                        No conversations found
+                      </div>
+                    ) : (
+                      filteredConversations.map((conversation) => {
+                        const otherParticipant = getOtherParticipant(conversation);
+                        return (
+                          <div
+                            key={conversation.id}
+                            onClick={() => setSelectedConversation(conversation)}
+                            className={`p-4 border-b cursor-pointer hover:bg-accent transition-colors ${
+                              selectedConversation?.id === conversation.id ? 'bg-accent' : ''
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                                <MessageCircle className="h-5 w-5 text-primary" />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between">
+                                  <h3 className="font-medium truncate">
+                                    {otherParticipant?.full_name || 'Unknown User'}
+                                  </h3>
+                                  <span className="text-xs text-muted-foreground">
+                                    {new Date(conversation.last_message_at).toLocaleDateString()}
+                                  </span>
+                                </div>
+                                <p className="text-sm text-muted-foreground truncate">
+                                  {otherParticipant?.company_name || 'No company'}
+                                </p>
+                                <Badge variant="outline" className="mt-1 text-xs">
+                                  {conversation.status}
+                                </Badge>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                </div>
 
-            {/* Message Input */}
-            <div className="p-4 border-t bg-card">
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Type a message..."
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                  className="flex-1"
-                />
-                <Button onClick={sendMessage} disabled={!newMessage.trim()}>
-                  <Send className="h-4 w-4" />
-                </Button>
+                {/* Chat Area */}
+                <div className="hidden lg:flex lg:flex-1 flex-col">
+                  {selectedConversation ? (
+                    <>
+                      {/* Chat Header */}
+                      <div className="p-4 border-b bg-card/50 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                            <MessageCircle className="h-4 w-4 text-primary" />
+                          </div>
+                          <div>
+                            <h3 className="font-medium">
+                              {getOtherParticipant(selectedConversation)?.full_name || 'Unknown User'}
+                            </h3>
+                            <p className="text-sm text-muted-foreground">
+                              {getOtherParticipant(selectedConversation)?.company_name || 'No company'}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button variant="ghost" size="sm">
+                            <Phone className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm">
+                            <Video className="h-4 w-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Messages */}
+                      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                        {messages.map((message) => {
+                          const isOwnMessage = message.sender_id === user?.id;
+                          return (
+                            <div
+                              key={message.id}
+                              className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}
+                            >
+                              <div
+                                className={`max-w-[70%] rounded-lg p-3 ${
+                                  isOwnMessage
+                                    ? 'bg-primary text-primary-foreground'
+                                    : 'bg-muted'
+                                }`}
+                              >
+                                <p className="text-sm">{message.content}</p>
+                                <p className="text-xs opacity-70 mt-1">
+                                  {new Date(message.created_at).toLocaleTimeString()}
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* Message Input */}
+                      <div className="p-4 border-t bg-card/50">
+                        <div className="flex gap-2">
+                          <Input
+                            placeholder="Type a message..."
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                            className="flex-1"
+                          />
+                          <Button onClick={sendMessage} disabled={!newMessage.trim()}>
+                            <Send className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex-1 flex items-center justify-center text-muted-foreground">
+                      <div className="text-center">
+                        <MessageCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <p>Select a conversation to start messaging</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Mobile Chat Overlay - shown when conversation is selected on mobile */}
+                {selectedConversation && (
+                  <div className="lg:hidden fixed inset-0 bg-background z-50 flex flex-col">
+                    {/* Mobile Chat Header */}
+                    <div className="p-4 border-b bg-card flex items-center gap-3">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => setSelectedConversation(null)}
+                        className="mr-2"
+                      >
+                        ←
+                      </Button>
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                        <MessageCircle className="h-4 w-4 text-primary" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-medium">
+                          {getOtherParticipant(selectedConversation)?.full_name || 'Unknown User'}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {getOtherParticipant(selectedConversation)?.company_name || 'No company'}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button variant="ghost" size="sm">
+                          <Phone className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm">
+                          <Video className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Mobile Messages */}
+                    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                      {messages.map((message) => {
+                        const isOwnMessage = message.sender_id === user?.id;
+                        return (
+                          <div
+                            key={message.id}
+                            className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}
+                          >
+                            <div
+                              className={`max-w-[70%] rounded-lg p-3 ${
+                                isOwnMessage
+                                  ? 'bg-primary text-primary-foreground'
+                                  : 'bg-muted'
+                              }`}
+                            >
+                              <p className="text-sm">{message.content}</p>
+                              <p className="text-xs opacity-70 mt-1">
+                                {new Date(message.created_at).toLocaleTimeString()}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Mobile Message Input */}
+                    <div className="p-4 border-t bg-card">
+                      <div className="flex gap-2">
+                        <Input
+                          placeholder="Type a message..."
+                          value={newMessage}
+                          onChange={(e) => setNewMessage(e.target.value)}
+                          onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                          className="flex-1"
+                        />
+                        <Button onClick={sendMessage} disabled={!newMessage.trim()}>
+                          <Send className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-          </>
-        ) : (
-          <div className="flex-1 flex items-center justify-center text-muted-foreground">
-            <div className="text-center">
-              <MessageCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p>Select a conversation to start messaging</p>
-            </div>
+            </Card>
           </div>
-        )}
+        </main>
       </div>
     </div>
   );
