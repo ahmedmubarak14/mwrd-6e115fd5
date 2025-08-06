@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -49,12 +50,12 @@ interface UserSubscription {
   current_period_end: string;
   cancel_at_period_end: boolean;
   created_at: string;
-  subscription_plans: SubscriptionPlan;
-  user_profiles: {
+  subscription_plans?: SubscriptionPlan | null;
+  user_profiles?: {
     full_name: string;
     email: string;
     company_name: string;
-  };
+  } | null;
 }
 
 export const SubscriptionManagement = () => {
@@ -88,10 +89,16 @@ export const SubscriptionManagement = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setPlans((data || []).map(plan => ({
+      
+      // Convert Json[] to string[] for features
+      const processedPlans = (data || []).map(plan => ({
         ...plan,
-        features: Array.isArray(plan.features) ? plan.features : []
-      })));
+        features: Array.isArray(plan.features) 
+          ? plan.features.map(f => typeof f === 'string' ? f : String(f))
+          : []
+      }));
+      
+      setPlans(processedPlans);
     } catch (error: any) {
       toast({
         title: "Error",
@@ -103,23 +110,54 @@ export const SubscriptionManagement = () => {
 
   const fetchSubscriptions = async () => {
     try {
-      const { data, error } = await supabase
+      // Get subscriptions first
+      const { data: subscriptionData, error: subscriptionError } = await supabase
         .from('user_subscriptions')
-        .select(`
-          *,
-          subscription_plans (*),
-          user_profiles (full_name, email, company_name)
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setSubscriptions((data || []).map(sub => ({
-        ...sub,
-        subscription_plans: {
-          ...sub.subscription_plans,
-          features: Array.isArray(sub.subscription_plans?.features) ? sub.subscription_plans.features : []
-        }
-      })));
+      if (subscriptionError) throw subscriptionError;
+
+      // Get subscription plans separately
+      const planIds = subscriptionData?.map(sub => sub.plan_id).filter(Boolean) || [];
+      const { data: planData, error: planError } = await supabase
+        .from('subscription_plans')
+        .select('*')
+        .in('id', planIds);
+
+      if (planError) {
+        console.warn('Could not fetch subscription plans:', planError);
+      }
+
+      // Get user profiles separately
+      const userIds = subscriptionData?.map(sub => sub.user_id).filter(Boolean) || [];
+      const { data: profileData, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('id, full_name, email, company_name')
+        .in('id', userIds);
+
+      if (profileError) {
+        console.warn('Could not fetch user profiles:', profileError);
+      }
+
+      // Combine the data
+      const combinedData = subscriptionData?.map(subscription => {
+        const planInfo = planData?.find(plan => plan.id === subscription.plan_id);
+        const processedPlan = planInfo ? {
+          ...planInfo,
+          features: Array.isArray(planInfo.features) 
+            ? planInfo.features.map(f => typeof f === 'string' ? f : String(f))
+            : []
+        } : null;
+
+        return {
+          ...subscription,
+          subscription_plans: processedPlan,
+          user_profiles: profileData?.find(profile => profile.id === subscription.user_id) || null
+        };
+      }) || [];
+
+      setSubscriptions(combinedData);
     } catch (error: any) {
       toast({
         title: "Error",
@@ -350,7 +388,7 @@ export const SubscriptionManagement = () => {
                       <div className="flex items-center gap-3">
                         <div>
                           <h4 className="font-semibold">{subscription.user_profiles?.full_name || 'No Name'}</h4>
-                          <p className="text-sm text-muted-foreground">{subscription.user_profiles?.email}</p>
+                          <p className="text-sm text-muted-foreground">{subscription.user_profiles?.email || 'No email'}</p>
                         </div>
                         <Badge variant={getStatusBadgeVariant(subscription.status)}>
                           {subscription.status}
@@ -358,7 +396,7 @@ export const SubscriptionManagement = () => {
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
                         <div>
-                          <strong>Plan:</strong> {subscription.subscription_plans?.name}
+                          <strong>Plan:</strong> {subscription.subscription_plans?.name || 'N/A'}
                         </div>
                         <div>
                           <strong>Period:</strong> {new Date(subscription.current_period_start).toLocaleDateString()} - {new Date(subscription.current_period_end).toLocaleDateString()}

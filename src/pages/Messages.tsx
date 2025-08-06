@@ -1,163 +1,233 @@
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
-import { useRealTimeChat } from '@/hooks/useRealTimeChat';
-import { Send, Search, MoreVertical } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { 
+  MessageCircle, 
+  Send, 
+  Search,
+  MoreVertical,
+  Phone,
+  Video
+} from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+
+interface Message {
+  id: string;
+  content: string;
+  sender_id: string;
+  recipient_id: string;
+  created_at: string;
+  read_at: string | null;
+  message_type: string;
+  message_status: string;
+  conversation_id: string | null;
+  request_id: string | null;
+  offer_id: string | null;
+}
+
+interface Conversation {
+  id: string;
+  client_id: string;
+  supplier_id: string;
+  request_id: string | null;
+  offer_id: string | null;
+  status: string;
+  last_message_at: string;
+  created_at: string;
+  messages?: Message[];
+}
 
 interface UserProfile {
   id: string;
   full_name: string;
   email: string;
-  avatar_url?: string;
+  avatar_url: string | null;
+  company_name: string | null;
 }
 
 export default function Messages() {
-  console.log('Messages component rendering...');
-  
   const { user } = useAuth();
   const { toast } = useToast();
-  const [profiles, setProfiles] = useState<Record<string, UserProfile>>({});
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
+  const [userProfiles, setUserProfiles] = useState<{[key: string]: UserProfile}>({});
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  
-  const {
-    conversations,
-    messages,
-    loading,
-    activeConversation,
-    setActiveConversation,
-    sendMessage,
-    markAsRead,
-    getUnreadCount,
-    getOtherParticipant
-  } = useRealTimeChat();
 
-  console.log('Messages component state:', { 
-    conversationsCount: conversations.length, 
-    profilesCount: Object.keys(profiles).length,
-    activeConversation,
-    loading
-  });
-
-  // Fetch user profiles for conversations
   useEffect(() => {
-    if (!conversations.length) {
-      console.log('No conversations to fetch profiles for');
-      return;
+    if (user) {
+      fetchConversations();
     }
+  }, [user]);
 
-    const fetchProfiles = async () => {
-      console.log('Fetching profiles for conversations:', conversations.length);
-      
-      try {
-        const participantIds = conversations.map(conv => 
-          getOtherParticipant(conv)
-        ).filter(Boolean);
+  useEffect(() => {
+    if (selectedConversation) {
+      fetchMessages(selectedConversation.id);
+    }
+  }, [selectedConversation]);
 
-        console.log('Participant IDs to fetch:', participantIds);
-
-        if (participantIds.length === 0) {
-          console.log('No participant IDs to fetch');
-          return;
-        }
-
-        const { data: profilesData, error } = await supabase
-          .from('user_profiles')
-          .select('id, full_name, email, avatar_url')
-          .in('id', participantIds);
-
-        console.log('Fetched profiles data:', profilesData, 'Error:', error);
-
-        if (error) {
-          console.error('Error fetching profiles:', error);
-          throw error;
-        }
-
-        // Safely handle profiles data
-        const profilesMap: Record<string, UserProfile> = {};
-        if (profilesData && Array.isArray(profilesData)) {
-          profilesData.forEach(profile => {
-            if (profile && profile.id) {
-              profilesMap[profile.id] = profile;
-            }
-          });
-        }
-
-        console.log('Setting profiles map:', profilesMap);
-        setProfiles(profilesMap);
-      } catch (error) {
-        console.error('Error fetching user profiles:', error);
-        toast({
-          title: "Error",
-          description: "Failed to load user profiles",
-          variant: "destructive",
-        });
-      }
-    };
-
-    fetchProfiles();
-  }, [conversations, getOtherParticipant, toast]);
-
-  const handleSendMessage = async () => {
-    if (!newMessage.trim() || !activeConversation || !user) return;
-
-    const conversation = conversations.find(c => c.id === activeConversation);
-    if (!conversation) return;
-
-    const recipientId = getOtherParticipant(conversation);
-    if (!recipientId) return;
+  const fetchConversations = async () => {
+    if (!user) return;
 
     try {
-      await sendMessage(activeConversation, newMessage.trim(), recipientId);
-      setNewMessage('');
-    } catch (error) {
-      console.error('Error sending message:', error);
+      const { data, error } = await supabase
+        .from('conversations')
+        .select('*')
+        .or(`client_id.eq.${user.id},supplier_id.eq.${user.id}`)
+        .order('last_message_at', { ascending: false });
+
+      if (error) throw error;
+
+      setConversations(data || []);
+
+      // Fetch user profiles for all participants
+      const userIds = new Set<string>();
+      data?.forEach(conv => {
+        userIds.add(conv.client_id);
+        userIds.add(conv.supplier_id);
+      });
+
+      if (userIds.size > 0) {
+        const { data: profiles, error: profileError } = await supabase
+          .from('user_profiles')
+          .select('*')
+          .in('id', Array.from(userIds));
+
+        if (profileError) {
+          console.warn('Could not fetch user profiles:', profileError);
+        } else {
+          const profileMap = profiles?.reduce((acc, profile) => {
+            acc[profile.id] = profile;
+            return acc;
+          }, {} as {[key: string]: UserProfile}) || {};
+          setUserProfiles(profileMap);
+        }
+      }
+
+      // Select first conversation if none selected
+      if (data && data.length > 0 && !selectedConversation) {
+        setSelectedConversation(data[0]);
+      }
+    } catch (error: any) {
+      console.error('Error fetching conversations:', error);
       toast({
         title: "Error",
-        description: "Failed to send message",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchMessages = async (conversationId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('messages')
+        .select('*')
+        .eq('conversation_id', conversationId)
+        .order('created_at', { ascending: true });
+
+      if (error) throw error;
+      setMessages(data || []);
+
+      // Mark messages as read
+      if (data && data.length > 0) {
+        const unreadMessages = data.filter(msg => 
+          msg.recipient_id === user?.id && !msg.read_at
+        );
+        
+        if (unreadMessages.length > 0) {
+          await supabase
+            .from('messages')
+            .update({ read_at: new Date().toISOString() })
+            .in('id', unreadMessages.map(msg => msg.id));
+        }
+      }
+    } catch (error: any) {
+      console.error('Error fetching messages:', error);
+      toast({
+        title: "Error",
+        description: error.message,
         variant: "destructive",
       });
     }
   };
 
-  const getProfileForConversation = (conversation: any) => {
-    const otherParticipantId = getOtherParticipant(conversation);
-    return otherParticipantId ? profiles[otherParticipantId] : null;
+  const sendMessage = async () => {
+    if (!selectedConversation || !user || !newMessage.trim()) return;
+
+    try {
+      const recipientId = selectedConversation.client_id === user.id 
+        ? selectedConversation.supplier_id 
+        : selectedConversation.client_id;
+
+      const { error } = await supabase
+        .from('messages')
+        .insert({
+          content: newMessage,
+          sender_id: user.id,
+          recipient_id: recipientId,
+          conversation_id: selectedConversation.id,
+          message_type: 'text'
+        });
+
+      if (error) throw error;
+
+      // Update conversation's last message time
+      await supabase
+        .from('conversations')
+        .update({ last_message_at: new Date().toISOString() })
+        .eq('id', selectedConversation.id);
+
+      setNewMessage('');
+      fetchMessages(selectedConversation.id);
+      fetchConversations();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const getOtherParticipant = (conversation: Conversation) => {
+    if (!user) return null;
+    const otherUserId = conversation.client_id === user.id 
+      ? conversation.supplier_id 
+      : conversation.client_id;
+    return userProfiles[otherUserId] || null;
   };
 
   const filteredConversations = conversations.filter(conversation => {
-    if (!searchTerm) return true;
-    
-    const profile = getProfileForConversation(conversation);
-    if (!profile) return false;
-    
-    return profile.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-           profile.email?.toLowerCase().includes(searchTerm.toLowerCase());
+    const otherParticipant = getOtherParticipant(conversation);
+    return otherParticipant?.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+           otherParticipant?.company_name?.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-96">
+      <div className="flex items-center justify-center h-screen">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="flex h-[calc(100vh-8rem)] max-w-7xl mx-auto">
+    <div className="h-screen flex bg-background">
       {/* Conversations List */}
-      <div className="w-1/3 border-r border-border flex flex-col">
-        <div className="p-4 border-b border-border">
-          <h2 className="text-lg font-semibold mb-3">Messages</h2>
+      <div className="w-1/3 border-r bg-card">
+        <div className="p-4 border-b">
+          <h2 className="text-xl font-semibold mb-4">Messages</h2>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input
@@ -168,117 +238,95 @@ export default function Messages() {
             />
           </div>
         </div>
-
-        <ScrollArea className="flex-1">
+        
+        <div className="overflow-y-auto h-full">
           {filteredConversations.length === 0 ? (
             <div className="p-4 text-center text-muted-foreground">
-              {conversations.length === 0 ? 'No conversations yet' : 'No matching conversations'}
+              No conversations found
             </div>
           ) : (
-            <div className="divide-y divide-border">
-              {filteredConversations.map((conversation) => {
-                const profile = getProfileForConversation(conversation);
-                const unreadCount = getUnreadCount(conversation.id);
-                const isActive = activeConversation === conversation.id;
-
-                // Skip rendering if profile is not loaded yet
-                if (!profile) {
-                  return null;
-                }
-
-                return (
-                  <div
-                    key={conversation.id}
-                    className={`p-4 cursor-pointer hover:bg-muted/50 transition-colors ${
-                      isActive ? 'bg-muted' : ''
-                    }`}
-                    onClick={() => setActiveConversation(conversation.id)}
-                  >
-                    <div className="flex items-center space-x-3">
-                      <Avatar>
-                        <AvatarImage src={profile.avatar_url} alt={profile.full_name} />
-                        <AvatarFallback>
-                          {profile.full_name?.charAt(0) || profile.email?.charAt(0) || '?'}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <h3 className="text-sm font-medium truncate">
-                            {profile.full_name || profile.email}
-                          </h3>
-                          {unreadCount > 0 && (
-                            <Badge variant="destructive" className="text-xs">
-                              {unreadCount}
-                            </Badge>
-                          )}
-                        </div>
-                        <p className="text-xs text-muted-foreground truncate">
-                          {conversation.last_message_content || 'No messages yet'}
-                        </p>
+            filteredConversations.map((conversation) => {
+              const otherParticipant = getOtherParticipant(conversation);
+              return (
+                <div
+                  key={conversation.id}
+                  onClick={() => setSelectedConversation(conversation)}
+                  className={`p-4 border-b cursor-pointer hover:bg-accent transition-colors ${
+                    selectedConversation?.id === conversation.id ? 'bg-accent' : ''
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <MessageCircle className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-medium truncate">
+                          {otherParticipant?.full_name || 'Unknown User'}
+                        </h3>
+                        <span className="text-xs text-muted-foreground">
+                          {new Date(conversation.last_message_at).toLocaleDateString()}
+                        </span>
                       </div>
+                      <p className="text-sm text-muted-foreground truncate">
+                        {otherParticipant?.company_name || 'No company'}
+                      </p>
+                      <Badge variant="outline" className="mt-1 text-xs">
+                        {conversation.status}
+                      </Badge>
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })
           )}
-        </ScrollArea>
+        </div>
       </div>
 
       {/* Chat Area */}
       <div className="flex-1 flex flex-col">
-        {activeConversation ? (
+        {selectedConversation ? (
           <>
             {/* Chat Header */}
-            <div className="p-4 border-b border-border flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                {(() => {
-                  const conversation = conversations.find(c => c.id === activeConversation);
-                  const profile = conversation ? getProfileForConversation(conversation) : null;
-                  
-                  if (!profile) {
-                    return (
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-muted rounded-full" />
-                        <div className="w-24 h-4 bg-muted rounded" />
-                      </div>
-                    );
-                  }
-                  
-                  return (
-                    <>
-                      <Avatar>
-                        <AvatarImage src={profile.avatar_url} alt={profile.full_name} />
-                        <AvatarFallback>
-                          {profile.full_name?.charAt(0) || profile.email?.charAt(0) || '?'}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <h3 className="font-medium">{profile.full_name || profile.email}</h3>
-                        <p className="text-sm text-muted-foreground">Online</p>
-                      </div>
-                    </>
-                  );
-                })()}
+            <div className="p-4 border-b bg-card flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                  <MessageCircle className="h-4 w-4 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-medium">
+                    {getOtherParticipant(selectedConversation)?.full_name || 'Unknown User'}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {getOtherParticipant(selectedConversation)?.company_name || 'No company'}
+                  </p>
+                </div>
               </div>
-              <Button variant="ghost" size="sm">
-                <MoreVertical className="h-4 w-4" />
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button variant="ghost" size="sm">
+                  <Phone className="h-4 w-4" />
+                </Button>
+                <Button variant="ghost" size="sm">
+                  <Video className="h-4 w-4" />
+                </Button>
+                <Button variant="ghost" size="sm">
+                  <MoreVertical className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
 
             {/* Messages */}
-            <ScrollArea className="flex-1 p-4">
-              <div className="space-y-4">
-                {(messages[activeConversation] || []).map((message) => (
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              {messages.map((message) => {
+                const isOwnMessage = message.sender_id === user?.id;
+                return (
                   <div
                     key={message.id}
-                    className={`flex ${
-                      message.sender_id === user?.id ? 'justify-end' : 'justify-start'
-                    }`}
+                    className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[70%] rounded-lg px-3 py-2 ${
-                        message.sender_id === user?.id
+                      className={`max-w-[70%] rounded-lg p-3 ${
+                        isOwnMessage
                           ? 'bg-primary text-primary-foreground'
                           : 'bg-muted'
                       }`}
@@ -289,31 +337,31 @@ export default function Messages() {
                       </p>
                     </div>
                   </div>
-                ))}
-              </div>
-            </ScrollArea>
+                );
+              })}
+            </div>
 
             {/* Message Input */}
-            <div className="p-4 border-t border-border">
-              <div className="flex items-center space-x-2">
+            <div className="p-4 border-t bg-card">
+              <div className="flex gap-2">
                 <Input
                   placeholder="Type a message..."
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                  onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                   className="flex-1"
                 />
-                <Button onClick={handleSendMessage} disabled={!newMessage.trim()}>
+                <Button onClick={sendMessage} disabled={!newMessage.trim()}>
                   <Send className="h-4 w-4" />
                 </Button>
               </div>
             </div>
           </>
         ) : (
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex-1 flex items-center justify-center text-muted-foreground">
             <div className="text-center">
-              <h3 className="text-lg font-medium mb-2">Select a conversation</h3>
-              <p className="text-muted-foreground">Choose a conversation to start messaging</p>
+              <MessageCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
+              <p>Select a conversation to start messaging</p>
             </div>
           </div>
         )}

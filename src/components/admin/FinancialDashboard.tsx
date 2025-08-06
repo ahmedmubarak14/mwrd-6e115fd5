@@ -24,11 +24,11 @@ interface FinancialTransaction {
   transaction_type: string;
   description: string;
   created_at: string;
-  user_profiles: {
+  user_profiles?: {
     full_name: string;
     email: string;
     company_name: string;
-  };
+  } | null;
 }
 
 interface FinancialStats {
@@ -57,17 +57,33 @@ export const FinancialDashboard = () => {
       const daysAgo = new Date();
       daysAgo.setDate(daysAgo.getDate() - parseInt(selectedPeriod));
 
-      const { data, error } = await supabase
+      // Get transactions first
+      const { data: transactionData, error: transactionError } = await supabase
         .from('financial_transactions')
-        .select(`
-          *,
-          user_profiles (full_name, email, company_name)
-        `)
+        .select('*')
         .gte('created_at', daysAgo.toISOString())
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setTransactions((data || []).filter(t => t.user_profiles));
+      if (transactionError) throw transactionError;
+
+      // Get user profiles separately
+      const userIds = transactionData?.map(t => t.user_id).filter(Boolean) || [];
+      const { data: profileData, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('id, full_name, email, company_name')
+        .in('id', userIds);
+
+      if (profileError) {
+        console.warn('Could not fetch user profiles:', profileError);
+      }
+
+      // Combine the data
+      const combinedData = transactionData?.map(transaction => ({
+        ...transaction,
+        user_profiles: profileData?.find(profile => profile.id === transaction.user_id) || null
+      })) || [];
+
+      setTransactions(combinedData);
     } catch (error: any) {
       toast({
         title: "Error",
@@ -253,7 +269,7 @@ export const FinancialDashboard = () => {
                           {transaction.user_profiles?.full_name || 'Unknown User'}
                         </div>
                         <div className="text-sm text-muted-foreground">
-                          {transaction.user_profiles?.email}
+                          {transaction.user_profiles?.email || 'No email'}
                         </div>
                         <div className="text-xs text-muted-foreground">
                           {transaction.description}

@@ -35,10 +35,10 @@ interface ActivityLog {
   resource_id: string;
   metadata: any;
   created_at: string;
-  user_profiles: {
+  user_profiles?: {
     full_name: string;
     email: string;
-  };
+  } | null;
 }
 
 export const PlatformAnalytics = () => {
@@ -75,18 +75,34 @@ export const PlatformAnalytics = () => {
       const daysAgo = new Date();
       daysAgo.setDate(daysAgo.getDate() - parseInt(selectedPeriod));
 
-      const { data, error } = await supabase
+      // Get activity logs first
+      const { data: logData, error: logError } = await supabase
         .from('activity_logs')
-        .select(`
-          *,
-          user_profiles (full_name, email)
-        `)
+        .select('*')
         .gte('created_at', daysAgo.toISOString())
         .order('created_at', { ascending: false })
         .limit(50);
 
-      if (error) throw error;
-      setActivityLogs((data || []).filter(log => log.user_profiles));
+      if (logError) throw logError;
+
+      // Get user profiles separately
+      const userIds = logData?.map(log => log.user_id).filter(Boolean) || [];
+      const { data: profileData, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('id, full_name, email')
+        .in('id', userIds);
+
+      if (profileError) {
+        console.warn('Could not fetch user profiles:', profileError);
+      }
+
+      // Combine the data
+      const combinedData = logData?.map(log => ({
+        ...log,
+        user_profiles: profileData?.find(profile => profile.id === log.user_id) || null
+      })) || [];
+
+      setActivityLogs(combinedData);
     } catch (error: any) {
       toast({
         title: "Error",
@@ -270,7 +286,7 @@ export const PlatformAnalytics = () => {
                           </span>
                         </div>
                         <div className="text-sm text-muted-foreground">
-                          {log.user_profiles?.email}
+                          {log.user_profiles?.email || 'No email'}
                         </div>
                       </div>
                     </div>
