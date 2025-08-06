@@ -438,6 +438,12 @@ const translations = {
     'nav.home': 'الرئيسية',
     'nav.pricing': 'الأسعار',
     'nav.consultation': 'استشارة خبير',
+    'nav.messages': 'الرسائل',
+    'nav.analytics': 'التحليلات',
+    'nav.orders': 'الطلبات',
+    'nav.manageSubscription': 'إدارة الاشتراك',
+    'nav.support': 'الدعم',
+    'nav.browseRequests': 'تصفح الطلبات',
     
     // Common
     'common.submit': 'إرسال',
