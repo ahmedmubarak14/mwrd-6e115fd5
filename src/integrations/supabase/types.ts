@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_logs: {
+        Row: {
+          action: string
+          created_at: string | null
+          id: string
+          ip_address: unknown | null
+          metadata: Json | null
+          resource_id: string | null
+          resource_type: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          metadata?: Json | null
+          resource_id?: string | null
+          resource_type?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       conversations: {
         Row: {
           client_id: string
@@ -113,6 +149,59 @@ export type Database = {
         }
         Relationships: []
       }
+      financial_transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          currency: string | null
+          description: string | null
+          id: string
+          metadata: Json | null
+          processed_at: string | null
+          status: string | null
+          stripe_payment_intent_id: string | null
+          subscription_id: string | null
+          transaction_type: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          processed_at?: string | null
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          subscription_id?: string | null
+          transaction_type?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          processed_at?: string | null
+          status?: string | null
+          stripe_payment_intent_id?: string | null
+          subscription_id?: string | null
+          transaction_type?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "financial_transactions_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "user_subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           attachment_type: string | null
@@ -188,9 +277,14 @@ export type Database = {
       }
       notifications: {
         Row: {
+          action_label: string | null
+          action_url: string | null
+          category: string | null
           created_at: string
+          expires_at: string | null
           id: string
           message: string
+          priority: string | null
           read_at: string | null
           reference_id: string | null
           title: string
@@ -198,9 +292,14 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          action_label?: string | null
+          action_url?: string | null
+          category?: string | null
           created_at?: string
+          expires_at?: string | null
           id?: string
           message: string
+          priority?: string | null
           read_at?: string | null
           reference_id?: string | null
           title: string
@@ -208,9 +307,14 @@ export type Database = {
           user_id: string
         }
         Update: {
+          action_label?: string | null
+          action_url?: string | null
+          category?: string | null
           created_at?: string
+          expires_at?: string | null
           id?: string
           message?: string
+          priority?: string | null
           read_at?: string | null
           reference_id?: string | null
           title?: string
@@ -314,6 +418,36 @@ export type Database = {
         }
         Relationships: []
       }
+      platform_analytics: {
+        Row: {
+          created_at: string | null
+          dimensions: Json | null
+          id: string
+          metric_name: string
+          metric_type: string | null
+          metric_value: number | null
+          recorded_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          dimensions?: Json | null
+          id?: string
+          metric_name: string
+          metric_type?: string | null
+          metric_value?: number | null
+          recorded_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          dimensions?: Json | null
+          id?: string
+          metric_name?: string
+          metric_type?: string | null
+          metric_value?: number | null
+          recorded_at?: string | null
+        }
+        Relationships: []
+      }
       requests: {
         Row: {
           admin_approval_date: string | null
@@ -413,6 +547,60 @@ export type Database = {
         }
         Relationships: []
       }
+      subscription_plans: {
+        Row: {
+          created_at: string | null
+          currency: string | null
+          description: string | null
+          features: Json | null
+          id: string
+          is_active: boolean | null
+          max_projects: number | null
+          max_storage_gb: number | null
+          max_users: number | null
+          name: string
+          price_monthly: number | null
+          price_yearly: number | null
+          stripe_price_id_monthly: string | null
+          stripe_price_id_yearly: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          features?: Json | null
+          id?: string
+          is_active?: boolean | null
+          max_projects?: number | null
+          max_storage_gb?: number | null
+          max_users?: number | null
+          name: string
+          price_monthly?: number | null
+          price_yearly?: number | null
+          stripe_price_id_monthly?: string | null
+          stripe_price_id_yearly?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          features?: Json | null
+          id?: string
+          is_active?: boolean | null
+          max_projects?: number | null
+          max_storage_gb?: number | null
+          max_users?: number | null
+          name?: string
+          price_monthly?: number | null
+          price_yearly?: number | null
+          stripe_price_id_monthly?: string | null
+          stripe_price_id_yearly?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       user_profiles: {
         Row: {
           avatar_url: string | null
@@ -446,6 +634,65 @@ export type Database = {
         }
         Relationships: []
       }
+      user_subscriptions: {
+        Row: {
+          cancel_at_period_end: boolean | null
+          cancelled_at: string | null
+          created_at: string | null
+          current_period_end: string | null
+          current_period_start: string | null
+          id: string
+          plan_id: string | null
+          status: string | null
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          trial_end: string | null
+          trial_start: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          cancel_at_period_end?: boolean | null
+          cancelled_at?: string | null
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          plan_id?: string | null
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          trial_end?: string | null
+          trial_start?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          cancel_at_period_end?: boolean | null
+          cancelled_at?: string | null
+          created_at?: string | null
+          current_period_end?: string | null
+          current_period_start?: string | null
+          id?: string
+          plan_id?: string | null
+          status?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          trial_end?: string | null
+          trial_start?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "subscription_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -460,6 +707,17 @@ export type Database = {
           p_reference_id?: string
         }
         Returns: string
+      }
+      get_platform_statistics: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          total_users: number
+          active_subscriptions: number
+          monthly_revenue: number
+          total_requests: number
+          total_offers: number
+          total_transactions: number
+        }[]
       }
       get_user_statistics: {
         Args: Record<PropertyKey, never>
