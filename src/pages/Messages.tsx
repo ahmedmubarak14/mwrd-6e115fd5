@@ -1,318 +1,323 @@
-import { Header } from "@/components/ui/layout/Header";
-import { Sidebar } from "@/components/ui/layout/Sidebar";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
-import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { useRealTimeChat, type Conversation } from "@/hooks/useRealTimeChat";
-import { useUserProfiles } from "@/hooks/useUserProfiles";
-import { RealTimeChatModal } from "@/components/modals/RealTimeChatModal";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { 
-  Search, 
-  MessageCircle, 
-  Clock, 
-  Star, 
-  MoreVertical, 
-  Send,
-  Filter,
-  Users,
-  MessageSquare
-} from "lucide-react";
-import { useState, useMemo } from "react";
 
-const Messages = () => {
-  const { t, language } = useLanguage();
-  const { user, userProfile, loading } = useAuth();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedTab, setSelectedTab] = useState<'all' | 'unread'>('all');
-  const isMobile = useIsMobile();
-  const { 
-    conversations, 
-    loading: chatLoading 
-  } = useRealTimeChat();
-  const { fetchMultipleProfiles } = useUserProfiles();
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+import { useRealTimeChat } from '@/hooks/useRealTimeChat';
+import { Send, Search, MoreVertical } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+
+interface UserProfile {
+  id: string;
+  full_name: string;
+  email: string;
+  avatar_url?: string;
+}
+
+export default function Messages() {
+  console.log('Messages component rendering...');
   
-  const isRTL = language === 'ar';
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [profiles, setProfiles] = useState<Record<string, UserProfile>>({});
+  const [newMessage, setNewMessage] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  const {
+    conversations,
+    messages,
+    loading,
+    activeConversation,
+    setActiveConversation,
+    sendMessage,
+    markAsRead,
+    getUnreadCount,
+    getOtherParticipant
+  } = useRealTimeChat();
+
+  console.log('Messages component state:', { 
+    conversationsCount: conversations.length, 
+    profilesCount: Object.keys(profiles).length,
+    activeConversation,
+    loading
+  });
 
   // Fetch user profiles for conversations
-  const [userProfiles, setUserProfiles] = useState<Record<string, any>>({});
+  useEffect(() => {
+    if (!conversations.length) {
+      console.log('No conversations to fetch profiles for');
+      return;
+    }
 
-  const getUserProfile = async (userId: string) => {
-    if (userProfiles[userId]) return userProfiles[userId];
-    
+    const fetchProfiles = async () => {
+      console.log('Fetching profiles for conversations:', conversations.length);
+      
+      try {
+        const participantIds = conversations.map(conv => 
+          getOtherParticipant(conv)
+        ).filter(Boolean);
+
+        console.log('Participant IDs to fetch:', participantIds);
+
+        if (participantIds.length === 0) {
+          console.log('No participant IDs to fetch');
+          return;
+        }
+
+        const { data: profilesData, error } = await supabase
+          .from('user_profiles')
+          .select('id, full_name, email, avatar_url')
+          .in('id', participantIds);
+
+        console.log('Fetched profiles data:', profilesData, 'Error:', error);
+
+        if (error) {
+          console.error('Error fetching profiles:', error);
+          throw error;
+        }
+
+        // Safely handle profiles data
+        const profilesMap: Record<string, UserProfile> = {};
+        if (profilesData && Array.isArray(profilesData)) {
+          profilesData.forEach(profile => {
+            if (profile && profile.id) {
+              profilesMap[profile.id] = profile;
+            }
+          });
+        }
+
+        console.log('Setting profiles map:', profilesMap);
+        setProfiles(profilesMap);
+      } catch (error) {
+        console.error('Error fetching user profiles:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load user profiles",
+          variant: "destructive",
+        });
+      }
+    };
+
+    fetchProfiles();
+  }, [conversations, getOtherParticipant, toast]);
+
+  const handleSendMessage = async () => {
+    if (!newMessage.trim() || !activeConversation || !user) return;
+
+    const conversation = conversations.find(c => c.id === activeConversation);
+    if (!conversation) return;
+
+    const recipientId = getOtherParticipant(conversation);
+    if (!recipientId) return;
+
     try {
-      const profiles = await fetchMultipleProfiles([userId]);
-      const profile = profiles[0];
-      setUserProfiles(prev => ({ ...prev, [userId]: profile }));
-      return profile;
+      await sendMessage(activeConversation, newMessage.trim(), recipientId);
+      setNewMessage('');
     } catch (error) {
-      console.error('Error fetching user profile:', error);
-      return { name: 'Unknown User', email: '', avatar_url: null };
-    }
-  };
-
-  // Filter conversations based on search and tab
-  const filteredConversations = useMemo(() => {
-    if (!conversations) return [];
-    
-    return conversations.filter(conversation => {
-      const otherUserId = conversation.client_id === user?.id ? conversation.supplier_id : conversation.client_id;
-      const userProfile = userProfiles[otherUserId || ''];
-      const matchesSearch = searchQuery === "" || 
-        (userProfile?.name?.toLowerCase().includes(searchQuery.toLowerCase()));
-      
-      const matchesTab = selectedTab === 'all' || 
-        (selectedTab === 'unread' && false); // TODO: Implement unread count when DB schema is ready
-      
-      return matchesSearch && matchesTab;
-    });
-  }, [conversations, searchQuery, selectedTab, userProfiles, user?.id]);
-
-  const formatLastMessageTime = (timestamp: string) => {
-    const date = new Date(timestamp);
-    const now = new Date();
-    const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
-    
-    if (diffInHours < 1) {
-      return date.toLocaleTimeString(language === 'ar' ? 'ar-SA' : 'en-US', { 
-        hour: '2-digit', 
-        minute: '2-digit' 
-      });
-    } else if (diffInHours < 24) {
-      return date.toLocaleTimeString(language === 'ar' ? 'ar-SA' : 'en-US', { 
-        hour: '2-digit', 
-        minute: '2-digit' 
-      });
-    } else if (diffInHours < 48) {
-      return 'Yesterday';
-    } else {
-      return date.toLocaleDateString(language === 'ar' ? 'ar-SA' : 'en-US', { 
-        month: 'short', 
-        day: 'numeric' 
+      console.error('Error sending message:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send message",
+        variant: "destructive",
       });
     }
   };
+
+  const getProfileForConversation = (conversation: any) => {
+    const otherParticipantId = getOtherParticipant(conversation);
+    return otherParticipantId ? profiles[otherParticipantId] : null;
+  };
+
+  const filteredConversations = conversations.filter(conversation => {
+    if (!searchTerm) return true;
+    
+    const profile = getProfileForConversation(conversation);
+    if (!profile) return false;
+    
+    return profile.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+           profile.email?.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner />
+      <div className="flex items-center justify-center h-96">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
-      
-      {/* Mobile Sidebar */}
-      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
-          <Sidebar userRole={userProfile?.role || 'client'} userProfile={userProfile} />
-        </SheetContent>
-      </Sheet>
-
-      <div className="rtl-flex">
-        {/* Desktop Sidebar - position based on language */}
-        <div className="hidden lg:block rtl-order-1">
-          <Sidebar userRole={userProfile?.role || 'client'} userProfile={userProfile} />
+    <div className="flex h-[calc(100vh-8rem)] max-w-7xl mx-auto">
+      {/* Conversations List */}
+      <div className="w-1/3 border-r border-border flex flex-col">
+        <div className="p-4 border-b border-border">
+          <h2 className="text-lg font-semibold mb-3">Messages</h2>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+            <Input
+              placeholder="Search conversations..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
         </div>
-        
-        <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
-          <div className="max-w-7xl mx-auto h-[calc(100vh-120px)]">
-            
-            {/* Enhanced Header with gradient background */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-accent/10 to-lime/10 rounded-xl p-6 mb-6">
-              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-                <div>
-                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
-                    Messages
-                  </h1>
-                  <p className="text-muted-foreground text-sm sm:text-base">
-                    Connect and communicate with clients and suppliers
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                    <MessageCircle className="h-5 w-5 text-primary" />
-                  </div>
-                  <div className="text-right rtl:text-left">
-                    <p className="text-2xl font-bold text-primary">
-                      {filteredConversations.length}
-                    </p>
-                    <p className="text-xs text-muted-foreground">Active chats</p>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-full">
-              
-              {/* Conversations List */}
-              <Card className="lg:col-span-1 border-0 bg-card/70 backdrop-blur-sm h-full flex flex-col">
-                <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5 p-4 sm:p-6">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Users className="h-4 w-4 text-primary" />
-                    </div>
-                    Conversations
-                  </CardTitle>
-                  <CardDescription className="text-sm">
-                    Manage your communications
-                  </CardDescription>
-                </CardHeader>
-                
-                <CardContent className="flex-1 p-0 flex flex-col">
-                  {/* Search and Filters */}
-                  <div className="p-4 space-y-3 border-b">
-                    <div className="relative">
-                      <Search className="absolute left-3 rtl:left-auto rtl:right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input 
-                        placeholder="Search conversations..."
-                        className="pl-10 rtl:pl-3 rtl:pr-10 h-10 bg-background/50 border-primary/20 focus:border-primary/50"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                      />
-                    </div>
-                    
-                    {/* Tab filters */}
-                    <div className="flex gap-2">
-                      <Button
-                        variant={selectedTab === 'all' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => setSelectedTab('all')}
-                        className="flex-1 h-8"
-                      >
-                        All ({conversations?.length || 0})
-                      </Button>
-                      <Button
-                        variant={selectedTab === 'unread' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => setSelectedTab('unread')}
-                        className="flex-1 h-8"
-                      >
-                        Unread (0)
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  {/* Conversations List */}
-                  <div className="flex-1 overflow-y-auto">
-                    {chatLoading ? (
-                      <div className="p-8 text-center">
-                        <LoadingSpinner />
-                      </div>
-                    ) : filteredConversations.length === 0 ? (
-                      <div className="p-8 text-center">
-                        <MessageSquare className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
-                        <h3 className="text-lg font-semibold mb-2">No conversations</h3>
-                        <p className="text-muted-foreground text-sm">
-                          {searchQuery ? 'No conversations match your search' : 'Start a conversation to get connected'}
+        <ScrollArea className="flex-1">
+          {filteredConversations.length === 0 ? (
+            <div className="p-4 text-center text-muted-foreground">
+              {conversations.length === 0 ? 'No conversations yet' : 'No matching conversations'}
+            </div>
+          ) : (
+            <div className="divide-y divide-border">
+              {filteredConversations.map((conversation) => {
+                const profile = getProfileForConversation(conversation);
+                const unreadCount = getUnreadCount(conversation.id);
+                const isActive = activeConversation === conversation.id;
+
+                // Skip rendering if profile is not loaded yet
+                if (!profile) {
+                  return null;
+                }
+
+                return (
+                  <div
+                    key={conversation.id}
+                    className={`p-4 cursor-pointer hover:bg-muted/50 transition-colors ${
+                      isActive ? 'bg-muted' : ''
+                    }`}
+                    onClick={() => setActiveConversation(conversation.id)}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <Avatar>
+                        <AvatarImage src={profile.avatar_url} alt={profile.full_name} />
+                        <AvatarFallback>
+                          {profile.full_name?.charAt(0) || profile.email?.charAt(0) || '?'}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between">
+                          <h3 className="text-sm font-medium truncate">
+                            {profile.full_name || profile.email}
+                          </h3>
+                          {unreadCount > 0 && (
+                            <Badge variant="destructive" className="text-xs">
+                              {unreadCount}
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-xs text-muted-foreground truncate">
+                          {conversation.last_message_content || 'No messages yet'}
                         </p>
                       </div>
-                    ) : (
-                      <div className="divide-y">
-                        {filteredConversations.map((conversation) => {
-                          const otherUserId = conversation.client_id === user?.id ? conversation.supplier_id : conversation.client_id;
-                          const profile = userProfiles[otherUserId || ''];
-                          const unreadCount = 0; // TODO: Implement when DB schema includes unread_count
-                          
-                          // Fetch profile if not already loaded
-                          if (!profile && otherUserId) {
-                            getUserProfile(otherUserId);
-                          }
-                          
-                          return (
-                            <RealTimeChatModal
-                              key={conversation.id}
-                              recipientId={otherUserId || ''}
-                            >
-                              <div className="p-4 hover:bg-muted/50 transition-colors cursor-pointer">
-                                <div className="flex items-start gap-3">
-                                  <div className="relative">
-                                    <Avatar className="h-12 w-12">
-                                      <AvatarImage src={profile?.avatar_url} />
-                                      <AvatarFallback className="bg-primary/10 text-primary font-semibold">
-                                        {profile?.name ? profile.name.charAt(0).toUpperCase() : '?'}
-                                      </AvatarFallback>
-                                    </Avatar>
-                                    {unreadCount > 0 && (
-                                      <div className="absolute -top-1 -right-1 rtl:-right-auto rtl:-left-1 bg-destructive text-destructive-foreground rounded-full min-w-[1.25rem] h-5 flex items-center justify-center text-xs font-medium">
-                                        {unreadCount > 99 ? '99+' : unreadCount}
-                                      </div>
-                                    )}
-                                  </div>
-                                  
-                                  <div className="flex-1 min-w-0">
-                                    <div className="flex items-start justify-between mb-1">
-                                      <h4 className="font-semibold text-sm truncate">
-                                        {profile?.name || 'Loading...'}
-                                      </h4>
-                                      <span className="text-xs text-muted-foreground">
-                                        {conversation.last_message_at && formatLastMessageTime(conversation.last_message_at)}
-                                      </span>
-                                    </div>
-                                    
-                                    <p className="text-sm text-muted-foreground truncate">
-                                      No messages yet
-                                    </p>
-                                    
-                                    {profile?.company && (
-                                      <p className="text-xs text-primary mt-1 truncate">
-                                        {profile.company}
-                                      </p>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            </RealTimeChatModal>
-                          );
-                        })}
-                      </div>
-                    )}
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
+                );
+              })}
+            </div>
+          )}
+        </ScrollArea>
+      </div>
 
-              {/* Chat Area Placeholder */}
-              <Card className="lg:col-span-2 border-0 bg-card/70 backdrop-blur-sm h-full flex flex-col">
-                <CardContent className="flex-1 flex items-center justify-center p-8">
-                  <div className="text-center max-w-md">
-                    <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <MessageCircle className="h-10 w-10 text-primary" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2">Select a conversation</h3>
-                    <p className="text-muted-foreground mb-6">
-                      Choose a conversation from the list to start messaging
-                    </p>
-                    <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-2">
-                        <Send className="h-4 w-4" />
-                        <span>Real-time messaging</span>
+      {/* Chat Area */}
+      <div className="flex-1 flex flex-col">
+        {activeConversation ? (
+          <>
+            {/* Chat Header */}
+            <div className="p-4 border-b border-border flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                {(() => {
+                  const conversation = conversations.find(c => c.id === activeConversation);
+                  const profile = conversation ? getProfileForConversation(conversation) : null;
+                  
+                  if (!profile) {
+                    return (
+                      <div className="flex items-center space-x-3">
+                        <div className="w-8 h-8 bg-muted rounded-full" />
+                        <div className="w-24 h-4 bg-muted rounded" />
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Star className="h-4 w-4" />
-                        <span>File sharing</span>
+                    );
+                  }
+                  
+                  return (
+                    <>
+                      <Avatar>
+                        <AvatarImage src={profile.avatar_url} alt={profile.full_name} />
+                        <AvatarFallback>
+                          {profile.full_name?.charAt(0) || profile.email?.charAt(0) || '?'}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <h3 className="font-medium">{profile.full_name || profile.email}</h3>
+                        <p className="text-sm text-muted-foreground">Online</p>
                       </div>
+                    </>
+                  );
+                })()}
+              </div>
+              <Button variant="ghost" size="sm">
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {/* Messages */}
+            <ScrollArea className="flex-1 p-4">
+              <div className="space-y-4">
+                {(messages[activeConversation] || []).map((message) => (
+                  <div
+                    key={message.id}
+                    className={`flex ${
+                      message.sender_id === user?.id ? 'justify-end' : 'justify-start'
+                    }`}
+                  >
+                    <div
+                      className={`max-w-[70%] rounded-lg px-3 py-2 ${
+                        message.sender_id === user?.id
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-muted'
+                      }`}
+                    >
+                      <p className="text-sm">{message.content}</p>
+                      <p className="text-xs opacity-70 mt-1">
+                        {new Date(message.created_at).toLocaleTimeString()}
+                      </p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-              
+                ))}
+              </div>
+            </ScrollArea>
+
+            {/* Message Input */}
+            <div className="p-4 border-t border-border">
+              <div className="flex items-center space-x-2">
+                <Input
+                  placeholder="Type a message..."
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                  className="flex-1"
+                />
+                <Button onClick={handleSendMessage} disabled={!newMessage.trim()}>
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center">
+              <h3 className="text-lg font-medium mb-2">Select a conversation</h3>
+              <p className="text-muted-foreground">Choose a conversation to start messaging</p>
             </div>
           </div>
-        </main>
+        )}
       </div>
     </div>
   );
-};
-
-export default Messages;
+}
