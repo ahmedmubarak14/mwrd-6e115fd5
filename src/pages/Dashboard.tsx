@@ -7,12 +7,16 @@ import { AuthForm } from "@/components/auth/AuthForm";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export const Dashboard = () => {
   const { user, userProfile, loading } = useAuth();
   const { language } = useLanguage();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useLocalStorage("onboarding-completed", false);
+  const [onboardingComplete, setOnboardingComplete] = useState(false);
   
   const isRTL = language === 'ar';
 
@@ -28,6 +32,19 @@ export const Dashboard = () => {
     // Already handled by useEffect
   };
 
+  const handleOnboardingComplete = () => {
+    setShowOnboarding(true);
+    setOnboardingComplete(true);
+  };
+
+  const handleOnboardingSkip = () => {
+    setShowOnboarding(true);
+    setOnboardingComplete(true);
+  };
+
+  // Show onboarding for new users
+  const shouldShowOnboarding = userProfile && !showOnboarding && userProfile.role !== 'admin';
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -41,7 +58,7 @@ export const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-16 md:pb-0">
       <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
       
       {/* Mobile Sidebar */}
@@ -61,6 +78,14 @@ export const Dashboard = () => {
           <ClientDashboard />
         </main>
       </div>
+
+      {/* Onboarding Flow */}
+      {shouldShowOnboarding && !onboardingComplete && (
+        <OnboardingFlow 
+          onComplete={handleOnboardingComplete}
+          onSkip={handleOnboardingSkip}
+        />
+      )}
     </div>
   );
 };

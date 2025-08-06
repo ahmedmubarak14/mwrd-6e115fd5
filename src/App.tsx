@@ -38,6 +38,7 @@ import { AdvancedUserManagement } from "@/components/admin/AdvancedUserManagemen
 import { FinancialDashboard } from "@/components/admin/FinancialDashboard";
 import { SubscriptionManagement } from "@/components/admin/SubscriptionManagement";
 import { PlatformAnalytics } from "@/components/admin/PlatformAnalytics";
+import { MobileBottomTabs } from "@/components/navigation/MobileBottomTabs";
 
 const queryClient = new QueryClient();
 
@@ -91,6 +92,7 @@ const App = () => (
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
+            <MobileBottomTabs />
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>
