@@ -13,8 +13,20 @@ import {
   UserPlus,
   DollarSign,
   ShoppingCart,
-  MessageSquare
+  MessageSquare,
+  FileText,
+  RotateCcw,
+  Zap,
+  BarChart3
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
@@ -151,48 +163,75 @@ export const AdminDashboardOverview = () => {
   ];
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-          <p className="text-muted-foreground">
-            Welcome back! Here's what's happening with your platform.
-          </p>
+    <div className="space-y-4 sm:space-y-6 lg:space-y-8">
+      {/* Enhanced Welcome Header */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-primary via-accent to-lime text-white rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-6 lg:p-8">
+        <div className="absolute inset-0">
+          <div className="absolute top-1/4 right-1/4 w-20 h-20 sm:w-32 sm:h-32 lg:w-64 lg:h-64 bg-white/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-1/4 left-1/4 w-24 h-24 sm:w-40 sm:h-40 lg:w-80 lg:h-80 bg-white/5 rounded-full blur-3xl"></div>
         </div>
-        <div className="flex gap-2">
-          <Button onClick={() => navigate('/admin/users?action=create')}>
-            <UserPlus className="h-4 w-4 mr-2" />
-            Add User
-          </Button>
-          <Button variant="outline" onClick={fetchDashboardData}>
-            <Activity className="h-4 w-4 mr-2" />
-            Refresh
-          </Button>
+        <div className="relative z-10">
+          <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3">Admin Dashboard</h1>
+          <p className="text-sm sm:text-base lg:text-xl opacity-90 mb-4 sm:mb-6 lg:mb-8 max-w-2xl leading-relaxed">
+            Monitor platform performance, manage users, and oversee all operations
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="bg-white text-primary hover:bg-white/90 font-semibold px-4 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg hover-scale w-full sm:w-auto text-sm sm:text-base">
+                  <UserPlus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                  Add User
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Quick Add User</DialogTitle>
+                  <DialogDescription>
+                    Create a new user account quickly. For advanced options, use the User Management page.
+                  </DialogDescription>
+                </DialogHeader>
+                <p className="text-sm text-muted-foreground">
+                  This is a demo feature. In a real application, this would open a user creation form.
+                </p>
+              </DialogContent>
+            </Dialog>
+            <Button 
+              variant="outline" 
+              onClick={fetchDashboardData}
+              className="bg-white/10 border-white/20 text-white hover:bg-white/20 font-medium px-4 sm:px-6 py-2 sm:py-3 hover-scale w-full sm:w-auto text-sm sm:text-base"
+            >
+              <RotateCcw className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+              Refresh
+            </Button>
+          </div>
         </div>
       </div>
 
-      {/* Stats Overview */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {/* Enhanced Stats Overview */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
         {statCards.map((card, index) => (
-          <Card key={index} className="hover:shadow-md transition-shadow cursor-pointer" onClick={card.action}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
+          <Card key={index} className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={card.action}>
+            <CardHeader className="space-y-0 pb-2 p-4 sm:p-6">
+              <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
                 {card.title}
               </CardTitle>
-              <card.icon className="h-4 w-4 text-muted-foreground" />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                <card.icon className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+              </div>
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{card.value}</div>
-              <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+            <CardContent className="p-4 sm:p-6 pt-0">
+              <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                {card.value}
+              </div>
+              <div className="flex items-center justify-between text-xs text-muted-foreground mt-2">
                 <span>{card.description}</span>
-                <div className="flex items-center">
+                <div className="flex items-center gap-1">
                   {card.changeType === 'positive' ? (
-                    <ArrowUpRight className="h-3 w-3 text-green-500" />
+                    <ArrowUpRight className="h-3 w-3 text-lime" />
                   ) : (
-                    <ArrowDownRight className="h-3 w-3 text-red-500" />
+                    <ArrowDownRight className="h-3 w-3 text-destructive" />
                   )}
-                  <span className={card.changeType === 'positive' ? 'text-green-500' : 'text-red-500'}>
+                  <span className={card.changeType === 'positive' ? 'text-lime font-medium' : 'text-destructive font-medium'}>
                     {card.change}
                   </span>
                 </div>
@@ -202,41 +241,48 @@ export const AdminDashboardOverview = () => {
         ))}
       </div>
 
-      {/* Recent Activity and Quick Actions */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      {/* Enhanced Two Column Layout */}
+      <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
         {/* Recent Activity */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>
+        <Card className="border-0 bg-card/70 backdrop-blur-sm">
+          <CardHeader className="p-4 sm:p-6">
+            <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
+              <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                <Activity className="h-5 w-5 text-primary" />
+              </div>
+              Recent Activity
+            </CardTitle>
+            <CardDescription className="text-sm sm:text-base">
               Latest actions performed on the platform
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
+          <CardContent className="p-4 sm:p-6">
+            <div className="space-y-3 sm:space-y-4">
               {recentActivity.length > 0 ? recentActivity.slice(0, 5).map((activity) => (
-                <div key={activity.id} className="flex items-center justify-between border-b pb-2 last:border-b-0">
-                  <div className="space-y-1">
-                    <p className="text-sm font-medium">
+                <div key={activity.id} className="flex items-start gap-3 p-3 sm:p-4 rounded-lg sm:rounded-xl border bg-background/50 hover:shadow-lg transition-all duration-300">
+                  <div className="w-2 h-2 rounded-full bg-lime mt-2"></div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm sm:text-base font-medium">
                       {activity.action.replace('_', ' ').toUpperCase()}
                     </p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs sm:text-sm text-muted-foreground">
                       {activity.resource_type && `on ${activity.resource_type}`}
                     </p>
-                  </div>
-                  <div className="text-right">
-                    <Badge variant="outline" className="text-xs">
+                    <Badge variant="outline" className="text-xs mt-1">
                       {new Date(activity.created_at).toLocaleDateString()}
                     </Badge>
                   </div>
                 </div>
               )) : (
-                <p className="text-sm text-muted-foreground">No recent activity</p>
+                <div className="text-center py-8">
+                  <Activity className="h-12 w-12 mx-auto mb-4 opacity-50 text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground">No recent activity</p>
+                </div>
               )}
             </div>
             <Button 
               variant="outline" 
-              className="w-full mt-4"
+              className="w-full mt-4 hover-scale"
               onClick={() => navigate('/admin/analytics')}
             >
               View All Activity
@@ -245,55 +291,75 @@ export const AdminDashboardOverview = () => {
         </Card>
 
         {/* Quick Actions */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>
+        <Card className="border-0 bg-card/70 backdrop-blur-sm">
+          <CardHeader className="p-4 sm:p-6">
+            <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
+              <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
+                <Zap className="h-5 w-5 text-accent" />
+              </div>
+              Quick Actions
+            </CardTitle>
+            <CardDescription className="text-sm sm:text-base">
               Common administrative tasks
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="grid gap-3">
-              <Button 
-                variant="outline" 
-                className="justify-start"
-                onClick={() => navigate('/admin/users?action=create')}
-              >
-                <UserPlus className="h-4 w-4 mr-2" />
-                Add New User
-              </Button>
-              <Button 
-                variant="outline" 
-                className="justify-start"
-                onClick={() => navigate('/admin/content/requests')}
-              >
-                <MessageSquare className="h-4 w-4 mr-2" />
-                Review Pending Requests
-              </Button>
-              <Button 
-                variant="outline" 
-                className="justify-start"
-                onClick={() => navigate('/admin/financial')}
-              >
-                <CreditCard className="h-4 w-4 mr-2" />
-                View Financial Reports
-              </Button>
-              <Button 
-                variant="outline" 
-                className="justify-start"
-                onClick={() => navigate('/admin/analytics')}
-              >
-                <TrendingUp className="h-4 w-4 mr-2" />
-                Platform Analytics
-              </Button>
-              <Button 
-                variant="outline" 
-                className="justify-start"
-                onClick={() => navigate('/admin/settings')}
-              >
-                <Activity className="h-4 w-4 mr-2" />
-                System Settings
-              </Button>
+          <CardContent className="p-4 sm:p-6">
+            <div className="grid gap-3 sm:gap-4">
+              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={() => navigate('/admin/users?action=create')}>
+                <CardHeader className="pb-4 p-3 sm:p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-r from-primary/20 to-accent/20 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300">
+                      <UserPlus className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-sm sm:text-base">Add New User</CardTitle>
+                      <CardDescription className="text-xs sm:text-sm">Create user accounts</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+              </Card>
+              
+              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={() => navigate('/admin/content/requests')}>
+                <CardHeader className="pb-4 p-3 sm:p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-r from-accent/20 to-lime/20 rounded-xl flex items-center justify-center group-hover:from-accent/30 group-hover:to-lime/30 transition-all duration-300">
+                      <FileText className="h-5 w-5 text-accent" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-sm sm:text-base">Review Requests</CardTitle>
+                      <CardDescription className="text-xs sm:text-sm">Manage pending requests</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+              </Card>
+
+              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={() => navigate('/admin/financial')}>
+                <CardHeader className="pb-4 p-3 sm:p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-r from-lime/20 to-primary/20 rounded-xl flex items-center justify-center group-hover:from-lime/30 group-hover:to-primary/30 transition-all duration-300">
+                      <DollarSign className="h-5 w-5 text-lime" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-sm sm:text-base">Financial Reports</CardTitle>
+                      <CardDescription className="text-xs sm:text-sm">Monitor revenue & payments</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+              </Card>
+
+              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={() => navigate('/admin/analytics')}>
+                <CardHeader className="pb-4 p-3 sm:p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-r from-primary/20 to-lime/20 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-lime/30 transition-all duration-300">
+                      <BarChart3 className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-sm sm:text-base">Platform Analytics</CardTitle>
+                      <CardDescription className="text-xs sm:text-sm">Insights & metrics</CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+              </Card>
             </div>
           </CardContent>
         </Card>
