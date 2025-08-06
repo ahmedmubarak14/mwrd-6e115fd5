@@ -4,7 +4,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { DemoButton } from "@/components/demo/DemoButton";
-import { Check, ArrowRight, Users, Shield, Zap, Award, TrendingUp, Clock, Star, Play, ChevronDown, Building2, Calendar, CheckCircle, BarChart3, HeartHandshake, Sparkles, User, Mail } from "lucide-react";
+import { Check, ArrowRight, Users, Shield, Zap, Award, TrendingUp, Clock, Star, Play, ChevronDown, Building2, Calendar, CheckCircle, BarChart3, HeartHandshake, Sparkles, User, Mail, Twitter, Instagram, Linkedin } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
@@ -874,12 +874,51 @@ export const Landing = () => {
           </div>
           
           <div className="border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-muted-foreground text-sm">
-              {t('language') === 'ar' ? 
-                '© 2024 سبلفاي. جميع الحقوق محفوظة.' : 
-                '© 2024 Supplify. All rights reserved.'
-              }
-            </p>
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              <p className="text-muted-foreground text-sm">
+                {t('language') === 'ar' ? 
+                  '© 2024 سبلفاي. جميع الحقوق محفوظة.' : 
+                  '© 2024 Supplify. All rights reserved.'
+                }
+              </p>
+              
+              {/* Social Media Links */}
+              <div className="flex items-center gap-4">
+                <span className="text-sm text-muted-foreground">
+                  {t('language') === 'ar' ? 'تابعونا:' : 'Follow us:'}
+                </span>
+                <div className="flex gap-3">
+                  <a 
+                    href="https://x.com/supplifyapp" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover-scale"
+                    aria-label="Follow us on X (Twitter)"
+                  >
+                    <Twitter className="h-4 w-4" />
+                  </a>
+                  <a 
+                    href="https://www.instagram.com/supplifyapp/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover-scale"
+                    aria-label="Follow us on Instagram"
+                  >
+                    <Instagram className="h-4 w-4" />
+                  </a>
+                  <a 
+                    href="https://www.linkedin.com/company/supplifyapp/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover-scale"
+                    aria-label="Follow us on LinkedIn"
+                  >
+                    <Linkedin className="h-4 w-4" />
+                  </a>
+                </div>
+              </div>
+            </div>
+            
             <div className="flex gap-6 text-sm text-muted-foreground">
               <Link to="/privacy-policy" className="hover:text-primary transition-colors">{t('language') === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}</Link>
               <Link to="/terms-and-conditions" className="hover:text-primary transition-colors">{t('language') === 'ar' ? 'شروط الخدمة' : 'Terms of Service'}</Link>
