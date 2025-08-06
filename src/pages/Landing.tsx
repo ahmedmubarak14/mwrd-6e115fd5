@@ -4,7 +4,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { DemoButton } from "@/components/demo/DemoButton";
-import { Check, ArrowRight, Users, Shield, Zap, Award, TrendingUp, Clock, Star, Play, ChevronDown, Building2, Calendar, CheckCircle, BarChart3, HeartHandshake, Sparkles, User, Mail, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Check, ArrowRight, Users, Shield, Zap, Award, TrendingUp, Clock, Star, Play, ChevronDown, Building2, Calendar, CheckCircle, BarChart3, HeartHandshake, Sparkles, User, Mail, X, Instagram, Linkedin } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
@@ -893,9 +893,9 @@ export const Landing = () => {
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover-scale"
-                    aria-label="Follow us on X (Twitter)"
+                    aria-label="Follow us on X"
                   >
-                    <Twitter className="h-4 w-4" />
+                    <X className="h-4 w-4" />
                   </a>
                   <a 
                     href="https://www.instagram.com/supplifyapp/" 
