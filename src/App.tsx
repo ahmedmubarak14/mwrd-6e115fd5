@@ -14,7 +14,6 @@ import { Requests } from "./pages/Requests";
 import { Suppliers } from "./pages/Suppliers";
 import { Pricing } from "./pages/Pricing";
 import { Profile } from "./pages/Profile";
-import { AdminDashboard } from "./pages/AdminDashboard";
 import { ExpertConsultation } from "./pages/ExpertConsultation";
 import { ManageSubscription } from "./pages/ManageSubscription";
 import { BrowseRequests } from "./pages/BrowseRequests";
@@ -30,6 +29,15 @@ import { TermsAndConditions } from "./pages/TermsAndConditions";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { SupplierDashboard } from "./pages/SupplierDashboard";
 import Messages from "./pages/Messages";
+
+// Admin Layout and Pages
+import { AdminLayout } from "@/components/admin/AdminLayout";
+import { AdminDashboardOverview } from "@/pages/admin/AdminDashboardOverview";
+import { AdminUsers } from "@/pages/admin/AdminUsers";
+import { AdvancedUserManagement } from "@/components/admin/AdvancedUserManagement";
+import { FinancialDashboard } from "@/components/admin/FinancialDashboard";
+import { SubscriptionManagement } from "@/components/admin/SubscriptionManagement";
+import { PlatformAnalytics } from "@/components/admin/PlatformAnalytics";
 
 const queryClient = new QueryClient();
 
@@ -51,7 +59,6 @@ const App = () => (
               <Route path="/suppliers" element={<Suppliers />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/manage-subscription" element={<ManageSubscription />} />
               <Route path="/expert-consultation" element={<ExpertConsultation />} />
               <Route path="/browse-requests" element={<BrowseRequests />} />
@@ -66,6 +73,21 @@ const App = () => (
               <Route path="/supplier-dashboard" element={<SupplierDashboard />} />
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              
+              {/* Admin Routes with dedicated layout */}
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<AdminDashboardOverview />} />
+                <Route path="users" element={<AdminUsers />} />
+                <Route path="users/advanced" element={<AdvancedUserManagement />} />
+                <Route path="financial" element={<FinancialDashboard />} />
+                <Route path="financial/subscriptions" element={<SubscriptionManagement />} />
+                <Route path="analytics" element={<PlatformAnalytics />} />
+                <Route path="content/requests" element={<div>Request Approval Page</div>} />
+                <Route path="content/offers" element={<div>Offer Management Page</div>} />
+                <Route path="content/consultations" element={<div>Expert Consultations Page</div>} />
+                <Route path="settings" element={<div>Admin Settings Page</div>} />
+              </Route>
+
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

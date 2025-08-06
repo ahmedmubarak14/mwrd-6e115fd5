@@ -1,0 +1,52 @@
+import { useState } from "react";
+import { Outlet } from "react-router-dom";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AdminSidebar } from "./AdminSidebar";
+import { AdminHeader } from "./AdminHeader";
+import { useAuth } from "@/contexts/AuthContext";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+
+export const AdminLayout = () => {
+  const { userProfile, loading } = useAuth();
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
+
+  if (userProfile?.role !== 'admin') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Card className="p-8 max-w-md mx-auto">
+          <CardHeader>
+            <CardTitle className="text-2xl text-center text-destructive">
+              Access Denied
+            </CardTitle>
+            <CardDescription className="text-center">
+              You need admin privileges to access this area.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <SidebarProvider defaultOpen={sidebarOpen} onOpenChange={setSidebarOpen}>
+      <div className="min-h-screen flex w-full bg-background">
+        <AdminSidebar />
+        <div className="flex-1 flex flex-col min-w-0">
+          <AdminHeader />
+          <main className="flex-1 p-6 overflow-auto">
+            <Outlet />
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
+  );
+};
