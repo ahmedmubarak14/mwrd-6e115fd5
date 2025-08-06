@@ -16,6 +16,74 @@ const translations = {
     // App name and slogan
     'app.name': 'Supplify',
     'app.slogan': 'All Event Needs in One Place',
+    
+    // Landing page translations
+    'landing.hero.badge': 'EMPOWERING BUSINESSES OF ALL SHAPES AND SIZES',
+    'landing.hero.description': 'An intelligent platform redefining how event organizers connect with exceptional service providers across Saudi Arabia',
+    'landing.hero.startFree': 'Start Your Journey Free',
+    'landing.hero.watchDemo': 'Watch Demo',
+    'landing.nav.platform': 'Platform',
+    'landing.nav.benefits': 'Benefits',
+    'landing.nav.services': 'Our Services',
+    'landing.nav.unique': 'What Makes Us Unique',
+    'landing.nav.pricing': 'Pricing',
+    'landing.hero.welcomeBack': 'Welcome Back',
+    'landing.hero.accountDetails': 'Account Details',
+    'landing.hero.accountInfo': 'Your personal account information',
+    'landing.hero.email': 'Email',
+    'landing.hero.company': 'Company Name',
+    'landing.hero.accountType': 'Account Type',
+    'landing.hero.client': 'Client',
+    'landing.hero.supplier': 'Supplier',
+    'landing.hero.admin': 'Admin',
+    'landing.hero.dashboard': 'Go to Dashboard',
+    'landing.hero.manageSubscription': 'Manage Subscription',
+    'landing.stats.providers': 'Certified Providers',
+    'landing.stats.events': 'Successful Events',
+    'landing.stats.regions': 'Regions in KSA',
+    'landing.stats.satisfaction': 'Client Satisfaction',
+    'landing.stats.providers.desc': 'Verified professionals',
+    'landing.stats.events.desc': 'Events delivered with excellence',
+    'landing.stats.regions.desc': 'Complete coverage',
+    'landing.stats.satisfaction.desc': 'Exceptional ratings',
+    'landing.platform.title': 'Advanced Event Management Platform',
+    'landing.platform.subtitle': 'Modern technology and intuitive interface for an unparalleled experience',
+    'landing.contact.title': 'Contact Us',
+    'landing.contact.subtitle': 'Our team is ready to help you anytime',
+    'landing.contact.address': 'Address',
+    'landing.contact.phone': 'Phone',
+    'landing.contact.email': 'Email',
+    'landing.contact.followUs': 'Follow Us',
+    'landing.footer.tagline': 'Your trusted platform for all event needs',
+    'landing.footer.quickLinks': 'Quick Links',
+    'landing.footer.home': 'Home',
+    'landing.footer.about': 'About Us',
+    'landing.footer.services': 'Our Services',
+    'landing.footer.contact': 'Contact Us',
+    'landing.footer.legal': 'Legal',
+    'landing.footer.terms': 'Terms & Conditions',
+    'landing.footer.privacy': 'Privacy Policy',
+    'landing.footer.cookies': 'Cookie Policy',
+    'landing.footer.support': 'Support',
+    'landing.footer.helpCenter': 'Help Center',
+    'landing.footer.resources': 'Resources',
+    'landing.footer.contactLink': 'Contact',
+    'landing.footer.rights': 'All rights reserved',
+    'landing.footer.taglineText': 'Reshaping the future of the events industry in Saudi Arabia through innovative technologies and strategic partnerships.',
+    'landing.footer.company': 'Company',
+    'landing.footer.whyStart': 'Why Start with Us',
+    'landing.footer.whyMove': 'Why Move to Us',
+    'landing.footer.pricingSection': 'Pricing',
+    'landing.footer.supportSection': 'Support',
+    'landing.footer.helpCenterLink': 'Help Center',
+    'landing.footer.documentation': 'Documentation',
+    'landing.footer.systemStatus': 'System Status',
+    'landing.footer.followUs': 'Follow us:',
+    'landing.footer.contactUsBtn': 'Contact Us',
+    'landing.footer.blog': 'Blog',
+    'landing.footer.privacyPolicy': 'Privacy Policy',
+    'landing.footer.termsOfService': 'Terms of Service',
+    'landing.footer.copyright': '© 2024 Supplify. All rights reserved.',
     // Language
     'language': 'en',
     
@@ -332,6 +400,74 @@ const translations = {
     'category.carpets': 'السجاد',
     'category.flowers': 'الزهور',
 
+    // Landing page translations
+    'landing.hero.badge': 'تمكين الشركات من جميع الأشكال والأحجام',
+    'landing.hero.description': 'منصة ذكية تعيد تعريف كيفية ربط منظمي الفعاليات بمقدمي الخدمات المتميزين في المملكة العربية السعودية',
+    'landing.hero.startFree': 'ابدأ رحلتك مجاناً',
+    'landing.hero.watchDemo': 'شاهد العرض التوضيحي',
+    'landing.nav.platform': 'المنصة',
+    'landing.nav.benefits': 'المزايا',
+    'landing.nav.services': 'خدماتنا',
+    'landing.nav.unique': 'ما يميزنا',
+    'landing.nav.pricing': 'الأسعار',
+    'landing.hero.welcomeBack': 'مرحباً بك',
+    'landing.hero.accountDetails': 'تفاصيل الحساب',
+    'landing.hero.accountInfo': 'معلومات حسابك الشخصي',
+    'landing.hero.email': 'البريد الإلكتروني',
+    'landing.hero.company': 'اسم الشركة',
+    'landing.hero.accountType': 'نوع الحساب',
+    'landing.hero.client': 'عميل',
+    'landing.hero.supplier': 'مقدم خدمة',
+    'landing.hero.admin': 'مدير',
+    'landing.hero.dashboard': 'انتقل إلى لوحة التحكم',
+    'landing.hero.manageSubscription': 'إدارة الاشتراك',
+    'landing.stats.providers': 'مقدم خدمة معتمد',
+    'landing.stats.events': 'فعالية ناجحة',
+    'landing.stats.regions': 'منطقة في المملكة',
+    'landing.stats.satisfaction': 'رضا العملاء',
+    'landing.stats.providers.desc': 'محترفون معتمدون',
+    'landing.stats.events.desc': 'فعاليات منجزة بتميز',
+    'landing.stats.regions.desc': 'تغطية شاملة',
+    'landing.stats.satisfaction.desc': 'تقييمات استثنائية',
+    'landing.platform.title': 'منصة متطورة لإدارة الفعاليات',
+    'landing.platform.subtitle': 'تقنيات حديثة وواجهة بديهية لتجربة لا مثيل لها',
+    'landing.contact.title': 'تواصل معنا',
+    'landing.contact.subtitle': 'فريقنا جاهز لمساعدتك في أي وقت',
+    'landing.contact.address': 'العنوان',
+    'landing.contact.phone': 'الهاتف',
+    'landing.contact.email': 'البريد الإلكتروني',
+    'landing.contact.followUs': 'تابعنا على',
+    'landing.footer.tagline': 'منصتك الموثوقة لجميع احتياجات الفعاليات',
+    'landing.footer.quickLinks': 'روابط سريعة',
+    'landing.footer.home': 'الرئيسية',
+    'landing.footer.about': 'من نحن',
+    'landing.footer.services': 'خدماتنا',
+    'landing.footer.contact': 'اتصل بنا',
+    'landing.footer.legal': 'قانوني',
+    'landing.footer.terms': 'الشروط والأحكام',
+    'landing.footer.privacy': 'سياسة الخصوصية',
+    'landing.footer.cookies': 'سياسة ملفات تعريف الارتباط',
+    'landing.footer.support': 'الدعم',
+    'landing.footer.helpCenter': 'مركز المساعدة',
+    'landing.footer.resources': 'الموارد',
+    'landing.footer.contactLink': 'اتصل بنا',
+    'landing.footer.rights': 'جميع الحقوق محفوظة',
+    'landing.footer.taglineText': 'نعيد تشكيل مستقبل صناعة الفعاليات في المملكة العربية السعودية من خلال تقنيات مبتكرة وشراكات استراتيجية.',
+    'landing.footer.company': 'الشركة',
+    'landing.footer.whyStart': 'لماذا تبدأ معنا',
+    'landing.footer.whyMove': 'لماذا تنتقل إلينا',
+    'landing.footer.pricingSection': 'الأسعار',
+    'landing.footer.supportSection': 'الدعم',
+    'landing.footer.helpCenterLink': 'مركز المساعدة',
+    'landing.footer.documentation': 'الوثائق',
+    'landing.footer.systemStatus': 'حالة النظام',
+    'landing.footer.followUs': 'تابعونا:',
+    'landing.footer.contactUsBtn': 'تواصل معنا',
+    'landing.footer.blog': 'المدونة',
+    'landing.footer.privacyPolicy': 'سياسة الخصوصية',
+    'landing.footer.termsOfService': 'شروط الخدمة',
+    'landing.footer.copyright': '© 2024 سبلفاي. جميع الحقوق محفوظة.',
+
     // Terms and Conditions (Arabic)
     'termsTitle': 'الشروط والأحكام',
     'termsLastUpdated': 'آخر تحديث: 1 يناير 2024',
@@ -461,10 +597,20 @@ const translations = {
 };
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('ar');
+  const [language, setLanguage] = useState<Language>(() => {
+    // Check localStorage first, then default to 'en'
+    const savedLanguage = localStorage.getItem('language') as Language;
+    return savedLanguage && ['en', 'ar'].includes(savedLanguage) ? savedLanguage : 'en';
+  });
+
+  const handleSetLanguage = (lang: Language) => {
+    setLanguage(lang);
+    localStorage.setItem('language', lang);
+  };
 
   const toggleLanguage = () => {
-    setLanguage(prev => prev === 'en' ? 'ar' : 'en');
+    const newLang = language === 'en' ? 'ar' : 'en';
+    handleSetLanguage(newLang);
   };
 
   const t = (key: string): string => {
@@ -478,7 +624,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   }, [language]);
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, toggleLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, toggleLanguage, t }}>
       <div dir={language === 'ar' ? 'rtl' : 'ltr'} className={language === 'ar' ? 'font-arabic' : ''}>
         {children}
       </div>

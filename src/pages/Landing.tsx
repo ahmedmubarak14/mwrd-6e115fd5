@@ -123,23 +123,23 @@ export const Landing = () => {
           <nav className={`hidden md:flex items-center gap-8 ${language === 'ar' ? 'order-2' : 'order-2'}`}>
             <a href="#platform" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Zap className="h-3 w-3" />
-              {t('language') === 'ar' ? 'المنصة' : 'Platform'}
+              {t('landing.nav.platform')}
             </a>
             <a href="#benefits" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <TrendingUp className="h-3 w-3" />
-              {t('language') === 'ar' ? 'المزايا' : 'Benefits'}
+              {t('landing.nav.benefits')}
             </a>
             <a href="#services" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Building2 className="h-3 w-3" />
-              {t('language') === 'ar' ? 'خدماتنا' : 'Our Services'}
+              {t('landing.nav.services')}
             </a>
             <a href="#uvp" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Sparkles className="h-3 w-3" />
-              {t('language') === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
+              {t('landing.nav.unique')}
             </a>
             <Link to="/pricing" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Star className="h-3 w-3" />
-              {t('language') === 'ar' ? 'الأسعار' : 'Pricing'}
+              {t('landing.nav.pricing')}
             </Link>
           </nav>
           
@@ -190,7 +190,7 @@ export const Landing = () => {
                 <div className="inline-flex items-center gap-2 bg-lime/10 rounded-full px-6 py-2 mb-8 animate-fade-in">
                   <Shield className="h-4 w-4 text-lime" />
                   <span className="text-sm font-medium text-lime">
-                    {language === 'ar' ? 'مرحباً بك' : 'Welcome Back'}
+                    {t('landing.hero.welcomeBack')}
                   </span>
                 </div>
                 
@@ -280,7 +280,7 @@ export const Landing = () => {
                 <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-6 py-2 mb-8 animate-fade-in">
                   <Sparkles className="h-4 w-4 text-primary" />
                   <span className="text-sm font-medium text-primary">
-                    {language === 'ar' ? 'تمكين الشركات من جميع الأشكال والأحجام' : 'EMPOWERING BUSINESSES OF ALL SHAPES AND SIZES'}
+                    {t('landing.hero.badge')}
                   </span>
                 </div>
                 
@@ -295,17 +295,14 @@ export const Landing = () => {
                 </h1>
                 
                 <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-in delay-200">
-                  {language === 'ar' ? 
-                    'منصة ذكية تعيد تعريف كيفية ربط منظمي الفعاليات بمقدمي الخدمات المتميزين في المملكة العربية السعودية' :
-                    'An intelligent platform redefining how event organizers connect with exceptional service providers across Saudi Arabia'
-                  }
+                  {t('landing.hero.description')}
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16 animate-fade-in delay-300">
                   <Link to="/home">
                     <Button size="lg" className="px-10 py-5 text-lg font-semibold shadow-xl hover-scale bg-gradient-to-r from-primary to-accent">
-                      {t('language') === 'ar' ? 'ابدأ رحلتك مجاناً' : 'Start Your Journey Free'}
-                      <ArrowRight className="ml-2 h-6 w-6" />
+                      {t('landing.hero.startFree')}
+                      <ArrowRight className={`h-6 w-6 ${language === 'ar' ? 'mr-2 rotate-180' : 'ml-2'}`} />
                     </Button>
                   </Link>
                   <DemoButton 
@@ -326,11 +323,11 @@ export const Landing = () => {
                       <stat.icon className="h-7 w-7 text-primary group-hover:text-accent transition-colors" />
                     </div>
                     <div className="text-3xl font-bold gradient-text mb-2 animate-bounce-subtle">{stat.number}</div>
-                    <div className="text-sm font-semibold text-foreground mb-1">
-                      {t('language') === 'ar' ? stat.label : stat.englishLabel}
+                    <div className={`text-sm font-semibold text-foreground mb-1 ${language === 'ar' ? 'rtl-text-right' : ''}`}>
+                      {language === 'ar' ? stat.label : stat.englishLabel}
                     </div>
-                    <div className="text-xs text-muted-foreground">
-                      {t('language') === 'ar' ? stat.description : stat.englishDescription}
+                    <div className={`text-xs text-muted-foreground ${language === 'ar' ? 'rtl-text-right' : ''}`}>
+                      {language === 'ar' ? stat.description : stat.englishDescription}
                     </div>
                   </CardContent>
                 </Card>
@@ -350,14 +347,11 @@ export const Landing = () => {
                 {t('language') === 'ar' ? 'تقنية متطورة' : 'Advanced Technology'}
               </span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              {t('language') === 'ar' ? 'لماذا سبلفاي هو الخيار الأذكى؟' : 'Why is Supplify the Smartest Choice?'}
+            <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${language === 'ar' ? 'rtl-text-right' : ''}`}>
+              {t('landing.platform.title')}
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              {t('language') === 'ar' ? 
-                'نجمع بين الذكاء الاصطناعي والخبرة البشرية لنقدم تجربة استثنائية تحول رؤيتك لفعاليتك إلى واقع مذهل' : 
-                'We combine artificial intelligence with human expertise to deliver an exceptional experience that transforms your event vision into stunning reality'
-              }
+            <p className={`text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed ${language === 'ar' ? 'rtl-text-right' : ''}`}>
+              {t('landing.platform.subtitle')}
             </p>
           </div>
           
@@ -377,11 +371,11 @@ export const Landing = () => {
                       </span>
                     </div>
                   </div>
-                  <h3 className="text-xl font-bold mb-4 group-hover:text-primary transition-colors duration-300">
-                    {t('language') === 'ar' ? advantage.title : advantage.englishTitle}
+                  <h3 className={`text-xl font-bold mb-4 group-hover:text-primary transition-colors duration-300 ${language === 'ar' ? 'rtl-text-right' : ''}`}>
+                    {language === 'ar' ? advantage.title : advantage.englishTitle}
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {t('language') === 'ar' ? advantage.description : advantage.englishDescription}
+                  <p className={`text-muted-foreground leading-relaxed ${language === 'ar' ? 'rtl-text-right' : ''}`}>
+                    {language === 'ar' ? advantage.description : advantage.englishDescription}
                   </p>
                 </div>
               </div>
@@ -834,58 +828,52 @@ export const Landing = () => {
                   className="h-16 w-auto"
                 />
               </div>
-              <p className="text-muted-foreground mb-6 max-w-md leading-relaxed text-lg">
-                {t('language') === 'ar' ? 
-                  'نعيد تشكيل مستقبل صناعة الفعاليات في المملكة العربية السعودية من خلال تقنيات مبتكرة وشراكات استراتيجية.' : 
-                  'Reshaping the future of the events industry in Saudi Arabia through innovative technologies and strategic partnerships.'
-                }
+              <p className={`text-muted-foreground mb-6 max-w-md leading-relaxed text-lg ${language === 'ar' ? 'rtl-text-right' : ''}`}>
+                {t('landing.footer.taglineText')}
               </p>
-              <div className="flex gap-4">
+              <div className={`flex gap-4 ${language === 'ar' ? 'rtl-flex' : ''}`}>
                 <Button variant="outline" size="sm" className="hover-scale">
-                  {t('language') === 'ar' ? 'تواصل معنا' : 'Contact Us'}
+                  {t('landing.footer.contactUsBtn')}
                 </Button>
                 <Button variant="ghost" size="sm" className="hover-scale">
-                  {t('language') === 'ar' ? 'المدونة' : 'Blog'}
+                  {t('landing.footer.blog')}
                 </Button>
               </div>
             </div>
             
-            <div>
+            <div className={language === 'ar' ? 'rtl-text-right' : ''}>
               <h3 className="font-semibold mb-4 text-lg">
-                {t('language') === 'ar' ? 'الشركة' : 'Company'}
+                {t('landing.footer.company')}
               </h3>
-              <ul className="space-y-3 text-muted-foreground">
-                <li><Link to="/why-start-with-supplify" className="hover:text-primary transition-colors story-link">{t('language') === 'ar' ? 'لماذا تبدأ معنا' : 'Why Start with Us'}</Link></li>
-                <li><Link to="/why-move-to-supplify" className="hover:text-primary transition-colors story-link">{t('language') === 'ar' ? 'لماذا تنتقل إلينا' : 'Why Move to Us'}</Link></li>
-                <li><Link to="/pricing" className="hover:text-primary transition-colors story-link">{t('language') === 'ar' ? 'الأسعار' : 'Pricing'}</Link></li>
+              <ul className={`space-y-3 text-muted-foreground ${language === 'ar' ? 'rtl-text-right' : ''}`}>
+                <li><Link to="/why-start-with-supplify" className="hover:text-primary transition-colors story-link">{t('landing.footer.whyStart')}</Link></li>
+                <li><Link to="/why-move-to-supplify" className="hover:text-primary transition-colors story-link">{t('landing.footer.whyMove')}</Link></li>
+                <li><Link to="/pricing" className="hover:text-primary transition-colors story-link">{t('landing.footer.pricingSection')}</Link></li>
               </ul>
             </div>
             
-            <div>
+            <div className={language === 'ar' ? 'rtl-text-right' : ''}>
               <h3 className="font-semibold mb-4 text-lg">
-                {t('language') === 'ar' ? 'الدعم' : 'Support'}
+                {t('landing.footer.supportSection')}
               </h3>
-              <ul className="space-y-3 text-muted-foreground">
-                <li><a href="#" className="hover:text-primary transition-colors story-link">{t('language') === 'ar' ? 'مركز المساعدة' : 'Help Center'}</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors story-link">{t('language') === 'ar' ? 'الوثائق' : 'Documentation'}</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors story-link">{t('language') === 'ar' ? 'حالة النظام' : 'System Status'}</a></li>
+              <ul className={`space-y-3 text-muted-foreground ${language === 'ar' ? 'rtl-text-right' : ''}`}>
+                <li><a href="#" className="hover:text-primary transition-colors story-link">{t('landing.footer.helpCenterLink')}</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors story-link">{t('landing.footer.documentation')}</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors story-link">{t('landing.footer.systemStatus')}</a></li>
               </ul>
             </div>
           </div>
           
-          <div className="border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex flex-col md:flex-row items-center gap-4">
-              <p className="text-muted-foreground text-sm">
-                {t('language') === 'ar' ? 
-                  '© 2024 سبلفاي. جميع الحقوق محفوظة.' : 
-                  '© 2024 Supplify. All rights reserved.'
-                }
+          <div className={`border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4 ${language === 'ar' ? 'md:rtl-flex-reverse' : ''}`}>
+            <div className={`flex flex-col md:flex-row items-center gap-4 ${language === 'ar' ? 'md:rtl-flex-reverse' : ''}`}>
+              <p className={`text-muted-foreground text-sm ${language === 'ar' ? 'rtl-text-right' : ''}`}>
+                {t('landing.footer.copyright')}
               </p>
               
               {/* Social Media Links */}
-              <div className="flex items-center gap-4">
+              <div className={`flex items-center gap-4 ${language === 'ar' ? 'rtl-flex-reverse' : ''}`}>
                 <span className="text-sm text-muted-foreground">
-                  {t('language') === 'ar' ? 'تابعونا:' : 'Follow us:'}
+                  {t('landing.footer.followUs')}
                 </span>
                 <div className="flex gap-3">
                   <a 
@@ -919,9 +907,9 @@ export const Landing = () => {
               </div>
             </div>
             
-            <div className="flex gap-6 text-sm text-muted-foreground">
-              <Link to="/privacy-policy" className="hover:text-primary transition-colors">{t('language') === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}</Link>
-              <Link to="/terms-and-conditions" className="hover:text-primary transition-colors">{t('language') === 'ar' ? 'شروط الخدمة' : 'Terms of Service'}</Link>
+            <div className={`flex gap-6 text-sm text-muted-foreground ${language === 'ar' ? 'rtl-flex-reverse' : ''}`}>
+              <Link to="/privacy-policy" className="hover:text-primary transition-colors">{t('landing.footer.privacyPolicy')}</Link>
+              <Link to="/terms-and-conditions" className="hover:text-primary transition-colors">{t('landing.footer.termsOfService')}</Link>
             </div>
           </div>
         </div>
