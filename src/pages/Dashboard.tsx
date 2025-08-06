@@ -19,10 +19,12 @@ export const Dashboard = () => {
   useEffect(() => {
     if (!user && !loading) {
       navigate('/home');
+    } else if (userProfile?.role === 'admin' && !loading) {
+      navigate('/admin');
     }
-  }, [user, loading, navigate]);
+  }, [user, userProfile, loading, navigate]);
 
-  const handleAuthSuccess = (userData: { id: string; email: string; role: 'client' | 'supplier' }) => {
+  const handleAuthSuccess = (userData: { id: string; email: string; role: 'client' | 'supplier' | 'admin' }) => {
     // Already handled by useEffect
   };
 

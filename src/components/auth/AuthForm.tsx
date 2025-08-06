@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 interface AuthFormProps {
-  onAuthSuccess: (userData: { id: string; email: string; role: 'client' | 'supplier' }) => void;
+  onAuthSuccess: (userData: { id: string; email: string; role: 'client' | 'supplier' | 'admin' }) => void;
 }
 
 export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
@@ -55,7 +55,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
         onAuthSuccess({
           id: data.user.id,
           email: data.user.email!,
-          role: profileData.role as 'client' | 'supplier'
+          role: profileData.role as 'client' | 'supplier' | 'admin'
         });
 
         toast({
