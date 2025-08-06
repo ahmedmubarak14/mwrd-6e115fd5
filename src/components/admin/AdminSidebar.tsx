@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -29,6 +29,8 @@ import {
   Palette,
   ChevronDown,
   ChevronRight,
+  ArrowLeft,
+  Home,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
@@ -153,8 +155,9 @@ const adminMenuItems = [
 export const AdminSidebar = () => {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const location = useLocation();
+  const navigate = useNavigate();
   const isRTL = language === 'ar';
   const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(['Dashboard']));
 
@@ -189,21 +192,42 @@ export const AdminSidebar = () => {
     <Sidebar className={cn("border-sidebar-border", collapsed ? "w-16" : "w-64")}>
       <SidebarHeader className="p-4 border-b border-sidebar-border">
         {!collapsed && (
-          <div className="flex items-center gap-2">
-            <Shield className="h-8 w-8 text-sidebar-primary" />
-            <div>
+          <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <img 
+              src="/lovable-uploads/91db8182-e5ce-4596-90c8-bfa524cd0464.png" 
+              alt="Supplify Logo" 
+              className="h-8 w-8 object-contain"
+            />
+            <div className={isRTL ? 'text-right' : ''}>
               <h2 className="text-lg font-bold text-sidebar-foreground">
-                Admin Panel
+                {t('adminPanel')}
               </h2>
               <p className="text-xs text-sidebar-foreground/60">
-                Management Dashboard
+                {t('managementDashboard')}
               </p>
             </div>
           </div>
         )}
         {collapsed && (
           <div className="flex justify-center">
-            <Shield className="h-8 w-8 text-sidebar-primary" />
+            <img 
+              src="/lovable-uploads/91db8182-e5ce-4596-90c8-bfa524cd0464.png" 
+              alt="Supplify Logo" 
+              className="h-8 w-8 object-contain"
+            />
+          </div>
+        )}
+        
+        {/* Back to main site button */}
+        {!collapsed && (
+          <div className={`mt-3 ${isRTL ? 'text-right' : ''}`}>
+            <button
+              onClick={() => navigate('/')}
+              className={`flex items-center gap-2 text-xs text-sidebar-foreground/60 hover:text-sidebar-foreground transition-colors w-full p-2 rounded-md hover:bg-sidebar-accent ${isRTL ? 'flex-row-reverse text-right' : ''}`}
+            >
+              <ArrowLeft className={`h-3 w-3 ${isRTL ? 'rotate-180' : ''}`} />
+              <span>{t('backToSite')}</span>
+            </button>
           </div>
         )}
       </SidebarHeader>
@@ -225,21 +249,21 @@ export const AdminSidebar = () => {
                         openGroups.has(item.title) && "bg-sidebar-accent text-sidebar-accent-foreground"
                       )}
                     >
-                      <div className="flex items-center gap-2">
+                      <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                         <item.icon className="h-4 w-4" />
-                        {!collapsed && <span>{item.title}</span>}
+                        {!collapsed && <span>{t(item.title.toLowerCase().replace(/\s+/g, ''))}</span>}
                       </div>
                       {!collapsed && (
-                        <div className="flex items-center gap-1">
+                        <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                           {item.title === "Content Management" && (
                             <Badge variant="secondary" className="text-xs px-1.5 py-0.5">
                               3
                             </Badge>
                           )}
                           {openGroups.has(item.title) ? (
-                            <ChevronDown className="h-3 w-3" />
+                            <ChevronDown className={`h-3 w-3 ${isRTL ? 'rotate-180' : ''}`} />
                           ) : (
-                            <ChevronRight className="h-3 w-3" />
+                            <ChevronRight className={`h-3 w-3 ${isRTL ? 'rotate-180' : ''}`} />
                           )}
                         </div>
                       )}
@@ -250,12 +274,12 @@ export const AdminSidebar = () => {
                       <SidebarMenuButton key={subItem.url} asChild className="ml-4">
                         <NavLink
                           to={subItem.url}
-                          className={getNavClassName(subItem.url)}
+                          className={`${getNavClassName(subItem.url)} ${isRTL ? 'flex-row-reverse' : ''}`}
                         >
                           <subItem.icon className="h-4 w-4" />
                           {!collapsed && (
-                            <div className="flex items-center justify-between w-full">
-                              <span>{subItem.title}</span>
+                            <div className={`flex items-center justify-between w-full ${isRTL ? 'flex-row-reverse' : ''}`}>
+                              <span>{t(subItem.title.toLowerCase().replace(/\s+/g, ''))}</span>
                               {subItem.badge && (
                                 <Badge variant="destructive" className="text-xs px-1.5 py-0.5">
                                   {subItem.badge}
@@ -273,10 +297,10 @@ export const AdminSidebar = () => {
                   <NavLink
                     to={item.url}
                     end={item.end}
-                    className={getNavClassName(item.url, item.end)}
+                    className={`${getNavClassName(item.url, item.end)} ${isRTL ? 'flex-row-reverse' : ''}`}
                   >
                     <item.icon className="h-4 w-4" />
-                    {!collapsed && <span>{item.title}</span>}
+                    {!collapsed && <span>{t(item.title.toLowerCase().replace(/\s+/g, ''))}</span>}
                   </NavLink>
                 </SidebarMenuButton>
               )}
@@ -287,8 +311,8 @@ export const AdminSidebar = () => {
 
       <SidebarFooter className="p-4 border-t border-sidebar-border">
         {!collapsed ? (
-          <div className="text-xs text-sidebar-foreground/60 text-center">
-            <p>Admin Dashboard v2.0</p>
+          <div className={`text-xs text-sidebar-foreground/60 ${isRTL ? 'text-center' : 'text-center'}`}>
+            <p>{t('adminVersion')}</p>
             <p>© 2024 Supplify</p>
           </div>
         ) : (

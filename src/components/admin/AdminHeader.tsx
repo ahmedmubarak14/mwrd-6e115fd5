@@ -14,7 +14,9 @@ import {
   Globe,
   RefreshCw,
   Plus,
-  Filter
+  Filter,
+  Home,
+  ArrowLeft
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -35,16 +37,17 @@ export const AdminHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { userProfile, signOut } = useAuth();
-  const { language, toggleLanguage } = useLanguage();
+  const { language, toggleLanguage, t } = useLanguage();
   const { theme, setTheme } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const isRTL = language === 'ar';
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       // Implement global admin search
-      toast.info(`Searching for: ${searchQuery}`);
+      toast.info(`${t('searching')}: ${searchQuery}`);
     }
   };
 
@@ -73,9 +76,37 @@ export const AdminHeader = () => {
   return (
     <header className="h-16 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
       <div className="flex items-center justify-between h-full px-6">
-        {/* Left side - Sidebar trigger and breadcrumbs */}
-        <div className="flex items-center gap-4">
+        {/* Left side - Sidebar trigger, logo and breadcrumbs */}
+        <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
           <SidebarTrigger className="h-8 w-8" />
+          
+          {/* Logo and site navigation */}
+          <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <img 
+              src="/lovable-uploads/91db8182-e5ce-4596-90c8-bfa524cd0464.png" 
+              alt="Supplify Logo" 
+              className="h-8 w-8 object-contain"
+            />
+            <div className="hidden sm:block">
+              <h1 className="text-lg font-semibold text-foreground">
+                {t('adminPanel')}
+              </h1>
+            </div>
+          </div>
+          
+          {/* Navigation to main site */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate('/')}
+            className={`text-muted-foreground hover:text-foreground ${isRTL ? 'flex-row-reverse' : ''}`}
+          >
+            <Home className="h-4 w-4" />
+            <span className={`hidden sm:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>
+              {t('backToSite')}
+            </span>
+          </Button>
+          
           <AdminBreadcrumbs />
         </div>
 
@@ -85,38 +116,39 @@ export const AdminHeader = () => {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search admin panel..."
+              placeholder={t('searchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-4 w-full"
+              className={`w-full ${isRTL ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4'}`}
+              dir={isRTL ? 'rtl' : 'ltr'}
             />
           </form>
         </div>
 
         {/* Right side - Actions and user menu */}
-        <div className="flex items-center gap-2">
+        <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
           {/* Quick actions */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="hidden lg:flex">
-                <Plus className="h-4 w-4 mr-1" />
-                Quick Actions
+              <Button variant="outline" size="sm" className={`hidden lg:flex ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <Plus className={`h-4 w-4 ${isRTL ? 'ml-1' : 'mr-1'}`} />
+                {t('quickActions')}
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuLabel>Quick Actions</DropdownMenuLabel>
+            <DropdownMenuContent align={isRTL ? "start" : "end"} className="w-48">
+              <DropdownMenuLabel>{t('quickActions')}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => handleQuickAction('new-user')}>
-                <User className="h-4 w-4 mr-2" />
-                Add New User
+              <DropdownMenuItem onClick={() => handleQuickAction('new-user')} className={isRTL ? 'flex-row-reverse' : ''}>
+                <User className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t('addNewUser')}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleQuickAction('approve-requests')}>
-                <Filter className="h-4 w-4 mr-2" />
-                Review Requests
+              <DropdownMenuItem onClick={() => handleQuickAction('approve-requests')} className={isRTL ? 'flex-row-reverse' : ''}>
+                <Filter className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t('reviewRequests')}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleQuickAction('view-analytics')}>
-                <Bell className="h-4 w-4 mr-2" />
-                View Analytics
+              <DropdownMenuItem onClick={() => handleQuickAction('view-analytics')} className={isRTL ? 'flex-row-reverse' : ''}>
+                <Bell className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t('viewAnalytics')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -167,33 +199,33 @@ export const AdminHeader = () => {
                 <span className="hidden sm:inline">{userProfile?.full_name || userProfile?.email}</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuContent align={isRTL ? "start" : "end"} className="w-56">
               <DropdownMenuLabel>
-                <div className="flex flex-col space-y-1">
+                <div className={`flex flex-col space-y-1 ${isRTL ? 'text-right' : ''}`}>
                   <p className="text-sm font-medium leading-none">
-                    {userProfile?.full_name || 'Admin User'}
+                    {userProfile?.full_name || t('adminUser')}
                   </p>
                   <p className="text-xs leading-none text-muted-foreground">
                     {userProfile?.email}
                   </p>
                   <Badge variant="secondary" className="w-fit text-xs">
-                    {userProfile?.role}
+                    {t(userProfile?.role || 'admin')}
                   </Badge>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate('/admin/settings')}>
-                <Settings className="h-4 w-4 mr-2" />
-                Admin Settings
+              <DropdownMenuItem onClick={() => navigate('/admin/settings')} className={isRTL ? 'flex-row-reverse' : ''}>
+                <Settings className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t('adminSettings')}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/profile')}>
-                <User className="h-4 w-4 mr-2" />
-                Profile
+              <DropdownMenuItem onClick={() => navigate('/profile')} className={isRTL ? 'flex-row-reverse' : ''}>
+                <User className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t('nav.profile')}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={signOut} className="text-destructive">
-                <LogOut className="h-4 w-4 mr-2" />
-                Sign Out
+              <DropdownMenuItem onClick={signOut} className={`text-destructive ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <LogOut className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t('auth.signOut')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
