@@ -290,7 +290,7 @@ export const Landing = () => {
                   </span>
                   <br />
                   <span className="text-foreground/80 text-3xl md:text-4xl font-normal">
-                    {language === 'ar' ? 'مع سبلايفي' : 'with Supplify'}
+                    {language === 'ar' ? 'مع سبلفاي' : 'with Supplify'}
                   </span>
                 </h1>
                 

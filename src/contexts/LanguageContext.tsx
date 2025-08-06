@@ -424,7 +424,7 @@ const translations = {
   },
   ar: {
     // App name and slogan
-    'app.name': 'سبلايفي',
+    'app.name': 'سبلفاي',
     'app.slogan': 'جميع احتياجات الفعاليات في مكان واحد',
     // Language
     'language': 'ar',
