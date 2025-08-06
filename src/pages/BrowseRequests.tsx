@@ -160,8 +160,8 @@ export const BrowseRequests = () => {
             <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-accent/10 to-lime/10 rounded-xl p-6">
               <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
               <div className="relative">
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">Browse Service Requests</h1>
-                <p className="text-muted-foreground text-sm sm:text-base">Find requests that match your expertise and submit your offers</p>
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">{t('browseRequests.title')}</h1>
+                <p className="text-muted-foreground text-sm sm:text-base">{t('browseRequests.subtitle')}</p>
               </div>
             </div>
 
@@ -172,9 +172,9 @@ export const BrowseRequests = () => {
                   <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                     <Search className="h-5 w-5 text-primary" />
                   </div>
-                  Search & Filter Requests
+                  {t('browseRequests.searchAndFilter')}
                 </CardTitle>
-                <CardDescription className="text-sm sm:text-base">Find the perfect requests for your services</CardDescription>
+                <CardDescription className="text-sm sm:text-base">{t('browseRequests.filterDescription')}</CardDescription>
               </CardHeader>
               <CardContent className="p-4 sm:p-6">
                 <div className="space-y-4">
@@ -182,7 +182,7 @@ export const BrowseRequests = () => {
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input 
-                      placeholder="Search by title, category, client, or location..."
+                      placeholder={t('browseRequests.searchPlaceholder')}
                       className="pl-10 h-12 text-sm sm:text-base bg-background/50 border-primary/20 focus:border-primary/50"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
@@ -193,10 +193,10 @@ export const BrowseRequests = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <Select value={categoryFilter} onValueChange={setCategoryFilter}>
                       <SelectTrigger className="h-12 bg-background/50 border-primary/20">
-                        <SelectValue placeholder="Filter by category" />
+                        <SelectValue placeholder={t('browseRequests.filterByCategory')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">All Categories</SelectItem>
+                        <SelectItem value="all">{t('browseRequests.allCategories')}</SelectItem>
                         <SelectItem value="Audio, Visual & Lighting">Audio, Visual & Lighting</SelectItem>
                         <SelectItem value="Catering & Food Services">Catering & Food Services</SelectItem>
                         <SelectItem value="Photography & Videography">Photography & Videography</SelectItem>
@@ -207,10 +207,10 @@ export const BrowseRequests = () => {
                     
                     <Select value={locationFilter} onValueChange={setLocationFilter}>
                       <SelectTrigger className="h-12 bg-background/50 border-primary/20">
-                        <SelectValue placeholder="Filter by location" />
+                        <SelectValue placeholder={t('browseRequests.filterByLocation')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">All Locations</SelectItem>
+                        <SelectItem value="all">{t('browseRequests.allLocations')}</SelectItem>
                         <SelectItem value="Riyadh">Riyadh</SelectItem>
                         <SelectItem value="Jeddah">Jeddah</SelectItem>
                         <SelectItem value="Dammam">Dammam</SelectItem>
@@ -220,13 +220,13 @@ export const BrowseRequests = () => {
                     
                     <Select value={urgencyFilter} onValueChange={setUrgencyFilter}>
                       <SelectTrigger className="h-12 bg-background/50 border-primary/20">
-                        <SelectValue placeholder="Filter by urgency" />
+                        <SelectValue placeholder={t('browseRequests.filterByUrgency')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">All Urgency Levels</SelectItem>
-                        <SelectItem value="High">High Priority</SelectItem>
-                        <SelectItem value="Medium">Medium Priority</SelectItem>
-                        <SelectItem value="Low">Low Priority</SelectItem>
+                        <SelectItem value="all">{t('browseRequests.allUrgencyLevels')}</SelectItem>
+                        <SelectItem value="High">{t('browseRequests.highPriority')}</SelectItem>
+                        <SelectItem value="Medium">{t('browseRequests.mediumPriority')}</SelectItem>
+                        <SelectItem value="Low">{t('browseRequests.lowPriority')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -240,8 +240,8 @@ export const BrowseRequests = () => {
                 <div className="col-span-full text-center py-12">
                   <div className="text-muted-foreground">
                     <Search className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <h3 className="text-lg font-semibold mb-2">No requests found</h3>
-                    <p>Try adjusting your search terms or filters</p>
+                    <h3 className="text-lg font-semibold mb-2">{t('browseRequests.noResults')}</h3>
+                    <p>{t('browseRequests.noResultsDesc')}</p>
                   </div>
                 </div>
               ) : (
@@ -294,7 +294,7 @@ export const BrowseRequests = () => {
                       <div className="flex items-center gap-2 p-3 bg-lime/5 rounded-lg border border-lime/10">
                         <DollarSign className="h-4 w-4 text-lime" />
                         <div>
-                          <p className="text-xs text-muted-foreground">Budget</p>
+                          <p className="text-xs text-muted-foreground">{t('browseRequests.budget')}</p>
                           <p className="font-semibold text-sm text-lime">{request.budget}</p>
                         </div>
                       </div>
@@ -302,7 +302,7 @@ export const BrowseRequests = () => {
                       <div className="flex items-center gap-2 p-3 bg-accent/5 rounded-lg border border-accent/10">
                         <Calendar className="h-4 w-4 text-accent" />
                         <div>
-                          <p className="text-xs text-muted-foreground">Deadline</p>
+                          <p className="text-xs text-muted-foreground">{t('browseRequests.deadline')}</p>
                           <p className="font-semibold text-sm">{request.deadline}</p>
                         </div>
                       </div>
@@ -310,15 +310,15 @@ export const BrowseRequests = () => {
                       <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-lg border border-primary/10">
                         <Eye className="h-4 w-4 text-primary" />
                         <div>
-                          <p className="text-xs text-muted-foreground">Offers</p>
-                          <p className="font-semibold text-sm">{request.offers} submitted</p>
+                          <p className="text-xs text-muted-foreground">{t('browseRequests.offers')}</p>
+                          <p className="font-semibold text-sm">{request.offers} {t('browseRequests.offersSubmitted')}</p>
                         </div>
                       </div>
                       
                       <div className="flex items-center gap-2 p-3 bg-orange-50 rounded-lg border border-orange-100">
                         <Clock className="h-4 w-4 text-orange-600" />
                         <div>
-                          <p className="text-xs text-muted-foreground">Posted</p>
+                          <p className="text-xs text-muted-foreground">{t('browseRequests.posted')}</p>
                           <p className="font-semibold text-sm">{request.postedDate}</p>
                         </div>
                       </div>
@@ -338,14 +338,14 @@ export const BrowseRequests = () => {
                       >
                         <Button variant="outline" className="flex-1 bg-primary/10 border-primary/20 text-primary hover:bg-primary/20 hover-scale">
                           <Eye className="h-4 w-4 mr-2" />
-                          View Details
+                          {t('browseRequests.viewDetails')}
                         </Button>
                       </ViewDetailsModal>
                       
                       <CreateOfferModal>
                         <Button className="flex-1 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-lg hover-scale">
                           <DollarSign className="h-4 w-4 mr-2" />
-                          Submit Offer
+                          {t('browseRequests.submitOffer')}
                         </Button>
                       </CreateOfferModal>
                     </div>

@@ -56,7 +56,7 @@ interface UserProfile {
 
 export default function Messages() {
   const { user, userProfile } = useAuth();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const { toast } = useToast();
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
@@ -258,8 +258,8 @@ export default function Messages() {
                   <MessageCircle className="h-6 w-6 text-primary" />
                 </div>
                 <div>
-                  <h1 className="text-2xl sm:text-3xl font-bold">Messages</h1>
-                  <p className="text-muted-foreground">Connect with suppliers and clients</p>
+                  <h1 className="text-2xl sm:text-3xl font-bold">{t('messages.title')}</h1>
+                  <p className="text-muted-foreground">{t('messages.subtitle')}</p>
                 </div>
               </div>
             </div>
@@ -273,7 +273,7 @@ export default function Messages() {
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                       <Input
-                        placeholder="Search conversations..."
+                        placeholder={t('messages.searchConversations')}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="pl-10"
@@ -284,7 +284,7 @@ export default function Messages() {
                   <div className="overflow-y-auto h-full">
                     {filteredConversations.length === 0 ? (
                       <div className="p-4 text-center text-muted-foreground">
-                        No conversations found
+                        {t('messages.noConversations')}
                       </div>
                     ) : (
                       filteredConversations.map((conversation) => {
@@ -304,14 +304,14 @@ export default function Messages() {
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center justify-between">
                                   <h3 className="font-medium truncate">
-                                    {otherParticipant?.full_name || 'Unknown User'}
+                                    {otherParticipant?.full_name || t('messages.unknownUser')}
                                   </h3>
                                   <span className="text-xs text-muted-foreground">
                                     {new Date(conversation.last_message_at).toLocaleDateString()}
                                   </span>
                                 </div>
                                 <p className="text-sm text-muted-foreground truncate">
-                                  {otherParticipant?.company_name || 'No company'}
+                                  {otherParticipant?.company_name || t('messages.noCompany')}
                                 </p>
                                 <Badge variant="outline" className="mt-1 text-xs">
                                   {conversation.status}
@@ -337,10 +337,10 @@ export default function Messages() {
                           </div>
                           <div>
                             <h3 className="font-medium">
-                              {getOtherParticipant(selectedConversation)?.full_name || 'Unknown User'}
+                              {getOtherParticipant(selectedConversation)?.full_name || t('messages.unknownUser')}
                             </h3>
                             <p className="text-sm text-muted-foreground">
-                              {getOtherParticipant(selectedConversation)?.company_name || 'No company'}
+                              {getOtherParticipant(selectedConversation)?.company_name || t('messages.noCompany')}
                             </p>
                           </div>
                         </div>
@@ -386,13 +386,13 @@ export default function Messages() {
                       {/* Message Input */}
                       <div className="p-4 border-t bg-card/50">
                         <div className="flex gap-2">
-                          <Input
-                            placeholder="Type a message..."
-                            value={newMessage}
-                            onChange={(e) => setNewMessage(e.target.value)}
-                            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                            className="flex-1"
-                          />
+                        <Input
+                          placeholder={t('messages.typeMessage')}
+                          value={newMessage}
+                          onChange={(e) => setNewMessage(e.target.value)}
+                          onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                          className="flex-1"
+                        />
                           <Button onClick={sendMessage} disabled={!newMessage.trim()}>
                             <Send className="h-4 w-4" />
                           </Button>
@@ -401,10 +401,10 @@ export default function Messages() {
                     </>
                   ) : (
                     <div className="flex-1 flex items-center justify-center text-muted-foreground">
-                      <div className="text-center">
-                        <MessageCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                        <p>Select a conversation to start messaging</p>
-                      </div>
+                        <div className="text-center">
+                          <MessageCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                          <p>{t('messages.selectConversation')}</p>
+                        </div>
                     </div>
                   )}
                 </div>
@@ -427,10 +427,10 @@ export default function Messages() {
                       </div>
                       <div className="flex-1">
                         <h3 className="font-medium">
-                          {getOtherParticipant(selectedConversation)?.full_name || 'Unknown User'}
+                          {getOtherParticipant(selectedConversation)?.full_name || t('messages.unknownUser')}
                         </h3>
                         <p className="text-sm text-muted-foreground">
-                          {getOtherParticipant(selectedConversation)?.company_name || 'No company'}
+                          {getOtherParticipant(selectedConversation)?.company_name || t('messages.noCompany')}
                         </p>
                       </div>
                       <div className="flex items-center gap-2">
@@ -473,7 +473,7 @@ export default function Messages() {
                     <div className="p-4 border-t bg-card">
                       <div className="flex gap-2">
                         <Input
-                          placeholder="Type a message..."
+                          placeholder={t('messages.typeMessage')}
                           value={newMessage}
                           onChange={(e) => setNewMessage(e.target.value)}
                           onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
