@@ -112,7 +112,7 @@ export const Landing = () => {
           <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
             <Link to="/" className="flex items-center gap-3">
               <img 
-                src="/lovable-uploads/supplify-logo-white-bg.png" 
+                src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
                 alt="Supplify Logo"
                 className="h-24 w-auto hover:scale-105 transition-transform"
               />
@@ -823,7 +823,7 @@ export const Landing = () => {
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-6">
                 <img 
-                  src="/lovable-uploads/supplify-logo-white-bg.png" 
+                  src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
                   alt="Supplify Logo"
                   className="h-16 w-auto"
                 />

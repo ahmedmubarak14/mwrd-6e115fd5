@@ -194,9 +194,9 @@ export const AdminSidebar = () => {
         {!collapsed && (
           <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <img 
-              src="/lovable-uploads/supplify-logo-white-bg.png" 
+              src="/lovable-uploads/91db8182-e5ce-4596-90c8-bfa524cd0464.png" 
               alt="Supplify Logo" 
-              className="h-8 w-auto object-contain"
+              className="h-8 w-8 object-contain"
             />
             <div className={isRTL ? 'text-right' : ''}>
               <h2 className="text-lg font-bold text-sidebar-foreground">
@@ -211,9 +211,9 @@ export const AdminSidebar = () => {
         {collapsed && (
           <div className="flex justify-center">
             <img 
-              src="/lovable-uploads/supplify-logo-white-bg.png" 
+              src="/lovable-uploads/91db8182-e5ce-4596-90c8-bfa524cd0464.png" 
               alt="Supplify Logo" 
-              className="h-6 w-auto object-contain"
+              className="h-8 w-8 object-contain"
             />
           </div>
         )}

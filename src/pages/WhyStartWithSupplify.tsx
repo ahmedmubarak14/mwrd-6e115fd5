@@ -70,7 +70,7 @@ export const WhyStartWithSupplify = () => {
           <div className={`${isRTL ? 'order-2' : 'order-1'}`}>
             <Link to="/" className="flex items-center gap-3">
               <img 
-                src="/lovable-uploads/supplify-logo-white-bg.png" 
+                src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
                 alt="Supplify Logo"
                 className="h-16 w-auto hover:scale-105 transition-transform"
               />

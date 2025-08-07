@@ -83,9 +83,9 @@ export const AdminHeader = () => {
           {/* Logo and site navigation */}
           <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <img 
-              src="/lovable-uploads/supplify-logo-white-bg.png" 
+              src="/lovable-uploads/91db8182-e5ce-4596-90c8-bfa524cd0464.png" 
               alt="Supplify Logo" 
-              className="h-8 w-auto object-contain"
+              className="h-8 w-8 object-contain"
             />
             <div className="hidden sm:block">
               <h1 className="text-lg font-semibold text-foreground">

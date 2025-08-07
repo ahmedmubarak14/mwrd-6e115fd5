@@ -63,7 +63,7 @@ export const MobileNavigation = () => {
             <SheetTitle className={`flex items-center gap-3 ${isRTL ? 'justify-end' : 'justify-start'}`}>
               <Link to="/" onClick={handleLinkClick}>
                 <img 
-                  src="/lovable-uploads/supplify-logo-white-bg.png" 
+                  src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
                   alt="Supplify Logo"
                   className="h-14 w-auto"
                 />
