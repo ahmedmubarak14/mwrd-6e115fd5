@@ -35,6 +35,9 @@ enable_signup = true
 
 [edge_functions]
 enabled = true
+
+[functions.send-notification-email]
+verify_jwt = false
 port = 54329
 
 [functions.check-subscription]
