@@ -11,6 +11,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Eye, EyeOff, User, Building2, Mail, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 interface AuthFormProps {
   onAuthSuccess: (userData: { id: string; email: string; role: 'client' | 'supplier' | 'admin' }) => void;
@@ -28,6 +29,9 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
   const { t, language } = useLanguage();
+  const [resetOpen, setResetOpen] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -170,6 +174,29 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
       setIsLoading(false);
     }
   };
+  
+  const handlePasswordReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setResetLoading(true);
+    try {
+      const redirectTo = `${window.location.origin}/reset-password`;
+      const { error } = await supabase.auth.resetPasswordForEmail((resetEmail || email), { redirectTo });
+      if (error) throw error;
+      toast({
+        title: language === 'ar' ? 'تم إرسال رابط إعادة التعيين' : 'Password reset email sent',
+        description: language === 'ar' ? 'تحقق من بريدك الإلكتروني واتبع التعليمات.' : 'Check your email and follow the instructions.',
+      });
+      setResetOpen(false);
+    } catch (err: any) {
+      toast({
+        variant: 'destructive',
+        title: language === 'ar' ? 'فشل إعادة التعيين' : 'Reset failed',
+        description: err.message,
+      });
+    } finally {
+      setResetLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-accent/10 p-4">
@@ -256,6 +283,38 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
                     language === 'ar' ? 'تسجيل الدخول' : 'Sign In'
                   )}
                 </Button>
+                <Dialog open={resetOpen} onOpenChange={setResetOpen}>
+                  <DialogTrigger asChild>
+                    <button type="button" className="mx-auto block text-sm text-primary hover:underline">
+                      {language === 'ar' ? 'هل نسيت كلمة المرور؟' : 'Forgot your password?'}
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>{language === 'ar' ? 'إعادة تعيين كلمة المرور' : 'Reset your password'}</DialogTitle>
+                      <DialogDescription>
+                        {language === 'ar' ? 'سنرسل رابط إعادة التعيين إلى بريدك الإلكتروني.' : 'We will email you a reset link.'}
+                      </DialogDescription>
+                    </DialogHeader>
+                    <form onSubmit={handlePasswordReset} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="resetEmail">{language === 'ar' ? 'البريد الإلكتروني' : 'Email'}</Label>
+                        <Input
+                          id="resetEmail"
+                          type="email"
+                          value={resetEmail || email}
+                          onChange={(e) => setResetEmail(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <DialogFooter>
+                        <Button type="submit" disabled={resetLoading} className="bg-gradient-to-r from-primary to-accent">
+                          {resetLoading ? <LoadingSpinner size="sm" /> : (language === 'ar' ? 'إرسال رابط' : 'Send reset link')}
+                        </Button>
+                      </DialogFooter>
+                    </form>
+                  </DialogContent>
+                </Dialog>
               </form>
             </TabsContent>
             

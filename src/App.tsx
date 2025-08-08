@@ -40,7 +40,9 @@ import { SubscriptionManagement } from "@/components/admin/SubscriptionManagemen
 import { PlatformAnalytics } from "@/components/admin/PlatformAnalytics";
 import { MobileBottomTabs } from "@/components/navigation/MobileBottomTabs";
 import { ProtectedRoute } from "@/components/routing/ProtectedRoute";
+import { RoleProtectedRoute } from "@/components/routing/RoleProtectedRoute";
 import Auth from "./pages/Auth";
+import ResetPassword from "./pages/ResetPassword";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -71,12 +73,12 @@ const App = () => (
               <Route path="/support" element={<Support />} />
               <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
               <Route path="/payment-success" element={<PaymentSuccess />} />
-              <Route path="/client-dashboard" element={<ProtectedRoute><Index /></ProtectedRoute>} />
-              <Route path="/supplier-dashboard" element={<ProtectedRoute><SupplierDashboard /></ProtectedRoute>} />
+              <Route path="/client-dashboard" element={<RoleProtectedRoute allowed={['client']}><Index /></RoleProtectedRoute>} />
+              <Route path="/supplier-dashboard" element={<RoleProtectedRoute allowed={['supplier']}><SupplierDashboard /></RoleProtectedRoute>} />
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/auth" element={<Auth />} />
-              
+              <Route path="/reset-password" element={<ResetPassword />} />
               {/* Admin Routes with dedicated layout */}
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminDashboardOverview />} />
