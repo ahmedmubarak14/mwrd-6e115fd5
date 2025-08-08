@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User } from '@supabase/supabase-js';
+import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
 
@@ -14,45 +14,53 @@ interface UserProfile {
 
 interface AuthContextType {
   user: User | null;
+  session: Session | null;
   userProfile: UserProfile | null;
   loading: boolean;
   signOut: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const { showInfo } = useToastFeedback();
 
-  useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchUserProfile(session.user.id);
-      } else {
-        setLoading(false);
-      }
-    });
+useEffect(() => {
+  // Listen for auth changes FIRST to avoid missing events
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+    setSession(nextSession);
+    setUser(nextSession?.user ?? null);
 
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchUserProfile(session.user.id);
-      } else {
-        setUserProfile(null);
-        setLoading(false);
-      }
-    });
+    // Defer any Supabase calls to avoid deadlocks
+    if (nextSession?.user) {
+      setTimeout(() => {
+        fetchUserProfile(nextSession.user!.id);
+      }, 0);
+    } else {
+      setUserProfile(null);
+      setLoading(false);
+    }
+  });
 
-    return () => subscription.unsubscribe();
-  }, []);
+  // THEN get initial session
+  supabase.auth.getSession().then(({ data: { session: initialSession } }) => {
+    setSession(initialSession);
+    setUser(initialSession?.user ?? null);
+    if (initialSession?.user) {
+      fetchUserProfile(initialSession.user.id);
+    } else {
+      setLoading(false);
+    }
+  });
+
+  return () => subscription.unsubscribe();
+}, []);
 
   const fetchUserProfile = async (userId: string) => {
     try {
@@ -110,6 +118,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const value = {
     user,
+    session,
     userProfile,
     loading,
     signOut,

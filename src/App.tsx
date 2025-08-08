@@ -39,8 +39,8 @@ import { FinancialDashboard } from "@/components/admin/FinancialDashboard";
 import { SubscriptionManagement } from "@/components/admin/SubscriptionManagement";
 import { PlatformAnalytics } from "@/components/admin/PlatformAnalytics";
 import { MobileBottomTabs } from "@/components/navigation/MobileBottomTabs";
+import { ProtectedRoute } from "@/components/routing/ProtectedRoute";
 import Auth from "./pages/Auth";
-
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -54,25 +54,25 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route path="/home" element={<Home />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               <Route path="/why-start-with-supplify" element={<WhyStartWithSupplify />} />
               <Route path="/why-move-to-supplify" element={<WhyMoveToSupplify />} />
-              <Route path="/requests" element={<Requests />} />
+              <Route path="/requests" element={<ProtectedRoute><Requests /></ProtectedRoute>} />
               <Route path="/suppliers" element={<Suppliers />} />
               <Route path="/pricing" element={<Pricing />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/manage-subscription" element={<ManageSubscription />} />
+              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path="/manage-subscription" element={<ProtectedRoute><ManageSubscription /></ProtectedRoute>} />
               <Route path="/expert-consultation" element={<ExpertConsultation />} />
               <Route path="/browse-requests" element={<BrowseRequests />} />
-              <Route path="/my-offers" element={<MyOffers />} />
-              <Route path="/analytics" element={<Analytics />} />
-              <Route path="/orders" element={<Orders />} />
-              <Route path="/messages" element={<Messages />} />
+              <Route path="/my-offers" element={<ProtectedRoute><MyOffers /></ProtectedRoute>} />
+              <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
+              <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+              <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
               <Route path="/support" element={<Support />} />
-              <Route path="/settings" element={<Settings />} />
+              <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
               <Route path="/payment-success" element={<PaymentSuccess />} />
-              <Route path="/client-dashboard" element={<Index />} />
-              <Route path="/supplier-dashboard" element={<SupplierDashboard />} />
+              <Route path="/client-dashboard" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+              <Route path="/supplier-dashboard" element={<ProtectedRoute><SupplierDashboard /></ProtectedRoute>} />
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/auth" element={<Auth />} />
