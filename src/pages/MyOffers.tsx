@@ -1,241 +1,320 @@
 import { Header } from "@/components/ui/layout/Header";
 import { Sidebar } from "@/components/ui/layout/Sidebar";
-import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, MapPin, Calendar, DollarSign, Clock, Package } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { Search, DollarSign, Clock, Eye, FileText, Filter, Calendar, MapPin } from "lucide-react";
+import { useState, useMemo } from "react";
+import { useOffers } from "@/hooks/useOffers";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
-import { useState } from "react";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { RealTimeChatModal } from "@/components/modals/RealTimeChatModal";
 
 export const MyOffers = () => {
   const { userProfile } = useAuth();
   const { language } = useLanguage();
-  const isRTL = language === 'ar';
-
-  const offers = [
-    {
-      id: "1",
-      title: "Professional Audio Equipment Package",
-      requestTitle: "Corporate Event Audio Setup",
-      client: "TechCorp Solutions",
-      price: "14,500 SAR",
-      status: "Pending",
-      submittedDate: "March 8, 2024",
-      deliveryTime: "2 days",
-      description: "Complete audio equipment package including wireless microphones, speakers, and mixing console for 500-person event.",
-      location: "Riyadh, Saudi Arabia"
-    },
-    {
-      id: "2",
-      title: "Wedding Catering Service",
-      requestTitle: "Traditional Saudi Wedding Reception",
-      client: "Happy Events Co.",
-      price: "23,000 SAR",
-      status: "Accepted",
-      submittedDate: "March 5, 2024",
-      deliveryTime: "1 day",
-      description: "Traditional Saudi cuisine for 200 guests with dessert station and tea service.",
-      location: "Jeddah, Saudi Arabia"
-    },
-    {
-      id: "3",
-      title: "Product Launch Photography",
-      requestTitle: "Tech Product Launch Coverage",
-      client: "Innovation Hub",
-      price: "11,500 SAR",
-      status: "Completed",
-      submittedDate: "February 28, 2024",
-      deliveryTime: "Same day",
-      description: "Professional photography and videography with drone footage for product launch event.",
-      location: "Dammam, Saudi Arabia"
-    },
-    {
-      id: "4",
-      title: "Event Booth Design",
-      requestTitle: "Trade Show Booth Setup",
-      client: "Global Tech",
-      price: "8,500 SAR",
-      status: "Rejected",
-      submittedDate: "March 1, 2024",
-      deliveryTime: "3 days",
-      description: "Custom booth design and setup for international trade show with interactive displays.",
-      location: "Riyadh, Saudi Arabia"
-    }
-  ];
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "Pending": return "default";
-      case "Accepted": return "default";
-      case "Completed": return "default";
-      case "Rejected": return "destructive";
-      default: return "secondary";
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "Pending": return Clock;
-      case "Accepted": return Package;
-      case "Completed": return Package;
-      case "Rejected": return Package;
-      default: return Package;
-    }
-  };
-
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const isRTL = language === 'ar';
+  
+  const { offers, loading, formatPrice, getStatusColor } = useOffers();
+
+  // Filter and search logic
+  const filteredOffers = useMemo(() => {
+    return offers.filter(offer => {
+      // Search filter
+      const searchLower = searchTerm.toLowerCase();
+      const matchesSearch = searchTerm === "" || 
+        offer.title.toLowerCase().includes(searchLower) ||
+        offer.description.toLowerCase().includes(searchLower) ||
+        offer.request?.title.toLowerCase().includes(searchLower) ||
+        offer.request?.category.toLowerCase().includes(searchLower);
+
+      // Status filter
+      const matchesStatus = statusFilter === "all" || offer.client_approval_status === statusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
+  }, [offers, searchTerm, statusFilter]);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  const stats = {
+    total: offers.length,
+    approved: offers.filter(o => o.client_approval_status === 'approved').length,
+    pending: offers.filter(o => o.client_approval_status === 'pending').length,
+    rejected: offers.filter(o => o.client_approval_status === 'rejected').length
+  };
 
   return (
-    <div className={`min-h-screen bg-background ${isRTL ? 'rtl' : 'ltr'}`}>
+    <div className="min-h-screen bg-background">
       <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
       
       {/* Mobile Sidebar */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
         <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
-          <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
+          <Sidebar userRole={userProfile?.role || 'supplier'} userProfile={userProfile} />
         </SheetContent>
       </Sheet>
 
       <div className="rtl-flex">
-        {/* Desktop Sidebar - position based on language */}
+        {/* Desktop Sidebar */}
         <div className="hidden lg:block rtl-order-1">
-          <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
+          <Sidebar userRole={userProfile?.role || 'supplier'} userProfile={userProfile} />
         </div>
         
         <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
-          <div className="max-w-7xl mx-auto">
-            <div className={`mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
-              <h1 className="text-3xl font-bold mb-2">
-                {isRTL ? "عروضي" : "My Offers"}
-              </h1>
-              <p className="text-muted-foreground">
-                {isRTL ? "تتبع حالة عروضك وإدارة مشاريعك" : "Track your offer status and manage your projects"}
-              </p>
+          <div className="max-w-6xl mx-auto space-y-6">
+            {/* Header */}
+            <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-accent/10 to-lime/10 rounded-xl p-6">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                <div>
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">My Offers</h1>
+                  <p className="text-muted-foreground text-sm sm:text-base">Track and manage all your submitted offers</p>
+                </div>
+              </div>
             </div>
 
-            {/* Filters */}
-            <Card className="mb-6">
-              <CardContent className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+              <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Total Offers</CardTitle>
+                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                    <FileText className="h-5 w-5 text-primary" />
+                  </div>
+                </CardHeader>
+                <CardContent className="p-4 sm:p-6 pt-0">
+                  <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                    {stats.total}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">All time</p>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Approved</CardTitle>
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <Eye className="h-5 w-5 text-green-600" />
+                  </div>
+                </CardHeader>
+                <CardContent className="p-4 sm:p-6 pt-0">
+                  <div className="text-3xl font-bold text-green-600">
+                    {stats.approved}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {stats.total > 0 ? Math.round((stats.approved / stats.total) * 100) : 0}% success rate
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Pending</CardTitle>
+                  <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                    <Clock className="h-5 w-5 text-yellow-600" />
+                  </div>
+                </CardHeader>
+                <CardContent className="p-4 sm:p-6 pt-0">
+                  <div className="text-3xl font-bold text-yellow-600">
+                    {stats.pending}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">Awaiting response</p>
+                </CardContent>
+              </Card>
+
+              <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Rejected</CardTitle>
+                  <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                    <FileText className="h-5 w-5 text-red-600" />
+                  </div>
+                </CardHeader>
+                <CardContent className="p-4 sm:p-6 pt-0">
+                  <div className="text-3xl font-bold text-red-600">
+                    {stats.rejected}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">Need revision</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Search and Filters */}
+            <Card className="border-0 bg-card/70 backdrop-blur-sm overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5 p-4 sm:p-6">
+                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                    <Search className="h-5 w-5 text-primary" />
+                  </div>
+                  Search & Filter Offers
+                </CardTitle>
+                <CardDescription className="text-sm sm:text-base">Find specific offers quickly</CardDescription>
+              </CardHeader>
+              <CardContent className="p-4 sm:p-6">
+                <div className="space-y-4">
+                  {/* Search bar */}
                   <div className="relative">
-                    <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input 
-                      placeholder={isRTL ? "ابحث في العروض..." : "Search offers..."}
-                      className="pl-10"
+                      placeholder="Search by offer title, description, or request..."
+                      className="pl-10 h-12 text-sm sm:text-base bg-background/50 border-primary/20 focus:border-primary/50"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder={isRTL ? "الحالة" : "Status"} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="pending">Pending</SelectItem>
-                      <SelectItem value="accepted">Accepted</SelectItem>
-                      <SelectItem value="completed">Completed</SelectItem>
-                      <SelectItem value="rejected">Rejected</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder={isRTL ? "الموقع" : "Location"} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="riyadh">Riyadh</SelectItem>
-                      <SelectItem value="jeddah">Jeddah</SelectItem>
-                      <SelectItem value="dammam">Dammam</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  
+                  {/* Filter select */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <Select value={statusFilter} onValueChange={setStatusFilter}>
+                      <SelectTrigger className="h-12 bg-background/50 border-primary/20">
+                        <SelectValue placeholder="Filter by status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Statuses</SelectItem>
+                        <SelectItem value="pending">Pending</SelectItem>
+                        <SelectItem value="approved">Approved</SelectItem>
+                        <SelectItem value="rejected">Rejected</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Offers Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {offers.map((offer) => {
-                const StatusIcon = getStatusIcon(offer.status);
-                return (
-                  <Card key={offer.id} className="hover:shadow-lg transition-shadow">
-                    <CardHeader>
-                      <div className={`flex justify-between items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
-                        <div className={isRTL ? 'text-right' : 'text-left'}>
-                          <CardTitle className="text-lg mb-1">{offer.title}</CardTitle>
-                          <p className="text-sm text-muted-foreground mb-2">
-                            {isRTL ? "للطلب:" : "For:"} {offer.requestTitle}
-                          </p>
-                          <div className={`flex items-center gap-2 text-sm text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
-                            <MapPin className="h-4 w-4" />
-                            <span>{offer.location}</span>
+            {/* Offers List */}
+            <Card className="border-0 bg-card/70 backdrop-blur-sm overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-lime/5 to-primary/5 p-4 sm:p-6">
+                <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                  <div className="w-10 h-10 bg-lime/10 rounded-full flex items-center justify-center">
+                    <FileText className="h-5 w-5 text-lime" />
+                  </div>
+                  Your Offers ({filteredOffers.length})
+                </CardTitle>
+                <CardDescription className="text-sm sm:text-base">All your submitted offers and their status</CardDescription>
+              </CardHeader>
+              <CardContent className="p-0">
+                {filteredOffers.length === 0 ? (
+                  <div className="text-center py-12">
+                    <div className="text-muted-foreground">
+                      <Search className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                      <h3 className="text-lg font-semibold mb-2">No offers found</h3>
+                      <p>Try adjusting your search terms or filters</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="divide-y">
+                    {filteredOffers.map((offer) => (
+                      <div key={offer.id} className="p-4 sm:p-6 hover:bg-muted/50 transition-colors">
+                        <div className="space-y-4">
+                          {/* Header */}
+                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-start justify-between mb-2">
+                                <h3 className="text-base sm:text-lg font-semibold line-clamp-1">{offer.title}</h3>
+                                <Badge className={getStatusColor(offer.client_approval_status)} variant="secondary">
+                                  {offer.client_approval_status}
+                                </Badge>
+                              </div>
+                              <p className="text-sm text-muted-foreground mb-2 line-clamp-2">
+                                {offer.description}
+                              </p>
+                              <div className="flex items-center gap-3 text-sm">
+                                <span className="text-primary font-medium">For: {offer.request?.title}</span>
+                                <span className="text-muted-foreground">•</span>
+                                <span className="text-muted-foreground">{offer.request?.category}</span>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {/* Details */}
+                          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                            <div className="flex items-center gap-2 p-3 bg-lime/5 rounded-lg">
+                              <DollarSign className="h-4 w-4 text-lime" />
+                              <div>
+                                <p className="text-xs text-muted-foreground">Price</p>
+                                <p className="font-semibold text-sm text-lime">{formatPrice(offer)}</p>
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-center gap-2 p-3 bg-accent/5 rounded-lg">
+                              <Clock className="h-4 w-4 text-accent" />
+                              <div>
+                                <p className="text-xs text-muted-foreground">Delivery</p>
+                                <p className="font-semibold text-sm">{offer.delivery_time_days} days</p>
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-lg">
+                              <Calendar className="h-4 w-4 text-primary" />
+                              <div>
+                                <p className="text-xs text-muted-foreground">Submitted</p>
+                                <p className="font-semibold text-sm">{new Date(offer.created_at).toLocaleDateString()}</p>
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-center gap-2 p-3 bg-orange-50 rounded-lg">
+                              <MapPin className="h-4 w-4 text-orange-600" />
+                              <div>
+                                <p className="text-xs text-muted-foreground">Location</p>
+                                <p className="font-semibold text-sm">{offer.request?.location || 'Not specified'}</p>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Approval Notes */}
+                          {offer.client_approval_notes && (
+                            <div className="p-3 bg-muted/30 rounded-lg">
+                              <p className="text-xs text-muted-foreground mb-1">Client Notes:</p>
+                              <p className="text-sm">{offer.client_approval_notes}</p>
+                            </div>
+                          )}
+                          
+                          {/* Actions */}
+                          <div className="flex flex-col sm:flex-row gap-2">
+                            <ViewDetailsModal 
+                              item={{
+                                id: parseInt(offer.id.slice(-8), 16),
+                                title: offer.title,
+                                description: offer.description,
+                                value: formatPrice(offer),
+                                status: offer.client_approval_status
+                              }}
+                              userRole="supplier"
+                            >
+                              <Button size="sm" variant="outline" className="flex-1 sm:flex-initial">
+                                <Eye className="h-4 w-4 mr-2" />
+                                View Details
+                              </Button>
+                            </ViewDetailsModal>
+                            
+                            {offer.request && (
+                              <RealTimeChatModal 
+                                requestId={offer.request_id}
+                                offerId={offer.id}
+                                recipientId={offer.request.user_id}
+                              >
+                                <Button size="sm" className="flex-1 sm:flex-initial bg-gradient-to-r from-primary to-accent">
+                                  Chat with Client
+                                </Button>
+                              </RealTimeChatModal>
+                            )}
                           </div>
                         </div>
-                        <Badge variant={getStatusColor(offer.status) as any} className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                          <StatusIcon className="h-3 w-3" />
-                          {offer.status}
-                        </Badge>
                       </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className={`text-sm text-muted-foreground mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
-                        {offer.description}
-                      </p>
-                      
-                      <div className="space-y-3 mb-4">
-                        <div className={`flex items-center gap-2 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
-                          <DollarSign className="h-4 w-4 text-muted-foreground" />
-                          <span className="font-medium text-lg">{offer.price}</span>
-                        </div>
-                        <div className={`flex items-center gap-2 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
-                          <Calendar className="h-4 w-4 text-muted-foreground" />
-                          <span>{isRTL ? "تاريخ الإرسال:" : "Submitted:"} {offer.submittedDate}</span>
-                        </div>
-                        <div className={`flex items-center gap-2 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
-                          <Clock className="h-4 w-4 text-muted-foreground" />
-                          <span>{isRTL ? "وقت التسليم:" : "Delivery:"} {offer.deliveryTime}</span>
-                        </div>
-                      </div>
-
-                      <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                        <ViewDetailsModal 
-                          item={{
-                            id: parseInt(offer.id),
-                            title: offer.title,
-                            value: offer.price,
-                            status: offer.status
-                          }}
-                          userRole="supplier"
-                        >
-                          <Button variant="outline" size="sm" className="flex-1">
-                            {isRTL ? "عرض التفاصيل" : "View Details"}
-                          </Button>
-                        </ViewDetailsModal>
-                        
-                        {offer.status === "Pending" && (
-                          <Button variant="destructive" size="sm" className="flex-1">
-                            {isRTL ? "سحب العرض" : "Withdraw Offer"}
-                          </Button>
-                        )}
-                        
-                        {offer.status === "Accepted" && (
-                          <Button size="sm" className="flex-1">
-                            {isRTL ? "بدء المشروع" : "Start Project"}
-                          </Button>
-                        )}
-                        
-                        {offer.status === "Completed" && (
-                          <Button variant="outline" size="sm" className="flex-1">
-                            {isRTL ? "عرض الفاتورة" : "View Invoice"}
-                          </Button>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </div>
         </main>
       </div>

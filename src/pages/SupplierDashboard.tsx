@@ -18,7 +18,7 @@ import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 
 export const SupplierDashboard = () => {
   const { userProfile } = useAuth();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
@@ -108,52 +108,52 @@ export const SupplierDashboard = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
               <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">{t('supplier.availableRequests')}</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Total Offers</CardTitle>
                   <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                     <Package className="h-5 w-5 text-primary" />
                   </div>
                 </CardHeader>
                 <CardContent className="p-4 sm:p-6 pt-0">
                   <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                    {filteredRequests.length}
+                    {stats.totalOffers}
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">Open for offers</p>
+                  <p className="text-xs text-muted-foreground mt-1">Submitted this month</p>
                 </CardContent>
               </Card>
               
               <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">{t('supplier.totalOffers')}</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Approved</CardTitle>
                   <div className="w-10 h-10 bg-lime/10 rounded-full flex items-center justify-center">
                     <TrendingUp className="h-5 w-5 text-lime" />
                   </div>
                 </CardHeader>
                 <CardContent className="p-4 sm:p-6 pt-0">
                   <div className="text-3xl font-bold bg-gradient-to-r from-lime to-primary bg-clip-text text-transparent">
-                    {offers.length}
+                    {stats.approvedOffers}
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">Total submitted</p>
+                  <p className="text-xs text-muted-foreground mt-1">Success rate: {Math.round((stats.approvedOffers / Math.max(stats.totalOffers, 1)) * 100)}%</p>
                 </CardContent>
               </Card>
               
               <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">{t('supplier.pendingOffers')}</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Pending</CardTitle>
                   <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
                     <Clock className="h-5 w-5 text-accent" />
                   </div>
                 </CardHeader>
                 <CardContent className="p-4 sm:p-6 pt-0">
                   <div className="text-3xl font-bold bg-gradient-to-r from-accent to-lime bg-clip-text text-transparent">
-                    {offers.filter(o => o.status === 'pending').length}
+                    {stats.pendingOffers}
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">Awaiting response</p>
+                  <p className="text-xs text-muted-foreground mt-1">Awaiting client response</p>
                 </CardContent>
               </Card>
 
               <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">{t('supplier.acceptedOffers')}</CardTitle>
+                  <CardTitle className="text-sm font-medium text-muted-foreground">Projects</CardTitle>
                   <div className="w-10 h-10 bg-green-500/10 rounded-full flex items-center justify-center">
                     <Eye className="h-5 w-5 text-green-500" />
                   </div>
