@@ -39,6 +39,7 @@ import { FinancialDashboard } from "@/components/admin/FinancialDashboard";
 import { SubscriptionManagement } from "@/components/admin/SubscriptionManagement";
 import { PlatformAnalytics } from "@/components/admin/PlatformAnalytics";
 import { MobileBottomTabs } from "@/components/navigation/MobileBottomTabs";
+import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient();
 
@@ -74,6 +75,7 @@ const App = () => (
               <Route path="/supplier-dashboard" element={<SupplierDashboard />} />
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/auth" element={<Auth />} />
               
               {/* Admin Routes with dedicated layout */}
               <Route path="/admin" element={<AdminLayout />}>

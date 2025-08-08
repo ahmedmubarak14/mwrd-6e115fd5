@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AdminSidebar } from "./AdminSidebar";
@@ -6,10 +6,19 @@ import { AdminHeader } from "./AdminHeader";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { useNavigate } from "react-router-dom";
+import { AdminCommandPalette } from "./AdminCommandPalette";
 
 export const AdminLayout = () => {
-  const { userProfile, loading } = useAuth();
+  const { user, userProfile, loading } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/auth');
+    }
+  }, [loading, user, navigate]);
 
   if (loading) {
     return (
@@ -46,6 +55,7 @@ export const AdminLayout = () => {
             <Outlet />
           </main>
         </div>
+        <AdminCommandPalette />
       </div>
     </SidebarProvider>
   );
