@@ -7,12 +7,16 @@ import { useToast } from "@/hooks/use-toast";
 import { CreateRequestModal } from "@/components/modals/CreateRequestModal";
 import { CreateOfferModal } from "@/components/modals/CreateOfferModal";
 import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
+import { EnhancedAnalyticsDashboard } from "@/components/analytics/EnhancedAnalyticsDashboard";
+import { useRealTimeAnalytics } from "@/hooks/useRealTimeAnalytics";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export const ClientDashboard = () => {
   const { t, language } = useLanguage();
   const { userProfile } = useAuth();
   const { toast } = useToast();
   const isRTL = language === 'ar';
+  const { data: analyticsData, loading: analyticsLoading } = useRealTimeAnalytics();
 
   const handleUpgradeSubscription = () => {
     toast({
@@ -35,19 +39,52 @@ export const ClientDashboard = () => {
     });
   };
 
-  console.log('ClientDashboard rendering with userProfile:', userProfile);
-  console.log('Language:', language, 'isRTL:', isRTL);
-
-  // Universal stats that work for both clients and suppliers
+  // Real-time stats using analytics data
   const stats = userProfile?.role === 'supplier' ? [
-    { title: t('dashboard.activeOffers'), value: "12", icon: Package, color: "text-primary" },
-    { title: t('dashboard.totalEarnings'), value: "92,000", icon: Banknote, color: "text-lime", currency: true },
-    { title: t('dashboard.successRate'), value: "85%", icon: TrendingUp, color: "text-primary" },
-    { title: t('dashboard.clientRating'), value: "4.8", icon: Star, color: "text-lime" }
+    { 
+      title: t('dashboard.activeOffers'), 
+      value: analyticsData.totalOffers?.toString() || "0", 
+      icon: Package, 
+      color: "text-primary" 
+    },
+    { 
+      title: t('dashboard.totalEarnings'), 
+      value: analyticsData.totalRevenue?.toLocaleString() || "0", 
+      icon: Banknote, 
+      color: "text-lime", 
+      currency: true 
+    },
+    { 
+      title: t('dashboard.successRate'), 
+      value: `${Math.round(analyticsData.successRate || 0)}%`, 
+      icon: TrendingUp, 
+      color: "text-primary" 
+    },
+    { 
+      title: t('dashboard.clientRating'), 
+      value: "4.8", 
+      icon: Star, 
+      color: "text-lime" 
+    }
   ] : [
-    { title: t('dashboard.totalRequests'), value: "3", icon: FileText, color: "text-primary" },
-    { title: t('dashboard.pendingOffers'), value: "8", icon: TrendingUp, color: "text-lime" },
-    { title: t('dashboard.suppliersConnected'), value: "12", icon: Users, color: "text-primary" }
+    { 
+      title: t('dashboard.totalRequests'), 
+      value: analyticsData.totalRequests?.toString() || "0", 
+      icon: FileText, 
+      color: "text-primary" 
+    },
+    { 
+      title: t('dashboard.pendingOffers'), 
+      value: analyticsData.totalOffers?.toString() || "0", 
+      icon: TrendingUp, 
+      color: "text-lime" 
+    },
+    { 
+      title: t('dashboard.suppliersConnected'), 
+      value: "12", 
+      icon: Users, 
+      color: "text-primary" 
+    }
   ];
 
   // Universal recent items that work for both user types
@@ -97,30 +134,44 @@ export const ClientDashboard = () => {
 
       {/* Enhanced Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
-        {stats.map((stat, index) => (
-          <Card key={index} className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
-            <CardHeader className="rtl-card-header space-y-0 pb-2 p-4 sm:p-6">
-              <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
-                {stat.title}
-              </CardTitle>
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                <stat.icon className={`h-4 w-4 sm:h-5 sm:w-5 ${stat.color}`} />
-              </div>
-            </CardHeader>
-            <CardContent className="p-4 sm:p-6 pt-0">
-              <div className="rtl-flex items-center gap-2">
-                <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{stat.value}</div>
-                {stat.currency && (
-                  <img 
-                    src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
-                    alt="SAR" 
-                    className="h-5 w-5 sm:h-6 sm:w-6 opacity-80"
-                  />
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+        {analyticsLoading ? (
+          Array.from({ length: 3 }).map((_, index) => (
+            <Card key={index} className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm">
+              <CardHeader className="rtl-card-header space-y-0 pb-2 p-4 sm:p-6">
+                <div className="h-4 bg-muted rounded animate-pulse" />
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-muted rounded-full animate-pulse" />
+              </CardHeader>
+              <CardContent className="p-4 sm:p-6 pt-0">
+                <div className="h-8 bg-muted rounded animate-pulse" />
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          stats.map((stat, index) => (
+            <Card key={index} className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
+              <CardHeader className="rtl-card-header space-y-0 pb-2 p-4 sm:p-6">
+                <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
+                  {stat.title}
+                </CardTitle>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                  <stat.icon className={`h-4 w-4 sm:h-5 sm:w-5 ${stat.color}`} />
+                </div>
+              </CardHeader>
+              <CardContent className="p-4 sm:p-6 pt-0">
+                <div className="rtl-flex items-center gap-2">
+                  <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">{stat.value}</div>
+                  {stat.currency && (
+                    <img 
+                      src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
+                      alt="SAR" 
+                      className="h-5 w-5 sm:h-6 sm:w-6 opacity-80"
+                    />
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        )}
       </div>
 
       {/* Enhanced Quick Actions - Universal for both user types */}
@@ -265,6 +316,9 @@ export const ClientDashboard = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Enhanced Analytics Dashboard */}
+      <EnhancedAnalyticsDashboard />
     </div>
   );
 };

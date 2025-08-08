@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { FinancialAnalyticsChart } from '@/components/analytics/FinancialAnalyticsChart';
 import { 
   DollarSign, 
   TrendingUp, 
@@ -303,21 +304,7 @@ export const FinancialDashboard = () => {
         </TabsContent>
 
         <TabsContent value="analytics" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Financial Analytics</CardTitle>
-              <CardDescription>Revenue trends and financial insights</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="text-center text-muted-foreground py-8">
-                  Financial analytics charts will be implemented here.
-                  <br />
-                  This will include revenue trends, payment method breakdown, and customer lifecycle value.
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <FinancialAnalyticsChart period={selectedPeriod as any} />
         </TabsContent>
       </Tabs>
     </div>
