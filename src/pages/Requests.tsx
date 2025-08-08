@@ -15,6 +15,8 @@ import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 import { CreateRequestModal } from "@/components/modals/CreateRequestModal";
 import { useRequests } from "@/hooks/useRequests";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { RequestOffersModal } from "@/components/modals/RequestOffersModal";
+import { CATEGORIES, getCategoryLabel } from "@/constants/categories";
 
 export const Requests = () => {
   const { t, language } = useLanguage();
@@ -161,12 +163,13 @@ export const Requests = () => {
                         <SelectValue placeholder="Filter by category" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="all">All Categories</SelectItem>
-                        <SelectItem value="AVL">AVL Equipment</SelectItem>
-                        <SelectItem value="Hospitality">Hospitality</SelectItem>
-                        <SelectItem value="Booth Stands">Booth Stands</SelectItem>
-                        <SelectItem value="Photography">Photography</SelectItem>
-                        <SelectItem value="Security">Security</SelectItem>
+                        <SelectItem value="all">{isRTL ? 'كل الفئات' : 'All Categories'}</SelectItem>
+                        {CATEGORIES.map(cat => (
+                          <SelectItem key={cat.value} value={cat.value}>
+                            {isRTL ? cat.labelAr : cat.labelEn}
+                          </SelectItem>
+                        ))}
+
                       </SelectContent>
                     </Select>
                   </div>
@@ -265,7 +268,7 @@ export const Requests = () => {
                                 </div>
                                 <p className="text-sm text-muted-foreground mb-2">{request.description}</p>
                                 <div className="flex items-center gap-4 mb-2">
-                                  <span className="text-sm text-primary font-medium">{request.category}</span>
+                                  <span className="text-sm text-primary font-medium">{getCategoryLabel(request.category, language as any)}</span>
                                   <div className="flex items-center gap-1 text-sm text-muted-foreground">
                                     <MapPin className="h-3 w-3" />
                                     <span>{request.location}</span>
@@ -333,14 +336,16 @@ export const Requests = () => {
                             </Button>
                           )}
                           {getOffersCount(request) > 0 && (
-                            <Button 
-                              size="sm" 
-                              variant="outline" 
-                              className="flex-1 sm:flex-initial bg-lime/10 border-lime/20 text-lime hover:bg-lime/20 hover-scale"
-                              onClick={() => handleViewOffers(getOffersCount(request))}
-                            >
-                              View Offers ({getOffersCount(request)})
-                            </Button>
+                            <RequestOffersModal requestId={request.id} requestTitle={request.title}>
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                className="flex-1 sm:flex-initial bg-lime/10 border-lime/20 text-lime hover:bg-lime/20 hover-scale"
+                              >
+                                {isRTL ? 'عرض العروض' : 'View Offers'} ({getOffersCount(request)})
+                              </Button>
+                            </RequestOffersModal>
+
                           )}
                         </div>
                       </div>

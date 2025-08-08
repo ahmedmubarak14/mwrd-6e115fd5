@@ -14,6 +14,7 @@ import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
+import { CATEGORIES } from "@/constants/categories";
 
 interface CreateRequestModalProps {
   children: React.ReactNode;
@@ -127,12 +128,11 @@ export const CreateRequestModal = ({ children }: CreateRequestModalProps) => {
                 <SelectValue placeholder={isRTL ? "اختر الفئة" : "Select Category"} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="avl">{isRTL ? "الصوت والإضاءة والمرئيات" : "Audio, Visual & Lighting"}</SelectItem>
-                <SelectItem value="catering">{isRTL ? "خدمات الطعام" : "Catering Services"}</SelectItem>
-                <SelectItem value="decoration">{isRTL ? "الديكور والتزيين" : "Decoration & Design"}</SelectItem>
-                <SelectItem value="furniture">{isRTL ? "الأثاث" : "Furniture"}</SelectItem>
-                <SelectItem value="security">{isRTL ? "الأمن" : "Security"}</SelectItem>
-                <SelectItem value="transportation">{isRTL ? "النقل" : "Transportation"}</SelectItem>
+                {CATEGORIES.map(cat => (
+                  <SelectItem key={cat.value} value={cat.value}>
+                    {isRTL ? cat.labelAr : cat.labelEn}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
