@@ -41,6 +41,7 @@ import { PlatformAnalytics } from "@/components/admin/PlatformAnalytics";
 import { MobileBottomTabs } from "@/components/navigation/MobileBottomTabs";
 import { ProtectedRoute } from "@/components/routing/ProtectedRoute";
 import { RoleProtectedRoute } from "@/components/routing/RoleProtectedRoute";
+import { AuthRedirect } from "@/components/routing/AuthRedirect";
 import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
 const queryClient = new QueryClient();
@@ -54,7 +55,12 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Landing />} />
+              <Route path="/" element={
+                <>
+                  <AuthRedirect />
+                  <Landing />
+                </>
+              } />
               <Route path="/home" element={<Home />} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               <Route path="/why-start-with-supplify" element={<WhyStartWithSupplify />} />

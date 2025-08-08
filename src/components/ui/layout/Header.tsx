@@ -19,7 +19,7 @@ interface HeaderProps {
 
 export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
   const { t, language } = useLanguage();
-  const { userProfile, signOut } = useAuth();
+  const { user, userProfile, signOut } = useAuth();
   const { unreadCount } = useNotifications();
   const { toast } = useToast();
   const isRTL = language === 'ar';
@@ -65,7 +65,10 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
             <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
           
-          <Link to="/" className="flex items-center">
+          <Link 
+            to={user && userProfile ? "/dashboard" : "/"} 
+            className="flex items-center"
+          >
             <img 
               src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
               alt="Supplify Logo"

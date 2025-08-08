@@ -108,9 +108,12 @@ export const Landing = () => {
       {/* Enhanced Navigation */}
       <header className="border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          {/* Logo - Always positioned based on language */}
+          {/* Logo - Conditional redirect based on auth state */}
           <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
-            <Link to="/" className="flex items-center gap-3">
+            <Link 
+              to={user && userProfile ? "/dashboard" : "/"} 
+              className="flex items-center gap-3"
+            >
               <img 
                 src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
                 alt="Supplify Logo"

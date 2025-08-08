@@ -111,9 +111,17 @@ useEffect(() => {
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
-    // Redirect to auth page after logout
-    window.location.assign('/auth');
+    try {
+      // Clear user state immediately to prevent timing issues
+      setUserProfile(null);
+      setUser(null);
+      setSession(null);
+      
+      await supabase.auth.signOut();
+      showInfo('You have been signed out successfully.');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
 
   const value = {
