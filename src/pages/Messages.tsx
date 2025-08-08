@@ -361,6 +361,10 @@ export default function Messages() {
                       <div className="flex-1 overflow-y-auto p-4 space-y-4">
                         {messages.map((message) => {
                           const isOwnMessage = message.sender_id === user?.id;
+                          const senderProfile = userProfiles[message.sender_id];
+                          const senderName = senderProfile?.full_name || senderProfile?.email || 'Unknown User';
+                          const senderCompany = senderProfile?.company_name;
+                          
                           return (
                             <div
                               key={message.id}
@@ -373,6 +377,12 @@ export default function Messages() {
                                     : 'bg-muted'
                                 }`}
                               >
+                                {!isOwnMessage && (
+                                  <div className="text-xs font-medium mb-1 opacity-80">
+                                    {senderName}
+                                    {senderCompany && <span className="text-xs opacity-60 ml-1">({senderCompany})</span>}
+                                  </div>
+                                )}
                                 <p className="text-sm">{message.content}</p>
                                 <p className="text-xs opacity-70 mt-1">
                                   {new Date(message.created_at).toLocaleTimeString()}
@@ -447,18 +457,28 @@ export default function Messages() {
                     <div className="flex-1 overflow-y-auto p-4 space-y-4">
                       {messages.map((message) => {
                         const isOwnMessage = message.sender_id === user?.id;
+                        const senderProfile = userProfiles[message.sender_id];
+                        const senderName = senderProfile?.full_name || senderProfile?.email || 'Unknown User';
+                        const senderCompany = senderProfile?.company_name;
+                        
                         return (
                           <div
                             key={message.id}
                             className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}
                           >
                             <div
-                              className={`max-w-[70%] rounded-lg p-3 ${
+                              className={`max-w-[80%] rounded-lg p-3 ${
                                 isOwnMessage
                                   ? 'bg-primary text-primary-foreground'
                                   : 'bg-muted'
                               }`}
                             >
+                              {!isOwnMessage && (
+                                <div className="text-xs font-medium mb-1 opacity-80">
+                                  {senderName}
+                                  {senderCompany && <span className="text-xs opacity-60 ml-1">({senderCompany})</span>}
+                                </div>
+                              )}
                               <p className="text-sm">{message.content}</p>
                               <p className="text-xs opacity-70 mt-1">
                                 {new Date(message.created_at).toLocaleTimeString()}

@@ -101,7 +101,7 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
     }
   };
 
-  const userRole = userProfile?.role === 'admin' ? 'admin' : (userProfile?.role === 'client' ? 'client' : 'supplier');
+  const userRole = userProfile?.role || 'client';
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
