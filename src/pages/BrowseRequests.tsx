@@ -11,8 +11,9 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Search, MapPin, Calendar, DollarSign, Clock, Star, Eye, Filter } from "lucide-react";
 import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 import { CreateOfferModal } from "@/components/modals/CreateOfferModal";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 export const BrowseRequests = () => {
   const { userProfile } = useAuth();
@@ -25,83 +26,65 @@ export const BrowseRequests = () => {
   const [urgencyFilter, setUrgencyFilter] = useState("all");
   const { toast } = useToast();
 
-  const requests = [
-    {
-      id: "1",
-      title: "Professional Audio Equipment for Corporate Event",
-      category: "Audio, Visual & Lighting",
-      location: "Riyadh",
-      budget: "15,000 - 20,000 SAR",
-      deadline: "March 15, 2024",
-      urgency: "High",
-      client: "TechCorp Solutions",
-      clientRating: 4.8,
-      offers: 5,
-      description: "Need high-quality audio equipment for a 500-person corporate conference including microphones, speakers, and mixing board.",
-      status: "Open",
-      postedDate: "Feb 20, 2024"
-    },
-    {
-      id: "2", 
-      title: "Catering Services for Wedding Reception",
-      category: "Catering & Food Services",
-      location: "Jeddah",
-      budget: "25,000 - 30,000 SAR",
-      deadline: "April 10, 2024",
-      urgency: "Medium",
-      client: "Happy Events Co.",
-      clientRating: 4.9,
-      offers: 8,
-      description: "Traditional Saudi cuisine for 200 guests with vegetarian options and dessert station.",
-      status: "Open",
-      postedDate: "Feb 25, 2024"
-    },
-    {
-      id: "3",
-      title: "Photography & Videography for Product Launch",
-      category: "Photography & Videography", 
-      location: "Dammam",
-      budget: "12,000 - 15,000 SAR",
-      deadline: "March 20, 2024",
-      urgency: "Medium",
-      client: "Innovation Hub",
-      clientRating: 4.7,
-      offers: 3,
-      description: "Professional photo and video coverage of new product launch event with drone footage.",
-      status: "Open",
-      postedDate: "Feb 18, 2024"
-    },
-    {
-      id: "4",
-      title: "Booth Design & Construction for Trade Show",
-      category: "Booth Design",
-      location: "Riyadh",
-      budget: "30,000 - 45,000 SAR",
-      deadline: "April 1, 2024",
-      urgency: "High",
-      client: "Global Exhibitions",
-      clientRating: 4.6,
-      offers: 12,
-      description: "Custom booth design and construction for major international trade show with interactive displays.",
-      status: "Open",
-      postedDate: "Feb 28, 2024"
-    },
-    {
-      id: "5",
-      title: "Event Security & Crowd Management",
-      category: "Security Services",
-      location: "Mecca",
-      budget: "18,000 - 25,000 SAR",
-      deadline: "March 30, 2024",
-      urgency: "High",
-      client: "SafeEvents Ltd",
-      clientRating: 4.5,
-      offers: 6,
-      description: "Professional security team for large outdoor festival with crowd control expertise.",
-      status: "Open",
-      postedDate: "Feb 22, 2024"
+  const [requests, setRequests] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch real requests from database
+  useEffect(() => {
+    fetchRequests();
+  }, []);
+
+  const fetchRequests = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('requests')
+        .select(`
+          *,
+          user_profiles (
+            full_name,
+            company_name
+          ),
+          offers (count)
+        `)
+        .eq('status', 'open')
+        .eq('admin_approval_status', 'approved')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      const formattedRequests = (data || []).map(request => ({
+        id: request.id,
+        title: request.title,
+        category: request.category,
+        location: request.location || 'Saudi Arabia',
+        budget: request.budget_min && request.budget_max 
+          ? `${request.budget_min.toLocaleString()} - ${request.budget_max.toLocaleString()} ${request.currency}`
+          : request.budget_min 
+            ? `From ${request.budget_min.toLocaleString()} ${request.currency}`
+            : 'Budget negotiable',
+        deadline: request.deadline ? new Date(request.deadline).toLocaleDateString() : 'Flexible',
+        urgency: request.urgency.charAt(0).toUpperCase() + request.urgency.slice(1),
+        client: (request.user_profiles as any)?.company_name || (request.user_profiles as any)?.full_name || 'Client',
+        clientRating: 4.5 + Math.random() * 0.5, // Mock rating for now
+        offers: request.offers?.[0]?.count || 0,
+        description: request.description,
+        status: 'Open',
+        postedDate: new Date(request.created_at).toLocaleDateString()
+      }));
+
+      setRequests(formattedRequests);
+    } catch (error) {
+      console.error('Error fetching requests:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load requests",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
   const getUrgencyColor = (urgency: string) => {
     switch (urgency) {

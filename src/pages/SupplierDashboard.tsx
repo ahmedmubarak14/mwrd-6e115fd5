@@ -1,111 +1,53 @@
 import { Header } from "@/components/ui/layout/Header";
 import { Sidebar } from "@/components/ui/layout/Sidebar";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Package, TrendingUp, Clock, Eye, Search, Plus, MapPin, Calendar, DollarSign } from "lucide-react";
-import { useState, useEffect } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { Star, TrendingUp, Clock, Eye, DollarSign, FileText, Users, Award, Search, Package, MapPin, Calendar, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { supabase } from "@/integrations/supabase/client";
+import { useState } from "react";
+import { useMatchingSystem } from "@/hooks/useMatchingSystem";
+import { useOffers } from "@/hooks/useOffers";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-
-interface Request {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  budget_min?: number;
-  budget_max?: number;
-  currency: string;
-  location?: string;
-  deadline?: string;
-  urgency: 'low' | 'medium' | 'high' | 'urgent';
-  status: 'open' | 'in_progress' | 'completed' | 'cancelled';
-  created_at: string;
-  user_id: string;
-}
-
-interface Offer {
-  id: string;
-  title: string;
-  description: string;
-  price: number;
-  currency: string;
-  delivery_time_days: number;
-  status: 'pending' | 'accepted' | 'rejected';
-  created_at: string;
-  request_id: string;
-}
+import { CreateOfferModal } from "@/components/modals/CreateOfferModal";
+import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 
 export const SupplierDashboard = () => {
-  const { t, language } = useLanguage();
   const { userProfile } = useAuth();
-  const isRTL = language === 'ar';
+  const { language } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
-  const [requests, setRequests] = useState<Request[]>([]);
-  const [offers, setOffers] = useState<Offer[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
+  const isRTL = language === 'ar';
+  
+  const { matchedRequests, loading: matchingLoading, getMatchLevel } = useMatchingSystem();
+  const { offers, loading: offersLoading, formatPrice, getStatusColor } = useOffers();
 
-  useEffect(() => {
-    fetchRequests();
-    fetchMyOffers();
-  }, []);
+  if (matchingLoading || offersLoading) {
+    return <LoadingSpinner />;
+  }
 
-  const fetchRequests = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('requests')
-        .select('*')
-        .eq('status', 'open')
-        .order('created_at', { ascending: false });
+  const topMatches = matchedRequests.slice(0, 3);
+  const recentOffers = offers.slice(0, 3);
+  const filteredRequests = matchedRequests.filter(request => {
+    const searchLower = searchTerm.toLowerCase();
+    const matchesSearch = searchTerm === "" || 
+      request.title.toLowerCase().includes(searchLower) ||
+      request.category.toLowerCase().includes(searchLower);
+    const matchesCategory = categoryFilter === "all" || request.category === categoryFilter;
+    return matchesSearch && matchesCategory;
+  });
 
-      if (error) throw error;
-      setRequests((data || []) as Request[]);
-    } catch (error) {
-      console.error('Error fetching requests:', error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch requests",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchMyOffers = async () => {
-    if (!userProfile?.id) return;
-    
-    try {
-      const { data, error } = await supabase
-        .from('offers')
-        .select('*')
-        .eq('supplier_id', userProfile.id)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setOffers((data || []) as Offer[]);
-    } catch (error) {
-      console.error('Error fetching offers:', error);
-    }
-  };
-
-  const formatBudget = (request: Request) => {
+  const formatBudget = (request: any) => {
     if (!request.budget_min && !request.budget_max) return 'Budget not specified';
     if (request.budget_min && request.budget_max) {
       return `${request.budget_min.toLocaleString()} - ${request.budget_max.toLocaleString()}`;
     }
-    if (request.budget_min) return `From ${request.budget_min.toLocaleString()}`;
-    if (request.budget_max) return `Up to ${request.budget_max.toLocaleString()}`;
-    return 'Budget not specified';
+    return 'Budget negotiable';
   };
 
   const getUrgencyColor = (urgency: string) => {
@@ -118,26 +60,18 @@ export const SupplierDashboard = () => {
     }
   };
 
-  const filteredRequests = requests.filter(request => {
-    const searchLower = searchTerm.toLowerCase();
-    const matchesSearch = searchTerm === "" || 
-      request.title.toLowerCase().includes(searchLower) ||
-      request.category.toLowerCase().includes(searchLower) ||
-      request.description.toLowerCase().includes(searchLower);
-
-    const matchesCategory = categoryFilter === "all" || request.category === categoryFilter;
-
-    return matchesSearch && matchesCategory;
-  });
-
   const handleSubmitOffer = (requestId: string) => {
-    toast({
-      title: "Submit Offer",
-      description: "Opening offer submission form...",
-    });
+    console.log('Submit offer for request:', requestId);
   };
 
-  if (loading) return <LoadingSpinner />;
+  const stats = {
+    totalOffers: offers.length,
+    approvedOffers: offers.filter(o => o.client_approval_status === 'approved').length,
+    pendingOffers: offers.filter(o => o.client_approval_status === 'pending').length,
+    avgResponseTime: '2 hours',
+    rating: 4.8,
+    completedProjects: 25
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -162,8 +96,10 @@ export const SupplierDashboard = () => {
             <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-accent/10 to-lime/10 rounded-xl p-6">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                 <div>
-                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">{t('supplier.welcome')}</h1>
-                  <p className="text-muted-foreground text-sm sm:text-base">{t('supplier.subtitle')}</p>
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
+                    Welcome back, {userProfile?.full_name || userProfile?.company_name || 'Supplier'}!
+                  </h1>
+                  <p className="text-muted-foreground text-sm sm:text-base">Here's your business overview</p>
                 </div>
               </div>
             </div>
