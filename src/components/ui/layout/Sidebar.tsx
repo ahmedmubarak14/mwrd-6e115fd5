@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Link, useLocation } from "react-router-dom";
+import { ConversationsDropdown } from "@/components/conversations/ConversationsDropdown";
 import { 
   Home, 
   FileText, 
@@ -41,7 +42,7 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
     { icon: Home, label: t('nav.dashboard'), href: '/dashboard' },
     { icon: FileText, label: t('nav.requests'), href: '/requests' },
     { icon: Users, label: t('nav.suppliers'), href: '/suppliers' },
-    { icon: MessageCircle, label: t('nav.messages'), href: '/messages' },
+    { icon: MessageCircle, label: t('nav.messages'), href: '/messages', isMessagesDropdown: true },
     { icon: TrendingUp, label: t('nav.analytics'), href: '/analytics' },
     { icon: ShoppingCart, label: t('nav.orders'), href: '/orders' },
     { icon: CreditCard, label: t('nav.manageSubscription'), href: '/manage-subscription' },
@@ -53,7 +54,7 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
     { icon: Home, label: t('nav.dashboard'), href: '/dashboard' },
     { icon: FileText, label: t('nav.browseRequests'), href: '/browse-requests' },
     { icon: Package, label: t('nav.offers'), href: '/my-offers' },
-    { icon: MessageCircle, label: t('nav.messages'), href: '/messages' },
+    { icon: MessageCircle, label: t('nav.messages'), href: '/messages', isMessagesDropdown: true },
     { icon: TrendingUp, label: t('nav.analytics'), href: '/analytics' },
     { icon: ShoppingCart, label: t('nav.orders'), href: '/orders' },
     { icon: CreditCard, label: t('nav.manageSubscription'), href: '/manage-subscription' },
@@ -66,7 +67,7 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
     { icon: BarChart3, label: 'Admin Panel', href: '/admin' },
     { icon: Users, label: t('nav.suppliers'), href: '/suppliers' },
     { icon: FileText, label: t('nav.requests'), href: '/requests' },
-    { icon: MessageCircle, label: t('nav.messages'), href: '/messages' },
+    { icon: MessageCircle, label: t('nav.messages'), href: '/messages', isMessagesDropdown: true },
     { icon: TrendingUp, label: t('nav.analytics'), href: '/analytics' },
     { icon: ShoppingCart, label: t('nav.orders'), href: '/orders' },
     { icon: HelpCircle, label: t('nav.support'), href: '/support' },
@@ -135,20 +136,31 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
       </div>
       
       <nav className="flex-1 px-3 sm:px-4 py-4 space-y-1 sm:space-y-2">
-        {getMenuItems().map((item, index) => (
-          <Link key={index} to={item.href}>
-            <Button
-              variant="ghost"
-              className={cn(
-                "w-full gap-3 h-10 sm:h-12 text-sm sm:text-base rtl-justify-start rtl-flex",
-                isActive(item.href) && "bg-primary/10 text-primary hover:bg-primary/20"
-              )}
-            >
-              <item.icon className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-              <span className="truncate">{item.label}</span>
-            </Button>
-          </Link>
-        ))}
+        {getMenuItems().map((item, index) => {
+          if (item.isMessagesDropdown) {
+            return (
+              <ConversationsDropdown
+                key={index}
+                isActive={isActive(item.href)}
+              />
+            );
+          }
+          
+          return (
+            <Link key={index} to={item.href}>
+              <Button
+                variant="ghost"
+                className={cn(
+                  "w-full gap-3 h-10 sm:h-12 text-sm sm:text-base rtl-justify-start rtl-flex",
+                  isActive(item.href) && "bg-primary/10 text-primary hover:bg-primary/20"
+                )}
+              >
+                <item.icon className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                <span className="truncate">{item.label}</span>
+              </Button>
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Language Switcher - Always visible with proper RTL support */}
