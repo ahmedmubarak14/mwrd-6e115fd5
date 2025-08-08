@@ -99,7 +99,6 @@ export const useMatchingSystem = () => {
           )
         `)
         .eq('status', 'open')
-        .eq('admin_approval_status', 'approved')
         .order('created_at', { ascending: false });
 
       if (error) throw error;

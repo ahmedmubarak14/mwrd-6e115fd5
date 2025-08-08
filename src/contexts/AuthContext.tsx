@@ -158,6 +158,11 @@ useEffect(() => {
       
       await supabase.auth.signOut();
       showInfo('You have been signed out successfully.');
+      
+      // Redirect to home page after logout
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 500);
     } catch (error) {
       console.error('Error signing out:', error);
     }
