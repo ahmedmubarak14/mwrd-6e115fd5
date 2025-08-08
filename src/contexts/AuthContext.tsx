@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
-import { useActivityFeed } from '@/hooks/useActivityFeed';
 
 interface UserProfile {
   id: string;
@@ -30,7 +29,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const { showInfo } = useToastFeedback();
-  const { trackActivity } = useActivityFeed();
 
 useEffect(() => {
   // Listen for auth changes FIRST to avoid missing events
@@ -126,20 +124,6 @@ useEffect(() => {
 
       // Update local state
       setUserProfile({ ...userProfile, ...updates });
-
-      // Track activity
-      const changedFields = Object.keys(updates);
-      await trackActivity(
-        'profile_updated',
-        'Profile updated',
-        `Updated ${changedFields.join(', ')}`,
-        { 
-          updated_fields: changedFields,
-          changes: updates
-        },
-        'profile',
-        user.id
-      );
 
       showInfo('Profile updated successfully.');
       return true;
