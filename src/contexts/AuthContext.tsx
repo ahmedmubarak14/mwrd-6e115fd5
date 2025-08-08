@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
+import { useActivityFeed } from '@/hooks/useActivityFeed';
 
 interface UserProfile {
   id: string;
@@ -18,6 +19,7 @@ interface AuthContextType {
   userProfile: UserProfile | null;
   loading: boolean;
   signOut: () => Promise<void>;
+  updateProfile: (updates: Partial<UserProfile>) => Promise<boolean>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -28,6 +30,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const { showInfo } = useToastFeedback();
+  const { trackActivity } = useActivityFeed();
 
 useEffect(() => {
   // Listen for auth changes FIRST to avoid missing events
@@ -110,6 +113,42 @@ useEffect(() => {
     }
   };
 
+  const updateProfile = async (updates: Partial<UserProfile>): Promise<boolean> => {
+    if (!user || !userProfile) return false;
+
+    try {
+      const { error } = await supabase
+        .from('user_profiles')
+        .update(updates)
+        .eq('id', user.id);
+
+      if (error) throw error;
+
+      // Update local state
+      setUserProfile({ ...userProfile, ...updates });
+
+      // Track activity
+      const changedFields = Object.keys(updates);
+      await trackActivity(
+        'profile_updated',
+        'Profile updated',
+        `Updated ${changedFields.join(', ')}`,
+        { 
+          updated_fields: changedFields,
+          changes: updates
+        },
+        'profile',
+        user.id
+      );
+
+      showInfo('Profile updated successfully.');
+      return true;
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      return false;
+    }
+  };
+
   const signOut = async () => {
     try {
       // Clear user state immediately to prevent timing issues
@@ -130,6 +169,7 @@ useEffect(() => {
     userProfile,
     loading,
     signOut,
+    updateProfile,
   };
 
   return (

@@ -10,6 +10,7 @@ import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 import { EnhancedAnalyticsDashboard } from "@/components/analytics/EnhancedAnalyticsDashboard";
 import { useRealTimeAnalytics } from "@/hooks/useRealTimeAnalytics";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import ActivityFeed from "@/components/ActivityFeed";
 
 export const ClientDashboard = () => {
   const { t, language } = useLanguage();
@@ -317,8 +318,15 @@ export const ClientDashboard = () => {
         </CardContent>
       </Card>
 
-      {/* Enhanced Analytics Dashboard */}
-      <EnhancedAnalyticsDashboard />
+      {/* Activity Feed and Analytics */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+        <div className="lg:col-span-2">
+          <EnhancedAnalyticsDashboard />
+        </div>
+        <div className="lg:col-span-1">
+          <ActivityFeed />
+        </div>
+      </div>
     </div>
   );
 };

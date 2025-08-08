@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useActivityFeed } from './useActivityFeed';
 
 export interface Offer {
   id: string;
@@ -31,6 +32,7 @@ export const useOffers = (requestId?: string) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
+  const { trackActivity } = useActivityFeed();
 
   const fetchOffers = async () => {
     if (!user) {
@@ -97,6 +99,24 @@ export const useOffers = (requestId?: string) => {
         .eq('id', offerId);
 
       if (error) throw error;
+
+      // Track activity
+      const offer = offers.find(o => o.id === offerId);
+      if (offer) {
+        await trackActivity(
+          status === 'approved' ? 'offer_accepted' : 'offer_rejected',
+          `${status === 'approved' ? 'Accepted' : 'Rejected'} offer: ${offer.title}`,
+          `Offer from supplier ${status === 'approved' ? 'accepted' : 'rejected'} with ${notes ? 'feedback' : 'no feedback'}`,
+          { 
+            offer_id: offerId,
+            price: offer.price,
+            supplier_id: offer.supplier_id,
+            feedback: notes 
+          },
+          'offer',
+          offerId
+        );
+      }
       
       // Refresh offers after update
       await fetchOffers();
@@ -104,6 +124,48 @@ export const useOffers = (requestId?: string) => {
     } catch (error) {
       console.error('Error updating offer status:', error);
       return false;
+    }
+  };
+
+  const createOffer = async (offerData: {
+    title: string;
+    description: string;
+    price: number;
+    currency: string;
+    delivery_time_days: number;
+    request_id: string;
+  }) => {
+    if (!user) throw new Error('User not authenticated');
+
+    try {
+      const { data, error } = await supabase
+        .from('offers')
+        .insert([{ ...offerData, supplier_id: user.id }])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // Track activity
+      await trackActivity(
+        'offer_submitted',
+        `Submitted offer: ${offerData.title}`,
+        `New offer submitted for ${offerData.price.toLocaleString()} ${offerData.currency} with ${offerData.delivery_time_days} days delivery`,
+        { 
+          price: offerData.price,
+          currency: offerData.currency,
+          delivery_days: offerData.delivery_time_days,
+          request_id: offerData.request_id
+        },
+        'offer',
+        data.id
+      );
+
+      await fetchOffers();
+      return data;
+    } catch (error) {
+      console.error('Error creating offer:', error);
+      throw error;
     }
   };
 
@@ -126,6 +188,7 @@ export const useOffers = (requestId?: string) => {
     error,
     refetch: fetchOffers,
     updateOfferStatus,
+    createOffer,
     formatPrice,
     getStatusColor
   };

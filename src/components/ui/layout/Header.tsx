@@ -12,6 +12,7 @@ import { SearchModal } from "@/components/modals/SearchModal";
 import { NotificationsModal } from "@/components/modals/NotificationsModal";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useToast } from "@/hooks/use-toast";
+import StatusIndicator from "@/components/StatusIndicator";
 
 interface HeaderProps {
   onMobileMenuOpen?: () => void;
@@ -99,6 +100,10 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
           
           <div className="hidden sm:block">
             <LanguageSwitcher />
+          </div>
+          
+          <div className="hidden lg:block">
+            <StatusIndicator />
           </div>
           
           <NotificationsModal>

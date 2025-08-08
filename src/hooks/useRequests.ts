@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useActivityFeed } from './useActivityFeed';
 
 export interface Request {
   id: string;
@@ -24,6 +25,7 @@ export const useRequests = () => {
   const [requests, setRequests] = useState<Request[]>([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const { trackActivity } = useActivityFeed();
 
   const fetchRequests = async () => {
     if (!user) return;
@@ -66,11 +68,57 @@ export const useRequests = () => {
     return request.offers?.[0]?.count || 0;
   };
 
+  const createRequest = async (requestData: {
+    title: string;
+    description: string;
+    category: string;
+    budget_min?: number;
+    budget_max?: number;
+    currency: string;
+    location?: string;
+    deadline?: string;
+    urgency: 'low' | 'medium' | 'high' | 'urgent';
+    status?: 'open' | 'in_progress' | 'completed' | 'cancelled';
+  }) => {
+    if (!user) throw new Error('User not authenticated');
+
+    try {
+      const { data, error } = await supabase
+        .from('requests')
+        .insert([{ ...requestData, user_id: user.id }])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // Track activity
+      await trackActivity(
+        'request_created',
+        `Created request: ${requestData.title}`,
+        `New ${requestData.category} request for ${requestData.location || 'unspecified location'}`,
+        { 
+          category: requestData.category,
+          budget_range: `${requestData.budget_min || 0} - ${requestData.budget_max || 0}`,
+          urgency: requestData.urgency 
+        },
+        'request',
+        data.id
+      );
+
+      await fetchRequests();
+      return data;
+    } catch (error) {
+      console.error('Error creating request:', error);
+      throw error;
+    }
+  };
+
   return {
     requests,
     loading,
     refetch: fetchRequests,
     formatBudget,
-    getOffersCount
+    getOffersCount,
+    createRequest
   };
 };

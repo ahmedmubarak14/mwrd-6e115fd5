@@ -1,6 +1,7 @@
 import { useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { useActivityFeed } from './useActivityFeed';
 
 interface EngagementEvent {
   user_id: string;
@@ -11,6 +12,7 @@ interface EngagementEvent {
 
 export const useEngagementTracking = () => {
   const { user } = useAuth();
+  const { trackActivity } = useActivityFeed();
 
   const trackEvent = useCallback(async (
     eventType: EngagementEvent['event_type'],
@@ -64,21 +66,47 @@ export const useEngagementTracking = () => {
     });
   }, [trackEvent]);
 
-  const trackSearch = useCallback((query: string, resultsCount?: number) => {
+  const trackSearch = useCallback(async (query: string, resultsCount?: number) => {
     trackEvent('search', {
       query,
       results_count: resultsCount,
       page: window.location.pathname
     });
-  }, [trackEvent]);
 
-  const trackChatStart = useCallback((supplierId?: string, context?: string) => {
+    // Also track in activity feed
+    await trackActivity(
+      'search_performed',
+      `Searched: "${query}"`,
+      `Found ${resultsCount || 0} results on ${window.location.pathname}`,
+      { 
+        query,
+        results_count: resultsCount,
+        page: window.location.pathname
+      },
+      'search'
+    );
+  }, [trackEvent, trackActivity]);
+
+  const trackChatStart = useCallback(async (supplierId?: string, context?: string) => {
     trackEvent('chat_start', {
       supplier_id: supplierId,
       context,
       page: window.location.pathname
     });
-  }, [trackEvent]);
+
+    // Also track in activity feed
+    await trackActivity(
+      'message_sent',
+      'Started new conversation',
+      `Initiated chat ${context ? `about ${context}` : 'with supplier'}`,
+      { 
+        supplier_id: supplierId,
+        context,
+        page: window.location.pathname
+      },
+      'message'
+    );
+  }, [trackEvent, trackActivity]);
 
   // Auto-track page views
   useEffect(() => {
