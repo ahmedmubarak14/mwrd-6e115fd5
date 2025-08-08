@@ -91,25 +91,6 @@ export const CreateOfferModal = ({ children, requestId }: CreateOfferModalProps)
 
       if (error) throw error;
 
-      // Create notification for the client
-      const { data: request } = await supabase
-        .from('requests')
-        .select('user_id, title')
-        .eq('id', formData.requestId)
-        .single();
-
-      if (request) {
-        await supabase
-          .from('notifications')
-          .insert({
-            user_id: request.user_id,
-            title: isRTL ? "عرض جديد" : "New Offer",
-            message: isRTL ? `تم استلام عرض جديد على طلبك: ${request.title}` : `New offer received for your request: ${request.title}`,
-            type: 'new_offer',
-            reference_id: formData.requestId
-          });
-      }
-
       toast({
         title: isRTL ? "تم إنشاء العرض بنجاح" : "Offer Created Successfully",
         description: isRTL ? "تم إرسال عرضك وسيتم إشعار العميل" : "Your offer has been submitted and the client will be notified",
