@@ -43,19 +43,54 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
 
         if (error) throw error;
 
-        // Get user profile
-        const { data: profileData, error: profileError } = await supabase
+        // Get or create user profile
+        const { data: profileMaybe, error: profileError } = await supabase
           .from('user_profiles')
           .select('*')
           .eq('id', data.user.id)
-          .single();
+          .maybeSingle();
 
-        if (profileError) throw profileError;
+        let effectiveRole: 'client' | 'supplier' | 'admin' =
+          (data.user.user_metadata?.role as 'client' | 'supplier' | 'admin') ?? 'client';
+
+        if (profileError) {
+          console.error('Error fetching profile during login:', profileError);
+        }
+
+        let profile = profileMaybe as any;
+
+        if (!profile) {
+          const { data: created, error: insertError } = await supabase
+            .from('user_profiles')
+            .insert({
+              id: data.user.id,
+              email: data.user.email!,
+              role: effectiveRole,
+              full_name: data.user.user_metadata?.full_name ?? null,
+              company_name: data.user.user_metadata?.company_name ?? null,
+            })
+            .select('*')
+            .single();
+
+          if (insertError) {
+            throw insertError;
+          } else {
+            profile = created;
+            toast({
+              title: language === 'ar' ? 'تم إنشاء الملف الشخصي' : 'Profile created',
+              description: language === 'ar'
+                ? 'تم إعداد ملفك الشخصي لأول مرة.'
+                : 'We set up your profile for the first time.',
+            });
+          }
+        } else {
+          effectiveRole = (profile.role as any) ?? effectiveRole;
+        }
 
         onAuthSuccess({
           id: data.user.id,
           email: data.user.email!,
-          role: profileData.role as 'client' | 'supplier' | 'admin'
+          role: effectiveRole,
         });
 
         toast({

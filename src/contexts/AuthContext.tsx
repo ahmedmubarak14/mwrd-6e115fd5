@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { useToastFeedback } from '@/hooks/useToastFeedback';
 
 interface UserProfile {
   id: string;
@@ -24,6 +25,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const { showInfo } = useToastFeedback();
 
   useEffect(() => {
     // Get initial session
@@ -58,12 +60,43 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .from('user_profiles')
         .select('*')
         .eq('id', userId)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error fetching user profile:', error);
+      }
+
+      if (data) {
+        setUserProfile(data as UserProfile);
+        return;
+      }
+
+      // No profile found: create one from auth metadata
+      const { data: userRes } = await supabase.auth.getUser();
+      const authUser = userRes.user;
+      const email = authUser?.email ?? '';
+      const role = (authUser?.user_metadata?.role as 'client' | 'supplier' | 'admin') ?? 'client';
+
+      const { data: created, error: insertError } = await supabase
+        .from('user_profiles')
+        .insert({
+          id: userId,
+          email,
+          role,
+          full_name: authUser?.user_metadata?.full_name ?? null,
+          company_name: authUser?.user_metadata?.company_name ?? null,
+        })
+        .select('*')
         .single();
 
-      if (error) throw error;
-      setUserProfile(data as UserProfile);
+      if (insertError) {
+        console.error('Error creating user profile:', insertError);
+      } else if (created) {
+        setUserProfile(created as UserProfile);
+        showInfo('Your profile was created successfully.');
+      }
     } catch (error) {
-      console.error('Error fetching user profile:', error);
+      console.error('Error fetching/creating user profile:', error);
     } finally {
       setLoading(false);
     }

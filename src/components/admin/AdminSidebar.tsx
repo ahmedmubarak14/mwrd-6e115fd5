@@ -60,7 +60,7 @@ const adminMenuItems = [
       },
       {
         title: "User Profiles",
-        url: "/admin/users/profiles",
+        url: "/admin/users",
         icon: Shield,
       },
     ],
