@@ -306,6 +306,59 @@ export type Database = {
           },
         ]
       }
+      invoices: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          due_at: string | null
+          file_path: string | null
+          id: string
+          issued_at: string
+          metadata: Json
+          offer_id: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          due_at?: string | null
+          file_path?: string | null
+          id?: string
+          issued_at?: string
+          metadata?: Json
+          offer_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          due_at?: string | null
+          file_path?: string | null
+          id?: string
+          issued_at?: string
+          metadata?: Json
+          offer_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           attachment_type: string | null
@@ -492,6 +545,7 @@ export type Database = {
           created_at: string
           currency: string | null
           id: string
+          offer_id: string | null
           plan_name: string | null
           status: string | null
           stripe_session_id: string | null
@@ -503,6 +557,7 @@ export type Database = {
           created_at?: string
           currency?: string | null
           id?: string
+          offer_id?: string | null
           plan_name?: string | null
           status?: string | null
           stripe_session_id?: string | null
@@ -514,13 +569,22 @@ export type Database = {
           created_at?: string
           currency?: string | null
           id?: string
+          offer_id?: string | null
           plan_name?: string | null
           status?: string | null
           stripe_session_id?: string | null
           updated_at?: string
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "orders_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       platform_analytics: {
         Row: {
@@ -705,34 +769,96 @@ export type Database = {
         }
         Relationships: []
       }
+      supplier_details: {
+        Row: {
+          availability: boolean
+          categories: string[] | null
+          city: string | null
+          created_at: string
+          languages: string[] | null
+          max_price: number | null
+          min_price: number | null
+          rating: number | null
+          response_time: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          availability?: boolean
+          categories?: string[] | null
+          city?: string | null
+          created_at?: string
+          languages?: string[] | null
+          max_price?: number | null
+          min_price?: number | null
+          rating?: number | null
+          response_time?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          availability?: boolean
+          categories?: string[] | null
+          city?: string | null
+          created_at?: string
+          languages?: string[] | null
+          max_price?: number | null
+          min_price?: number | null
+          rating?: number | null
+          response_time?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "supplier_details_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_profiles: {
         Row: {
+          approved_at: string | null
+          approved_by: string | null
           avatar_url: string | null
           company_name: string | null
           created_at: string | null
           email: string
           full_name: string | null
           id: string
+          moderation_reason: string | null
+          moderation_status: string
           role: string
           updated_at: string | null
         }
         Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
           avatar_url?: string | null
           company_name?: string | null
           created_at?: string | null
           email: string
           full_name?: string | null
           id: string
+          moderation_reason?: string | null
+          moderation_status?: string
           role: string
           updated_at?: string | null
         }
         Update: {
+          approved_at?: string | null
+          approved_by?: string | null
           avatar_url?: string | null
           company_name?: string | null
           created_at?: string | null
           email?: string
           full_name?: string | null
           id?: string
+          moderation_reason?: string | null
+          moderation_status?: string
           role?: string
           updated_at?: string | null
         }
@@ -812,6 +938,14 @@ export type Database = {
         }
         Returns: string
       }
+      get_admin_pending_counts: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          pending_suppliers: number
+          pending_requests: number
+          pending_offers: number
+        }[]
+      }
       get_platform_statistics: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -834,6 +968,10 @@ export type Database = {
       }
       is_admin: {
         Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      is_approved_supplier: {
+        Args: { _user_id: string }
         Returns: boolean
       }
       start_conversation: {

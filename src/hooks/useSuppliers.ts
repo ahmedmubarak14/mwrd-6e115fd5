@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import type { UserProfile } from './useUserProfiles';
@@ -10,6 +11,11 @@ export interface Supplier extends UserProfile {
   completed_projects?: number;
   response_time?: string;
   categories?: string[];
+  availability?: boolean;
+  languages?: string[];
+  min_price?: number | null;
+  max_price?: number | null;
+  city?: string | null;
 }
 
 export const useSuppliers = () => {
@@ -21,39 +27,75 @@ export const useSuppliers = () => {
     try {
       setLoading(true);
       setError(null);
-      
+
+      // Fetch approved suppliers with their supplier_details
+      // We use supplier_details as the base to filter/sort easily and join user_profiles
       const { data, error } = await supabase
-        .from('user_profiles')
-        .select('*')
-        .eq('role', 'supplier')
+        .from('supplier_details')
+        .select(`
+          user_id,
+          city,
+          categories,
+          min_price,
+          max_price,
+          rating,
+          availability,
+          languages,
+          response_time,
+          user_profiles:user_id (
+            id,
+            email,
+            role,
+            full_name,
+            company_name,
+            avatar_url,
+            created_at
+          )
+        `)
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error fetching suppliers:', error);
+        console.error('Error fetching suppliers with details:', error);
         setError('Failed to load suppliers');
         return;
       }
 
-      // Transform the data to include mock additional fields for now
-      // In a real app, these would come from additional tables
-      const suppliersWithExtendedData: Supplier[] = (data || []).map((supplier, index) => ({
-        ...supplier,
-        role: supplier.role as 'supplier',
-        rating: 4.5 + Math.random() * 0.5, // Random rating between 4.5-5.0
-        reviews_count: Math.floor(Math.random() * 50) + 10, // Random reviews 10-59
-        location: supplier.company_name?.includes('Riyadh') ? 'Riyadh, Saudi Arabia' : 
-                  supplier.company_name?.includes('Jeddah') ? 'Jeddah, Saudi Arabia' :
-                  supplier.company_name?.includes('Dammam') ? 'Dammam, Saudi Arabia' :
-                  'Saudi Arabia',
-        description: `Professional ${supplier.company_name || 'services'} with years of experience in the industry.`,
-        completed_projects: Math.floor(Math.random() * 200) + 50,
-        response_time: ['30 minutes', '1 hour', '2 hours', '3 hours'][index % 4],
-        categories: ['AVL Equipment', 'Booth Design', 'Printing', 'Furniture', 'Equipment'][index % 5] ? 
-                   [['AVL Equipment', 'Booth Design', 'Printing', 'Furniture', 'Equipment'][index % 5]] : 
-                   ['General Services']
-      }));
+      const normalized: Supplier[] = (data || [])
+        // Safety: only include rows with a joined user profile
+        .filter((row: any) => row.user_profiles && row.user_profiles.id)
+        .map((row: any) => {
+          const profile = row.user_profiles;
+          const supplier: Supplier = {
+            id: profile.id,
+            email: profile.email,
+            role: profile.role as 'supplier',
+            full_name: profile.full_name || undefined,
+            company_name: profile.company_name || undefined,
+            avatar_url: profile.avatar_url || undefined,
+            created_at: profile.created_at || undefined,
+            // Map details
+            rating: row.rating ?? undefined,
+            response_time: row.response_time ?? undefined,
+            categories: row.categories ?? undefined,
+            availability: row.availability ?? undefined,
+            languages: row.languages ?? undefined,
+            min_price: row.min_price ?? null,
+            max_price: row.max_price ?? null,
+            city: row.city ?? null,
+            // Friendly fields preserved for UI (description/location)
+            location: row.city ?? undefined,
+            description: profile.company_name
+              ? `Professional ${profile.company_name} with proven track record.`
+              : `Professional services with years of experience.`,
+            // Optional demo numbers if UI expects them
+            reviews_count: undefined,
+            completed_projects: undefined,
+          };
+          return supplier;
+        });
 
-      setSuppliers(suppliersWithExtendedData);
+      console.log('[useSuppliers] fetched suppliers:', normalized.length);
+      setSuppliers(normalized);
     } catch (err) {
       console.error('Error in fetchSuppliers:', err);
       setError('An unexpected error occurred');

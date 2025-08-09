@@ -1,8 +1,7 @@
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { Header } from "@/components/ui/layout/Header";
 import { Sidebar } from "@/components/ui/layout/Sidebar";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -15,7 +14,8 @@ import {
   Search,
   MoreVertical,
   Phone,
-  Video
+  Video,
+  Paperclip
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -32,6 +32,8 @@ interface Message {
   conversation_id: string | null;
   request_id: string | null;
   offer_id: string | null;
+  attachment_url?: string | null;
+  attachment_type?: string | null;
 }
 
 interface Conversation {
@@ -66,7 +68,10 @@ export default function Messages() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
+
   const isRTL = language === 'ar';
 
   useEffect(() => {
@@ -80,6 +85,66 @@ export default function Messages() {
       fetchMessages(selectedConversation.id);
     }
   }, [selectedConversation]);
+
+  useEffect(() => {
+    if (!selectedConversation?.id) return;
+    const channel = supabase.channel(`conversation-${selectedConversation.id}`)
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'messages',
+        filter: `conversation_id=eq.${selectedConversation.id}`
+      }, (payload: any) => {
+        const msg = payload.new as Message;
+        setMessages(prev => [...prev, msg]);
+        if (msg.recipient_id === user?.id && !msg.read_at) {
+          supabase.from('messages')
+            .update({ read_at: new Date().toISOString() })
+            .eq('id', msg.id)
+            .then(() => {
+              // no-op
+            });
+        }
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [selectedConversation?.id, user?.id]);
+
+  useEffect(() => {
+    const fetchSigned = async () => {
+      const entries = await Promise.all(
+        messages
+          .filter(m => m.attachment_url && !signedUrls[m.id])
+          .map(async (m) => {
+            const path = m.attachment_url as string;
+            const { data, error } = await supabase
+              .storage
+              .from('documents')
+              .createSignedUrl(path, 3600);
+            if (error || !data?.signedUrl) {
+              console.warn('Failed to create signed URL', error);
+              return [m.id, ''] as const;
+            }
+            return [m.id, data.signedUrl] as const;
+          })
+      );
+      if (entries.length > 0) {
+        setSignedUrls(prev => {
+          const next = { ...prev };
+          for (const [id, url] of entries) {
+            if (url) next[id] = url;
+          }
+          return next;
+        });
+      }
+    };
+    if (messages.length > 0) {
+      fetchSigned();
+    }
+  }, [messages]);
 
   const fetchConversations = async () => {
     if (!user) return;
@@ -95,7 +160,6 @@ export default function Messages() {
 
       setConversations(data || []);
 
-      // Fetch user profiles for all participants
       const userIds = new Set<string>();
       data?.forEach(conv => {
         userIds.add(conv.client_id);
@@ -119,7 +183,6 @@ export default function Messages() {
         }
       }
 
-      // Select first conversation if none selected
       if (data && data.length > 0 && !selectedConversation) {
         setSelectedConversation(data[0]);
       }
@@ -146,7 +209,6 @@ export default function Messages() {
       if (error) throw error;
       setMessages(data || []);
 
-      // Mark messages as read
       if (data && data.length > 0) {
         const unreadMessages = data.filter(msg => 
           msg.recipient_id === user?.id && !msg.read_at
@@ -184,12 +246,13 @@ export default function Messages() {
           sender_id: user.id,
           recipient_id: recipientId,
           conversation_id: selectedConversation.id,
+          request_id: selectedConversation.request_id,
+          offer_id: selectedConversation.offer_id,
           message_type: 'text'
         });
 
       if (error) throw error;
 
-      // Update conversation's last message time
       await supabase
         .from('conversations')
         .update({ last_message_at: new Date().toISOString() })
@@ -204,6 +267,69 @@ export default function Messages() {
         description: error.message,
         variant: "destructive",
       });
+    }
+  };
+
+  const attachFile = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!selectedConversation || !user) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const file = files[0];
+    setUploading(true);
+    try {
+      const recipientId = selectedConversation.client_id === user.id 
+        ? selectedConversation.supplier_id 
+        : selectedConversation.client_id;
+
+      const path = `messages/${selectedConversation.id}/${Date.now()}_${file.name}`;
+
+      const { error: uploadError } = await supabase
+        .storage
+        .from('documents')
+        .upload(path, file);
+
+      if (uploadError) throw uploadError;
+
+      const message_type = file.type?.startsWith('image/') ? 'image' : 'file';
+
+      const { error: insertError } = await supabase
+        .from('messages')
+        .insert({
+          content: message_type === 'image' ? '📷 Image' : '📎 Attachment',
+          sender_id: user.id,
+          recipient_id: recipientId,
+          conversation_id: selectedConversation.id,
+          request_id: selectedConversation.request_id,
+          offer_id: selectedConversation.offer_id,
+          message_type,
+          attachment_url: path,
+          attachment_type: file.type || null
+        });
+
+      if (insertError) throw insertError;
+
+      await supabase
+        .from('conversations')
+        .update({ last_message_at: new Date().toISOString() })
+        .eq('id', selectedConversation.id);
+
+      if (fileInputRef.current) fileInputRef.current.value = '';
+
+      toast({ title: t('messages.fileUploaded') || 'File uploaded', description: file.name });
+    } catch (error: any) {
+      console.error('Attachment upload failed:', error);
+      toast({
+        title: t('messages.error') || 'Error',
+        description: error.message || 'Failed to upload file',
+        variant: 'destructive'
+      });
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -236,7 +362,6 @@ export default function Messages() {
     <div className="min-h-screen bg-background">
       <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
       
-      {/* Mobile Sidebar */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
         <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
           <Sidebar userRole={userProfile?.role || 'client'} userProfile={userProfile} />
@@ -244,14 +369,12 @@ export default function Messages() {
       </Sheet>
 
       <div className="rtl-flex">
-        {/* Desktop Sidebar - position based on language */}
         <div className="hidden lg:block rtl-order-1">
           <Sidebar userRole={userProfile?.role || 'client'} userProfile={userProfile} />
         </div>
         
         <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
           <div className="max-w-6xl mx-auto">
-            {/* Messages Header */}
             <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-accent/10 to-lime/10 rounded-xl p-6 mb-6">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
@@ -264,10 +387,8 @@ export default function Messages() {
               </div>
             </div>
 
-            {/* Chat Interface */}
             <Card className="border-0 bg-card/70 backdrop-blur-sm overflow-hidden">
               <div className="h-[calc(100vh-16rem)] flex">
-                {/* Conversations List */}
                 <div className="w-full lg:w-1/3 border-r bg-card/50">
                   <div className="p-4 border-b">
                     <div className="relative">
@@ -325,11 +446,9 @@ export default function Messages() {
                   </div>
                 </div>
 
-                {/* Chat Area */}
                 <div className="hidden lg:flex lg:flex-1 flex-col">
                   {selectedConversation ? (
                     <>
-                      {/* Chat Header */}
                       <div className="p-4 border-b bg-card/50 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
@@ -357,14 +476,16 @@ export default function Messages() {
                         </div>
                       </div>
 
-                      {/* Messages */}
                       <div className="flex-1 overflow-y-auto p-4 space-y-4">
                         {messages.map((message) => {
                           const isOwnMessage = message.sender_id === user?.id;
                           const senderProfile = userProfiles[message.sender_id];
-                          const senderName = senderProfile?.full_name || senderProfile?.email || 'Unknown User';
+                          const senderName = senderProfile?.full_name || senderProfile?.email || (isOwnMessage ? (user?.email || 'You') : (getOtherParticipant(selectedConversation)?.full_name || getOtherParticipant(selectedConversation)?.email || 'User'));
                           const senderCompany = senderProfile?.company_name;
-                          
+
+                          const signed = message.attachment_url ? signedUrls[message.id] : null;
+                          const isImage = message.attachment_type?.startsWith('image/');
+
                           return (
                             <div
                               key={message.id}
@@ -383,7 +504,26 @@ export default function Messages() {
                                     {senderCompany && <span className="text-xs opacity-60 ml-1">({senderCompany})</span>}
                                   </div>
                                 )}
-                                <p className="text-sm">{message.content}</p>
+
+                                {signed && (
+                                  <div className={`mb-2 ${isImage ? '' : 'underline'}`}>
+                                    {isImage ? (
+                                      <img
+                                        src={signed}
+                                        alt="attachment"
+                                        className="rounded-md max-w-full h-auto"
+                                      />
+                                    ) : (
+                                      <a href={signed} target="_blank" rel="noreferrer">
+                                        {t('messages.viewAttachment') || 'View attachment'}
+                                      </a>
+                                    )}
+                                  </div>
+                                )}
+
+                                {message.content && (
+                                  <p className="text-sm break-words whitespace-pre-wrap">{message.content}</p>
+                                )}
                                 <p className="text-xs opacity-70 mt-1">
                                   {new Date(message.created_at).toLocaleTimeString()}
                                 </p>
@@ -393,17 +533,25 @@ export default function Messages() {
                         })}
                       </div>
 
-                      {/* Message Input */}
                       <div className="p-4 border-t bg-card/50">
                         <div className="flex gap-2">
-                        <Input
-                          placeholder={t('messages.typeMessage')}
-                          value={newMessage}
-                          onChange={(e) => setNewMessage(e.target.value)}
-                          onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-                          className="flex-1"
-                        />
-                          <Button onClick={sendMessage} disabled={!newMessage.trim()}>
+                          <Button variant="ghost" size="icon" onClick={attachFile} disabled={uploading} className="shrink-0">
+                            <Paperclip className="h-4 w-4" />
+                          </Button>
+                          <input
+                            type="file"
+                            ref={fileInputRef}
+                            onChange={handleFileChange}
+                            className="hidden"
+                          />
+                          <Input
+                            placeholder={t('messages.typeMessage')}
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                            onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                            className="flex-1"
+                          />
+                          <Button onClick={sendMessage} disabled={!newMessage.trim() || uploading}>
                             <Send className="h-4 w-4" />
                           </Button>
                         </div>
@@ -411,18 +559,16 @@ export default function Messages() {
                     </>
                   ) : (
                     <div className="flex-1 flex items-center justify-center text-muted-foreground">
-                        <div className="text-center">
-                          <MessageCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                          <p>{t('messages.selectConversation')}</p>
-                        </div>
+                      <div className="text-center">
+                        <MessageCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <p>{t('messages.selectConversation')}</p>
+                      </div>
                     </div>
                   )}
                 </div>
 
-                {/* Mobile Chat Overlay - shown when conversation is selected on mobile */}
                 {selectedConversation && (
                   <div className="lg:hidden fixed inset-0 bg-background z-50 flex flex-col">
-                    {/* Mobile Chat Header */}
                     <div className="p-4 border-b bg-card flex items-center gap-3">
                       <Button 
                         variant="ghost" 
@@ -453,14 +599,16 @@ export default function Messages() {
                       </div>
                     </div>
 
-                    {/* Mobile Messages */}
                     <div className="flex-1 overflow-y-auto p-4 space-y-4">
                       {messages.map((message) => {
                         const isOwnMessage = message.sender_id === user?.id;
                         const senderProfile = userProfiles[message.sender_id];
-                        const senderName = senderProfile?.full_name || senderProfile?.email || 'Unknown User';
+                        const senderName = senderProfile?.full_name || senderProfile?.email || (isOwnMessage ? (user?.email || 'You') : (getOtherParticipant(selectedConversation)?.full_name || getOtherParticipant(selectedConversation)?.email || 'User'));
                         const senderCompany = senderProfile?.company_name;
-                        
+
+                        const signed = message.attachment_url ? signedUrls[message.id] : null;
+                        const isImage = message.attachment_type?.startsWith('image/');
+
                         return (
                           <div
                             key={message.id}
@@ -479,7 +627,26 @@ export default function Messages() {
                                   {senderCompany && <span className="text-xs opacity-60 ml-1">({senderCompany})</span>}
                                 </div>
                               )}
-                              <p className="text-sm">{message.content}</p>
+
+                              {signed && (
+                                <div className={`mb-2 ${isImage ? '' : 'underline'}`}>
+                                  {isImage ? (
+                                    <img
+                                      src={signed}
+                                      alt="attachment"
+                                      className="rounded-md max-w-full h-auto"
+                                    />
+                                  ) : (
+                                    <a href={signed} target="_blank" rel="noreferrer">
+                                      {t('messages.viewAttachment') || 'View attachment'}
+                                    </a>
+                                  )}
+                                </div>
+                              )}
+
+                              {message.content && (
+                                <p className="text-sm break-words whitespace-pre-wrap">{message.content}</p>
+                              )}
                               <p className="text-xs opacity-70 mt-1">
                                 {new Date(message.created_at).toLocaleTimeString()}
                               </p>
@@ -489,9 +656,17 @@ export default function Messages() {
                       })}
                     </div>
 
-                    {/* Mobile Message Input */}
                     <div className="p-4 border-t bg-card">
                       <div className="flex gap-2">
+                        <Button variant="ghost" size="icon" onClick={attachFile} disabled={uploading} className="shrink-0">
+                          <Paperclip className="h-4 w-4" />
+                        </Button>
+                        <input
+                          type="file"
+                          ref={fileInputRef}
+                          onChange={handleFileChange}
+                          className="hidden"
+                        />
                         <Input
                           placeholder={t('messages.typeMessage')}
                           value={newMessage}
@@ -499,7 +674,7 @@ export default function Messages() {
                           onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                           className="flex-1"
                         />
-                        <Button onClick={sendMessage} disabled={!newMessage.trim()}>
+                        <Button onClick={sendMessage} disabled={!newMessage.trim() || uploading}>
                           <Send className="h-4 w-4" />
                         </Button>
                       </div>
