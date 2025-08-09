@@ -11,9 +11,10 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { User, Bell, Shield, Globe, CreditCard, Key } from "lucide-react";
+import { User, Bell, Shield, Globe, CreditCard, Key, Lock } from "lucide-react";
 import { useState } from "react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export const Settings = () => {
   const { userProfile } = useAuth();
@@ -21,6 +22,7 @@ export const Settings = () => {
   const isRTL = language === 'ar';
   const { toast } = useToast();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isAdmin = userProfile?.role === 'admin';
 
   const handleSaveProfile = () => {
     toast({
@@ -128,25 +130,58 @@ export const Settings = () => {
                         <Label htmlFor="company" className={isRTL ? 'text-right' : 'text-left'}>
                           {isRTL ? "اسم الشركة" : "Company Name"}
                         </Label>
-                        <Input 
-                          id="company" 
-                          defaultValue={userProfile?.company_name || ""} 
-                          className={isRTL ? 'text-right' : 'text-left'}
-                        />
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div>
+                                <Input 
+                                  id="company" 
+                                  defaultValue={userProfile?.company_name || ""} 
+                                  className={isRTL ? 'text-right' : 'text-left'}
+                                  disabled={!isAdmin}
+                                />
+                              </div>
+                            </TooltipTrigger>
+                            {!isAdmin && (
+                              <TooltipContent>
+                                <div className="flex items-center gap-2">
+                                  <Lock className="h-3 w-3" />
+                                  <span>{isRTL ? 'تُدار بواسطة المسؤول' : 'Managed by Admin'}</span>
+                                </div>
+                              </TooltipContent>
+                            )}
+                          </Tooltip>
+                        </TooltipProvider>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="role" className={isRTL ? 'text-right' : 'text-left'}>
                           {isRTL ? "الدور" : "Role"}
                         </Label>
-                        <Select defaultValue={userProfile?.role || "client"}>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="client">{isRTL ? "عميل" : "Client"}</SelectItem>
-                            <SelectItem value="supplier">{isRTL ? "مقدم خدمة" : "Supplier"}</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div>
+                                <Select defaultValue={userProfile?.role || "client"} disabled={!isAdmin}>
+                                  <SelectTrigger>
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="client">{isRTL ? "عميل" : "Client"}</SelectItem>
+                                    <SelectItem value="supplier">{isRTL ? "مقدم خدمة" : "Supplier"}</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+                            </TooltipTrigger>
+                            {!isAdmin && (
+                              <TooltipContent>
+                                <div className="flex items-center gap-2">
+                                  <Lock className="h-3 w-3" />
+                                  <span>{isRTL ? 'تُدار بواسطة المسؤول' : 'Managed by Admin'}</span>
+                                </div>
+                              </TooltipContent>
+                            )}
+                          </Tooltip>
+                        </TooltipProvider>
                       </div>
                     </div>
                     <Button onClick={handleSaveProfile} className="w-full">

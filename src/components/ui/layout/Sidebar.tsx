@@ -17,8 +17,10 @@ import {
   TrendingUp,
   ShoppingCart,
   HelpCircle,
-  MessageCircle
+  MessageCircle,
+  Lock
 } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface UserProfile {
   id: string;

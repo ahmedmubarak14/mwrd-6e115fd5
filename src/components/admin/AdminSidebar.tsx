@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   Sidebar,
@@ -36,6 +36,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Badge } from "@/components/ui/badge";
+import { supabase } from "@/integrations/supabase/client";
 
 const adminMenuItems = [
   {
@@ -160,6 +161,7 @@ export const AdminSidebar = () => {
   const navigate = useNavigate();
   const isRTL = language === 'ar';
   const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(['Dashboard']));
+  const [pendingCounts, setPendingCounts] = useState<{pending_suppliers: number; pending_requests: number; pending_offers: number}>({ pending_suppliers: 0, pending_requests: 0, pending_offers: 0 });
 
   const isActive = (path: string, end?: boolean) => {
     if (end) {
@@ -177,6 +179,21 @@ export const AdminSidebar = () => {
     }
     setOpenGroups(newOpenGroups);
   };
+
+  useEffect(() => {
+    const loadCounts = async () => {
+      const { data, error } = await supabase.rpc('get_admin_pending_counts');
+      if (!error && data && data.length > 0) {
+        const row = data[0] as any;
+        setPendingCounts({
+          pending_suppliers: Number(row.pending_suppliers || 0),
+          pending_requests: Number(row.pending_requests || 0),
+          pending_offers: Number(row.pending_offers || 0),
+        });
+      }
+    };
+    loadCounts();
+  }, []);
 
   const getNavClassName = (path: string, end?: boolean) => {
     const active = isActive(path, end);
@@ -257,7 +274,7 @@ export const AdminSidebar = () => {
                         <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
                           {item.title === "Content Management" && (
                             <Badge variant="secondary" className="text-xs px-1.5 py-0.5">
-                              3
+                              {pendingCounts.pending_requests + pendingCounts.pending_offers + pendingCounts.pending_suppliers}
                             </Badge>
                           )}
                           {openGroups.has(item.title) ? (
@@ -280,9 +297,14 @@ export const AdminSidebar = () => {
                           {!collapsed && (
                             <div className={`flex items-center justify-between w-full ${isRTL ? 'flex-row-reverse' : ''}`}>
                               <span>{t(subItem.title.toLowerCase().replace(/\s+/g, ''))}</span>
-                              {subItem.badge && (
+                              {subItem.title === 'Requests Approval' && (
                                 <Badge variant="destructive" className="text-xs px-1.5 py-0.5">
-                                  {subItem.badge}
+                                  {pendingCounts.pending_requests}
+                                </Badge>
+                              )}
+                              {subItem.title === 'Offers Management' && (
+                                <Badge variant="destructive" className="text-xs px-1.5 py-0.5">
+                                  {pendingCounts.pending_offers}
                                 </Badge>
                               )}
                             </div>

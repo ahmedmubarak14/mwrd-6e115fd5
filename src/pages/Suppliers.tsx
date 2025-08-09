@@ -14,6 +14,8 @@ import { SupplierProfileModal } from "@/components/modals/SupplierProfileModal";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { useSuppliers } from "@/hooks/useSuppliers";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 
 export const Suppliers = () => {
   const { t, language } = useLanguage();
@@ -26,6 +28,12 @@ export const Suppliers = () => {
   const [favoriteSuppliers, setFavoriteSuppliers] = useLocalStorage<string[]>('favorite-suppliers', []);
   const { toast } = useToast();
   const { suppliers: realSuppliers, loading: suppliersLoading, error: suppliersError } = useSuppliers();
+  // New advanced filters
+  const [cityFilter, setCityFilter] = useState<string>("all");
+  const [ratingMin, setRatingMin] = useState<number>(0);
+  const [availabilityOnly, setAvailabilityOnly] = useState<boolean>(false);
+  const [priceMin, setPriceMin] = useState<number | "">("");
+  const [priceMax, setPriceMax] = useState<number | "">("");
 
   const handleFilterClick = (category: string) => {
     setActiveFilter(category);
@@ -68,7 +76,11 @@ export const Suppliers = () => {
     englishLocation: supplier.location || 'Saudi Arabia',
     englishDescription: supplier.description || 'Professional services provider',
     englishResponseTime: supplier.response_time || '2 hours',
-    avatar_url: supplier.avatar_url
+    avatar_url: supplier.avatar_url,
+    // New fields for filtering
+    availability: supplier.availability ?? true,
+    minPrice: supplier.min_price ?? 0,
+    maxPrice: supplier.max_price ?? 0,
   }));
 
   const categories = [
