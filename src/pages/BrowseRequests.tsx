@@ -324,12 +324,14 @@ export const BrowseRequests = () => {
                         </Button>
                       </ViewDetailsModal>
                       
-                      <CreateOfferModal>
-                        <Button className="flex-1 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-lg hover-scale">
-                          <DollarSign className="h-4 w-4 mr-2" />
-                          {t('browseRequests.submitOffer')}
-                        </Button>
-                      </CreateOfferModal>
+                      {userProfile?.role === 'supplier' && (
+                        <CreateOfferModal requestId={request.id}>
+                          <Button className="flex-1 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-lg hover-scale">
+                            <DollarSign className="h-4 w-4 mr-2" />
+                            {t('browseRequests.submitOffer')}
+                          </Button>
+                        </CreateOfferModal>
+                      )}
                     </div>
                   </CardContent>
                 </Card>

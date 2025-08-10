@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { OfferApprovalCard } from "@/components/admin/OfferApprovalCard";
 import { RealTimeChatModal } from "@/components/modals/RealTimeChatModal";
 import { useUserProfiles } from "@/hooks/useUserProfiles";
+import { useOffers } from "@/hooks/useOffers";
 
 interface RequestOffersModalProps {
   children: React.ReactNode;
@@ -42,7 +43,8 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
   const { language } = useLanguage();
   const { toast } = useToast();
   const { fetchMultipleProfiles, getProfile } = useUserProfiles();
-  const isRTL = language === 'ar';
+const isRTL = language === 'ar';
+  const { updateOfferStatus } = useOffers(requestId);
 
   const loadOffers = async () => {
     setLoading(true);
@@ -74,34 +76,28 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
   }, [open, requestId]);
 
   const onApprove = async (id: string, notes: string) => {
-    try {
-      const { error } = await supabase
-        .from('offers')
-        .update({ client_approval_status: 'approved', client_approval_notes: notes, client_approval_date: new Date().toISOString() })
-        .eq('id', id);
-      if (error) throw error;
+    const ok = await updateOfferStatus(id, 'approved', notes);
+    if (ok) {
       toast({ title: isRTL ? 'تم القبول' : 'Approved', description: isRTL ? 'تم قبول العرض.' : 'Offer approved.' });
       await loadOffers();
-    } catch (err: any) {
-      toast({ title: isRTL ? 'خطأ' : 'Error', description: err.message, variant: 'destructive' });
+    } else {
+      toast({ title: isRTL ? 'خطأ' : 'Error', description: isRTL ? 'تعذر تحديث حالة العرض' : 'Failed to update offer status', variant: 'destructive' });
     }
   };
 
   const onReject = async (id: string, notes: string) => {
-    try {
-      const { error } = await supabase
-        .from('offers')
-        .update({ client_approval_status: 'rejected', client_approval_notes: notes, client_approval_date: new Date().toISOString() })
-        .eq('id', id);
-      if (error) throw error;
+    const ok = await updateOfferStatus(id, 'rejected', notes);
+    if (ok) {
       toast({ title: isRTL ? 'تم الرفض' : 'Rejected', description: isRTL ? 'تم رفض العرض.' : 'Offer rejected.' });
       await loadOffers();
-    } catch (err: any) {
-      toast({ title: isRTL ? 'خطأ' : 'Error', description: err.message, variant: 'destructive' });
+    } else {
+      toast({ title: isRTL ? 'خطأ' : 'Error', description: isRTL ? 'تعذر تحديث حالة العرض' : 'Failed to update offer status', variant: 'destructive' });
     }
   };
-
-  const userRole = userProfile?.role || 'client';
+  const requestOwnerId = useMemo(() => offers[0]?.request?.user_id ?? null, [offers]);
+  const canManage = (userProfile?.role === 'admin') || (!!userProfile?.id && !!requestOwnerId && userProfile.id === requestOwnerId);
+  const baseRole = userProfile?.role || 'client';
+  const userRole = canManage ? baseRole : 'supplier';
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
