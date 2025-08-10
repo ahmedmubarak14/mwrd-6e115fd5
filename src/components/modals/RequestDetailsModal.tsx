@@ -2,11 +2,16 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Calendar, MapPin, DollarSign, Clock, User, Star } from "lucide-react";
+import { Calendar, MapPin, DollarSign, Clock, Eye } from "lucide-react";
+import { useOffers } from "@/hooks/useOffers";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { useState } from "react";
+import { RequestOffersModal } from "./RequestOffersModal";
+import { CreateOfferModal } from "./CreateOfferModal";
 
-interface ViewDetailsModalProps {
+interface RequestDetailsModalProps {
   children: React.ReactNode;
-  request?: {
+  request: {
     id: string;
     title: string;
     description: string;
@@ -21,64 +26,13 @@ interface ViewDetailsModalProps {
     created_at: string;
     user_id: string;
   };
-  // Legacy fallback for non-request items
-  item?: {
-    id: number;
-    title: string;
-    description?: string;
-    value: string;
-    status: string;
-    currency?: boolean;
-  };
   userRole?: 'client' | 'supplier' | 'admin';
 }
 
-export const ViewDetailsModal = ({ children, request, item, userRole = 'client' }: ViewDetailsModalProps) => {
+export const RequestDetailsModal = ({ children, request, userRole = 'client' }: RequestDetailsModalProps) => {
   const { language } = useLanguage();
   const isRTL = language === 'ar';
-
-  // If neither request nor item data is provided
-  if (!request && !item) {
-    return (
-      <Dialog>
-        <DialogTrigger asChild>{children}</DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>No Data Available</DialogTitle>
-            <DialogDescription>Information is not available.</DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-    );
-  }
-
-  // Legacy fallback for non-request items
-  if (!request && item) {
-    return (
-      <Dialog>
-        <DialogTrigger asChild>{children}</DialogTrigger>
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>{item.title}</DialogTitle>
-            <DialogDescription>Item Details</DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <p className="text-muted-foreground">{item.description}</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-medium">Status:</span>
-              <Badge variant="secondary">{item.status}</Badge>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-medium">Value:</span>
-              <span>{item.value}</span>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
+  const [open, setOpen] = useState(false);
 
   const formatBudget = () => {
     if (!request.budget_min && !request.budget_max) return 'Budget not specified';
@@ -90,42 +44,25 @@ export const ViewDetailsModal = ({ children, request, item, userRole = 'client' 
     return 'Budget not specified';
   };
 
-  // Use real request data
-  const getRequestDetails = () => {
-    return {
-      title: request.title,
-      description: request.description,
-      category: request.category,
-      location: request.location || 'Not specified',
-      deadline: request.deadline ? new Date(request.deadline).toLocaleDateString() : 'Not specified',
-      budget: formatBudget(),
-      urgency: request.urgency,
-      status: request.status,
-      createdDate: new Date(request.created_at).toLocaleDateString()
-    };
-  };
-
-  const details = getRequestDetails();
-
   const getStatusBadge = (status: string) => {
     const statusMap = {
+      open: { label: isRTL ? "مفتوح" : "Open", variant: "default" as const },
       pending: { label: isRTL ? "في الانتظار" : "Pending", variant: "secondary" as const },
-      active: { label: isRTL ? "نشط" : "Active", variant: "default" as const },
-      accepted: { label: isRTL ? "مقبول" : "Accepted", variant: "default" as const },
+      in_progress: { label: isRTL ? "قيد التنفيذ" : "In Progress", variant: "secondary" as const },
       completed: { label: isRTL ? "مكتمل" : "Completed", variant: "outline" as const },
-      in_progress: { label: isRTL ? "قيد التنفيذ" : "In Progress", variant: "secondary" as const }
+      cancelled: { label: isRTL ? "ملغي" : "Cancelled", variant: "destructive" as const }
     };
-    return statusMap[status as keyof typeof statusMap] || statusMap.pending;
+    return statusMap[status as keyof typeof statusMap] || statusMap.open;
   };
 
   const statusInfo = getStatusBadge(request.status);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[700px]">
         <DialogHeader>
           <DialogTitle className={isRTL ? "text-right" : "text-left"}>
             {request.title}
@@ -135,7 +72,7 @@ export const ViewDetailsModal = ({ children, request, item, userRole = 'client' 
               ? (isRTL ? "تفاصيل طلب العميل" : "Client Request Details")
               : userRole === 'admin'
               ? (isRTL ? "عرض إداري للطلب" : "Administrative Request View")
-              : (isRTL ? "تفاصيل الطلب والعروض" : "Request Details and Offers")
+              : (isRTL ? "تفاصيل الطلب" : "Request Details")
             }
           </DialogDescription>
         </DialogHeader>
@@ -153,7 +90,7 @@ export const ViewDetailsModal = ({ children, request, item, userRole = 'client' 
               {isRTL ? "الوصف" : "Description"}
             </h4>
             <p className={`text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
-              {details.description}
+              {request.description}
             </p>
           </div>
 
@@ -162,39 +99,39 @@ export const ViewDetailsModal = ({ children, request, item, userRole = 'client' 
             <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Calendar className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">
-                <strong>{isRTL ? "الموعد النهائي:" : "Deadline:"}</strong> {details.deadline}
+                <strong>{isRTL ? "الموعد النهائي:" : "Deadline:"}</strong> {request.deadline ? new Date(request.deadline).toLocaleDateString() : 'Not specified'}
               </span>
             </div>
 
             <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <MapPin className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">
-                <strong>{isRTL ? "الموقع:" : "Location:"}</strong> {details.location}
+                <strong>{isRTL ? "الموقع:" : "Location:"}</strong> {request.location || 'Not specified'}
               </span>
             </div>
 
             <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <DollarSign className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">
-                <strong>{isRTL ? "الميزانية:" : "Budget:"}</strong> {details.budget}
+                <strong>{isRTL ? "الميزانية:" : "Budget:"}</strong> {formatBudget()}
               </span>
             </div>
 
             <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Clock className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">
-                <strong>{isRTL ? "الأولوية:" : "Urgency:"}</strong> {details.urgency}
+                <strong>{isRTL ? "الأولوية:" : "Urgency:"}</strong> {request.urgency}
               </span>
             </div>
           </div>
 
-          {/* Category Information */}
+          {/* Category */}
           <div>
             <h4 className={`font-semibold mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
               {isRTL ? "الفئة" : "Category"}
             </h4>
             <p className={`text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
-              {details.category}
+              {request.category}
             </p>
           </div>
 
@@ -204,39 +141,30 @@ export const ViewDetailsModal = ({ children, request, item, userRole = 'client' 
               {isRTL ? "تاريخ الإنشاء" : "Created On"}
             </h4>
             <p className={`text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
-              {details.createdDate}
+              {new Date(request.created_at).toLocaleDateString()}
             </p>
           </div>
         </div>
 
+        {/* Action buttons */}
         <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} gap-2 pt-4`}>
           {userRole === 'supplier' ? (
-            <>
-              <Button variant="outline" className="flex-1">
-                {isRTL ? "حفظ" : "Save"}
-              </Button>
-              <Button className="flex-1">
+            <CreateOfferModal requestId={request.id}>
+              <Button className="flex-1 bg-gradient-to-r from-primary to-accent">
                 {isRTL ? "إرسال عرض" : "Submit Offer"}
               </Button>
-            </>
-          ) : userRole === 'admin' ? (
-            <>
-              <Button variant="outline" className="flex-1">
-                {isRTL ? "تعديل" : "Edit"}
+            </CreateOfferModal>
+          ) : userRole === 'client' ? (
+            <RequestOffersModal requestId={request.id}>
+              <Button className="flex-1 bg-gradient-to-r from-primary to-accent">
+                <Eye className="h-4 w-4 mr-2" />
+                {isRTL ? "عرض العروض" : "View Offers"}
               </Button>
-              <Button className="flex-1">
-                {isRTL ? "إجراءات إدارية" : "Admin Actions"}
-              </Button>
-            </>
+            </RequestOffersModal>
           ) : (
-            <>
-              <Button variant="outline" className="flex-1">
-                {isRTL ? "تعديل الطلب" : "Edit Request"}
-              </Button>
-              <Button className="flex-1">
-                {isRTL ? "مقارنة العروض" : "Compare Offers"}
-              </Button>
-            </>
+            <Button variant="outline" className="flex-1">
+              {isRTL ? "إجراءات إدارية" : "Admin Actions"}
+            </Button>
           )}
         </div>
       </DialogContent>

@@ -9,8 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Search, MapPin, Calendar, DollarSign, Clock, Star, Eye, Filter } from "lucide-react";
-import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 import { CreateOfferModal } from "@/components/modals/CreateOfferModal";
+import { RequestDetailsModal } from "@/components/modals/RequestDetailsModal";
 import { useState, useMemo, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -308,13 +308,21 @@ export const BrowseRequests = () => {
                     
                     {/* Action buttons */}
                     <div className="flex flex-col sm:flex-row gap-2 pt-2">
-                      <ViewDetailsModal 
-                        item={{
-                          id: parseInt(request.id),
+                      <RequestDetailsModal 
+                        request={{
+                          id: request.id,
                           title: request.title,
                           description: request.description,
-                          value: request.budget,
-                          status: request.status
+                          category: request.category,
+                          budget_min: undefined,
+                          budget_max: undefined,
+                          currency: 'SAR',
+                          location: request.location,
+                          deadline: undefined,
+                          urgency: request.urgency,
+                          status: 'open',
+                          created_at: new Date().toISOString(),
+                          user_id: ''
                         }}
                         userRole="supplier"
                       >
@@ -322,7 +330,7 @@ export const BrowseRequests = () => {
                           <Eye className="h-4 w-4 mr-2" />
                           {t('browseRequests.viewDetails')}
                         </Button>
-                      </ViewDetailsModal>
+                      </RequestDetailsModal>
                       
                       {userProfile?.role === 'supplier' && (
                         <CreateOfferModal requestId={request.id}>

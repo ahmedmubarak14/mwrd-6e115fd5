@@ -11,11 +11,11 @@ import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 import { CreateRequestModal } from "@/components/modals/CreateRequestModal";
 import { useRequests } from "@/hooks/useRequests";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { RequestOffersModal } from "@/components/modals/RequestOffersModal";
+import { RequestDetailsModal } from "@/components/modals/RequestDetailsModal";
 import { CATEGORIES, getCategoryLabel } from "@/constants/categories";
 
 export const Requests = () => {
@@ -310,21 +310,15 @@ export const Requests = () => {
                         
                         {/* Action buttons */}
                         <div className="flex flex-col sm:flex-row gap-2 pl-5">
-                          <ViewDetailsModal 
-                            item={{
-                              id: parseInt(request.id.slice(-8), 16),
-                              title: request.title,
-                              description: `Category: ${request.category}`,
-                              value: formatBudget(request),
-                              status: request.status
-                            }}
+                          <RequestDetailsModal 
+                            request={request}
                             userRole={userProfile?.role as any}
                           >
                             <Button size="sm" className="flex-1 sm:flex-initial bg-gradient-to-r from-primary to-accent hover-scale">
                               <Eye className="h-4 w-4 mr-2" />
                               {t('common.view')}
                             </Button>
-                          </ViewDetailsModal>
+                          </RequestDetailsModal>
                           {request.status === 'open' && (
                             <Button 
                               size="sm" 
