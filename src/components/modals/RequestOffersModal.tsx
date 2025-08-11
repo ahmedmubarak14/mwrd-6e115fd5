@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { OfferApprovalCard } from "@/components/admin/OfferApprovalCard";
 import { RealTimeChatModal } from "@/components/modals/RealTimeChatModal";
+import { OfferDetailsModal } from "@/components/modals/OfferDetailsModal";
 import { useUserProfiles } from "@/hooks/useUserProfiles";
 import { useOffers } from "@/hooks/useOffers";
 
@@ -177,7 +178,7 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
                       onReject={onReject}
                       userRole={userRole as any}
                     />
-                    <div className={`flex ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <RealTimeChatModal 
                         recipientId={offer.supplier_id}
                         recipientName={supplierName}
@@ -188,6 +189,12 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
                           {isRTL ? 'مراسلة المورّد' : 'Message Supplier'}
                         </Button>
                       </RealTimeChatModal>
+
+                      <OfferDetailsModal offerId={offer.id} userRole={userRole as any} onUpdated={loadOffers}>
+                        <Button variant="outline" size="sm">
+                          {isRTL ? 'عرض التفاصيل' : 'View Details'}
+                        </Button>
+                      </OfferDetailsModal>
                     </div>
                   </div>
                 );
