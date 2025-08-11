@@ -38,17 +38,33 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [offers, setOffers] = useState<OfferRow[]>([]);
+  const [requestOwnerId, setRequestOwnerId] = useState<string | null>(null);
 
   const { userProfile } = useAuth();
   const { language } = useLanguage();
   const { toast } = useToast();
   const { fetchMultipleProfiles, getProfile } = useUserProfiles();
-const isRTL = language === 'ar';
+  const isRTL = language === 'ar';
   const { updateOfferStatus } = useOffers(requestId);
 
   const loadOffers = async () => {
     setLoading(true);
     try {
+      // First, fetch request details to get owner ID
+      const { data: requestData, error: requestError } = await supabase
+        .from('requests')
+        .select('user_id')
+        .eq('id', requestId)
+        .single();
+      
+      if (requestError) {
+        console.error('Error fetching request owner:', requestError);
+        throw requestError;
+      }
+      
+      setRequestOwnerId(requestData?.user_id || null);
+
+      // Then fetch offers
       const { data, error } = await supabase
         .from('offers')
         .select(`*, request:requests(title, user_id)`) 
@@ -62,6 +78,7 @@ const isRTL = language === 'ar';
       const supplierIds = Array.from(new Set(list.map(o => o.supplier_id)));
       if (supplierIds.length > 0) await fetchMultipleProfiles(supplierIds);
     } catch (err: any) {
+      console.error('Error loading offers:', err);
       toast({ title: isRTL ? 'خطأ' : 'Error', description: err.message, variant: 'destructive' });
     } finally {
       setLoading(false);
@@ -76,28 +93,54 @@ const isRTL = language === 'ar';
   }, [open, requestId]);
 
   const onApprove = async (id: string, notes: string) => {
+    console.log('Attempting to approve offer:', { id, notes, userProfile: userProfile?.id, requestOwnerId });
     const ok = await updateOfferStatus(id, 'approved', notes);
     if (ok) {
       toast({ title: isRTL ? 'تم القبول' : 'Approved', description: isRTL ? 'تم قبول العرض.' : 'Offer approved.' });
       await loadOffers();
     } else {
-      toast({ title: isRTL ? 'خطأ' : 'Error', description: isRTL ? 'تعذر تحديث حالة العرض' : 'Failed to update offer status', variant: 'destructive' });
+      console.error('Failed to approve offer - check database permissions and RLS policies');
+      toast({ 
+        title: isRTL ? 'خطأ' : 'Error', 
+        description: isRTL ? 'تعذر قبول العرض. تحقق من الصلاحيات.' : 'Failed to approve offer. Check permissions.', 
+        variant: 'destructive' 
+      });
     }
   };
 
   const onReject = async (id: string, notes: string) => {
+    console.log('Attempting to reject offer:', { id, notes, userProfile: userProfile?.id, requestOwnerId });
     const ok = await updateOfferStatus(id, 'rejected', notes);
     if (ok) {
       toast({ title: isRTL ? 'تم الرفض' : 'Rejected', description: isRTL ? 'تم رفض العرض.' : 'Offer rejected.' });
       await loadOffers();
     } else {
-      toast({ title: isRTL ? 'خطأ' : 'Error', description: isRTL ? 'تعذر تحديث حالة العرض' : 'Failed to update offer status', variant: 'destructive' });
+      console.error('Failed to reject offer - check database permissions and RLS policies');
+      toast({ 
+        title: isRTL ? 'خطأ' : 'Error', 
+        description: isRTL ? 'تعذر رفض العرض. تحقق من الصلاحيات.' : 'Failed to reject offer. Check permissions.', 
+        variant: 'destructive' 
+      });
     }
   };
-  const requestOwnerId = useMemo(() => offers[0]?.request?.user_id ?? null, [offers]);
-  const canManage = (userProfile?.role === 'admin') || (!!userProfile?.id && !!requestOwnerId && userProfile.id === requestOwnerId);
-  const baseRole = userProfile?.role || 'client';
-  const userRole = canManage ? baseRole : 'supplier';
+  // Determine user permissions and role
+  const isAdmin = userProfile?.role === 'admin';
+  const isRequestOwner = !!userProfile?.id && !!requestOwnerId && userProfile.id === requestOwnerId;
+  const canManage = isAdmin || isRequestOwner;
+  
+  // Fixed logic: if user can manage offers, they should be able to approve/reject (client or admin role)
+  // If they can't manage, they're viewing as a supplier
+  const userRole = canManage ? (isAdmin ? 'admin' : 'client') : 'supplier';
+  
+  console.log('Permission check:', { 
+    userProfileId: userProfile?.id, 
+    userProfileRole: userProfile?.role,
+    requestOwnerId, 
+    isAdmin, 
+    isRequestOwner, 
+    canManage, 
+    userRole 
+  });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
