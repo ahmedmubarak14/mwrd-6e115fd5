@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -89,16 +90,19 @@ export const useOffers = (requestId?: string) => {
 
   const updateOfferStatus = async (offerId: string, status: 'approved' | 'rejected', notes?: string) => {
     try {
+      // Only update approval fields; DB trigger handles client_approval_date
       const { error } = await supabase
         .from('offers')
         .update({
           client_approval_status: status,
           client_approval_notes: notes,
-          client_approval_date: new Date().toISOString()
         })
         .eq('id', offerId);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error updating offer status:', error);
+        return false;
+      }
 
       // Track activity
       const offer = offers.find(o => o.id === offerId);
@@ -122,7 +126,7 @@ export const useOffers = (requestId?: string) => {
       await fetchOffers();
       return true;
     } catch (error) {
-      console.error('Error updating offer status:', error);
+      console.error('Error updating offer status (unexpected):', error);
       return false;
     }
   };
