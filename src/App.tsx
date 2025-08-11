@@ -61,6 +61,7 @@ const App = () => (
                   <Landing />
                 </>
               } />
+              <Route path="/landing" element={<Landing />} />
               <Route path="/home" element={<Home />} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               <Route path="/why-start-with-supplify" element={<WhyStartWithSupplify />} />
