@@ -20,7 +20,7 @@ export const MobileNavigation = () => {
 
   const navigationItems = [
     {
-      href: "/#platform",
+      href: "/landing#platform",
       icon: Zap,
       label: t('language') === 'ar' ? 'المنصة' : 'Platform'
     },
@@ -35,7 +35,7 @@ export const MobileNavigation = () => {
       label: t('language') === 'ar' ? 'لماذا تنتقل إلينا' : 'Why Move to Us'
     },
     {
-      href: "/#services",
+      href: "/landing#services",
       icon: Sparkles,
       label: t('language') === 'ar' ? 'خدماتنا' : 'Our Services'
     },
@@ -61,7 +61,7 @@ export const MobileNavigation = () => {
         <SheetContent side={isRTL ? "left" : "right"} className="w-80 p-0">
           <SheetHeader className={`p-6 border-b ${isRTL ? 'text-right' : 'text-left'}`}>
             <SheetTitle className={`flex items-center gap-3 ${isRTL ? 'justify-end' : 'justify-start'}`}>
-              <Link to="/" onClick={handleLinkClick}>
+              <Link to="/landing" onClick={handleLinkClick}>
                 <img 
                   src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
                   alt="Supplify Logo"

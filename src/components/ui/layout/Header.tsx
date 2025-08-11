@@ -67,7 +67,7 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
           </Button>
           
           <Link 
-            to={user && userProfile ? "/dashboard" : "/"} 
+            to="/landing" 
             className="flex items-center"
           >
             <img 
