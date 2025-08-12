@@ -920,6 +920,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
   // Set document dir attribute for proper RTL support
   React.useEffect(() => {
     document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = language;
     document.documentElement.className = language === 'ar' ? 'font-arabic' : '';
   }, [language]);
 

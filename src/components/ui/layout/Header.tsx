@@ -131,7 +131,7 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
                 </div>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align={isRTL ? "start" : "end"} className="w-56">
+            <DropdownMenuContent align={isRTL ? "start" : "end"} className="z-50 bg-popover w-56">
               <DropdownMenuItem asChild>
                 <Link to="/profile" className="rtl-flex items-center">
                   <User className="rtl-mr-2 h-4 w-4" />

@@ -288,7 +288,7 @@ export const AdminDashboardOverview = () => {
               className="w-full mt-4 hover-scale"
               onClick={() => navigate('/admin/analytics')}
             >
-              View All Activity
+              {t('common.viewAll')}
             </Button>
           </CardContent>
         </Card>
@@ -315,7 +315,7 @@ export const AdminDashboardOverview = () => {
                       <UserPlus className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <CardTitle className="text-sm sm:text-base">Add New User</CardTitle>
+                      <CardTitle className="text-sm sm:text-base">{t('admin.addNewUser')}</CardTitle>
                       <CardDescription className="text-xs sm:text-sm">Create user accounts</CardDescription>
                     </div>
                   </div>
