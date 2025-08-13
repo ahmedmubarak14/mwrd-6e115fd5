@@ -50,6 +50,17 @@ export const EnterpriseConsultationModal = ({ children }: EnterpriseConsultation
     e.preventDefault();
     setIsLoading(true);
 
+    // Require authentication for security
+    if (!user?.id) {
+      toast({
+        title: "Error",
+        description: "Please sign in to submit a consultation request.",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const { error } = await supabase
         .from('expert_consultations')
@@ -60,7 +71,7 @@ export const EnterpriseConsultationModal = ({ children }: EnterpriseConsultation
           event_type: 'Enterprise Consultation',
           budget_range: formData.estimatedUsers,
           message: formData.message + (formData.requirements ? `\n\nSpecific Requirements: ${formData.requirements}` : ''),
-          user_id: user?.id || null,
+          user_id: user.id,
           status: 'pending'
         });
 

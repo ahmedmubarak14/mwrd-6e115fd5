@@ -95,11 +95,22 @@ export const ExpertConsultation = () => {
     e.preventDefault();
     setLoading(true);
 
+    // Require authentication for security
+    if (!user?.id) {
+      toast({
+        title: t('error'),
+        description: t('authRequired'),
+        variant: "destructive",
+      });
+      navigate('/auth');
+      return;
+    }
+
     try {
       const { error } = await supabase
         .from('expert_consultations')
         .insert({
-          user_id: user?.id || null,
+          user_id: user.id,
           full_name: formData.full_name,
           email: formData.email,
           phone: formData.phone || null,
