@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { 
@@ -115,7 +114,7 @@ export const AdminDashboardOverview = () => {
       change: "+12%",
       changeType: "positive" as const,
       icon: Users,
-      description: "Active platform users",
+      description: t('admin.activeUsers'),
       action: () => navigate('/admin/users')
     },
     {
@@ -124,7 +123,7 @@ export const AdminDashboardOverview = () => {
       change: "+8%",
       changeType: "positive" as const,
       icon: CreditCard,
-      description: "Current paid subscribers",
+      description: t('admin.paidSubscribers'),
       action: () => navigate('/admin/financial/subscriptions')
     },
     {
@@ -133,7 +132,7 @@ export const AdminDashboardOverview = () => {
       change: "+23%",
       changeType: "positive" as const,
       icon: DollarSign,
-      description: "Revenue this month",
+      description: t('admin.revenueThisMonth'),
       action: () => navigate('/admin/financial')
     },
     {
@@ -142,31 +141,31 @@ export const AdminDashboardOverview = () => {
       change: "+15%",
       changeType: "positive" as const,
       icon: ShoppingCart,
-      description: "Service requests posted",
+      description: t('admin.serviceRequestsPosted'),
       action: () => navigate('/admin/content/requests')
     },
     {
-      title: "Total Offers",
+      title: t('admin.totalOffers'),
       value: stats?.total_offers || 0,
       change: "+18%",
       changeType: "positive" as const,
       icon: MessageSquare,
-      description: "Offers submitted",
+      description: t('admin.offersSubmitted'),
       action: () => navigate('/admin/content/offers')
     },
     {
-      title: "Transactions",
+      title: t('admin.transactions'),
       value: stats?.total_transactions || 0,
       change: "+5%",
       changeType: "positive" as const,
       icon: Activity,
-      description: "Financial transactions",
+      description: t('admin.financialTransactions'),
       action: () => navigate('/admin/financial/transactions')
     }
   ];
 
   return (
-    <div className={`space-y-4 sm:space-y-6 lg:space-y-8 ${isRTL ? 'font-arabic' : ''}`}>
+    <div className="space-y-4 sm:space-y-6 lg:space-y-8 rtl-text-left">
       {/* Enhanced Welcome Header */}
       <div className="relative overflow-hidden bg-gradient-to-r from-primary via-accent to-lime text-white rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-6 lg:p-8">
         <div className="absolute inset-0">
@@ -194,7 +193,7 @@ export const AdminDashboardOverview = () => {
                   </DialogDescription>
                 </DialogHeader>
                 <p className="text-sm text-muted-foreground">
-                  This is a demo feature. In a real application, this would open a user creation form.
+                  {t('admin.demoFeature')}
                 </p>
               </DialogContent>
             </Dialog>
@@ -214,7 +213,7 @@ export const AdminDashboardOverview = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
         {statCards.map((card, index) => (
           <Card key={index} className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={card.action}>
-            <CardHeader className="space-y-0 pb-2 p-4 sm:p-6">
+            <CardHeader className="rtl-card-header space-y-0 pb-2 p-4 sm:p-6">
               <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
                 {card.title}
               </CardTitle>
@@ -226,7 +225,7 @@ export const AdminDashboardOverview = () => {
               <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 {card.value}
               </div>
-              <div className="flex items-center justify-between text-xs text-muted-foreground mt-2">
+              <div className={`flex items-center justify-between text-xs text-muted-foreground mt-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <span>{card.description}</span>
                 <div className="flex items-center gap-1">
                   {card.changeType === 'positive' ? (
@@ -249,37 +248,37 @@ export const AdminDashboardOverview = () => {
         {/* Recent Activity */}
         <Card className="border-0 bg-card/70 backdrop-blur-sm">
           <CardHeader className="p-4 sm:p-6">
-            <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
+            <CardTitle className={`flex items-center gap-2 text-xl sm:text-2xl ${isRTL ? 'flex-row-reverse' : ''}`}>
               <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                 <Activity className="h-5 w-5 text-primary" />
               </div>
               {t('analytics.recentActivity')}
             </CardTitle>
             <CardDescription className="text-sm sm:text-base">
-              Latest actions performed on the platform
+              {t('admin.latestPlatformActions')}
             </CardDescription>
           </CardHeader>
           <CardContent className="p-4 sm:p-6">
             <div className="space-y-3 sm:space-y-4">
               {recentActivity.length > 0 ? recentActivity.slice(0, 5).map((activity) => (
-                <div key={activity.id} className="flex items-start gap-3 p-3 sm:p-4 rounded-lg sm:rounded-xl border bg-background/50 hover:shadow-lg transition-all duration-300">
+                <div key={activity.id} className={`flex items-start gap-3 p-3 sm:p-4 rounded-lg sm:rounded-xl border bg-background/50 hover:shadow-lg transition-all duration-300 ${isRTL ? 'flex-row-reverse' : ''}`}>
                   <div className="w-2 h-2 rounded-full bg-lime mt-2"></div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm sm:text-base font-medium">
                       {activity.action.replace('_', ' ').toUpperCase()}
                     </p>
                     <p className="text-xs sm:text-sm text-muted-foreground">
-                      {activity.resource_type && `on ${activity.resource_type}`}
+                      {activity.resource_type && `${t('admin.on')} ${activity.resource_type}`}
                     </p>
                     <Badge variant="outline" className="text-xs mt-1">
-                      {new Date(activity.created_at).toLocaleDateString()}
+                      {new Date(activity.created_at).toLocaleDateString(isRTL ? 'ar-SA' : 'en-US')}
                     </Badge>
                   </div>
                 </div>
               )) : (
                 <div className="text-center py-8">
                   <Activity className="h-12 w-12 mx-auto mb-4 opacity-50 text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground">No recent activity</p>
+                  <p className="text-sm text-muted-foreground">{t('admin.noRecentActivity')}</p>
                 </div>
               )}
             </div>
@@ -296,27 +295,27 @@ export const AdminDashboardOverview = () => {
         {/* Quick Actions */}
         <Card className="border-0 bg-card/70 backdrop-blur-sm">
           <CardHeader className="p-4 sm:p-6">
-            <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
+            <CardTitle className={`flex items-center gap-2 text-xl sm:text-2xl ${isRTL ? 'flex-row-reverse' : ''}`}>
               <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
                 <Zap className="h-5 w-5 text-accent" />
               </div>
-              {t('quickActions')}
+              {t('admin.quickActions')}
             </CardTitle>
             <CardDescription className="text-sm sm:text-base">
-              Common administrative tasks
+              {t('admin.adminTasks')}
             </CardDescription>
           </CardHeader>
           <CardContent className="p-4 sm:p-6">
             <div className="grid gap-3 sm:gap-4">
               <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={() => navigate('/admin/users?action=create')}>
                 <CardHeader className="pb-4 p-3 sm:p-4">
-                  <div className="flex items-center gap-3">
+                  <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <div className="w-10 h-10 bg-gradient-to-r from-primary/20 to-accent/20 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300">
                       <UserPlus className="h-5 w-5 text-primary" />
                     </div>
                     <div>
                       <CardTitle className="text-sm sm:text-base">{t('admin.addNewUser')}</CardTitle>
-                      <CardDescription className="text-xs sm:text-sm">Create user accounts</CardDescription>
+                      <CardDescription className="text-xs sm:text-sm">{t('admin.createUserAccounts')}</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
@@ -324,13 +323,13 @@ export const AdminDashboardOverview = () => {
               
               <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={() => navigate('/admin/content/requests')}>
                 <CardHeader className="pb-4 p-3 sm:p-4">
-                  <div className="flex items-center gap-3">
+                  <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <div className="w-10 h-10 bg-gradient-to-r from-accent/20 to-lime/20 rounded-xl flex items-center justify-center group-hover:from-accent/30 group-hover:to-lime/30 transition-all duration-300">
                       <FileText className="h-5 w-5 text-accent" />
                     </div>
                     <div>
-                      <CardTitle className="text-sm sm:text-base">Review Requests</CardTitle>
-                      <CardDescription className="text-xs sm:text-sm">Manage pending requests</CardDescription>
+                      <CardTitle className="text-sm sm:text-base">{t('admin.reviewRequests')}</CardTitle>
+                      <CardDescription className="text-xs sm:text-sm">{t('admin.managePendingRequests')}</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
@@ -338,13 +337,13 @@ export const AdminDashboardOverview = () => {
 
               <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={() => navigate('/admin/financial')}>
                 <CardHeader className="pb-4 p-3 sm:p-4">
-                  <div className="flex items-center gap-3">
+                  <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <div className="w-10 h-10 bg-gradient-to-r from-lime/20 to-primary/20 rounded-xl flex items-center justify-center group-hover:from-lime/30 group-hover:to-primary/30 transition-all duration-300">
                       <DollarSign className="h-5 w-5 text-lime" />
                     </div>
                     <div>
-                      <CardTitle className="text-sm sm:text-base">Financial Reports</CardTitle>
-                      <CardDescription className="text-xs sm:text-sm">Monitor revenue & payments</CardDescription>
+                      <CardTitle className="text-sm sm:text-base">{t('admin.financialReports')}</CardTitle>
+                      <CardDescription className="text-xs sm:text-sm">{t('admin.monitorRevenue')}</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
@@ -352,13 +351,13 @@ export const AdminDashboardOverview = () => {
 
               <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={() => navigate('/admin/analytics')}>
                 <CardHeader className="pb-4 p-3 sm:p-4">
-                  <div className="flex items-center gap-3">
+                  <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <div className="w-10 h-10 bg-gradient-to-r from-primary/20 to-lime/20 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-lime/30 transition-all duration-300">
                       <BarChart3 className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <CardTitle className="text-sm sm:text-base">Platform Analytics</CardTitle>
-                      <CardDescription className="text-xs sm:text-sm">Insights & metrics</CardDescription>
+                      <CardTitle className="text-sm sm:text-base">{t('admin.platformAnalytics')}</CardTitle>
+                      <CardDescription className="text-xs sm:text-sm">{t('admin.insightsMetrics')}</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
