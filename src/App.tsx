@@ -39,6 +39,9 @@ import { AdvancedUserManagement } from "@/components/admin/AdvancedUserManagemen
 import { FinancialDashboard } from "@/components/admin/FinancialDashboard";
 import { SubscriptionManagement } from "@/components/admin/SubscriptionManagement";
 import { PlatformAnalytics } from "@/components/admin/PlatformAnalytics";
+import { RequestsApproval } from "@/pages/admin/RequestsApproval";
+import { OffersManagement } from "@/pages/admin/OffersManagement";
+import { ExpertConsultations } from "@/pages/admin/ExpertConsultations";
 import { MobileBottomTabs } from "@/components/navigation/MobileBottomTabs";
 import { ProtectedRoute } from "@/components/routing/ProtectedRoute";
 import { RoleProtectedRoute } from "@/components/routing/RoleProtectedRoute";
@@ -96,9 +99,9 @@ const App = () => (
                 <Route path="financial" element={<FinancialDashboard />} />
                 <Route path="financial/subscriptions" element={<SubscriptionManagement />} />
                 <Route path="analytics" element={<PlatformAnalytics />} />
-                <Route path="content/requests" element={<div>Request Approval Page</div>} />
-                <Route path="content/offers" element={<div>Offer Management Page</div>} />
-                <Route path="content/consultations" element={<div>Expert Consultations Page</div>} />
+                <Route path="content/requests" element={<RequestsApproval />} />
+                <Route path="content/offers" element={<OffersManagement />} />
+                <Route path="content/consultations" element={<ExpertConsultations />} />
                 <Route path="settings" element={<div>Admin Settings Page</div>} />
               </Route>
 

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Link, useLocation } from "react-router-dom";
 import { ConversationsDropdown } from "@/components/conversations/ConversationsDropdown";
 import { 
@@ -165,8 +166,15 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
         })}
       </nav>
 
-      {/* Language Switcher - Always visible with proper RTL support */}
-      <div className="mt-auto p-3 sm:p-4 border-t bg-primary/5">
+      {/* Controls - Always visible with proper RTL support */}
+      <div className="mt-auto p-3 sm:p-4 border-t bg-primary/5 space-y-3">
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            Theme / المظهر
+          </p>
+          <ThemeToggle />
+        </div>
+        
         <div className="space-y-2">
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
             Language / اللغة

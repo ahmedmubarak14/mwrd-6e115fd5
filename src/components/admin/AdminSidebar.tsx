@@ -217,10 +217,10 @@ export const AdminSidebar = () => {
             />
             <div className={isRTL ? 'text-right' : ''}>
               <h2 className="text-lg font-bold text-sidebar-foreground">
-                {t('adminPanel')}
+                {t('admin.panel')}
               </h2>
               <p className="text-xs text-sidebar-foreground/60">
-                {t('managementDashboard')}
+                {t('admin.managementDashboard')}
               </p>
             </div>
           </div>
@@ -243,7 +243,7 @@ export const AdminSidebar = () => {
               className={`flex items-center gap-2 text-xs text-sidebar-foreground/60 hover:text-sidebar-foreground transition-colors w-full p-2 rounded-md hover:bg-sidebar-accent ${isRTL ? 'flex-row-reverse text-right' : ''}`}
             >
               <ArrowLeft className={`h-3 w-3 ${isRTL ? 'rotate-180' : ''}`} />
-              <span>{t('backToSite')}</span>
+              <span>{t('admin.backToSite')}</span>
             </button>
           </div>
         )}
@@ -334,7 +334,7 @@ export const AdminSidebar = () => {
       <SidebarFooter className="p-4 border-t border-sidebar-border">
         {!collapsed ? (
           <div className={`text-xs text-sidebar-foreground/60 ${isRTL ? 'text-center' : 'text-center'}`}>
-            <p>{t('adminVersion')}</p>
+            <p>{t('admin.adminVersion')}</p>
             <p>© 2024 Supplify</p>
           </div>
         ) : (
