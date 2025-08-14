@@ -47,7 +47,7 @@ export const AdminLayout = () => {
 
   return (
     <SidebarProvider defaultOpen={sidebarOpen} onOpenChange={setSidebarOpen}>
-      <div className="min-h-screen flex w-full bg-background">
+      <div className="min-h-screen flex w-full bg-background" dir={localStorage.getItem('language') === 'ar' ? 'rtl' : 'ltr'}>
         <AdminSidebar />
         <div className="flex-1 flex flex-col min-w-0">
           <AdminHeader />

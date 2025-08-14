@@ -29,7 +29,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/contexts/ThemeContext";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { AdminBreadcrumbs } from "./AdminBreadcrumbs";
 import { toast } from "sonner";
 
@@ -37,7 +38,7 @@ export const AdminHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { userProfile, signOut } = useAuth();
-  const { language, toggleLanguage, t } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
   const { theme, setTheme } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -74,24 +75,18 @@ export const AdminHeader = () => {
   };
 
   return (
-    <header className="h-16 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-      <div className="flex items-center justify-between h-full px-6">
-        {/* Left side - Sidebar trigger, logo and breadcrumbs */}
-        <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-          <SidebarTrigger className="h-8 w-8" />
+    <header className="h-20 sm:h-24 lg:h-28 border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 h-full flex items-center justify-between">
+        {/* Logo - positioned based on language */}
+        <div className="rtl-order-1 flex items-center gap-2 sm:gap-4">
+          <SidebarTrigger className="lg:hidden h-8 w-8 sm:h-10 sm:w-10" />
           
-          {/* Logo and site navigation */}
-          <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className="flex items-center gap-2">
             <img 
-              src="/lovable-uploads/91db8182-e5ce-4596-90c8-bfa524cd0464.png" 
-              alt="Supplify Logo" 
-              className="h-8 w-8 object-contain"
+              src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
+              alt="Supplify Logo"
+              className="h-12 sm:h-20 lg:h-24 w-auto hover:scale-105 transition-transform"
             />
-            <div className="hidden sm:block">
-              <h1 className="text-lg font-semibold text-foreground">
-                {t('adminPanel')}
-              </h1>
-            </div>
           </div>
           
           {/* Navigation to main site */}
@@ -99,133 +94,74 @@ export const AdminHeader = () => {
             variant="ghost"
             size="sm"
             onClick={() => navigate('/')}
-            className={`text-muted-foreground hover:text-foreground ${isRTL ? 'flex-row-reverse' : ''}`}
+            className={`text-muted-foreground hover:text-foreground hidden lg:flex ${isRTL ? 'flex-row-reverse' : ''}`}
           >
-            <Home className="h-4 w-4" />
-            <span className={`hidden sm:inline ${isRTL ? 'mr-2' : 'ml-2'}`}>
-              {t('backToSite')}
+            <ArrowLeft className={`h-4 w-4 ${isRTL ? 'rotate-180' : ''}`} />
+            <span className={`${isRTL ? 'mr-2' : 'ml-2'}`}>
+              {t('admin.backToSite')}
+            </span>
+          </Button>
+        </div>
+
+        {/* Actions - positioned based on language */}
+        <div className="rtl-order-3 rtl-flex items-center gap-1 sm:gap-2 lg:gap-4">
+          <div className="relative hidden xl:block cursor-pointer">
+            <Search className="absolute rtl-left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+            <input
+              type="text"
+              placeholder={t('admin.searchPlaceholder')}
+              className="rtl-pl-4 rtl-pr-4 py-2 border rounded-lg w-80 bg-background/50 text-foreground placeholder:text-muted-foreground focus:bg-background transition-colors rtl-text-left cursor-pointer"
+              readOnly
+              onClick={(e) => e.preventDefault()}
+            />
+          </div>
+          
+          <Button variant="ghost" size="icon" className="hidden sm:flex xl:hidden h-8 w-8 sm:h-10 sm:w-10">
+            <Search className="h-4 w-4 sm:h-5 sm:w-5" />
+          </Button>
+
+          <ThemeToggle />
+          
+          <Button variant="ghost" size="icon" className="relative hidden sm:flex h-8 w-8 sm:h-10 sm:w-10">
+            <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span className="absolute -top-1 rtl--right-1 bg-destructive text-destructive-foreground text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center text-[10px] sm:text-xs">
+              3
             </span>
           </Button>
           
-          <AdminBreadcrumbs />
-        </div>
-
-        {/* Center - Search */}
-        <div className="hidden md:block flex-1 max-w-md mx-8">
-          <form onSubmit={handleSearch} className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder={t('searchPlaceholder')}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className={`w-full ${isRTL ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4'}`}
-              dir={isRTL ? 'rtl' : 'ltr'}
-            />
-          </form>
-        </div>
-
-        {/* Right side - Actions and user menu */}
-        <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-          {/* Quick actions */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className={`hidden lg:flex ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <Plus className={`h-4 w-4 ${isRTL ? 'ml-1' : 'mr-1'}`} />
-                {t('quickActions')}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align={isRTL ? "start" : "end"} className="w-48">
-              <DropdownMenuLabel>{t('quickActions')}</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => handleQuickAction('new-user')} className={isRTL ? 'flex-row-reverse' : ''}>
-                <User className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                {t('addNewUser')}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleQuickAction('approve-requests')} className={isRTL ? 'flex-row-reverse' : ''}>
-                <Filter className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                {t('reviewRequests')}
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleQuickAction('view-analytics')} className={isRTL ? 'flex-row-reverse' : ''}>
-                <Bell className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                {t('viewAnalytics')}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {/* Refresh button */}
           <Button
             variant="outline"
             size="sm"
-            onClick={handleRefresh}
-            disabled={isRefreshing}
+            onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
             className="hidden sm:flex"
           >
-            <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            🌐 {language === 'en' ? 'العربية' : 'English'}
           </Button>
-
-          {/* Notifications */}
-          <Button variant="outline" size="sm" className="relative">
-            <Bell className="h-4 w-4" />
-            <Badge variant="destructive" className="absolute -top-1 -right-1 h-4 w-4 p-0 text-xs">
-              3
-            </Badge>
-          </Button>
-
-          {/* Theme toggle */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-          >
-            {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-          </Button>
-
-          {/* Language toggle */}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={toggleLanguage}
-          >
-            <Globe className="h-4 w-4" />
-            <span className="ml-1 text-xs">{language.toUpperCase()}</span>
-          </Button>
-
-          {/* User menu */}
+          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
-                <User className="h-4 w-4 mr-1" />
-                <span className="hidden sm:inline">{userProfile?.full_name || userProfile?.email}</span>
+              <Button variant="ghost" className="rtl-flex items-center gap-1 sm:gap-2 px-1 sm:px-2 lg:px-3 rounded-lg h-8 sm:h-10">
+                <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs sm:text-sm">
+                  {userProfile?.full_name?.[0] || userProfile?.email?.[0] || 'A'}
+                </div>
+                <div className="rtl-text-left hidden lg:block">
+                  <p className="text-sm font-medium">{userProfile?.full_name || userProfile?.email?.split('@')[0] || t('admin.adminUser')}</p>
+                  <p className="text-xs text-muted-foreground capitalize">{userProfile?.role}</p>
+                </div>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align={isRTL ? "start" : "end"} className="w-56">
-              <DropdownMenuLabel>
-                <div className={`flex flex-col space-y-1 ${isRTL ? 'text-right' : ''}`}>
-                  <p className="text-sm font-medium leading-none">
-                    {userProfile?.full_name || t('adminUser')}
-                  </p>
-                  <p className="text-xs leading-none text-muted-foreground">
-                    {userProfile?.email}
-                  </p>
-                  <Badge variant="secondary" className="w-fit text-xs">
-                    {t(userProfile?.role || 'admin')}
-                  </Badge>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => navigate('/admin/settings')} className={isRTL ? 'flex-row-reverse' : ''}>
-                <Settings className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                {t('adminSettings')}
+            <DropdownMenuContent align={isRTL ? "start" : "end"} className="z-50 bg-popover w-56">
+              <DropdownMenuItem onClick={() => navigate('/profile')} className="rtl-flex items-center">
+                <User className="rtl-mr-2 h-4 w-4" />
+                <span>{t('common.profile')}</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/profile')} className={isRTL ? 'flex-row-reverse' : ''}>
-                <User className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                {t('nav.profile')}
+              <DropdownMenuItem onClick={() => navigate('/admin/settings')} className="rtl-flex">
+                <Settings className="rtl-mr-2 h-4 w-4" />
+                <span>{t('common.settings')}</span>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={signOut} className={`text-destructive ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <LogOut className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                {t('auth.signOut')}
+              <DropdownMenuItem onClick={signOut} className="rtl-flex">
+                <LogOut className="rtl-mr-2 h-4 w-4" />
+                <span>{t('common.signOut')}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

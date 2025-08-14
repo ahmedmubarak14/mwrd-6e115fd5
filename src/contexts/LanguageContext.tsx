@@ -250,6 +250,29 @@ const translations = {
     'admin.monitorRevenue': 'Monitor revenue & payments',
     'admin.platformAnalytics': 'Platform Analytics',
     'admin.insightsMetrics': 'Insights & metrics',
+    'admin.panel': 'Admin Panel',
+    'admin.managementDashboard': 'Management Dashboard',
+    'admin.backToSite': 'Back to Site',
+    'admin.quickActions': 'Quick Actions',
+    'admin.addNewUser': 'Add New User',
+    'admin.reviewRequests': 'Review Requests',
+    'admin.viewAnalytics': 'View Analytics',
+    'admin.adminSettings': 'Admin Settings',
+    'admin.adminUser': 'Admin User',
+    'admin.adminVersion': 'Admin v2.0',
+    'admin.searchPlaceholder': 'Search...',
+    'admin.searching': 'Searching',
+
+    // Admin translations
+    'adminPanel': 'Admin Panel',
+    'managementDashboard': 'Management Dashboard',
+    'backToSite': 'Back to Site',
+    'quickActions': 'Quick Actions',
+    'addNewUser': 'Add New User',
+    'adminUser': 'Admin User',
+    'adminVersion': 'Admin v2.0',
+    'searchPlaceholder': 'Search...',
+    'searching': 'Searching',
 
     // Supplier Dashboard
     'supplier.welcome': 'Welcome to Supplier Dashboard',
@@ -337,6 +360,11 @@ const translations = {
     'messages.noCompany': 'No company',
     'messages.typeMessage': 'Type a message...',
     
+    // Theme
+    'theme.light': 'Light',
+    'theme.dark': 'Dark',
+    'theme.system': 'System',
+
     // Categories
     'category.booth': 'Booth Stands',
     'category.printing': 'Printing',
@@ -612,6 +640,18 @@ const translations = {
     'admin.monitorRevenue': 'مراقبة الإيرادات والمدفوعات',
     'admin.platformAnalytics': 'تحليلات المنصة',
     'admin.insightsMetrics': 'الرؤى والمقاييس',
+    'admin.panel': 'لوحة الإدارة',
+    'admin.managementDashboard': 'لوحة إدارة النظام',
+    'admin.backToSite': 'العودة للموقع',
+    'admin.quickActions': 'إجراءات سريعة',
+    'admin.addNewUser': 'إضافة مستخدم جديد',
+    'admin.reviewRequests': 'مراجعة الطلبات',
+    'admin.viewAnalytics': 'عرض التحليلات',
+    'admin.adminSettings': 'إعدادات الإدارة',
+    'admin.adminUser': 'مستخدم إداري',
+    'admin.adminVersion': 'إصدار الإدارة 2.0',
+    'admin.searchPlaceholder': 'البحث...',
+    'admin.searching': 'جاري البحث',
 
     // Supplier Dashboard
     'supplier.welcome': 'مرحباً بك في لوحة مقدم الخدمة',
@@ -726,6 +766,11 @@ const translations = {
     'messages.noCompany': 'لا توجد شركة',
     'messages.typeMessage': 'اكتب رسالة...',
     
+    // Theme
+    'theme.light': 'فاتح',
+    'theme.dark': 'داكن',
+    'theme.system': 'النظام',
+
     // Categories
     'category.booth': 'أكشاك العرض',
     'category.printing': 'الطباعة',
