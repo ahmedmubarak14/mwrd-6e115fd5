@@ -466,13 +466,25 @@ const translations = {
     'privacyContactTitle': '10. Contact Us',
     'privacyContactContent': 'If you have any questions about this Privacy Policy, please contact us:',
     'privacyContactAddress': 'Address: Riyadh, Kingdom of Saudi Arabia',
+    
+    // Theme translations 
+    'theme.light': 'Light',
+    'theme.dark': 'Dark',
+    'theme.system': 'System',
+    
+    // Admin translations
+    'admin.panel': 'Admin Panel',
+    'admin.managementDashboard': 'Management Dashboard',
+    'admin.backToSite': 'Back to Site',
+    'admin.adminVersion': 'Admin Version',
+    'admin.financialTransactions': 'Financial Transactions',
+    'admin.financialTransactionsDescription': 'Manage and monitor all financial transactions',
+    'admin.noTransactionsFound': 'No transactions found',
   },
   ar: {
     // App name and slogan
     'app.name': 'سبلفاي',
     'app.slogan': 'جميع احتياجات الفعاليات في مكان واحد',
-    // Language
-    'language': 'ar',
     // Navigation
     'nav.dashboard': 'لوحة التحكم',
     'nav.requests': 'طلبات الخدمة',
@@ -745,10 +757,6 @@ const translations = {
     'messages.noCompany': 'لا توجد شركة',
     'messages.typeMessage': 'اكتب رسالة...',
     
-    // Theme
-    'theme.light': 'فاتح',
-    'theme.dark': 'داكن',
-    'theme.system': 'النظام',
 
     // Categories
     'category.booth': 'أكشاك العرض',

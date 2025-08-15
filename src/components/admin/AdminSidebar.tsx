@@ -1,18 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarHeader,
-  SidebarFooter,
-  useSidebar,
-} from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
 import {
   Users,
   BarChart3,
@@ -153,14 +141,16 @@ const adminMenuItems = [
   },
 ];
 
-export const AdminSidebar = () => {
-  const { state } = useSidebar();
-  const collapsed = state === "collapsed";
+interface AdminSidebarProps {
+  collapsed?: boolean;
+}
+
+export const AdminSidebar = ({ collapsed = false }: AdminSidebarProps) => {
   const { language, t } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
   const isRTL = language === 'ar';
-  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(['Dashboard']));
+  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(['Content Management']));
   const [pendingCounts, setPendingCounts] = useState<{pending_suppliers: number; pending_requests: number; pending_offers: number}>({ pending_suppliers: 0, pending_requests: 0, pending_offers: 0 });
 
   const isActive = (path: string, end?: boolean) => {
@@ -206,143 +196,164 @@ export const AdminSidebar = () => {
   };
 
   return (
-    <Sidebar className={cn("border-sidebar-border", collapsed ? "w-16" : "w-64")}>
-      <SidebarHeader className="p-4 border-b border-sidebar-border">
-        {!collapsed && (
-          <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <img 
-              src="/lovable-uploads/91db8182-e5ce-4596-90c8-bfa524cd0464.png" 
-              alt="Supplify Logo" 
-              className="h-8 w-8 object-contain"
-            />
-            <div className={isRTL ? 'text-right' : ''}>
-              <h2 className="text-lg font-bold text-sidebar-foreground">
-                {t('admin.panel')}
-              </h2>
-              <p className="text-xs text-sidebar-foreground/60">
+    <div className={cn(
+      "w-full h-full bg-sidebar flex flex-col",
+      collapsed ? "lg:w-16" : "lg:w-64",
+      "sidebar-border transition-all duration-300"
+    )}>
+      {/* Header matching client dashboard */}
+      <div className="p-4 sm:p-6 border-b border-sidebar-border">
+        <div className={cn(
+          "flex items-center gap-3",
+          isRTL && "flex-row-reverse",
+          collapsed && "justify-center"
+        )}>
+          <img 
+            src="/lovable-uploads/91db8182-e5ce-4596-90c8-bfa524cd0464.png" 
+            alt="Supplify Logo" 
+            className="h-8 w-8 object-contain flex-shrink-0"
+          />
+          {!collapsed && (
+            <div className={cn("flex-1 min-w-0", isRTL && "text-right")}>
+              <div className="flex items-center gap-2 mb-1">
+                <h2 className="text-sm font-semibold text-sidebar-foreground truncate">
+                  {t('admin.panel')}
+                </h2>
+                <Badge variant="destructive" className="text-xs px-1.5 py-0.5">
+                  Admin
+                </Badge>
+              </div>
+              <p className="text-xs text-sidebar-foreground/60 truncate">
                 {t('admin.managementDashboard')}
               </p>
             </div>
-          </div>
-        )}
-        {collapsed && (
-          <div className="flex justify-center">
-            <img 
-              src="/lovable-uploads/91db8182-e5ce-4596-90c8-bfa524cd0464.png" 
-              alt="Supplify Logo" 
-              className="h-8 w-8 object-contain"
-            />
-          </div>
-        )}
+          )}
+        </div>
         
-        {/* Back to main site button */}
+        {/* Back to main site button - matching client design */}
         {!collapsed && (
-          <div className={`mt-3 ${isRTL ? 'text-right' : ''}`}>
+          <div className="mt-4">
             <button
               onClick={() => navigate('/')}
-              className={`flex items-center gap-2 text-xs text-sidebar-foreground/60 hover:text-sidebar-foreground transition-colors w-full p-2 rounded-md hover:bg-sidebar-accent ${isRTL ? 'flex-row-reverse text-right' : ''}`}
+              className={cn(
+                "w-full flex items-center gap-2 px-3 py-2 text-xs",
+                "text-sidebar-foreground/60 hover:text-sidebar-foreground",
+                "hover:bg-sidebar-accent rounded-md transition-colors",
+                isRTL && "flex-row-reverse text-right"
+              )}
             >
-              <ArrowLeft className={`h-3 w-3 ${isRTL ? 'rotate-180' : ''}`} />
-              <span>{t('admin.backToSite')}</span>
+              <Home className={cn("h-4 w-4 flex-shrink-0", isRTL && "rotate-180")} />
+              <span className="truncate">{t('admin.backToSite')}</span>
             </button>
           </div>
         )}
-      </SidebarHeader>
+      </div>
 
-      <SidebarContent className="p-2">
-        <SidebarMenu>
-          {adminMenuItems.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              {item.items ? (
-                <Collapsible
-                  open={openGroups.has(item.title)}
-                  onOpenChange={() => toggleGroup(item.title)}
-                  className="w-full"
-                >
-                  <CollapsibleTrigger asChild>
-                    <SidebarMenuButton
-                      className={cn(
-                        "w-full justify-between hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                        openGroups.has(item.title) && "bg-sidebar-accent text-sidebar-accent-foreground"
-                      )}
-                    >
-                      <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                        <item.icon className="h-4 w-4" />
-                        {!collapsed && <span>{t(item.title.toLowerCase().replace(/\s+/g, ''))}</span>}
-                      </div>
-                      {!collapsed && (
-                        <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+      {/* Navigation - matching client dashboard style */}
+      <nav className="flex-1 px-3 sm:px-4 py-4 space-y-1 overflow-y-auto">
+        {adminMenuItems.map((item) => (
+          <div key={item.title}>
+            {item.items ? (
+              <Collapsible
+                open={openGroups.has(item.title)}
+                onOpenChange={() => toggleGroup(item.title)}
+                className="w-full"
+              >
+                <CollapsibleTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className={cn(
+                      "w-full gap-3 h-10 sm:h-12 text-sm sm:text-base",
+                      "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                      "rtl-justify-start rtl-flex",
+                      openGroups.has(item.title) && "bg-sidebar-accent text-sidebar-accent-foreground"
+                    )}
+                  >
+                    <item.icon className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                    {!collapsed && (
+                      <div className="flex items-center justify-between w-full">
+                        <span className="truncate">{t(item.title.toLowerCase().replace(/\s+/g, ''))}</span>
+                        <div className={cn("flex items-center gap-1", isRTL && "flex-row-reverse")}>
                           {item.title === "Content Management" && (
                             <Badge variant="secondary" className="text-xs px-1.5 py-0.5">
                               {pendingCounts.pending_requests + pendingCounts.pending_offers + pendingCounts.pending_suppliers}
                             </Badge>
                           )}
                           {openGroups.has(item.title) ? (
-                            <ChevronDown className={`h-3 w-3 ${isRTL ? 'rotate-180' : ''}`} />
+                            <ChevronDown className={cn("h-3 w-3", isRTL && "rotate-180")} />
                           ) : (
-                            <ChevronRight className={`h-3 w-3 ${isRTL ? 'rotate-180' : ''}`} />
+                            <ChevronRight className={cn("h-3 w-3", isRTL && "rotate-180")} />
                           )}
                         </div>
-                      )}
-                    </SidebarMenuButton>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent className="space-y-1 mt-1">
-                    {item.items.map((subItem) => (
-                      <SidebarMenuButton key={subItem.url} asChild className="ml-4">
-                        <NavLink
-                          to={subItem.url}
-                          className={`${getNavClassName(subItem.url)} ${isRTL ? 'flex-row-reverse' : ''}`}
-                        >
-                          <subItem.icon className="h-4 w-4" />
-                          {!collapsed && (
-                            <div className={`flex items-center justify-between w-full ${isRTL ? 'flex-row-reverse' : ''}`}>
-                              <span>{t(subItem.title.toLowerCase().replace(/\s+/g, ''))}</span>
-                              {subItem.title === 'Requests Approval' && (
-                                <Badge variant="destructive" className="text-xs px-1.5 py-0.5">
-                                  {pendingCounts.pending_requests}
-                                </Badge>
-                              )}
-                              {subItem.title === 'Offers Management' && (
-                                <Badge variant="destructive" className="text-xs px-1.5 py-0.5">
-                                  {pendingCounts.pending_offers}
-                                </Badge>
-                              )}
-                            </div>
-                          )}
-                        </NavLink>
-                      </SidebarMenuButton>
-                    ))}
-                  </CollapsibleContent>
-                </Collapsible>
-              ) : (
-                <SidebarMenuButton asChild>
-                  <NavLink
-                    to={item.url}
-                    end={item.end}
-                    className={`${getNavClassName(item.url, item.end)} ${isRTL ? 'flex-row-reverse' : ''}`}
-                  >
-                    <item.icon className="h-4 w-4" />
-                    {!collapsed && <span>{t(item.title.toLowerCase().replace(/\s+/g, ''))}</span>}
-                  </NavLink>
-                </SidebarMenuButton>
-              )}
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarContent>
+                      </div>
+                    )}
+                  </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="space-y-1 mt-1">
+                  {item.items.map((subItem) => (
+                    <NavLink key={subItem.url} to={subItem.url}>
+                      <Button
+                        variant="ghost"
+                        className={cn(
+                          "w-full gap-3 h-10 sm:h-12 text-sm",
+                          "rtl-justify-start rtl-flex ml-4",
+                          isActive(subItem.url) && "bg-primary/10 text-primary hover:bg-primary/20"
+                        )}
+                      >
+                        <subItem.icon className="h-4 w-4 flex-shrink-0" />
+                        {!collapsed && (
+                          <div className="flex items-center justify-between w-full">
+                            <span className="truncate">{t(subItem.title.toLowerCase().replace(/\s+/g, ''))}</span>
+                            {subItem.title === 'Requests Approval' && pendingCounts.pending_requests > 0 && (
+                              <Badge variant="destructive" className="text-xs px-1.5 py-0.5">
+                                {pendingCounts.pending_requests}
+                              </Badge>
+                            )}
+                            {subItem.title === 'Offers Management' && pendingCounts.pending_offers > 0 && (
+                              <Badge variant="destructive" className="text-xs px-1.5 py-0.5">
+                                {pendingCounts.pending_offers}
+                              </Badge>
+                            )}
+                          </div>
+                        )}
+                      </Button>
+                    </NavLink>
+                  ))}
+                </CollapsibleContent>
+              </Collapsible>
+            ) : (
+              <NavLink to={item.url} end={item.end}>
+                <Button
+                  variant="ghost"
+                  className={cn(
+                    "w-full gap-3 h-10 sm:h-12 text-sm sm:text-base rtl-justify-start rtl-flex",
+                    isActive(item.url, item.end) && "bg-primary/10 text-primary hover:bg-primary/20"
+                  )}
+                >
+                  <item.icon className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                  {!collapsed && <span className="truncate">{t(item.title.toLowerCase().replace(/\s+/g, ''))}</span>}
+                </Button>
+              </NavLink>
+            )}
+          </div>
+        ))}
+      </nav>
 
-      <SidebarFooter className="p-4 border-t border-sidebar-border">
+      {/* Footer - matching client dashboard */}
+      <div className="mt-auto p-3 sm:p-4 border-t border-sidebar-border bg-sidebar-accent/50">
         {!collapsed ? (
-          <div className={`text-xs text-sidebar-foreground/60 ${isRTL ? 'text-center' : 'text-center'}`}>
-            <p>{t('admin.adminVersion')}</p>
-            <p>© 2024 Supplify</p>
+          <div className="text-center">
+            <div className="text-xs text-sidebar-foreground/60 space-y-1">
+              <p className="font-medium">{t('admin.adminVersion')}</p>
+              <p>© 2024 Supplify</p>
+            </div>
           </div>
         ) : (
           <div className="flex justify-center">
-            <div className="w-2 h-2 bg-sidebar-primary rounded-full"></div>
+            <div className="w-2 h-2 bg-sidebar-primary rounded-full animate-pulse"></div>
           </div>
         )}
-      </SidebarFooter>
-    </Sidebar>
+      </div>
+    </div>
   );
 };

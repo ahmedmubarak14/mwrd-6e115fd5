@@ -42,6 +42,7 @@ import { PlatformAnalytics } from "@/components/admin/PlatformAnalytics";
 import { RequestsApproval } from "@/pages/admin/RequestsApproval";
 import { OffersManagement } from "@/pages/admin/OffersManagement";
 import { ExpertConsultations } from "@/pages/admin/ExpertConsultations";
+import FinancialTransactions from "@/pages/admin/FinancialTransactions";
 import { MobileBottomTabs } from "@/components/navigation/MobileBottomTabs";
 import { ProtectedRoute } from "@/components/routing/ProtectedRoute";
 import { RoleProtectedRoute } from "@/components/routing/RoleProtectedRoute";
@@ -97,6 +98,7 @@ const App = () => (
                 <Route path="users" element={<AdminUsers />} />
                 <Route path="users/advanced" element={<AdvancedUserManagement />} />
                 <Route path="financial" element={<FinancialDashboard />} />
+                <Route path="financial/transactions" element={<FinancialTransactions />} />
                 <Route path="financial/subscriptions" element={<SubscriptionManagement />} />
                 <Route path="analytics" element={<PlatformAnalytics />} />
                 <Route path="content/requests" element={<RequestsApproval />} />
