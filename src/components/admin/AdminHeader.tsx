@@ -29,7 +29,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useTheme } from "@/contexts/ThemeContext";
 import { DashboardThemeToggle } from "@/components/ui/DashboardThemeToggle";
 import { AdminBreadcrumbs } from "./AdminBreadcrumbs";
 import { toast } from "sonner";
@@ -39,7 +38,6 @@ export const AdminHeader = () => {
   const navigate = useNavigate();
   const { userProfile, signOut } = useAuth();
   const { language, setLanguage, t } = useLanguage();
-  const { theme, setTheme } = useTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const isRTL = language === 'ar';
