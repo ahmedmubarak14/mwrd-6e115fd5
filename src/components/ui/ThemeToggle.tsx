@@ -6,9 +6,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export function ThemeToggle() {
+  const { setTheme, theme } = useTheme();
   const { t, language } = useLanguage();
   const isRTL = language === 'ar';
 
@@ -22,9 +24,17 @@ export function ThemeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align={isRTL ? "start" : "end"}>
-        <DropdownMenuItem className={isRTL ? 'flex-row-reverse' : ''}>
+        <DropdownMenuItem onClick={() => setTheme("light")} className={isRTL ? 'flex-row-reverse' : ''}>
           <Sun className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
           <span>{t('theme.light')}</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")} className={isRTL ? 'flex-row-reverse' : ''}>
+          <Moon className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+          <span>{t('theme.dark')}</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("system")} className={isRTL ? 'flex-row-reverse' : ''}>
+          <Monitor className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+          <span>{t('theme.system')}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

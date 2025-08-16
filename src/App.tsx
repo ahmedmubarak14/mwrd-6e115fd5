@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { DashboardThemeProvider } from "@/contexts/DashboardThemeContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import { Landing } from "./pages/Landing";
 import { Home } from "./pages/Home";
 import { Dashboard } from "./pages/Dashboard";
@@ -53,7 +53,8 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <LanguageProvider>
+    <ThemeProvider>
+      <LanguageProvider>
         <AuthProvider>
           <TooltipProvider>
           <Toaster />
@@ -68,7 +69,7 @@ const App = () => (
               } />
               <Route path="/landing" element={<Landing />} />
               <Route path="/home" element={<Home />} />
-              <Route path="/dashboard" element={<ProtectedRoute><DashboardThemeProvider><Dashboard /></DashboardThemeProvider></ProtectedRoute>} />
+              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
               <Route path="/why-start-with-supplify" element={<WhyStartWithSupplify />} />
               <Route path="/why-move-to-supplify" element={<WhyMoveToSupplify />} />
               <Route path="/requests" element={<ProtectedRoute><Requests /></ProtectedRoute>} />
@@ -86,13 +87,13 @@ const App = () => (
               <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
               <Route path="/payment-success" element={<PaymentSuccess />} />
               <Route path="/client-dashboard" element={<RoleProtectedRoute allowed={['client']}><Index /></RoleProtectedRoute>} />
-              <Route path="/supplier-dashboard" element={<RoleProtectedRoute allowed={['supplier']}><DashboardThemeProvider><SupplierDashboard /></DashboardThemeProvider></RoleProtectedRoute>} />
+              <Route path="/supplier-dashboard" element={<RoleProtectedRoute allowed={['supplier']}><SupplierDashboard /></RoleProtectedRoute>} />
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/reset-password" element={<ResetPassword />} />
               {/* Admin Routes with dedicated layout */}
-              <Route path="/admin" element={<DashboardThemeProvider><AdminLayout /></DashboardThemeProvider>}>
+              <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminDashboardOverview />} />
                 <Route path="users" element={<AdminUsers />} />
                 <Route path="users/advanced" element={<AdvancedUserManagement />} />
@@ -114,7 +115,8 @@ const App = () => (
           </TooltipProvider>
         </AuthProvider>
       </LanguageProvider>
-    </QueryClientProvider>
+    </ThemeProvider>
+  </QueryClientProvider>
 );
 
 export default App;

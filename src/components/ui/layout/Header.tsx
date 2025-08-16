@@ -13,7 +13,7 @@ import { NotificationsModal } from "@/components/modals/NotificationsModal";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useToast } from "@/hooks/use-toast";
 import StatusIndicator from "@/components/StatusIndicator";
-import { DashboardThemeToggle } from "@/components/ui/DashboardThemeToggle";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 interface HeaderProps {
   onMobileMenuOpen?: () => void;
@@ -103,7 +103,7 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
             <LanguageSwitcher />
           </div>
           
-          <DashboardThemeToggle />
+          <ThemeToggle />
           
           <div className="hidden lg:block">
             <StatusIndicator />
