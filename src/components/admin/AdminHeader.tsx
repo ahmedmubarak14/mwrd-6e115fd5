@@ -30,7 +30,7 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { DashboardThemeToggle } from "@/components/ui/DashboardThemeToggle";
 import { AdminBreadcrumbs } from "./AdminBreadcrumbs";
 import { toast } from "sonner";
 
@@ -120,7 +120,7 @@ export const AdminHeader = () => {
             <Search className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
 
-          <ThemeToggle />
+          <DashboardThemeToggle />
           
           <Button variant="ghost" size="icon" className="relative hidden sm:flex h-8 w-8 sm:h-10 sm:w-10">
             <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
