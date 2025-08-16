@@ -11,114 +11,92 @@ import { MobileNavigation } from "@/components/layout/MobileNavigation";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-
 export const Landing = () => {
-  const { t, language } = useLanguage();
-  const { user, userProfile, loading } = useAuth();
-
-  const impactStats = [
-    { 
-      number: "500+", 
-      label: "مقدم خدمة معتمد", 
-      englishLabel: "Certified Providers",
-      icon: Shield,
-      description: "محترفون معتمدون",
-      englishDescription: "Verified professionals"
-    },
-    { 
-      number: "10,000+", 
-      label: "فعالية ناجحة", 
-      englishLabel: "Successful Events",
-      icon: Calendar,
-      description: "فعاليات منجزة بتميز",
-      englishDescription: "Events delivered with excellence"
-    },
-    { 
-      number: "13", 
-      label: "منطقة في المملكة", 
-      englishLabel: "Regions in KSA",
-      icon: Building2,
-      description: "تغطية شاملة",
-      englishDescription: "Complete coverage"
-    },
-    { 
-      number: "98%", 
-      label: "رضا العملاء", 
-      englishLabel: "Client Satisfaction",
-      icon: HeartHandshake,
-      description: "تقييمات استثنائية",
-      englishDescription: "Exceptional ratings"
-    }
-  ];
-
-  const platformAdvantages = [
-    { 
-      icon: Zap, 
-      title: "ربط فوري ذكي", 
-      description: "خوارزمية متطورة تربطك بأفضل مقدمي الخدمات في دقائق بناءً على احتياجاتك ومتطلبات فعاليتك",
-      englishTitle: "Instant Smart Matching",
-      englishDescription: "Advanced algorithm connects you with the best service providers in minutes based on your event needs and requirements",
-      metric: "أقل من 5 دقائق",
-      englishMetric: "Under 5 minutes"
-    },
-    { 
-      icon: Shield, 
-      title: "ضمان الجودة والأمان", 
-      description: "جميع مقدمي الخدمات مُتحققون ومعتمدون مع ضمانات مالية وقانونية شاملة لحماية استثمارك",
-      englishTitle: "Quality & Security Guarantee",
-      englishDescription: "All service providers are verified and certified with comprehensive financial and legal guarantees to protect your investment",
-      metric: "100% مضمون",
-      englishMetric: "100% Guaranteed"
-    },
-    { 
-      icon: BarChart3, 
-      title: "تحليلات وأداء متقدم", 
-      description: "رؤى تحليلية عميقة وتقارير أداء تساعدك في اتخاذ قرارات مدروسة وتحسين نتائج فعالياتك القادمة",
-      englishTitle: "Advanced Analytics & Performance",
-      englishDescription: "Deep analytical insights and performance reports help you make informed decisions and improve your future events",
-      metric: "رؤى حقيقية",
-      englishMetric: "Real insights"
-    },
-    { 
-      icon: Award, 
-      title: "شبكة نخبة متخصصة", 
-      description: "وصول حصري لشبكة من أفضل المتخصصين في صناعة الفعاليات مع خبرات مثبتة وسجل حافل بالنجاحات",
-      englishTitle: "Elite Specialist Network",
-      englishDescription: "Exclusive access to a network of top event industry specialists with proven expertise and successful track records",
-      metric: "نخبة مُتخصصة",
-      englishMetric: "Elite specialists"
-    }
-  ];
-
+  const {
+    t,
+    language
+  } = useLanguage();
+  const {
+    user,
+    userProfile,
+    loading
+  } = useAuth();
+  const impactStats = [{
+    number: "500+",
+    label: "مقدم خدمة معتمد",
+    englishLabel: "Certified Providers",
+    icon: Shield,
+    description: "محترفون معتمدون",
+    englishDescription: "Verified professionals"
+  }, {
+    number: "10,000+",
+    label: "فعالية ناجحة",
+    englishLabel: "Successful Events",
+    icon: Calendar,
+    description: "فعاليات منجزة بتميز",
+    englishDescription: "Events delivered with excellence"
+  }, {
+    number: "13",
+    label: "منطقة في المملكة",
+    englishLabel: "Regions in KSA",
+    icon: Building2,
+    description: "تغطية شاملة",
+    englishDescription: "Complete coverage"
+  }, {
+    number: "98%",
+    label: "رضا العملاء",
+    englishLabel: "Client Satisfaction",
+    icon: HeartHandshake,
+    description: "تقييمات استثنائية",
+    englishDescription: "Exceptional ratings"
+  }];
+  const platformAdvantages = [{
+    icon: Zap,
+    title: "ربط فوري ذكي",
+    description: "خوارزمية متطورة تربطك بأفضل مقدمي الخدمات في دقائق بناءً على احتياجاتك ومتطلبات فعاليتك",
+    englishTitle: "Instant Smart Matching",
+    englishDescription: "Advanced algorithm connects you with the best service providers in minutes based on your event needs and requirements",
+    metric: "أقل من 5 دقائق",
+    englishMetric: "Under 5 minutes"
+  }, {
+    icon: Shield,
+    title: "ضمان الجودة والأمان",
+    description: "جميع مقدمي الخدمات مُتحققون ومعتمدون مع ضمانات مالية وقانونية شاملة لحماية استثمارك",
+    englishTitle: "Quality & Security Guarantee",
+    englishDescription: "All service providers are verified and certified with comprehensive financial and legal guarantees to protect your investment",
+    metric: "100% مضمون",
+    englishMetric: "100% Guaranteed"
+  }, {
+    icon: BarChart3,
+    title: "تحليلات وأداء متقدم",
+    description: "رؤى تحليلية عميقة وتقارير أداء تساعدك في اتخاذ قرارات مدروسة وتحسين نتائج فعالياتك القادمة",
+    englishTitle: "Advanced Analytics & Performance",
+    englishDescription: "Deep analytical insights and performance reports help you make informed decisions and improve your future events",
+    metric: "رؤى حقيقية",
+    englishMetric: "Real insights"
+  }, {
+    icon: Award,
+    title: "شبكة نخبة متخصصة",
+    description: "وصول حصري لشبكة من أفضل المتخصصين في صناعة الفعاليات مع خبرات مثبتة وسجل حافل بالنجاحات",
+    englishTitle: "Elite Specialist Network",
+    englishDescription: "Exclusive access to a network of top event industry specialists with proven expertise and successful track records",
+    metric: "نخبة مُتخصصة",
+    englishMetric: "Elite specialists"
+  }];
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <LoadingSpinner 
-          size="lg" 
-          text={language === 'ar' ? 'جاري التحميل...' : 'Loading...'}
-          className="animate-fade-in"
-        />
-      </div>
-    );
+    return <div className="min-h-screen flex items-center justify-center bg-background">
+        <LoadingSpinner size="lg" text={language === 'ar' ? 'جاري التحميل...' : 'Loading...'} className="animate-fade-in" />
+      </div>;
   }
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <SmoothScroll />
       {/* Enhanced Navigation */}
       <header className="border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo - Conditional redirect based on auth state */}
           <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
-            <Link 
-              to={user && userProfile ? "/dashboard" : "/"} 
-              className="flex items-center gap-3"
-            >
-              <img 
-                src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
-                alt="Supplify Logo"
-                className="h-24 w-auto hover:scale-105 transition-transform"
-              />
+            <Link to={user && userProfile ? "/dashboard" : "/"} className="flex items-center gap-3">
+              <img src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" alt="Supplify Logo" className="h-24 w-auto hover:scale-105 transition-transform" />
             </Link>
           </div>
           
@@ -151,14 +129,11 @@ export const Landing = () => {
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>
-            {user && userProfile ? (
-              <Link to="/dashboard" className="hidden md:block">
+            {user && userProfile ? <Link to="/dashboard" className="hidden md:block">
                 <Button size="sm" className="hover-scale bg-gradient-to-r from-primary to-accent">
                   {t('language') === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
                 </Button>
-              </Link>
-            ) : (
-              <>
+              </Link> : <>
                 <Link to="/home" className="hidden md:block">
                   <Button variant="ghost" size="sm" className="hover-scale">
                     {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
@@ -169,8 +144,7 @@ export const Landing = () => {
                     {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
                   </Button>
                 </Link>
-              </>
-            )}
+              </>}
             <MobileNavigation />
           </div>
         </div>
@@ -187,9 +161,9 @@ export const Landing = () => {
         
         <div className="container mx-auto text-center relative z-10">
           <div className="max-w-5xl mx-auto">
-            {user && userProfile ? (
-              // Logged-in user experience
-              <>
+            {user && userProfile ?
+          // Logged-in user experience
+          <>
                 <div className="inline-flex items-center gap-2 bg-lime/10 rounded-full px-6 py-2 mb-8 animate-fade-in">
                   <Shield className="h-4 w-4 text-lime" />
                   <span className="text-sm font-medium text-lime">
@@ -204,10 +178,7 @@ export const Landing = () => {
                 </h1>
                 
                 <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-in delay-200">
-                  {language === 'ar' ? 
-                    'أهلاً بك في حسابك الشخصي. يمكنك إدارة طلباتك وتصفح الخدمات من هنا' : 
-                    'Welcome to your personal account. You can manage your requests and browse services from here'
-                  }
+                  {language === 'ar' ? 'أهلاً بك في حسابك الشخصي. يمكنك إدارة طلباتك وتصفح الخدمات من هنا' : 'Welcome to your personal account. You can manage your requests and browse services from here'}
                 </p>
 
                 {/* User Details Card */}
@@ -234,8 +205,7 @@ export const Landing = () => {
                         </div>
                       </div>
                       
-                      {userProfile.company_name && (
-                        <div className={`flex items-center gap-3 p-4 bg-accent/5 rounded-lg ${language === 'ar' ? 'flex-row-reverse text-right' : ''}`}>
+                      {userProfile.company_name && <div className={`flex items-center gap-3 p-4 bg-accent/5 rounded-lg ${language === 'ar' ? 'flex-row-reverse text-right' : ''}`}>
                           <Building2 className="h-5 w-5 text-accent" />
                           <div className="flex-1">
                             <p className="text-sm text-muted-foreground">
@@ -243,8 +213,7 @@ export const Landing = () => {
                             </p>
                             <p className="font-medium">{userProfile.company_name}</p>
                           </div>
-                        </div>
-                      )}
+                        </div>}
                       
                       <div className={`flex items-center gap-3 p-4 bg-lime/5 rounded-lg ${language === 'ar' ? 'flex-row-reverse text-right' : ''}`}>
                         <Shield className="h-5 w-5 text-lime" />
@@ -253,9 +222,7 @@ export const Landing = () => {
                             {language === 'ar' ? 'نوع الحساب' : 'Account Type'}
                           </p>
                           <p className="font-medium capitalize">
-                            {userProfile.role === 'client' ? (language === 'ar' ? 'عميل' : 'Client') : 
-                             userProfile.role === 'supplier' ? (language === 'ar' ? 'مقدم خدمة' : 'Supplier') :
-                             userProfile.role === 'admin' ? (language === 'ar' ? 'مدير' : 'Admin') : userProfile.role}
+                            {userProfile.role === 'client' ? language === 'ar' ? 'عميل' : 'Client' : userProfile.role === 'supplier' ? language === 'ar' ? 'مقدم خدمة' : 'Supplier' : userProfile.role === 'admin' ? language === 'ar' ? 'مدير' : 'Admin' : userProfile.role}
                           </p>
                         </div>
                       </div>
@@ -276,10 +243,9 @@ export const Landing = () => {
                     </Button>
                   </Link>
                 </div>
-              </>
-            ) : (
-              // Anonymous user experience
-              <>
+              </> :
+          // Anonymous user experience
+          <>
                 <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-6 py-2 mb-8 animate-fade-in">
                   <Sparkles className="h-4 w-4 text-primary" />
                   <span className="text-sm font-medium text-primary">
@@ -292,7 +258,7 @@ export const Landing = () => {
                     {t('app.slogan')}
                   </span>
                   <br />
-                  <span className="text-foreground/80 text-3xl md:text-4xl font-normal">
+                  <span className="text-foreground/80 text-3xl font-normal md:text-3xl">
                     {language === 'ar' ? 'مع سبلفاي' : 'with Supplify'}
                   </span>
                 </h1>
@@ -308,19 +274,13 @@ export const Landing = () => {
                       <ArrowRight className={`h-6 w-6 ${language === 'ar' ? 'mr-2 rotate-180' : 'ml-2'}`} />
                     </Button>
                   </Link>
-                  <DemoButton 
-                    size="lg" 
-                    variant="outline" 
-                    className="px-10 py-5 text-lg border-2"
-                  />
+                  <DemoButton size="lg" variant="outline" className="px-10 py-5 text-lg border-2" />
                 </div>
-              </>
-            )}
+              </>}
 
             {/* Enhanced Impact Stats - Always visible */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto animate-fade-in-up delay-500">
-              {impactStats.map((stat, index) => (
-                <Card key={index} className="text-center group hover:shadow-xl transition-all duration-500 border-0 bg-card/60 backdrop-blur-sm hover-lift">
+              {impactStats.map((stat, index) => <Card key={index} className="text-center group hover:shadow-xl transition-all duration-500 border-0 bg-card/60 backdrop-blur-sm hover-lift">
                   <CardContent className="pt-6">
                     <div className="w-14 h-14 mx-auto mb-4 bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300 group-hover:scale-110">
                       <stat.icon className="h-7 w-7 text-primary group-hover:text-accent transition-colors" />
@@ -333,8 +293,7 @@ export const Landing = () => {
                       {language === 'ar' ? stat.description : stat.englishDescription}
                     </div>
                   </CardContent>
-                </Card>
-              ))}
+                </Card>)}
             </div>
           </div>
         </div>
@@ -359,8 +318,7 @@ export const Landing = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {platformAdvantages.map((advantage, index) => (
-              <div key={index} className="group relative bg-card/80 backdrop-blur-sm border border-border/50 rounded-3xl p-8 hover:shadow-2xl hover:border-primary/30 transition-all duration-500 hover-scale">
+            {platformAdvantages.map((advantage, index) => <div key={index} className="group relative bg-card/80 backdrop-blur-sm border border-border/50 rounded-3xl p-8 hover:shadow-2xl hover:border-primary/30 transition-all duration-500 hover-scale">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-lime/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
                   <div className="flex items-center gap-4 mb-6">
@@ -381,8 +339,7 @@ export const Landing = () => {
                     {language === 'ar' ? advantage.description : advantage.englishDescription}
                   </p>
                 </div>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
@@ -401,10 +358,7 @@ export const Landing = () => {
               {t('language') === 'ar' ? 'لماذا تختار سبلفاي؟' : 'Why Choose Supplify?'}
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              {t('language') === 'ar' ? 
-                'منصة شاملة تلبي احتياجات الإدارة والمشتريات بكفاءة عالية' : 
-                'A comprehensive platform that efficiently meets management and procurement needs'
-              }
+              {t('language') === 'ar' ? 'منصة شاملة تلبي احتياجات الإدارة والمشتريات بكفاءة عالية' : 'A comprehensive platform that efficiently meets management and procurement needs'}
             </p>
           </div>
 
@@ -626,43 +580,75 @@ export const Landing = () => {
               {t('language') === 'ar' ? 'ما نغطيه' : 'What We Cover'}
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              {t('language') === 'ar' ? 
-                'خدمات شاملة تغطي جميع احتياجات الفعاليات والعلاقات العامة' : 
-                'Comprehensive services covering all event and public relations needs'
-              }
+              {t('language') === 'ar' ? 'خدمات شاملة تغطي جميع احتياجات الفعاليات والعلاقات العامة' : 'Comprehensive services covering all event and public relations needs'}
             </p>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            {[
-              { name: 'اللوجستيات', english: 'Logistics', icon: '🚚' },
-              { name: 'العمالة', english: 'Manpower', icon: '👥' },
-              { name: 'الطباعة', english: 'Printing', icon: '🖨️' },
-              { name: 'الأثاث', english: 'Furniture', icon: '🪑' },
-              { name: 'أجنحة المعارض', english: 'Booth Stands', icon: '🏢' },
-              { name: 'المعدات', english: 'Equipment', icon: '⚙️' },
-              { name: 'الهدايا التذكارية', english: 'Giveaways', icon: '🎁' },
-              { name: 'التموين والضيافة', english: 'Catering & Hospitality', icon: '🍽️' },
-              { name: 'تخطيط وإدارة الفعاليات', english: 'Event Planning & Management', icon: '📋' },
-              { name: 'المعدات السمعية والبصرية', english: 'AVL', icon: '🎵' },
-              { name: 'الترفيه والأنشطة', english: 'Entertainment & Activities', icon: '🎸', subtitle: 'DJs, bands, performers, games, and guest engagement activities', subtitleAr: 'دي جي، فرق موسيقية، عروض، ألعاب، وأنشطة تفاعل الضيوف' },
-              { name: 'خدمات ما بعد الفعالية', english: 'Post-event Services', icon: '🧹', subtitle: 'Cleanup, feedback collection, and reporting', subtitleAr: 'التنظيف، جمع التغذية الراجعة، والتقارير' },
-            ].map((service, index) => (
-              <div key={index} className="group relative bg-gradient-to-br from-card via-card/95 to-primary/5 border border-border/50 rounded-2xl p-6 text-center hover:shadow-xl hover:shadow-primary/10 hover:border-primary/30 transition-all duration-300 hover-scale">
+            {[{
+            name: 'اللوجستيات',
+            english: 'Logistics',
+            icon: '🚚'
+          }, {
+            name: 'العمالة',
+            english: 'Manpower',
+            icon: '👥'
+          }, {
+            name: 'الطباعة',
+            english: 'Printing',
+            icon: '🖨️'
+          }, {
+            name: 'الأثاث',
+            english: 'Furniture',
+            icon: '🪑'
+          }, {
+            name: 'أجنحة المعارض',
+            english: 'Booth Stands',
+            icon: '🏢'
+          }, {
+            name: 'المعدات',
+            english: 'Equipment',
+            icon: '⚙️'
+          }, {
+            name: 'الهدايا التذكارية',
+            english: 'Giveaways',
+            icon: '🎁'
+          }, {
+            name: 'التموين والضيافة',
+            english: 'Catering & Hospitality',
+            icon: '🍽️'
+          }, {
+            name: 'تخطيط وإدارة الفعاليات',
+            english: 'Event Planning & Management',
+            icon: '📋'
+          }, {
+            name: 'المعدات السمعية والبصرية',
+            english: 'AVL',
+            icon: '🎵'
+          }, {
+            name: 'الترفيه والأنشطة',
+            english: 'Entertainment & Activities',
+            icon: '🎸',
+            subtitle: 'DJs, bands, performers, games, and guest engagement activities',
+            subtitleAr: 'دي جي، فرق موسيقية، عروض، ألعاب، وأنشطة تفاعل الضيوف'
+          }, {
+            name: 'خدمات ما بعد الفعالية',
+            english: 'Post-event Services',
+            icon: '🧹',
+            subtitle: 'Cleanup, feedback collection, and reporting',
+            subtitleAr: 'التنظيف، جمع التغذية الراجعة، والتقارير'
+          }].map((service, index) => <div key={index} className="group relative bg-gradient-to-br from-card via-card/95 to-primary/5 border border-border/50 rounded-2xl p-6 text-center hover:shadow-xl hover:shadow-primary/10 hover:border-primary/30 transition-all duration-300 hover-scale">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-lime/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative z-10">
                   <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">{service.icon}</div>
                   <h3 className="font-semibold text-sm leading-relaxed group-hover:text-primary transition-colors duration-300 mb-2">
                     {t('language') === 'ar' ? service.name : service.english}
                   </h3>
-                  {service.subtitle && (
-                    <p className="text-xs text-muted-foreground leading-tight">
+                  {service.subtitle && <p className="text-xs text-muted-foreground leading-tight">
                       {t('language') === 'ar' ? service.subtitleAr : service.subtitle}
-                    </p>
-                  )}
+                    </p>}
                 </div>
-              </div>
-            ))}
+              </div>)}
           </div>
         </div>
       </section>
@@ -681,10 +667,7 @@ export const Landing = () => {
               {t('language') === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              {t('language') === 'ar' ? 
-                'مقترحات قيمة فريدة تجعلنا الخيار الأول في صناعة الفعاليات' : 
-                'Unique value propositions that make us the first choice in the events industry'
-              }
+              {t('language') === 'ar' ? 'مقترحات قيمة فريدة تجعلنا الخيار الأول في صناعة الفعاليات' : 'Unique value propositions that make us the first choice in the events industry'}
             </p>
           </div>
 
@@ -697,10 +680,7 @@ export const Landing = () => {
                 {t('language') === 'ar' ? 'سوق مركزي' : 'Centralized Marketplace'}
               </h3>
               <p className="text-muted-foreground">
-                {t('language') === 'ar' ? 
-                  'منصة موحدة تجمع جميع مقدمي الخدمات في مكان واحد' : 
-                  'Unified platform bringing all service providers together in one place'
-                }
+                {t('language') === 'ar' ? 'منصة موحدة تجمع جميع مقدمي الخدمات في مكان واحد' : 'Unified platform bringing all service providers together in one place'}
               </p>
             </Card>
 
@@ -712,10 +692,7 @@ export const Landing = () => {
                 {t('language') === 'ar' ? 'تحسين التكاليف' : 'Cost Optimization'}
               </h3>
               <p className="text-muted-foreground">
-                {t('language') === 'ar' ? 
-                  'حلول ذكية لتقليل التكاليف وزيادة العائد على الاستثمار' : 
-                  'Smart solutions to reduce costs and increase return on investment'
-                }
+                {t('language') === 'ar' ? 'حلول ذكية لتقليل التكاليف وزيادة العائد على الاستثمار' : 'Smart solutions to reduce costs and increase return on investment'}
               </p>
             </Card>
 
@@ -727,10 +704,7 @@ export const Landing = () => {
                 {t('language') === 'ar' ? 'شفافية المشتريات' : 'Procurement Transparency'}
               </h3>
               <p className="text-muted-foreground">
-                {t('language') === 'ar' ? 
-                  'شفافية كاملة في جميع عمليات الشراء والتوريد' : 
-                  'Complete transparency in all purchasing and supply operations'
-                }
+                {t('language') === 'ar' ? 'شفافية كاملة في جميع عمليات الشراء والتوريد' : 'Complete transparency in all purchasing and supply operations'}
               </p>
             </Card>
 
@@ -742,10 +716,7 @@ export const Landing = () => {
                 {t('language') === 'ar' ? 'موردون موثوقون' : 'Trusted Suppliers'}
               </h3>
               <p className="text-muted-foreground">
-                {t('language') === 'ar' ? 
-                  'شبكة من الموردين المعتمدين والموثوقين' : 
-                  'Network of certified and trusted suppliers'
-                }
+                {t('language') === 'ar' ? 'شبكة من الموردين المعتمدين والموثوقين' : 'Network of certified and trusted suppliers'}
               </p>
             </Card>
 
@@ -757,10 +728,7 @@ export const Landing = () => {
                 {t('language') === 'ar' ? 'توفير الوقت' : 'Time Savings'}
               </h3>
               <p className="text-muted-foreground">
-                {t('language') === 'ar' ? 
-                  'تقليل الوقت المطلوب لإنجاز المشاريع بشكل كبير' : 
-                  'Significantly reduce time required for project completion'
-                }
+                {t('language') === 'ar' ? 'تقليل الوقت المطلوب لإنجاز المشاريع بشكل كبير' : 'Significantly reduce time required for project completion'}
               </p>
             </Card>
 
@@ -772,10 +740,7 @@ export const Landing = () => {
                 {t('language') === 'ar' ? 'والمزيد' : 'And More'}
               </h3>
               <p className="text-muted-foreground">
-                {t('language') === 'ar' ? 
-                  'ميزات ومقترحات قيمة إضافية نكتشفها معاً' : 
-                  'Additional features and value propositions we discover together'
-                }
+                {t('language') === 'ar' ? 'ميزات ومقترحات قيمة إضافية نكتشفها معاً' : 'Additional features and value propositions we discover together'}
               </p>
             </Card>
           </div>
@@ -797,10 +762,7 @@ export const Landing = () => {
               {t('language') === 'ar' ? 'هل أنت مستعد لتحويل فعالياتك؟' : 'Are You Ready to Transform Your Events?'}
             </h2>
             <p className="text-xl md:text-2xl opacity-90 mb-12 leading-relaxed">
-              {t('language') === 'ar' ? 
-                'انضم إلى آلاف الشركات الرائدة التي اختارت سبلفاي لتحقيق أحلامها في عالم الفعاليات' : 
-                'Join thousands of leading companies that chose Supplify to achieve their dreams in the events world'
-              }
+              {t('language') === 'ar' ? 'انضم إلى آلاف الشركات الرائدة التي اختارت سبلفاي لتحقيق أحلامها في عالم الفعاليات' : 'Join thousands of leading companies that chose Supplify to achieve their dreams in the events world'}
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link to="/home">
@@ -825,11 +787,7 @@ export const Landing = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-6">
-                <img 
-                  src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
-                  alt="Supplify Logo"
-                  className="h-16 w-auto"
-                />
+                <img src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" alt="Supplify Logo" className="h-16 w-auto" />
               </div>
               <p className={`text-muted-foreground mb-6 max-w-md leading-relaxed text-lg ${language === 'ar' ? 'rtl-text-right' : ''}`}>
                 {t('landing.footer.taglineText')}
@@ -879,31 +837,13 @@ export const Landing = () => {
                   {t('landing.footer.followUs')}
                 </span>
                 <div className="flex gap-3">
-                  <a 
-                    href="https://x.com/supplifyapp" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover-scale"
-                    aria-label="Follow us on X"
-                  >
+                  <a href="https://x.com/supplifyapp" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover-scale" aria-label="Follow us on X">
                     <X className="h-4 w-4" />
                   </a>
-                  <a 
-                    href="https://www.instagram.com/supplifyapp/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover-scale"
-                    aria-label="Follow us on Instagram"
-                  >
+                  <a href="https://www.instagram.com/supplifyapp/" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover-scale" aria-label="Follow us on Instagram">
                     <Instagram className="h-4 w-4" />
                   </a>
-                  <a 
-                    href="https://www.linkedin.com/company/supplifyapp/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover-scale"
-                    aria-label="Follow us on LinkedIn"
-                  >
+                  <a href="https://www.linkedin.com/company/supplifyapp/" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover-scale" aria-label="Follow us on LinkedIn">
                     <Linkedin className="h-4 w-4" />
                   </a>
                 </div>
@@ -919,6 +859,5 @@ export const Landing = () => {
       </footer>
       
       <BackToTop />
-    </div>
-  );
+    </div>;
 };
