@@ -351,14 +351,14 @@ export const Landing = () => {
             <div className="inline-flex items-center gap-2 bg-lime/10 rounded-full px-6 py-2 mb-6">
               <Star className="h-4 w-4 text-lime" />
               <span className="text-sm font-medium text-lime">
-                {t('language') === 'ar' ? 'المزايا والفوائد' : 'Benefits & Advantages'}
+                {language === 'ar' ? 'المزايا والفوائد' : 'Benefits & Advantages'}
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              {t('language') === 'ar' ? 'لماذا تختار سبلفاي؟' : 'Why Choose Supplify?'}
+              {language === 'ar' ? 'لماذا تختار سبلفاي؟' : 'Why Choose Supplify?'}
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              {t('language') === 'ar' ? 'منصة شاملة تلبي احتياجات الإدارة والمشتريات بكفاءة عالية' : 'A comprehensive platform that efficiently meets management and procurement needs'}
+              {language === 'ar' ? 'منصة شاملة تلبي احتياجات الإدارة والمشتريات بكفاءة عالية' : 'A comprehensive platform that efficiently meets management and procurement needs'}
             </p>
           </div>
 
