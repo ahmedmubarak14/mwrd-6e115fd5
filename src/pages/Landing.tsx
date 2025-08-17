@@ -131,17 +131,17 @@ export const Landing = () => {
             </div>
             {user && userProfile ? <Link to="/dashboard" className="hidden md:block">
                 <Button size="sm" className="hover-scale bg-gradient-to-r from-primary to-accent">
-                  {t('language') === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
+                  {language === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
                 </Button>
               </Link> : <>
                 <Link to="/home" className="hidden md:block">
                   <Button variant="ghost" size="sm" className="hover-scale">
-                    {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
+                    {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
                   </Button>
                 </Link>
                 <Link to="/home" className="hidden md:block">
                   <Button size="sm" className="hover-scale bg-gradient-to-r from-primary to-accent">
-                    {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
+                    {language === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
                   </Button>
                 </Link>
               </>}
@@ -306,7 +306,7 @@ export const Landing = () => {
             <div className="inline-flex items-center gap-2 bg-accent/10 rounded-full px-6 py-2 mb-6">
               <Zap className="h-4 w-4 text-accent" />
               <span className="text-sm font-medium text-accent">
-                {t('language') === 'ar' ? 'تقنية متطورة' : 'Advanced Technology'}
+                {language === 'ar' ? 'تقنية متطورة' : 'Advanced Technology'}
               </span>
             </div>
             <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${language === 'ar' ? 'rtl-text-right' : ''}`}>
@@ -328,7 +328,7 @@ export const Landing = () => {
                     <div className="inline-flex items-center gap-2 bg-lime/10 rounded-full px-3 py-1.5">
                       <CheckCircle className="h-3 w-3 text-lime" />
                       <span className="text-xs font-medium text-lime">
-                        {t('language') === 'ar' ? advantage.metric : advantage.englishMetric}
+                        {language === 'ar' ? advantage.metric : advantage.englishMetric}
                       </span>
                     </div>
                   </div>
@@ -351,14 +351,14 @@ export const Landing = () => {
             <div className="inline-flex items-center gap-2 bg-lime/10 rounded-full px-6 py-2 mb-6">
               <Star className="h-4 w-4 text-lime" />
               <span className="text-sm font-medium text-lime">
-                {t('language') === 'ar' ? 'المزايا والفوائد' : 'Benefits & Advantages'}
+                {language === 'ar' ? 'المزايا والفوائد' : 'Benefits & Advantages'}
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              {t('language') === 'ar' ? 'لماذا تختار سبلفاي؟' : 'Why Choose Supplify?'}
+              {language === 'ar' ? 'لماذا تختار سبلفاي؟' : 'Why Choose Supplify?'}
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              {t('language') === 'ar' ? 'منصة شاملة تلبي احتياجات الإدارة والمشتريات بكفاءة عالية' : 'A comprehensive platform that efficiently meets management and procurement needs'}
+              {language === 'ar' ? 'منصة شاملة تلبي احتياجات الإدارة والمشتريات بكفاءة عالية' : 'A comprehensive platform that efficiently meets management and procurement needs'}
             </p>
           </div>
 
@@ -370,10 +370,10 @@ export const Landing = () => {
                   <BarChart3 className="h-8 w-8 text-primary" />
                 </div>
                 <h3 className="text-2xl font-bold mb-2">
-                  {t('language') === 'ar' ? 'للإدارة' : 'For Management'}
+                  {language === 'ar' ? 'للإدارة' : 'For Management'}
                 </h3>
                 <p className="text-muted-foreground text-sm">
-                  {t('language') === 'ar' ? 'حلول متكاملة لإدارة فعالة' : 'Integrated solutions for effective management'}
+                  {language === 'ar' ? 'حلول متكاملة لإدارة فعالة' : 'Integrated solutions for effective management'}
                 </p>
               </div>
               <div className="grid gap-4">
@@ -383,10 +383,10 @@ export const Landing = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-semibold mb-1 text-sm">
-                      {t('language') === 'ar' ? 'الرؤية الواضحة' : 'Clear Visibility'}
+                      {language === 'ar' ? 'الرؤية الواضحة' : 'Clear Visibility'}
                     </h4>
                     <p className="text-muted-foreground text-xs leading-relaxed">
-                      {t('language') === 'ar' ? 'رؤية شاملة لجميع العمليات والمشاريع' : 'Complete visibility of all operations and projects'}
+                      {language === 'ar' ? 'رؤية شاملة لجميع العمليات والمشاريع' : 'Complete visibility of all operations and projects'}
                     </p>
                   </div>
                 </div>
@@ -397,10 +397,10 @@ export const Landing = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-semibold mb-1 text-sm">
-                      {t('language') === 'ar' ? 'رؤى تحليلية' : 'Analytics Insights'}
+                      {language === 'ar' ? 'رؤى تحليلية' : 'Analytics Insights'}
                     </h4>
                     <p className="text-muted-foreground text-xs leading-relaxed">
-                      {t('language') === 'ar' ? 'تحليلات متقدمة لاتخاذ قرارات مدروسة' : 'Advanced analytics for informed decision making'}
+                      {language === 'ar' ? 'تحليلات متقدمة لاتخاذ قرارات مدروسة' : 'Advanced analytics for informed decision making'}
                     </p>
                   </div>
                 </div>
@@ -411,10 +411,10 @@ export const Landing = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-semibold mb-1 text-sm">
-                      {t('language') === 'ar' ? 'الأداء المتميز' : 'Superior Performance'}
+                      {language === 'ar' ? 'الأداء المتميز' : 'Superior Performance'}
                     </h4>
                     <p className="text-muted-foreground text-xs leading-relaxed">
-                      {t('language') === 'ar' ? 'مراقبة الأداء وتحسين النتائج' : 'Performance monitoring and result optimization'}
+                      {language === 'ar' ? 'مراقبة الأداء وتحسين النتائج' : 'Performance monitoring and result optimization'}
                     </p>
                   </div>
                 </div>
@@ -425,10 +425,10 @@ export const Landing = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-semibold mb-1 text-sm">
-                      {t('language') === 'ar' ? 'التتبع الذكي' : 'Smart Tracking'}
+                      {language === 'ar' ? 'التتبع الذكي' : 'Smart Tracking'}
                     </h4>
                     <p className="text-muted-foreground text-xs leading-relaxed">
-                      {t('language') === 'ar' ? 'تتبع كامل لجميع العمليات والمهام' : 'Complete tracking of all operations and tasks'}
+                      {language === 'ar' ? 'تتبع كامل لجميع العمليات والمهام' : 'Complete tracking of all operations and tasks'}
                     </p>
                   </div>
                 </div>
@@ -439,10 +439,10 @@ export const Landing = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-semibold mb-1 text-sm">
-                      {t('language') === 'ar' ? 'إدارة المخاطر' : 'Risk Management'}
+                      {language === 'ar' ? 'إدارة المخاطر' : 'Risk Management'}
                     </h4>
                     <p className="text-muted-foreground text-xs leading-relaxed">
-                      {t('language') === 'ar' ? 'تقييم وإدارة المخاطر بشكل استباقي' : 'Proactive risk assessment and management'}
+                      {language === 'ar' ? 'تقييم وإدارة المخاطر بشكل استباقي' : 'Proactive risk assessment and management'}
                     </p>
                   </div>
                 </div>
@@ -453,10 +453,10 @@ export const Landing = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-semibold mb-1 text-sm">
-                      {t('language') === 'ar' ? 'تعاون الفرق' : 'Team Collaboration'}
+                      {language === 'ar' ? 'تعاون الفرق' : 'Team Collaboration'}
                     </h4>
                     <p className="text-muted-foreground text-xs leading-relaxed">
-                      {t('language') === 'ar' ? 'تحسين التعاون والتواصل بين الفرق' : 'Enhanced team collaboration and communication'}
+                      {language === 'ar' ? 'تحسين التعاون والتواصل بين الفرق' : 'Enhanced team collaboration and communication'}
                     </p>
                   </div>
                 </div>
@@ -469,12 +469,12 @@ export const Landing = () => {
                 <div className="bg-accent/10 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                   <Zap className="h-8 w-8 text-accent" />
                 </div>
-                <h3 className="text-2xl font-bold mb-2">
-                  {t('language') === 'ar' ? 'للمشتريات' : 'For Procurement'}
-                </h3>
-                <p className="text-muted-foreground text-sm">
-                  {t('language') === 'ar' ? 'حلول متطورة للمشتريات الذكية' : 'Advanced solutions for smart procurement'}
-                </p>
+                                  <h3 className="text-2xl font-bold mb-2">
+                    {language === 'ar' ? 'للمشتريات' : 'For Procurement'}
+                  </h3>
+                  <p className="text-muted-foreground text-sm">
+                    {language === 'ar' ? 'حلول متطورة للمشتريات الذكية' : 'Advanced solutions for smart procurement'}
+                  </p>
               </div>
               <div className="grid gap-4">
                 <div className="flex items-start gap-4 p-4 rounded-xl bg-background/80 border border-border/30 hover:shadow-md transition-all duration-300">
@@ -483,10 +483,10 @@ export const Landing = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-semibold mb-1 text-sm">
-                      {t('language') === 'ar' ? 'الكفاءة العالية' : 'High Efficiency'}
+                      {language === 'ar' ? 'الكفاءة العالية' : 'High Efficiency'}
                     </h4>
                     <p className="text-muted-foreground text-xs leading-relaxed">
-                      {t('language') === 'ar' ? 'تبسيط العمليات وتوفير الوقت' : 'Streamlined processes and time savings'}
+                      {language === 'ar' ? 'تبسيط العمليات وتوفير الوقت' : 'Streamlined processes and time savings'}
                     </p>
                   </div>
                 </div>
@@ -497,10 +497,10 @@ export const Landing = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-semibold mb-1 text-sm">
-                      {t('language') === 'ar' ? 'الامتثال الكامل' : 'Full Compliance'}
+                      {language === 'ar' ? 'الامتثال الكامل' : 'Full Compliance'}
                     </h4>
                     <p className="text-muted-foreground text-xs leading-relaxed">
-                      {t('language') === 'ar' ? 'ضمان الامتثال للمعايير والقوانين' : 'Ensuring compliance with standards and regulations'}
+                      {language === 'ar' ? 'ضمان الامتثال للمعايير والقوانين' : 'Ensuring compliance with standards and regulations'}
                     </p>
                   </div>
                 </div>
@@ -511,10 +511,10 @@ export const Landing = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-semibold mb-1 text-sm">
-                      {t('language') === 'ar' ? 'التحكم الذكي' : 'Smart Control'}
+                      {language === 'ar' ? 'التحكم الذكي' : 'Smart Control'}
                     </h4>
                     <p className="text-muted-foreground text-xs leading-relaxed">
-                      {t('language') === 'ar' ? 'سيطرة كاملة على عمليات الشراء' : 'Complete control over purchasing operations'}
+                      {language === 'ar' ? 'سيطرة كاملة على عمليات الشراء' : 'Complete control over purchasing operations'}
                     </p>
                   </div>
                 </div>
@@ -525,10 +525,10 @@ export const Landing = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-semibold mb-1 text-sm">
-                      {t('language') === 'ar' ? 'دقة متناهية' : 'Ultimate Precision'}
+                      {language === 'ar' ? 'دقة متناهية' : 'Ultimate Precision'}
                     </h4>
                     <p className="text-muted-foreground text-xs leading-relaxed">
-                      {t('language') === 'ar' ? 'تقليل الأخطاء وزيادة الدقة' : 'Reduced errors and increased accuracy'}
+                      {language === 'ar' ? 'تقليل الأخطاء وزيادة الدقة' : 'Reduced errors and increased accuracy'}
                     </p>
                   </div>
                 </div>
@@ -539,10 +539,10 @@ export const Landing = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-semibold mb-1 text-sm">
-                      {t('language') === 'ar' ? 'التوريد السريع' : 'Fast Delivery'}
+                      {language === 'ar' ? 'التوريد السريع' : 'Fast Delivery'}
                     </h4>
                     <p className="text-muted-foreground text-xs leading-relaxed">
-                      {t('language') === 'ar' ? 'توريد سريع وموثوق' : 'Fast and reliable supply'}
+                      {language === 'ar' ? 'توريد سريع وموثوق' : 'Fast and reliable supply'}
                     </p>
                   </div>
                 </div>
@@ -553,10 +553,10 @@ export const Landing = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-semibold mb-1 text-sm">
-                      {t('language') === 'ar' ? 'أسعار تنافسية' : 'Competitive Pricing'}
+                      {language === 'ar' ? 'أسعار تنافسية' : 'Competitive Pricing'}
                     </h4>
                     <p className="text-muted-foreground text-xs leading-relaxed">
-                      {t('language') === 'ar' ? 'الحصول على أفضل الأسعار التنافسية' : 'Get the best competitive prices'}
+                      {language === 'ar' ? 'الحصول على أفضل الأسعار التنافسية' : 'Get the best competitive prices'}
                     </p>
                   </div>
                 </div>
@@ -573,14 +573,14 @@ export const Landing = () => {
             <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-6 py-2 mb-6">
               <Building2 className="h-4 w-4 text-primary" />
               <span className="text-sm font-medium text-primary">
-                {t('language') === 'ar' ? 'خدماتنا' : 'Our Services'}
+                {language === 'ar' ? 'خدماتنا' : 'Our Services'}
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              {t('language') === 'ar' ? 'ما نغطيه' : 'What We Cover'}
+              {language === 'ar' ? 'ما نغطيه' : 'What We Cover'}
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              {t('language') === 'ar' ? 'خدمات شاملة تغطي جميع احتياجات الفعاليات والعلاقات العامة' : 'Comprehensive services covering all event and public relations needs'}
+              {language === 'ar' ? 'خدمات شاملة تغطي جميع احتياجات الفعاليات والعلاقات العامة' : 'Comprehensive services covering all event and public relations needs'}
             </p>
           </div>
 
@@ -642,10 +642,10 @@ export const Landing = () => {
                 <div className="relative z-10">
                   <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">{service.icon}</div>
                   <h3 className="font-semibold text-sm leading-relaxed group-hover:text-primary transition-colors duration-300 mb-2">
-                    {t('language') === 'ar' ? service.name : service.english}
+                    {language === 'ar' ? service.name : service.english}
                   </h3>
                   {service.subtitle && <p className="text-xs text-muted-foreground leading-tight">
-                      {t('language') === 'ar' ? service.subtitleAr : service.subtitle}
+                      {language === 'ar' ? service.subtitleAr : service.subtitle}
                     </p>}
                 </div>
               </div>)}
@@ -660,14 +660,14 @@ export const Landing = () => {
             <div className="inline-flex items-center gap-2 bg-accent/10 rounded-full px-6 py-2 mb-6">
               <Sparkles className="h-4 w-4 text-accent" />
               <span className="text-sm font-medium text-accent">
-                {t('language') === 'ar' ? 'مقترحات القيمة الفريدة' : 'Unique Value Propositions'}
+                {language === 'ar' ? 'مقترحات القيمة الفريدة' : 'Unique Value Propositions'}
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              {t('language') === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
+              {language === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              {t('language') === 'ar' ? 'مقترحات قيمة فريدة تجعلنا الخيار الأول في صناعة الفعاليات' : 'Unique value propositions that make us the first choice in the events industry'}
+              {language === 'ar' ? 'مقترحات قيمة فريدة تجعلنا الخيار الأول في صناعة الفعاليات' : 'Unique value propositions that make us the first choice in the events industry'}
             </p>
           </div>
 
@@ -677,10 +677,10 @@ export const Landing = () => {
                 <Building2 className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-bold mb-4">
-                {t('language') === 'ar' ? 'سوق مركزي' : 'Centralized Marketplace'}
+                {language === 'ar' ? 'سوق مركزي' : 'Centralized Marketplace'}
               </h3>
               <p className="text-muted-foreground">
-                {t('language') === 'ar' ? 'منصة موحدة تجمع جميع مقدمي الخدمات في مكان واحد' : 'Unified platform bringing all service providers together in one place'}
+                {language === 'ar' ? 'منصة موحدة تجمع جميع مقدمي الخدمات في مكان واحد' : 'Unified platform bringing all service providers together in one place'}
               </p>
             </Card>
 
@@ -689,10 +689,10 @@ export const Landing = () => {
                 <TrendingUp className="h-8 w-8 text-accent" />
               </div>
               <h3 className="text-xl font-bold mb-4">
-                {t('language') === 'ar' ? 'تحسين التكاليف' : 'Cost Optimization'}
+                {language === 'ar' ? 'تحسين التكاليف' : 'Cost Optimization'}
               </h3>
               <p className="text-muted-foreground">
-                {t('language') === 'ar' ? 'حلول ذكية لتقليل التكاليف وزيادة العائد على الاستثمار' : 'Smart solutions to reduce costs and increase return on investment'}
+                {language === 'ar' ? 'حلول ذكية لتقليل التكاليف وزيادة العائد على الاستثمار' : 'Smart solutions to reduce costs and increase return on investment'}
               </p>
             </Card>
 
@@ -701,10 +701,10 @@ export const Landing = () => {
                 <Shield className="h-8 w-8 text-lime" />
               </div>
               <h3 className="text-xl font-bold mb-4">
-                {t('language') === 'ar' ? 'شفافية المشتريات' : 'Procurement Transparency'}
+                {language === 'ar' ? 'شفافية المشتريات' : 'Procurement Transparency'}
               </h3>
               <p className="text-muted-foreground">
-                {t('language') === 'ar' ? 'شفافية كاملة في جميع عمليات الشراء والتوريد' : 'Complete transparency in all purchasing and supply operations'}
+                {language === 'ar' ? 'شفافية كاملة في جميع عمليات الشراء والتوريد' : 'Complete transparency in all purchasing and supply operations'}
               </p>
             </Card>
 
@@ -713,10 +713,10 @@ export const Landing = () => {
                 <Users className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-bold mb-4">
-                {t('language') === 'ar' ? 'موردون موثوقون' : 'Trusted Suppliers'}
+                {language === 'ar' ? 'موردون موثوقون' : 'Trusted Suppliers'}
               </h3>
               <p className="text-muted-foreground">
-                {t('language') === 'ar' ? 'شبكة من الموردين المعتمدين والموثوقين' : 'Network of certified and trusted suppliers'}
+                {language === 'ar' ? 'شبكة من الموردين المعتمدين والموثوقين' : 'Network of certified and trusted suppliers'}
               </p>
             </Card>
 
@@ -725,10 +725,10 @@ export const Landing = () => {
                 <Clock className="h-8 w-8 text-accent" />
               </div>
               <h3 className="text-xl font-bold mb-4">
-                {t('language') === 'ar' ? 'توفير الوقت' : 'Time Savings'}
+                {language === 'ar' ? 'توفير الوقت' : 'Time Savings'}
               </h3>
               <p className="text-muted-foreground">
-                {t('language') === 'ar' ? 'تقليل الوقت المطلوب لإنجاز المشاريع بشكل كبير' : 'Significantly reduce time required for project completion'}
+                {language === 'ar' ? 'تقليل الوقت المطلوب لإنجاز المشاريع بشكل كبير' : 'Significantly reduce time required for project completion'}
               </p>
             </Card>
 
@@ -737,10 +737,10 @@ export const Landing = () => {
                 <Sparkles className="h-8 w-8 text-lime" />
               </div>
               <h3 className="text-xl font-bold mb-4">
-                {t('language') === 'ar' ? 'والمزيد' : 'And More'}
+                {language === 'ar' ? 'والمزيد' : 'And More'}
               </h3>
               <p className="text-muted-foreground">
-                {t('language') === 'ar' ? 'ميزات ومقترحات قيمة إضافية نكتشفها معاً' : 'Additional features and value propositions we discover together'}
+                {language === 'ar' ? 'ميزات ومقترحات قيمة إضافية نكتشفها معاً' : 'Additional features and value propositions we discover together'}
               </p>
             </Card>
           </div>
@@ -759,21 +759,21 @@ export const Landing = () => {
         <div className="container mx-auto text-center relative z-10 text-white">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              {t('language') === 'ar' ? 'هل أنت مستعد لتحويل فعالياتك؟' : 'Are You Ready to Transform Your Events?'}
+              {language === 'ar' ? 'هل أنت مستعد لتحويل فعالياتك؟' : 'Are You Ready to Transform Your Events?'}
             </h2>
             <p className="text-xl md:text-2xl opacity-90 mb-12 leading-relaxed">
-              {t('language') === 'ar' ? 'انضم إلى آلاف الشركات الرائدة التي اختارت سبلفاي لتحقيق أحلامها في عالم الفعاليات' : 'Join thousands of leading companies that chose Supplify to achieve their dreams in the events world'}
+              {language === 'ar' ? 'انضم إلى آلاف الشركات الرائدة التي اختارت سبلفاي لتحقيق أحلامها في عالم الفعاليات' : 'Join thousands of leading companies that chose Supplify to achieve their dreams in the events world'}
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link to="/home">
                 <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold px-10 py-5 text-lg shadow-2xl hover-scale">
-                  {t('language') === 'ar' ? 'ابدأ تجربتك المجانية الآن' : 'Start Your Free Trial Now'} 
+                  {language === 'ar' ? 'ابدأ تجربتك المجانية الآن' : 'Start Your Free Trial Now'} 
                   <ArrowRight className="ml-2 h-6 w-6" />
                 </Button>
               </Link>
               <Link to="/expert-consultation">
                 <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold px-10 py-5 text-lg shadow-2xl hover-scale">
-                  {t('language') === 'ar' ? 'تحدث مع خبير' : 'Talk to Expert'}
+                  {language === 'ar' ? 'تحدث مع خبير' : 'Talk to Expert'}
                 </Button>
               </Link>
             </div>
