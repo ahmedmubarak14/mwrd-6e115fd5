@@ -467,10 +467,6 @@ const translations = {
     'privacyContactContent': 'If you have any questions about this Privacy Policy, please contact us:',
     'privacyContactAddress': 'Address: Riyadh, Kingdom of Saudi Arabia',
     
-    // Theme translations 
-    'theme.light': 'Light',
-    'theme.dark': 'Dark',
-    'theme.system': 'System',
     
 
   },

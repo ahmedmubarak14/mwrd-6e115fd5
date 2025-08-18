@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { ThemeProvider } from "@/contexts/ThemeContext";
+import { RouteAwareThemeProvider } from "@/contexts/RouteAwareThemeContext";
 import { Landing } from "./pages/Landing";
 import { Home } from "./pages/Home";
 import { Dashboard } from "./pages/Dashboard";
@@ -53,7 +53,7 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider>
+    <RouteAwareThemeProvider>
       <LanguageProvider>
         <AuthProvider>
           <TooltipProvider>
@@ -115,7 +115,7 @@ const App = () => (
           </TooltipProvider>
         </AuthProvider>
       </LanguageProvider>
-    </ThemeProvider>
+    </RouteAwareThemeProvider>
   </QueryClientProvider>
 );
 
