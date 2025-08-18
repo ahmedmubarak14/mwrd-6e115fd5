@@ -103,6 +103,10 @@ const translations = {
     'nav.manageSubscription': 'Manage Subscription',
     'nav.support': 'Support',
     'nav.browseRequests': 'Browse Requests',
+    'nav.platform': 'Platform',
+    'nav.whyStartWithUs': 'Why Start with Us',
+    'nav.whyMoveToUs': 'Why Move to Us',
+    'nav.services': 'Our Services',
     
     // Common
     'common.submit': 'Submit',
@@ -147,6 +151,7 @@ const translations = {
     'auth.createAccountButton': 'Create Account',
     'auth.showPassword': 'Show password',
     'auth.hidePassword': 'Hide password',
+    'auth.startFree': 'Start Free',
     
     // Dashboard - Client Dashboard
     'dashboard.welcome': 'Welcome to Supplify',
@@ -490,6 +495,10 @@ const translations = {
     'nav.manageSubscription': 'إدارة الاشتراك',
     'nav.support': 'الدعم',
     'nav.browseRequests': 'تصفح الطلبات',
+    'nav.platform': 'المنصة',
+    'nav.whyStartWithUs': 'لماذا تبدأ معنا',
+    'nav.whyMoveToUs': 'لماذا تنتقل إلينا',
+    'nav.services': 'خدماتنا',
     
     // Common
     'common.submit': 'إرسال',
@@ -534,6 +543,7 @@ const translations = {
     'auth.createAccountButton': 'إنشاء حساب',
     'auth.showPassword': 'إظهار كلمة المرور',
     'auth.hidePassword': 'إخفاء كلمة المرور',
+    'auth.startFree': 'ابدأ مجاناً',
     
     // Dashboard - Client Dashboard
     'dashboard.welcome': 'مرحباً بك في سبلفاي',

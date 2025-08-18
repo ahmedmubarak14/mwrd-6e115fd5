@@ -22,27 +22,27 @@ export const MobileNavigation = () => {
     {
       href: "/landing#platform",
       icon: Zap,
-      label: t('language') === 'ar' ? 'المنصة' : 'Platform'
+      label: t('nav.platform')
     },
     {
       href: "/why-start-with-supplify",
       icon: TrendingUp,
-      label: t('language') === 'ar' ? 'لماذا تبدأ معنا' : 'Why Start with Us'
+      label: t('nav.whyStartWithUs')
     },
     {
       href: "/why-move-to-supplify",
       icon: Building2,
-      label: t('language') === 'ar' ? 'لماذا تنتقل إلينا' : 'Why Move to Us'
+      label: t('nav.whyMoveToUs')
     },
     {
       href: "/landing#services",
       icon: Sparkles,
-      label: t('language') === 'ar' ? 'خدماتنا' : 'Our Services'
+      label: t('nav.services')
     },
     {
       href: "/pricing",
       icon: Star,
-      label: t('language') === 'ar' ? 'الأسعار' : 'Pricing'
+      label: t('nav.pricing')
     }
   ];
 
@@ -100,12 +100,12 @@ export const MobileNavigation = () => {
               <div className={`flex gap-3 mt-6 pt-4 border-t ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Link to="/home" onClick={handleLinkClick} className="flex-1">
                   <Button variant="ghost" size="sm" className="w-full">
-                    {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
+                    {t('auth.login')}
                   </Button>
                 </Link>
                 <Link to="/home" onClick={handleLinkClick} className="flex-1">
                   <Button size="sm" className="w-full bg-gradient-to-r from-primary to-accent">
-                    {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
+                    {t('auth.startFree')}
                   </Button>
                 </Link>
               </div>
