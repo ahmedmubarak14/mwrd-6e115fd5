@@ -309,10 +309,10 @@ export const Landing = () => {
                 {language === 'ar' ? 'تقنية متطورة' : 'Advanced Technology'}
               </span>
             </div>
-            <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${language === 'ar' ? 'rtl-text-right' : ''}`}>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-center">
               {t('landing.platform.title')}
             </h2>
-            <p className={`text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed ${language === 'ar' ? 'rtl-text-right' : ''}`}>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed text-center">
               {t('landing.platform.subtitle')}
             </p>
           </div>
