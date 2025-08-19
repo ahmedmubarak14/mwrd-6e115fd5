@@ -2,21 +2,14 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { 
   Search, 
   Bell, 
   Settings, 
   User, 
   LogOut, 
-  Moon, 
-  Sun,
   Globe,
   RefreshCw,
-  Plus,
-  Filter,
-  Home,
-  ArrowLeft
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -33,6 +26,7 @@ import { useRouteAwareTheme } from "@/contexts/RouteAwareThemeContext";
 import { DashboardThemeToggle } from "@/components/ui/DashboardThemeToggle";
 import { AdminBreadcrumbs } from "./AdminBreadcrumbs";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 export const AdminHeader = () => {
   const location = useLocation();
@@ -78,39 +72,32 @@ export const AdminHeader = () => {
     <header className="h-20 sm:h-24 lg:h-28 border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 h-full flex items-center justify-between">
         {/* Logo - positioned based on language */}
-        <div className="rtl-order-1 flex items-center gap-2 sm:gap-4">
+        <div className={cn("flex items-center gap-2 sm:gap-4", isRTL ? "order-3" : "order-1")}>
           <SidebarTrigger className="lg:hidden h-8 w-8 sm:h-10 sm:w-10" />
           
-          <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2 hover:scale-105 transition-transform"
+          >
             <img 
               src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
               alt="Supplify Logo"
-              className="h-12 sm:h-20 lg:h-24 w-auto hover:scale-105 transition-transform"
+              className="h-12 sm:h-20 lg:h-24 w-auto"
             />
-          </div>
-          
-          {/* Navigation to main site */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate('/')}
-            className={`text-muted-foreground hover:text-foreground hidden lg:flex ${isRTL ? 'flex-row-reverse' : ''}`}
-          >
-            <ArrowLeft className={`h-4 w-4 ${isRTL ? 'rotate-180' : ''}`} />
-            <span className={`${isRTL ? 'mr-2' : 'ml-2'}`}>
-              {t('admin.backToSite')}
-            </span>
-          </Button>
+          </button>
         </div>
 
         {/* Actions - positioned based on language */}
-        <div className="rtl-order-3 rtl-flex items-center gap-1 sm:gap-2 lg:gap-4">
+        <div className={cn("flex items-center gap-1 sm:gap-2 lg:gap-4", isRTL ? "order-1 flex-row-reverse" : "order-3")}>
           <div className="relative hidden xl:block cursor-pointer">
-            <Search className="absolute rtl-left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+            <Search className={cn("absolute top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4", isRTL ? "right-3" : "left-3")} />
             <input
               type="text"
               placeholder={t('admin.searchPlaceholder')}
-              className="rtl-pl-4 rtl-pr-4 py-2 border rounded-lg w-80 bg-background/50 text-foreground placeholder:text-muted-foreground focus:bg-background transition-colors rtl-text-left cursor-pointer"
+              className={cn(
+                "py-2 border rounded-lg w-80 bg-background/50 text-foreground placeholder:text-muted-foreground focus:bg-background transition-colors cursor-pointer",
+                isRTL ? "pr-10 pl-4 text-right" : "pl-10 pr-4 text-left"
+              )}
               readOnly
               onClick={(e) => e.preventDefault()}
             />
@@ -124,7 +111,7 @@ export const AdminHeader = () => {
           
           <Button variant="ghost" size="icon" className="relative hidden sm:flex h-8 w-8 sm:h-10 sm:w-10">
             <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
-            <span className="absolute -top-1 rtl--right-1 bg-destructive text-destructive-foreground text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center text-[10px] sm:text-xs">
+            <span className={cn("absolute -top-1 bg-destructive text-destructive-foreground text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center text-[10px] sm:text-xs", isRTL ? "-left-1" : "-right-1")}>
               3
             </span>
           </Button>
@@ -140,27 +127,27 @@ export const AdminHeader = () => {
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="rtl-flex items-center gap-1 sm:gap-2 px-1 sm:px-2 lg:px-3 rounded-lg h-8 sm:h-10">
+              <Button variant="ghost" className={cn("flex items-center gap-1 sm:gap-2 px-1 sm:px-2 lg:px-3 rounded-lg h-8 sm:h-10", isRTL && "flex-row-reverse")}>
                 <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs sm:text-sm">
                   {userProfile?.full_name?.[0] || userProfile?.email?.[0] || 'A'}
                 </div>
-                <div className="rtl-text-left hidden lg:block">
+                <div className={cn("hidden lg:block", isRTL && "text-right")}>
                   <p className="text-sm font-medium">{userProfile?.full_name || userProfile?.email?.split('@')[0] || t('admin.adminUser')}</p>
                   <p className="text-xs text-muted-foreground capitalize">{userProfile?.role}</p>
                 </div>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align={isRTL ? "start" : "end"} className="z-50 bg-popover w-56">
-              <DropdownMenuItem onClick={() => navigate('/profile')} className="rtl-flex items-center">
-                <User className="rtl-mr-2 h-4 w-4" />
+              <DropdownMenuItem onClick={() => navigate('/profile')} className={cn("flex items-center", isRTL && "flex-row-reverse")}>
+                <User className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
                 <span>{t('common.profile')}</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => navigate('/admin/settings')} className="rtl-flex">
-                <Settings className="rtl-mr-2 h-4 w-4" />
+              <DropdownMenuItem onClick={() => navigate('/admin/settings')} className={cn("flex items-center", isRTL && "flex-row-reverse")}>
+                <Settings className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
                 <span>{t('common.settings')}</span>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={signOut} className="rtl-flex">
-                <LogOut className="rtl-mr-2 h-4 w-4" />
+              <DropdownMenuItem onClick={signOut} className={cn("flex items-center", isRTL && "flex-row-reverse")}>
+                <LogOut className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
                 <span>{t('common.signOut')}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>

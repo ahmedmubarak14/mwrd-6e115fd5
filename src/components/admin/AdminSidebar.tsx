@@ -17,8 +17,6 @@ import {
   Palette,
   ChevronDown,
   ChevronRight,
-  ArrowLeft,
-  Home,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
@@ -28,112 +26,112 @@ import { supabase } from "@/integrations/supabase/client";
 
 const adminMenuItems = [
   {
-    title: "Dashboard",
+    title: "admin.menu.dashboard",
     url: "/admin",
     icon: BarChart3,
     end: true,
   },
   {
-    title: "User Management",
+    title: "admin.menu.userManagement",
     icon: Users,
     items: [
       {
-        title: "All Users",
+        title: "admin.menu.allUsers",
         url: "/admin/users",
         icon: Users,
       },
       {
-        title: "Advanced Management",
+        title: "admin.menu.advancedManagement",
         url: "/admin/users/advanced",
         icon: UserCog,
       },
       {
-        title: "User Profiles",
+        title: "admin.menu.userProfiles",
         url: "/admin/users",
         icon: Shield,
       },
     ],
   },
   {
-    title: "Financial",
+    title: "admin.menu.financial",
     icon: CreditCard,
     items: [
       {
-        title: "Dashboard",
+        title: "admin.menu.financialDashboard",
         url: "/admin/financial",
         icon: CreditCard,
       },
       {
-        title: "Transactions",
+        title: "admin.menu.transactions",
         url: "/admin/financial/transactions",
         icon: TrendingUp,
       },
       {
-        title: "Subscriptions",
+        title: "admin.menu.subscriptions",
         url: "/admin/financial/subscriptions",
         icon: Database,
       },
     ],
   },
   {
-    title: "Analytics",
+    title: "admin.menu.analytics",
     icon: Activity,
     items: [
       {
-        title: "Platform Analytics",
+        title: "admin.menu.platformAnalytics",
         url: "/admin/analytics",
         icon: BarChart3,
       },
       {
-        title: "User Activity",
+        title: "admin.menu.userActivity",
         url: "/admin/analytics/users",
         icon: Activity,
       },
       {
-        title: "Reports",
+        title: "admin.menu.reports",
         url: "/admin/analytics/reports",
         icon: FileText,
       },
     ],
   },
   {
-    title: "Content Management",
+    title: "admin.menu.contentManagement",
     icon: ClipboardCheck,
     items: [
       {
-        title: "Requests Approval",
+        title: "admin.menu.requestsApproval",
         url: "/admin/content/requests",
         icon: ClipboardCheck,
         badge: "pending",
       },
       {
-        title: "Offers Management",
+        title: "admin.menu.offersManagement",
         url: "/admin/content/offers",
         icon: MessageSquare,
       },
       {
-        title: "Expert Consultations",
+        title: "admin.menu.expertConsultations",
         url: "/admin/content/consultations",
         icon: MessageSquare,
       },
     ],
   },
   {
-    title: "System",
+    title: "admin.menu.system",
     icon: Settings,
     items: [
       {
-        title: "Settings",
+        title: "admin.menu.settings",
         url: "/admin/settings",
         icon: Settings,
       },
       {
-        title: "Theme & Design",
+        title: "admin.menu.themeDesign",
         url: "/admin/settings/theme",
         icon: Palette,
       },
       {
-        title: "Database",
+        title: "admin.menu.database",
         url: "/admin/settings/database",
         icon: Database,
       },
@@ -150,7 +148,7 @@ export const AdminSidebar = ({ collapsed = false }: AdminSidebarProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const isRTL = language === 'ar';
-  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(['Content Management']));
+  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set(['admin.menu.contentManagement']));
   const [pendingCounts, setPendingCounts] = useState<{pending_suppliers: number; pending_requests: number; pending_offers: number}>({ pending_suppliers: 0, pending_requests: 0, pending_offers: 0 });
 
   const isActive = (path: string, end?: boolean) => {
@@ -205,7 +203,7 @@ export const AdminSidebar = ({ collapsed = false }: AdminSidebarProps) => {
       <div className="p-4 sm:p-6 border-b border-sidebar-border">
         <div className={cn(
           "flex items-center gap-3",
-          isRTL && "flex-row-reverse",
+          isRTL ? "flex-row-reverse" : "",
           collapsed && "justify-center"
         )}>
           <img 
@@ -229,28 +227,10 @@ export const AdminSidebar = ({ collapsed = false }: AdminSidebarProps) => {
             </div>
           )}
         </div>
-        
-        {/* Back to main site button - matching client design */}
-        {!collapsed && (
-          <div className="mt-4">
-            <button
-              onClick={() => navigate('/')}
-              className={cn(
-                "w-full flex items-center gap-2 px-3 py-2 text-xs",
-                "text-sidebar-foreground/60 hover:text-sidebar-foreground",
-                "hover:bg-sidebar-accent rounded-md transition-colors",
-                isRTL && "flex-row-reverse text-right"
-              )}
-            >
-              <Home className={cn("h-4 w-4 flex-shrink-0", isRTL && "rotate-180")} />
-              <span className="truncate">{t('admin.backToSite')}</span>
-            </button>
-          </div>
-        )}
       </div>
 
       {/* Navigation - matching client dashboard style */}
-      <nav className="flex-1 px-3 sm:px-4 py-4 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-3 sm:px-4 py-4 space-y-2 overflow-y-auto">
         {adminMenuItems.map((item) => (
           <div key={item.title}>
             {item.items ? (
@@ -263,26 +243,27 @@ export const AdminSidebar = ({ collapsed = false }: AdminSidebarProps) => {
                   <Button
                     variant="ghost"
                     className={cn(
-                      "w-full gap-3 h-10 sm:h-12 text-sm sm:text-base",
+                      "w-full justify-start gap-3 h-11 text-sm font-medium",
                       "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                      "rtl-justify-start rtl-flex",
+                      "transition-colors duration-200",
+                      isRTL ? "flex-row-reverse text-right" : "",
                       openGroups.has(item.title) && "bg-sidebar-accent text-sidebar-accent-foreground"
                     )}
                   >
-                    <item.icon className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                    <item.icon className={cn("h-5 w-5 flex-shrink-0", isRTL && "ml-2")} />
                     {!collapsed && (
                       <div className="flex items-center justify-between w-full">
-                        <span className="truncate">{t(item.title.toLowerCase().replace(/\s+/g, ''))}</span>
-                        <div className={cn("flex items-center gap-1", isRTL && "flex-row-reverse")}>
-                          {item.title === "Content Management" && (
-                            <Badge variant="secondary" className="text-xs px-1.5 py-0.5">
+                        <span className="truncate font-medium">{t(item.title)}</span>
+                        <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
+                          {item.title === "admin.menu.contentManagement" && (
+                            <Badge variant="secondary" className="text-xs px-2 py-0.5">
                               {pendingCounts.pending_requests + pendingCounts.pending_offers + pendingCounts.pending_suppliers}
                             </Badge>
                           )}
                           {openGroups.has(item.title) ? (
-                            <ChevronDown className={cn("h-3 w-3", isRTL && "rotate-180")} />
+                            <ChevronDown className={cn("h-4 w-4", isRTL && "rotate-180")} />
                           ) : (
-                            <ChevronRight className={cn("h-3 w-3", isRTL && "rotate-180")} />
+                            <ChevronRight className={cn("h-4 w-4", isRTL && "rotate-180")} />
                           )}
                         </div>
                       </div>
@@ -295,22 +276,23 @@ export const AdminSidebar = ({ collapsed = false }: AdminSidebarProps) => {
                       <Button
                         variant="ghost"
                         className={cn(
-                          "w-full gap-3 h-10 sm:h-12 text-sm",
-                          "rtl-justify-start rtl-flex ml-4",
+                          "w-full justify-start gap-3 h-10 text-sm",
+                          "transition-colors duration-200",
+                          isRTL ? "flex-row-reverse text-right mr-4" : "ml-6",
                           isActive(subItem.url) && "bg-primary/10 text-primary hover:bg-primary/20"
                         )}
                       >
-                        <subItem.icon className="h-4 w-4 flex-shrink-0" />
+                        <subItem.icon className={cn("h-4 w-4 flex-shrink-0", isRTL && "ml-2")} />
                         {!collapsed && (
                           <div className="flex items-center justify-between w-full">
-                            <span className="truncate">{t(subItem.title.toLowerCase().replace(/\s+/g, ''))}</span>
-                            {subItem.title === 'Requests Approval' && pendingCounts.pending_requests > 0 && (
-                              <Badge variant="destructive" className="text-xs px-1.5 py-0.5">
+                            <span className="truncate">{t(subItem.title)}</span>
+                            {subItem.title === 'admin.menu.requestsApproval' && pendingCounts.pending_requests > 0 && (
+                              <Badge variant="destructive" className="text-xs px-2 py-0.5">
                                 {pendingCounts.pending_requests}
                               </Badge>
                             )}
-                            {subItem.title === 'Offers Management' && pendingCounts.pending_offers > 0 && (
-                              <Badge variant="destructive" className="text-xs px-1.5 py-0.5">
+                            {subItem.title === 'admin.menu.offersManagement' && pendingCounts.pending_offers > 0 && (
+                              <Badge variant="destructive" className="text-xs px-2 py-0.5">
                                 {pendingCounts.pending_offers}
                               </Badge>
                             )}
@@ -326,12 +308,14 @@ export const AdminSidebar = ({ collapsed = false }: AdminSidebarProps) => {
                 <Button
                   variant="ghost"
                   className={cn(
-                    "w-full gap-3 h-10 sm:h-12 text-sm sm:text-base rtl-justify-start rtl-flex",
+                    "w-full justify-start gap-3 h-11 text-sm font-medium",
+                    "transition-colors duration-200",
+                    isRTL ? "flex-row-reverse text-right" : "",
                     isActive(item.url, item.end) && "bg-primary/10 text-primary hover:bg-primary/20"
                   )}
                 >
-                  <item.icon className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                  {!collapsed && <span className="truncate">{t(item.title.toLowerCase().replace(/\s+/g, ''))}</span>}
+                  <item.icon className={cn("h-5 w-5 flex-shrink-0", isRTL && "ml-2")} />
+                  {!collapsed && <span className="truncate font-medium">{t(item.title)}</span>}
                 </Button>
               </NavLink>
             )}
