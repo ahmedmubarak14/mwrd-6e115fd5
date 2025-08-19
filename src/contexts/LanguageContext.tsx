@@ -103,6 +103,10 @@ const translations = {
     'nav.manageSubscription': 'Manage Subscription',
     'nav.support': 'Support',
     'nav.browseRequests': 'Browse Requests',
+    'nav.platform': 'Platform',
+    'nav.whyStartWithUs': 'Why Start with Us',
+    'nav.whyMoveToUs': 'Why Move to Us',
+    'nav.services': 'Our Services',
     
     // Common
     'common.submit': 'Submit',
@@ -147,6 +151,7 @@ const translations = {
     'auth.createAccountButton': 'Create Account',
     'auth.showPassword': 'Show password',
     'auth.hidePassword': 'Hide password',
+    'auth.startFree': 'Start Free',
     
     // Dashboard - Client Dashboard
     'dashboard.welcome': 'Welcome to Supplify',
@@ -258,6 +263,29 @@ const translations = {
     'admin.adminVersion': 'Admin v2.0',
     'admin.searchPlaceholder': 'Search...',
     'admin.searching': 'Searching',
+
+    // Admin Menu Items
+    'admin.menu.dashboard': 'Dashboard',
+    'admin.menu.userManagement': 'User Management',
+    'admin.menu.allUsers': 'All Users',
+    'admin.menu.advancedManagement': 'Advanced Management',
+    'admin.menu.userProfiles': 'User Profiles',
+    'admin.menu.financial': 'Financial',
+    'admin.menu.financialDashboard': 'Dashboard',
+    'admin.menu.transactions': 'Transactions',
+    'admin.menu.subscriptions': 'Subscriptions',
+    'admin.menu.analytics': 'Analytics',
+    'admin.menu.platformAnalytics': 'Platform Analytics',
+    'admin.menu.userActivity': 'User Activity',
+    'admin.menu.reports': 'Reports',
+    'admin.menu.contentManagement': 'Content Management',
+    'admin.menu.requestsApproval': 'Requests Approval',
+    'admin.menu.offersManagement': 'Offers Management',
+    'admin.menu.expertConsultations': 'Expert Consultations',
+    'admin.menu.system': 'System',
+    'admin.menu.settings': 'Settings',
+    'admin.menu.themeDesign': 'Theme & Design',
+    'admin.menu.database': 'Database',
 
     // Admin translations
     'adminPanel': 'Admin Panel',
@@ -467,10 +495,6 @@ const translations = {
     'privacyContactContent': 'If you have any questions about this Privacy Policy, please contact us:',
     'privacyContactAddress': 'Address: Riyadh, Kingdom of Saudi Arabia',
     
-    // Theme translations 
-    'theme.light': 'Light',
-    'theme.dark': 'Dark',
-    'theme.system': 'System',
     
 
   },
@@ -494,6 +518,10 @@ const translations = {
     'nav.manageSubscription': 'إدارة الاشتراك',
     'nav.support': 'الدعم',
     'nav.browseRequests': 'تصفح الطلبات',
+    'nav.platform': 'المنصة',
+    'nav.whyStartWithUs': 'لماذا تبدأ معنا',
+    'nav.whyMoveToUs': 'لماذا تنتقل إلينا',
+    'nav.services': 'خدماتنا',
     
     // Common
     'common.submit': 'إرسال',
@@ -538,6 +566,7 @@ const translations = {
     'auth.createAccountButton': 'إنشاء حساب',
     'auth.showPassword': 'إظهار كلمة المرور',
     'auth.hidePassword': 'إخفاء كلمة المرور',
+    'auth.startFree': 'ابدأ مجاناً',
     
     // Dashboard - Client Dashboard
     'dashboard.welcome': 'مرحباً بك في سبلفاي',
@@ -649,6 +678,29 @@ const translations = {
     'admin.adminVersion': 'إصدار الإدارة 2.0',
     'admin.searchPlaceholder': 'البحث...',
     'admin.searching': 'جاري البحث',
+
+    // Admin Menu Items
+    'admin.menu.dashboard': 'لوحة التحكم',
+    'admin.menu.userManagement': 'إدارة المستخدمين',
+    'admin.menu.allUsers': 'جميع المستخدمين',
+    'admin.menu.advancedManagement': 'الإدارة المتقدمة',
+    'admin.menu.userProfiles': 'ملفات المستخدمين',
+    'admin.menu.financial': 'المالية',
+    'admin.menu.financialDashboard': 'لوحة التحكم',
+    'admin.menu.transactions': 'المعاملات',
+    'admin.menu.subscriptions': 'الاشتراكات',
+    'admin.menu.analytics': 'التحليلات',
+    'admin.menu.platformAnalytics': 'تحليلات المنصة',
+    'admin.menu.userActivity': 'نشاط المستخدمين',
+    'admin.menu.reports': 'التقارير',
+    'admin.menu.contentManagement': 'إدارة المحتوى',
+    'admin.menu.requestsApproval': 'موافقة الطلبات',
+    'admin.menu.offersManagement': 'إدارة العروض',
+    'admin.menu.expertConsultations': 'استشارات الخبراء',
+    'admin.menu.system': 'النظام',
+    'admin.menu.settings': 'الإعدادات',
+    'admin.menu.themeDesign': 'التصميم والمظهر',
+    'admin.menu.database': 'قاعدة البيانات',
 
     // Supplier Dashboard
     'supplier.welcome': 'مرحباً بك في لوحة مقدم الخدمة',

@@ -15,46 +15,47 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useNotifications } from "@/hooks/useNotifications";
 import { useRealTimeChat } from "@/hooks/useRealTimeChat";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-const bottomTabs = [
+const getBottomTabs = (t: (key: string) => string) => [
   {
     id: "home",
-    label: "Home",
+    label: t('nav.dashboard'),
     icon: Home,
     path: "/",
     roles: ["client", "supplier", "admin"]
   },
   {
     id: "search",
-    label: "Search",
+    label: t('nav.suppliers'),
     icon: Search,
     path: "/suppliers",
     roles: ["client"]
   },
   {
     id: "requests",
-    label: "Requests",
+    label: t('nav.requests'),
     icon: FileText,
     path: "/requests",
     roles: ["client", "supplier"]
   },
   {
     id: "messages",
-    label: "Messages",
+    label: t('nav.messages'),
     icon: MessageCircle,
     path: "/messages",
     roles: ["client", "supplier"]
   },
   {
     id: "analytics",
-    label: "Analytics",
+    label: t('nav.analytics'),
     icon: TrendingUp,
     path: "/admin",
     roles: ["admin"]
   },
   {
     id: "profile",
-    label: "Profile",
+    label: t('nav.profile'),
     icon: User,
     path: "/profile",
     roles: ["client", "supplier", "admin"]
@@ -65,6 +66,7 @@ export const MobileBottomTabs = () => {
   const { userProfile } = useAuth();
   const { unreadCount } = useNotifications();
   const { conversations } = useRealTimeChat();
+  const { t } = useLanguage();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -76,6 +78,9 @@ export const MobileBottomTabs = () => {
     return total; // placeholder
   }, 0);
 
+  // Get tabs with current translations
+  const bottomTabs = getBottomTabs(t);
+  
   // Filter tabs based on user role
   const visibleTabs = bottomTabs.filter(tab => 
     tab.roles.includes(userProfile.role)
