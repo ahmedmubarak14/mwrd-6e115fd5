@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { DashboardThemeToggle } from "@/components/ui/DashboardThemeToggle";
 import { Link, useLocation } from "react-router-dom";
 import { ConversationsDropdown } from "@/components/conversations/ConversationsDropdown";
 import { 
@@ -172,7 +172,7 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
           <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
             Theme / المظهر
           </p>
-          <ThemeToggle />
+          <DashboardThemeToggle />
         </div>
         
         <div className="space-y-2">
