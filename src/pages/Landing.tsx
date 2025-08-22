@@ -103,54 +103,87 @@ export const Landing = () => {
         </div>
       </header>
 
-      {/* Clean Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ background: 'var(--gradient-hero-bg)' }}>
-        
-        <div className="container mx-auto px-6 text-center relative z-10 pt-20">
-          <div className="max-w-6xl mx-auto">
-            {/* Revolutionary Badge */}
-            <div className="inline-flex items-center gap-3 killer-card rounded-full px-8 py-4 mb-12 animate-fade-in">
-              <Sparkles className="h-5 w-5 text-[#FBA765]" />
-              <span className="text-lg font-semibold gradient-text-accent">
-                {language === 'ar' ? 'ثورة في عالم المشتريات التجارية' : 'The Future of B2B Procurement Marketplace Starts Here'}
-              </span>
-            </div>
+      {/* Hero Section - Exact Match to Reference */}
+      <section className="relative min-h-screen flex items-center overflow-hidden" style={{ background: 'var(--gradient-hero-bg)' }}>
+        <div className="container mx-auto px-6 pt-20 pb-16 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto">
             
-            {/* Killer Headline */}
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-black mb-8 leading-none animate-fade-in-up">
-              <div className="gradient-text-hero font-black">
-                {language === 'ar' ? 'اكتشف' : 'Discover'}
+            {/* Left Content */}
+            <div className={`${language === 'ar' ? 'lg:order-2 text-right' : 'lg:order-1'} space-y-8`}>
+              
+              {/* Badge */}
+              <div className="inline-block">
+                <div className="glass-card px-4 py-2 text-sm text-white/80 rounded-full">
+                  {language === 'ar' ? 'سوق إمداد B2B يربط العملاء بالموردين المعتمدين عبر الشرق الأوسط وشمال أفريقيا' : 'B2B supply chain marketplace connecting clients with verified vendors across MENA'}
+                </div>
               </div>
-              <div className="text-white/90 text-4xl md:text-5xl lg:text-6xl font-medium mt-4">
-                {language === 'ar' ? 'تواصل • اربح • انمو' : 'Connect • Scale • Thrive'}
+
+              {/* Main Brand */}
+              <div className="space-y-4">
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-black">
+                  <span className="gradient-text-killer">MWRD</span>
+                  <span className="text-white/90"> | {language === 'ar' ? 'مورد' : 'مورد'}</span>
+                </h1>
+                <p className="text-lg text-white/70 font-medium">
+                  {language === 'ar' ? 'سوق سلسلة التوريد B2B' : 'B2B Supply Chain Marketplace'}
+                </p>
               </div>
-            </h1>
-            
-            {/* Revolutionary Subtitle */}
-            <p className="text-2xl md:text-3xl text-white/80 mb-16 max-w-4xl mx-auto leading-relaxed font-medium animate-fade-in-up">
-              {language === 'ar' 
-                ? 'انضم إلى النظام البيئي الأقوى لسوق المشتريات التجارية حيث تلتقي الابتكارات مع الفرص اللامحدودة'
-                : 'Join the most powerful B2B procurement marketplace ecosystem where innovation meets unlimited opportunities'}
-            </p>
-            
-            {/* Killer CTA Buttons */}
-            <div className="flex flex-col lg:flex-row gap-8 justify-center mb-20 animate-scale-in">
-              <Link to="/auth" className="group">
-                <Button size="lg" className="px-16 py-8 text-xl font-bold hover:shadow-[0_0_50px_rgba(102,2,60,0.8)] transition-all duration-500 hover:scale-110 rounded-full" style={{ background: 'var(--gradient-button-primary)' }}>
-                  <Rocket className={`h-7 w-7 ${language === 'ar' ? 'ml-3' : 'mr-3'} group-hover:rotate-12 transition-transform duration-500`} />
-                  {language === 'ar' ? 'ابدأ رحلة النجاح' : 'Launch Your Success'}
-                </Button>
-              </Link>
-              <Link to="/auth" className="group">
-                <Button variant="outline" size="lg" className="px-16 py-8 text-xl font-bold glass-card border-2 text-white hover:bg-orange/20 hover:shadow-[0_0_50px_rgba(251,167,101,0.8)] transition-all duration-500 hover:scale-110 rounded-full" style={{ borderColor: 'var(--orange)' }}>
-                  <Globe className={`h-7 w-7 ${language === 'ar' ? 'ml-3' : 'mr-3'} group-hover:rotate-180 transition-transform duration-700`} />
-                  {language === 'ar' ? 'استكشف السوق' : 'Explore Marketplace'}
-                </Button>
-              </Link>
+
+              {/* Hero Headline */}
+              <div className="space-y-6">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                  {language === 'ar' ? 'تواصل. مصدر. وريد.' : 'Connect. Source. Supply.'}
+                </h2>
+                <p className="text-xl text-white/80 leading-relaxed max-w-2xl">
+                  {language === 'ar' 
+                    ? 'منصة B2B مهنية تربط العملاء بالموردين المؤهلين من خلال نظام طلب عروض الأسعار الذكي. احصل على عروض أسعار تنافسية، وقارن المقترحات، وأدر سلسلة التوريد الخاصة بك بكفاءة.'
+                    : 'A professional B2B marketplace connecting clients with qualified vendors through our smart RFQ system. Get competitive quotes, compare proposals, and manage your supply chain efficiently.'}
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link to="/auth" className="group">
+                  <Button size="lg" className="px-8 py-4 text-lg font-semibold transition-all duration-300 hover:scale-105" style={{ background: 'var(--gradient-button-primary)' }}>
+                    {language === 'ar' ? 'ابدأ البحث' : 'Start Sourcing'}
+                  </Button>
+                </Link>
+                <Link to="/auth" className="group">
+                  <Button variant="outline" size="lg" className="px-8 py-4 text-lg font-semibold border-2 border-white/30 text-white hover:bg-white/10 transition-all duration-300 hover:scale-105">
+                    {language === 'ar' ? 'انضم كمورد' : 'Join as Vendor'}
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Features List */}
+              <div className="space-y-4">
+                {[
+                  { text: language === 'ar' ? 'أرسل طلبات عروض الأسعار واحصل على عروض تنافسية' : 'Submit RFQs and receive competitive bids' },
+                  { text: language === 'ar' ? 'تواصل مع موردين معتمدين في قطاعك' : 'Connect with verified vendors in your sector' },
+                  { text: language === 'ar' ? 'معاملات آمنة وتتبع الطلبات' : 'Secure transactions and order tracking' }
+                ].map((feature, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <CheckCircle className="h-5 w-5 text-green-400 flex-shrink-0" />
+                    <span className="text-white/80">{feature.text}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Trust Badge */}
+              <div className="pt-8">
+                <p className="text-white/60 text-sm mb-2">
+                  {language === 'ar' ? 'موثوق من قبل أكثر من 500+ شركة' : 'Trusted by 500+ businesses'}
+                </p>
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+              </div>
             </div>
 
-            {/* Trust Indicators - Matching Reference Design */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto animate-fade-in">
+            {/* Right Stats Cards */}
+            <div className={`${language === 'ar' ? 'lg:order-1' : 'lg:order-2'} space-y-6`}>
               {[
                 { 
                   icon: FileText, 
@@ -158,7 +191,8 @@ export const Landing = () => {
                   subtitle: language === 'ar' ? 'عروض ذكية' : 'Smart bidding',
                   count: "24", 
                   label: language === 'ar' ? 'طلبات نشطة' : 'Active RFQs', 
-                  color: '#8B5CF6'
+                  color: '#8B5CF6',
+                  progress: 60
                 },
                 { 
                   icon: Users, 
@@ -166,7 +200,8 @@ export const Landing = () => {
                   subtitle: language === 'ar' ? 'موردون موثقون' : 'Verified suppliers',
                   count: "1,247", 
                   label: language === 'ar' ? 'موردون نشطون' : 'Active vendors', 
-                  color: '#3B82F6'
+                  color: '#3B82F6',
+                  progress: 85
                 },
                 { 
                   icon: Shield, 
@@ -174,7 +209,8 @@ export const Landing = () => {
                   subtitle: language === 'ar' ? 'معاملات موثقة' : 'Verified transactions',
                   count: "99.9%", 
                   label: language === 'ar' ? 'معدل النجاح' : 'Success rate', 
-                  color: '#10B981'
+                  color: '#10B981',
+                  progress: 99
                 },
                 { 
                   icon: Clock, 
@@ -182,40 +218,40 @@ export const Landing = () => {
                   subtitle: language === 'ar' ? 'متوسط الاستجابة' : 'Average response',
                   count: "4.2h", 
                   label: language === 'ar' ? 'وقت استجابة العرض' : 'Bid response time', 
-                  color: '#F59E0B'
+                  color: '#F59E0B',
+                  progress: 70
                 }
               ].map((stat, index) => (
-                <Card key={index} className="card-trust group hover:scale-105 transition-all duration-700 animate-fade-in p-4" style={{ animationDelay: `${index * 0.2}s` }}>
-                  <div className="flex items-start gap-3 mb-3">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${stat.color}20`, border: `1px solid ${stat.color}50` }}>
-                      <stat.icon className="h-4 w-4" style={{ color: stat.color }} />
+                <Card key={index} className="glass-card-premium p-6 hover:scale-105 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${stat.color}20`, border: `1px solid ${stat.color}40` }}>
+                      <stat.icon className="h-6 w-6" style={{ color: stat.color }} />
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="text-sm font-semibold text-white leading-tight">{stat.title}</div>
-                      <div className="text-xs text-white/60 leading-tight">{stat.subtitle}</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="font-bold text-white text-lg">{stat.title}</h3>
+                      </div>
+                      <p className="text-sm text-white/60 mb-3">{stat.subtitle}</p>
+                      <div className="flex items-end justify-between">
+                        <div>
+                          <div className="text-3xl font-black text-white mb-1">{stat.count}</div>
+                          <div className="text-sm text-white/70">{stat.label}</div>
+                        </div>
+                      </div>
+                      <div className="w-full bg-white/10 rounded-full h-1.5 mt-4">
+                        <div 
+                          className="h-1.5 rounded-full transition-all duration-1000" 
+                          style={{ 
+                            backgroundColor: stat.color, 
+                            width: `${stat.progress}%`
+                          }}
+                        ></div>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="text-2xl font-black text-white mb-1">{stat.count}</div>
-                  <div className="text-xs text-white/70 font-medium leading-tight">{stat.label}</div>
-                  
-                  {/* Progress bar for visual consistency */}
-                  <div className="w-full bg-white/10 rounded-full h-1 mt-3">
-                    <div className="h-1 rounded-full" style={{ 
-                      backgroundColor: stat.color, 
-                      width: stat.count === '99.9%' ? '99%' : stat.count === '24' ? '60%' : stat.count === '1,247' ? '85%' : '70%' 
-                    }}></div>
                   </div>
                 </Card>
               ))}
             </div>
-          </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce-subtle">
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white/70 rounded-full mt-2 animate-pulse"></div>
           </div>
         </div>
       </section>

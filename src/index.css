@@ -78,14 +78,14 @@ All colors MUST be HSL.
     /* Header uses #102C33 as specified */
     --gradient-header: linear-gradient(135deg, #102C33 0%, #004F54 100%);
     
-    /* Hero Section - Multi-stop gradient using all brand colors */
-    --gradient-hero-bg: linear-gradient(135deg, #66023C 0%, #004F54 25%, #765A3F 50%, #FBA765 75%, #F1EFE8 100%);
+    /* Hero Section - Minimal orange, focus on primary brand colors */
+    --gradient-hero-bg: linear-gradient(135deg, #102C33 0%, #66023C 30%, #004F54 70%, #765A3F 100%);
     --gradient-hero-overlay: linear-gradient(135deg, #66023C 0%, #004F54 100%);
     
-    /* Text Gradients */
-    --gradient-text-killer: linear-gradient(135deg, #66023C 0%, #004F54 50%, #FBA765 100%);
-    --gradient-text-accent: linear-gradient(135deg, #FBA765 0%, #765A3F 100%);
-    --gradient-text-subtle: linear-gradient(135deg, #004F54 0%, #765A3F 100%);
+    /* Text Gradients - Minimal orange */
+    --gradient-text-killer: linear-gradient(135deg, #66023C 0%, #004F54 80%, #FBA765 100%);
+    --gradient-text-accent: linear-gradient(135deg, #004F54 0%, #66023C 100%);
+    --gradient-text-subtle: linear-gradient(135deg, #765A3F 0%, #004F54 100%);
     
     /* Button Gradients */
     --gradient-button-primary: linear-gradient(135deg, #66023C 0%, #004F54 100%);
