@@ -61,7 +61,7 @@ export const Landing = () => {
       <SmoothScroll />
       
       {/* Ultra-Modern Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-background/20 backdrop-filter backdrop-blur-xl border-b border-white/10">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#102C33] backdrop-filter backdrop-blur-xl border-b border-white/10">
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
           <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
             <Link to={user && userProfile ? "/dashboard" : "/"} className="flex items-center gap-3 group">
@@ -120,7 +120,7 @@ export const Landing = () => {
             <div className="inline-flex items-center gap-3 killer-card rounded-full px-8 py-4 mb-12 animate-fade-in">
               <Sparkles className="h-5 w-5 text-[#FBA765]" />
               <span className="text-lg font-semibold bg-gradient-to-r from-[#FBA765] to-[#765A3F] bg-clip-text text-transparent">
-                {language === 'ar' ? 'ثورة في عالم التجارة الإلكترونية' : 'The Future of B2B Commerce Starts Here'}
+                {language === 'ar' ? 'ثورة في عالم المشتريات التجارية' : 'The Future of B2B Procurement Marketplace Starts Here'}
               </span>
             </div>
             
@@ -137,8 +137,8 @@ export const Landing = () => {
             {/* Revolutionary Subtitle */}
             <p className="text-2xl md:text-3xl text-white/80 mb-16 max-w-4xl mx-auto leading-relaxed font-light animate-fade-in-up">
               {language === 'ar' 
-                ? 'انضم إلى النظام البيئي الأقوى للتجارة الإلكترونية حيث تلتقي الابتكارات مع الفرص اللامحدودة'
-                : 'Join the most powerful B2B ecosystem where innovation meets unlimited opportunities'}
+                ? 'انضم إلى النظام البيئي الأقوى لسوق المشتريات التجارية حيث تلتقي الابتكارات مع الفرص اللامحدودة'
+                : 'Join the most powerful B2B procurement marketplace ecosystem where innovation meets unlimited opportunities'}
             </p>
             
             {/* Killer CTA Buttons */}
@@ -188,21 +188,21 @@ export const Landing = () => {
       </section>
 
       {/* Revolutionary Workflow Section */}
-      <section className="py-32 px-6 bg-gradient-to-b from-[#F1EFE8] to-white relative overflow-hidden">
+      <section className="py-32 px-6 bg-gradient-to-b from-[#102C33] to-[#004F54] relative overflow-hidden">
         {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, #66023C 2px, transparent 2px)`, backgroundSize: '50px 50px' }}></div>
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, #FBA765 2px, transparent 2px)`, backgroundSize: '50px 50px' }}></div>
         </div>
 
         <div className="container mx-auto relative z-10">
           <div className="text-center mb-20">
-            <h2 className="text-5xl md:text-7xl font-black mb-8 bg-gradient-to-r from-[#66023C] to-[#004F54] bg-clip-text text-transparent">
-              {language === 'ar' ? 'كيف نعيد تشكيل التجارة؟' : 'How We\'re Reshaping Commerce'}
+            <h2 className="text-5xl md:text-7xl font-black mb-8 text-white">
+              {language === 'ar' ? 'كيف نعيد تشكيل المشتريات التجارية؟' : 'How We\'re Reshaping B2B Procurement'}
             </h2>
-            <p className="text-2xl text-[#765A3F] max-w-3xl mx-auto font-light">
+            <p className="text-2xl text-white/70 max-w-3xl mx-auto font-light">
               {language === 'ar' 
-                ? 'نظام ثوري يدمج الذكاء الاصطناعي مع التجارة لتقديم تجربة لا مثيل لها'
-                : 'A revolutionary system that merges AI with commerce to deliver an unmatched experience'}
+                ? 'نظام ثوري يدمج الذكاء الاصطناعي مع سوق المشتريات التجارية لتقديم تجربة لا مثيل لها'
+                : 'A revolutionary system that merges AI with B2B procurement marketplace to deliver an unmatched experience'}
             </p>
           </div>
 
@@ -210,25 +210,25 @@ export const Landing = () => {
             {/* Revolutionary Step System */}
             <div className="relative">
               {/* Animated Connection Line */}
-              <div className="absolute left-1/2 top-0 bottom-0 w-2 bg-gradient-to-b from-[#66023C] via-[#FBA765] to-[#004F54] transform -translate-x-1/2 hidden lg:block rounded-full shadow-2xl"></div>
+              <div className="absolute left-1/2 top-0 bottom-0 w-2 bg-gradient-to-b from-[#FBA765] via-[#66023C] to-[#004F54] transform -translate-x-1/2 hidden lg:block rounded-full shadow-2xl"></div>
 
               {/* Step 1: AI-Powered Discovery */}
               <div className="relative mb-32 group">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                   <div className="lg:w-1/2 lg:pr-16">
-                    <Card className="p-12 bg-gradient-to-br from-[#66023C]/5 to-[#66023C]/10 border-none shadow-2xl hover:shadow-[0_25px_80px_rgba(102,2,60,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl">
+                    <Card className="p-12 bg-gradient-to-br from-white/10 to-white/5 border border-white/20 shadow-2xl hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl backdrop-blur-xl">
                       <div className="flex items-center gap-6 mb-8">
                         <div className="w-20 h-20 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-3xl flex items-center justify-center shadow-xl">
                           <Search className="h-10 w-10 text-white" />
                         </div>
                         <div>
-                          <span className="text-4xl font-black text-[#66023C]">01</span>
-                          <h3 className="text-3xl font-bold text-[#102C33]">
+                          <span className="text-4xl font-black text-[#FBA765]">01</span>
+                          <h3 className="text-3xl font-bold text-white">
                             {language === 'ar' ? 'اكتشاف ذكي' : 'AI-Powered Discovery'}
                           </h3>
                         </div>
                       </div>
-                      <p className="text-xl text-[#765A3F] leading-relaxed font-medium">
+                      <p className="text-xl text-white/80 leading-relaxed font-medium">
                         {language === 'ar' 
                           ? 'تقنية الذكاء الاصطناعي تحلل احتياجاتك وتوصلك بأفضل الموردين في ثوانٍ. اكتشف فرصاً لم تتخيلها من قبل'
                           : 'AI technology analyzes your needs and connects you with the best suppliers in seconds. Discover opportunities you never imagined'}
@@ -243,9 +243,9 @@ export const Landing = () => {
                         { icon: Eye, label: language === 'ar' ? 'رؤى متقدمة' : 'Advanced Insights', color: '#004F54' },
                         { icon: TrendingUp, label: language === 'ar' ? 'نمو مضمون' : 'Guaranteed Growth', color: '#765A3F' }
                       ].map((feature, index) => (
-                        <Card key={index} className="p-6 bg-white/80 backdrop-blur-xl border-none shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl">
+                        <Card key={index} className="p-6 bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl">
                           <feature.icon className="h-8 w-8 mb-4" style={{ color: feature.color }} />
-                          <div className="text-lg font-bold" style={{ color: feature.color }}>{feature.label}</div>
+                          <div className="text-lg font-bold text-white">{feature.label}</div>
                         </Card>
                       ))}
                     </div>
@@ -258,19 +258,19 @@ export const Landing = () => {
               <div className="relative mb-32 group">
                 <div className="flex flex-col lg:flex-row-reverse items-center gap-16">
                   <div className="lg:w-1/2 lg:pl-16">
-                    <Card className="p-12 bg-gradient-to-br from-[#FBA765]/5 to-[#FBA765]/10 border-none shadow-2xl hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl">
+                    <Card className="p-12 bg-gradient-to-br from-white/10 to-white/5 border border-white/20 shadow-2xl hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl backdrop-blur-xl">
                       <div className="flex items-center gap-6 mb-8">
                         <div className="w-20 h-20 bg-gradient-to-br from-[#FBA765] to-[#765A3F] rounded-3xl flex items-center justify-center shadow-xl">
                           <MessageSquare className="h-10 w-10 text-white" />
                         </div>
                         <div>
                           <span className="text-4xl font-black text-[#FBA765]">02</span>
-                          <h3 className="text-3xl font-bold text-[#102C33]">
+                          <h3 className="text-3xl font-bold text-white">
                             {language === 'ar' ? 'تفاوض سلس' : 'Seamless Negotiation'}
                           </h3>
                         </div>
                       </div>
-                      <p className="text-xl text-[#765A3F] leading-relaxed font-medium">
+                      <p className="text-xl text-white/80 leading-relaxed font-medium">
                         {language === 'ar' 
                           ? 'منصة تفاوض متطورة مع ترجمة فورية وتحليل السوق الذكي. كل صفقة محمية بضمانات متعددة الطبقات'
                           : 'Advanced negotiation platform with real-time translation and smart market analysis. Every deal protected by multi-layered guarantees'}
@@ -285,9 +285,9 @@ export const Landing = () => {
                         { icon: BarChart3, label: language === 'ar' ? 'تحليل السوق' : 'Market Analysis', color: '#66023C' },
                         { icon: HeartHandshake, label: language === 'ar' ? 'ثقة متبادلة' : 'Mutual Trust', color: '#765A3F' }
                       ].map((feature, index) => (
-                        <Card key={index} className="p-6 bg-white/80 backdrop-blur-xl border-none shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl">
+                        <Card key={index} className="p-6 bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl">
                           <feature.icon className="h-8 w-8 mb-4" style={{ color: feature.color }} />
-                          <div className="text-lg font-bold" style={{ color: feature.color }}>{feature.label}</div>
+                          <div className="text-lg font-bold text-white">{feature.label}</div>
                         </Card>
                       ))}
                     </div>
@@ -300,19 +300,19 @@ export const Landing = () => {
               <div className="relative group">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                   <div className="lg:w-1/2 lg:pr-16">
-                    <Card className="p-12 bg-gradient-to-br from-[#004F54]/5 to-[#004F54]/10 border-none shadow-2xl hover:shadow-[0_25px_80px_rgba(0,79,84,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl">
+                    <Card className="p-12 bg-gradient-to-br from-white/10 to-white/5 border border-white/20 shadow-2xl hover:shadow-[0_25px_80px_rgba(0,79,84,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl backdrop-blur-xl">
                       <div className="flex items-center gap-6 mb-8">
                         <div className="w-20 h-20 bg-gradient-to-br from-[#004F54] to-[#102C33] rounded-3xl flex items-center justify-center shadow-xl">
                           <CreditCard className="h-10 w-10 text-white" />
                         </div>
                         <div>
                           <span className="text-4xl font-black text-[#004F54]">03</span>
-                          <h3 className="text-3xl font-bold text-[#102C33]">
+                          <h3 className="text-3xl font-bold text-white">
                             {language === 'ar' ? 'إنجاز آمن' : 'Secure Completion'}
                           </h3>
                         </div>
                       </div>
-                      <p className="text-xl text-[#765A3F] leading-relaxed font-medium">
+                      <p className="text-xl text-white/80 leading-relaxed font-medium">
                         {language === 'ar' 
                           ? 'نظام دفع متقدم مع تشفير عسكري وضمانات استرداد كاملة. تتبع الشحنات والجودة في الوقت الفعلي'
                           : 'Advanced payment system with military-grade encryption and full refund guarantees. Real-time shipment and quality tracking'}
@@ -327,9 +327,9 @@ export const Landing = () => {
                         { icon: CheckCircle, label: language === 'ar' ? 'ضمان الجودة' : 'Quality Assurance', color: '#66023C' },
                         { icon: Award, label: language === 'ar' ? 'خدمة مميزة' : 'Premium Service', color: '#765A3F' }
                       ].map((feature, index) => (
-                        <Card key={index} className="p-6 bg-white/80 backdrop-blur-xl border-none shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl">
+                        <Card key={index} className="p-6 bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl">
                           <feature.icon className="h-8 w-8 mb-4" style={{ color: feature.color }} />
-                          <div className="text-lg font-bold" style={{ color: feature.color }}>{feature.label}</div>
+                          <div className="text-lg font-bold text-white">{feature.label}</div>
                         </Card>
                       ))}
                     </div>
@@ -480,8 +480,8 @@ export const Landing = () => {
             </h2>
             <p className="text-2xl md:text-3xl text-[#765A3F] mb-16 font-light leading-relaxed">
               {language === 'ar' 
-                ? 'كن جزءاً من مستقبل التجارة الإلكترونية اليوم'
-                : 'Be part of the future of commerce today'}
+                ? 'كن جزءاً من مستقبل سوق المشتريات التجارية اليوم'
+                : 'Be part of the future of B2B procurement marketplace today'}
             </p>
             
             <div className="flex flex-col lg:flex-row gap-8 justify-center">
@@ -501,8 +501,8 @@ export const Landing = () => {
         <div className="container mx-auto text-center">
           <p className="text-lg">
             {language === 'ar' 
-              ? '© 2024 MWRD. جميع الحقوق محفوظة. مستقبل التجارة يبدأ هنا.'
-              : '© 2024 MWRD. All rights reserved. The future of commerce starts here.'}
+              ? '© 2024 MWRD. جميع الحقوق محفوظة. مستقبل سوق المشتريات التجارية يبدأ هنا.'
+              : '© 2024 MWRD. All rights reserved. The future of B2B procurement marketplace starts here.'}
           </p>
         </div>
       </footer>
