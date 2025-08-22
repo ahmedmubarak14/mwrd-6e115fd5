@@ -29,8 +29,8 @@ const LANDING_ROUTES = [
   '/home',
   '/pricing',
   '/suppliers',
-  '/why-start-with-supplify',
-  '/why-move-to-supplify',
+  '/why-start-with-mwrd',
+  '/why-move-to-mwrd',
   '/privacy-policy',
   '/terms-and-conditions',
   '/support'

@@ -9,8 +9,8 @@ import { RouteAwareThemeProvider } from "@/contexts/RouteAwareThemeContext";
 import { Landing } from "./pages/Landing";
 import { Home } from "./pages/Home";
 import { Dashboard } from "./pages/Dashboard";
-import { WhyStartWithSupplify } from "./pages/WhyStartWithSupplify";
-import { WhyMoveToSupplify } from "./pages/WhyMoveToSupplify";
+import { WhyStartWithMWRD } from "./pages/WhyStartWithMWRD";
+import { WhyMoveToMWRD } from "./pages/WhyMoveToMWRD";
 import { Requests } from "./pages/Requests";
 import { Suppliers } from "./pages/Suppliers";
 import { Pricing } from "./pages/Pricing";
@@ -68,8 +68,8 @@ const App = () => (
               <Route path="/landing" element={<Landing />} />
               <Route path="/home" element={<Home />} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-              <Route path="/why-start-with-supplify" element={<WhyStartWithSupplify />} />
-              <Route path="/why-move-to-supplify" element={<WhyMoveToSupplify />} />
+              <Route path="/why-start-with-mwrd" element={<WhyStartWithMWRD />} />
+              <Route path="/why-move-to-mwrd" element={<WhyMoveToMWRD />} />
               <Route path="/requests" element={<ProtectedRoute><Requests /></ProtectedRoute>} />
               <Route path="/suppliers" element={<Suppliers />} />
               <Route path="/pricing" element={<Pricing />} />

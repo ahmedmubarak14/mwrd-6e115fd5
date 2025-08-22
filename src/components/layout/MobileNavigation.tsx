@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import mwrdLogo from "@/assets/mwrd-logo.png";
 import {
   Sheet,
   SheetContent,
@@ -25,12 +26,12 @@ export const MobileNavigation = () => {
       label: t('nav.platform')
     },
     {
-      href: "/why-start-with-supplify",
+      href: "/why-start-with-mwrd",
       icon: TrendingUp,
       label: t('nav.whyStartWithUs')
     },
     {
-      href: "/why-move-to-supplify",
+      href: "/why-move-to-mwrd",
       icon: Building2,
       label: t('nav.whyMoveToUs')
     },
@@ -63,8 +64,8 @@ export const MobileNavigation = () => {
             <SheetTitle className={`flex items-center gap-3 ${isRTL ? 'justify-end' : 'justify-start'}`}>
               <Link to="/landing" onClick={handleLinkClick}>
                 <img 
-                  src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
-                  alt="Supplify Logo"
+                  src={mwrdLogo} 
+                  alt="MWRD Logo"
                   className="h-14 w-auto"
                 />
               </Link>

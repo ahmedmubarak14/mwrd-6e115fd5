@@ -7,7 +7,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
 import { DemoButton } from "@/components/demo/DemoButton";
 
-export const WhyStartWithSupplify = () => {
+export const WhyStartWithMWRD = () => {
   const { t, language } = useLanguage();
   const isRTL = language === 'ar';
 

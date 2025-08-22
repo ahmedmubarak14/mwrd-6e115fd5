@@ -11,6 +11,7 @@ import { MobileNavigation } from "@/components/layout/MobileNavigation";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import mwrdLogo from "@/assets/mwrd-logo.png";
 export const Landing = () => {
   const {
     t,
@@ -96,7 +97,7 @@ export const Landing = () => {
           {/* Logo - Conditional redirect based on auth state */}
           <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
             <Link to={user && userProfile ? "/dashboard" : "/"} className="flex items-center gap-3">
-              <img src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" alt="Supplify Logo" className="h-24 w-auto hover:scale-105 transition-transform" />
+              <img src={mwrdLogo} alt="MWRD Logo" className="h-24 w-auto hover:scale-105 transition-transform" />
             </Link>
           </div>
           

@@ -69,6 +69,10 @@ export default {
 				lime: {
 					DEFAULT: 'hsl(var(--lime))',
 					foreground: 'hsl(var(--lime-foreground))'
+				},
+				orange: {
+					DEFAULT: '29 78% 68%',    /* #FBA765 - Cozy Nook */
+					foreground: 'hsl(var(--primary-900))'
 				}
 			},
 			borderRadius: {

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
 
-export const WhyMoveToSupplify = () => {
+export const WhyMoveToMWRD = () => {
   const { t, language } = useLanguage();
   const isRTL = language === 'ar';
 

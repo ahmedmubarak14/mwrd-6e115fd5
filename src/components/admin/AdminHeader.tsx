@@ -11,6 +11,7 @@ import {
   Globe,
   RefreshCw,
 } from "lucide-react";
+import mwrdLogo from "@/assets/mwrd-logo.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -80,8 +81,8 @@ export const AdminHeader = () => {
             className="flex items-center gap-2 hover:scale-105 transition-transform"
           >
             <img 
-              src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
-              alt="Supplify Logo"
+              src={mwrdLogo} 
+              alt="MWRD Logo"
               className="h-12 sm:h-20 lg:h-24 w-auto"
             />
           </button>

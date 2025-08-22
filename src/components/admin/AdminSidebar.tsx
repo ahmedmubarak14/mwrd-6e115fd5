@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import mwrdLogo from "@/assets/mwrd-logo.png";
 import {
   Users,
   BarChart3,
@@ -207,8 +208,8 @@ export const AdminSidebar = ({ collapsed = false }: AdminSidebarProps) => {
           collapsed && "justify-center"
         )}>
           <img 
-            src="/lovable-uploads/91db8182-e5ce-4596-90c8-bfa524cd0464.png" 
-            alt="Supplify Logo" 
+            src={mwrdLogo} 
+            alt="MWRD Logo" 
             className="h-8 w-8 object-contain flex-shrink-0"
           />
           {!collapsed && (
@@ -329,7 +330,7 @@ export const AdminSidebar = ({ collapsed = false }: AdminSidebarProps) => {
           <div className="text-center">
             <div className="text-xs text-sidebar-foreground/60 space-y-1">
               <p className="font-medium">{t('admin.adminVersion')}</p>
-              <p>© 2024 Supplify</p>
+              <p>© 2024 MWRD</p>
             </div>
           </div>
         ) : (
