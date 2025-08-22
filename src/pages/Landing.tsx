@@ -30,11 +30,11 @@ export const Landing = () => {
     englishDescription: "Verified professionals"
   }, {
     number: "10,000+",
-    label: "فعالية ناجحة",
-    englishLabel: "Successful Events",
+    label: "مشروع ناجح",
+    englishLabel: "Successful Projects",
     icon: Calendar,
-    description: "فعاليات منجزة بتميز",
-    englishDescription: "Events delivered with excellence"
+    description: "مشاريع منجزة بتميز",
+    englishDescription: "Projects delivered with excellence"
   }, {
     number: "13",
     label: "منطقة في المملكة",
@@ -300,7 +300,7 @@ export const Landing = () => {
       </section>
 
       {/* Platform Advantages Section */}
-      <section id="platform" className="py-24 px-4 bg-muted/30">
+      <section id="platform" className="py-24 px-4 bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
         <div className="container mx-auto">
           <div className="text-center mb-20">
             <div className="inline-flex items-center gap-2 bg-accent/10 rounded-full px-6 py-2 mb-6">
@@ -567,7 +567,7 @@ export const Landing = () => {
       </section>
 
       {/* What We Cover Section */}
-      <section id="services" className="py-24 px-4 bg-muted/30">
+      <section id="services" className="py-24 px-4 bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
         <div className="container mx-auto">
           <div className="text-center mb-20">
             <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-6 py-2 mb-6">
@@ -654,7 +654,7 @@ export const Landing = () => {
       </section>
 
       {/* UVP Section */}
-      <section id="uvp" className="py-24 px-4">
+      <section id="uvp" className="py-24 px-4 bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
         <div className="container mx-auto">
           <div className="text-center mb-20">
             <div className="inline-flex items-center gap-2 bg-accent/10 rounded-full px-6 py-2 mb-6">
@@ -748,8 +748,7 @@ export const Landing = () => {
       </section>
 
       {/* Enhanced CTA Section */}
-      <section className="py-24 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-lime"></div>
+      <section className="py-24 px-4 relative overflow-hidden bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
         <div className="absolute inset-0">
           <div className="absolute top-1/4 right-1/3 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
@@ -759,7 +758,7 @@ export const Landing = () => {
         <div className="container mx-auto text-center relative z-10 text-white">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              {language === 'ar' ? 'هل أنت مستعد لتحويل فعالياتك؟' : 'Are You Ready to Transform Your Events?'}
+              {language === 'ar' ? 'هل أنت مستعد لتحويل مشترياتك؟' : 'Are You Ready to Transform Your Procurement?'}
             </h2>
             <p className="text-xl md:text-2xl opacity-90 mb-12 leading-relaxed">
               {language === 'ar' ? 'انضم إلى آلاف الشركات الرائدة التي اختارت مورد لتحقيق أحلامها في عالم المشتريات' : 'Join thousands of leading companies that chose MWRD to achieve their dreams in the procurement world'}

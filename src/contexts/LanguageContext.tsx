@@ -15,7 +15,7 @@ const translations = {
   en: {
     // App name and slogan
     'app.name': 'MWRD',
-    'app.slogan': 'All Procurement Needs in One Place',
+    'app.slogan': 'The Future of Procurement Starts Here…',
     
     // Landing page translations
     'landing.hero.badge': 'EMPOWERING BUSINESSES OF ALL SHAPES AND SIZES',

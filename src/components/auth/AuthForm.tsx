@@ -199,7 +199,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-accent/10 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <Link to="/" className="inline-block">

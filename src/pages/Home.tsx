@@ -33,9 +33,9 @@ export const Home = () => {
   // Show user details if logged in
   if (user && userProfile) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
         {/* Header with logo */}
-        <header className="border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
+        <header className="border-b bg-gradient-to-r from-[#66023C] via-[#765A3F] to-[#004F54] backdrop-blur-sm sticky top-0 z-50">
           <div className="container mx-auto px-4 h-16 flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3">
               <img 
@@ -56,7 +56,7 @@ export const Home = () => {
         </header>
 
         {/* User Profile Section */}
-        <section className="py-24 px-4">
+        <section className="py-24 px-4 text-white">
           <div className="container mx-auto text-center">
             <div className="inline-flex items-center gap-2 bg-lime/10 rounded-full px-6 py-2 mb-6">
               <Shield className="h-4 w-4 text-lime" />
