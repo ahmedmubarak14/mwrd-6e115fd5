@@ -74,13 +74,42 @@ All colors MUST be HSL.
     --ring: var(--primary-600);
     --radius: 0.75rem;
 
-    /* Clean Hero Design System - Synchronized with Button Colors */
-    --gradient-hero-bg: linear-gradient(135deg, #66023C 0%, #004F54 100%);
-    --gradient-text-killer: linear-gradient(135deg, #66023C 0%, #004F54 50%, #66023C 100%);
+    /* Comprehensive Brand Color Gradient System */
+    /* Header uses #102C33 as specified */
+    --gradient-header: linear-gradient(135deg, #102C33 0%, #004F54 100%);
+    
+    /* Hero Section - Multi-stop gradient using all brand colors */
+    --gradient-hero-bg: linear-gradient(135deg, #66023C 0%, #004F54 25%, #765A3F 50%, #FBA765 75%, #F1EFE8 100%);
+    --gradient-hero-overlay: linear-gradient(135deg, #66023C 0%, #004F54 100%);
+    
+    /* Text Gradients */
+    --gradient-text-killer: linear-gradient(135deg, #66023C 0%, #004F54 50%, #FBA765 100%);
+    --gradient-text-accent: linear-gradient(135deg, #FBA765 0%, #765A3F 100%);
+    --gradient-text-subtle: linear-gradient(135deg, #004F54 0%, #765A3F 100%);
+    
+    /* Button Gradients */
     --gradient-button-primary: linear-gradient(135deg, #66023C 0%, #004F54 100%);
     --gradient-button-secondary: linear-gradient(135deg, #FBA765 0%, #765A3F 100%);
+    --gradient-button-accent: linear-gradient(135deg, #004F54 0%, #66023C 100%);
+    
+    /* Card & Component Gradients */
+    --gradient-card-bg: linear-gradient(135deg, rgba(241, 239, 232, 0.1) 0%, rgba(251, 167, 101, 0.05) 100%);
+    --gradient-card-border: linear-gradient(135deg, rgba(102, 2, 60, 0.2) 0%, rgba(0, 79, 84, 0.2) 100%);
+    
+    /* Section Background Gradients */
+    --gradient-section-1: linear-gradient(135deg, #F1EFE8 0%, rgba(251, 167, 101, 0.1) 100%);
+    --gradient-section-2: linear-gradient(135deg, rgba(118, 90, 63, 0.05) 0%, rgba(0, 79, 84, 0.05) 100%);
+    --gradient-section-3: linear-gradient(135deg, rgba(102, 2, 60, 0.03) 0%, #F1EFE8 100%);
+    
+    /* Glass Effect Gradients */
+    --gradient-glass-bg: linear-gradient(135deg, rgba(102, 2, 60, 0.1) 0%, rgba(0, 79, 84, 0.1) 50%, rgba(251, 167, 101, 0.05) 100%);
+    --gradient-glass-border: linear-gradient(135deg, rgba(102, 2, 60, 0.2) 0%, rgba(251, 167, 101, 0.2) 100%);
+    
+    /* Enhanced Shadows with Brand Colors */
     --shadow-elegant: 0 25px 50px -15px rgba(102, 2, 60, 0.3);
-    --shadow-card: 0 10px 30px -5px rgba(0, 0, 0, 0.2);
+    --shadow-card: 0 10px 30px -5px rgba(0, 79, 84, 0.2);
+    --shadow-accent: 0 15px 35px -10px rgba(251, 167, 101, 0.3);
+    --shadow-bronze: 0 12px 25px -8px rgba(118, 90, 63, 0.25);
     
     /* Legacy gradients for compatibility */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary-600)), hsl(var(--primary-400)));
@@ -417,10 +446,54 @@ All colors MUST be HSL.
   }
 
   .card-trust {
-    background: rgba(255, 255, 255, 0.1) !important;
+    background: var(--gradient-glass-bg) !important;
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border: 1px solid transparent !important;
+    border-image: var(--gradient-glass-border) 1 !important;
     box-shadow: var(--shadow-card);
+  }
+
+  /* New Brand Gradient Classes */
+  .gradient-text-accent {
+    background: var(--gradient-text-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-subtle {
+    background: var(--gradient-text-subtle);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-section-1 {
+    background: var(--gradient-section-1);
+  }
+
+  .bg-section-2 {
+    background: var(--gradient-section-2);
+  }
+
+  .bg-section-3 {
+    background: var(--gradient-section-3);
+  }
+
+  .glass-card {
+    background: var(--gradient-glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid transparent;
+    border-image: var(--gradient-glass-border) 1;
+    box-shadow: var(--shadow-card);
+  }
+
+  .glass-card-premium {
+    background: var(--gradient-card-bg);
+    backdrop-filter: blur(25px);
+    border: 1px solid transparent;
+    border-image: var(--gradient-card-border) 1;
+    box-shadow: var(--shadow-accent);
   }
 
   @keyframes gradient-shift {

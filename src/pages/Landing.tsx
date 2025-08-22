@@ -62,7 +62,7 @@ export const Landing = () => {
       <SmoothScroll />
       
       {/* Ultra-Modern Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#102C33] backdrop-filter backdrop-blur-xl border-b border-white/10">
+      <header className="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-white/10" style={{ background: 'var(--gradient-header)' }}>
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
           <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
             <Link to={user && userProfile ? "/dashboard" : "/"} className="flex items-center gap-3 group">
@@ -80,7 +80,7 @@ export const Landing = () => {
             </div>
             {user && userProfile ? (
               <Link to="/dashboard" className="hidden md:block">
-                <Button size="lg" className="px-8 bg-gradient-to-r from-[#66023C] to-[#004F54] hover:shadow-2xl transition-all duration-500 hover:scale-105">
+                <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105" style={{ background: 'var(--gradient-button-primary)' }}>
                   {language === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
                 </Button>
               </Link>
@@ -92,7 +92,7 @@ export const Landing = () => {
                   </Button>
                 </Link>
                 <Link to="/auth" className="hidden md:block">
-                  <Button size="lg" className="px-8 bg-gradient-to-r from-[#FBA765] to-[#765A3F] hover:shadow-2xl transition-all duration-500 hover:scale-105">
+                  <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105" style={{ background: 'var(--gradient-button-secondary)' }}>
                     {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
                   </Button>
                 </Link>
@@ -104,14 +104,14 @@ export const Landing = () => {
       </header>
 
       {/* Clean Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden hero-bg-clean">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ background: 'var(--gradient-hero-bg)' }}>
         
         <div className="container mx-auto px-6 text-center relative z-10 pt-20">
           <div className="max-w-6xl mx-auto">
             {/* Revolutionary Badge */}
             <div className="inline-flex items-center gap-3 killer-card rounded-full px-8 py-4 mb-12 animate-fade-in">
               <Sparkles className="h-5 w-5 text-[#FBA765]" />
-              <span className="text-lg font-semibold bg-gradient-to-r from-[#66023C] to-[#004F54] bg-clip-text text-transparent">
+              <span className="text-lg font-semibold gradient-text-accent">
                 {language === 'ar' ? 'ثورة في عالم المشتريات التجارية' : 'The Future of B2B Procurement Marketplace Starts Here'}
               </span>
             </div>
@@ -136,13 +136,13 @@ export const Landing = () => {
             {/* Killer CTA Buttons */}
             <div className="flex flex-col lg:flex-row gap-8 justify-center mb-20 animate-scale-in">
               <Link to="/auth" className="group">
-                <Button size="lg" className="px-16 py-8 text-xl font-bold bg-gradient-to-r from-[#66023C] to-[#004F54] hover:shadow-[0_0_50px_rgba(102,2,60,0.8)] transition-all duration-500 hover:scale-110 rounded-full">
+                <Button size="lg" className="px-16 py-8 text-xl font-bold hover:shadow-[0_0_50px_rgba(102,2,60,0.8)] transition-all duration-500 hover:scale-110 rounded-full" style={{ background: 'var(--gradient-button-primary)' }}>
                   <Rocket className={`h-7 w-7 ${language === 'ar' ? 'ml-3' : 'mr-3'} group-hover:rotate-12 transition-transform duration-500`} />
                   {language === 'ar' ? 'ابدأ رحلة النجاح' : 'Launch Your Success'}
                 </Button>
               </Link>
               <Link to="/auth" className="group">
-                <Button variant="outline" size="lg" className="px-16 py-8 text-xl font-bold bg-white/10 backdrop-blur-xl border-2 border-[#FBA765] text-white hover:bg-[#FBA765] hover:shadow-[0_0_50px_rgba(251,167,101,0.8)] transition-all duration-500 hover:scale-110 rounded-full">
+                <Button variant="outline" size="lg" className="px-16 py-8 text-xl font-bold glass-card border-2 text-white hover:bg-orange/20 hover:shadow-[0_0_50px_rgba(251,167,101,0.8)] transition-all duration-500 hover:scale-110 rounded-full" style={{ borderColor: 'var(--orange)' }}>
                   <Globe className={`h-7 w-7 ${language === 'ar' ? 'ml-3' : 'mr-3'} group-hover:rotate-180 transition-transform duration-700`} />
                   {language === 'ar' ? 'استكشف السوق' : 'Explore Marketplace'}
                 </Button>
@@ -221,7 +221,7 @@ export const Landing = () => {
       </section>
 
       {/* Revolutionary Workflow Section */}
-      <section className="py-32 px-6 bg-gradient-to-b from-[#102C33] to-[#004F54] relative overflow-hidden">
+      <section className="py-32 px-6 bg-section-2 relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, #FBA765 2px, transparent 2px)`, backgroundSize: '50px 50px' }}></div>
@@ -375,7 +375,7 @@ export const Landing = () => {
       </section>
 
       {/* Revolutionary Split Benefits Section */}
-      <section className="py-32 px-6 bg-gradient-to-br from-[#102C33] to-[#004F54] relative overflow-hidden">
+      <section className="py-32 px-6 bg-section-3 relative overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0">
           <div className="absolute top-0 right-0 w-[600px] h-[600px] floating-orb opacity-20"></div>
@@ -440,7 +440,7 @@ export const Landing = () => {
               </div>
 
               <Link to="/auth" className="block">
-                <Button size="lg" className="w-full py-6 text-xl font-bold bg-gradient-to-r from-[#FBA765] to-[#765A3F] hover:shadow-[0_20px_40px_rgba(251,167,101,0.6)] transition-all duration-500 hover:scale-105 rounded-2xl">
+                <Button size="lg" className="w-full py-6 text-xl font-bold hover:shadow-[0_20px_40px_rgba(251,167,101,0.6)] transition-all duration-500 hover:scale-105 rounded-2xl" style={{ background: 'var(--gradient-button-secondary)' }}>
                   <UserPlus className={`h-6 w-6 ${language === 'ar' ? 'ml-3' : 'mr-3'}`} />
                   {language === 'ar' ? 'انضم كمورد' : 'Join as Supplier'}
                 </Button>
@@ -492,7 +492,7 @@ export const Landing = () => {
               </div>
 
               <Link to="/auth" className="block">
-                <Button size="lg" className="w-full py-6 text-xl font-bold bg-gradient-to-r from-[#66023C] to-[#004F54] hover:shadow-[0_20px_40px_rgba(102,2,60,0.6)] transition-all duration-500 hover:scale-105 rounded-2xl">
+                <Button size="lg" className="w-full py-6 text-xl font-bold hover:shadow-[0_20px_40px_rgba(102,2,60,0.6)] transition-all duration-500 hover:scale-105 rounded-2xl" style={{ background: 'var(--gradient-button-primary)' }}>
                   <Search className={`h-6 w-6 ${language === 'ar' ? 'ml-3' : 'mr-3'}`} />
                   {language === 'ar' ? 'ابدأ البحث' : 'Start Shopping'}
                 </Button>
@@ -503,7 +503,7 @@ export const Landing = () => {
       </section>
 
       {/* Revolutionary Final CTA */}
-      <section className="py-32 px-6 bg-gradient-to-r from-[#F1EFE8] via-white to-[#F1EFE8] relative overflow-hidden">
+      <section className="py-32 px-6 bg-section-1 relative overflow-hidden">
         <div className="absolute inset-0 gradient-mesh-bg opacity-10"></div>
         
         <div className="container mx-auto text-center relative z-10">
@@ -511,7 +511,7 @@ export const Landing = () => {
             <h2 className="text-6xl md:text-8xl font-black mb-8 gradient-text-hero">
               {language === 'ar' ? 'انضم للثورة' : 'Join the Revolution'}
             </h2>
-            <p className="text-2xl md:text-3xl text-[#765A3F] mb-16 font-light leading-relaxed">
+            <p className="text-2xl md:text-3xl gradient-text-subtle mb-16 font-light leading-relaxed">
               {language === 'ar' 
                 ? 'كن جزءاً من مستقبل سوق المشتريات التجارية اليوم'
                 : 'Be part of the future of B2B procurement marketplace today'}
@@ -519,7 +519,7 @@ export const Landing = () => {
             
             <div className="flex flex-col lg:flex-row gap-8 justify-center">
               <Link to="/auth" className="group">
-                <Button size="lg" className="px-20 py-8 text-2xl font-bold bg-gradient-to-r from-[#66023C] via-[#FBA765] to-[#004F54] hover:shadow-[0_30px_60px_rgba(102,2,60,0.4)] transition-all duration-700 hover:scale-110 rounded-full animate-shimmer">
+                <Button size="lg" className="px-20 py-8 text-2xl font-bold hover:shadow-[0_30px_60px_rgba(102,2,60,0.4)] transition-all duration-700 hover:scale-110 rounded-full animate-shimmer" style={{ background: 'var(--gradient-hero-bg)' }}>
                   <Sparkles className={`h-8 w-8 ${language === 'ar' ? 'ml-4' : 'mr-4'} animate-pulse`} />
                   {language === 'ar' ? 'ابدأ رحلتك الآن' : 'Start Your Journey Now'}
                 </Button>
@@ -530,7 +530,7 @@ export const Landing = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-16 px-6 bg-[#102C33] text-white/80">
+      <footer className="py-16 px-6 text-white/80" style={{ background: 'var(--gradient-header)' }}>
         <div className="container mx-auto text-center">
           <p className="text-lg">
             {language === 'ar' 
