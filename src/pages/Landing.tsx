@@ -113,7 +113,7 @@ export const Landing = () => {
               
               {/* Badge */}
               <div className="inline-block">
-                <div className="glass-card px-4 py-2 text-sm text-white/80 rounded-full">
+                <div className="glass-card px-4 py-2 text-sm text-white/80 rounded-full bg-transparent border border-white/30" style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(20px)' }}>
                   {language === 'ar' ? 'سوق إمداد B2B يربط العملاء بالموردين المعتمدين عبر الشرق الأوسط وشمال أفريقيا' : 'B2B supply chain marketplace connecting clients with verified vendors across MENA'}
                 </div>
               </div>
@@ -224,7 +224,7 @@ export const Landing = () => {
               ].map((stat, index) => (
                 <Card key={index} className="glass-card p-3 hover:scale-105 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
                   <div className="flex items-start gap-2">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${stat.color}20`, border: `1px solid ${stat.color}40` }}>
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 glass-card border border-white/20" style={{ backgroundColor: `${stat.color}20`, border: `1px solid ${stat.color}40`, background: `rgba(${stat.color === '#8B5CF6' ? '139, 92, 246' : stat.color === '#3B82F6' ? '59, 130, 246' : stat.color === '#10B981' ? '16, 185, 129' : '245, 158, 11'}, 0.1)`, backdropFilter: 'blur(15px)' }}>
                       <stat.icon className="h-4 w-4" style={{ color: stat.color }} />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -287,7 +287,7 @@ export const Landing = () => {
                   <div className="lg:w-1/2 lg:pr-16">
                      <Card className="glass-card p-4 hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl">
                       <div className="flex items-center gap-4 mb-6">
-                        <div className="w-12 h-12 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-2xl flex items-center justify-center shadow-xl">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-2xl flex items-center justify-center shadow-xl glass-card border border-white/20" style={{ background: 'rgba(102, 2, 60, 0.2)', backdropFilter: 'blur(20px)' }}>
                           <Search className="h-6 w-6 text-white" />
                         </div>
                         <div>
@@ -329,7 +329,7 @@ export const Landing = () => {
                   <div className="lg:w-1/2 lg:pl-16">
                     <Card className="glass-card p-4 hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl">
                       <div className="flex items-center gap-4 mb-6">
-                        <div className="w-12 h-12 bg-gradient-to-br from-[#FBA765] to-[#765A3F] rounded-2xl flex items-center justify-center shadow-xl">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#FBA765] to-[#765A3F] rounded-2xl flex items-center justify-center shadow-xl glass-card border border-white/20" style={{ background: 'rgba(251, 167, 101, 0.2)', backdropFilter: 'blur(20px)' }}>
                           <MessageSquare className="h-6 w-6 text-white" />
                         </div>
                         <div>
@@ -371,7 +371,7 @@ export const Landing = () => {
                    <div className="lg:w-1/2 lg:pr-16">
                     <Card className="glass-card p-4 hover:shadow-[0_25px_80px_rgba(0,79,84,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl">
                       <div className="flex items-center gap-4 mb-6">
-                        <div className="w-12 h-12 bg-gradient-to-br from-[#004F54] to-[#102C33] rounded-2xl flex items-center justify-center shadow-xl">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#004F54] to-[#102C33] rounded-2xl flex items-center justify-center shadow-xl glass-card border border-white/20" style={{ background: 'rgba(0, 79, 84, 0.2)', backdropFilter: 'blur(20px)' }}>
                           <CreditCard className="h-6 w-6 text-white" />
                         </div>
                         <div>
@@ -434,7 +434,7 @@ export const Landing = () => {
             {/* Suppliers Panel */}
             <Card className="glass-card p-6 hover:shadow-[0_50px_100px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl group">
               <div className="text-center mb-8">
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-[#FBA765] to-[#765A3F] rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-[#FBA765] to-[#765A3F] rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500 glass-card border border-white/30" style={{ background: 'rgba(251, 167, 101, 0.15)', backdropFilter: 'blur(25px)' }}>
                   <Package className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-black text-[#FBA765] mb-3">
@@ -464,7 +464,7 @@ export const Landing = () => {
                   }
                 ].map((benefit, index) => (
                   <div key={index} className="flex items-start gap-4 group/item">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#FBA765]/20 to-[#765A3F]/10 rounded-xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#FBA765]/20 to-[#765A3F]/10 rounded-xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300 glass-card border border-[#FBA765]/30" style={{ background: 'rgba(251, 167, 101, 0.1)', backdropFilter: 'blur(15px)' }}>
                       <benefit.icon className="h-6 w-6 text-[#FBA765]" />
                     </div>
                     <div className="flex-1">
@@ -486,7 +486,7 @@ export const Landing = () => {
             {/* Buyers Panel */}
             <Card className="glass-card p-6 hover:shadow-[0_50px_100px_rgba(102,2,60,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl group">
               <div className="text-center mb-8">
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500 glass-card border border-white/30" style={{ background: 'rgba(102, 2, 60, 0.15)', backdropFilter: 'blur(25px)' }}>
                   <Briefcase className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-black text-[#66023C] mb-3">
@@ -516,7 +516,7 @@ export const Landing = () => {
                   }
                 ].map((benefit, index) => (
                   <div key={index} className="flex items-start gap-4 group/item">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#66023C]/20 to-[#004F54]/10 rounded-xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#66023C]/20 to-[#004F54]/10 rounded-xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300 glass-card border border-[#66023C]/30" style={{ background: 'rgba(102, 2, 60, 0.1)', backdropFilter: 'blur(15px)' }}>
                       <benefit.icon className="h-6 w-6 text-[#66023C]" />
                     </div>
                     <div className="flex-1">
