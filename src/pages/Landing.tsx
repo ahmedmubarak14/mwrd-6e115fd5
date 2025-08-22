@@ -105,9 +105,9 @@ export const Landing = () => {
 
       {/* Revolutionary Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Killer Background System */}
+        {/* Killer Background System - Synchronized with Button Colors */}
         <div className="absolute inset-0 gradient-mesh-bg opacity-90"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-transparent to-purple-900/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-[#66023C]/20 via-transparent to-[#004F54]/30"></div>
         
         {/* Floating Animated Orbs */}
         <div className="absolute top-20 right-1/4 w-96 h-96 floating-orb"></div>
@@ -120,23 +120,23 @@ export const Landing = () => {
             {/* Revolutionary Badge */}
             <div className="inline-flex items-center gap-3 killer-card rounded-full px-8 py-4 mb-12 animate-fade-in">
               <Sparkles className="h-5 w-5 text-[#FBA765]" />
-              <span className="text-lg font-semibold bg-gradient-to-r from-[#FBA765] to-[#765A3F] bg-clip-text text-transparent">
+              <span className="text-lg font-semibold bg-gradient-to-r from-[#66023C] to-[#004F54] bg-clip-text text-transparent">
                 {language === 'ar' ? 'ثورة في عالم المشتريات التجارية' : 'The Future of B2B Procurement Marketplace Starts Here'}
               </span>
             </div>
             
             {/* Killer Headline */}
             <h1 className="text-6xl md:text-8xl lg:text-9xl font-black mb-8 leading-none animate-fade-in-up">
-              <div className="gradient-text-hero">
+              <div className="gradient-text-hero font-black">
                 {language === 'ar' ? 'اكتشف' : 'Discover'}
               </div>
-              <div className="text-white/90 text-4xl md:text-5xl lg:text-6xl font-light mt-4">
+              <div className="text-white/90 text-4xl md:text-5xl lg:text-6xl font-medium mt-4">
                 {language === 'ar' ? 'تواصل • اربح • انمو' : 'Connect • Scale • Thrive'}
               </div>
             </h1>
             
             {/* Revolutionary Subtitle */}
-            <p className="text-2xl md:text-3xl text-white/80 mb-16 max-w-4xl mx-auto leading-relaxed font-light animate-fade-in-up">
+            <p className="text-2xl md:text-3xl text-white/80 mb-16 max-w-4xl mx-auto leading-relaxed font-medium animate-fade-in-up">
               {language === 'ar' 
                 ? 'انضم إلى النظام البيئي الأقوى لسوق المشتريات التجارية حيث تلتقي الابتكارات مع الفرص اللامحدودة'
                 : 'Join the most powerful B2B procurement marketplace ecosystem where innovation meets unlimited opportunities'}

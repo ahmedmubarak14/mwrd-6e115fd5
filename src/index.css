@@ -74,13 +74,13 @@ All colors MUST be HSL.
     --ring: var(--primary-600);
     --radius: 0.75rem;
 
-    /* Killer Design System - Inspired by Alex Cristache Palettes */
-    --gradient-mesh: conic-gradient(from 0deg at 50% 50%, #F1EFE8 0deg, #FBA765 72deg, #765A3F 144deg, #004F54 216deg, #102C33 288deg, #F1EFE8 360deg);
-    --gradient-hero: linear-gradient(135deg, #F1EFE8 0%, #FBA765 25%, #765A3F 50%, #004F54 75%, #102C33 100%);
-    --gradient-orb-1: radial-gradient(circle at 30% 30%, rgba(251, 167, 101, 0.4) 0%, rgba(118, 90, 63, 0.2) 50%, transparent 70%);
-    --gradient-orb-2: radial-gradient(circle at 70% 70%, rgba(0, 79, 84, 0.4) 0%, rgba(16, 44, 51, 0.2) 50%, transparent 70%);
-    --gradient-glass: linear-gradient(135deg, rgba(241, 239, 232, 0.1) 0%, rgba(251, 167, 101, 0.05) 100%);
-    --gradient-text-killer: linear-gradient(135deg, #66023C 0%, #FBA765 35%, #004F54 70%, #102C33 100%);
+    /* Killer Design System - Hero Colors Synchronized with Button */
+    --gradient-mesh: conic-gradient(from 0deg at 50% 50%, #66023C 0deg, #004F54 120deg, #66023C 240deg, #004F54 360deg);
+    --gradient-hero: linear-gradient(135deg, #66023C 0%, #004F54 100%);
+    --gradient-orb-1: radial-gradient(circle at 30% 30%, rgba(102, 2, 60, 0.4) 0%, rgba(102, 2, 60, 0.2) 50%, transparent 70%);
+    --gradient-orb-2: radial-gradient(circle at 70% 70%, rgba(0, 79, 84, 0.4) 0%, rgba(0, 79, 84, 0.2) 50%, transparent 70%);
+    --gradient-glass: linear-gradient(135deg, rgba(102, 2, 60, 0.1) 0%, rgba(0, 79, 84, 0.05) 100%);
+    --gradient-text-killer: linear-gradient(135deg, #66023C 0%, #004F54 50%, #66023C 100%);
     --gradient-button-primary: linear-gradient(135deg, #66023C 0%, #004F54 100%);
     --gradient-button-secondary: linear-gradient(135deg, #FBA765 0%, #765A3F 100%);
     --shadow-killer: 0 25px 80px -15px rgba(102, 2, 60, 0.4);
@@ -154,6 +154,10 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
     font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   .font-arabic {
