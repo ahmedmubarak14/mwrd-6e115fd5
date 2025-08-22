@@ -222,25 +222,25 @@ export const Landing = () => {
                   progress: 70
                 }
               ].map((stat, index) => (
-                <Card key={index} className="glass-card-premium p-6 hover:scale-105 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${stat.color}20`, border: `1px solid ${stat.color}40` }}>
-                      <stat.icon className="h-6 w-6" style={{ color: stat.color }} />
+                <Card key={index} className="glass-card-premium p-4 hover:scale-105 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${stat.color}20`, border: `1px solid ${stat.color}40` }}>
+                      <stat.icon className="h-5 w-5" style={{ color: stat.color }} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-bold text-white text-lg">{stat.title}</h3>
+                      <div className="flex items-center justify-between mb-1">
+                        <h3 className="font-semibold text-white text-base">{stat.title}</h3>
                       </div>
-                      <p className="text-sm text-white/60 mb-3">{stat.subtitle}</p>
+                      <p className="text-xs text-white/60 mb-2">{stat.subtitle}</p>
                       <div className="flex items-end justify-between">
                         <div>
-                          <div className="text-3xl font-black text-white mb-1">{stat.count}</div>
-                          <div className="text-sm text-white/70">{stat.label}</div>
+                          <div className="text-2xl font-black text-white mb-1">{stat.count}</div>
+                          <div className="text-xs text-white/70">{stat.label}</div>
                         </div>
                       </div>
-                      <div className="w-full bg-white/10 rounded-full h-1.5 mt-4">
+                      <div className="w-full bg-white/10 rounded-full h-1 mt-3">
                         <div 
-                          className="h-1.5 rounded-full transition-all duration-1000" 
+                          className="h-1 rounded-full transition-all duration-1000" 
                           style={{ 
                             backgroundColor: stat.color, 
                             width: `${stat.progress}%`
@@ -285,7 +285,7 @@ export const Landing = () => {
               <div className="relative mb-32 group">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                   <div className="lg:w-1/2 lg:pr-16">
-                     <Card className="p-12 bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl">
+                     <Card className="glass-card-premium p-6 hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl">
                       <div className="flex items-center gap-6 mb-8">
                         <div className="w-20 h-20 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-3xl flex items-center justify-center shadow-xl">
                           <Search className="h-10 w-10 text-white" />
@@ -311,10 +311,10 @@ export const Landing = () => {
                         { icon: Zap, label: language === 'ar' ? 'استجابة فورية' : 'Instant Response', color: '#FBA765' },
                         { icon: Eye, label: language === 'ar' ? 'رؤى متقدمة' : 'Advanced Insights', color: '#004F54' },
                         { icon: TrendingUp, label: language === 'ar' ? 'نمو مضمون' : 'Guaranteed Growth', color: '#765A3F' }
-                      ].map((feature, index) => (
-                        <Card key={index} className="p-6 bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl">
-                          <feature.icon className="h-8 w-8 mb-4" style={{ color: feature.color }} />
-                          <div className="text-lg font-bold text-white">{feature.label}</div>
+                       ].map((feature, index) => (
+                        <Card key={index} className="glass-card p-4 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl">
+                          <feature.icon className="h-6 w-6 mb-3" style={{ color: feature.color }} />
+                          <div className="text-base font-bold text-white">{feature.label}</div>
                         </Card>
                       ))}
                     </div>
@@ -327,7 +327,7 @@ export const Landing = () => {
               <div className="relative mb-32 group">
                 <div className="flex flex-col lg:flex-row-reverse items-center gap-16">
                   <div className="lg:w-1/2 lg:pl-16">
-                    <Card className="p-12 bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl">
+                    <Card className="glass-card-premium p-6 hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl">
                       <div className="flex items-center gap-6 mb-8">
                         <div className="w-20 h-20 bg-gradient-to-br from-[#FBA765] to-[#765A3F] rounded-3xl flex items-center justify-center shadow-xl">
                           <MessageSquare className="h-10 w-10 text-white" />
@@ -353,10 +353,10 @@ export const Landing = () => {
                         { icon: Globe, label: language === 'ar' ? 'ترجمة فورية' : 'Live Translation', color: '#004F54' },
                         { icon: BarChart3, label: language === 'ar' ? 'تحليل السوق' : 'Market Analysis', color: '#66023C' },
                         { icon: HeartHandshake, label: language === 'ar' ? 'ثقة متبادلة' : 'Mutual Trust', color: '#765A3F' }
-                      ].map((feature, index) => (
-                        <Card key={index} className="p-6 bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl">
-                          <feature.icon className="h-8 w-8 mb-4" style={{ color: feature.color }} />
-                          <div className="text-lg font-bold text-white">{feature.label}</div>
+                       ].map((feature, index) => (
+                        <Card key={index} className="glass-card p-4 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl">
+                          <feature.icon className="h-6 w-6 mb-3" style={{ color: feature.color }} />
+                          <div className="text-base font-bold text-white">{feature.label}</div>
                         </Card>
                       ))}
                     </div>
@@ -368,8 +368,8 @@ export const Landing = () => {
               {/* Step 3: Secure Completion */}
               <div className="relative group">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
-                  <div className="lg:w-1/2 lg:pr-16">
-                    <Card className="p-12 bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl hover:shadow-[0_25px_80px_rgba(0,79,84,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl">
+                   <div className="lg:w-1/2 lg:pr-16">
+                    <Card className="glass-card-premium p-6 hover:shadow-[0_25px_80px_rgba(0,79,84,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl">
                       <div className="flex items-center gap-6 mb-8">
                         <div className="w-20 h-20 bg-gradient-to-br from-[#004F54] to-[#102C33] rounded-3xl flex items-center justify-center shadow-xl">
                           <CreditCard className="h-10 w-10 text-white" />
@@ -395,10 +395,10 @@ export const Landing = () => {
                         { icon: Clock, label: language === 'ar' ? 'تتبع فوري' : 'Real-time Tracking', color: '#FBA765' },
                         { icon: CheckCircle, label: language === 'ar' ? 'ضمان الجودة' : 'Quality Assurance', color: '#66023C' },
                         { icon: Award, label: language === 'ar' ? 'خدمة مميزة' : 'Premium Service', color: '#765A3F' }
-                      ].map((feature, index) => (
-                        <Card key={index} className="p-6 bg-white/10 backdrop-blur-xl border border-white/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl">
-                          <feature.icon className="h-8 w-8 mb-4" style={{ color: feature.color }} />
-                          <div className="text-lg font-bold text-white">{feature.label}</div>
+                       ].map((feature, index) => (
+                        <Card key={index} className="glass-card p-4 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl">
+                          <feature.icon className="h-6 w-6 mb-3" style={{ color: feature.color }} />
+                          <div className="text-base font-bold text-white">{feature.label}</div>
                         </Card>
                       ))}
                     </div>
@@ -432,7 +432,7 @@ export const Landing = () => {
 
           <div className="grid lg:grid-cols-2 gap-16 max-w-7xl mx-auto">
             {/* Suppliers Panel */}
-            <Card className="p-12 bg-white/10 backdrop-blur-xl border border-white/20 hover:shadow-[0_50px_100px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl group">
+            <Card className="glass-card-premium p-8 hover:shadow-[0_50px_100px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl group">
               <div className="text-center mb-12">
                 <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-[#FBA765] to-[#765A3F] rounded-3xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500">
                   <Package className="h-12 w-12 text-white" />
@@ -484,7 +484,7 @@ export const Landing = () => {
             </Card>
 
             {/* Buyers Panel */}
-            <Card className="p-12 bg-white/10 backdrop-blur-xl border border-white/20 hover:shadow-[0_50px_100px_rgba(102,2,60,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl group">
+            <Card className="glass-card-premium p-8 hover:shadow-[0_50px_100px_rgba(102,2,60,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl group">
               <div className="text-center mb-12">
                 <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-3xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500">
                   <Briefcase className="h-12 w-12 text-white" />
