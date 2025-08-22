@@ -11,7 +11,6 @@ import { MobileNavigation } from "@/components/layout/MobileNavigation";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import mwrdLogo from "@/assets/mwrd-logo.png";
 export const Landing = () => {
   const {
     t,
@@ -97,7 +96,7 @@ export const Landing = () => {
           {/* Logo - Conditional redirect based on auth state */}
           <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
             <Link to={user && userProfile ? "/dashboard" : "/"} className="flex items-center gap-3">
-              <img src={mwrdLogo} alt="MWRD Logo" className="h-24 w-auto hover:scale-105 transition-transform" />
+              <img src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" alt="MWRD Logo" className="h-24 w-auto hover:scale-105 transition-transform" />
             </Link>
           </div>
           
@@ -788,7 +787,7 @@ export const Landing = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-6">
-                <img src={mwrdLogo} alt="MWRD Logo" className="h-16 w-auto" />
+                <img src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" alt="MWRD Logo" className="h-16 w-auto" />
               </div>
               <p className={`text-muted-foreground mb-6 max-w-md leading-relaxed text-lg ${language === 'ar' ? 'rtl-text-right' : ''}`}>
                 {t('landing.footer.taglineText')}

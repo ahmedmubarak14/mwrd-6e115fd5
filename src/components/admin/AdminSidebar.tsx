@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import mwrdLogo from "@/assets/mwrd-logo.png";
 import {
   Users,
   BarChart3,
@@ -208,7 +207,7 @@ export const AdminSidebar = ({ collapsed = false }: AdminSidebarProps) => {
           collapsed && "justify-center"
         )}>
           <img 
-            src={mwrdLogo} 
+            src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
             alt="MWRD Logo" 
             className="h-8 w-8 object-contain flex-shrink-0"
           />

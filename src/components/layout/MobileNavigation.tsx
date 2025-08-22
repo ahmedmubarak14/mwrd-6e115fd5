@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import mwrdLogo from "@/assets/mwrd-logo.png";
 import {
   Sheet,
   SheetContent,
@@ -64,7 +63,7 @@ export const MobileNavigation = () => {
             <SheetTitle className={`flex items-center gap-3 ${isRTL ? 'justify-end' : 'justify-start'}`}>
               <Link to="/landing" onClick={handleLinkClick}>
                 <img 
-                  src={mwrdLogo} 
+                  src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
                   alt="MWRD Logo"
                   className="h-14 w-auto"
                 />
