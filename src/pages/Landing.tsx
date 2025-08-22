@@ -91,7 +91,7 @@ export const Landing = () => {
   return <div className="min-h-screen bg-background">
       <SmoothScroll />
       {/* Enhanced Navigation */}
-      <header className="border-b bg-[#66023C] backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b bg-gradient-to-r from-[#66023C] via-[#765A3F] to-[#004F54] backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo - Conditional redirect based on auth state */}
           <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
@@ -151,7 +151,7 @@ export const Landing = () => {
       </header>
 
       {/* Revolutionary Hero Section */}
-      <section className="relative py-32 px-4 overflow-hidden bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#FBA765]">
+      <section className="relative py-32 px-4 overflow-hidden bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/5"></div>
           <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
