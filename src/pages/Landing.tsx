@@ -260,7 +260,7 @@ export const Landing = () => {
                   </span>
                   <br />
                   <span className="text-foreground/80 text-3xl font-normal md:text-3xl">
-                    {language === 'ar' ? 'مع سبلفاي' : 'with Supplify'}
+                    {language === 'ar' ? 'مع مورد' : 'with MWRD'}
                   </span>
                 </h1>
                 
@@ -356,7 +356,7 @@ export const Landing = () => {
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              {language === 'ar' ? 'لماذا تختار سبلفاي؟' : 'Why Choose Supplify?'}
+              {language === 'ar' ? 'لماذا تختار مورد؟' : 'Why Choose MWRD?'}
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               {language === 'ar' ? 'منصة شاملة تلبي احتياجات الإدارة والمشتريات بكفاءة عالية' : 'A comprehensive platform that efficiently meets management and procurement needs'}
@@ -763,7 +763,7 @@ export const Landing = () => {
               {language === 'ar' ? 'هل أنت مستعد لتحويل فعالياتك؟' : 'Are You Ready to Transform Your Events?'}
             </h2>
             <p className="text-xl md:text-2xl opacity-90 mb-12 leading-relaxed">
-              {language === 'ar' ? 'انضم إلى آلاف الشركات الرائدة التي اختارت سبلفاي لتحقيق أحلامها في عالم الفعاليات' : 'Join thousands of leading companies that chose Supplify to achieve their dreams in the events world'}
+              {language === 'ar' ? 'انضم إلى آلاف الشركات الرائدة التي اختارت مورد لتحقيق أحلامها في عالم المشتريات' : 'Join thousands of leading companies that chose MWRD to achieve their dreams in the procurement world'}
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link to="/home">
@@ -788,7 +788,7 @@ export const Landing = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-6">
-                <img src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" alt="Supplify Logo" className="h-16 w-auto" />
+                <img src={mwrdLogo} alt="MWRD Logo" className="h-16 w-auto" />
               </div>
               <p className={`text-muted-foreground mb-6 max-w-md leading-relaxed text-lg ${language === 'ar' ? 'rtl-text-right' : ''}`}>
                 {t('landing.footer.taglineText')}
@@ -808,8 +808,8 @@ export const Landing = () => {
                 {t('landing.footer.company')}
               </h3>
               <ul className={`space-y-3 text-muted-foreground ${language === 'ar' ? 'rtl-text-right' : ''}`}>
-                <li><Link to="/why-start-with-supplify" className="hover:text-primary transition-colors story-link">{t('landing.footer.whyStart')}</Link></li>
-                <li><Link to="/why-move-to-supplify" className="hover:text-primary transition-colors story-link">{t('landing.footer.whyMove')}</Link></li>
+                <li><Link to="/why-start-with-mwrd" className="hover:text-primary transition-colors story-link">{t('landing.footer.whyStart')}</Link></li>
+                <li><Link to="/why-move-to-mwrd" className="hover:text-primary transition-colors story-link">{t('landing.footer.whyMove')}</Link></li>
                 <li><Link to="/pricing" className="hover:text-primary transition-colors story-link">{t('landing.footer.pricingSection')}</Link></li>
               </ul>
             </div>
@@ -838,13 +838,13 @@ export const Landing = () => {
                   {t('landing.footer.followUs')}
                 </span>
                 <div className="flex gap-3">
-                  <a href="https://x.com/supplifyapp" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover-scale" aria-label="Follow us on X">
+                  <a href="https://x.com/mwrdapp" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover-scale" aria-label="Follow us on X">
                     <X className="h-4 w-4" />
                   </a>
-                  <a href="https://www.instagram.com/supplifyapp/" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover-scale" aria-label="Follow us on Instagram">
+                  <a href="https://www.instagram.com/mwrdapp/" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover-scale" aria-label="Follow us on Instagram">
                     <Instagram className="h-4 w-4" />
                   </a>
-                  <a href="https://www.linkedin.com/company/supplifyapp/" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover-scale" aria-label="Follow us on LinkedIn">
+                  <a href="https://www.linkedin.com/company/mwrdapp/" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover-scale" aria-label="Follow us on LinkedIn">
                     <Linkedin className="h-4 w-4" />
                   </a>
                 </div>

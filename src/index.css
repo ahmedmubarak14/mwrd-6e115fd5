@@ -10,62 +10,65 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Primary Colors - Purple Scale from new palette */
+    /* Primary Colors - Tyrian Purple Scale (#66023C) */
     --primary-900: 324 96% 12%;    /* #66023C - main brand color */
-    --primary-800: 324 90% 16%;    /* #7a1048 */
-    --primary-700: 324 85% 20%;    /* #8e1e54 */
+    --primary-800: 324 90% 16%;    /* darker variation */
+    --primary-700: 324 85% 20%;    /* darker variation */
     --primary-600: 324 96% 20%;    /* #66023C */
-    --primary-500: 324 80% 25%;    /* #a23366 */
-    --primary-400: 324 70% 35%;    /* #b84578 */
-    --primary-300: 324 60% 50%;    /* #d4669a */
-    --primary-200: 324 50% 65%;    /* #e699bb */
-    --primary-100: 324 40% 80%;    /* #f0ccdd */
-    --primary-50: 324 30% 95%;     /* #faf7f9 */
+    --primary-500: 324 80% 25%;    /* lighter variation */
+    --primary-400: 324 70% 35%;    /* lighter variation */
+    --primary-300: 324 60% 50%;    /* lighter variation */
+    --primary-200: 324 50% 65%;    /* lighter variation */
+    --primary-100: 324 40% 80%;    /* lighter variation */
+    --primary-50: 324 30% 95%;     /* lightest variation */
 
-    /* Accent Colors - Complementary palette */
-    --accent-900: 180 100% 10%;    /* #004F54 - Transporter Green */
-    --accent-800: 180 90% 15%;     /* #0a5a60 */
-    --accent-700: 180 80% 20%;     /* #14656c */
-    --accent-600: 180 100% 17%;    /* #004F54 */
-    --accent-500: 180 70% 25%;     /* #267074 */
-    --accent-400: 180 60% 35%;     /* #3d7b86 */
-    --accent-300: 180 50% 50%;     /* #5a9ba2 */
-    --accent-200: 180 40% 65%;     /* #85b5bb */
-    --accent-100: 180 30% 80%;     /* #b5d0d4 */
-    --accent-50: 180 20% 95%;      /* #e8f2f3 */
+    /* Accent Colors - Transporter Green Scale (#004F54) */
+    --accent-900: 195 100% 16%;    /* #004F54 - Transporter Green */
+    --accent-800: 195 90% 18%;     /* slightly lighter */
+    --accent-700: 195 80% 22%;     /* lighter variation */
+    --accent-600: 195 100% 17%;    /* #004F54 */
+    --accent-500: 195 70% 25%;     /* lighter variation */
+    --accent-400: 195 60% 35%;     /* lighter variation */
+    --accent-300: 195 50% 50%;     /* lighter variation */
+    --accent-200: 195 40% 65%;     /* lighter variation */
+    --accent-100: 195 30% 80%;     /* lighter variation */
+    --accent-50: 195 20% 95%;      /* lightest variation */
 
-    /* Neutral Colors - Updated from new palette */
-    --neutral-900: 195 26% 10%;   /* #102C33 - Black Chasm */
-    --neutral-800: 195 20% 20%;   /* #2a3f44 */
-    --neutral-700: 30 22% 25%;    /* #765A3F - X Marks the Spot */
-    --neutral-600: 30 18% 35%;    /* #8a7659 */
-    --neutral-500: 30 15% 50%;    /* #a39182 */
-    --neutral-400: 30 12% 65%;    /* #bcaea4 */
-    --neutral-300: 30 10% 75%;    /* #cfc5be */
-    --neutral-200: 30 8% 85%;     /* #e2dcd8 */
+    /* Neutral Colors - Black Chasm and Fuji Snow Scale */
+    --neutral-900: 195 49% 10%;   /* #102C33 - Black Chasm */
+    --neutral-800: 195 35% 15%;   /* darker variation */
+    --neutral-700: 195 25% 25%;   /* mid-dark variation */
+    --neutral-600: 195 20% 35%;   /* mid variation */
+    --neutral-500: 195 15% 50%;   /* mid-light variation */
+    --neutral-400: 195 10% 65%;   /* lighter variation */
+    --neutral-300: 40 10% 75%;    /* lighter variation */
+    --neutral-200: 40 8% 85%;     /* light variation */
     --neutral-100: 40 15% 91%;    /* #F1EFE8 - Fuji Snow */
-    --neutral-50: 40 20% 96%;     /* #f8f7f4 */
+    --neutral-50: 40 20% 96%;     /* lightest variation */
+
+    /* Cozy Nook Color - Orange Accent (#FBA765) */
+    --orange: 29 78% 68%;         /* #FBA765 - Cozy Nook */
 
     /* Main Design System Colors */
-    --background: var(--neutral-50);
-    --foreground: var(--neutral-900);
-    --card: 0 0% 100%;
+    --background: var(--neutral-100);  /* Fuji Snow background */
+    --foreground: var(--neutral-900);  /* Black Chasm text */
+    --card: var(--neutral-50);
     --card-foreground: var(--neutral-900);
-    --popover: 0 0% 100%;
+    --popover: var(--neutral-50);
     --popover-foreground: var(--neutral-900);
-    --primary: var(--primary-600);
+    --primary: var(--primary-600);     /* Tyrian Purple */
     --primary-foreground: 0 0% 100%;
-    --secondary: var(--primary-100);
-    --secondary-foreground: var(--primary-900);
-    --muted: var(--neutral-100);
-    --muted-foreground: var(--neutral-500);
-    --accent: var(--accent-500);
+    --secondary: var(--accent-600);    /* Transporter Green */
+    --secondary-foreground: 0 0% 100%;
+    --muted: var(--neutral-200);
+    --muted-foreground: var(--neutral-600);
+    --accent: var(--accent-600);       /* Transporter Green */
     --accent-foreground: 0 0% 100%;
-    --lime: var(--primary-400);
-    --lime-foreground: var(--primary-900);
+    --lime: var(--orange);             /* Cozy Nook orange */
+    --lime-foreground: var(--neutral-900);
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: var(--neutral-200);
+    --border: var(--neutral-300);
     --input: var(--neutral-200);
     --ring: var(--primary-600);
     --radius: 0.75rem;
@@ -88,27 +91,27 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: var(--neutral-900);
-    --foreground: var(--neutral-50);
+    --background: var(--neutral-900);  /* Black Chasm dark background */
+    --foreground: var(--neutral-100);  /* Fuji Snow text */
     --card: var(--neutral-800);
-    --card-foreground: var(--neutral-50);
+    --card-foreground: var(--neutral-100);
     --popover: var(--neutral-800);
-    --popover-foreground: var(--neutral-50);
-    --primary: var(--primary-500);
-    --primary-foreground: var(--neutral-900);
-    --secondary: var(--neutral-800);
-    --secondary-foreground: var(--neutral-50);
+    --popover-foreground: var(--neutral-100);
+    --primary: var(--primary-600);     /* Keep Tyrian Purple in dark */
+    --primary-foreground: var(--neutral-100);
+    --secondary: var(--accent-700);    /* Darker Transporter Green */
+    --secondary-foreground: var(--neutral-100);
     --muted: var(--neutral-800);
     --muted-foreground: var(--neutral-400);
-    --accent: var(--accent-600);
-    --accent-foreground: var(--neutral-50);
-    --lime: var(--primary-300);
+    --accent: var(--accent-700);       /* Darker Transporter Green */
+    --accent-foreground: var(--neutral-100);
+    --lime: var(--orange);             /* Keep Cozy Nook orange */
     --lime-foreground: var(--neutral-900);
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: var(--neutral-50);
+    --destructive-foreground: var(--neutral-100);
     --border: var(--neutral-700);
     --input: var(--neutral-700);
-    --ring: var(--primary-500);
+    --ring: var(--primary-600);
 
     /* Dark mode design tokens */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary-500)), hsl(var(--primary-300)));

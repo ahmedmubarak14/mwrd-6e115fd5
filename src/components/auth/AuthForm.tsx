@@ -143,7 +143,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
 
           toast({
             title: language === 'ar' ? "تم إنشاء الحساب بنجاح" : "Account created successfully",
-            description: language === 'ar' ? "مرحباً بك في سبلفاي!" : "Welcome to Supplify!",
+            description: language === 'ar' ? "مرحباً بك في مورد!" : "Welcome to MWRD!",
           });
         }
       }
@@ -205,12 +205,12 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
           <Link to="/" className="inline-block">
             <img 
               src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
-              alt="Supplify Logo"
+              alt="MWRD Logo"
               className="h-16 w-auto mx-auto mb-4 hover:scale-105 transition-transform"
             />
           </Link>
           <CardTitle className="text-2xl">
-            {language === 'ar' ? 'مرحباً بك في سبلفاي' : 'Welcome to Supplify'}
+            {language === 'ar' ? 'مرحباً بك في مورد' : 'Welcome to MWRD'}
           </CardTitle>
           <CardDescription>
             {language === 'ar' ? 'سجل دخولك أو أنشئ حساباً جديداً' : 'Sign in to your account or create a new one'}

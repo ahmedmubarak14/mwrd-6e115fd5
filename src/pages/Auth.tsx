@@ -6,14 +6,14 @@ const Auth = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = "Sign in | Supplify";
+    document.title = "Sign in | MWRD";
     const metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
-      metaDesc.setAttribute("content", "Sign in to Supplify to manage users, requests, and offers.");
+      metaDesc.setAttribute("content", "Sign in to MWRD to manage users, requests, and offers.");
     } else {
       const m = document.createElement("meta");
       m.name = "description";
-      m.content = "Sign in to Supplify to manage users, requests, and offers.";
+      m.content = "Sign in to MWRD to manage users, requests, and offers.";
       document.head.appendChild(m);
     }
     const link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;

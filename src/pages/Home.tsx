@@ -40,7 +40,7 @@ export const Home = () => {
             <Link to="/" className="flex items-center gap-3">
               <img 
                 src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
-                alt="Supplify Logo"
+                alt="MWRD Logo"
                 className="h-16 w-auto hover:scale-105 transition-transform"
               />
             </Link>

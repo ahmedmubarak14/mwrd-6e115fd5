@@ -297,7 +297,7 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-sm text-muted-foreground mb-4">
-                All communication with this supplier happens within the Supplify platform to ensure security and transparency.
+                All communication with this supplier happens within the MWRD platform to ensure security and transparency.
               </p>
               <div className="flex gap-2">
                 <Button 

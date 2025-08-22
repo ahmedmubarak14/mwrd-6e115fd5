@@ -264,7 +264,7 @@ export const Pricing = () => {
           <Link to="/" className="flex items-center gap-3">
             <img 
               src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
-              alt="Supplify Logo"
+              alt="MWRD Logo"
               className="h-16 w-auto hover:scale-105 transition-transform"
             />
           </Link>
@@ -417,7 +417,7 @@ export const Pricing = () => {
             <p className="text-xl md:text-2xl opacity-90 mb-12 leading-relaxed">
               {t('language') === 'ar' ? 
                 'انضم إلى آلاف الشركات الرائدة التي اختارت سبلفاي لتحقيق أحلامها في عالم الفعاليات' : 
-                'Join thousands of leading companies that chose Supplify to achieve their dreams in the events world'
+                'Join thousands of leading companies that chose MWRD to achieve their dreams in the procurement world'
               }
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">

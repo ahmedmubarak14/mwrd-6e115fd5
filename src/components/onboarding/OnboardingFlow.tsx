@@ -18,7 +18,7 @@ interface OnboardingStep {
 const onboardingSteps: OnboardingStep[] = [
   {
     id: "welcome",
-    title: "Welcome to Supplify",
+    title: "Welcome to MWRD",
     description: "Let's get you started with the basics of our platform.",
   },
   {

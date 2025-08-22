@@ -39,8 +39,8 @@ export const InteractiveDemo = ({ isOpen, onClose }: InteractiveDemoProps) => {
 
   const steps = [
     {
-      titleEn: "Welcome to Supplify",
-      titleAr: "مرحباً بك في Supplify",
+      titleEn: "Welcome to MWRD",
+      titleAr: "مرحباً بك في مورد",
       descEn: "Your complete procurement management platform",
       descAr: "منصتك الكاملة لإدارة المشتريات"
     },
@@ -156,7 +156,7 @@ export const InteractiveDemo = ({ isOpen, onClose }: InteractiveDemoProps) => {
         <DialogHeader className="p-6 border-b bg-card">
           <div className="flex items-center justify-between">
             <DialogTitle className="text-2xl font-bold">
-              {isRTL ? 'جولة تفاعلية في Supplify' : 'Interactive Supplify Tour'}
+              {isRTL ? 'جولة تفاعلية في مورد' : 'Interactive MWRD Tour'}
             </DialogTitle>
             <Badge variant="outline" className="text-sm">
               {currentStep + 1} / {steps.length}

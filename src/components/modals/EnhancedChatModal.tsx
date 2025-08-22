@@ -370,7 +370,7 @@ export const EnhancedChatModal = ({ children, supplierName, supplierId, supplier
             </p>
             {isOnline && (
               <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
-                Secure messaging via Supplify
+                Secure messaging via MWRD
               </Badge>
             )}
           </div>

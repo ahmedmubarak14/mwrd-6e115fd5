@@ -88,7 +88,7 @@ export const SearchModal = ({ children }: SearchModalProps) => {
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle className={isRTL ? "text-right" : "text-left"}>
-            {isRTL ? "البحث في سبلفاي" : "Search Supplify"}
+            {isRTL ? "البحث في مورد" : "Search MWRD"}
           </DialogTitle>
           <DialogDescription className={isRTL ? "text-right" : "text-left"}>
             {isRTL ? "ابحث عن الطلبات والموردين والعروض" : "Search for requests, suppliers, and offers"}

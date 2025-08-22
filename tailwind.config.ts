@@ -73,6 +73,18 @@ export default {
 				orange: {
 					DEFAULT: '29 78% 68%',    /* #FBA765 - Cozy Nook */
 					foreground: 'hsl(var(--primary-900))'
+				},
+				darkGreen: {
+					DEFAULT: '195 100% 16%',   /* #004F54 - Transporter Green */
+					foreground: '0 0% 100%'
+				},
+				blackChasm: {
+					DEFAULT: '195 49% 10%',    /* #102C33 - Black Chasm */
+					foreground: '0 0% 100%'
+				},
+				fujiSnow: {
+					DEFAULT: '40 15% 91%',     /* #F1EFE8 - Fuji Snow */
+					foreground: 'hsl(var(--neutral-900))'
 				}
 			},
 			borderRadius: {

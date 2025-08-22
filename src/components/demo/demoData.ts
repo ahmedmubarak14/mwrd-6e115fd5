@@ -20,8 +20,8 @@ export const initialNodes: Node[] = [
     position: { x: 50, y: 50 },
     data: {
       stepNumber: 0,
-      titleEn: 'Welcome to Supplify',
-      titleAr: 'مرحباً بك في Supplify',
+      titleEn: 'Welcome to MWRD',
+      titleAr: 'مرحباً بك في مورد',
       descEn: 'Your complete procurement management platform',
       descAr: 'منصتك الكاملة لإدارة المشتريات',
       icon: Layout,

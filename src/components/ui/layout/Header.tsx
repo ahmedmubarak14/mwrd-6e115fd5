@@ -73,7 +73,7 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
           >
             <img 
               src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
-              alt="Supplify Logo"
+              alt="MWRD Logo"
               className="h-12 sm:h-20 lg:h-24 w-auto hover:scale-105 transition-transform"
             />
           </Link>
@@ -129,7 +129,7 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
                   </AvatarFallback>
                 </Avatar>
                 <div className="rtl-text-left hidden lg:block">
-                  <p className="text-sm font-medium">{userProfile?.full_name || userProfile?.email?.split('@')[0] || t('dashboard.welcome').replace('Welcome to Supplify', 'Welcome').replace('مرحباً بك في سبلفاي', 'مرحباً')}</p>
+                  <p className="text-sm font-medium">{userProfile?.full_name || userProfile?.email?.split('@')[0] || t('dashboard.welcome').replace('Welcome to MWRD', 'Welcome').replace('مرحباً بك في مورد', 'مرحباً')}</p>
                   <p className="text-xs text-muted-foreground capitalize">{userProfile?.role}</p>
                 </div>
               </Button>

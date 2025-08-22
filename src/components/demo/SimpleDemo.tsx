@@ -48,7 +48,7 @@ export const SimpleDemo = ({ isOpen, onClose }: SimpleDemoProps) => {
         <DialogHeader className="p-6 border-b">
           <div className="flex items-center justify-between">
             <DialogTitle className="text-xl">
-              {isRTL ? 'جولة سريعة في Supplify' : 'Quick Supplify Tour'}
+              {isRTL ? 'جولة سريعة في مورد' : 'Quick MWRD Tour'}
             </DialogTitle>
             <Badge variant="outline">{currentStep + 1} / {steps.length}</Badge>
           </div>

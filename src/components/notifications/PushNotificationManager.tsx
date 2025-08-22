@@ -71,7 +71,7 @@ export const PushNotificationManager = () => {
 
   const sendTestNotification = () => {
     if (permission === "granted") {
-      new Notification("Supplify Test Notification", {
+      new Notification("MWRD Test Notification", {
         body: "This is a test notification to verify everything is working!",
         icon: "/favicon.ico",
         badge: "/favicon.ico",
