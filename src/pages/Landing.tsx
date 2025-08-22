@@ -119,22 +119,22 @@ export const Landing = () => {
               </div>
 
               {/* Main Brand */}
-              <div className="space-y-4">
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-black">
+              <div className="space-y-3">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-black">
                   <span className="gradient-text-killer">MWRD</span>
                   <span className="text-white/90"> | {language === 'ar' ? 'مورد' : 'مورد'}</span>
                 </h1>
-                <p className="text-lg text-white/70 font-medium">
+                <p className="text-base text-white/70 font-medium">
                   {language === 'ar' ? 'سوق سلسلة التوريد B2B' : 'B2B Supply Chain Marketplace'}
                 </p>
               </div>
 
               {/* Hero Headline */}
-              <div className="space-y-6">
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+              <div className="space-y-4">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight">
                   {language === 'ar' ? 'تواصل. مصدر. وريد.' : 'Connect. Source. Supply.'}
                 </h2>
-                <p className="text-xl text-white/80 leading-relaxed max-w-2xl">
+                <p className="text-base text-white/80 leading-relaxed max-w-2xl">
                   {language === 'ar' 
                     ? 'منصة B2B مهنية تربط العملاء بالموردين المؤهلين من خلال نظام طلب عروض الأسعار الذكي. احصل على عروض أسعار تنافسية، وقارن المقترحات، وأدر سلسلة التوريد الخاصة بك بكفاءة.'
                     : 'A professional B2B marketplace connecting clients with qualified vendors through our smart RFQ system. Get competitive quotes, compare proposals, and manage your supply chain efficiently.'}
@@ -142,14 +142,14 @@ export const Landing = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <Link to="/auth" className="group">
-                  <Button size="lg" className="px-8 py-4 text-lg font-semibold transition-all duration-300 hover:scale-105" style={{ background: 'var(--gradient-button-primary)' }}>
+                  <Button size="default" className="px-6 py-3 text-base font-semibold transition-all duration-300 hover:scale-105" style={{ background: 'var(--gradient-button-primary)' }}>
                     {language === 'ar' ? 'ابدأ البحث' : 'Start Sourcing'}
                   </Button>
                 </Link>
                 <Link to="/auth" className="group">
-                  <Button variant="outline" size="lg" className="px-8 py-4 text-lg font-semibold border-2 border-white/30 text-white hover:bg-white/10 transition-all duration-300 hover:scale-105">
+                  <Button variant="outline" size="default" className="px-6 py-3 text-base font-semibold border-2 border-white/30 text-white hover:bg-white/10 transition-all duration-300 hover:scale-105">
                     {language === 'ar' ? 'انضم كمورد' : 'Join as Vendor'}
                   </Button>
                 </Link>
@@ -222,23 +222,23 @@ export const Landing = () => {
                   progress: 70
                 }
               ].map((stat, index) => (
-                <Card key={index} className="glass-card-premium p-4 hover:scale-105 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${stat.color}20`, border: `1px solid ${stat.color}40` }}>
-                      <stat.icon className="h-5 w-5" style={{ color: stat.color }} />
+                <Card key={index} className="glass-card p-3 hover:scale-105 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="flex items-start gap-2">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${stat.color}20`, border: `1px solid ${stat.color}40` }}>
+                      <stat.icon className="h-4 w-4" style={{ color: stat.color }} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1">
-                        <h3 className="font-semibold text-white text-base">{stat.title}</h3>
+                        <h3 className="font-semibold text-white text-sm">{stat.title}</h3>
                       </div>
-                      <p className="text-xs text-white/60 mb-2">{stat.subtitle}</p>
+                      <p className="text-xs text-white/60 mb-1">{stat.subtitle}</p>
                       <div className="flex items-end justify-between">
                         <div>
-                          <div className="text-2xl font-black text-white mb-1">{stat.count}</div>
+                          <div className="text-lg font-black text-white mb-1">{stat.count}</div>
                           <div className="text-xs text-white/70">{stat.label}</div>
                         </div>
                       </div>
-                      <div className="w-full bg-white/10 rounded-full h-1 mt-3">
+                      <div className="w-full bg-white/10 rounded-full h-1 mt-2">
                         <div 
                           className="h-1 rounded-full transition-all duration-1000" 
                           style={{ 
@@ -264,11 +264,11 @@ export const Landing = () => {
         </div>
 
         <div className="container mx-auto relative z-10">
-          <div className="text-center mb-20">
-            <h2 className="text-5xl md:text-7xl font-black mb-8 text-white">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
               {language === 'ar' ? 'كيف نعيد تشكيل المشتريات التجارية؟' : 'How We\'re Reshaping B2B Procurement'}
             </h2>
-            <p className="text-2xl text-white/70 max-w-3xl mx-auto font-light">
+            <p className="text-lg text-white/70 max-w-3xl mx-auto font-light">
               {language === 'ar' 
                 ? 'نظام ثوري يدمج الذكاء الاصطناعي مع سوق المشتريات التجارية لتقديم تجربة لا مثيل لها'
                 : 'A revolutionary system that merges AI with B2B procurement marketplace to deliver an unmatched experience'}
@@ -285,19 +285,19 @@ export const Landing = () => {
               <div className="relative mb-32 group">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                   <div className="lg:w-1/2 lg:pr-16">
-                     <Card className="glass-card-premium p-6 hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl">
-                      <div className="flex items-center gap-6 mb-8">
-                        <div className="w-20 h-20 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-3xl flex items-center justify-center shadow-xl">
-                          <Search className="h-10 w-10 text-white" />
+                     <Card className="glass-card p-4 hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl">
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-2xl flex items-center justify-center shadow-xl">
+                          <Search className="h-6 w-6 text-white" />
                         </div>
                         <div>
-                          <span className="text-4xl font-black text-[#FBA765]">01</span>
-                          <h3 className="text-3xl font-bold text-white">
+                          <span className="text-2xl font-black text-[#FBA765]">01</span>
+                          <h3 className="text-xl font-bold text-white">
                             {language === 'ar' ? 'اكتشاف ذكي' : 'AI-Powered Discovery'}
                           </h3>
                         </div>
                       </div>
-                      <p className="text-xl text-white/80 leading-relaxed font-medium">
+                      <p className="text-base text-white/80 leading-relaxed font-medium">
                         {language === 'ar' 
                           ? 'تقنية الذكاء الاصطناعي تحلل احتياجاتك وتوصلك بأفضل الموردين في ثوانٍ. اكتشف فرصاً لم تتخيلها من قبل'
                           : 'AI technology analyzes your needs and connects you with the best suppliers in seconds. Discover opportunities you never imagined'}
@@ -312,9 +312,9 @@ export const Landing = () => {
                         { icon: Eye, label: language === 'ar' ? 'رؤى متقدمة' : 'Advanced Insights', color: '#004F54' },
                         { icon: TrendingUp, label: language === 'ar' ? 'نمو مضمون' : 'Guaranteed Growth', color: '#765A3F' }
                        ].map((feature, index) => (
-                        <Card key={index} className="glass-card p-4 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl">
-                          <feature.icon className="h-6 w-6 mb-3" style={{ color: feature.color }} />
-                          <div className="text-base font-bold text-white">{feature.label}</div>
+                        <Card key={index} className="glass-card p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl">
+                          <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
+                          <div className="text-sm font-bold text-white">{feature.label}</div>
                         </Card>
                       ))}
                     </div>
@@ -327,19 +327,19 @@ export const Landing = () => {
               <div className="relative mb-32 group">
                 <div className="flex flex-col lg:flex-row-reverse items-center gap-16">
                   <div className="lg:w-1/2 lg:pl-16">
-                    <Card className="glass-card-premium p-6 hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl">
-                      <div className="flex items-center gap-6 mb-8">
-                        <div className="w-20 h-20 bg-gradient-to-br from-[#FBA765] to-[#765A3F] rounded-3xl flex items-center justify-center shadow-xl">
-                          <MessageSquare className="h-10 w-10 text-white" />
+                    <Card className="glass-card p-4 hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl">
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#FBA765] to-[#765A3F] rounded-2xl flex items-center justify-center shadow-xl">
+                          <MessageSquare className="h-6 w-6 text-white" />
                         </div>
                         <div>
-                          <span className="text-4xl font-black text-[#FBA765]">02</span>
-                          <h3 className="text-3xl font-bold text-white">
+                          <span className="text-2xl font-black text-[#FBA765]">02</span>
+                          <h3 className="text-xl font-bold text-white">
                             {language === 'ar' ? 'تفاوض سلس' : 'Seamless Negotiation'}
                           </h3>
                         </div>
                       </div>
-                      <p className="text-xl text-white/80 leading-relaxed font-medium">
+                      <p className="text-base text-white/80 leading-relaxed font-medium">
                         {language === 'ar' 
                           ? 'منصة تفاوض متطورة مع ترجمة فورية وتحليل السوق الذكي. كل صفقة محمية بضمانات متعددة الطبقات'
                           : 'Advanced negotiation platform with real-time translation and smart market analysis. Every deal protected by multi-layered guarantees'}
@@ -354,9 +354,9 @@ export const Landing = () => {
                         { icon: BarChart3, label: language === 'ar' ? 'تحليل السوق' : 'Market Analysis', color: '#66023C' },
                         { icon: HeartHandshake, label: language === 'ar' ? 'ثقة متبادلة' : 'Mutual Trust', color: '#765A3F' }
                        ].map((feature, index) => (
-                        <Card key={index} className="glass-card p-4 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl">
-                          <feature.icon className="h-6 w-6 mb-3" style={{ color: feature.color }} />
-                          <div className="text-base font-bold text-white">{feature.label}</div>
+                        <Card key={index} className="glass-card p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl">
+                          <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
+                          <div className="text-sm font-bold text-white">{feature.label}</div>
                         </Card>
                       ))}
                     </div>
@@ -369,19 +369,19 @@ export const Landing = () => {
               <div className="relative group">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                    <div className="lg:w-1/2 lg:pr-16">
-                    <Card className="glass-card-premium p-6 hover:shadow-[0_25px_80px_rgba(0,79,84,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl">
-                      <div className="flex items-center gap-6 mb-8">
-                        <div className="w-20 h-20 bg-gradient-to-br from-[#004F54] to-[#102C33] rounded-3xl flex items-center justify-center shadow-xl">
-                          <CreditCard className="h-10 w-10 text-white" />
+                    <Card className="glass-card p-4 hover:shadow-[0_25px_80px_rgba(0,79,84,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl">
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#004F54] to-[#102C33] rounded-2xl flex items-center justify-center shadow-xl">
+                          <CreditCard className="h-6 w-6 text-white" />
                         </div>
                         <div>
-                          <span className="text-4xl font-black text-[#004F54]">03</span>
-                          <h3 className="text-3xl font-bold text-white">
+                          <span className="text-2xl font-black text-[#004F54]">03</span>
+                          <h3 className="text-xl font-bold text-white">
                             {language === 'ar' ? 'إنجاز آمن' : 'Secure Completion'}
                           </h3>
                         </div>
                       </div>
-                      <p className="text-xl text-white/80 leading-relaxed font-medium">
+                      <p className="text-base text-white/80 leading-relaxed font-medium">
                         {language === 'ar' 
                           ? 'نظام دفع متقدم مع تشفير عسكري وضمانات استرداد كاملة. تتبع الشحنات والجودة في الوقت الفعلي'
                           : 'Advanced payment system with military-grade encryption and full refund guarantees. Real-time shipment and quality tracking'}
@@ -396,9 +396,9 @@ export const Landing = () => {
                         { icon: CheckCircle, label: language === 'ar' ? 'ضمان الجودة' : 'Quality Assurance', color: '#66023C' },
                         { icon: Award, label: language === 'ar' ? 'خدمة مميزة' : 'Premium Service', color: '#765A3F' }
                        ].map((feature, index) => (
-                        <Card key={index} className="glass-card p-4 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-2xl">
-                          <feature.icon className="h-6 w-6 mb-3" style={{ color: feature.color }} />
-                          <div className="text-base font-bold text-white">{feature.label}</div>
+                        <Card key={index} className="glass-card p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl">
+                          <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
+                          <div className="text-sm font-bold text-white">{feature.label}</div>
                         </Card>
                       ))}
                     </div>
@@ -419,11 +419,11 @@ export const Landing = () => {
         </div>
 
         <div className="container mx-auto relative z-10">
-          <div className="text-center mb-20">
-            <h2 className="text-5xl md:text-7xl font-black mb-8 text-white">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
               {language === 'ar' ? 'لماذا تختار منصتنا؟' : 'Why Choose Our Platform?'}
             </h2>
-            <p className="text-2xl text-white/70 max-w-3xl mx-auto font-light">
+            <p className="text-lg text-white/70 max-w-3xl mx-auto font-light">
               {language === 'ar' 
                 ? 'حلول مخصصة لكل نوع من أنواع الأعمال مع نتائج مضمونة'
                 : 'Tailored solutions for every type of business with guaranteed results'}
@@ -432,20 +432,20 @@ export const Landing = () => {
 
           <div className="grid lg:grid-cols-2 gap-16 max-w-7xl mx-auto">
             {/* Suppliers Panel */}
-            <Card className="glass-card-premium p-8 hover:shadow-[0_50px_100px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl group">
-              <div className="text-center mb-12">
-                <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-[#FBA765] to-[#765A3F] rounded-3xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500">
-                  <Package className="h-12 w-12 text-white" />
+            <Card className="glass-card p-6 hover:shadow-[0_50px_100px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl group">
+              <div className="text-center mb-8">
+                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-[#FBA765] to-[#765A3F] rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                  <Package className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-4xl font-black text-[#FBA765] mb-4">
+                <h3 className="text-2xl font-black text-[#FBA765] mb-3">
                   {language === 'ar' ? 'للموردين' : 'For Suppliers'}
                 </h3>
-                <p className="text-xl text-white/80 font-medium">
+                <p className="text-base text-white/80 font-medium">
                   {language === 'ar' ? 'اعرض منتجاتك للعالم' : 'Showcase Your Products to the World'}
                 </p>
               </div>
 
-              <div className="space-y-8 mb-12">
+              <div className="space-y-6 mb-8">
                 {[
                   { 
                     icon: Globe, 
@@ -463,41 +463,41 @@ export const Landing = () => {
                     desc: language === 'ar' ? 'استلم أموالك بأمان وسرعة' : 'Receive payments securely and quickly'
                   }
                 ].map((benefit, index) => (
-                  <div key={index} className="flex items-start gap-6 group/item">
-                    <div className="w-16 h-16 bg-gradient-to-br from-[#FBA765]/20 to-[#765A3F]/10 rounded-2xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300">
-                      <benefit.icon className="h-8 w-8 text-[#FBA765]" />
+                  <div key={index} className="flex items-start gap-4 group/item">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#FBA765]/20 to-[#765A3F]/10 rounded-xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300">
+                      <benefit.icon className="h-6 w-6 text-[#FBA765]" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-xl font-bold text-white mb-2">{benefit.title}</h4>
-                      <p className="text-white/70">{benefit.desc}</p>
+                      <h4 className="text-base font-bold text-white mb-1">{benefit.title}</h4>
+                      <p className="text-sm text-white/70">{benefit.desc}</p>
                     </div>
                   </div>
                 ))}
               </div>
 
               <Link to="/auth" className="block">
-                <Button size="lg" className="w-full py-6 text-xl font-bold hover:shadow-[0_20px_40px_rgba(251,167,101,0.6)] transition-all duration-500 hover:scale-105 rounded-2xl" style={{ background: 'var(--gradient-button-secondary)' }}>
-                  <UserPlus className={`h-6 w-6 ${language === 'ar' ? 'ml-3' : 'mr-3'}`} />
+                <Button size="default" className="w-full py-4 text-base font-bold hover:shadow-[0_20px_40px_rgba(251,167,101,0.6)] transition-all duration-500 hover:scale-105 rounded-xl" style={{ background: 'var(--gradient-button-secondary)' }}>
+                  <UserPlus className={`h-5 w-5 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />
                   {language === 'ar' ? 'انضم كمورد' : 'Join as Supplier'}
                 </Button>
               </Link>
             </Card>
 
             {/* Buyers Panel */}
-            <Card className="glass-card-premium p-8 hover:shadow-[0_50px_100px_rgba(102,2,60,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl group">
-              <div className="text-center mb-12">
-                <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-3xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500">
-                  <Briefcase className="h-12 w-12 text-white" />
+            <Card className="glass-card p-6 hover:shadow-[0_50px_100px_rgba(102,2,60,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl group">
+              <div className="text-center mb-8">
+                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                  <Briefcase className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-4xl font-black text-[#66023C] mb-4">
+                <h3 className="text-2xl font-black text-[#66023C] mb-3">
                   {language === 'ar' ? 'للمشترين' : 'For Buyers'}
                 </h3>
-                <p className="text-xl text-white/80 font-medium">
+                <p className="text-base text-white/80 font-medium">
                   {language === 'ar' ? 'اعثر على أفضل المنتجات' : 'Find the Best Products'}
                 </p>
               </div>
 
-              <div className="space-y-8 mb-12">
+              <div className="space-y-6 mb-8">
                 {[
                   { 
                     icon: Search, 
@@ -515,21 +515,21 @@ export const Landing = () => {
                     desc: language === 'ar' ? 'احصل على أفضل الأسعار دائماً' : 'Always get the best prices'
                   }
                 ].map((benefit, index) => (
-                  <div key={index} className="flex items-start gap-6 group/item">
-                    <div className="w-16 h-16 bg-gradient-to-br from-[#66023C]/20 to-[#004F54]/10 rounded-2xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300">
-                      <benefit.icon className="h-8 w-8 text-[#66023C]" />
+                  <div key={index} className="flex items-start gap-4 group/item">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#66023C]/20 to-[#004F54]/10 rounded-xl flex items-center justify-center group-hover/item:scale-110 transition-transform duration-300">
+                      <benefit.icon className="h-6 w-6 text-[#66023C]" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-xl font-bold text-white mb-2">{benefit.title}</h4>
-                      <p className="text-white/70">{benefit.desc}</p>
+                      <h4 className="text-base font-bold text-white mb-1">{benefit.title}</h4>
+                      <p className="text-sm text-white/70">{benefit.desc}</p>
                     </div>
                   </div>
                 ))}
               </div>
 
               <Link to="/auth" className="block">
-                <Button size="lg" className="w-full py-6 text-xl font-bold hover:shadow-[0_20px_40px_rgba(102,2,60,0.6)] transition-all duration-500 hover:scale-105 rounded-2xl" style={{ background: 'var(--gradient-button-primary)' }}>
-                  <Search className={`h-6 w-6 ${language === 'ar' ? 'ml-3' : 'mr-3'}`} />
+                <Button size="default" className="w-full py-4 text-base font-bold hover:shadow-[0_20px_40px_rgba(102,2,60,0.6)] transition-all duration-500 hover:scale-105 rounded-xl" style={{ background: 'var(--gradient-button-primary)' }}>
+                  <Search className={`h-5 w-5 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />
                   {language === 'ar' ? 'ابدأ البحث' : 'Start Shopping'}
                 </Button>
               </Link>
@@ -543,20 +543,20 @@ export const Landing = () => {
         <div className="absolute inset-0 gradient-mesh-bg opacity-10"></div>
         
         <div className="container mx-auto text-center relative z-10">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-6xl md:text-8xl font-black mb-8 gradient-text-hero">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-black mb-6 gradient-text-hero">
               {language === 'ar' ? 'انضم للثورة' : 'Join the Revolution'}
             </h2>
-            <p className="text-2xl md:text-3xl gradient-text-subtle mb-16 font-light leading-relaxed">
+            <p className="text-lg md:text-xl gradient-text-subtle mb-12 font-light leading-relaxed">
               {language === 'ar' 
                 ? 'كن جزءاً من مستقبل سوق المشتريات التجارية اليوم'
                 : 'Be part of the future of B2B procurement marketplace today'}
             </p>
             
-            <div className="flex flex-col lg:flex-row gap-8 justify-center">
+            <div className="flex flex-col lg:flex-row gap-6 justify-center">
               <Link to="/auth" className="group">
-                <Button size="lg" className="px-20 py-8 text-2xl font-bold hover:shadow-[0_30px_60px_rgba(102,2,60,0.4)] transition-all duration-700 hover:scale-110 rounded-full animate-shimmer" style={{ background: 'var(--gradient-hero-bg)' }}>
-                  <Sparkles className={`h-8 w-8 ${language === 'ar' ? 'ml-4' : 'mr-4'} animate-pulse`} />
+                <Button size="lg" className="px-12 py-6 text-lg font-bold hover:shadow-[0_30px_60px_rgba(102,2,60,0.4)] transition-all duration-700 hover:scale-110 rounded-2xl animate-shimmer" style={{ background: 'var(--gradient-hero-bg)' }}>
+                  <Sparkles className={`h-6 w-6 ${language === 'ar' ? 'ml-3' : 'mr-3'} animate-pulse`} />
                   {language === 'ar' ? 'ابدأ رحلتك الآن' : 'Start Your Journey Now'}
                 </Button>
               </Link>
