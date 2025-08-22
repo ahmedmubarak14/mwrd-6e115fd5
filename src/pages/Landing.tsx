@@ -92,7 +92,7 @@ export const Landing = () => {
   return <div className="min-h-screen bg-background">
       <SmoothScroll />
       {/* Enhanced Navigation */}
-      <header className="border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b bg-gradient-to-r from-neutral-900 via-accent-900 to-primary-900 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo - Conditional redirect based on auth state */}
           <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
@@ -103,23 +103,23 @@ export const Landing = () => {
           
           {/* Navigation - Center */}
           <nav className={`hidden md:flex items-center gap-8 ${language === 'ar' ? 'order-2' : 'order-2'}`}>
-            <a href="#platform" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <a href="#platform" className={`flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Zap className="h-3 w-3" />
               {t('landing.nav.platform')}
             </a>
-            <a href="#benefits" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <a href="#benefits" className={`flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <TrendingUp className="h-3 w-3" />
               {t('landing.nav.benefits')}
             </a>
-            <a href="#services" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <a href="#services" className={`flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Building2 className="h-3 w-3" />
               {t('landing.nav.services')}
             </a>
-            <a href="#uvp" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <a href="#uvp" className={`flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Sparkles className="h-3 w-3" />
               {t('landing.nav.unique')}
             </a>
-            <Link to="/pricing" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <Link to="/pricing" className={`flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors story-link ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Star className="h-3 w-3" />
               {t('landing.nav.pricing')}
             </Link>
@@ -131,17 +131,17 @@ export const Landing = () => {
               <LanguageSwitcher />
             </div>
             {user && userProfile ? <Link to="/dashboard" className="hidden md:block">
-                <Button size="sm" className="hover-scale bg-gradient-to-r from-primary to-accent">
+                <Button size="sm" className="hover-scale bg-white/20 text-white hover:bg-white/30 border border-white/20">
                   {language === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
                 </Button>
               </Link> : <>
                 <Link to="/home" className="hidden md:block">
-                  <Button variant="ghost" size="sm" className="hover-scale">
+                  <Button variant="ghost" size="sm" className="hover-scale text-white hover:bg-white/10">
                     {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
                   </Button>
                 </Link>
                 <Link to="/home" className="hidden md:block">
-                  <Button size="sm" className="hover-scale bg-gradient-to-r from-primary to-accent">
+                  <Button size="sm" className="hover-scale bg-white/20 text-white hover:bg-white/30 border border-white/20">
                     {language === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
                   </Button>
                 </Link>
@@ -152,12 +152,12 @@ export const Landing = () => {
       </header>
 
       {/* Revolutionary Hero Section */}
-      <section className="relative py-32 px-4 overflow-hidden">
+      <section className="relative py-32 px-4 overflow-hidden bg-gradient-to-r from-neutral-900 via-accent-900 to-primary-900">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-accent/10"></div>
-          <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-accent/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-lime/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/5"></div>
+          <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-white/5 rounded-full blur-3xl animate-pulse delay-500"></div>
         </div>
         
         <div className="container mx-auto text-center relative z-10">
@@ -165,64 +165,64 @@ export const Landing = () => {
             {user && userProfile ?
           // Logged-in user experience
           <>
-                <div className="inline-flex items-center gap-2 bg-lime/10 rounded-full px-6 py-2 mb-8 animate-fade-in">
-                  <Shield className="h-4 w-4 text-lime" />
-                  <span className="text-sm font-medium text-lime">
+                <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-6 py-2 mb-8 animate-fade-in">
+                  <Shield className="h-4 w-4 text-white" />
+                  <span className="text-sm font-medium text-white">
                     {t('landing.hero.welcomeBack')}
                   </span>
                 </div>
                 
-                <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight animate-fade-in">
-                  <span className="bg-gradient-to-r from-primary via-accent to-lime bg-clip-text text-transparent">
+                <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight animate-fade-in text-white">
+                  <span className="bg-gradient-to-r from-orange-400 via-lime-400 to-orange-300 bg-clip-text text-transparent">
                     {language === 'ar' ? 'مرحباً، ' : 'Hello, '}{userProfile.full_name || userProfile.email}
                   </span>
                 </h1>
                 
-                <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-in delay-200">
+                <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-in delay-200">
                   {language === 'ar' ? 'أهلاً بك في حسابك الشخصي. يمكنك إدارة طلباتك وتصفح الخدمات من هنا' : 'Welcome to your personal account. You can manage your requests and browse services from here'}
                 </p>
 
                 {/* User Details Card */}
                 <div className="max-w-2xl mx-auto mb-12">
-                  <Card className="bg-card/70 backdrop-blur-sm hover:shadow-xl transition-all duration-500 border-0">
+                  <Card className="bg-white/10 backdrop-blur-sm hover:shadow-xl transition-all duration-500 border border-white/20">
                     <CardHeader className="text-center pb-6">
-                      <CardTitle className="text-2xl font-bold mb-4 flex items-center justify-center gap-3">
-                        <User className="h-6 w-6 text-primary" />
+                      <CardTitle className="text-2xl font-bold mb-4 flex items-center justify-center gap-3 text-white">
+                        <User className="h-6 w-6 text-white" />
                         {language === 'ar' ? 'تفاصيل الحساب' : 'Account Details'}
                       </CardTitle>
-                      <CardDescription className="text-base">
+                      <CardDescription className="text-base text-white/70">
                         {language === 'ar' ? 'معلومات حسابك الشخصي' : 'Your personal account information'}
                       </CardDescription>
                     </CardHeader>
                     
                     <CardContent className="space-y-4">
-                      <div className={`flex items-center gap-3 p-4 bg-primary/5 rounded-lg ${language === 'ar' ? 'flex-row-reverse text-right' : ''}`}>
-                        <Mail className="h-5 w-5 text-primary" />
+                      <div className={`flex items-center gap-3 p-4 bg-white/5 rounded-lg ${language === 'ar' ? 'flex-row-reverse text-right' : ''}`}>
+                        <Mail className="h-5 w-5 text-white" />
                         <div className="flex-1">
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm text-white/60">
                             {language === 'ar' ? 'البريد الإلكتروني' : 'Email'}
                           </p>
-                          <p className="font-medium">{userProfile.email}</p>
+                          <p className="font-medium text-white">{userProfile.email}</p>
                         </div>
                       </div>
                       
-                      {userProfile.company_name && <div className={`flex items-center gap-3 p-4 bg-accent/5 rounded-lg ${language === 'ar' ? 'flex-row-reverse text-right' : ''}`}>
-                          <Building2 className="h-5 w-5 text-accent" />
+                      {userProfile.company_name && <div className={`flex items-center gap-3 p-4 bg-white/5 rounded-lg ${language === 'ar' ? 'flex-row-reverse text-right' : ''}`}>
+                          <Building2 className="h-5 w-5 text-white" />
                           <div className="flex-1">
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-sm text-white/60">
                               {language === 'ar' ? 'اسم الشركة' : 'Company Name'}
                             </p>
-                            <p className="font-medium">{userProfile.company_name}</p>
+                            <p className="font-medium text-white">{userProfile.company_name}</p>
                           </div>
                         </div>}
                       
-                      <div className={`flex items-center gap-3 p-4 bg-lime/5 rounded-lg ${language === 'ar' ? 'flex-row-reverse text-right' : ''}`}>
-                        <Shield className="h-5 w-5 text-lime" />
+                      <div className={`flex items-center gap-3 p-4 bg-white/5 rounded-lg ${language === 'ar' ? 'flex-row-reverse text-right' : ''}`}>
+                        <Shield className="h-5 w-5 text-white" />
                         <div className="flex-1">
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm text-white/60">
                             {language === 'ar' ? 'نوع الحساب' : 'Account Type'}
                           </p>
-                          <p className="font-medium capitalize">
+                          <p className="font-medium capitalize text-white">
                             {userProfile.role === 'client' ? language === 'ar' ? 'عميل' : 'Client' : userProfile.role === 'supplier' ? language === 'ar' ? 'مقدم خدمة' : 'Supplier' : userProfile.role === 'admin' ? language === 'ar' ? 'مدير' : 'Admin' : userProfile.role}
                           </p>
                         </div>
@@ -233,13 +233,13 @@ export const Landing = () => {
                 
                 <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16 animate-fade-in delay-300">
                   <Link to="/dashboard">
-                    <Button size="lg" className="px-10 py-5 text-lg font-semibold shadow-xl hover-scale bg-gradient-to-r from-primary to-accent">
+                    <Button size="lg" className="px-10 py-5 text-lg font-semibold shadow-xl hover-scale bg-white/20 text-white hover:bg-white/30 border border-white/20">
                       {language === 'ar' ? 'انتقل إلى لوحة التحكم' : 'Go to Dashboard'}
                       <ArrowRight className="ml-2 h-6 w-6" />
                     </Button>
                   </Link>
                   <Link to="/pricing">
-                    <Button variant="outline" size="lg" className="px-10 py-5 text-lg border-2 hover-scale">
+                    <Button variant="outline" size="lg" className="px-10 py-5 text-lg border-2 border-white/20 text-white hover:bg-white/10 hover-scale">
                       {language === 'ar' ? 'إدارة الاشتراك' : 'Manage Subscription'}
                     </Button>
                   </Link>
@@ -247,50 +247,50 @@ export const Landing = () => {
               </> :
           // Anonymous user experience
           <>
-                <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-6 py-2 mb-8 animate-fade-in">
-                  <Sparkles className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium text-primary">
+                <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-6 py-2 mb-8 animate-fade-in">
+                  <Sparkles className="h-4 w-4 text-white" />
+                  <span className="text-sm font-medium text-white">
                     {t('landing.hero.badge')}
                   </span>
                 </div>
                 
-                <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight animate-fade-in">
-                  <span className="bg-gradient-to-r from-primary via-accent to-lime bg-clip-text text-transparent">
+                <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight animate-fade-in text-white">
+                  <span className="bg-gradient-to-r from-orange-400 via-lime-400 to-orange-300 bg-clip-text text-transparent">
                     {t('app.slogan')}
                   </span>
                   <br />
-                  <span className="text-foreground/80 text-3xl font-normal md:text-3xl">
+                  <span className="text-white/80 text-3xl font-normal md:text-3xl">
                     {language === 'ar' ? 'مع مورد' : 'with MWRD'}
                   </span>
                 </h1>
                 
-                <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-in delay-200">
+                <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed animate-fade-in delay-200">
                   {t('landing.hero.description')}
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16 animate-fade-in delay-300">
                   <Link to="/home">
-                    <Button size="lg" className="px-10 py-5 text-lg font-semibold shadow-xl hover-scale bg-gradient-to-r from-primary to-accent">
+                    <Button size="lg" className="px-10 py-5 text-lg font-semibold shadow-xl hover-scale bg-white/20 text-white hover:bg-white/30 border border-white/20">
                       {t('landing.hero.startFree')}
                       <ArrowRight className={`h-6 w-6 ${language === 'ar' ? 'mr-2 rotate-180' : 'ml-2'}`} />
                     </Button>
                   </Link>
-                  <DemoButton size="lg" variant="outline" className="px-10 py-5 text-lg border-2" />
+                  <DemoButton size="lg" variant="outline" className="px-10 py-5 text-lg border-2 border-white/20 text-white hover:bg-white/10" />
                 </div>
               </>}
 
             {/* Enhanced Impact Stats - Always visible */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto animate-fade-in-up delay-500">
-              {impactStats.map((stat, index) => <Card key={index} className="text-center group hover:shadow-xl transition-all duration-500 border-0 bg-card/60 backdrop-blur-sm hover-lift">
+              {impactStats.map((stat, index) => <Card key={index} className="text-center group hover:shadow-xl transition-all duration-500 border border-white/20 bg-white/10 backdrop-blur-sm hover-lift">
                   <CardContent className="pt-6">
-                    <div className="w-14 h-14 mx-auto mb-4 bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300 group-hover:scale-110">
-                      <stat.icon className="h-7 w-7 text-primary group-hover:text-accent transition-colors" />
+                    <div className="w-14 h-14 mx-auto mb-4 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20 transition-all duration-300 group-hover:scale-110">
+                      <stat.icon className="h-7 w-7 text-white group-hover:text-lime-300 transition-colors" />
                     </div>
-                    <div className="text-3xl font-bold gradient-text mb-2 animate-bounce-subtle">{stat.number}</div>
-                    <div className={`text-sm font-semibold text-foreground mb-1 ${language === 'ar' ? 'rtl-text-right' : ''}`}>
+                    <div className="text-3xl font-bold text-white mb-2 animate-bounce-subtle">{stat.number}</div>
+                    <div className={`text-sm font-semibold text-white mb-1 ${language === 'ar' ? 'rtl-text-right' : ''}`}>
                       {language === 'ar' ? stat.label : stat.englishLabel}
                     </div>
-                    <div className={`text-xs text-muted-foreground ${language === 'ar' ? 'rtl-text-right' : ''}`}>
+                    <div className={`text-xs text-white/70 ${language === 'ar' ? 'rtl-text-right' : ''}`}>
                       {language === 'ar' ? stat.description : stat.englishDescription}
                     </div>
                   </CardContent>
