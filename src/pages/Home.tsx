@@ -33,21 +33,21 @@ export const Home = () => {
   // Show user details if logged in
   if (user && userProfile) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
-        {/* Header with logo */}
-        <header className="border-b bg-gradient-to-r from-[#66023C] via-[#765A3F] to-[#004F54] backdrop-blur-sm sticky top-0 z-50">
-          <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-            <Link to="/" className="flex items-center gap-3">
+      <div className="min-h-screen bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900">
+        {/* Professional Header */}
+        <header className="border-b border-white/10 bg-gradient-to-r from-primary via-accent to-primary backdrop-blur-sm sticky top-0 z-50 shadow-lg">
+          <div className="container mx-auto px-6 h-20 flex items-center justify-between">
+            <Link to="/" className="flex items-center">
               <img 
                 src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
                 alt="MWRD Logo"
-                className="h-16 w-auto hover:scale-105 transition-transform"
+                className="h-16 w-auto hover:scale-105 transition-transform duration-300"
               />
             </Link>
             
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <Link to="/dashboard">
-                <Button size="sm" className="hover-scale bg-gradient-to-r from-primary to-accent">
+                <Button size="lg" className="bg-white/10 hover:bg-white/20 text-white border border-white/20 hover-scale font-semibold px-6">
                   {isRTL ? 'لوحة التحكم' : 'Dashboard'}
                 </Button>
               </Link>
@@ -55,88 +55,121 @@ export const Home = () => {
           </div>
         </header>
 
-        {/* User Profile Section */}
-        <section className="py-24 px-4 text-white">
-          <div className="container mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-lime/10 rounded-full px-6 py-2 mb-6">
-              <Shield className="h-4 w-4 text-lime" />
-              <span className="text-sm font-medium text-lime">
-                {isRTL ? 'مرحباً بك' : 'Welcome Back'}
-              </span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              {isRTL ? 'مرحباً، ' : 'Hello, '}{userProfile.full_name || userProfile.email.split('@')[0]}
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-12">
-              {isRTL ? 
-                'أهلاً بك في حسابك الشخصي. يمكنك إدارة طلباتك وتصفح الخدمات من هنا' : 
-                'Welcome to your personal account. You can manage your requests and browse services from here'
-              }
-            </p>
+        {/* Hero Section with Professional Layout */}
+        <main className="relative">
+          {/* Background Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/20 pointer-events-none" />
+          
+          <section className="relative py-20 px-6">
+            <div className="container mx-auto max-w-4xl">
+              
+              {/* Welcome Badge */}
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-full px-6 py-3 border border-white/20">
+                  <Shield className="h-5 w-5 text-lime" />
+                  <span className="text-sm font-semibold text-white">
+                    {isRTL ? 'مرحباً بك مرة أخرى' : 'Welcome Back'}
+                  </span>
+                </div>
+              </div>
 
-            {/* User Details Card */}
-            <div className="max-w-2xl mx-auto mb-12 animate-fade-in-up">
-              <Card className="bg-card/70 backdrop-blur-sm hover-lift transition-all duration-500 border-0 shadow-lg">
-                <CardHeader className="text-center pb-6">
-                  <CardTitle className="text-2xl font-bold mb-4 flex items-center justify-center gap-3">
-                    <User className="h-6 w-6 text-primary" />
-                    {isRTL ? 'تفاصيل الحساب' : 'Account Details'}
-                  </CardTitle>
-                  <CardDescription className="text-base">
-                    {isRTL ? 'معلومات حسابك الشخصي' : 'Your personal account information'}
-                  </CardDescription>
-                </CardHeader>
-                
-                <CardContent className="space-y-4">
-                  <div className={`flex items-center gap-3 p-4 bg-primary/5 rounded-lg ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
-                    <Mail className="h-5 w-5 text-primary" />
-                    <div className="flex-1">
-                      <p className="text-sm text-muted-foreground">
-                        {isRTL ? 'البريد الإلكتروني' : 'Email'}
-                      </p>
-                      <p className="font-medium">{userProfile.email}</p>
-                    </div>
-                  </div>
+              {/* Main Heading */}
+              <div className="text-center mb-12">
+                <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                  {isRTL ? 'مرحباً، ' : 'Hello, '}
+                  <span className="gradient-text bg-gradient-to-r from-lime to-white bg-clip-text text-transparent">
+                    {userProfile.full_name || userProfile.email.split('@')[0]}
+                  </span>
+                </h1>
+                <p className="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed font-medium">
+                  {isRTL ? 
+                    'مرحباً بك في حسابك الشخصي. يمكنك إدارة جميع طلباتك والخدمات من خلال لوحة التحكم المخصصة لك.' : 
+                    'Welcome to your personal account. Manage all your requests and services through your personalized dashboard.'
+                  }
+                </p>
+              </div>
+
+              {/* Professional Account Card */}
+              <div className="mb-12 animate-fade-in-up">
+                <Card className="bg-white/95 backdrop-blur-lg border-0 shadow-2xl hover-lift transition-all duration-500 overflow-hidden">
+                  <div className="bg-gradient-to-r from-primary to-accent h-2"></div>
                   
-                  {userProfile.company_name && (
-                    <div className={`flex items-center gap-3 p-4 bg-accent/5 rounded-lg ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
-                      <Building2 className="h-5 w-5 text-accent" />
+                  <CardHeader className="text-center pb-8 pt-8">
+                    <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mb-4">
+                      <User className="h-8 w-8 text-white" />
+                    </div>
+                    <CardTitle className="text-3xl font-bold text-foreground mb-2">
+                      {isRTL ? 'تفاصيل الحساب' : 'Account Details'}
+                    </CardTitle>
+                    <CardDescription className="text-lg text-muted-foreground">
+                      {isRTL ? 'معلومات حسابك الشخصي والمهني' : 'Your personal and professional account information'}
+                    </CardDescription>
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-6 px-8 pb-8">
+                    {/* Email Section */}
+                    <div className={`flex items-center gap-4 p-6 bg-primary/5 rounded-xl border border-primary/10 transition-colors hover:bg-primary/10 ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
+                      <div className="flex-shrink-0 w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <Mail className="h-6 w-6 text-primary" />
+                      </div>
                       <div className="flex-1">
-                        <p className="text-sm text-muted-foreground">
-                          {isRTL ? 'اسم الشركة' : 'Company Name'}
+                        <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-1">
+                          {isRTL ? 'البريد الإلكتروني' : 'Email Address'}
                         </p>
-                        <p className="font-medium">{userProfile.company_name}</p>
+                        <p className="text-lg font-semibold text-foreground">{userProfile.email}</p>
                       </div>
                     </div>
-                  )}
-                  
-                  <div className={`flex items-center gap-3 p-4 bg-lime/5 rounded-lg ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
-                    <Shield className="h-5 w-5 text-lime" />
-                    <div className="flex-1">
-                      <p className="text-sm text-muted-foreground">
-                        {isRTL ? 'نوع الحساب' : 'Account Type'}
-                      </p>
-                      <p className="font-medium capitalize">
-                        {userProfile.role === 'client' ? (isRTL ? 'عميل' : 'Client') : 
-                         userProfile.role === 'supplier' ? (isRTL ? 'مقدم خدمة' : 'Supplier') :
-                         userProfile.role === 'admin' ? (isRTL ? 'مدير' : 'Admin') : userProfile.role}
-                      </p>
+                    
+                    {/* Company Section */}
+                    {userProfile.company_name && (
+                      <div className={`flex items-center gap-4 p-6 bg-accent/5 rounded-xl border border-accent/10 transition-colors hover:bg-accent/10 ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
+                        <div className="flex-shrink-0 w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
+                          <Building2 className="h-6 w-6 text-accent" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-1">
+                            {isRTL ? 'اسم الشركة' : 'Company Name'}
+                          </p>
+                          <p className="text-lg font-semibold text-foreground">{userProfile.company_name}</p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Account Type Section */}
+                    <div className={`flex items-center gap-4 p-6 bg-lime/5 rounded-xl border border-lime/10 transition-colors hover:bg-lime/10 ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
+                      <div className="flex-shrink-0 w-12 h-12 bg-lime/10 rounded-lg flex items-center justify-center">
+                        <Shield className="h-6 w-6 text-lime" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-1">
+                          {isRTL ? 'نوع الحساب' : 'Account Type'}
+                        </p>
+                        <p className="text-lg font-semibold text-foreground capitalize">
+                          {userProfile.role === 'client' ? (isRTL ? 'عميل' : 'Client') : 
+                           userProfile.role === 'supplier' ? (isRTL ? 'مقدم خدمة' : 'Supplier') :
+                           userProfile.role === 'admin' ? (isRTL ? 'مدير' : 'Administrator') : userProfile.role}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                  </CardContent>
+                </Card>
+              </div>
 
-            {/* Action Buttons */}
-            <div className="flex justify-center items-center">
-              <Link to="/dashboard">
-                <Button size="lg" className="hover-scale bg-gradient-to-r from-primary to-accent px-8">
-                  {isRTL ? 'انتقل إلى لوحة التحكم' : 'Go to Dashboard'}
-                </Button>
-              </Link>
+              {/* Professional CTA Button */}
+              <div className="text-center">
+                <Link to="/dashboard">
+                  <Button 
+                    size="lg" 
+                    className="bg-gradient-to-r from-primary to-accent text-white font-bold px-12 py-4 text-lg hover-scale shadow-lg hover:shadow-xl transition-all duration-300 border-0"
+                  >
+                    {isRTL ? 'انتقل إلى لوحة التحكم' : 'Access Dashboard'}
+                  </Button>
+                </Link>
+              </div>
+
             </div>
-          </div>
-        </section>
+          </section>
+        </main>
       </div>
     );
   }
