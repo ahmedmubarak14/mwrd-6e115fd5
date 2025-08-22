@@ -91,7 +91,7 @@ export const Landing = () => {
   return <div className="min-h-screen bg-background">
       <SmoothScroll />
       {/* Enhanced Navigation */}
-      <header className="border-b bg-gradient-to-r from-[#102C33] to-[#004F54] backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b bg-[#66023C] backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo - Conditional redirect based on auth state */}
           <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
