@@ -80,19 +80,19 @@ export const Landing = () => {
             </div>
             {user && userProfile ? (
               <Link to="/dashboard" className="hidden md:block">
-                <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105" style={{ background: 'var(--gradient-button-primary)' }}>
+                <Button size="lg" className="glass-card px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-transparent border border-white/30" style={{ background: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(20px)' }}>
                   {language === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
                 </Button>
               </Link>
             ) : (
               <>
                 <Link to="/auth" className="hidden md:block">
-                  <Button variant="ghost" size="lg" className="px-6 hover:bg-white/10 transition-all duration-300">
+                  <Button variant="ghost" size="lg" className="glass-card px-6 bg-transparent border border-white/20 text-white transition-all duration-300" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(15px)' }}>
                     {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
                   </Button>
                 </Link>
                 <Link to="/auth" className="hidden md:block">
-                  <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105" style={{ background: 'var(--gradient-button-secondary)' }}>
+                  <Button size="lg" className="glass-card px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-transparent border border-white/30" style={{ background: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(20px)' }}>
                     {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
                   </Button>
                 </Link>
@@ -144,12 +144,12 @@ export const Landing = () => {
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3">
                 <Link to="/auth" className="group">
-                  <Button size="default" className="px-6 py-3 text-base font-semibold transition-all duration-300 hover:scale-105" style={{ background: 'var(--gradient-button-primary)' }}>
+                  <Button size="default" className="glass-card px-6 py-3 text-base font-semibold transition-all duration-300 hover:scale-105 bg-transparent border border-white/30 text-white" style={{ background: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(20px)' }}>
                     {language === 'ar' ? 'ابدأ البحث' : 'Start Sourcing'}
                   </Button>
                 </Link>
                 <Link to="/auth" className="group">
-                  <Button variant="outline" size="default" className="px-6 py-3 text-base font-semibold border-2 border-white/30 text-white hover:bg-white/10 transition-all duration-300 hover:scale-105">
+                  <Button variant="outline" size="default" className="glass-card px-6 py-3 text-base font-semibold border-2 border-white/30 text-white bg-transparent transition-all duration-300 hover:scale-105" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(15px)' }}>
                     {language === 'ar' ? 'انضم كمورد' : 'Join as Vendor'}
                   </Button>
                 </Link>
@@ -476,7 +476,7 @@ export const Landing = () => {
               </div>
 
               <Link to="/auth" className="block">
-                <Button size="default" className="w-full py-4 text-base font-bold hover:shadow-[0_20px_40px_rgba(251,167,101,0.6)] transition-all duration-500 hover:scale-105 rounded-xl" style={{ background: 'var(--gradient-button-secondary)' }}>
+                <Button size="default" className="glass-card w-full py-4 text-base font-bold hover:shadow-[0_20px_40px_rgba(251,167,101,0.6)] transition-all duration-500 hover:scale-105 rounded-xl bg-transparent border border-[#FBA765]/30 text-white" style={{ background: 'rgba(251, 167, 101, 0.1)', backdropFilter: 'blur(20px)' }}>
                   <UserPlus className={`h-5 w-5 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />
                   {language === 'ar' ? 'انضم كمورد' : 'Join as Supplier'}
                 </Button>
@@ -528,7 +528,7 @@ export const Landing = () => {
               </div>
 
               <Link to="/auth" className="block">
-                <Button size="default" className="w-full py-4 text-base font-bold hover:shadow-[0_20px_40px_rgba(102,2,60,0.6)] transition-all duration-500 hover:scale-105 rounded-xl" style={{ background: 'var(--gradient-button-primary)' }}>
+                <Button size="default" className="glass-card w-full py-4 text-base font-bold hover:shadow-[0_20px_40px_rgba(102,2,60,0.6)] transition-all duration-500 hover:scale-105 rounded-xl bg-transparent border border-[#66023C]/30 text-white" style={{ background: 'rgba(102, 2, 60, 0.1)', backdropFilter: 'blur(20px)' }}>
                   <Search className={`h-5 w-5 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />
                   {language === 'ar' ? 'ابدأ البحث' : 'Start Shopping'}
                 </Button>
@@ -555,7 +555,7 @@ export const Landing = () => {
             
             <div className="flex flex-col lg:flex-row gap-6 justify-center">
               <Link to="/auth" className="group">
-                <Button size="lg" className="px-12 py-6 text-lg font-bold hover:shadow-[0_30px_60px_rgba(102,2,60,0.4)] transition-all duration-700 hover:scale-110 rounded-2xl animate-shimmer" style={{ background: 'var(--gradient-hero-bg)' }}>
+                <Button size="lg" className="glass-card px-12 py-6 text-lg font-bold hover:shadow-[0_30px_60px_rgba(102,2,60,0.4)] transition-all duration-700 hover:scale-110 rounded-2xl animate-shimmer bg-transparent border border-white/30 text-white" style={{ background: 'rgba(102, 2, 60, 0.15)', backdropFilter: 'blur(25px)' }}>
                   <Sparkles className={`h-6 w-6 ${language === 'ar' ? 'ml-3' : 'mr-3'} animate-pulse`} />
                   {language === 'ar' ? 'ابدأ رحلتك الآن' : 'Start Your Journey Now'}
                 </Button>
