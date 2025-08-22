@@ -72,7 +72,7 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
             className="flex items-center"
           >
             <img 
-              src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
+              src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
               alt="MWRD Logo"
               className="h-12 sm:h-20 lg:h-24 w-auto hover:scale-105 transition-transform"
             />

@@ -70,7 +70,7 @@ export const WhyStartWithMWRD = () => {
           <div className={`${isRTL ? 'order-2' : 'order-1'}`}>
             <Link to="/" className="flex items-center gap-3">
               <img 
-                src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
+                src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
                 alt="MWRD Logo"
                 className="h-16 w-auto hover:scale-105 transition-transform"
               />
