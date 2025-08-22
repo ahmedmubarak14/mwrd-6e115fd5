@@ -103,17 +103,8 @@ export const Landing = () => {
         </div>
       </header>
 
-      {/* Revolutionary Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Killer Background System - Synchronized with Button Colors */}
-        <div className="absolute inset-0 gradient-mesh-bg opacity-90"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-[#66023C]/20 via-transparent to-[#004F54]/30"></div>
-        
-        {/* Floating Animated Orbs */}
-        <div className="absolute top-20 right-1/4 w-96 h-96 floating-orb"></div>
-        <div className="absolute bottom-20 left-1/4 w-[500px] h-[500px] floating-orb-2"></div>
-        <div className="absolute top-1/3 left-1/3 w-64 h-64 floating-orb opacity-40"></div>
-        <div className="absolute bottom-1/3 right-1/3 w-80 h-80 floating-orb-2 opacity-30"></div>
+      {/* Clean Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden hero-bg-clean">
         
         <div className="container mx-auto px-6 text-center relative z-10 pt-20">
           <div className="max-w-6xl mx-auto">
@@ -158,8 +149,8 @@ export const Landing = () => {
               </Link>
             </div>
 
-            {/* Revolutionary Trust Indicators */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto animate-fade-in">
+            {/* Trust Indicators - Matching Reference Design */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto animate-fade-in">
               {[
                 { 
                   icon: FileText, 
@@ -167,8 +158,7 @@ export const Landing = () => {
                   subtitle: language === 'ar' ? 'عروض ذكية' : 'Smart bidding',
                   count: "24", 
                   label: language === 'ar' ? 'طلبات نشطة' : 'Active RFQs', 
-                  color: '#8B5CF6',
-                  bgColor: 'from-purple-500/20 to-purple-600/10'
+                  color: '#8B5CF6'
                 },
                 { 
                   icon: Users, 
@@ -176,8 +166,7 @@ export const Landing = () => {
                   subtitle: language === 'ar' ? 'موردون موثقون' : 'Verified suppliers',
                   count: "1,247", 
                   label: language === 'ar' ? 'موردون نشطون' : 'Active vendors', 
-                  color: '#3B82F6',
-                  bgColor: 'from-blue-500/20 to-blue-600/10'
+                  color: '#3B82F6'
                 },
                 { 
                   icon: Shield, 
@@ -185,8 +174,7 @@ export const Landing = () => {
                   subtitle: language === 'ar' ? 'معاملات موثقة' : 'Verified transactions',
                   count: "99.9%", 
                   label: language === 'ar' ? 'معدل النجاح' : 'Success rate', 
-                  color: '#10B981',
-                  bgColor: 'from-green-500/20 to-green-600/10'
+                  color: '#10B981'
                 },
                 { 
                   icon: Clock, 
@@ -194,27 +182,30 @@ export const Landing = () => {
                   subtitle: language === 'ar' ? 'متوسط الاستجابة' : 'Average response',
                   count: "4.2h", 
                   label: language === 'ar' ? 'وقت استجابة العرض' : 'Bid response time', 
-                  color: '#F59E0B',
-                  bgColor: 'from-orange-500/20 to-orange-600/10'
+                  color: '#F59E0B'
                 }
               ].map((stat, index) => (
-                <Card key={index} className="killer-card group hover:scale-105 transition-all duration-700 animate-fade-in border border-white/20 bg-gradient-to-br from-black/40 to-black/20" style={{ animationDelay: `${index * 0.2}s` }}>
-                  <CardContent className="pt-6 pb-6 px-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${stat.color}20`, border: `1px solid ${stat.color}30` }}>
-                        <stat.icon className="h-4 w-4" style={{ color: stat.color }} />
-                      </div>
-                      <div>
-                        <div className="text-sm font-semibold text-white/90">{stat.title}</div>
-                        <div className="text-xs text-white/60">{stat.subtitle}</div>
-                      </div>
+                <Card key={index} className="card-trust group hover:scale-105 transition-all duration-700 animate-fade-in p-4" style={{ animationDelay: `${index * 0.2}s` }}>
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${stat.color}20`, border: `1px solid ${stat.color}50` }}>
+                      <stat.icon className="h-4 w-4" style={{ color: stat.color }} />
                     </div>
-                    
-                    <div className="mb-2">
-                      <div className="text-3xl font-black text-white mb-1">{stat.count}</div>
-                      <div className="text-sm text-white/70 font-medium">{stat.label}</div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-sm font-semibold text-white leading-tight">{stat.title}</div>
+                      <div className="text-xs text-white/60 leading-tight">{stat.subtitle}</div>
                     </div>
-                  </CardContent>
+                  </div>
+                  
+                  <div className="text-2xl font-black text-white mb-1">{stat.count}</div>
+                  <div className="text-xs text-white/70 font-medium leading-tight">{stat.label}</div>
+                  
+                  {/* Progress bar for visual consistency */}
+                  <div className="w-full bg-white/10 rounded-full h-1 mt-3">
+                    <div className="h-1 rounded-full" style={{ 
+                      backgroundColor: stat.color, 
+                      width: stat.count === '99.9%' ? '99%' : stat.count === '24' ? '60%' : stat.count === '1,247' ? '85%' : '70%' 
+                    }}></div>
+                  </div>
                 </Card>
               ))}
             </div>
