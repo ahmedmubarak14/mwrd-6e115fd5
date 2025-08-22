@@ -249,7 +249,7 @@ export const Landing = () => {
               <div className="relative mb-32 group">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                   <div className="lg:w-1/2 lg:pr-16">
-                    <Card className="p-12 bg-gradient-to-br from-white/10 to-white/5 border border-white/20 shadow-2xl hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl backdrop-blur-xl">
+                     <Card className="p-12 bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl">
                       <div className="flex items-center gap-6 mb-8">
                         <div className="w-20 h-20 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-3xl flex items-center justify-center shadow-xl">
                           <Search className="h-10 w-10 text-white" />
@@ -291,7 +291,7 @@ export const Landing = () => {
               <div className="relative mb-32 group">
                 <div className="flex flex-col lg:flex-row-reverse items-center gap-16">
                   <div className="lg:w-1/2 lg:pl-16">
-                    <Card className="p-12 bg-gradient-to-br from-white/10 to-white/5 border border-white/20 shadow-2xl hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl backdrop-blur-xl">
+                    <Card className="p-12 bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl">
                       <div className="flex items-center gap-6 mb-8">
                         <div className="w-20 h-20 bg-gradient-to-br from-[#FBA765] to-[#765A3F] rounded-3xl flex items-center justify-center shadow-xl">
                           <MessageSquare className="h-10 w-10 text-white" />
@@ -333,7 +333,7 @@ export const Landing = () => {
               <div className="relative group">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                   <div className="lg:w-1/2 lg:pr-16">
-                    <Card className="p-12 bg-gradient-to-br from-white/10 to-white/5 border border-white/20 shadow-2xl hover:shadow-[0_25px_80px_rgba(0,79,84,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl backdrop-blur-xl">
+                    <Card className="p-12 bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl hover:shadow-[0_25px_80px_rgba(0,79,84,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl">
                       <div className="flex items-center gap-6 mb-8">
                         <div className="w-20 h-20 bg-gradient-to-br from-[#004F54] to-[#102C33] rounded-3xl flex items-center justify-center shadow-xl">
                           <CreditCard className="h-10 w-10 text-white" />
@@ -396,7 +396,7 @@ export const Landing = () => {
 
           <div className="grid lg:grid-cols-2 gap-16 max-w-7xl mx-auto">
             {/* Suppliers Panel */}
-            <Card className="killer-card p-12 bg-gradient-to-br from-[#FBA765]/10 to-[#765A3F]/5 hover:shadow-[0_50px_100px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl group">
+            <Card className="p-12 bg-white/10 backdrop-blur-xl border border-white/20 hover:shadow-[0_50px_100px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl group">
               <div className="text-center mb-12">
                 <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-[#FBA765] to-[#765A3F] rounded-3xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500">
                   <Package className="h-12 w-12 text-white" />
@@ -448,7 +448,7 @@ export const Landing = () => {
             </Card>
 
             {/* Buyers Panel */}
-            <Card className="killer-card p-12 bg-gradient-to-br from-[#66023C]/10 to-[#004F54]/5 hover:shadow-[0_50px_100px_rgba(102,2,60,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl group">
+            <Card className="p-12 bg-white/10 backdrop-blur-xl border border-white/20 hover:shadow-[0_50px_100px_rgba(102,2,60,0.3)] transition-all duration-700 hover:scale-105 rounded-3xl group">
               <div className="text-center mb-12">
                 <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-3xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500">
                   <Briefcase className="h-12 w-12 text-white" />
