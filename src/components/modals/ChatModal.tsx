@@ -28,7 +28,7 @@ export const ChatModal = ({ children, supplierName, supplierAvatar }: ChatModalP
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: "Hello! Thank you for reaching out. How can I help you with your event requirements?",
+      text: "Hello! Thank you for reaching out. How can I help you with your procurement requirements?",
       sender: 'supplier',
       timestamp: '10:30 AM'
     }

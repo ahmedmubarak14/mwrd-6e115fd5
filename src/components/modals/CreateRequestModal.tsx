@@ -173,7 +173,7 @@ export const CreateRequestModal = ({ children }: CreateRequestModalProps) => {
           </div>
 
           <div className="space-y-2">
-            <Label>{isRTL ? "تاريخ الفعالية" : "Event Date"}</Label>
+            <Label>{isRTL ? "تاريخ التسليم" : "Delivery Date"}</Label>
             <Popover>
               <PopoverTrigger asChild>
                 <Button

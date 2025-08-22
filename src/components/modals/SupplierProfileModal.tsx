@@ -63,7 +63,7 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
   const portfolioItems = [
     { title: "Corporate Summit 2024", category: "Conference", image: "CS" },
     { title: "Tech Exhibition", category: "Trade Show", image: "TE" },
-    { title: "Product Launch Event", category: "Launch", image: "PL" },
+    { title: "Product Launch Campaign", category: "Launch", image: "PL" },
     { title: "Annual Gala", category: "Gala", image: "AG" }
   ];
 
@@ -71,14 +71,14 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
     "Audio Equipment Setup",
     "Video Production",
     "Stage Lighting",
-    "Event Photography",
+    "Office Supply Services",
     "Live Streaming",
     "Technical Support"
   ];
 
   const certifications = [
     "ISO 9001:2015 Certified",
-    "Event Management Professional",
+    "Supply Management Professional",
     "Audio-Visual Technology Specialist"
   ];
 

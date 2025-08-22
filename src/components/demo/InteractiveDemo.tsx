@@ -59,8 +59,8 @@ export const InteractiveDemo = ({ isOpen, onClose }: InteractiveDemoProps) => {
     {
       titleEn: "Create Service Request",
       titleAr: "إنشاء طلب خدمة",
-      descEn: "Request any event service you need",
-      descAr: "اطلب أي خدمة فعاليات تحتاجها"
+      descEn: "Request any procurement service you need",
+      descAr: "اطلب أي خدمة مشتريات تحتاجها"
     },
     {
       titleEn: "Browse Suppliers",

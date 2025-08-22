@@ -55,7 +55,7 @@ export const EnhancedChatModal = ({ children, supplierName, supplierId, supplier
     if (messages.length === 0) {
       const welcomeMessage: Message = {
         id: `msg-${Date.now()}`,
-        text: `Hello! Thank you for reaching out to ${supplierName}. How can I help you with your event requirements?`,
+        text: `Hello! Thank you for reaching out to ${supplierName}. How can I help you with your procurement requirements?`,
         sender: 'supplier',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         status: 'read'

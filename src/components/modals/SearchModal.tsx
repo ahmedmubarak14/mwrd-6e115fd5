@@ -41,8 +41,8 @@ export const SearchModal = ({ children }: SearchModalProps) => {
     {
       id: 3,
       type: "offer",
-      title: "Complete Wedding Photography Package",
-      description: "Full day wedding photography with editing",
+      title: "Complete Office Supplies Package",
+      description: "Full office supplies with setup service",
       price: "8,500 SAR",
       supplier: "Creative Lens Studio",
       status: "pending",

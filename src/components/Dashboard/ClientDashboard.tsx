@@ -90,7 +90,7 @@ export const ClientDashboard = () => {
 
   // Universal recent items that work for both user types
   const recentItems = userProfile?.role === 'supplier' ? [
-    { id: 1, title: "Wedding Photography Package", description: "Happy Events Co.", value: "9,400", status: "pending", currency: true },
+    { id: 1, title: "Office Furniture Package", description: "Modern Supply Co.", value: "9,400", status: "pending", currency: true },
     { id: 2, title: "Corporate Meeting Setup", description: "Tech Solutions Ltd.", value: "6,800", status: "accepted", currency: true },
     { id: 3, title: "Exhibition Booth Furniture", description: "Global Exhibitions", value: "15,800", status: "in_progress", currency: true }
   ] : [

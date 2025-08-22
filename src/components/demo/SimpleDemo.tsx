@@ -27,8 +27,8 @@ export const SimpleDemo = ({ isOpen, onClose }: SimpleDemoProps) => {
     {
       titleEn: "Create Request",
       titleAr: "إنشاء طلب",
-      descEn: "Request any event service with a simple form",
-      descAr: "اطلب أي خدمة فعاليات من خلال نموذج بسيط",
+      descEn: "Request any procurement service with a simple form",
+      descAr: "اطلب أي خدمة مشتريات من خلال نموذج بسيط",
       component: <RequestStep />
     },
     {
@@ -219,7 +219,7 @@ const OffersStep = () => {
         <CardContent className="p-4">
           <div className="flex justify-between items-start mb-2">
             <div>
-              <div className="font-medium">{isRTL ? 'شركة الفعاليات الذهبية' : 'Golden Events Co.'}</div>
+              <div className="font-medium">{isRTL ? 'شركة الموردين الذهبية' : 'Golden Supply Co.'}</div>
               <div className="text-sm text-muted-foreground">⭐ 4.7 ({isRTL ? '32 تقييم' : '32 reviews'})</div>
             </div>
             <div className="text-right">

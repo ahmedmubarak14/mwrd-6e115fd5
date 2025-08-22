@@ -329,7 +329,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
                       <RadioGroupItem value="client" id="client" />
                       <Label htmlFor="client" className="flex items-center gap-2">
                         <User className="h-4 w-4" />
-                        {language === 'ar' ? 'عميل (منظم فعاليات)' : 'Client (Event Organizer)'}
+                        {language === 'ar' ? 'عميل (مدير مشتريات)' : 'Client (Procurement Manager)'}
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2 space-x-reverse">
