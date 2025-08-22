@@ -257,7 +257,7 @@ export const Landing = () => {
       </section>
 
       {/* Revolutionary Workflow Section */}
-      <section className="py-32 px-6 bg-section-2 relative overflow-hidden">
+      <section className="py-32 px-6 bg-section-1 relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, #FBA765 2px, transparent 2px)`, backgroundSize: '50px 50px' }}></div>
@@ -411,7 +411,7 @@ export const Landing = () => {
       </section>
 
       {/* Revolutionary Split Benefits Section */}
-      <section className="py-32 px-6 bg-section-3 relative overflow-hidden">
+      <section className="py-32 px-6 bg-section-2 relative overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0">
           <div className="absolute top-0 right-0 w-[600px] h-[600px] floating-orb opacity-20"></div>
@@ -539,7 +539,7 @@ export const Landing = () => {
       </section>
 
       {/* Revolutionary Final CTA */}
-      <section className="py-32 px-6 bg-section-1 relative overflow-hidden">
+      <section className="py-32 px-6 bg-section-3 relative overflow-hidden">
         <div className="absolute inset-0 gradient-mesh-bg opacity-10"></div>
         
         <div className="container mx-auto text-center relative z-10">

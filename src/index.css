@@ -96,11 +96,11 @@ All colors MUST be HSL.
     --gradient-card-bg: linear-gradient(135deg, rgba(241, 239, 232, 0.1) 0%, rgba(251, 167, 101, 0.05) 100%);
     --gradient-card-border: linear-gradient(135deg, rgba(102, 2, 60, 0.2) 0%, rgba(0, 79, 84, 0.2) 100%);
     
-    /* Section Background Gradients - Rich Color Integration */
-    --gradient-section-1: linear-gradient(135deg, #F1EFE8 0%, rgba(102, 2, 60, 0.1) 25%, rgba(0, 79, 84, 0.08) 75%, rgba(251, 167, 101, 0.12) 100%);
-    --gradient-section-2: linear-gradient(135deg, rgba(16, 44, 51, 0.95) 0%, rgba(102, 2, 60, 0.85) 25%, rgba(0, 79, 84, 0.90) 50%, rgba(118, 90, 63, 0.75) 75%, rgba(16, 44, 51, 0.95) 100%);
-    --gradient-section-3: linear-gradient(135deg, rgba(102, 2, 60, 0.08) 0%, rgba(118, 90, 63, 0.06) 30%, #F1EFE8 70%, rgba(0, 79, 84, 0.05) 100%);
-    --gradient-section-4: linear-gradient(135deg, rgba(0, 79, 84, 0.1) 0%, rgba(251, 167, 101, 0.08) 50%, rgba(102, 2, 60, 0.06) 100%);
+    /* Section Background Gradients - Rich Color Integration with Minimal Orange */
+    --gradient-section-1: linear-gradient(135deg, rgba(16, 44, 51, 0.95) 0%, rgba(102, 2, 60, 0.85) 25%, rgba(0, 79, 84, 0.90) 50%, rgba(118, 90, 63, 0.80) 75%, rgba(16, 44, 51, 0.95) 100%);
+    --gradient-section-2: linear-gradient(135deg, rgba(102, 2, 60, 0.95) 0%, rgba(0, 79, 84, 0.90) 25%, rgba(118, 90, 63, 0.85) 50%, rgba(16, 44, 51, 0.90) 75%, rgba(102, 2, 60, 0.95) 100%);
+    --gradient-section-3: linear-gradient(135deg, rgba(0, 79, 84, 0.95) 0%, rgba(118, 90, 63, 0.85) 25%, rgba(102, 2, 60, 0.90) 50%, rgba(16, 44, 51, 0.85) 75%, rgba(0, 79, 84, 0.95) 100%);
+    --gradient-section-4: linear-gradient(135deg, rgba(118, 90, 63, 0.95) 0%, rgba(16, 44, 51, 0.85) 25%, rgba(102, 2, 60, 0.90) 50%, rgba(0, 79, 84, 0.85) 75%, rgba(118, 90, 63, 0.95) 100%);
     
     /* Glass Effect Gradients */
     --gradient-glass-bg: linear-gradient(135deg, rgba(102, 2, 60, 0.1) 0%, rgba(0, 79, 84, 0.1) 50%, rgba(251, 167, 101, 0.05) 100%);
@@ -486,19 +486,17 @@ All colors MUST be HSL.
   }
 
   .glass-card {
-    background: var(--gradient-glass-bg);
+    background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(20px);
-    border: 1px solid transparent;
-    border-image: var(--gradient-glass-border) 1;
-    box-shadow: var(--shadow-card);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.1);
   }
 
   .glass-card-premium {
-    background: var(--gradient-card-bg);
+    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(25px);
-    border: 1px solid transparent;
-    border-image: var(--gradient-card-border) 1;
-    box-shadow: var(--shadow-accent);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
   }
 
   @keyframes gradient-shift {
