@@ -22,6 +22,7 @@ import {
   Rocket,
   Globe,
   Award,
+  FileText,
   MessageSquare,
   Package,
   ThumbsUp,
@@ -160,18 +161,59 @@ export const Landing = () => {
             {/* Revolutionary Trust Indicators */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto animate-fade-in">
               {[
-                { icon: Building2, count: "10,000+", label: language === 'ar' ? 'شركة عالمية' : 'Global Companies', color: '#66023C' },
-                { icon: Package, count: "500K+", label: language === 'ar' ? 'منتج حصري' : 'Exclusive Products', color: '#FBA765' },
-                { icon: Handshake, count: "$2.5B+", label: language === 'ar' ? 'قيمة المعاملات' : 'Transaction Volume', color: '#004F54' },
-                { icon: Award, count: "99%", label: language === 'ar' ? 'معدل الرضا' : 'Success Rate', color: '#765A3F' }
+                { 
+                  icon: FileText, 
+                  title: language === 'ar' ? 'نظام طلب التسعير' : 'RFQ System',
+                  subtitle: language === 'ar' ? 'عروض ذكية' : 'Smart bidding',
+                  count: "24", 
+                  label: language === 'ar' ? 'طلبات نشطة' : 'Active RFQs', 
+                  color: '#8B5CF6',
+                  bgColor: 'from-purple-500/20 to-purple-600/10'
+                },
+                { 
+                  icon: Users, 
+                  title: language === 'ar' ? 'الموردون' : 'Vendors',
+                  subtitle: language === 'ar' ? 'موردون موثقون' : 'Verified suppliers',
+                  count: "1,247", 
+                  label: language === 'ar' ? 'موردون نشطون' : 'Active vendors', 
+                  color: '#3B82F6',
+                  bgColor: 'from-blue-500/20 to-blue-600/10'
+                },
+                { 
+                  icon: Shield, 
+                  title: language === 'ar' ? 'آمان' : 'Secure',
+                  subtitle: language === 'ar' ? 'معاملات موثقة' : 'Verified transactions',
+                  count: "99.9%", 
+                  label: language === 'ar' ? 'معدل النجاح' : 'Success rate', 
+                  color: '#10B981',
+                  bgColor: 'from-green-500/20 to-green-600/10'
+                },
+                { 
+                  icon: Clock, 
+                  title: language === 'ar' ? 'سريع' : 'Fast',
+                  subtitle: language === 'ar' ? 'متوسط الاستجابة' : 'Average response',
+                  count: "4.2h", 
+                  label: language === 'ar' ? 'وقت استجابة العرض' : 'Bid response time', 
+                  color: '#F59E0B',
+                  bgColor: 'from-orange-500/20 to-orange-600/10'
+                }
               ].map((stat, index) => (
-                <Card key={index} className="killer-card group hover:scale-105 transition-all duration-700 animate-fade-in" style={{ animationDelay: `${index * 0.2}s` }}>
-                  <CardContent className="pt-8 pb-6 text-center">
-                    <div className="w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-all duration-500" style={{ background: `linear-gradient(135deg, ${stat.color}20, ${stat.color}40)` }}>
-                      <stat.icon className="h-8 w-8" style={{ color: stat.color }} />
+                <Card key={index} className="killer-card group hover:scale-105 transition-all duration-700 animate-fade-in border border-white/20 bg-gradient-to-br from-black/40 to-black/20" style={{ animationDelay: `${index * 0.2}s` }}>
+                  <CardContent className="pt-6 pb-6 px-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${stat.color}20`, border: `1px solid ${stat.color}30` }}>
+                        <stat.icon className="h-4 w-4" style={{ color: stat.color }} />
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-white/90">{stat.title}</div>
+                        <div className="text-xs text-white/60">{stat.subtitle}</div>
+                      </div>
                     </div>
-                    <div className="text-4xl font-black mb-2 text-white">{stat.count}</div>
-                    <div className="text-lg text-white/70 font-medium">{stat.label}</div>
+                    
+                    <div className="mb-2">
+                      <div className="text-3xl font-black text-white mb-1">{stat.count}</div>
+                      <div className="text-sm text-white/70 font-medium">{stat.label}</div>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
