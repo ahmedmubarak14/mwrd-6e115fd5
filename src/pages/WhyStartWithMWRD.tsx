@@ -48,8 +48,8 @@ export const WhyStartWithMWRD = () => {
       nameAr: "أحمد الراشد",
       companyEn: "Tech Solutions Co.",
       companyAr: "شركة الحلول التقنية",
-      textEn: "Supplify transformed our procurement process completely. We save 40% of our time now.",
-      textAr: "غيّرت Supplify عملية المشتريات لدينا بالكامل. نوفر الآن 40% من وقتنا."
+      textEn: "MWRD transformed our procurement process completely. We save 40% of our time now.",
+      textAr: "غيّرت مورد عملية المشتريات لدينا بالكامل. نوفر الآن 40% من وقتنا."
     },
     {
       nameEn: "Fatima Al-Zahra",
@@ -71,7 +71,7 @@ export const WhyStartWithMWRD = () => {
             <Link to="/" className="flex items-center gap-3">
               <img 
                 src="/lovable-uploads/842b99cc-446d-41b5-8de7-b9c12faa1ed9.png" 
-                alt="Supplify Logo"
+                alt="MWRD Logo"
                 className="h-16 w-auto hover:scale-105 transition-transform"
               />
             </Link>
@@ -110,7 +110,7 @@ export const WhyStartWithMWRD = () => {
             </div>
             
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              {isRTL ? 'تبسيط المشتريات – ابدأ بذكاء مع Supplify' : 'Procurement Made Simple – Start Smart with Supplify'}
+              {isRTL ? 'تبسيط المشتريات – ابدأ بذكاء مع مورد' : 'Procurement Made Simple – Start Smart with MWRD'}
             </h1>
             
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8">
@@ -123,7 +123,7 @@ export const WhyStartWithMWRD = () => {
             <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
               <Link to="/home">
                 <Button size="lg" className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white px-8 py-3 hover-scale">
-                  {isRTL ? 'ابدأ مع Supplify' : 'Start with Supplify'}
+                  {isRTL ? 'ابدأ مع مورد' : 'Start with MWRD'}
                 </Button>
               </Link>
               <DemoButton 
@@ -230,7 +230,7 @@ export const WhyStartWithMWRD = () => {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                {isRTL ? 'لماذا تبدأ الشركات مع Supplify' : 'Why Companies Start with Supplify'}
+                {isRTL ? 'لماذا تبدأ الشركات مع مورد' : 'Why Companies Start with MWRD'}
               </h2>
             </div>
             
@@ -317,7 +317,7 @@ export const WhyStartWithMWRD = () => {
             </p>
             <Link to="/home">
               <Button size="lg" variant="secondary" className="px-8 py-3 text-primary hover:bg-white/90 hover-scale">
-                {isRTL ? 'ابدأ مع Supplify' : 'Get Started with Supplify'}
+                {isRTL ? 'ابدأ مع مورد' : 'Get Started with MWRD'}
               </Button>
             </Link>
           </div>

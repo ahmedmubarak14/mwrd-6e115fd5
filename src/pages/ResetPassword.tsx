@@ -17,9 +17,9 @@ const ResetPassword = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = 'Reset Password | Supplify';
+    document.title = 'Reset Password | MWRD';
     const metaDesc = document.querySelector('meta[name="description"]');
-    const content = 'Reset your Supplify account password securely.';
+    const content = 'Reset your MWRD account password securely.';
     if (metaDesc) metaDesc.setAttribute('content', content);
     else {
       const m = document.createElement('meta');

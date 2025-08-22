@@ -62,27 +62,27 @@ export const WhyMoveToMWRD = () => {
     {
       feature: isRTL ? "الأتمتة" : "Automation",
       traditional: false,
-      supplify: true
+      mwrd: true
     },
     {
       feature: isRTL ? "توفير التكاليف" : "Cost Savings", 
       traditional: false,
-      supplify: true
+      mwrd: true
     },
     {
       feature: isRTL ? "التوافق مع اللوائح" : "Compliance",
       traditional: false,
-      supplify: true
+      mwrd: true
     },
     {
       feature: isRTL ? "التقارير الآلية" : "Automated Reports",
       traditional: false,
-      supplify: true
+      mwrd: true
     },
     {
       feature: isRTL ? "إدارة الموردين" : "Vendor Management",
       traditional: false,
-      supplify: true
+      mwrd: true
     }
   ];
 
@@ -135,7 +135,7 @@ export const WhyMoveToMWRD = () => {
             </div>
             
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              {isRTL ? 'انتقل إلى إدارة مشتريات أذكى – اختر Supplify' : 'Switch to Smarter Procurement – Move to Supplify'}
+              {isRTL ? 'انتقل إلى إدارة مشتريات أذكى – اختر مورد' : 'Switch to Smarter Procurement – Move to MWRD'}
             </h1>
             
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8">
@@ -148,7 +148,7 @@ export const WhyMoveToMWRD = () => {
             <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
               <Link to="/home">
                 <Button size="lg" className="bg-gradient-to-r from-accent to-primary hover:from-accent/90 hover:to-primary/90 text-white px-8 py-3 hover-scale">
-                  {isRTL ? 'انتقل إلى Supplify' : 'Move to Supplify'}
+                  {isRTL ? 'انتقل إلى مورد' : 'Move to MWRD'}
                 </Button>
               </Link>
               <Link to="/pricing">
@@ -198,7 +198,7 @@ export const WhyMoveToMWRD = () => {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                {isRTL ? 'الانتقال إلى Supplify سريع وسهل' : 'Moving to Supplify is Quick and Easy'}
+                {isRTL ? 'الانتقال إلى مورد سريع وسهل' : 'Moving to MWRD is Quick and Easy'}
               </h2>
             </div>
             
@@ -237,7 +237,7 @@ export const WhyMoveToMWRD = () => {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                {isRTL ? 'الأدوات التقليدية مقابل Supplify' : 'Traditional Tools vs. Supplify'}
+                {isRTL ? 'الأدوات التقليدية مقابل مورد' : 'Traditional Tools vs. MWRD'}
               </h2>
             </div>
             
@@ -254,7 +254,7 @@ export const WhyMoveToMWRD = () => {
                           {isRTL ? 'الأدوات التقليدية' : 'Traditional Tools'}
                         </th>
                         <th className="p-4 text-center font-semibold text-primary">
-                          Supplify
+                          مورد
                         </th>
                       </tr>
                     </thead>
@@ -371,7 +371,7 @@ export const WhyMoveToMWRD = () => {
         <div className="container mx-auto text-center relative z-10 text-white">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              {isRTL ? 'انتقل إلى Supplify وغيّر إدارة مشترياتك اليوم' : 'Move to Supplify and Transform Your Procurement Today'}
+              {isRTL ? 'انتقل إلى مورد وغيّر إدارة مشترياتك اليوم' : 'Move to MWRD and Transform Your Procurement Today'}
             </h2>
             <p className="text-xl mb-8 leading-relaxed opacity-90">
               {isRTL ? 

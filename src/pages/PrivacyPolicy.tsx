@@ -152,8 +152,8 @@ export const PrivacyPolicy = () => {
               <div className="leading-relaxed">
                 <p>{t('privacyContactContent')}</p>
                 <div className="mt-4 p-4 bg-muted rounded-lg">
-                  <p className="font-semibold">Supplify - Data Protection Officer</p>
-                  <p>Email: privacy@supplify.sa</p>
+                  <p className="font-semibold">MWRD - Data Protection Officer</p>
+                  <p>Email: privacy@mwrd.sa</p>
                   <p>Phone: +966 11 XXX XXXX</p>
                   <p>{t('privacyContactAddress')}</p>
                 </div>

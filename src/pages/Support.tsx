@@ -211,7 +211,7 @@ export const Support = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-center font-medium">support@supplify.com</p>
+                  <p className="text-center font-medium">support@mwrd.com</p>
                   <p className="text-center text-sm text-muted-foreground mt-2">
                     {isRTL ? 'رد خلال 24 ساعة' : 'Response within 24 hours'}
                   </p>

@@ -85,7 +85,7 @@ export const dummyApi = {
     return {
       success: true,
       data: {
-        invoiceUrl: `https://supplify.com/invoices/INV-${orderId}-${Date.now()}.pdf`
+        invoiceUrl: `https://mwrd.com/invoices/INV-${orderId}-${Date.now()}.pdf`
       }
     };
   },
@@ -101,7 +101,7 @@ export const dummyApi = {
     return {
       success: true,
       data: {
-        downloadUrl: `https://supplify.com/exports/analytics-${dateRange.start}-to-${dateRange.end}.xlsx`
+        downloadUrl: `https://mwrd.com/exports/analytics-${dateRange.start}-to-${dateRange.end}.xlsx`
       }
     };
   },
@@ -161,7 +161,7 @@ export const dummyApi = {
       success: true,
       data: {
         callId: `CALL-${Date.now()}`,
-        roomUrl: `https://meet.supplify.com/room/${Date.now()}`
+        roomUrl: `https://meet.mwrd.com/room/${Date.now()}`
       }
     };
   }

@@ -556,7 +556,7 @@ const translations = {
     'auth.client': 'عميل',
     'auth.supplier': 'مقدم خدمة',
     'auth.welcomeBack': 'مرحباً بك مرة أخرى!',
-    'auth.welcomeToSupplify': 'مرحباً بك في موّرد!',
+    'auth.welcomeToSupplify': 'مرحباً بك في مورد!',
     'auth.signInDescription': 'سجل دخولك أو أنشئ حساباً جديداً',
     'auth.enterEmail': 'أدخل بريدك الإلكتروني',
     'auth.enterPassword': 'أدخل كلمة المرور',

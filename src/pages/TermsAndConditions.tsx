@@ -131,8 +131,8 @@ export const TermsAndConditions = () => {
               <div className="leading-relaxed">
                 <p>{t('termsContactContent')}</p>
                 <div className="mt-4 p-4 bg-muted rounded-lg">
-                  <p className="font-semibold">Supplify</p>
-                  <p>Email: support@supplify.sa</p>
+                  <p className="font-semibold">MWRD</p>
+                  <p>Email: support@mwrd.sa</p>
                   <p>Phone: +966 11 XXX XXXX</p>
                   <p>{t('termsContactAddress')}</p>
                 </div>
