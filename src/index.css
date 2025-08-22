@@ -46,7 +46,8 @@ All colors MUST be HSL.
     --neutral-100: 40 15% 91%;    /* #F1EFE8 - Fuji Snow */
     --neutral-50: 40 20% 96%;     /* lightest variation */
 
-    /* Cozy Nook Color - Orange Accent (#FBA765) */
+    /* Additional Brand Colors */
+    --bronze: 40 28% 35%;         /* #765A3F - Bronze/Brown */
     --orange: 29 78% 68%;         /* #FBA765 - Cozy Nook */
 
     /* Main Design System Colors */

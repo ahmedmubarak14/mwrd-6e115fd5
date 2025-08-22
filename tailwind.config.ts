@@ -70,6 +70,10 @@ export default {
 					DEFAULT: 'hsl(var(--lime))',
 					foreground: 'hsl(var(--lime-foreground))'
 				},
+				bronze: {
+					DEFAULT: '40 28% 35%',     /* #765A3F - Bronze/Brown */
+					foreground: '0 0% 100%'
+				},
 				orange: {
 					DEFAULT: '29 78% 68%',    /* #FBA765 - Cozy Nook */
 					foreground: 'hsl(var(--primary-900))'
