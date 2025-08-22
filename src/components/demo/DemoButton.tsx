@@ -20,7 +20,7 @@ export const DemoButton = ({ variant = 'default', size = 'default', className }:
       <Button
         variant={variant}
         size={size}
-        className={`hover-scale ${className}`}
+        className={`hover-scale bg-transparent border border-white/30 text-white hover:bg-white/10 ${className}`}
         onClick={() => setIsDemoOpen(true)}
       >
         <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
