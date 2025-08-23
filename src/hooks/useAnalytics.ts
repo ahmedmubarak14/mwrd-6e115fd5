@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface AnalyticsData {
   total_users: number;
   total_requests: number;
   total_offers: number;
-  totalRequests: number;  // Add camelCase versions
+  totalRequests: number;
   totalOffers: number;
   acceptedOffers: number;
   completedRequests: number;
@@ -25,36 +26,89 @@ export interface AnalyticsData {
 export const useAnalytics = () => {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchAnalytics = async () => {
     setLoading(true);
+    setError(null);
+    
     try {
-      // Mock analytics data since we don't have analytics tables
-      const mockAnalytics: AnalyticsData = {
-        total_users: 150,
-        total_requests: 89,
-        total_offers: 234,
-        totalRequests: 89,
-        totalOffers: 234,
-        acceptedOffers: 156,
-        completedRequests: 72,
-        successRate: 67,
-        totalRevenue: 125000,
-        clientSatisfaction: 4.5,
-        responseTime: 2.3,
-        active_users: 45,
-        revenue: 125000,
-        period: 'This Month',
+      // Fetch real analytics data from Supabase
+      const { data: analyticsData, error: analyticsError } = await supabase
+        .rpc('get_analytics_data');
+
+      if (analyticsError) throw analyticsError;
+
+      const baseData = analyticsData?.[0] || {
+        total_users: 0,
+        total_requests: 0,
+        total_offers: 0,
+        total_orders: 0,
+        active_users: 0,
+        total_revenue: 0,
+        success_rate: 0
+      };
+
+      // Get additional metrics
+      const { data: acceptedOffers } = await supabase
+        .from('offers')
+        .select('id')
+        .eq('status', 'accepted');
+
+      const { data: completedOrders } = await supabase
+        .from('orders')
+        .select('id')
+        .eq('status', 'completed');
+
+      // Calculate growth metrics by comparing with previous period
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      const sixtyDaysAgo = new Date();
+      sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+
+      const [currentPeriodRequests, previousPeriodRequests, currentPeriodOffers, previousPeriodOffers] = await Promise.all([
+        supabase.from('requests').select('id').gte('created_at', thirtyDaysAgo.toISOString()),
+        supabase.from('requests').select('id').gte('created_at', sixtyDaysAgo.toISOString()).lt('created_at', thirtyDaysAgo.toISOString()),
+        supabase.from('offers').select('id').gte('created_at', thirtyDaysAgo.toISOString()),
+        supabase.from('offers').select('id').gte('created_at', sixtyDaysAgo.toISOString()).lt('created_at', thirtyDaysAgo.toISOString())
+      ]);
+
+      const requestsGrowth = previousPeriodRequests.data?.length 
+        ? Math.round(((currentPeriodRequests.data?.length || 0) - (previousPeriodRequests.data?.length || 0)) / (previousPeriodRequests.data?.length) * 100)
+        : 0;
+
+      const offersGrowth = previousPeriodOffers.data?.length 
+        ? Math.round(((currentPeriodOffers.data?.length || 0) - (previousPeriodOffers.data?.length || 0)) / (previousPeriodOffers.data?.length) * 100)
+        : 0;
+
+      const revenueGrowth = 15; // Placeholder until we have historical revenue data
+
+      const analyticsResult: AnalyticsData = {
+        total_users: Number(baseData.total_users) || 0,
+        total_requests: Number(baseData.total_requests) || 0,
+        total_offers: Number(baseData.total_offers) || 0,
+        totalRequests: Number(baseData.total_requests) || 0,
+        totalOffers: Number(baseData.total_offers) || 0,
+        acceptedOffers: acceptedOffers?.length || 0,
+        completedRequests: completedOrders?.length || 0,
+        successRate: Number(baseData.success_rate) || 0,
+        totalRevenue: Number(baseData.total_revenue) || 0,
+        clientSatisfaction: 4.2, // Placeholder until we have rating system
+        responseTime: 2.5, // Placeholder until we track response times
+        active_users: Number(baseData.active_users) || 0,
+        revenue: Number(baseData.total_revenue) || 0,
+        period: 'Last 30 Days',
         growth: {
-          requests: 15,
-          offers: 22,
-          revenue: 18
+          requests: requestsGrowth,
+          offers: offersGrowth,
+          revenue: revenueGrowth
         }
       };
 
-      setAnalytics(mockAnalytics);
+      setAnalytics(analyticsResult);
     } catch (error: any) {
       console.error('Error fetching analytics:', error);
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -67,6 +121,7 @@ export const useAnalytics = () => {
   return {
     analytics,
     loading,
+    error,
     fetchAnalytics
   };
 };

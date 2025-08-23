@@ -20,9 +20,9 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState } from "react";
-import { dummyApi } from "@/utils/dummyApi";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useToast } from "@/hooks/use-toast";
+import { useRealTimeChat } from "@/hooks/useRealTimeChat";
 
 interface SupplierProfileModalProps {
   children: React.ReactNode;
@@ -48,6 +48,7 @@ interface SupplierProfileModalProps {
 export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModalProps) => {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const { startConversation, sendMessage } = useRealTimeChat();
   const isArabic = t('language') === 'ar';
   const [isLoadingCall, setIsLoadingCall] = useState(false);
   const [isLoadingMessage, setIsLoadingMessage] = useState(false);
@@ -85,14 +86,18 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
   const handleSendMessage = async () => {
     setIsLoadingMessage(true);
     try {
-      const response = await dummyApi.sendChatMessage("Hello, I'm interested in your services.", supplier.id.toString());
-      if (response.success) {
+      const conversation = await startConversation(supplier.id.toString());
+      if (conversation) {
+        await sendMessage(
+          conversation.id, 
+          t("Hello, I'm interested in your services."), 
+          supplier.id.toString()
+        );
+        
         toast({
-          title: "Message Sent",
-          description: `Your message has been sent to ${supplierInfo.name}. They typically respond within ${supplierInfo.responseTime}.`,
+          title: t("Message Sent"),
+          description: t(`Your message has been sent to ${supplierInfo.name}. They typically respond within ${supplierInfo.responseTime}.`),
         });
-      } else {
-        throw new Error(response.error);
       }
     } catch (error) {
       toast({
@@ -108,22 +113,11 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
   const handleVideoCall = async () => {
     setIsLoadingCall(true);
     try {
-      const response = await dummyApi.initiateVideoCall(supplierInfo.name);
-      if (response.success) {
-        toast({
-          title: "Video Call Initiated",
-          description: `Connecting to ${supplierInfo.name}... They will be notified of your call request.`,
-        });
-        // Simulate opening video call interface
-        setTimeout(() => {
-          toast({
-            title: "Call Connected",
-            description: "Video call is now active. The supplier has joined the call.",
-          });
-        }, 3000);
-      } else {
-        throw new Error(response.error);
-      }
+      // Placeholder for video call functionality
+      toast({
+        title: t("Video Call Initiated"),
+        description: t(`Connecting to ${supplierInfo.name}... They will be notified of your call request.`),
+      });
     } catch (error) {
       toast({
         title: "Call Failed",

@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_feed: {
+        Row: {
+          activity_type: string
+          created_at: string
+          description: string
+          id: string
+          metadata: Json | null
+          title: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activity_type: string
+          created_at?: string
+          description: string
+          id?: string
+          metadata?: Json | null
+          title?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activity_type?: string
+          created_at?: string
+          description?: string
+          id?: string
+          metadata?: Json | null
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       audit_log: {
         Row: {
           action: string
@@ -591,6 +624,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_analytics_data: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          active_users: number
+          success_rate: number
+          total_offers: number
+          total_orders: number
+          total_requests: number
+          total_revenue: number
+          total_users: number
+        }[]
+      }
       get_platform_statistics: {
         Args: Record<PropertyKey, never>
         Returns: {

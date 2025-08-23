@@ -11,15 +11,16 @@ import { TrendingUp, Eye, Clock, CreditCard, Calendar, DollarSign, CheckCircle, 
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { EnterpriseConsultationModal } from "@/components/modals/EnterpriseConsultationModal";
-import { dummyApi } from "@/utils/dummyApi";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { Footer } from "@/components/ui/layout/Footer";
+import { usePaymentIntegration } from "@/hooks/usePaymentIntegration";
 
 export const ManageSubscription = () => {
   const { user, userProfile, loading } = useAuth();
   const { t, language } = useLanguage();
   const { toast } = useToast();
+  const { processSubscriptionPayment } = usePaymentIntegration();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeView, setActiveView] = useState<'overview' | 'upgrade' | 'billing' | 'payment'>('overview');
   const [subscriptionData, setSubscriptionData] = useLocalStorage<any>('subscription-data', {

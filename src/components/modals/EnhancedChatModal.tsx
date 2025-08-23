@@ -9,8 +9,9 @@ import { Badge } from "@/components/ui/badge";
 import { Send, Phone, Video, MoreVertical, PhoneCall, VideoIcon, Mic, MicOff, PhoneOff, Paperclip, Smile } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { dummyApi } from "@/utils/dummyApi";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { useRealTimeChat } from "@/hooks/useRealTimeChat";
+import { useToast } from "@/hooks/use-toast";
 
 interface Message {
   id: string;
@@ -30,6 +31,8 @@ interface EnhancedChatModalProps {
 
 export const EnhancedChatModal = ({ children, supplierName, supplierId, supplierAvatar }: EnhancedChatModalProps) => {
   const { t } = useLanguage();
+  const { toast } = useToast();
+  const { startConversation, sendMessage } = useRealTimeChat();
   const [messages, setMessages] = useLocalStorage<Message[]>(`chat-${supplierId}`, []);
   const [newMessage, setNewMessage] = useState("");
   const [isCallActive, setIsCallActive] = useState(false);
@@ -80,35 +83,20 @@ export const EnhancedChatModal = ({ children, supplierName, supplierId, supplier
     setIsLoading(true);
 
     try {
-      // Simulate sending message
-      const response = await dummyApi.sendChatMessage(newMessage, supplierId);
-      
-      if (response.success) {
+      // Use real chat functionality
+      const conversation = await startConversation(supplierId);
+      if (conversation) {
+        await sendMessage(conversation.id, newMessage, supplierId);
+        
         // Update message status to sent
         setMessages(prev => prev.map(msg => 
           msg.id === userMessage.id ? { ...msg, status: 'sent' } : msg
         ));
 
-        // Simulate supplier response if provided
-        if (response.data?.response) {
-          setIsTyping(true);
-          setTimeout(() => {
-            const supplierResponse: Message = {
-              id: `msg-${Date.now()}-supplier`,
-              text: response.data!.response!,
-              sender: 'supplier',
-              timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-              status: 'read'
-            };
-            setMessages(prev => [...prev, supplierResponse]);
-            setIsTyping(false);
-          }, 1500);
-        }
-      } else {
-        // Update message status to failed
-        setMessages(prev => prev.map(msg => 
-          msg.id === userMessage.id ? { ...msg, status: 'sent', text: msg.text + ' (Failed to send)' } : msg
-        ));
+        toast({
+          title: t('Message Sent'),
+          description: t('Your message has been sent successfully.')
+        });
       }
     } catch (error) {
       console.error('Failed to send message:', error);
@@ -127,20 +115,22 @@ export const EnhancedChatModal = ({ children, supplierName, supplierId, supplier
   const handleStartCall = async () => {
     setIsLoading(true);
     try {
-      const response = await dummyApi.initiateVideoCall(supplierName);
+      // Placeholder for video call functionality
+      toast({
+        title: t('Video Call'),
+        description: t('Video call feature will be available soon.')
+      });
       
-      if (response.success) {
-        setIsCallActive(true);
-        setCallDuration(0);
-        
-        // Simulate call timer
-        const timer = setInterval(() => {
-          setCallDuration(prev => prev + 1);
-        }, 1000);
-        
-        // Store timer for cleanup
-        (window as any).callTimer = timer;
-      }
+      setIsCallActive(true);
+      setCallDuration(0);
+      
+      // Simulate call timer
+      const timer = setInterval(() => {
+        setCallDuration(prev => prev + 1);
+      }, 1000);
+      
+      // Store timer for cleanup
+      (window as any).callTimer = timer;
     } catch (error) {
       console.error('Failed to start call:', error);
     } finally {
