@@ -44,20 +44,20 @@ export const ClientDashboard = () => {
   const stats = userProfile?.role === 'supplier' ? [
     { 
       title: t('dashboard.activeOffers'), 
-      value: analyticsData.totalOffers?.toString() || "0", 
+      value: analyticsData?.totalOffers?.toString() || "0", 
       icon: Package, 
       color: "text-primary" 
     },
     { 
       title: t('dashboard.totalEarnings'), 
-      value: analyticsData.totalRevenue?.toLocaleString() || "0", 
+      value: analyticsData?.totalRevenue?.toLocaleString() || "0", 
       icon: Banknote, 
       color: "text-lime", 
       currency: true 
     },
     { 
       title: t('dashboard.successRate'), 
-      value: `${Math.round(analyticsData.successRate || 0)}%`, 
+      value: `${Math.round(analyticsData?.successRate || 0)}%`, 
       icon: TrendingUp, 
       color: "text-primary" 
     },
@@ -70,13 +70,13 @@ export const ClientDashboard = () => {
   ] : [
     { 
       title: t('dashboard.totalRequests'), 
-      value: analyticsData.totalRequests?.toString() || "0", 
+      value: analyticsData?.totalRequests?.toString() || "0", 
       icon: FileText, 
       color: "text-primary" 
     },
     { 
       title: t('dashboard.pendingOffers'), 
-      value: analyticsData.totalOffers?.toString() || "0", 
+      value: analyticsData?.totalOffers?.toString() || "0", 
       icon: TrendingUp, 
       color: "text-lime" 
     },
