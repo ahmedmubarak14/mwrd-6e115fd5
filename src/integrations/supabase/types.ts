@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "13.0.4"
@@ -930,40 +930,40 @@ export type Database = {
     Functions: {
       create_notification: {
         Args: {
-          p_user_id: string
-          p_type: string
-          p_title: string
           p_message: string
           p_reference_id?: string
+          p_title: string
+          p_type: string
+          p_user_id: string
         }
         Returns: string
       }
       get_admin_pending_counts: {
         Args: Record<PropertyKey, never>
         Returns: {
-          pending_suppliers: number
-          pending_requests: number
           pending_offers: number
+          pending_requests: number
+          pending_suppliers: number
         }[]
       }
       get_platform_statistics: {
         Args: Record<PropertyKey, never>
         Returns: {
-          total_users: number
           active_subscriptions: number
           monthly_revenue: number
-          total_requests: number
           total_offers: number
+          total_requests: number
           total_transactions: number
+          total_users: number
         }[]
       }
       get_user_statistics: {
         Args: Record<PropertyKey, never>
         Returns: {
-          total_users: number
+          total_admins: number
           total_clients: number
           total_suppliers: number
-          total_admins: number
+          total_users: number
         }[]
       }
       is_admin: {
@@ -976,9 +976,9 @@ export type Database = {
       }
       start_conversation: {
         Args: {
-          p_request_id: string
-          p_offer_id: string
           p_client_id: string
+          p_offer_id: string
+          p_request_id: string
           p_supplier_id: string
         }
         Returns: string
