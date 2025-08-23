@@ -96,11 +96,11 @@ All colors MUST be HSL.
     --gradient-card-bg: linear-gradient(135deg, rgba(241, 239, 232, 0.1) 0%, rgba(251, 167, 101, 0.05) 100%);
     --gradient-card-border: linear-gradient(135deg, rgba(102, 2, 60, 0.2) 0%, rgba(0, 79, 84, 0.2) 100%);
     
-    /* Section Background Gradients - Rich Color Integration with Minimal Orange */
-    --gradient-section-1: linear-gradient(135deg, rgba(16, 44, 51, 0.95) 0%, rgba(102, 2, 60, 0.85) 25%, rgba(0, 79, 84, 0.90) 50%, rgba(118, 90, 63, 0.80) 75%, rgba(16, 44, 51, 0.95) 100%);
-    --gradient-section-2: linear-gradient(135deg, rgba(102, 2, 60, 0.95) 0%, rgba(0, 79, 84, 0.90) 25%, rgba(118, 90, 63, 0.85) 50%, rgba(16, 44, 51, 0.90) 75%, rgba(102, 2, 60, 0.95) 100%);
-    --gradient-section-3: linear-gradient(135deg, rgba(0, 79, 84, 0.95) 0%, rgba(118, 90, 63, 0.85) 25%, rgba(102, 2, 60, 0.90) 50%, rgba(16, 44, 51, 0.85) 75%, rgba(0, 79, 84, 0.95) 100%);
-    --gradient-section-4: linear-gradient(135deg, rgba(118, 90, 63, 0.95) 0%, rgba(16, 44, 51, 0.85) 25%, rgba(102, 2, 60, 0.90) 50%, rgba(0, 79, 84, 0.85) 75%, rgba(118, 90, 63, 0.95) 100%);
+    /* Section Background Gradients - Using specified gradient colors */
+    --gradient-section-1: linear-gradient(135deg, rgba(16, 44, 51, 1) 0%, rgba(0, 79, 84, 0.9) 25%, rgba(251, 167, 101, 0.8) 50%, rgba(118, 90, 63, 0.9) 75%, rgba(16, 44, 51, 1) 100%);
+    --gradient-section-2: linear-gradient(135deg, rgba(0, 79, 84, 1) 0%, rgba(251, 167, 101, 0.9) 25%, rgba(118, 90, 63, 0.8) 50%, rgba(16, 44, 51, 0.9) 75%, rgba(0, 79, 84, 1) 100%);
+    --gradient-section-3: linear-gradient(135deg, rgba(251, 167, 101, 1) 0%, rgba(118, 90, 63, 0.9) 25%, rgba(16, 44, 51, 0.8) 50%, rgba(0, 79, 84, 0.9) 75%, rgba(251, 167, 101, 1) 100%);
+    --gradient-section-4: linear-gradient(135deg, rgba(118, 90, 63, 1) 0%, rgba(16, 44, 51, 0.9) 25%, rgba(0, 79, 84, 0.8) 50%, rgba(251, 167, 101, 0.9) 75%, rgba(118, 90, 63, 1) 100%);
     
     /* Glass Effect Gradients */
     --gradient-glass-bg: linear-gradient(135deg, rgba(102, 2, 60, 0.1) 0%, rgba(0, 79, 84, 0.1) 50%, rgba(251, 167, 101, 0.05) 100%);

@@ -265,10 +265,10 @@ export const Landing = () => {
 
         <div className="container mx-auto relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
+            <h2 className="text-3xl md:text-4xl font-black mb-6" style={{ color: '#F1EFE8' }}>
               {language === 'ar' ? 'كيف نعيد تشكيل المشتريات التجارية؟' : 'How We\'re Reshaping B2B Procurement'}
             </h2>
-            <p className="text-lg text-white/70 max-w-3xl mx-auto font-light">
+            <p className="text-lg max-w-3xl mx-auto font-light" style={{ color: '#F1EFE8', opacity: 0.8 }}>
               {language === 'ar' 
                 ? 'نظام ثوري يدمج الذكاء الاصطناعي مع سوق المشتريات التجارية لتقديم تجربة لا مثيل لها'
                 : 'A revolutionary system that merges AI with B2B procurement marketplace to deliver an unmatched experience'}
@@ -292,12 +292,12 @@ export const Landing = () => {
                         </div>
                         <div>
                           <span className="text-2xl font-black text-[#FBA765]">01</span>
-                          <h3 className="text-xl font-bold text-white">
+                          <h3 className="text-xl font-bold" style={{ color: '#F1EFE8' }}>
                             {language === 'ar' ? 'اكتشاف ذكي' : 'AI-Powered Discovery'}
                           </h3>
                         </div>
                       </div>
-                      <p className="text-base text-white/80 leading-relaxed font-medium">
+                      <p className="text-base leading-relaxed font-medium" style={{ color: '#F1EFE8', opacity: 0.9 }}>
                         {language === 'ar' 
                           ? 'تقنية الذكاء الاصطناعي تحلل احتياجاتك وتوصلك بأفضل الموردين في ثوانٍ. اكتشف فرصاً لم تتخيلها من قبل'
                           : 'AI technology analyzes your needs and connects you with the best suppliers in seconds. Discover opportunities you never imagined'}
@@ -314,7 +314,7 @@ export const Landing = () => {
                        ].map((feature, index) => (
                         <Card key={index} className="glass-card p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl bg-transparent border border-white/20" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(15px)' }}>
                           <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
-                          <div className="text-sm font-bold text-white">{feature.label}</div>
+                          <div className="text-sm font-bold" style={{ color: '#F1EFE8' }}>{feature.label}</div>
                         </Card>
                       ))}
                     </div>
@@ -334,12 +334,12 @@ export const Landing = () => {
                         </div>
                         <div>
                           <span className="text-2xl font-black text-[#FBA765]">02</span>
-                          <h3 className="text-xl font-bold text-white">
+                          <h3 className="text-xl font-bold" style={{ color: '#F1EFE8' }}>
                             {language === 'ar' ? 'تفاوض سلس' : 'Seamless Negotiation'}
                           </h3>
                         </div>
                       </div>
-                      <p className="text-base text-white/80 leading-relaxed font-medium">
+                      <p className="text-base leading-relaxed font-medium" style={{ color: '#F1EFE8', opacity: 0.9 }}>
                         {language === 'ar' 
                           ? 'منصة تفاوض متطورة مع ترجمة فورية وتحليل السوق الذكي. كل صفقة محمية بضمانات متعددة الطبقات'
                           : 'Advanced negotiation platform with real-time translation and smart market analysis. Every deal protected by multi-layered guarantees'}
@@ -356,7 +356,7 @@ export const Landing = () => {
                        ].map((feature, index) => (
                         <Card key={index} className="glass-card p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl bg-transparent border border-white/20" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(15px)' }}>
                           <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
-                          <div className="text-sm font-bold text-white">{feature.label}</div>
+                        <div className="text-sm font-bold" style={{ color: '#F1EFE8' }}>{feature.label}</div>
                         </Card>
                       ))}
                     </div>
@@ -376,12 +376,12 @@ export const Landing = () => {
                         </div>
                         <div>
                           <span className="text-2xl font-black text-[#004F54]">03</span>
-                          <h3 className="text-xl font-bold text-white">
+                          <h3 className="text-xl font-bold" style={{ color: '#F1EFE8' }}>
                             {language === 'ar' ? 'إنجاز آمن' : 'Secure Completion'}
                           </h3>
                         </div>
                       </div>
-                      <p className="text-base text-white/80 leading-relaxed font-medium">
+                      <p className="text-base leading-relaxed font-medium" style={{ color: '#F1EFE8', opacity: 0.9 }}>
                         {language === 'ar' 
                           ? 'نظام دفع متقدم مع تشفير عسكري وضمانات استرداد كاملة. تتبع الشحنات والجودة في الوقت الفعلي'
                           : 'Advanced payment system with military-grade encryption and full refund guarantees. Real-time shipment and quality tracking'}
@@ -398,7 +398,7 @@ export const Landing = () => {
                        ].map((feature, index) => (
                         <Card key={index} className="glass-card p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl bg-transparent border border-white/20" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(15px)' }}>
                           <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
-                          <div className="text-sm font-bold text-white">{feature.label}</div>
+                          <div className="text-sm font-bold" style={{ color: '#F1EFE8' }}>{feature.label}</div>
                         </Card>
                       ))}
                     </div>
@@ -420,10 +420,10 @@ export const Landing = () => {
 
         <div className="container mx-auto relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
+            <h2 className="text-3xl md:text-4xl font-black mb-6" style={{ color: '#F1EFE8' }}>
               {language === 'ar' ? 'لماذا تختار منصتنا؟' : 'Why Choose Our Platform?'}
             </h2>
-            <p className="text-lg text-white/70 max-w-3xl mx-auto font-light">
+            <p className="text-lg max-w-3xl mx-auto font-light" style={{ color: '#F1EFE8', opacity: 0.8 }}>
               {language === 'ar' 
                 ? 'حلول مخصصة لكل نوع من أنواع الأعمال مع نتائج مضمونة'
                 : 'Tailored solutions for every type of business with guaranteed results'}
@@ -440,7 +440,7 @@ export const Landing = () => {
                 <h3 className="text-2xl font-black text-[#FBA765] mb-3">
                   {language === 'ar' ? 'للموردين' : 'For Suppliers'}
                 </h3>
-                <p className="text-base text-white/80 font-medium">
+                <p className="text-base font-medium" style={{ color: '#F1EFE8', opacity: 0.9 }}>
                   {language === 'ar' ? 'اعرض منتجاتك للعالم' : 'Showcase Your Products to the World'}
                 </p>
               </div>
@@ -468,15 +468,15 @@ export const Landing = () => {
                       <benefit.icon className="h-6 w-6 text-[#FBA765]" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-base font-bold text-white mb-1">{benefit.title}</h4>
-                      <p className="text-sm text-white/70">{benefit.desc}</p>
+                      <h4 className="text-base font-bold mb-1" style={{ color: '#F1EFE8' }}>{benefit.title}</h4>
+                      <p className="text-sm" style={{ color: '#F1EFE8', opacity: 0.8 }}>{benefit.desc}</p>
                     </div>
                   </div>
                 ))}
               </div>
 
               <Link to="/auth" className="block">
-                <Button size="default" className="glass-card w-full py-4 text-base font-bold hover:shadow-[0_20px_40px_rgba(251,167,101,0.6)] transition-all duration-500 hover:scale-105 rounded-xl bg-transparent border border-[#FBA765]/30 text-white" style={{ background: 'rgba(251, 167, 101, 0.1)', backdropFilter: 'blur(20px)' }}>
+                <Button size="default" className="glass-card w-full py-4 text-base font-bold hover:shadow-[0_20px_40px_rgba(251,167,101,0.6)] transition-all duration-500 hover:scale-105 rounded-xl bg-transparent border border-[#FBA765]/30" style={{ background: 'rgba(251, 167, 101, 0.1)', backdropFilter: 'blur(20px)', color: '#F1EFE8' }}>
                   <UserPlus className={`h-5 w-5 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />
                   {language === 'ar' ? 'انضم كمورد' : 'Join as Supplier'}
                 </Button>
@@ -492,7 +492,7 @@ export const Landing = () => {
                 <h3 className="text-2xl font-black text-[#66023C] mb-3">
                   {language === 'ar' ? 'للمشترين' : 'For Buyers'}
                 </h3>
-                <p className="text-base text-white/80 font-medium">
+                <p className="text-base font-medium" style={{ color: '#F1EFE8', opacity: 0.9 }}>
                   {language === 'ar' ? 'اعثر على أفضل المنتجات' : 'Find the Best Products'}
                 </p>
               </div>
@@ -520,15 +520,15 @@ export const Landing = () => {
                       <benefit.icon className="h-6 w-6 text-[#66023C]" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="text-base font-bold text-white mb-1">{benefit.title}</h4>
-                      <p className="text-sm text-white/70">{benefit.desc}</p>
+                      <h4 className="text-base font-bold mb-1" style={{ color: '#F1EFE8' }}>{benefit.title}</h4>
+                      <p className="text-sm" style={{ color: '#F1EFE8', opacity: 0.8 }}>{benefit.desc}</p>
                     </div>
                   </div>
                 ))}
               </div>
 
               <Link to="/auth" className="block">
-                <Button size="default" className="glass-card w-full py-4 text-base font-bold hover:shadow-[0_20px_40px_rgba(102,2,60,0.6)] transition-all duration-500 hover:scale-105 rounded-xl bg-transparent border border-[#66023C]/30 text-white" style={{ background: 'rgba(102, 2, 60, 0.1)', backdropFilter: 'blur(20px)' }}>
+                <Button size="default" className="glass-card w-full py-4 text-base font-bold hover:shadow-[0_20px_40px_rgba(102,2,60,0.6)] transition-all duration-500 hover:scale-105 rounded-xl bg-transparent border border-[#66023C]/30" style={{ background: 'rgba(102, 2, 60, 0.1)', backdropFilter: 'blur(20px)', color: '#F1EFE8' }}>
                   <Search className={`h-5 w-5 ${language === 'ar' ? 'ml-2' : 'mr-2'}`} />
                   {language === 'ar' ? 'ابدأ البحث' : 'Start Shopping'}
                 </Button>
@@ -555,7 +555,7 @@ export const Landing = () => {
             
             <div className="flex flex-col lg:flex-row gap-6 justify-center">
               <Link to="/auth" className="group">
-                <Button size="lg" className="glass-card px-12 py-6 text-lg font-bold hover:shadow-[0_30px_60px_rgba(102,2,60,0.4)] transition-all duration-700 hover:scale-110 rounded-2xl animate-shimmer bg-transparent border border-white/30 text-white" style={{ background: 'rgba(102, 2, 60, 0.15)', backdropFilter: 'blur(25px)' }}>
+                <Button size="lg" className="glass-card px-12 py-6 text-lg font-bold hover:shadow-[0_30px_60px_rgba(102,2,60,0.4)] transition-all duration-700 hover:scale-110 rounded-2xl animate-shimmer bg-transparent border border-white/30" style={{ background: 'rgba(102, 2, 60, 0.15)', backdropFilter: 'blur(25px)', color: '#F1EFE8' }}>
                   <Sparkles className={`h-6 w-6 ${language === 'ar' ? 'ml-3' : 'mr-3'} animate-pulse`} />
                   {language === 'ar' ? 'ابدأ رحلتك الآن' : 'Start Your Journey Now'}
                 </Button>
@@ -568,7 +568,7 @@ export const Landing = () => {
       {/* Footer */}
       <footer className="py-16 px-6 text-white/80" style={{ background: 'var(--gradient-header)' }}>
         <div className="container mx-auto text-center">
-          <p className="text-lg">
+          <p className="text-lg" style={{ color: '#F1EFE8', opacity: 0.9 }}>
             {language === 'ar' 
               ? '© 2024 MWRD. جميع الحقوق محفوظة. مستقبل سوق المشتريات التجارية يبدأ هنا.'
               : '© 2024 MWRD. All rights reserved. The future of B2B procurement marketplace starts here.'}
