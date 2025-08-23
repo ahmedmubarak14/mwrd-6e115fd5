@@ -33,16 +33,19 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
   const [resetEmail, setResetEmail] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
   const [adminLoading, setAdminLoading] = useState(false);
+  const [showForceCreate, setShowForceCreate] = useState(false);
 
-  const createAdminUser = async () => {
+  const createAdminUser = async (force = false) => {
     setAdminLoading(true);
+    setShowForceCreate(false);
     try {
       const { data, error } = await supabase.functions.invoke('create-admin-user', {
         body: {
           email: 'ahmedmubaraks@hotmail.com',
           password: 'Aa123456',
           role: 'admin',
-          full_name: 'Ahmed Mubarak'
+          full_name: 'Ahmed Mubarak',
+          force
         }
       });
 
@@ -53,6 +56,17 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
         description: "Admin user has been created successfully. You can now login with ahmedmubaraks@hotmail.com",
       });
     } catch (error: any) {
+      // Handle specific "user already exists" error
+      if (error.message?.includes('User already exists') && !force) {
+        toast({
+          variant: "destructive", 
+          title: "User Already Exists",
+          description: "The admin user already exists. Use 'Force Create' to recreate it.",
+        });
+        setShowForceCreate(true);
+        return;
+      }
+      
       toast({
         variant: "destructive",
         title: "Error Creating Admin",
@@ -476,9 +490,9 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
         </CardContent>
         
         {/* Temporary Admin Creation Button */}
-        <div className="px-6 pb-4">
+        <div className="px-6 pb-4 space-y-2">
           <Button 
-            onClick={createAdminUser}
+            onClick={() => createAdminUser(false)}
             variant="outline"
             size="sm"
             disabled={adminLoading}
@@ -490,6 +504,22 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
               'Create Admin User (Temporary)'
             )}
           </Button>
+          
+          {showForceCreate && (
+            <Button 
+              onClick={() => createAdminUser(true)}
+              variant="destructive"
+              size="sm"
+              disabled={adminLoading}
+              className="w-full text-xs"
+            >
+              {adminLoading ? (
+                <LoadingSpinner size="sm" />
+              ) : (
+                'Force Create (Delete Existing)'
+              )}
+            </Button>
+          )}
         </div>
       </Card>
     </div>

@@ -10,6 +10,7 @@ interface CreateUserRequest {
   password: string;
   role: string;
   full_name: string;
+  force?: boolean;
 }
 
 Deno.serve(async (req) => {
@@ -56,9 +57,9 @@ Deno.serve(async (req) => {
     }
     
     console.log('=== Field Validation ===');
-    const { email, password, role, full_name } = requestBody as CreateUserRequest;
+    const { email, password, role, full_name, force = false } = requestBody as CreateUserRequest;
     
-    console.log('Extracted fields:', { email, password: password ? '[REDACTED]' : undefined, role, full_name });
+    console.log('Extracted fields:', { email, password: password ? '[REDACTED]' : undefined, role, full_name, force });
     
     // Create admin client using service role key
     const supabase = createClient(supabaseUrl, supabaseServiceKey, {
@@ -77,23 +78,58 @@ Deno.serve(async (req) => {
       );
     }
 
-    console.log('Creating user:', { email, role, full_name });
+    console.log('Creating user:', { email, role, full_name, force });
 
-    // Check if user already exists in profiles (avoid auth.users query issues)
-    const { data: existingProfiles } = await supabase
+    // Check if user already exists
+    const { data: existingProfile } = await supabase
       .from('user_profiles')
-      .select('email')
+      .select('user_id, email')
       .eq('email', email)
       .maybeSingle();
 
-    if (existingProfiles) {
-      return new Response(
-        JSON.stringify({ error: 'User with this email already exists' }), 
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      );
+    console.log('Existing profile check:', existingProfile);
+
+    // Check if auth user exists
+    const { data: { users: existingAuthUsers } } = await supabase.auth.admin.listUsers();
+    const existingAuthUser = existingAuthUsers?.find(user => user.email === email);
+    
+    console.log('Existing auth user check:', !!existingAuthUser);
+
+    if (existingProfile || existingAuthUser) {
+      if (!force) {
+        return new Response(
+          JSON.stringify({ 
+            error: 'User already exists',
+            details: {
+              profileExists: !!existingProfile,
+              authUserExists: !!existingAuthUser,
+              message: 'Use force=true to recreate the user'
+            }
+          }), 
+          { 
+            status: 400, 
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+          }
+        );
+      }
+
+      // Force cleanup of existing user
+      console.log('Force cleanup requested - removing existing user');
+      
+      if (existingProfile) {
+        console.log('Deleting existing profile:', existingProfile.user_id);
+        await supabase
+          .from('user_profiles')
+          .delete()
+          .eq('user_id', existingProfile.user_id);
+      }
+
+      if (existingAuthUser) {
+        console.log('Deleting existing auth user:', existingAuthUser.id);
+        await supabase.auth.admin.deleteUser(existingAuthUser.id);
+      }
+      
+      console.log('Cleanup completed');
     }
 
     // Create the user with admin privileges
