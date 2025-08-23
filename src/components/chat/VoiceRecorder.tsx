@@ -2,7 +2,9 @@ import { useState, useRef, useEffect } from 'react';
 import { Mic, MicOff, Play, Pause, Send, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
+import { VoiceWaveform } from './VoiceWaveform';
 
 interface VoiceRecorderProps {
   onRecordingComplete: (audioBlob: Blob, duration: number) => void;
@@ -15,6 +17,8 @@ export const VoiceRecorder = ({ onRecordingComplete, onCancel }: VoiceRecorderPr
   const [recordingTime, setRecordingTime] = useState(0);
   const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [audioLevel, setAudioLevel] = useState(0);
+  const [maxDuration] = useState(300); // 5 minutes max
   
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -30,9 +34,37 @@ export const VoiceRecorder = ({ onRecordingComplete, onCancel }: VoiceRecorderPr
 
   const startRecording = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mediaRecorder = new MediaRecorder(stream);
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true
+        }
+      });
+      
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: 'audio/webm;codecs=opus'
+      });
       const chunks: Blob[] = [];
+
+      // Audio level monitoring
+      const audioContext = new AudioContext();
+      const analyser = audioContext.createAnalyser();
+      const microphone = audioContext.createMediaStreamSource(stream);
+      const dataArray = new Uint8Array(analyser.frequencyBinCount);
+      
+      microphone.connect(analyser);
+      analyser.fftSize = 256;
+
+      const updateAudioLevel = () => {
+        analyser.getByteFrequencyData(dataArray);
+        const average = dataArray.reduce((sum, value) => sum + value, 0) / dataArray.length;
+        setAudioLevel(average / 255);
+        
+        if (isRecording) {
+          requestAnimationFrame(updateAudioLevel);
+        }
+      };
 
       mediaRecorder.ondataavailable = (event) => {
         chunks.push(event.data);
@@ -44,15 +76,24 @@ export const VoiceRecorder = ({ onRecordingComplete, onCancel }: VoiceRecorderPr
         const url = URL.createObjectURL(blob);
         setAudioUrl(url);
         stream.getTracks().forEach(track => track.stop());
+        audioContext.close();
+        setAudioLevel(0);
       };
 
       mediaRecorderRef.current = mediaRecorder;
       mediaRecorder.start();
       setIsRecording(true);
       setRecordingTime(0);
+      updateAudioLevel();
 
       intervalRef.current = setInterval(() => {
-        setRecordingTime(prev => prev + 1);
+        setRecordingTime(prev => {
+          if (prev >= maxDuration - 1) {
+            stopRecording();
+            return prev;
+          }
+          return prev + 1;
+        });
       }, 1000);
     } catch (error) {
       showError('Could not access microphone');
@@ -137,10 +178,20 @@ export const VoiceRecorder = ({ onRecordingComplete, onCancel }: VoiceRecorderPr
             {formatTime(recordingTime)}
           </div>
           
+          {recordingTime > 0 && (
+            <Progress 
+              value={(recordingTime / maxDuration) * 100} 
+              className="w-full h-2"
+            />
+          )}
+          
           {isRecording && (
-            <p className="text-sm text-muted-foreground">
-              Recording... Tap to stop
-            </p>
+            <div className="space-y-2">
+              <VoiceWaveform isRecording={isRecording} audioLevel={audioLevel} />
+              <p className="text-sm text-muted-foreground">
+                Recording... Tap to stop ({Math.floor((maxDuration - recordingTime) / 60)}:{((maxDuration - recordingTime) % 60).toString().padStart(2, '0')} remaining)
+              </p>
+            </div>
           )}
         </div>
       ) : (

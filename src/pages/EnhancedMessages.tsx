@@ -36,9 +36,29 @@ export default function EnhancedMessages() {
     getOtherParticipant
   } = useRealTimeChat();
 
+  // Cache participants for filtering
+  const [participantCache, setParticipantCache] = useState<Map<string, any>>(new Map());
+  
+  // Update participant cache
+  useEffect(() => {
+    const updateParticipants = async () => {
+      const cache = new Map();
+      for (const conversation of conversations) {
+        const participant = await getOtherParticipant(conversation);
+        cache.set(conversation.id, participant);
+      }
+      setParticipantCache(cache);
+    };
+    
+    if (conversations.length > 0) {
+      updateParticipants();
+    }
+  }, [conversations, getOtherParticipant]);
+
   // Filter conversations based on search
-  const filteredConversations = conversations.filter(async (conversation) => {
-    const otherParticipant = await getOtherParticipant(conversation);
+  const filteredConversations = conversations.filter((conversation) => {
+    if (!searchTerm) return true;
+    const otherParticipant = participantCache.get(conversation.id);
     return otherParticipant?.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
            otherParticipant?.company_name?.toLowerCase().includes(searchTerm.toLowerCase());
   });
@@ -112,7 +132,7 @@ export default function EnhancedMessages() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Users className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm font-medium">Conversations ({conversations.length})</span>
+                        <span className="text-sm font-medium">Conversations ({filteredConversations.length})</span>
                       </div>
                       <ConversationsDropdown>
                         <Button variant="outline" size="sm">Start New</Button>
@@ -127,8 +147,8 @@ export default function EnhancedMessages() {
                         <h3 className="font-medium mb-2">No conversations yet</h3>
                         <p className="text-sm">Start a conversation from a request or offer</p>
                       </div>
-                    ) : (
-                      conversations.map((conversation) => (
+                     ) : (
+                      filteredConversations.map((conversation) => (
                         <ConversationItem
                           key={conversation.id}
                           conversation={conversation}

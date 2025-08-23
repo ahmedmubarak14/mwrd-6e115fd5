@@ -26,6 +26,8 @@ import { TypingIndicator } from "./TypingIndicator";
 import { FileAttachment } from "./FileAttachment";
 import { VoiceRecorder } from "./VoiceRecorder";
 import { ImageViewer } from "./ImageViewer";
+import { EmojiPicker } from "./EmojiPicker";
+import { DocumentPreview } from "./DocumentPreview";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
@@ -281,12 +283,11 @@ export const ChatInterface = ({ conversation, className }: ChatInterfaceProps) =
                 </div>
               )}
               {isFile && !isAudio && (
-                <FileAttachment
-                  fileName={msg.content}
-                  fileSize={0}
-                  fileType="application/octet-stream"
-                  fileUrl={msg.attachment_url!}
-                />
+                  <DocumentPreview
+                    fileName={msg.content}
+                    fileUrl={msg.attachment_url!}
+                    fileType={msg.message_type === 'image' ? 'image/*' : 'application/octet-stream'}
+                  />
               )}
               {isAudio && (
                 <div className="bg-muted rounded-lg p-3 max-w-xs">
@@ -502,13 +503,16 @@ export const ChatInterface = ({ conversation, className }: ChatInterfaceProps) =
                 size="icon" 
                 className="shrink-0"
                 onClick={() => setShowVoiceRecorder(true)}
+                title="Record voice message"
               >
                 <Mic className="h-4 w-4" />
               </Button>
               
-              <Button variant="outline" size="icon" className="shrink-0">
-                <Smile className="h-4 w-4" />
-              </Button>
+              <EmojiPicker 
+                onEmojiSelect={(emoji) => {
+                  setMessage(prev => prev + emoji);
+                }}
+              />
               
               <Button 
                 onClick={handleSendMessage} 
