@@ -200,7 +200,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full max-w-md" style={{ backgroundColor: '#102C33', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
         <CardHeader className="text-center">
           <Link to="/" className="inline-block">
             <img 
@@ -209,10 +209,10 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
               className="h-16 w-auto mx-auto mb-4 hover:scale-105 transition-transform"
             />
           </Link>
-          <CardTitle className="text-2xl">
+          <CardTitle className="text-2xl" style={{ color: '#F1EFE8' }}>
             {language === 'ar' ? 'مرحباً بك في مورد' : 'Welcome to MWRD'}
           </CardTitle>
-          <CardDescription>
+          <CardDescription style={{ color: '#F1EFE8', opacity: 0.8 }}>
             {language === 'ar' ? 'سجل دخولك أو أنشئ حساباً جديداً' : 'Sign in to your account or create a new one'}
           </CardDescription>
         </CardHeader>
@@ -230,7 +230,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
             <TabsContent value="login">
               <form onSubmit={handleAuth} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email">
+                  <Label htmlFor="email" style={{ color: '#F1EFE8' }}>
                     {language === 'ar' ? 'البريد الإلكتروني' : 'Email'}
                   </Label>
                   <div className="relative">
@@ -247,7 +247,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="password">
+                  <Label htmlFor="password" style={{ color: '#F1EFE8' }}>
                     {language === 'ar' ? 'كلمة المرور' : 'Password'}
                   </Label>
                   <div className="relative">
@@ -321,20 +321,20 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
             <TabsContent value="register">
               <form onSubmit={handleAuth} className="space-y-4">
                 <div className="space-y-2">
-                  <Label>
+                  <Label style={{ color: '#F1EFE8' }}>
                     {language === 'ar' ? 'نوع الحساب' : 'Account Type'}
                   </Label>
                   <RadioGroup value={role} onValueChange={(value: 'client' | 'supplier') => setRole(value)}>
                     <div className="flex items-center space-x-2 space-x-reverse">
                       <RadioGroupItem value="client" id="client" />
-                      <Label htmlFor="client" className="flex items-center gap-2">
+                      <Label htmlFor="client" className="flex items-center gap-2" style={{ color: '#F1EFE8' }}>
                         <User className="h-4 w-4" />
                         {language === 'ar' ? 'عميل (مدير مشتريات)' : 'Client (Procurement Manager)'}
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2 space-x-reverse">
                       <RadioGroupItem value="supplier" id="supplier" />
-                      <Label htmlFor="supplier" className="flex items-center gap-2">
+                      <Label htmlFor="supplier" className="flex items-center gap-2" style={{ color: '#F1EFE8' }}>
                         <Building2 className="h-4 w-4" />
                         {language === 'ar' ? 'مقدم خدمة' : 'Service Provider'}
                       </Label>
@@ -343,7 +343,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="fullName">
+                  <Label htmlFor="fullName" style={{ color: '#F1EFE8' }}>
                     {language === 'ar' ? 'الاسم الكامل' : 'Full Name'}
                   </Label>
                   <Input
@@ -357,7 +357,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
 
                 {role === 'supplier' && (
                   <div className="space-y-2">
-                    <Label htmlFor="companyName">
+                    <Label htmlFor="companyName" style={{ color: '#F1EFE8' }}>
                       {language === 'ar' ? 'اسم الشركة' : 'Company Name'}
                     </Label>
                     <Input
@@ -371,7 +371,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
                 )}
 
                 <div className="space-y-2">
-                  <Label htmlFor="registerEmail">
+                  <Label htmlFor="registerEmail" style={{ color: '#F1EFE8' }}>
                     {language === 'ar' ? 'البريد الإلكتروني' : 'Email'}
                   </Label>
                   <div className="relative">
@@ -389,7 +389,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="registerPassword">
+                  <Label htmlFor="registerPassword" style={{ color: '#F1EFE8' }}>
                     {language === 'ar' ? 'كلمة المرور' : 'Password'}
                   </Label>
                   <div className="relative">
@@ -416,7 +416,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">
+                  <Label htmlFor="confirmPassword" style={{ color: '#F1EFE8' }}>
                     {language === 'ar' ? 'تأكيد كلمة المرور' : 'Confirm Password'}
                   </Label>
                   <Input
