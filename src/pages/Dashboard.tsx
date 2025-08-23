@@ -23,7 +23,7 @@ export const Dashboard = () => {
 
   useEffect(() => {
     if (!user && !loading) {
-      navigate('/home');
+      navigate('/');
     } else if (userProfile?.role === 'admin' && !loading) {
       navigate('/admin');
     }

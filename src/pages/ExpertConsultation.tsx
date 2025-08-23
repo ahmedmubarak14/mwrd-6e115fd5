@@ -131,7 +131,7 @@ export const ExpertConsultation = () => {
           'Thank you for contacting us. Our expert team will reach out to you soon.',
       });
 
-      // Navigate back to home after successful submission
+      // Navigate back to landing after successful submission
       navigate('/');
     } catch (error: any) {
       toast({
@@ -369,7 +369,7 @@ export const ExpertConsultation = () => {
         {/* Back Button */}
         <div className="text-center mt-8">
           <Button variant="outline" onClick={() => navigate('/')} className="px-8">
-            {t('language') === 'ar' ? 'العودة للصفحة الرئيسية' : 'Back to Home'}
+            {t('language') === 'ar' ? 'العودة للصفحة الرئيسية' : 'Back to Landing'}
           </Button>
         </div>
       </div>

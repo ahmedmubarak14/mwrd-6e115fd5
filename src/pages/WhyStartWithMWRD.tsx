@@ -138,7 +138,7 @@ export const WhyStartWithMWRD = () => {
             </p>
             
             <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-              <Link to="/home">
+              <Link to="/">
                 <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
                   {isRTL ? 'ابدأ مع مورد' : 'Start with MWRD'}
                 </Button>
@@ -270,7 +270,7 @@ export const WhyStartWithMWRD = () => {
             </div>
             
             <div className="text-center mt-12">
-              <Link to="/home">
+              <Link to="/">
                 <Button size="lg" className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white px-8 py-3 hover-scale">
                   {isRTL ? 'ابدأ رحلة المشتريات الذكية اليوم' : 'Start Your Procurement Journey Today'}
                 </Button>
@@ -334,7 +334,7 @@ export const WhyStartWithMWRD = () => {
                 'Join hundreds of companies that have transformed to smarter, more efficient procurement management.'
               }
             </p>
-            <Link to="/home">
+            <Link to="/">
               <Button size="lg" className="px-8 py-3 bg-white/10 border border-white/30 text-white backdrop-blur-20 hover:bg-white/20 hover:scale-105 transition-all duration-300">
                 {isRTL ? 'ابدأ مع مورد' : 'Get Started with MWRD'}
               </Button>

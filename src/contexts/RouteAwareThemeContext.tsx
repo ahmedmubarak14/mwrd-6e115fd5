@@ -26,7 +26,6 @@ export const useRouteAwareTheme = () => {
 const LANDING_ROUTES = [
   '/',
   '/landing',
-  '/home',
   '/pricing',
   '/suppliers',
   '/why-start-with-mwrd',

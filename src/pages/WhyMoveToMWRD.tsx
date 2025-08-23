@@ -198,7 +198,7 @@ export const WhyMoveToMWRD = () => {
             </p>
             
             <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-              <Link to="/home">
+              <Link to="/">
                 <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
                   {isRTL ? 'انتقل إلى مورد' : 'Move to MWRD'}
                 </Button>
@@ -431,7 +431,7 @@ export const WhyMoveToMWRD = () => {
                 'Join companies that trusted us to improve their procurement processes and save costs.'
               }
             </p>
-            <Link to="/home">
+            <Link to="/">
               <Button size="lg" className="px-8 py-3 bg-white/10 border border-white/30 text-white hover:bg-white/20 backdrop-blur-20">
                 {isRTL ? 'ابدأ الانتقال الآن' : 'Start Migration Now'}
               </Button>

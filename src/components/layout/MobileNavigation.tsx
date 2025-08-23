@@ -103,12 +103,12 @@ export const MobileNavigation = () => {
               
               {/* Login and Start Free buttons after navigation */}
               <div className={`flex gap-3 mt-6 pt-4 border-t ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <Link to="/home" onClick={handleLinkClick} className="flex-1">
+                <Link to="/auth" onClick={handleLinkClick} className="flex-1">
                   <Button variant="ghost" size="sm" className="w-full">
                     {t('auth.login')}
                   </Button>
                 </Link>
-                <Link to="/home" onClick={handleLinkClick} className="flex-1">
+                <Link to="/auth" onClick={handleLinkClick} className="flex-1">
                   <Button size="sm" className="w-full bg-gradient-to-r from-primary to-accent">
                     {t('auth.startFree')}
                   </Button>

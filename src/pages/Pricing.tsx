@@ -446,7 +446,7 @@ export const Pricing = () => {
                     ))}
                   </ul>
                   
-                  <Link to="/home">
+                  <Link to="/">
                     <Button 
                       className={`w-full py-3 hover-scale ${plan.popular ? 'bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 shadow-lg' : ''}`}
                       variant={plan.popular ? 'default' : 'outline'}
@@ -480,7 +480,7 @@ export const Pricing = () => {
               }
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Link to="/home">
+              <Link to="/">
                 <Button size="lg" className="bg-white text-blackChasm hover:bg-white/90 font-semibold px-10 py-5 text-lg shadow-2xl hover-scale">
                   {t('language') === 'ar' ? 'ابدأ تجربتك المجانية الآن' : 'Start Your Free Trial Now'} 
                   <ArrowRight className="ml-2 h-6 w-6" />

@@ -184,7 +184,7 @@ export const WhatMakesUsUnique = () => {
             </p>
             
             <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-              <Link to="/home">
+              <Link to="/">
                 <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
                   {isRTL ? 'اكتشف الفرق' : 'Discover the Difference'}
                 </Button>
@@ -360,7 +360,7 @@ export const WhatMakesUsUnique = () => {
                 'Join thousands of companies that chose MWRD to transform their procurement operations.'
               }
             </p>
-            <Link to="/home">
+            <Link to="/">
               <Button size="lg" className="px-8 py-3 bg-white/10 border border-white/30 text-white backdrop-blur-20 hover:bg-white/20 transition-all duration-300">
                 {isRTL ? 'ابدأ التجربة المجانية' : 'Start Free Trial'}
               </Button>
