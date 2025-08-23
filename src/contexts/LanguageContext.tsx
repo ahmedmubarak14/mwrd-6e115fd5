@@ -83,7 +83,7 @@ const translations = {
     'landing.footer.blog': 'Blog',
     'landing.footer.privacyPolicy': 'Privacy Policy',
     'landing.footer.termsOfService': 'Terms of Service',
-    'landing.footer.copyright': '© 2024 MWRD. All rights reserved.',
+    'landing.footer.copyright': '© 2025 MWRD. All rights reserved.',
     // Language
     'language': 'en',
     
@@ -887,7 +887,7 @@ const translations = {
     'landing.footer.blog': 'المدونة',
     'landing.footer.privacyPolicy': 'سياسة الخصوصية',
     'landing.footer.termsOfService': 'شروط الخدمة',
-    'landing.footer.copyright': '© 2024 سبلفاي. جميع الحقوق محفوظة.',
+    'landing.footer.copyright': '© 2025 MWRD. جميع الحقوق محفوظة.',
 
     // Terms and Conditions (Arabic)
     'termsTitle': 'الشروط والأحكام',

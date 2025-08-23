@@ -14,6 +14,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
 import { ChatModal } from "@/components/modals/ChatModal";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const Support = () => {
   const { userProfile } = useAuth();
@@ -308,6 +309,9 @@ export const Support = () => {
       <ChatModal supplierName="Support Team">
         <div style={{ display: chatModalOpen ? 'block' : 'none' }} />
       </ChatModal>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

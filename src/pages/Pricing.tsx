@@ -5,6 +5,7 @@ import { useOptionalAuth } from "@/contexts/useOptionalAuth";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { Footer } from "@/components/ui/layout/Footer";
 import { Check, ArrowRight, Star } from "lucide-react";
 import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
@@ -489,6 +490,9 @@ export const Pricing = () => {
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

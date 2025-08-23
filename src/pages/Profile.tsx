@@ -20,6 +20,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const Profile = () => {
   const { userProfile, loading } = useAuth();
@@ -445,6 +446,9 @@ export const Profile = () => {
           </div>
         </main>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

@@ -33,6 +33,7 @@ import {
 } from "lucide-react";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useToastFeedback } from "@/hooks/useToastFeedback";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const Home = () => {
   const { user, userProfile, loading } = useAuth();
@@ -466,6 +467,9 @@ export const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

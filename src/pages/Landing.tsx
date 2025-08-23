@@ -37,6 +37,7 @@ import { MobileNavigation } from "@/components/layout/MobileNavigation";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const Landing = () => {
   const { t, language } = useLanguage();
@@ -555,22 +556,7 @@ export const Landing = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 border-t border-white/10">
-        <div className="container mx-auto">
-          <div className="text-center space-y-4">
-            <div className="flex justify-center">
-              <img 
-                src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
-                alt="MWRD Logo" 
-                className="h-12 w-auto opacity-80" 
-              />
-            </div>
-            <p className="text-white text-sm">
-              © 2024 MWRD. {language === 'ar' ? 'جميع الحقوق محفوظة' : 'All rights reserved'} | {language === 'ar' ? 'تمكين التجارة العالمية' : 'Empowering Global Trade'}
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
       <BackToTop />
     </div>
