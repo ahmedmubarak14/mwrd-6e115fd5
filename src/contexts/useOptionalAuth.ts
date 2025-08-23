@@ -3,9 +3,7 @@ import { AuthContext } from '@/contexts/AuthContext';
 
 // Safe optional auth hook for public pages/components
 export const useOptionalAuth = () => {
-  try {
-    return useContext(AuthContext);
-  } catch {
-    return undefined;
-  }
+  const context = useContext(AuthContext);
+  // Return undefined if the context is not available (component not wrapped in AuthProvider)
+  return context;
 };
