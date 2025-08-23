@@ -272,8 +272,8 @@ export const Pricing = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
       {/* Navigation Header */}
-      <header className="h-20 sm:h-24 lg:h-28 border-b backdrop-blur-sm sticky top-0 z-50" style={{ background: 'var(--gradient-header)' }}>
-        <div className="container mx-auto px-3 sm:px-4 lg:px-6 h-full flex items-center justify-between">
+      <header className="h-20 backdrop-filter backdrop-blur-xl border-b border-white/10 bg-white/10 fixed top-0 left-0 right-0 z-50">
+        <div className="container mx-auto px-6 h-full flex items-center justify-between">
           
           {/* Logo - positioned based on language */}
           <div className={`${language === 'ar' ? 'order-3' : 'order-1'} flex items-center gap-2 sm:gap-4`}>
@@ -284,7 +284,7 @@ export const Pricing = () => {
               <img 
                 src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
                 alt="MWRD Logo"
-                className="h-12 sm:h-20 lg:h-24 w-auto hover:scale-105 transition-transform"
+                className="h-14 w-auto transition-all duration-500 group-hover:scale-110 drop-shadow-2xl"
               />
             </Link>
           </div>
@@ -315,8 +315,8 @@ export const Pricing = () => {
           </div>
           
           {/* Actions - positioned based on language */}
-          <div className={`${language === 'ar' ? 'flex-row-reverse order-2' : 'order-3'} items-center gap-1 sm:gap-2 lg:gap-4`}>
-            <div className="hidden sm:block">
+          <div className={`${language === 'ar' ? 'flex-row-reverse order-2' : 'order-3'} flex items-center gap-1 sm:gap-2 lg:gap-4`}>
+            <div className="hidden md:block">
               <LanguageSwitcher />
             </div>
             
@@ -324,19 +324,19 @@ export const Pricing = () => {
             
             {authData?.user ? (
               <Link to="/dashboard">
-                <Button className="bg-white/10 text-white border border-white/20 hover:bg-white/20 px-3 sm:px-4 lg:px-6 text-sm">
+                <Button size="lg" className="hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
                   {isRTL ? "لوحة التحكم" : "Dashboard"}
                 </Button>
               </Link>
             ) : (
               <>
                 <Link to="/auth">
-                  <Button variant="ghost" className="text-white hover:bg-white/10 px-3 sm:px-4 text-sm">
+                  <Button variant="ghost" size="lg" className="bg-white/5 border border-white/20 text-white transition-all duration-300 backdrop-blur-15">
                     {isRTL ? "تسجيل الدخول" : "Login"}
                   </Button>
                 </Link>
                 <Link to="/auth">
-                  <Button className="bg-white/10 text-white border border-white/20 hover:bg-white/20 px-3 sm:px-4 lg:px-6 text-sm">
+                  <Button size="lg" className="hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
                     {isRTL ? "ابدأ مجاناً" : "Get Started"}
                   </Button>
                 </Link>
@@ -347,7 +347,7 @@ export const Pricing = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="pt-20 pb-32 px-6">
+      <section className="pt-40 pb-32 px-6">
         <div className="container mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/30 backdrop-blur-20 rounded-full px-6 py-2 mb-6">
             <Star className="h-4 w-4 text-white" />
