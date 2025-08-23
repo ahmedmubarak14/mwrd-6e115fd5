@@ -14,7 +14,7 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 interface AuthFormProps {
-  onAuthSuccess: (userData: { id: string; email: string; role: 'client' | 'supplier' | 'admin' }) => void;
+  onAuthSuccess: (userData: { id: string; email: string; role: 'client' | 'vendor' | 'admin' }) => void;
 }
 
 export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
@@ -22,7 +22,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState<'client' | 'supplier'>('client');
+  const [role, setRole] = useState<'client' | 'vendor'>('client');
   const [companyName, setCompanyName] = useState("");
   const [fullName, setFullName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -98,8 +98,8 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
           .eq('user_id', data.user.id)
           .maybeSingle();
 
-        let effectiveRole: 'client' | 'supplier' | 'admin' =
-          (data.user.user_metadata?.role as 'client' | 'supplier' | 'admin') ?? 'client';
+        let effectiveRole: 'client' | 'vendor' | 'admin' =
+          (data.user.user_metadata?.role as 'client' | 'vendor' | 'admin') ?? 'client';
 
         if (profileError) {
           console.error('Error fetching profile during login:', profileError);
@@ -368,7 +368,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
                   <Label style={{ color: '#F1EFE8' }}>
                     {language === 'ar' ? 'نوع الحساب' : 'Account Type'}
                   </Label>
-                  <RadioGroup value={role} onValueChange={(value: 'client' | 'supplier') => setRole(value)}>
+                  <RadioGroup value={role} onValueChange={(value: 'client' | 'vendor') => setRole(value)}>
                     <div className="flex items-center space-x-2 space-x-reverse">
                       <RadioGroupItem value="client" id="client" />
                       <Label htmlFor="client" className="flex items-center gap-2" style={{ color: '#F1EFE8' }}>
@@ -377,8 +377,8 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2 space-x-reverse">
-                      <RadioGroupItem value="supplier" id="supplier" />
-                      <Label htmlFor="supplier" className="flex items-center gap-2" style={{ color: '#F1EFE8' }}>
+                      <RadioGroupItem value="vendor" id="vendor" />
+                      <Label htmlFor="vendor" className="flex items-center gap-2" style={{ color: '#F1EFE8' }}>
                         <Building2 className="h-4 w-4" />
                         {language === 'ar' ? 'مقدم خدمة' : 'Service Provider'}
                       </Label>

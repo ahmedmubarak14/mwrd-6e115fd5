@@ -198,7 +198,7 @@ export const ManageSubscription = () => {
     }
   };
 
-  const handleAuthSuccess = (userData: { id: string; email: string; role: 'client' | 'supplier' }) => {
+  const handleAuthSuccess = (userData: { id: string; email: string; role: 'client' | 'vendor' | 'admin' }) => {
     // Already handled by useEffect
   };
 

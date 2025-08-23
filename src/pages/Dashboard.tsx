@@ -29,7 +29,7 @@ export const Dashboard = () => {
     }
   }, [user, userProfile, loading, navigate]);
 
-  const handleAuthSuccess = (userData: { id: string; email: string; role: 'client' | 'supplier' | 'admin' }) => {
+  const handleAuthSuccess = (userData: { id: string; email: string; role: 'client' | 'vendor' | 'admin' }) => {
     // Already handled by useEffect
   };
 
