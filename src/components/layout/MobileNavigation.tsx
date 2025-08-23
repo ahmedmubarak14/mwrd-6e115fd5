@@ -63,8 +63,8 @@ export const MobileNavigation = () => {
             <Menu className="h-6 w-6" />
           </Button>
         </SheetTrigger>
-        <SheetContent side={isRTL ? "left" : "right"} className="w-80 p-0">
-          <SheetHeader className={`p-6 border-b ${isRTL ? 'text-right' : 'text-left'}`}>
+        <SheetContent side={isRTL ? "left" : "right"} className="w-80 p-0 safe-area-pt safe-area-pb animate-slide-in-right">
+          <SheetHeader className={`p-6 border-b ${isRTL ? 'text-right' : 'text-left'} bg-gradient-to-br from-primary/5 to-accent/5`}>
             <SheetTitle className={`flex items-center gap-3 ${isRTL ? 'justify-end' : 'justify-start'}`}>
               <Link to="/landing" onClick={handleLinkClick}>
                 <img 
@@ -84,32 +84,34 @@ export const MobileNavigation = () => {
             </div>
           </SheetHeader>
           
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col h-full bg-gradient-to-b from-background to-primary/5">
             <nav className="flex-1 px-6 py-4">
               <ul className="space-y-4">
                 {navigationItems.map((item, index) => (
-                  <li key={index}>
+                  <li key={index} className="animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
                     <Link
                       to={item.href}
                       onClick={handleLinkClick}
-                      className={`flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition-colors ${isRTL ? 'flex-row-reverse text-right' : ''}`}
+                      className={`flex items-center gap-3 p-4 rounded-xl hover:bg-primary/10 transition-all duration-300 hover:shadow-md hover:scale-[1.02] active:scale-95 ${isRTL ? 'flex-row-reverse text-right' : ''} group`}
                     >
-                      <item.icon className="h-5 w-5 text-primary" />
-                      <span className="font-medium">{item.label}</span>
+                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                        <item.icon className="h-5 w-5 text-primary group-hover:scale-110 transition-transform" />
+                      </div>
+                      <span className="font-semibold text-sm group-hover:text-primary transition-colors">{item.label}</span>
                     </Link>
                   </li>
                 ))}
               </ul>
               
-              {/* Login and Start Free buttons after navigation */}
-              <div className={`flex gap-3 mt-6 pt-4 border-t ${isRTL ? 'flex-row-reverse' : ''}`}>
+              {/* Enhanced Login and Start Free buttons */}
+              <div className={`flex gap-3 mt-8 pt-6 border-t border-border/50 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Link to="/auth" onClick={handleLinkClick} className="flex-1">
-                  <Button variant="ghost" size="sm" className="w-full">
+                  <Button variant="outline" size="lg" className="w-full hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-95">
                     {t('auth.login')}
                   </Button>
                 </Link>
                 <Link to="/auth" onClick={handleLinkClick} className="flex-1">
-                  <Button size="sm" className="w-full bg-gradient-to-r from-primary to-accent">
+                  <Button size="lg" className="w-full bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-95">
                     {t('auth.startFree')}
                   </Button>
                 </Link>
