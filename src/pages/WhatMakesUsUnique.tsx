@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Brain, Shield, Zap, Users, TrendingUp, Award, CheckCircle, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Badge } from "@/components/ui/badge";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
 import { DemoButton } from "@/components/demo/DemoButton";
 
@@ -16,7 +16,7 @@ export const WhatMakesUsUnique = () => {
       icon: Brain,
       titleEn: "AI-Powered Smart Matching",
       titleAr: "مطابقة ذكية بالذكاء الاصطناعي",
-      descEn: "Our advanced AI algorithm analyzes requirements and matches you with the perfect suppliers instantly.",
+      descEn: "Our advanced AI algorithm analyzes requirements and matches you with the perfect vendors instantly.",
       descAr: "خوارزمية الذكاء الاصطناعي المتقدمة تحلل المتطلبات وتطابقك مع الموردين المثاليين فوراً."
     },
     {
@@ -35,9 +35,9 @@ export const WhatMakesUsUnique = () => {
     },
     {
       icon: Users,
-      titleEn: "Verified Supplier Network",
+      titleEn: "Verified Vendor Network",
       titleAr: "شبكة موردين معتمدة",
-      descEn: "Every supplier undergoes strict verification - financial, legal, and quality checks before joining.",
+      descEn: "Every vendor undergoes strict verification - financial, legal, and quality checks before joining.",
       descAr: "كل مورد يخضع لتحقق صارم - فحوصات مالية وقانونية وجودة قبل الانضمام."
     },
     {
@@ -86,14 +86,14 @@ export const WhatMakesUsUnique = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
       {/* Navigation Header */}
-      <nav className="border-b border-white/10 bg-blackChasm/80 backdrop-blur-xl sticky top-0 z-50">
+      <header className="border-b border-white/10 bg-white/10 backdrop-blur-xl fixed top-0 left-0 right-0 z-50">
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-12">
             <Link to="/" className="flex items-center">
               <img 
                 src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
                 alt="MWRD Logo"
-                className="h-12 w-auto"
+                className="h-14 w-auto"
               />
             </Link>
             
@@ -114,18 +114,17 @@ export const WhatMakesUsUnique = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            <Badge variant="outline" className="border-white/20 text-white/80 px-3 py-1">
-              {isRTL ? 'عر' : 'EN'}
-            </Badge>
+            <LanguageSwitcher />
             <Button variant="ghost" className="text-white hover:bg-white/10">
               {isRTL ? 'تسجيل الدخول' : 'Sign in'}
             </Button>
             <Button className="bg-gradient-to-r from-primary to-accent text-white border-0 px-6">
               {isRTL ? 'ابدأ الآن' : 'Get Started'}
             </Button>
+            <MobileNavigation />
           </div>
         </div>
-      </nav>
+      </header>
 
       {/* Hero Section */}
       <section className="pt-20 pb-32 px-6 relative overflow-hidden">
@@ -254,19 +253,19 @@ export const WhatMakesUsUnique = () => {
                 
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-lime" />
+                    <CheckCircle className="h-5 w-5 text-white" />
                     <span className="text-white">{isRTL ? 'معالجة ذكية للطلبات بالذكاء الاصطناعي' : 'AI-powered intelligent request processing'}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-lime" />
+                    <CheckCircle className="h-5 w-5 text-white" />
                     <span className="text-white">{isRTL ? 'تحليلات تنبؤية للأسعار' : 'Predictive pricing analytics'}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-lime" />
+                    <CheckCircle className="h-5 w-5 text-white" />
                     <span className="text-white">{isRTL ? 'أتمتة كاملة لسير العمل' : 'Complete workflow automation'}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-lime" />
+                    <CheckCircle className="h-5 w-5 text-white" />
                     <span className="text-white">{isRTL ? 'تكاملات مخصصة مع أنظمة ERP' : 'Custom ERP system integrations'}</span>
                   </div>
                 </div>
@@ -274,34 +273,34 @@ export const WhatMakesUsUnique = () => {
               
               <div className={isRTL ? 'lg:order-1' : ''}>
                   <div className="relative">
-                    <div className="bg-gradient-to-br from-primary/10 to-lime/10 rounded-2xl p-8">
+                    <div className="bg-white/5 border border-white/20 backdrop-blur-20 rounded-2xl p-8">
                       <div className="grid grid-cols-2 gap-6">
                         <div className="bg-white/5 border border-white/20 backdrop-blur-20 rounded-lg p-4 text-center">
-                          <Brain className="h-8 w-8 text-primary mx-auto mb-2" />
+                          <Brain className="h-8 w-8 text-white mx-auto mb-2" />
                           <div className="text-2xl font-bold text-white">95%</div>
                           <div className="text-sm text-white/70">
                             {isRTL ? 'دقة المطابقة' : 'Match Accuracy'}
                           </div>
                         </div>
                         <div className="bg-white/5 border border-white/20 backdrop-blur-20 rounded-lg p-4 text-center">
-                          <Zap className="h-8 w-8 text-accent mx-auto mb-2" />
+                          <Zap className="h-8 w-8 text-white mx-auto mb-2" />
                           <div className="text-2xl font-bold text-white">15min</div>
                           <div className="text-sm text-white/70">
                             {isRTL ? 'وقت الاستجابة' : 'Response Time'}
                           </div>
                         </div>
                         <div className="bg-white/5 border border-white/20 backdrop-blur-20 rounded-lg p-4 text-center">
-                          <Shield className="h-8 w-8 text-lime mx-auto mb-2" />
+                          <Shield className="h-8 w-8 text-white mx-auto mb-2" />
                           <div className="text-2xl font-bold text-white">99.9%</div>
                           <div className="text-sm text-white/70">
                             {isRTL ? 'وقت التشغيل' : 'Uptime'}
                           </div>
                         </div>
                         <div className="bg-white/5 border border-white/20 backdrop-blur-20 rounded-lg p-4 text-center">
-                          <Users className="h-8 w-8 text-primary mx-auto mb-2" />
+                          <Users className="h-8 w-8 text-white mx-auto mb-2" />
                           <div className="text-2xl font-bold text-white">5000+</div>
                           <div className="text-sm text-white/70">
-                            {isRTL ? 'مورد معتمد' : 'Verified Suppliers'}
+                            {isRTL ? 'مورد معتمد' : 'Verified Vendors'}
                           </div>
                         </div>
                       </div>
@@ -314,21 +313,23 @@ export const WhatMakesUsUnique = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-32 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-lime via-primary to-accent"></div>
+      <section className="py-32 px-6 relative overflow-hidden bg-blackChasm/50">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, #004F54 2px, transparent 2px)`, backgroundSize: '50px 50px' }}></div>
+        </div>
         <div className="container mx-auto text-center relative z-10 text-white">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-black mb-6">
               {isRTL ? 'اكتشف الفرق بنفسك' : 'Experience the Difference Yourself'}
             </h2>
-            <p className="text-xl mb-8 leading-relaxed opacity-90">
+            <p className="text-xl mb-8 leading-relaxed text-white/90">
               {isRTL ? 
                 'انضم إلى آلاف الشركات التي اختارت مورد لتحويل عمليات المشتريات لديها.' :
                 'Join thousands of companies that chose MWRD to transform their procurement operations.'
               }
             </p>
             <Link to="/home">
-              <Button size="lg" variant="secondary" className="px-8 py-3 text-primary hover:bg-white/90 hover-scale">
+              <Button size="lg" className="px-8 py-3 bg-white/10 border border-white/30 text-white backdrop-blur-20 hover:bg-white/20 transition-all duration-300">
                 {isRTL ? 'ابدأ التجربة المجانية' : 'Start Free Trial'}
               </Button>
             </Link>
