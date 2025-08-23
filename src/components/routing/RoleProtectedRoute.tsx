@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 
 interface RoleProtectedRouteProps {
   children: ReactNode;
-  allowed: Array<'client' | 'supplier' | 'admin'>;
+  allowed: Array<'client' | 'vendor' | 'admin'>;
 }
 
 export const RoleProtectedRoute = ({ children, allowed }: RoleProtectedRouteProps) => {
@@ -41,7 +41,7 @@ export const RoleProtectedRoute = ({ children, allowed }: RoleProtectedRouteProp
   if (!role || !allowed.includes(role)) {
     const homeByRole: Record<string, string> = {
       client: '/client-dashboard',
-      supplier: '/supplier-dashboard',
+      vendor: '/supplier-dashboard',
       admin: '/admin',
     };
 

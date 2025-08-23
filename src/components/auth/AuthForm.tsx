@@ -113,7 +113,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
             .insert({
               user_id: data.user.id,
               email: data.user.email!,
-              role: effectiveRole === 'supplier' ? 'vendor' : effectiveRole,
+              role: effectiveRole,
               full_name: data.user.user_metadata?.full_name ?? null,
               company_name: data.user.user_metadata?.company_name ?? null,
             })
@@ -159,7 +159,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
             data: {
               role,
               full_name: fullName,
-              company_name: role === 'supplier' ? companyName : null,
+              company_name: role === 'vendor' ? companyName : null,
             }
           }
         });
@@ -399,7 +399,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
                   />
                 </div>
 
-                {role === 'supplier' && (
+                {role === 'vendor' && (
                   <div className="space-y-2">
                     <Label htmlFor="companyName" style={{ color: '#F1EFE8' }}>
                       {language === 'ar' ? 'اسم الشركة' : 'Company Name'}

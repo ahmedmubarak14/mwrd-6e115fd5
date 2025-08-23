@@ -91,7 +91,7 @@ const App = () => (
               <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
               <Route path="/payment-success" element={<PaymentSuccess />} />
               <Route path="/client-dashboard" element={<RoleProtectedRoute allowed={['client']}><Index /></RoleProtectedRoute>} />
-              <Route path="/supplier-dashboard" element={<RoleProtectedRoute allowed={['supplier']}><SupplierDashboard /></RoleProtectedRoute>} />
+              <Route path="/supplier-dashboard" element={<RoleProtectedRoute allowed={['vendor']}><SupplierDashboard /></RoleProtectedRoute>} />
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/auth" element={<Auth />} />

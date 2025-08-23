@@ -23,18 +23,10 @@ import {
   Lock
 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-
-interface UserProfile {
-  id: string;
-  email: string;
-  role: 'client' | 'supplier' | 'admin';
-  full_name?: string;
-  company_name?: string;
-  avatar_url?: string;
-}
+import { UserProfile } from '@/types/database';
 
 interface SidebarProps {
-  userRole?: 'client' | 'supplier' | 'admin';
+  userRole?: 'client' | 'vendor' | 'admin';
   userProfile?: UserProfile;
 }
 
@@ -82,7 +74,7 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
 
   const getMenuItems = () => {
     switch (userRole) {
-      case 'supplier': return supplierMenu;
+      case 'vendor': return supplierMenu;
       case 'admin': return adminMenu;
       default: return clientMenu;
     }
@@ -93,15 +85,15 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
       case 'admin': return 'destructive';
-      case 'supplier': return 'secondary';
+      case 'vendor': return 'secondary';
       default: return 'default';
     }
   };
 
   const getRoleDisplayName = (role: string) => {
     const roleNames = {
-      en: { admin: 'Admin', supplier: 'Supplier', client: 'Client' },
-      ar: { admin: 'مدير', supplier: 'مورد', client: 'عميل' }
+      en: { admin: 'Admin', vendor: 'Vendor', client: 'Client' },
+      ar: { admin: 'مدير', vendor: 'مورد', client: 'عميل' }
     };
     return roleNames[language as keyof typeof roleNames]?.[role as keyof typeof roleNames.en] || role;
   };

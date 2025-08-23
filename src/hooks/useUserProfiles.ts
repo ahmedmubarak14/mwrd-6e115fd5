@@ -1,16 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-
-export interface UserProfile {
-  id: string;
-  email: string;
-  role: 'client' | 'supplier' | 'admin';
-  full_name?: string;
-  company_name?: string;
-  avatar_url?: string;
-  created_at?: string;
-  updated_at?: string;
-}
+import { UserProfile } from '@/types/database';
 
 export const useUserProfiles = () => {
   const [profiles, setProfiles] = useState<Record<string, UserProfile>>({});
@@ -37,13 +27,24 @@ export const useUserProfiles = () => {
       if (data) {
         const profile: UserProfile = {
           id: data.id,
+          user_id: data.user_id,
           email: data.email,
-          role: data.role as 'client' | 'supplier' | 'admin',
+          role: data.role,
           full_name: data.full_name || undefined,
           company_name: data.company_name || undefined,
           avatar_url: data.avatar_url || undefined,
-          created_at: data.created_at || undefined,
-          updated_at: data.updated_at || undefined,
+          status: data.status,
+          phone: data.phone || undefined,
+          address: data.address || undefined,
+          bio: data.bio || undefined,
+          portfolio_url: data.portfolio_url || undefined,
+          verification_documents: data.verification_documents,
+          categories: data.categories,
+          subscription_plan: data.subscription_plan,
+          subscription_status: data.subscription_status,
+          subscription_expires_at: data.subscription_expires_at || undefined,
+          created_at: data.created_at,
+          updated_at: data.updated_at,
         };
 
         setProfiles(prev => ({ ...prev, [userId]: profile }));
@@ -80,13 +81,24 @@ export const useUserProfiles = () => {
         data.forEach(profile => {
           newProfiles[profile.id] = {
             id: profile.id,
+            user_id: profile.user_id,
             email: profile.email,
-            role: profile.role as 'client' | 'supplier' | 'admin',
+            role: profile.role,
             full_name: profile.full_name || undefined,
             company_name: profile.company_name || undefined,
             avatar_url: profile.avatar_url || undefined,
-            created_at: profile.created_at || undefined,
-            updated_at: profile.updated_at || undefined,
+            status: profile.status,
+            phone: profile.phone || undefined,
+            address: profile.address || undefined,
+            bio: profile.bio || undefined,
+            portfolio_url: profile.portfolio_url || undefined,
+            verification_documents: profile.verification_documents,
+            categories: profile.categories,
+            subscription_plan: profile.subscription_plan,
+            subscription_status: profile.subscription_status,
+            subscription_expires_at: profile.subscription_expires_at || undefined,
+            created_at: profile.created_at,
+            updated_at: profile.updated_at,
           };
         });
 

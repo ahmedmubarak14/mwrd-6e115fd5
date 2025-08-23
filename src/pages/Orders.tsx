@@ -347,7 +347,7 @@ export const Orders = () => {
             value: `${selectedOrder.amount.toLocaleString()} ${selectedOrder.currency}`,
             status: selectedOrder.status
           }}
-          userRole={userProfile?.role}
+          userRole={userProfile?.role === 'vendor' ? 'client' : userProfile?.role}
         >
           <div />
         </ViewDetailsModal>

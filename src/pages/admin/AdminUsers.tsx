@@ -40,16 +40,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useSearchParams } from "react-router-dom";
-
-interface UserProfile {
-  id: string;
-  email: string;
-  full_name: string | null;
-  company_name: string | null;
-  role: 'client' | 'supplier' | 'admin';
-  created_at: string;
-  avatar_url?: string;
-}
+import { UserProfile } from '@/types/database';
 
 interface UserStats {
   total_users: number;
@@ -77,7 +68,7 @@ export const AdminUsers = () => {
     password: "",
     full_name: "",
     company_name: "",
-    role: "client" as 'client' | 'supplier' | 'admin'
+    role: "client" as 'client' | 'vendor' | 'admin'
   });
 
   useEffect(() => {
@@ -148,7 +139,7 @@ export const AdminUsers = () => {
             email: newUser.email,
             full_name: newUser.full_name || null,
             company_name: newUser.company_name || null,
-            role: newUser.role === 'supplier' ? 'vendor' : newUser.role as 'admin' | 'client' | 'vendor',
+            role: newUser.role,
             status: 'approved',
             categories: [],
             verification_documents: [],
@@ -242,7 +233,7 @@ export const AdminUsers = () => {
   const getRoleBadgeVariant = (role: string) => {
     switch (role) {
       case 'admin': return 'destructive';
-      case 'supplier': return 'default';
+      case 'vendor': return 'default';
       case 'client': return 'secondary';
       default: return 'outline';
     }
@@ -328,7 +319,7 @@ export const AdminUsers = () => {
                 <Label htmlFor="role">{t('admin.role')}</Label>
                 <Select
                   value={newUser.role}
-                  onValueChange={(value: 'client' | 'supplier' | 'admin') => 
+                  onValueChange={(value: 'client' | 'vendor' | 'admin') => 
                     setNewUser(prev => ({ ...prev, role: value }))
                   }
                 >
@@ -337,7 +328,7 @@ export const AdminUsers = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="client">{t('admin.client')}</SelectItem>
-                    <SelectItem value="supplier">{t('admin.supplier')}</SelectItem>
+                    <SelectItem value="vendor">{t('admin.supplier')}</SelectItem>
                     <SelectItem value="admin">{t('admin.admin')}</SelectItem>
                   </SelectContent>
                 </Select>
@@ -447,7 +438,7 @@ export const AdminUsers = () => {
               <SelectContent>
                 <SelectItem value="all">{t('admin.allRoles')}</SelectItem>
                 <SelectItem value="client">{t('admin.clients')}</SelectItem>
-                <SelectItem value="supplier">{t('admin.suppliers')}</SelectItem>
+                <SelectItem value="vendor">{t('admin.suppliers')}</SelectItem>
                 <SelectItem value="admin">{t('admin.admins')}</SelectItem>
               </SelectContent>
             </Select>

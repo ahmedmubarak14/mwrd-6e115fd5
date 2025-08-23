@@ -214,7 +214,7 @@ export const useMatchingSystem = () => {
   };
 
   const fetchMatchedRequests = async () => {
-    if (!user || userProfile?.role !== 'supplier') {
+    if (!user || userProfile?.role !== 'vendor') {
       setLoading(false);
       return;
     }

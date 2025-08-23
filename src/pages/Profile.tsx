@@ -252,7 +252,7 @@ export const Profile = () => {
                       <div className="flex items-center gap-2">
                         <div className={`px-3 py-1 rounded-full text-sm font-medium ${
                           userProfile?.role === 'admin' ? 'bg-red-100 text-red-800' :
-                          userProfile?.role === 'supplier' ? 'bg-lime-100 text-lime-800' :
+                          userProfile?.role === 'vendor' ? 'bg-lime-100 text-lime-800' :
                           'bg-blue-100 text-blue-800'
                         }`}>
                           <Shield className="h-3 w-3 inline mr-1" />
@@ -310,7 +310,7 @@ export const Profile = () => {
                     />
                   </div>
 
-                  {userProfile?.role === 'supplier' && (
+                  {userProfile?.role === 'vendor' && (
                     <div className="space-y-2">
                       <Label htmlFor="company_name">🏢 Company Name</Label>
                       <Input

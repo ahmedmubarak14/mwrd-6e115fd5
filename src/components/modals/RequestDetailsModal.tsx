@@ -26,7 +26,7 @@ interface RequestDetailsModalProps {
     created_at: string;
     user_id: string;
   };
-  userRole?: 'client' | 'supplier' | 'admin';
+  userRole?: 'client' | 'vendor' | 'admin';
 }
 
 export const RequestDetailsModal = ({ children, request, userRole = 'client' }: RequestDetailsModalProps) => {
@@ -68,7 +68,7 @@ export const RequestDetailsModal = ({ children, request, userRole = 'client' }: 
             {request.title}
           </DialogTitle>
           <DialogDescription className={isRTL ? "text-right" : "text-left"}>
-            {userRole === 'supplier' 
+            {userRole === 'vendor' 
               ? (isRTL ? "تفاصيل طلب العميل" : "Client Request Details")
               : userRole === 'admin'
               ? (isRTL ? "عرض إداري للطلب" : "Administrative Request View")
@@ -148,7 +148,7 @@ export const RequestDetailsModal = ({ children, request, userRole = 'client' }: 
 
         {/* Action buttons */}
         <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} gap-2 pt-4`}>
-          {userRole === 'supplier' ? (
+          {userRole === 'vendor' ? (
             <CreateOfferModal requestId={request.id}>
               <Button className="flex-1 bg-gradient-to-r from-primary to-accent">
                 {isRTL ? "إرسال عرض" : "Submit Offer"}

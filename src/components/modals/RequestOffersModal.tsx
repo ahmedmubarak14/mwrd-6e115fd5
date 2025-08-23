@@ -129,8 +129,8 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
   const canManage = isAdmin || isRequestOwner;
   
   // Fixed logic: if user can manage offers, they should be able to approve/reject (client or admin role)
-  // If they can't manage, they're viewing as a supplier
-  const userRole = canManage ? (isAdmin ? 'admin' : 'client') : 'supplier';
+  // If they can't manage, they're viewing as a vendor
+  const userRole = canManage ? (isAdmin ? 'admin' : 'client') : 'vendor';
   
   console.log('Permission check:', { 
     userProfileId: userProfile?.id, 

@@ -30,7 +30,7 @@ interface ViewDetailsModalProps {
     status: string;
     currency?: boolean;
   };
-  userRole?: 'client' | 'supplier' | 'admin';
+  userRole?: 'client' | 'vendor' | 'admin';
 }
 
 export const ViewDetailsModal = ({ children, request, item, userRole = 'client' }: ViewDetailsModalProps) => {
@@ -131,7 +131,7 @@ export const ViewDetailsModal = ({ children, request, item, userRole = 'client' 
             {request.title}
           </DialogTitle>
           <DialogDescription className={isRTL ? "text-right" : "text-left"}>
-            {userRole === 'supplier' 
+            {userRole === 'vendor' 
               ? (isRTL ? "تفاصيل طلب العميل" : "Client Request Details")
               : userRole === 'admin'
               ? (isRTL ? "عرض إداري للطلب" : "Administrative Request View")
@@ -210,7 +210,7 @@ export const ViewDetailsModal = ({ children, request, item, userRole = 'client' 
         </div>
 
         <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} gap-2 pt-4`}>
-          {userRole === 'supplier' ? (
+          {userRole === 'vendor' ? (
             <>
               <Button variant="outline" className="flex-1">
                 {isRTL ? "حفظ" : "Save"}

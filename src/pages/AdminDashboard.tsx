@@ -50,22 +50,13 @@ import {
 } from "@/components/ui/select";
 import { RequestApprovalCard } from "@/components/admin/RequestApprovalCard";
 import { OfferApprovalCard } from "@/components/admin/OfferApprovalCard";
+import { UserProfile } from '@/types/database';
 
 interface UserStats {
   total_users: number;
   total_clients: number;
   total_vendors: number;
   total_admins: number;
-}
-
-interface UserProfile {
-  id: string;
-  email: string;
-  full_name: string;
-  company_name: string;
-  role: 'client' | 'vendor' | 'admin';
-  created_at: string;
-  avatar_url?: string;
 }
 
 interface ExpertConsultation {

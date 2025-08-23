@@ -81,14 +81,14 @@ export const SupplierDashboard = () => {
       {/* Mobile Sidebar */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
         <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
-          <Sidebar userRole={userProfile?.role || 'supplier'} userProfile={userProfile} />
+          <Sidebar userRole={userProfile?.role || 'vendor'} userProfile={userProfile} />
         </SheetContent>
       </Sheet>
 
       <div className="rtl-flex">
         {/* Desktop Sidebar - position based on language */}
         <div className="hidden lg:block rtl-order-1">
-          <Sidebar userRole={userProfile?.role || 'supplier'} userProfile={userProfile} />
+          <Sidebar userRole={userProfile?.role || 'vendor'} userProfile={userProfile} />
         </div>
         
         <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">

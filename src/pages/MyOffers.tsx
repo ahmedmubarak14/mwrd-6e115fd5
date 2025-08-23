@@ -62,14 +62,14 @@ export const MyOffers = () => {
       {/* Mobile Sidebar */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
         <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
-          <Sidebar userRole={userProfile?.role || 'supplier'} userProfile={userProfile} />
+          <Sidebar userRole={userProfile?.role || 'vendor'} userProfile={userProfile} />
         </SheetContent>
       </Sheet>
 
       <div className="rtl-flex">
         {/* Desktop Sidebar */}
         <div className="hidden lg:block rtl-order-1">
-          <Sidebar userRole={userProfile?.role || 'supplier'} userProfile={userProfile} />
+          <Sidebar userRole={userProfile?.role || 'vendor'} userProfile={userProfile} />
         </div>
         
         <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
@@ -289,7 +289,7 @@ export const MyOffers = () => {
                                 value: formatPrice(offer),
                                 status: offer.client_approval_status
                               }}
-                              userRole="supplier"
+                              userRole="client"
                             >
                               <Button size="sm" variant="outline" className="flex-1 sm:flex-initial">
                                 <Eye className="h-4 w-4 mr-2" />
