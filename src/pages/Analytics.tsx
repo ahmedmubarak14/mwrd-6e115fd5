@@ -113,21 +113,13 @@ export const Analytics = () => {
   const handleExportAnalytics = async () => {
     setIsExporting(true);
     try {
-      const endDate = new Date().toISOString().split('T')[0];
-      const startDate = new Date(Date.now() - parseInt(dateRange) * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+      // Simulate export functionality
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      const response = await dummyApi.exportAnalytics({
-        start: startDate,
-        end: endDate
+      toast({
+        title: isRTL ? "تم تصدير التحليلات" : "Analytics Exported",
+        description: isRTL ? "تم تصدير بيانات التحليلات بنجاح" : "Analytics data exported successfully",
       });
-
-      if (response.success) {
-        toast({
-          title: isRTL ? "تم تصدير التحليلات" : "Analytics Exported",
-          description: isRTL ? "تم تصدير بيانات التحليلات بنجاح" : "Analytics data exported successfully",
-        });
-        window.open(response.data?.downloadUrl || '#', '_blank');
-      }
     } catch (error) {
       toast({
         title: isRTL ? "خطأ في التصدير" : "Export Error",

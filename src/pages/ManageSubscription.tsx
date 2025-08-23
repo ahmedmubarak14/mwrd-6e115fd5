@@ -60,34 +60,25 @@ export const ManageSubscription = () => {
   const handleUpgrade = async (plan: string) => {
     setIsLoading(true);
     try {
-      const response = await dummyApi.upgradeSubscription(plan);
+      // Simulate successful upgrade
+      toast({
+        title: "Redirecting to Checkout",
+        description: `Processing upgrade to ${plan} plan...`,
+      });
       
-      if (response.success) {
-        // Simulate successful upgrade
+      // Simulate successful upgrade after 2 seconds
+      setTimeout(() => {
+        setSubscriptionData(prev => ({
+          ...prev,
+          subscription_tier: plan,
+          amount: plan === 'Basic' ? 299 : plan === 'Professional' ? 799 : 1299
+        }));
+        
         toast({
-          title: "Redirecting to Checkout",
-          description: `Processing upgrade to ${plan} plan...`,
+          title: "Upgrade Successful",
+          description: `Your subscription has been upgraded to ${plan}!`,
         });
-        
-        // Open dummy checkout in new tab
-        window.open(response.data!.checkoutUrl, '_blank');
-        
-        // Simulate successful upgrade after 3 seconds
-        setTimeout(() => {
-          setSubscriptionData(prev => ({
-            ...prev,
-            subscription_tier: plan,
-            amount: plan === 'Basic' ? 299 : plan === 'Professional' ? 799 : 1299
-          }));
-          
-          toast({
-            title: "Upgrade Successful",
-            description: `Your subscription has been upgraded to ${plan}!`,
-          });
-        }, 3000);
-      } else {
-        throw new Error(response.error);
-      }
+      }, 2000);
     } catch (error: any) {
       console.error('Error creating checkout:', error);
       toast({
@@ -133,23 +124,20 @@ export const ManageSubscription = () => {
     try {
       setIsLoading(true);
       
-      const response = await dummyApi.cancelSubscription();
+      // Simulate downgrade process
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      if (response.success) {
-        setSubscriptionData(prev => ({
-          ...prev,
-          subscription_tier: 'Basic',
-          amount: 299,
-          status: 'downgrading'
-        }));
-        
-        toast({
-          title: isRTL ? "تم تخفيض الاشتراك" : "Subscription Downgraded", 
-          description: isRTL ? "سيتم تطبيق التغيير في الفترة القادمة" : "Downgrade will take effect at the end of current billing period",
-        });
-      } else {
-        throw new Error(response.error);
-      }
+      setSubscriptionData(prev => ({
+        ...prev,
+        subscription_tier: 'Basic',
+        amount: 299,
+        status: 'downgrading'
+      }));
+      
+      toast({
+        title: isRTL ? "تم تخفيض الاشتراك" : "Subscription Downgraded", 
+        description: isRTL ? "سيتم تطبيق التغيير في الفترة القادمة" : "Downgrade will take effect at the end of current billing period",
+      });
     } catch (error: any) {
       toast({
         title: "Error",
@@ -165,22 +153,19 @@ export const ManageSubscription = () => {
     try {
       setIsLoading(true);
       
-      const response = await dummyApi.cancelSubscription();
+      // Simulate cancellation process
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      if (response.success) {
-        setSubscriptionData(prev => ({
-          ...prev,
-          status: 'cancelled',
-          subscription_end: prev.subscription_end // Keep current end date
-        }));
-        
-        toast({
-          title: isRTL ? "تم إلغاء الاشتراك" : "Subscription Cancelled",
-          description: isRTL ? "ستحتفظ بالوصول حتى نهاية الفترة الحالية" : "You'll retain access until the end of your current billing period",
-        });
-      } else {
-        throw new Error(response.error);
-      }
+      setSubscriptionData(prev => ({
+        ...prev,
+        status: 'cancelled',
+        subscription_end: prev.subscription_end // Keep current end date
+      }));
+      
+      toast({
+        title: isRTL ? "تم إلغاء الاشتراك" : "Subscription Cancelled",
+        description: isRTL ? "ستحتفظ بالوصول حتى نهاية الفترة الحالية" : "You'll retain access until the end of your current billing period",
+      });
     } catch (error: any) {
       toast({
         title: "Error",
@@ -195,16 +180,13 @@ export const ManageSubscription = () => {
   const handleUpdatePaymentMethod = async () => {
     setIsLoading(true);
     try {
-      const response = await dummyApi.updatePaymentMethod({ cardNumber: '4242' });
+      // Simulate payment method update
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      if (response.success) {
-        toast({
-          title: "Payment Method Updated",
-          description: "Your payment method has been updated successfully.",
-        });
-      } else {
-        throw new Error(response.error);
-      }
+      toast({
+        title: "Payment Method Updated",
+        description: "Your payment method has been updated successfully.",
+      });
     } catch (error: any) {
       toast({
         title: "Update Failed",
@@ -443,16 +425,13 @@ export const ManageSubscription = () => {
                     onClick={async () => {
                       setIsLoading(true);
                       try {
-                        const response = await dummyApi.generateInvoice(bill.invoice);
-                        if (response.success) {
-                          window.open(response.data!.invoiceUrl, '_blank');
-                          toast({
-                            title: "Invoice Downloaded",
-                            description: `Invoice ${bill.invoice} has been downloaded.`,
-                          });
-                        } else {
-                          throw new Error(response.error);
-                        }
+                        // Simulate invoice download
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                        
+                        toast({
+                          title: "Invoice Downloaded",
+                          description: `Invoice ${bill.invoice} has been downloaded.`,
+                        });
                       } catch (error) {
                         toast({
                           title: "Download Failed",
