@@ -99,7 +99,14 @@ Deno.serve(async (req) => {
 
     console.log('Auth user created:', authUser.user.id);
 
-    // Create or update the user profile directly
+    // Create or update the user profile directly with proper PostgreSQL types
+    console.log('Creating user profile with data:', {
+      user_id: authUser.user.id,
+      email: email,
+      full_name: full_name,
+      role: role
+    });
+
     const { error: profileError } = await supabase
       .from('user_profiles')
       .upsert({ 
@@ -108,14 +115,20 @@ Deno.serve(async (req) => {
         full_name: full_name,
         role: role as 'admin' | 'client' | 'vendor',
         status: 'approved',
-        categories: [],
-        verification_documents: [],
-        subscription_plan: 'premium',
+        // Use proper PostgreSQL array literals
+        categories: '{}', // Empty PostgreSQL text array
+        verification_documents: '[]', // Empty JSONB array
+        subscription_plan: 'free', // Use default value from schema
         subscription_status: 'active'
       });
 
     if (profileError) {
-      console.error('Profile creation error:', profileError);
+      console.error('Profile creation error details:', {
+        message: profileError.message,
+        details: profileError.details,
+        hint: profileError.hint,
+        code: profileError.code
+      });
       
       // Try to clean up the auth user if profile creation failed
       try {
@@ -126,7 +139,11 @@ Deno.serve(async (req) => {
       }
       
       return new Response(
-        JSON.stringify({ error: `Profile creation failed: ${profileError.message}` }), 
+        JSON.stringify({ 
+          error: `Profile creation failed: ${profileError.message}`,
+          details: profileError.details,
+          code: profileError.code
+        }), 
         { 
           status: 400, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
