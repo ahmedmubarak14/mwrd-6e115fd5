@@ -260,36 +260,46 @@ export const Pricing = () => {
     <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-white/10 bg-white/10">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-3">
-            <img 
-              src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
-              alt="MWRD Logo"
-              className="h-16 w-auto hover:scale-105 transition-transform"
-            />
-          </Link>
-          
-          <div className="flex items-center gap-3">
-            <div className="hidden md:block">
-              <LanguageSwitcher />
+        <div className="container mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-12">
+            <Link to="/" className="flex items-center">
+              <img 
+                src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
+                alt="MWRD Logo"
+                className="h-12 w-auto"
+              />
+            </Link>
+            
+            <div className="hidden md:flex items-center gap-8">
+              <Link to="/why-start-with-mwrd" className="text-white/80 hover:text-white font-medium transition-colors">
+                {t('language') === 'ar' ? 'لماذا نبدأ معنا' : 'Why Start'}  
+              </Link>
+              <Link to="/what-makes-us-unique" className="text-white/80 hover:text-white font-medium transition-colors">
+                {t('language') === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
+              </Link>
+              <Link to="/why-move-to-mwrd" className="text-white/80 hover:text-white font-medium transition-colors">
+                {t('language') === 'ar' ? 'لماذا الانتقال إلينا' : 'Why Move'}
+              </Link>
+              <Link to="/pricing" className="text-white/80 hover:text-white font-medium transition-colors">
+                {t('language') === 'ar' ? 'الأسعار' : 'Pricing'}
+              </Link>
             </div>
-            <Link to="/home" className="hidden md:block">
-              <Button variant="ghost" size="lg" className="px-6 bg-white/5 border border-white/20 text-white transition-all duration-300 backdrop-blur-15">
-                {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
-              </Button>
-            </Link>
-            <Link to="/home" className="hidden md:block">
-              <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
-                {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
-              </Button>
-            </Link>
-            <MobileNavigation />
+          </div>
+
+          <div className="flex items-center gap-4">
+            <LanguageSwitcher />
+            <Button variant="ghost" className="text-white hover:bg-white/10">
+              {t('language') === 'ar' ? 'تسجيل الدخول' : 'Sign in'}
+            </Button>
+            <Button className="bg-gradient-to-r from-primary to-accent text-white border-0 px-6">
+              {t('language') === 'ar' ? 'ابدأ الآن' : 'Get Started'}
+            </Button>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="py-24 px-4 mt-20">
+      <section className="pt-20 pb-32 px-6">
         <div className="container mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/30 backdrop-blur-20 rounded-full px-6 py-2 mb-6">
             <Star className="h-4 w-4 text-white" />
@@ -297,7 +307,7 @@ export const Pricing = () => {
               {t('language') === 'ar' ? 'حلول مرنة' : 'Flexible Solutions'}
             </span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+          <h1 className="text-4xl md:text-5xl font-black mb-6 text-white">
             {t('language') === 'ar' ? 'استثمر في نجاح أعمالك' : 'Invest in Your Business Success'}
           </h1>
           <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-12">
@@ -310,7 +320,7 @@ export const Pricing = () => {
           {/* Role Selection Toggle */}
           <div className="flex justify-center items-center gap-4 mb-12">
             <div className={`flex items-center gap-4 ${t('language') === 'ar' ? 'flex-row-reverse' : ''}`}>
-              <span className={`text-lg font-medium transition-colors ${selectedRole === 'client' ? 'text-foreground' : 'text-muted-foreground'}`}>
+              <span className={`text-lg font-medium transition-colors text-white ${selectedRole === 'client' ? 'opacity-100' : 'opacity-70'}`}>
                 {t('language') === 'ar' ? 'العملاء' : 'Clients'}
               </span>
               
@@ -321,7 +331,7 @@ export const Pricing = () => {
                 className="scale-125"
               />
               
-              <span className={`text-lg font-medium transition-colors ${selectedRole === 'supplier' ? 'text-foreground' : 'text-muted-foreground'}`}>
+              <span className={`text-lg font-medium transition-colors text-white ${selectedRole === 'supplier' ? 'opacity-100' : 'opacity-70'}`}>
                 {t('language') === 'ar' ? 'مقدمي الخدمات' : 'Suppliers'}
               </span>
               
@@ -336,11 +346,11 @@ export const Pricing = () => {
       </section>
 
       {/* Pricing Cards */}
-      <section className="py-12 px-4">
+      <section className="py-32 px-6">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
             {currentPricingPlans.map((plan, index) => (
-              <Card key={index} className={`relative group ${plan.popular ? 'ring-2 ring-primary scale-105 shadow-2xl bg-gradient-to-b from-card to-primary/5' : 'hover:shadow-xl bg-card/70'} transition-all duration-500 border-0 backdrop-blur-sm hover-scale`}>
+              <Card key={index} className={`relative group ${plan.popular ? 'ring-2 ring-primary scale-105 shadow-2xl bg-white/5 border border-white/20 backdrop-blur-20' : 'hover:shadow-xl bg-white/5 border border-white/20 backdrop-blur-20'} transition-all duration-500`}>
                 {plan.badge && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                     <div className={`${plan.popular ? 'bg-gradient-to-r from-primary to-accent' : 'bg-accent'} text-white px-4 py-2 rounded-full text-xs font-medium shadow-lg`}>
@@ -350,12 +360,12 @@ export const Pricing = () => {
                 )}
                 
                 <CardHeader className="text-center pb-6 pt-8">
-                  <CardTitle className="text-xl font-bold mb-4">
+                  <CardTitle className="text-xl font-black mb-4 text-white">
                     {t('language') === 'ar' ? plan.name : plan.englishName}
                   </CardTitle>
                   <div className="mb-4">
                     <div className="flex items-baseline justify-center gap-2">
-                      <span className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                      <span className="text-4xl font-black bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                         {t('language') === 'ar' ? plan.price : (plan.englishPrice || plan.price)}
                       </span>
                       {plan.price !== 'حسب الطلب' && plan.price !== 'Custom' && (
@@ -367,12 +377,12 @@ export const Pricing = () => {
                       )}
                     </div>
                     {plan.period && (
-                      <span className="text-muted-foreground text-sm">
+                      <span className="text-white/70 text-sm">
                         {t('language') === 'ar' ? plan.period : plan.englishPeriod}
                       </span>
                     )}
                   </div>
-                  <CardDescription className="text-sm leading-relaxed">
+                  <CardDescription className="text-sm leading-relaxed text-white/80">
                     {t('language') === 'ar' ? plan.description : plan.englishDescription}
                   </CardDescription>
                 </CardHeader>
@@ -382,7 +392,7 @@ export const Pricing = () => {
                     {(t('language') === 'ar' ? plan.features : plan.englishFeatures).map((feature, featureIndex) => (
                       <li key={featureIndex} className="flex items-start gap-3">
                         <Check className="h-4 w-4 text-lime shrink-0 mt-1" />
-                        <span className="text-sm leading-relaxed">{feature}</span>
+                        <span className="text-sm leading-relaxed text-white">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -407,11 +417,11 @@ export const Pricing = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-4 relative overflow-hidden">
+      <section className="py-32 px-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-lime"></div>
         <div className="container mx-auto text-center relative z-10 text-white">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl font-black mb-6">
               {t('language') === 'ar' ? 'هل أنت مستعد لتحويل فعالياتك؟' : 'Are You Ready to Transform Your Events?'}
             </h2>
             <p className="text-xl md:text-2xl opacity-90 mb-12 leading-relaxed">

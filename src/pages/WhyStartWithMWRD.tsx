@@ -65,40 +65,46 @@ export const WhyStartWithMWRD = () => {
     <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-white/10 bg-white/10">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          {/* Logo - positioned based on language */}
-          <div className={`${isRTL ? 'order-2' : 'order-1'}`}>
-            <Link to="/" className="flex items-center gap-3">
+        <div className="container mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-12">
+            <Link to="/" className="flex items-center">
               <img 
                 src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
                 alt="MWRD Logo"
-                className="h-16 w-auto hover:scale-105 transition-transform"
+                className="h-12 w-auto"
               />
             </Link>
-          </div>
-          
-          {/* Actions - positioned based on language */}
-          <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse order-1' : 'order-2'}`}>
-            <div className="hidden md:block">
-              <LanguageSwitcher />
+            
+            <div className="hidden md:flex items-center gap-8">
+              <Link to="/why-start-with-mwrd" className="text-white/80 hover:text-white font-medium transition-colors">
+                {isRTL ? 'لماذا نبدأ معنا' : 'Why Start'}  
+              </Link>
+              <Link to="/what-makes-us-unique" className="text-white/80 hover:text-white font-medium transition-colors">
+                {isRTL ? 'ما يميزنا' : 'What Makes Us Unique'}
+              </Link>
+              <Link to="/why-move-to-mwrd" className="text-white/80 hover:text-white font-medium transition-colors">
+                {isRTL ? 'لماذا الانتقال إلينا' : 'Why Move'}
+              </Link>
+              <Link to="/pricing" className="text-white/80 hover:text-white font-medium transition-colors">
+                {isRTL ? 'الأسعار' : 'Pricing'}
+              </Link>
             </div>
-            <Link to="/home" className="hidden md:block">
-              <Button variant="ghost" size="lg" className="px-6 bg-white/5 border border-white/20 text-white transition-all duration-300 backdrop-blur-15">
-                {isRTL ? 'تسجيل الدخول' : 'Login'}
-              </Button>
-            </Link>
-            <Link to="/home" className="hidden md:block">
-              <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
-                {isRTL ? 'ابدأ مجاناً' : 'Start Free'}
-              </Button>
-            </Link>
-            <MobileNavigation />
+          </div>
+
+          <div className="flex items-center gap-4">
+            <LanguageSwitcher />
+            <Button variant="ghost" className="text-white hover:bg-white/10">
+              {isRTL ? 'تسجيل الدخول' : 'Sign in'}
+            </Button>
+            <Button className="bg-gradient-to-r from-primary to-accent text-white border-0 px-6">
+              {isRTL ? 'ابدأ الآن' : 'Get Started'}
+            </Button>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative py-24 px-4 overflow-hidden mt-20">
+      <section className="pt-20 pb-32 px-6 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, #004F54 2px, transparent 2px)`, backgroundSize: '50px 50px' }}></div>
         </div>
@@ -111,7 +117,7 @@ export const WhyStartWithMWRD = () => {
               </span>
             </div>
             
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight text-white">
+            <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight text-white">
               {isRTL ? 'تبسيط المشتريات – ابدأ بذكاء مع مورد' : 'Procurement Made Simple – Start Smart with MWRD'}
             </h1>
             
@@ -139,15 +145,15 @@ export const WhyStartWithMWRD = () => {
       </section>
 
       {/* Problem Statement Section */}
-      <section className="py-20 px-4">
+      <section className="py-32 px-6">
         <div className="container mx-auto">
           <div className="max-w-6xl mx-auto">
             <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${isRTL ? 'lg:grid-cols-2' : ''}`}>
               <div className={isRTL ? 'lg:order-2' : ''}>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
                   {isRTL ? 'المشتريات التقليدية بطيئة ومعقدة' : 'Traditional Procurement is Slow and Complex'}
                 </h2>
-                <p className="text-lg text-muted-foreground leading-relaxed">
+                <p className="text-lg text-white/80 leading-relaxed">
                   {isRTL ? 
                     'الموافقات اليدوية والتواصل المبعثر مع الموردين والأعمال الورقية تضيع وقتك وأموالك.' :
                     'Manual approvals, scattered supplier communication, and paperwork waste your time and money.'
@@ -181,7 +187,7 @@ export const WhyStartWithMWRD = () => {
       </section>
 
       {/* Solution Section */}
-      <section className="py-20 px-4 bg-card/30">
+      <section className="py-32 px-6 bg-blackChasm/50">
         <div className="container mx-auto">
           <div className="max-w-6xl mx-auto">
             <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${isRTL ? 'lg:grid-cols-2' : ''}`}>
@@ -211,10 +217,10 @@ export const WhyStartWithMWRD = () => {
               </div>
               
               <div className={isRTL ? 'lg:order-2' : ''}>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
                   {isRTL ? 'طريقة ذكية ومركزية لإدارة المشتريات' : 'A Smarter, Centralized Way to Manage Procurement'}
                 </h2>
-                <p className="text-lg text-muted-foreground leading-relaxed">
+                <p className="text-lg text-white/80 leading-relaxed">
                   {isRTL ? 
                     'منصة شاملة تجمع جميع عمليات المشتريات في مكان واحد مع أتمتة ذكية للموافقات وإدارة متقدمة للموردين.' :
                     'A comprehensive platform that brings all procurement processes together with smart automation for approvals and advanced vendor management.'
@@ -227,26 +233,26 @@ export const WhyStartWithMWRD = () => {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-20 px-4">
+      <section className="py-32 px-6">
         <div className="container mx-auto">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
                 {isRTL ? 'لماذا تبدأ الشركات مع مورد' : 'Why Companies Start with MWRD'}
               </h2>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {benefits.map((benefit, index) => (
-                <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-0 bg-card/50 backdrop-blur-sm hover-scale">
+                <Card key={index} className="group hover:shadow-xl transition-all duration-300 bg-white/5 border border-white/20 backdrop-blur-20">
                   <CardContent className="p-6 text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4 group-hover:bg-primary/20 transition-colors">
-                      <benefit.icon className="h-8 w-8 text-primary" />
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 border border-white/20 backdrop-blur-15 mb-4 group-hover:bg-white/20 transition-colors">
+                      <benefit.icon className="h-8 w-8 text-white" />
                     </div>
-                    <h3 className="text-lg font-semibold mb-3">
+                    <h3 className="text-lg font-bold mb-3 text-white">
                       {isRTL ? benefit.titleAr : benefit.titleEn}
                     </h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
+                    <p className="text-white/80 text-sm leading-relaxed">
                       {isRTL ? benefit.descAr : benefit.descEn}
                     </p>
                   </CardContent>
@@ -266,32 +272,32 @@ export const WhyStartWithMWRD = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 px-4 bg-card/30">
+      <section className="py-32 px-6 bg-blackChasm/50">
         <div className="container mx-auto">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
                 {isRTL ? 'موثوق من الشركات في جميع أنحاء المملكة' : 'Trusted by Businesses Across Saudi Arabia'}
               </h2>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {testimonials.map((testimonial, index) => (
-                <Card key={index} className="bg-card border-0 shadow-lg">
+                <Card key={index} className="bg-white/5 border border-white/20 backdrop-blur-20 shadow-lg">
                   <CardContent className="p-8">
                     <div className="flex items-center gap-1 mb-4">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                       ))}
                     </div>
-                    <p className="text-lg mb-6 leading-relaxed">
+                    <p className="text-lg mb-6 leading-relaxed text-white">
                       "{isRTL ? testimonial.textAr : testimonial.textEn}"
                     </p>
                     <div>
-                      <div className="font-semibold">
+                      <div className="font-semibold text-white">
                         {isRTL ? testimonial.nameAr : testimonial.nameEn}
                       </div>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-sm text-white/70">
                         {isRTL ? testimonial.companyAr : testimonial.companyEn}
                       </div>
                     </div>
@@ -304,11 +310,11 @@ export const WhyStartWithMWRD = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-24 px-4 relative overflow-hidden">
+      <section className="py-32 px-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-lime"></div>
         <div className="container mx-auto text-center relative z-10 text-white">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl font-black mb-6">
               {isRTL ? 'هل أنت مستعد لتبسيط المشتريات لديك؟' : 'Ready to Simplify Your Procurement?'}
             </h2>
             <p className="text-xl mb-8 leading-relaxed opacity-90">

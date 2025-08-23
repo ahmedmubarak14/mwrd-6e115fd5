@@ -87,40 +87,46 @@ export const WhatMakesUsUnique = () => {
     <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-white/10 bg-white/10">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          {/* Logo - positioned based on language */}
-          <div className={`${isRTL ? 'order-2' : 'order-1'}`}>
-            <Link to="/" className="flex items-center gap-3">
+        <div className="container mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-12">
+            <Link to="/" className="flex items-center">
               <img 
                 src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
                 alt="MWRD Logo"
-                className="h-16 w-auto hover:scale-105 transition-transform"
+                className="h-12 w-auto"
               />
             </Link>
-          </div>
-          
-          {/* Actions - positioned based on language */}
-          <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse order-1' : 'order-2'}`}>
-            <div className="hidden md:block">
-              <LanguageSwitcher />
+            
+            <div className="hidden md:flex items-center gap-8">
+              <Link to="/why-start-with-mwrd" className="text-white/80 hover:text-white font-medium transition-colors">
+                {isRTL ? 'لماذا نبدأ معنا' : 'Why Start'}  
+              </Link>
+              <Link to="/what-makes-us-unique" className="text-white/80 hover:text-white font-medium transition-colors">
+                {isRTL ? 'ما يميزنا' : 'What Makes Us Unique'}
+              </Link>
+              <Link to="/why-move-to-mwrd" className="text-white/80 hover:text-white font-medium transition-colors">
+                {isRTL ? 'لماذا الانتقال إلينا' : 'Why Move'}
+              </Link>
+              <Link to="/pricing" className="text-white/80 hover:text-white font-medium transition-colors">
+                {isRTL ? 'الأسعار' : 'Pricing'}
+              </Link>
             </div>
-            <Link to="/home" className="hidden md:block">
-              <Button variant="ghost" size="lg" className="px-6 bg-white/5 border border-white/20 text-white transition-all duration-300 backdrop-blur-15">
-                {isRTL ? 'تسجيل الدخول' : 'Login'}
-              </Button>
-            </Link>
-            <Link to="/home" className="hidden md:block">
-              <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
-                {isRTL ? 'ابدأ مجاناً' : 'Start Free'}
-              </Button>
-            </Link>
-            <MobileNavigation />
+          </div>
+
+          <div className="flex items-center gap-4">
+            <LanguageSwitcher />
+            <Button variant="ghost" className="text-white hover:bg-white/10">
+              {isRTL ? 'تسجيل الدخول' : 'Sign in'}
+            </Button>
+            <Button className="bg-gradient-to-r from-primary to-accent text-white border-0 px-6">
+              {isRTL ? 'ابدأ الآن' : 'Get Started'}
+            </Button>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative py-24 px-4 overflow-hidden mt-20">
+      <section className="pt-20 pb-32 px-6 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, #004F54 2px, transparent 2px)`, backgroundSize: '50px 50px' }}></div>
         </div>
@@ -133,7 +139,7 @@ export const WhatMakesUsUnique = () => {
               </span>
             </div>
             
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight text-white">
+            <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight text-white">
               {isRTL ? 'ما يجعل مورد منصة فريدة ومتميزة' : 'What Makes MWRD Uniquely Powerful'}
             </h1>
             
@@ -161,11 +167,11 @@ export const WhatMakesUsUnique = () => {
       </section>
 
       {/* Unique Features Section */}
-      <section className="py-20 px-4">
+      <section className="py-32 px-6">
         <div className="container mx-auto">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+              <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
                 {isRTL ? 'ميزات فريدة تجعلنا الخيار الأول' : 'Unique Features That Make Us #1'}
               </h2>
               <p className="text-lg text-white/90 max-w-3xl mx-auto">
@@ -178,15 +184,15 @@ export const WhatMakesUsUnique = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {uniqueFeatures.map((feature, index) => (
-                <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/5 border border-white/20 backdrop-blur-20 hover-scale">
+                <Card key={index} className="group hover:shadow-xl transition-all duration-300 bg-white/5 border border-white/20 backdrop-blur-20">
                   <CardContent className="p-6">
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 border border-white/20 backdrop-blur-15 mb-4 group-hover:bg-white/20 transition-colors">
                       <feature.icon className="h-8 w-8 text-white" />
                     </div>
-                    <h3 className="text-lg font-semibold mb-3 text-white">
+                    <h3 className="text-lg font-bold mb-3 text-white">
                       {isRTL ? feature.titleAr : feature.titleEn}
                     </h3>
-                    <p className="text-white/70 text-sm leading-relaxed">
+                    <p className="text-white/80 text-sm leading-relaxed">
                       {isRTL ? feature.descAr : feature.descEn}
                     </p>
                   </CardContent>
@@ -198,11 +204,11 @@ export const WhatMakesUsUnique = () => {
       </section>
 
       {/* Differentiators Section */}
-      <section className="py-20 px-4">
+      <section className="py-32 px-6">
         <div className="container mx-auto">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
+              <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
                 {isRTL ? 'لماذا نتفوق على المنافسين' : 'Why We Outperform Competitors'}
               </h2>
             </div>
@@ -214,10 +220,10 @@ export const WhatMakesUsUnique = () => {
                     <CheckCircle className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-2 text-white">
+                    <h3 className="text-lg font-bold mb-2 text-white">
                       {isRTL ? diff.titleAr : diff.titleEn}
                     </h3>
-                    <p className="text-white/70 leading-relaxed">
+                    <p className="text-white/80 leading-relaxed">
                       {isRTL ? diff.descAr : diff.descEn}
                     </p>
                   </div>
@@ -229,15 +235,15 @@ export const WhatMakesUsUnique = () => {
       </section>
 
       {/* Innovation Showcase */}
-      <section className="py-20 px-4">
+      <section className="py-32 px-6">
         <div className="container mx-auto">
           <div className="max-w-6xl mx-auto">
             <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${isRTL ? 'lg:grid-cols-2' : ''}`}>
               <div className={isRTL ? 'lg:order-2' : ''}>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
                   {isRTL ? 'تقنية رائدة للمستقبل' : 'Leading Technology for the Future'}
                 </h2>
-                <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+                <p className="text-lg text-white/80 leading-relaxed mb-8">
                   {isRTL ? 
                     'نستخدم أحدث التقنيات لنقدم لك تجربة مشتريات لا مثيل لها، مع التركيز على السرعة والدقة والأمان.' :
                     'We use cutting-edge technology to deliver an unparalleled procurement experience, focusing on speed, accuracy, and security.'
@@ -246,59 +252,59 @@ export const WhatMakesUsUnique = () => {
                 
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-primary" />
-                    <span>{isRTL ? 'معالجة ذكية للطلبات بالذكاء الاصطناعي' : 'AI-powered intelligent request processing'}</span>
+                    <CheckCircle className="h-5 w-5 text-lime" />
+                    <span className="text-white">{isRTL ? 'معالجة ذكية للطلبات بالذكاء الاصطناعي' : 'AI-powered intelligent request processing'}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-primary" />
-                    <span>{isRTL ? 'تحليلات تنبؤية للأسعار' : 'Predictive pricing analytics'}</span>
+                    <CheckCircle className="h-5 w-5 text-lime" />
+                    <span className="text-white">{isRTL ? 'تحليلات تنبؤية للأسعار' : 'Predictive pricing analytics'}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-primary" />
-                    <span>{isRTL ? 'أتمتة كاملة لسير العمل' : 'Complete workflow automation'}</span>
+                    <CheckCircle className="h-5 w-5 text-lime" />
+                    <span className="text-white">{isRTL ? 'أتمتة كاملة لسير العمل' : 'Complete workflow automation'}</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-primary" />
-                    <span>{isRTL ? 'تكاملات مخصصة مع أنظمة ERP' : 'Custom ERP system integrations'}</span>
+                    <CheckCircle className="h-5 w-5 text-lime" />
+                    <span className="text-white">{isRTL ? 'تكاملات مخصصة مع أنظمة ERP' : 'Custom ERP system integrations'}</span>
                   </div>
                 </div>
               </div>
               
               <div className={isRTL ? 'lg:order-1' : ''}>
-                <div className="relative">
-                  <div className="bg-gradient-to-br from-primary/10 to-lime/10 rounded-2xl p-8">
-                    <div className="grid grid-cols-2 gap-6">
-                      <div className="bg-card/80 rounded-lg p-4 text-center backdrop-blur-sm">
-                        <Brain className="h-8 w-8 text-primary mx-auto mb-2" />
-                        <div className="text-2xl font-bold text-primary">95%</div>
-                        <div className="text-sm text-muted-foreground">
-                          {isRTL ? 'دقة المطابقة' : 'Match Accuracy'}
+                  <div className="relative">
+                    <div className="bg-gradient-to-br from-primary/10 to-lime/10 rounded-2xl p-8">
+                      <div className="grid grid-cols-2 gap-6">
+                        <div className="bg-white/5 border border-white/20 backdrop-blur-20 rounded-lg p-4 text-center">
+                          <Brain className="h-8 w-8 text-primary mx-auto mb-2" />
+                          <div className="text-2xl font-bold text-white">95%</div>
+                          <div className="text-sm text-white/70">
+                            {isRTL ? 'دقة المطابقة' : 'Match Accuracy'}
+                          </div>
                         </div>
-                      </div>
-                      <div className="bg-card/80 rounded-lg p-4 text-center backdrop-blur-sm">
-                        <Zap className="h-8 w-8 text-accent mx-auto mb-2" />
-                        <div className="text-2xl font-bold text-accent">15min</div>
-                        <div className="text-sm text-muted-foreground">
-                          {isRTL ? 'وقت الاستجابة' : 'Response Time'}
+                        <div className="bg-white/5 border border-white/20 backdrop-blur-20 rounded-lg p-4 text-center">
+                          <Zap className="h-8 w-8 text-accent mx-auto mb-2" />
+                          <div className="text-2xl font-bold text-white">15min</div>
+                          <div className="text-sm text-white/70">
+                            {isRTL ? 'وقت الاستجابة' : 'Response Time'}
+                          </div>
                         </div>
-                      </div>
-                      <div className="bg-card/80 rounded-lg p-4 text-center backdrop-blur-sm">
-                        <Shield className="h-8 w-8 text-lime mx-auto mb-2" />
-                        <div className="text-2xl font-bold text-lime">99.9%</div>
-                        <div className="text-sm text-muted-foreground">
-                          {isRTL ? 'وقت التشغيل' : 'Uptime'}
+                        <div className="bg-white/5 border border-white/20 backdrop-blur-20 rounded-lg p-4 text-center">
+                          <Shield className="h-8 w-8 text-lime mx-auto mb-2" />
+                          <div className="text-2xl font-bold text-white">99.9%</div>
+                          <div className="text-sm text-white/70">
+                            {isRTL ? 'وقت التشغيل' : 'Uptime'}
+                          </div>
                         </div>
-                      </div>
-                      <div className="bg-card/80 rounded-lg p-4 text-center backdrop-blur-sm">
-                        <Users className="h-8 w-8 text-primary mx-auto mb-2" />
-                        <div className="text-2xl font-bold text-primary">5000+</div>
-                        <div className="text-sm text-muted-foreground">
-                          {isRTL ? 'مورد معتمد' : 'Verified Suppliers'}
+                        <div className="bg-white/5 border border-white/20 backdrop-blur-20 rounded-lg p-4 text-center">
+                          <Users className="h-8 w-8 text-primary mx-auto mb-2" />
+                          <div className="text-2xl font-bold text-white">5000+</div>
+                          <div className="text-sm text-white/70">
+                            {isRTL ? 'مورد معتمد' : 'Verified Suppliers'}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
               </div>
             </div>
           </div>
@@ -306,11 +312,11 @@ export const WhatMakesUsUnique = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-24 px-4 relative overflow-hidden">
+      <section className="py-32 px-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-lime via-primary to-accent"></div>
         <div className="container mx-auto text-center relative z-10 text-white">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl font-black mb-6">
               {isRTL ? 'اكتشف الفرق بنفسك' : 'Experience the Difference Yourself'}
             </h2>
             <p className="text-xl mb-8 leading-relaxed opacity-90">
