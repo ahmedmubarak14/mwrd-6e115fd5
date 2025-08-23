@@ -276,7 +276,7 @@ export const Pricing = () => {
         <div className="container mx-auto px-3 sm:px-4 lg:px-6 h-full flex items-center justify-between">
           
           {/* Logo - positioned based on language */}
-          <div className="rtl-order-1 flex items-center gap-2 sm:gap-4">
+          <div className={`${language === 'ar' ? 'order-3' : 'order-1'} flex items-center gap-2 sm:gap-4`}>
             <Link 
               to="/landing" 
               className="flex items-center group"
@@ -290,7 +290,7 @@ export const Pricing = () => {
           </div>
           
           {/* Desktop Navigation Links - centered */}
-          <div className="rtl-order-2 hidden lg:flex items-center gap-8">
+          <div className={`${language === 'ar' ? 'order-1' : 'order-2'} hidden lg:flex items-center gap-8`}>
             <Link 
               to="/why-start-with-mwrd" 
               className="text-white/90 hover:text-white text-sm font-medium transition-colors"
@@ -315,7 +315,7 @@ export const Pricing = () => {
           </div>
           
           {/* Actions - positioned based on language */}
-          <div className="rtl-order-3 rtl-flex items-center gap-1 sm:gap-2 lg:gap-4">
+          <div className={`${language === 'ar' ? 'flex-row-reverse order-2' : 'order-3'} items-center gap-1 sm:gap-2 lg:gap-4`}>
             <div className="hidden sm:block">
               <LanguageSwitcher />
             </div>
