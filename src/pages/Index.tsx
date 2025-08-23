@@ -4,7 +4,8 @@ import { ClientDashboard } from "@/components/Dashboard/ClientDashboard";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState } from "react";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Sheet } from "@/components/ui/sheet";
+import { MobileSheet } from "@/components/ui/MobileSheet";
 import { Footer } from "@/components/ui/layout/Footer";
 
 const Index = () => {
@@ -20,9 +21,9 @@ const Index = () => {
       
       {/* Mobile Sidebar */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
+        <MobileSheet>
           <Sidebar userRole={userProfile?.role || 'client'} userProfile={userProfile} />
-        </SheetContent>
+        </MobileSheet>
       </Sheet>
 
       <div className="rtl-flex">

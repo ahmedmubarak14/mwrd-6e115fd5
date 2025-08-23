@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { MobileFriendlyCard } from "@/components/ui/MobileFriendlyCard";
+import { MobileOptimizedButton } from "@/components/ui/MobileOptimizedButton";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { Plus, FileText, Users, TrendingUp, Package, Banknote, Star, Eye, Clock } from "lucide-react";
@@ -96,9 +98,9 @@ export const ClientDashboard = () => {
   const displayRecentItems = recentItems?.length > 0 ? recentItems.slice(0, 3) : [];
 
   return (
-    <div className="space-y-4 sm:space-y-6 lg:space-y-8 rtl-text-left">
+    <div className="space-y-4 sm:space-y-6 lg:space-y-8 rtl-text-left pb-20 md:pb-0">
       {/* Enhanced Welcome Header */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-primary via-accent to-lime text-white rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-6 lg:p-8">
+      <MobileFriendlyCard className="relative overflow-hidden bg-gradient-to-r from-primary via-accent to-lime text-white border-0">
         <div className="absolute inset-0">
           <div className="absolute top-1/4 right-1/4 w-20 h-20 sm:w-32 sm:h-32 lg:w-64 lg:h-64 bg-white/10 rounded-full blur-3xl"></div>
           <div className="absolute bottom-1/4 left-1/4 w-24 h-24 sm:w-40 sm:h-40 lg:w-80 lg:h-80 bg-white/5 rounded-full blur-3xl"></div>
@@ -120,14 +122,17 @@ export const ClientDashboard = () => {
             </CreateOfferModal>
           ) : (
             <CreateRequestModal>
-              <Button className="bg-white text-primary hover:bg-white/90 font-semibold px-4 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg hover-scale w-full sm:w-auto text-sm sm:text-base rtl-button-gap">
+              <MobileOptimizedButton 
+                fullWidthOnMobile 
+                className="bg-white text-primary hover:bg-white/90 font-semibold shadow-lg rtl-button-gap"
+              >
                 <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
                 {t('dashboard.createRequest')}
-              </Button>
+              </MobileOptimizedButton>
             </CreateRequestModal>
           )}
         </div>
-      </div>
+      </MobileFriendlyCard>
 
       {/* Enhanced Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
@@ -145,7 +150,7 @@ export const ClientDashboard = () => {
           ))
         ) : (
           stats.map((stat, index) => (
-            <Card key={index} className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
+            <MobileFriendlyCard key={index} touchOptimized className="hover:shadow-xl transition-all duration-300">
               <CardHeader className="rtl-card-header space-y-0 pb-2 p-4 sm:p-6">
                 <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
                   {stat.title}
@@ -166,7 +171,7 @@ export const ClientDashboard = () => {
                   )}
                 </div>
               </CardContent>
-            </Card>
+            </MobileFriendlyCard>
           ))
         )}
       </div>
@@ -176,7 +181,7 @@ export const ClientDashboard = () => {
         {userProfile?.role === 'vendor' ? (
           <>
             <CreateOfferModal>
-              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer">
+              <MobileFriendlyCard touchOptimized className="group hover:shadow-2xl transition-all duration-500 cursor-pointer">
                 <CardHeader className="pb-4 p-4 sm:p-6">
                   <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-primary/20 to-accent/20 rounded-xl sm:rounded-2xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300 mb-3 sm:mb-4">
                     <Plus className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
@@ -186,7 +191,7 @@ export const ClientDashboard = () => {
                     {t('dashboard.submitOffers')}
                   </CardDescription>
                 </CardHeader>
-              </Card>
+              </MobileFriendlyCard>
             </CreateOfferModal>
 
             <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={() => window.location.href = '/my-offers'}>

@@ -62,36 +62,102 @@ const App = () => (
           <TooltipProvider>
             <BrowserRouter>
               <RouteAwareThemeProvider>
-            <Routes>
-              <Route path="/" element={
-                <>
-                  <AuthRedirect />
-                  <Landing />
-                </>
-              } />
+              <Routes>
+                <Route path="/" element={
+                  <>
+                    <AuthRedirect />
+                    <Landing />
+                    <MobileBottomTabs />
+                  </>
+                } />
               <Route path="/landing" element={<Landing />} />
               
-              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                  <MobileBottomTabs />
+                </ProtectedRoute>
+              } />
           <Route path="/why-start-with-mwrd" element={<WhyStartWithMWRD />} />
           <Route path="/what-makes-us-unique" element={<WhatMakesUsUnique />} />
           <Route path="/why-move-to-mwrd" element={<WhyMoveToMWRD />} />
-              <Route path="/projects" element={<ProtectedRoute><Projects /></ProtectedRoute>} />
-              <Route path="/requests" element={<ProtectedRoute><Requests /></ProtectedRoute>} />
+              <Route path="/projects" element={
+                <ProtectedRoute>
+                  <Projects />
+                  <MobileBottomTabs />
+                </ProtectedRoute>
+              } />
+              <Route path="/requests" element={
+                <ProtectedRoute>
+                  <Requests />
+                  <MobileBottomTabs />
+                </ProtectedRoute>
+              } />
               <Route path="/suppliers" element={<Suppliers />} />
               <Route path="/pricing" element={<Pricing />} />
-              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-              <Route path="/manage-subscription" element={<ProtectedRoute><ManageSubscription /></ProtectedRoute>} />
+              <Route path="/profile" element={
+                <ProtectedRoute>
+                  <Profile />
+                  <MobileBottomTabs />
+                </ProtectedRoute>
+              } />
+              <Route path="/manage-subscription" element={
+                <ProtectedRoute>
+                  <ManageSubscription />
+                  <MobileBottomTabs />
+                </ProtectedRoute>
+              } />
               <Route path="/expert-consultation" element={<ExpertConsultation />} />
-              <Route path="/browse-requests" element={<BrowseRequests />} />
-              <Route path="/my-offers" element={<ProtectedRoute><MyOffers /></ProtectedRoute>} />
-              <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
-              <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
-              <Route path="/messages" element={<ProtectedRoute><EnhancedMessages /></ProtectedRoute>} />
+              <Route path="/browse-requests" element={
+                <>
+                  <BrowseRequests />
+                  <MobileBottomTabs />
+                </>
+              } />
+              <Route path="/my-offers" element={
+                <ProtectedRoute>
+                  <MyOffers />
+                  <MobileBottomTabs />
+                </ProtectedRoute>
+              } />
+              <Route path="/analytics" element={
+                <ProtectedRoute>
+                  <Analytics />
+                  <MobileBottomTabs />
+                </ProtectedRoute>
+              } />
+              <Route path="/orders" element={
+                <ProtectedRoute>
+                  <Orders />
+                  <MobileBottomTabs />
+                </ProtectedRoute>
+              } />
+              <Route path="/messages" element={
+                <ProtectedRoute>
+                  <EnhancedMessages />
+                  <MobileBottomTabs />
+                </ProtectedRoute>
+              } />
               <Route path="/support" element={<Support />} />
-              <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+              <Route path="/settings" element={
+                <ProtectedRoute>
+                  <Settings />
+                  <MobileBottomTabs />
+                </ProtectedRoute>
+              } />
               <Route path="/payment-success" element={<PaymentSuccess />} />
-              <Route path="/client-dashboard" element={<RoleProtectedRoute allowed={['client']}><Index /></RoleProtectedRoute>} />
-              <Route path="/supplier-dashboard" element={<RoleProtectedRoute allowed={['vendor']}><SupplierDashboard /></RoleProtectedRoute>} />
+              <Route path="/client-dashboard" element={
+                <RoleProtectedRoute allowed={['client']}>
+                  <Index />
+                  <MobileBottomTabs />
+                </RoleProtectedRoute>
+              } />
+              <Route path="/supplier-dashboard" element={
+                <RoleProtectedRoute allowed={['vendor']}>
+                  <SupplierDashboard />
+                  <MobileBottomTabs />
+                </RoleProtectedRoute>
+              } />
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/auth" element={<Auth />} />
@@ -114,7 +180,6 @@ const App = () => (
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
                 </Routes>
-                <MobileBottomTabs />
                 <Toaster />
                 <Sonner />
               </RouteAwareThemeProvider>

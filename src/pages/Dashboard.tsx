@@ -6,7 +6,9 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Sheet } from "@/components/ui/sheet";
+import { MobileSheet } from "@/components/ui/MobileSheet";
+import { MobileContainer } from "@/components/ui/MobileContainer";
 import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { Footer } from "@/components/ui/layout/Footer";
@@ -59,14 +61,14 @@ export const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background pb-16 md:pb-0">
+    <MobileContainer>
       <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
       
       {/* Mobile Sidebar */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
+        <MobileSheet>
           <Sidebar userRole={userProfile.role} userProfile={userProfile} />
-        </SheetContent>
+        </MobileSheet>
       </Sheet>
 
       <div className="rtl-flex">
@@ -88,6 +90,6 @@ export const Dashboard = () => {
         />
       )}
       <Footer />
-    </div>
+    </MobileContainer>
   );
 };
