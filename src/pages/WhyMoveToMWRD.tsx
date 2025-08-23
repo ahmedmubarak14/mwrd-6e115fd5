@@ -1,13 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { ArrowRight, Clock, AlertTriangle, FileText, Database, GraduationCap, PiggyBank, CheckCircle, X, Users, Headphones } from "lucide-react";
+import { useOptionalAuth } from "@/contexts/useOptionalAuth";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { MobileNavigation } from "@/components/layout/MobileNavigation";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { ArrowRight, Clock, AlertTriangle, FileText, Database, GraduationCap, PiggyBank, CheckCircle, X, Users, Headphones, Menu } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
 
 export const WhyMoveToMWRD = () => {
   const { t, language } = useLanguage();
   const isRTL = language === 'ar';
+  const auth = useOptionalAuth();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  if (auth === undefined) {
+    return <LoadingSpinner size="lg" className="min-h-screen flex items-center justify-center" />;
+  }
 
   const painPoints = [
     {
@@ -88,46 +98,78 @@ export const WhyMoveToMWRD = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
       {/* Navigation Header */}
-      <nav className="border-b border-white/10 bg-blackChasm/80 backdrop-blur-xl sticky top-0 z-50">
-        <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-12">
-            <Link to="/" className="flex items-center">
-              <img 
-                src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
-                alt="MWRD Logo"
-                className="h-12 w-auto"
-              />
-            </Link>
-            
-            <div className="hidden md:flex items-center gap-8">
-              <Link to="/what-makes-us-unique" className="text-white/80 hover:text-white font-medium transition-colors">
-                {isRTL ? 'ما يميزنا' : 'What Makes Us Unique'}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/10 backdrop-filter backdrop-blur-xl border-b border-white/20">
+        <div className="container mx-auto">
+          <div className="flex items-center justify-between h-20 px-6">
+            {/* Logo and Desktop Navigation */}
+            <div className={`flex items-center gap-12 ${isRTL ? 'order-3' : 'order-1'}`}>
+              <Link to="/" className="flex items-center transition-transform hover:scale-105">
+                <img 
+                  src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
+                  alt="MWRD Logo"
+                  className="h-14 w-auto"
+                />
               </Link>
-              <Link to="/pricing" className="text-white/80 hover:text-white font-medium transition-colors">
-                {isRTL ? 'الأسعار' : 'Pricing'}
-              </Link>
-              <Link to="/why-move-to-mwrd" className="text-white/80 hover:text-white font-medium transition-colors">
-                {isRTL ? 'الموارد' : 'Resources'}
-              </Link>
-              <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
-                {isRTL ? 'اتصل بنا' : 'Contact'}
-              </Link>
+              
+              <nav className="hidden lg:flex items-center gap-8">
+                <Link to="/what-makes-us-unique" className="text-white/90 hover:text-white text-sm font-medium transition-colors">
+                  {isRTL ? 'ما يميزنا' : 'What Makes Us Unique'}
+                </Link>
+                <Link to="/why-start-with-us" className="text-white/90 hover:text-white text-sm font-medium transition-colors">
+                  {isRTL ? 'لماذا تبدأ معنا' : 'Why Start with Us'}
+                </Link>
+                <Link to="/pricing" className="text-white/90 hover:text-white text-sm font-medium transition-colors">
+                  {isRTL ? 'الأسعار' : 'Pricing'}
+                </Link>
+                <Link to="/why-move-to-mwrd" className="text-white hover:text-white text-sm font-medium transition-colors border-b border-white/50">
+                  {isRTL ? 'لماذا الانتقال إلى مورد' : 'Why Move to MWRD'}
+                </Link>
+              </nav>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className={`lg:hidden ${isRTL ? 'order-1' : 'order-3'}`}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="text-white hover:bg-white/10"
+              >
+                <Menu className="h-6 w-6" />
+              </Button>
+            </div>
+
+            {/* Right Side - Language, Theme, Auth */}
+            <div className={`flex items-center gap-4 ${isRTL ? 'order-2' : 'order-2'}`}>
+              <LanguageSwitcher />
+              
+              {auth?.user ? (
+                <Link to="/dashboard">
+                  <Button className="bg-white/10 border border-white/30 text-white hover:bg-white/20 backdrop-blur-20">
+                    {isRTL ? 'لوحة التحكم' : 'Dashboard'}
+                  </Button>
+                </Link>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <Link to="/auth">
+                    <Button variant="ghost" className="text-white hover:bg-white/10">
+                      {isRTL ? 'تسجيل الدخول' : 'Sign in'}
+                    </Button>
+                  </Link>
+                  <Link to="/auth">
+                    <Button className="bg-white/10 border border-white/30 text-white hover:bg-white/20 backdrop-blur-20">
+                      {isRTL ? 'ابدأ الآن' : 'Get Started'}
+                    </Button>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
-
-          <div className="flex items-center gap-4">
-            <Badge variant="outline" className="border-white/20 text-white/80 px-3 py-1">
-              {isRTL ? 'عر' : 'EN'}
-            </Badge>
-            <Button variant="ghost" className="text-white hover:bg-white/10">
-              {isRTL ? 'تسجيل الدخول' : 'Sign in'}
-            </Button>
-            <Button className="bg-gradient-to-r from-primary to-accent text-white border-0 px-6">
-              {isRTL ? 'ابدأ الآن' : 'Get Started'}
-            </Button>
-          </div>
         </div>
-      </nav>
+      </header>
+
+      {/* Mobile Navigation */}
+      <MobileNavigation />
 
       {/* Hero Section */}
       <section className="pt-20 pb-32 px-6 relative overflow-hidden">
@@ -184,10 +226,10 @@ export const WhyMoveToMWRD = () => {
               {painPoints.map((point, index) => (
                 <Card key={index} className="group hover:shadow-xl transition-all duration-300 bg-white/5 border border-white/20 backdrop-blur-20">
                   <CardContent className="p-6 text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-destructive/10 mb-4">
-                      <point.icon className="h-8 w-8 text-destructive" />
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 mb-4">
+                      <point.icon className="h-8 w-8 text-white" />
                     </div>
-                    <h3 className="text-lg font-bold mb-3 text-destructive">
+                    <h3 className="text-lg font-bold mb-3 text-white">
                       {isRTL ? point.titleAr : point.titleEn}
                     </h3>
                     <p className="text-white/80 text-sm leading-relaxed">
@@ -262,7 +304,7 @@ export const WhyMoveToMWRD = () => {
                         <th className="p-4 text-center font-semibold text-white">
                           {isRTL ? 'الأدوات التقليدية' : 'Traditional Tools'}
                         </th>
-                        <th className="p-4 text-center font-semibold text-primary">
+                        <th className="p-4 text-center font-semibold text-white">
                           مورد
                         </th>
                       </tr>
@@ -375,8 +417,8 @@ export const WhyMoveToMWRD = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-32 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-accent via-primary to-lime"></div>
+      <section className="py-32 px-6 relative overflow-hidden bg-blackChasm/50">
+        <div className="absolute inset-0 opacity-5"></div>
         <div className="container mx-auto text-center relative z-10 text-white">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-black mb-6">
@@ -389,7 +431,7 @@ export const WhyMoveToMWRD = () => {
               }
             </p>
             <Link to="/home">
-              <Button size="lg" variant="secondary" className="px-8 py-3 text-primary hover:bg-white/90 hover-scale">
+              <Button size="lg" className="px-8 py-3 bg-white/10 border border-white/30 text-white hover:bg-white/20 backdrop-blur-20">
                 {isRTL ? 'ابدأ الانتقال الآن' : 'Start Migration Now'}
               </Button>
             </Link>
