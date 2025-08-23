@@ -24,15 +24,14 @@ interface OfferRow {
   title: string;
   description: string;
   price: number;
-  currency: string;
-  delivery_time_days: number;
+  delivery_time?: number;
   client_approval_status: 'pending' | 'approved' | 'rejected';
   client_approval_notes?: string | null;
   client_approval_date?: string | null;
   created_at: string;
-  supplier_id: string;
+  vendor_id: string;
   request_id: string;
-  request?: { title: string; user_id: string } | null;
+  request?: { title: string; client_id: string } | null;
 }
 
 export const RequestOffersModal = ({ children, requestId, requestTitle }: RequestOffersModalProps) => {
@@ -54,7 +53,7 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
       // First, fetch request details to get owner ID
       const { data: requestData, error: requestError } = await supabase
         .from('requests')
-        .select('user_id')
+        .select('client_id')
         .eq('id', requestId)
         .single();
       
@@ -63,12 +62,12 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
         throw requestError;
       }
       
-      setRequestOwnerId(requestData?.user_id || null);
+      setRequestOwnerId(requestData?.client_id || null);
 
       // Then fetch offers
       const { data, error } = await supabase
         .from('offers')
-        .select(`*, request:requests(title, user_id)`) 
+        .select(`*, request:requests(title, client_id)`) 
         .eq('request_id', requestId)
         .order('created_at', { ascending: false });
       if (error) throw error;
@@ -76,7 +75,7 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
       const list = (data || []) as OfferRow[];
       setOffers(list);
 
-      const supplierIds = Array.from(new Set(list.map(o => o.supplier_id)));
+      const supplierIds = Array.from(new Set(list.map(o => o.vendor_id)));
       if (supplierIds.length > 0) await fetchMultipleProfiles(supplierIds);
     } catch (err: any) {
       console.error('Error loading offers:', err);
@@ -168,7 +167,7 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
               </Card>
             ) : (
               offers.map((offer) => {
-                const supplier = getProfile(offer.supplier_id);
+                const supplier = getProfile(offer.vendor_id);
                 const supplierName = supplier?.full_name || supplier?.email || 'Supplier';
                 return (
                   <div key={offer.id} className="space-y-2">
@@ -180,7 +179,7 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
                     />
                     <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <RealTimeChatModal 
-                        recipientId={offer.supplier_id}
+                        recipientId={offer.vendor_id}
                         recipientName={supplierName}
                         requestId={offer.request_id}
                         offerId={offer.id}

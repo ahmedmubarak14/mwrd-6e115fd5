@@ -67,9 +67,9 @@ export const EnterpriseConsultationModal = ({ children }: EnterpriseConsultation
         .insert({
           full_name: formData.fullName,
           email: formData.email,
-          company_name: formData.companyName,
-          procurement_type: 'Enterprise Consultation',
-          budget_range: formData.estimatedUsers,
+          company: formData.companyName,
+          event_type: 'Enterprise Consultation',
+          event_description: formData.estimatedUsers,
           message: formData.message + (formData.requirements ? `\n\nSpecific Requirements: ${formData.requirements}` : ''),
           user_id: user.id,
           status: 'pending'

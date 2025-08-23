@@ -18,16 +18,15 @@ interface OfferRow {
   title: string;
   description: string;
   price: number;
-  currency: string;
-  delivery_time_days: number;
+  delivery_time?: number;
   client_approval_status: 'pending' | 'approved' | 'rejected';
   client_approval_notes?: string | null;
   client_approval_date?: string | null;
   created_at: string;
-  supplier_id: string;
+  vendor_id: string;
   request_id: string;
   request?: {
-    user_id: string;
+    client_id: string;
   };
 }
 
@@ -62,7 +61,7 @@ export const OfferDetailsModal = ({ children, offerId, userRole = 'client', onUp
         .select(`
           *,
           request:requests!inner (
-            user_id
+            client_id
           )
         `)
         .eq('id', offerId)
@@ -78,7 +77,7 @@ export const OfferDetailsModal = ({ children, offerId, userRole = 'client', onUp
       setOffer(data as OfferRow);
 
       // Check permissions
-      const isRequestOwner = user?.id === data.request?.user_id;
+      const isRequestOwner = user?.id === data.request?.client_id;
       const isAdmin = userRole === 'admin';
       
       if (!isRequestOwner && !isAdmin) {
@@ -223,7 +222,7 @@ export const OfferDetailsModal = ({ children, offerId, userRole = 'client', onUp
                   <span>{isRTL ? 'السعر' : 'Price'}</span>
                 </div>
                 <p className={`text-2xl font-bold text-primary ${isRTL ? 'text-right' : ''}`}>
-                  {offer.price.toLocaleString()} {offer.currency}
+                  {offer.price.toLocaleString()} SAR
                 </p>
               </div>
               
@@ -233,7 +232,7 @@ export const OfferDetailsModal = ({ children, offerId, userRole = 'client', onUp
                   <span>{isRTL ? 'وقت التسليم' : 'Delivery Time'}</span>
                 </div>
                 <p className={`text-2xl font-bold text-primary ${isRTL ? 'text-right' : ''}`}>
-                  {offer.delivery_time_days} {isRTL ? 'أيام' : 'days'}
+                  {offer.delivery_time || 'Not specified'} {isRTL ? 'أيام' : 'days'}
                 </p>
               </div>
             </div>

@@ -51,7 +51,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
         const { data: profileMaybe, error: profileError } = await supabase
           .from('user_profiles')
           .select('*')
-          .eq('id', data.user.id)
+          .eq('user_id', data.user.id)
           .maybeSingle();
 
         let effectiveRole: 'client' | 'supplier' | 'admin' =
@@ -67,9 +67,9 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
           const { data: created, error: insertError } = await supabase
             .from('user_profiles')
             .insert({
-              id: data.user.id,
+              user_id: data.user.id,
               email: data.user.email!,
-              role: effectiveRole,
+              role: effectiveRole === 'supplier' ? 'vendor' : effectiveRole,
               full_name: data.user.user_metadata?.full_name ?? null,
               company_name: data.user.user_metadata?.company_name ?? null,
             })

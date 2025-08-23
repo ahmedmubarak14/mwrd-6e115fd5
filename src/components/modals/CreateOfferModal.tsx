@@ -44,7 +44,7 @@ export const CreateOfferModal = ({ children, requestId }: CreateOfferModalProps)
       const { data, error } = await supabase
         .from('requests')
         .select('id, title, description, category')
-        .eq('status', 'open')
+        .eq('status', 'new')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -82,11 +82,11 @@ export const CreateOfferModal = ({ children, requestId }: CreateOfferModalProps)
         .from('offers')
         .insert({
           request_id: formData.requestId,
-          supplier_id: user.id,
+          vendor_id: user.id,
           title: formData.title,
           description: formData.description,
           price: parseInt(formData.price),
-          delivery_time_days: parseInt(formData.deliveryTime)
+          delivery_time: parseInt(formData.deliveryTime)
         });
 
       if (error) throw error;

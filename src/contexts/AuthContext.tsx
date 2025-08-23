@@ -68,7 +68,7 @@ useEffect(() => {
       const { data, error } = await supabase
         .from('user_profiles')
         .select('*')
-        .eq('id', userId)
+        .eq('user_id', userId)
         .maybeSingle();
 
       if (error) {
@@ -89,9 +89,9 @@ useEffect(() => {
       const { data: created, error: insertError } = await supabase
         .from('user_profiles')
         .insert({
-          id: userId,
+          user_id: userId,
           email,
-          role,
+          role: role === 'supplier' ? 'vendor' : role,
           full_name: authUser?.user_metadata?.full_name ?? null,
           company_name: authUser?.user_metadata?.company_name ?? null,
         })
@@ -117,8 +117,11 @@ useEffect(() => {
     try {
       const { error } = await supabase
         .from('user_profiles')
-        .update(updates)
-        .eq('id', user.id);
+        .update({
+          ...updates,
+          role: updates.role === 'supplier' ? 'vendor' : updates.role
+        } as any)
+        .eq('user_id', user.id);
 
       if (error) throw error;
 

@@ -1,150 +1,101 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Link, useLocation } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { 
   Home, 
   Search, 
-  MessageCircle, 
-  FileText, 
-  User,
-  Bell,
-  Settings,
-  TrendingUp
+  MessageSquare, 
+  Bell, 
+  User, 
+  PlusCircle,
+  Package
 } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
-import { useNotifications } from "@/hooks/useNotifications";
-import { useRealTimeChat } from "@/hooks/useRealTimeChat";
-import { useLanguage } from "@/contexts/LanguageContext";
 
-const getBottomTabs = (t: (key: string) => string) => [
-  {
-    id: "home",
-    label: t('nav.dashboard'),
-    icon: Home,
-    path: "/",
-    roles: ["client", "supplier", "admin"]
-  },
-  {
-    id: "search",
-    label: t('nav.suppliers'),
-    icon: Search,
-    path: "/suppliers",
-    roles: ["client"]
-  },
-  {
-    id: "requests",
-    label: t('nav.requests'),
-    icon: FileText,
-    path: "/requests",
-    roles: ["client", "supplier"]
-  },
-  {
-    id: "messages",
-    label: t('nav.messages'),
-    icon: MessageCircle,
-    path: "/messages",
-    roles: ["client", "supplier"]
-  },
-  {
-    id: "analytics",
-    label: t('nav.analytics'),
-    icon: TrendingUp,
-    path: "/admin",
-    roles: ["admin"]
-  },
-  {
-    id: "profile",
-    label: t('nav.profile'),
-    icon: User,
-    path: "/profile",
-    roles: ["client", "supplier", "admin"]
-  }
-];
+interface MobileBottomTabsProps {
+  userRole: 'client' | 'vendor' | 'admin';
+}
 
-export const MobileBottomTabs = () => {
-  const { userProfile } = useAuth();
-  const { unreadCount } = useNotifications();
-  const { conversations } = useRealTimeChat();
-  const { t } = useLanguage();
+export const MobileBottomTabs = ({ userRole }: MobileBottomTabsProps) => {
   const location = useLocation();
-  const navigate = useNavigate();
-
-  if (!userProfile) return null;
-
-  // Calculate total unread messages
-  const totalUnreadMessages = conversations.reduce((total, conv) => {
-    // This would need to be implemented in useRealTimeChat
-    return total; // placeholder
-  }, 0);
-
-  // Get tabs with current translations
-  const bottomTabs = getBottomTabs(t);
   
-  // Filter tabs based on user role
-  const visibleTabs = bottomTabs.filter(tab => 
-    tab.roles.includes(userProfile.role)
-  );
+  // Mock unread counts - replace with real data
+  const unreadMessages = 0;
+  const unreadNotifications = 0;
 
-  const handleTabClick = (path: string) => {
-    navigate(path);
-  };
+  const getTabsForRole = () => {
+    const baseTabs = [
+      { icon: Home, label: 'Home', path: '/' },
+      { icon: Search, label: 'Browse', path: '/browse-requests' },
+    ];
 
-  const isActive = (path: string) => {
-    if (path === "/") {
-      return location.pathname === "/" || location.pathname === "/dashboard";
+    if (userRole === 'client') {
+      return [
+        ...baseTabs,
+        { icon: PlusCircle, label: 'Create', path: '/requests' },
+        { icon: MessageSquare, label: 'Messages', path: '/messages', count: unreadMessages },
+        { icon: User, label: 'Profile', path: '/profile' },
+      ];
     }
-    return location.pathname.startsWith(path);
+
+    if (userRole === 'vendor') {
+      return [
+        ...baseTabs,
+        { icon: Package, label: 'My Offers', path: '/my-offers' },
+        { icon: MessageSquare, label: 'Messages', path: '/messages', count: unreadMessages },
+        { icon: User, label: 'Profile', path: '/profile' },
+      ];
+    }
+
+    if (userRole === 'admin') {
+      return [
+        { icon: Home, label: 'Dashboard', path: '/admin' },
+        { icon: Search, label: 'Users', path: '/admin/users' },
+        { icon: Package, label: 'Requests', path: '/admin/requests' },
+        { icon: Bell, label: 'Notifications', path: '/admin/notifications', count: unreadNotifications },
+        { icon: User, label: 'Profile', path: '/profile' },
+      ];
+    }
+
+    return baseTabs;
   };
+
+  const tabs = getTabsForRole();
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-card border-t border-border z-40 md:hidden">
-      <div className="flex items-center justify-around h-16 px-2">
-        {visibleTabs.map((tab) => {
-          const Icon = tab.icon;
-          const active = isActive(tab.path);
+    <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border z-50 md:hidden">
+      <div className="flex">
+        {tabs.map((tab) => {
+          const isActive = location.pathname === tab.path;
+          const IconComponent = tab.icon;
           
-          // Show badges for messages and notifications
-          const showBadge = 
-            (tab.id === "messages" && totalUnreadMessages > 0) ||
-            (tab.id === "profile" && unreadCount > 0);
-          
-          const badgeCount = 
-            tab.id === "messages" ? totalUnreadMessages :
-            tab.id === "profile" ? unreadCount : 0;
-
           return (
-            <Button
-              key={tab.id}
-              variant="ghost"
-              size="sm"
+            <Link
+              key={tab.path}
+              to={tab.path}
               className={cn(
-                "flex flex-col items-center gap-1 h-auto py-2 px-3 relative",
-                active && "text-primary bg-primary/10"
+                "flex-1 flex flex-col items-center justify-center py-2 px-1 relative",
+                "transition-colors duration-200",
+                isActive 
+                  ? "text-primary bg-primary/5" 
+                  : "text-muted-foreground hover:text-foreground"
               )}
-              onClick={() => handleTabClick(tab.path)}
             >
               <div className="relative">
-                <Icon className={cn(
-                  "h-5 w-5",
-                  active && "text-primary"
-                )} />
-                {showBadge && (
+                <IconComponent className="h-5 w-5" />
+                {tab.count && tab.count > 0 && (
                   <Badge 
-                    variant="destructive" 
-                    className="absolute -top-2 -right-2 h-4 w-4 p-0 flex items-center justify-center text-xs rounded-full"
+                    className="absolute -top-2 -right-2 h-4 w-4 text-xs flex items-center justify-center p-0 min-w-4"
+                    variant="destructive"
                   >
-                    {badgeCount > 9 ? "9+" : badgeCount}
+                    {tab.count > 9 ? '9+' : tab.count}
                   </Badge>
                 )}
               </div>
-              <span className={cn(
-                "text-xs font-medium",
-                active && "text-primary"
-              )}>
-                {tab.label}
-              </span>
-            </Button>
+              <span className="text-xs mt-1 line-clamp-1">{tab.label}</span>
+              {isActive && (
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-primary rounded-b" />
+              )}
+            </Link>
           );
         })}
       </div>

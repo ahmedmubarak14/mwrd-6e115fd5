@@ -57,7 +57,7 @@ export const CreateRequestModal = ({ children }: CreateRequestModalProps) => {
       const { error } = await supabase
         .from('requests')
         .insert({
-          user_id: user.id,
+          client_id: user.id,
           title: formData.title,
           description: formData.description,
           category: formData.category,

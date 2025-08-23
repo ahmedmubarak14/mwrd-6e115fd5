@@ -17,11 +17,32 @@ export interface UserProfile {
   address?: string;
   bio?: string;
   portfolio_url?: string;
-  verification_documents: any[];
+  verification_documents: any;
   categories: string[];
   subscription_plan: string;
   subscription_status: string;
   subscription_expires_at?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+// Conversation and Message interfaces for chat functionality
+export interface Conversation {
+  id: string;
+  participants: string[];
+  last_message?: string;
+  last_activity: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Message {
+  id: string;
+  conversation_id: string;
+  sender_id: string;
+  recipient_id: string;
+  content: string;
+  message_status: string;
   created_at: string;
   updated_at: string;
 }
