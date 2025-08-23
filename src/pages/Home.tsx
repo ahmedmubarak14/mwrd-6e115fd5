@@ -4,6 +4,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
 import { 
   ArrowRight,
@@ -248,74 +249,81 @@ export const Home = () => {
             </div>
 
             {/* Right Side - Statistics Dashboard */}
-            <div className="space-y-8">
+            <div className="space-y-6">
               {/* RFQ System Card */}
-              <Card className="bg-white/5 backdrop-blur-xl border border-white/10 p-8">
-                <div className="flex items-center justify-between mb-6">
+              <Card className="bg-white/5 backdrop-blur-xl border border-white/10 p-6">
+                <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <FileText className="h-6 w-6 text-accent" />
-                    <span className="text-white font-semibold">
+                    <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                    <span className="text-white font-semibold text-sm">
                       {isRTL ? 'نظام RFQ' : 'RFQ System'}
                     </span>
                   </div>
-                  <Badge className="bg-lime/20 text-lime border-lime/30">
-                    {isRTL ? 'نشط' : 'Active'}
-                  </Badge>
                 </div>
-                <div className="w-full bg-white/10 rounded-full h-2 mb-4">
-                  <div className="bg-gradient-to-r from-accent to-primary h-2 rounded-full" style={{width: '74%'}}></div>
+                <div className="text-xs text-white/60 mb-3">
+                  {isRTL ? 'العطاءات الذكية' : 'Smart bidding'}
                 </div>
-                <div className="text-sm text-white/60">
+                <div className="text-2xl font-bold text-white mb-3">
                   {isRTL ? '24 طلب RFQ نشط' : '24 Active RFQs'}
                 </div>
+                <Progress value={74} className="h-2" />
               </Card>
 
               {/* Vendors Card */}
-              <Card className="bg-white/5 backdrop-blur-xl border border-white/10 p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <Users className="h-6 w-6 text-primary" />
-                  <span className="text-white font-semibold">
-                    {isRTL ? 'الموردين' : 'Vendors'}
-                  </span>
+              <Card className="bg-white/5 backdrop-blur-xl border border-white/10 p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                    <span className="text-white font-semibold text-sm">
+                      {isRTL ? 'الموردين' : 'Vendors'}
+                    </span>
+                  </div>
                 </div>
-                <div className="text-4xl font-black text-white mb-2">1,247</div>
-                <div className="text-sm text-white/60">
-                  {isRTL ? 'موردين نشطين' : 'Active vendors'}
+                <div className="text-xs text-white/60 mb-3">
+                  {isRTL ? 'موردين موثقين' : 'Verified suppliers'}
                 </div>
+                <div className="text-2xl font-bold text-white mb-3">
+                  {isRTL ? '1,247 موردين نشطين' : '1,247 Active vendors'}
+                </div>
+                <Progress value={89} className="h-2" />
               </Card>
 
-              {/* Success Metrics */}
-              <div className="grid grid-cols-2 gap-6">
-                <Card className="bg-white/5 backdrop-blur-xl border border-white/10 p-6">
+              {/* Bottom Grid */}
+              <div className="grid grid-cols-2 gap-4">
+                {/* Secure Card */}
+                <Card className="bg-white/5 backdrop-blur-xl border border-white/10 p-4">
                   <div className="flex items-center gap-2 mb-3">
-                    <Shield className="h-5 w-5 text-lime" />
-                    <span className="text-white/80 text-sm font-medium">
+                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                    <span className="text-white text-xs font-medium">
                       {isRTL ? 'آمن' : 'Secure'}
                     </span>
                   </div>
                   <div className="text-white/60 text-xs mb-2">
                     {isRTL ? 'معاملات موثقة' : 'Verified transactions'}
                   </div>
-                  <div className="text-2xl font-bold text-lime">99.9%</div>
-                  <div className="text-xs text-white/50">
+                  <div className="text-xl font-bold text-white mb-2">99.9%</div>
+                  <div className="text-xs text-white/50 mb-2">
                     {isRTL ? 'معدل النجاح' : 'Success rate'}
                   </div>
+                  <Progress value={99} className="h-1.5" />
                 </Card>
 
-                <Card className="bg-white/5 backdrop-blur-xl border border-white/10 p-6">
+                {/* Fast Card */}
+                <Card className="bg-white/5 backdrop-blur-xl border border-white/10 p-4">
                   <div className="flex items-center gap-2 mb-3">
-                    <Clock className="h-5 w-5 text-orange" />
-                    <span className="text-white/80 text-sm font-medium">
+                    <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+                    <span className="text-white text-xs font-medium">
                       {isRTL ? 'سريع' : 'Fast'}
                     </span>
                   </div>
                   <div className="text-white/60 text-xs mb-2">
                     {isRTL ? 'متوسط الاستجابة' : 'Average response'}
                   </div>
-                  <div className="text-2xl font-bold text-orange">4.2h</div>
-                  <div className="text-xs text-white/50">
-                    {isRTL ? 'وقت الاستجابة' : 'Avg response time'}
+                  <div className="text-xl font-bold text-white mb-2">4.2h</div>
+                  <div className="text-xs text-white/50 mb-2">
+                    {isRTL ? 'وقت استجابة العرض' : 'Bid response time'}
                   </div>
+                  <Progress value={65} className="h-1.5" />
                 </Card>
               </div>
             </div>
