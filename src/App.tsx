@@ -31,7 +31,7 @@ import NotFound from "./pages/NotFound";
 import { TermsAndConditions } from "./pages/TermsAndConditions";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { SupplierDashboard } from "./pages/SupplierDashboard";
-import Messages from "./pages/Messages";
+import EnhancedMessages from "./pages/EnhancedMessages";
 
 // Admin Layout and Pages
 import { AdminLayout } from "@/components/admin/AdminLayout";
@@ -49,6 +49,7 @@ import { MobileBottomTabs } from "@/components/navigation/MobileBottomTabs";
 import { ProtectedRoute } from "@/components/routing/ProtectedRoute";
 import { RoleProtectedRoute } from "@/components/routing/RoleProtectedRoute";
 import { AuthRedirect } from "@/components/routing/AuthRedirect";
+import { CallNotificationProvider } from "@/components/conversations/CallNotificationProvider";
 import Auth from "./pages/Auth";
 import ResetPassword from "./pages/ResetPassword";
 const queryClient = new QueryClient();
@@ -57,9 +58,10 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
       <AuthProvider>
-        <TooltipProvider>
-          <BrowserRouter>
-            <RouteAwareThemeProvider>
+        <CallNotificationProvider>
+          <TooltipProvider>
+            <BrowserRouter>
+              <RouteAwareThemeProvider>
             <Routes>
               <Route path="/" element={
                 <>
@@ -84,7 +86,7 @@ const App = () => (
               <Route path="/my-offers" element={<ProtectedRoute><MyOffers /></ProtectedRoute>} />
               <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
               <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
-              <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
+              <Route path="/messages" element={<ProtectedRoute><EnhancedMessages /></ProtectedRoute>} />
               <Route path="/support" element={<Support />} />
               <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
               <Route path="/payment-success" element={<PaymentSuccess />} />
@@ -118,8 +120,9 @@ const App = () => (
               </RouteAwareThemeProvider>
             </BrowserRouter>
           </TooltipProvider>
-        </AuthProvider>
-       </LanguageProvider>
+        </CallNotificationProvider>
+      </AuthProvider>
+     </LanguageProvider>
   </QueryClientProvider>
 );
 

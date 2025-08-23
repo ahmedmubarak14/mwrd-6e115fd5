@@ -29,6 +29,7 @@ import { ImageViewer } from "./ImageViewer";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCallNotificationContext } from "@/components/conversations/CallNotificationProvider";
 
 interface MessageWithStatus extends Message {
   status?: 'sending' | 'sent' | 'delivered' | 'read';
@@ -52,6 +53,7 @@ export const ChatInterface = ({ conversation, className }: ChatInterfaceProps) =
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const { user } = useAuth();
+  const { showVideoCall } = useCallNotificationContext();
   
   const {
     messages,
@@ -379,11 +381,20 @@ export const ChatInterface = ({ conversation, className }: ChatInterfaceProps) =
         </div>
         
         <div className="flex gap-2">
-          <Button variant="outline" size="sm">
-            <Phone className="h-4 w-4" />
-          </Button>
-          <Button variant="outline" size="sm">
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => {
+              if (otherParticipant?.user_id) {
+                showVideoCall(otherParticipant.user_id, otherParticipant.full_name, conversation.id);
+              }
+            }}
+            title="Start video call"
+          >
             <Video className="h-4 w-4" />
+          </Button>
+          <Button variant="outline" size="sm" title="Audio call (coming soon)">
+            <Phone className="h-4 w-4" />
           </Button>
         </div>
       </div>
