@@ -153,6 +153,50 @@ export type Database = {
           },
         ]
       }
+      call_invitations: {
+        Row: {
+          call_id: string
+          created_at: string
+          expires_at: string
+          id: string
+          invitee_id: string
+          inviter_id: string
+          response_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          call_id: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          invitee_id: string
+          inviter_id: string
+          response_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          call_id?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          invitee_id?: string
+          inviter_id?: string
+          response_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "call_invitations_call_id_fkey"
+            columns: ["call_id"]
+            isOneToOne: false
+            referencedRelation: "video_calls"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       conversations: {
         Row: {
           client_id: string
@@ -750,6 +794,68 @@ export type Database = {
           verification_documents?: Json | null
         }
         Relationships: []
+      }
+      video_calls: {
+        Row: {
+          answered_at: string | null
+          call_type: string
+          callee_id: string
+          caller_id: string
+          conversation_id: string | null
+          created_at: string
+          duration: number | null
+          ended_at: string | null
+          id: string
+          metadata: Json | null
+          quality_score: number | null
+          recording_url: string | null
+          started_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          answered_at?: string | null
+          call_type?: string
+          callee_id: string
+          caller_id: string
+          conversation_id?: string | null
+          created_at?: string
+          duration?: number | null
+          ended_at?: string | null
+          id?: string
+          metadata?: Json | null
+          quality_score?: number | null
+          recording_url?: string | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          answered_at?: string | null
+          call_type?: string
+          callee_id?: string
+          caller_id?: string
+          conversation_id?: string | null
+          created_at?: string
+          duration?: number | null
+          ended_at?: string | null
+          id?: string
+          metadata?: Json | null
+          quality_score?: number | null
+          recording_url?: string | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_calls_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
