@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ShoppingCart, FileCheck, Handshake, Shield, CheckCircle, Clock, Users, Star } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Badge } from "@/components/ui/badge";
+import { MobileNavigation } from "@/components/layout/MobileNavigation";
 import { DemoButton } from "@/components/demo/DemoButton";
 
 export const WhyStartWithMWRD = () => {
@@ -63,46 +64,52 @@ export const WhyStartWithMWRD = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
       {/* Navigation Header */}
-      <nav className="border-b border-white/10 bg-blackChasm/80 backdrop-blur-xl sticky top-0 z-50">
+      <header className="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-white/10 bg-white/10">
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-12">
-            <Link to="/" className="flex items-center">
+          <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
+            <Link to="/" className="flex items-center gap-3 group">
               <img 
                 src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
-                alt="MWRD Logo"
-                className="h-12 w-auto"
+                alt="MWRD Logo" 
+                className="h-14 w-auto transition-all duration-500 group-hover:scale-110 drop-shadow-2xl" 
               />
             </Link>
-            
-            <div className="hidden md:flex items-center gap-8">
-              <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
-                {isRTL ? 'المنتج' : 'Product'}
-              </Link>
-              <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
-                {isRTL ? 'الأسعار' : 'Pricing'}
-              </Link>
-              <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
-                {isRTL ? 'الموارد' : 'Resources'}
-              </Link>
-              <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
-                {isRTL ? 'اتصل بنا' : 'Contact'}
-              </Link>
-            </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <Badge variant="outline" className="border-white/20 text-white/80 px-3 py-1">
-              {isRTL ? 'عر' : 'EN'}
-            </Badge>
-            <Button variant="ghost" className="text-white hover:bg-white/10">
-              {isRTL ? 'تسجيل الدخول' : 'Sign in'}
-            </Button>
-            <Button className="bg-gradient-to-r from-primary to-accent text-white border-0 px-6">
-              {isRTL ? 'ابدأ الآن' : 'Get Started'}
-            </Button>
+          {/* Desktop Navigation Menu */}
+          <nav className={`hidden lg:flex items-center gap-6 ${language === 'ar' ? 'order-1' : 'order-2'}`}>
+            <Link to="/why-start-with-mwrd" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+              {language === 'ar' ? 'لماذا نبدأ معنا' : 'Why Start with Us'}
+            </Link>
+            <Link to="/what-makes-us-unique" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+              {language === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
+            </Link>
+            <Link to="/why-move-to-mwrd" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+              {language === 'ar' ? 'لماذا الانتقال إلينا' : 'Why Move to Us'}
+            </Link>
+            <Link to="/pricing" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+              {language === 'ar' ? 'الأسعار' : 'Pricing'}
+            </Link>
+          </nav>
+          
+          <div className={`flex items-center gap-4 ${language === 'ar' ? 'flex-row-reverse order-2' : 'order-3'}`}>
+            <div className="hidden md:block">
+              <LanguageSwitcher />
+            </div>
+            <Link to="/auth" className="hidden md:block">
+              <Button variant="ghost" size="lg" className="px-6 bg-white/5 border border-white/20 text-white transition-all duration-300 backdrop-blur-15">
+                {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
+              </Button>
+            </Link>
+            <Link to="/auth" className="hidden md:block">
+              <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
+                {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
+              </Button>
+            </Link>
+            <MobileNavigation />
           </div>
         </div>
-      </nav>
+      </header>
 
       {/* Hero Section */}
       <section className="pt-20 pb-32 px-6 relative overflow-hidden">
@@ -311,21 +318,23 @@ export const WhyStartWithMWRD = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-32 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-lime"></div>
-        <div className="container mx-auto text-center relative z-10 text-white">
+      <section className="py-32 px-6 relative overflow-hidden bg-blackChasm/50">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, #004F54 2px, transparent 2px)`, backgroundSize: '50px 50px' }}></div>
+        </div>
+        <div className="container mx-auto text-center relative z-10">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-black mb-6">
+            <h2 className="text-4xl md:text-5xl font-black mb-6 text-white">
               {isRTL ? 'هل أنت مستعد لتبسيط المشتريات لديك؟' : 'Ready to Simplify Your Procurement?'}
             </h2>
-            <p className="text-xl mb-8 leading-relaxed opacity-90">
+            <p className="text-xl mb-8 leading-relaxed text-white/90">
               {isRTL ? 
                 'انضم إلى مئات الشركات التي تحولت إلى إدارة مشتريات أكثر ذكاءً وفعالية.' :
                 'Join hundreds of companies that have transformed to smarter, more efficient procurement management.'
               }
             </p>
             <Link to="/home">
-              <Button size="lg" variant="secondary" className="px-8 py-3 text-primary hover:bg-white/90 hover-scale">
+              <Button size="lg" className="px-8 py-3 bg-white/10 border border-white/30 text-white backdrop-blur-20 hover:bg-white/20 hover:scale-105 transition-all duration-300">
                 {isRTL ? 'ابدأ مع مورد' : 'Get Started with MWRD'}
               </Button>
             </Link>
