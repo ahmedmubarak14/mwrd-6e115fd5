@@ -55,12 +55,33 @@ export const PlatformAnalytics = () => {
 
   const fetchPlatformStats = async () => {
     try {
-      const { data, error } = await supabase.rpc('get_platform_statistics');
-      
-      if (error) throw error;
-      if (data && data.length > 0) {
-        setStats(data[0]);
-      }
+      const [usersRes, requestsRes, offersRes, transactionsRes] = await Promise.all([
+        supabase.from('user_profiles').select('id, subscription_status'),
+        supabase.from('requests').select('id'),
+        supabase.from('offers').select('id'),
+        supabase.from('financial_transactions').select('amount, type, created_at').eq('type', 'payment')
+      ]);
+
+      const users = usersRes.data || [];
+      const requests = requestsRes.data || [];
+      const offers = offersRes.data || [];
+      const transactions = transactionsRes.data || [];
+
+      // Calculate monthly revenue
+      const thisMonth = new Date();
+      thisMonth.setMonth(thisMonth.getMonth(), 1);
+      const monthlyRevenue = transactions
+        .filter(t => new Date(t.created_at) >= thisMonth)
+        .reduce((sum, t) => sum + (t.amount || 0), 0);
+
+      setStats({
+        total_users: users.length,
+        active_subscriptions: users.filter(u => u.subscription_status === 'active').length,
+        monthly_revenue: monthlyRevenue,
+        total_requests: requests.length,
+        total_offers: offers.length,
+        total_transactions: transactions.length,
+      });
     } catch (error: any) {
       toast({
         title: "Error",
@@ -75,9 +96,9 @@ export const PlatformAnalytics = () => {
       const daysAgo = new Date();
       daysAgo.setDate(daysAgo.getDate() - parseInt(selectedPeriod));
 
-      // Get activity logs first
+      // Get audit logs first
       const { data: logData, error: logError } = await supabase
-        .from('activity_logs')
+        .from('audit_log')
         .select('*')
         .gte('created_at', daysAgo.toISOString())
         .order('created_at', { ascending: false })
@@ -89,17 +110,23 @@ export const PlatformAnalytics = () => {
       const userIds = logData?.map(log => log.user_id).filter(Boolean) || [];
       const { data: profileData, error: profileError } = await supabase
         .from('user_profiles')
-        .select('id, full_name, email')
-        .in('id', userIds);
+        .select('user_id, full_name, email')
+        .in('user_id', userIds);
 
       if (profileError) {
         console.warn('Could not fetch user profiles:', profileError);
       }
 
-      // Combine the data
+      // Combine the data and transform to ActivityLog format
       const combinedData = logData?.map(log => ({
-        ...log,
-        user_profiles: profileData?.find(profile => profile.id === log.user_id) || null
+        id: log.id,
+        user_id: log.user_id || '',
+        action: log.action,
+        resource_type: log.entity_type,
+        resource_id: log.entity_id,
+        metadata: log.new_values || {},
+        created_at: log.created_at,
+        user_profiles: profileData?.find(profile => profile.user_id === log.user_id) || null
       })) || [];
 
       setActivityLogs(combinedData);
@@ -117,12 +144,12 @@ export const PlatformAnalytics = () => {
   const logActivity = async (action: string, resourceType: string, resourceId?: string) => {
     try {
       await supabase
-        .from('activity_logs')
+        .from('audit_log')
         .insert({
           action,
-          resource_type: resourceType,
-          resource_id: resourceId,
-          metadata: { timestamp: new Date().toISOString() }
+          entity_type: resourceType,
+          entity_id: resourceId || '',
+          new_values: { timestamp: new Date().toISOString() }
         });
     } catch (error) {
       console.error('Failed to log activity:', error);

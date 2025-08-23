@@ -170,14 +170,20 @@ export const AdminSidebar = ({ collapsed = false }: AdminSidebarProps) => {
 
   useEffect(() => {
     const loadCounts = async () => {
-      const { data, error } = await supabase.rpc('get_admin_pending_counts');
-      if (!error && data && data.length > 0) {
-        const row = data[0] as any;
+      try {
+        const [requestsRes, offersRes, usersRes] = await Promise.all([
+          supabase.from('requests').select('id').eq('admin_approval_status', 'pending'),
+          supabase.from('offers').select('id').eq('admin_approval_status', 'pending'),
+          supabase.from('user_profiles').select('id').eq('status', 'pending')
+        ]);
+
         setPendingCounts({
-          pending_suppliers: Number(row.pending_suppliers || 0),
-          pending_requests: Number(row.pending_requests || 0),
-          pending_offers: Number(row.pending_offers || 0),
+          pending_suppliers: usersRes.data?.length || 0,
+          pending_requests: requestsRes.data?.length || 0,
+          pending_offers: offersRes.data?.length || 0,
         });
+      } catch (error) {
+        console.error('Error loading pending counts:', error);
       }
     };
     loadCounts();

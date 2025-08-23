@@ -20,9 +20,8 @@ interface FinancialTransaction {
   id: string;
   user_id: string;
   amount: number;
-  currency: string;
   status: string;
-  transaction_type: string;
+  type: string;
   description: string;
   created_at: string;
   user_profiles?: {
@@ -101,27 +100,27 @@ export const FinancialDashboard = () => {
 
       const { data, error } = await supabase
         .from('financial_transactions')
-        .select('amount, status, transaction_type, created_at')
+        .select('amount, status, type, created_at')
         .gte('created_at', daysAgo.toISOString());
 
       if (error) throw error;
 
       const transactions = data || [];
       const totalRevenue = transactions
-        .filter(t => t.status === 'succeeded' && t.transaction_type === 'payment')
-        .reduce((sum, t) => sum + t.amount, 0);
+        .filter(t => t.status === 'completed' && t.type === 'payment')
+        .reduce((sum, t) => sum + (t.amount || 0), 0);
 
       const thisMonth = new Date();
       thisMonth.setDate(1);
       const monthlyRevenue = transactions
-        .filter(t => t.status === 'succeeded' && 
-                    t.transaction_type === 'payment' && 
+        .filter(t => t.status === 'completed' && 
+                    t.type === 'payment' && 
                     new Date(t.created_at) >= thisMonth)
-        .reduce((sum, t) => sum + t.amount, 0);
+        .reduce((sum, t) => sum + (t.amount || 0), 0);
 
       const pendingAmount = transactions
         .filter(t => t.status === 'pending')
-        .reduce((sum, t) => sum + t.amount, 0);
+        .reduce((sum, t) => sum + (t.amount || 0), 0);
 
       const failedTransactions = transactions
         .filter(t => t.status === 'failed').length;
@@ -147,10 +146,10 @@ export const FinancialDashboard = () => {
 
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
-      case 'succeeded': return 'default';
+      case 'completed': return 'default';
       case 'pending': return 'secondary';
       case 'failed': return 'destructive';
-      case 'refunded': return 'outline';
+      case 'cancelled': return 'outline';
       default: return 'outline';
     }
   };
@@ -159,7 +158,7 @@ export const FinancialDashboard = () => {
     switch (type) {
       case 'payment': return <TrendingUp className="h-4 w-4 text-green-600" />;
       case 'refund': return <TrendingDown className="h-4 w-4 text-red-600" />;
-      case 'chargeback': return <AlertCircle className="h-4 w-4 text-orange-600" />;
+      case 'commission': return <AlertCircle className="h-4 w-4 text-orange-600" />;
       default: return <CreditCard className="h-4 w-4" />;
     }
   };
@@ -264,24 +263,24 @@ export const FinancialDashboard = () => {
                 {transactions.map((transaction) => (
                   <div key={transaction.id} className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center gap-3">
-                      {getTransactionTypeIcon(transaction.transaction_type)}
-                      <div>
-                        <div className="font-medium">
-                          {transaction.user_profiles?.full_name || 'Unknown User'}
-                        </div>
-                        <div className="text-sm text-muted-foreground">
-                          {transaction.user_profiles?.email || 'No email'}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {transaction.description}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-medium">
-                        {transaction.transaction_type === 'refund' ? '-' : '+'}
-                        {transaction.amount} {transaction.currency}
-                      </div>
+                      {getTransactionTypeIcon(transaction.type)}
+                       <div>
+                         <div className="font-medium">
+                           {transaction.user_profiles?.full_name || 'Unknown User'}
+                         </div>
+                         <div className="text-sm text-muted-foreground">
+                           {transaction.user_profiles?.email || 'No email'}
+                         </div>
+                         <div className="text-xs text-muted-foreground">
+                           {transaction.description}
+                         </div>
+                       </div>
+                     </div>
+                     <div className="text-right">
+                       <div className="font-medium">
+                         {transaction.type === 'refund' ? '-' : '+'}
+                         {transaction.amount} SAR
+                       </div>
                       <div className="flex items-center gap-2">
                         <Badge variant={getStatusBadgeVariant(transaction.status)}>
                           {transaction.status}
