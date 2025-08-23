@@ -5,8 +5,13 @@ import { useAnalytics } from './useAnalytics';
 
 export const useRealTimeAnalytics = (dateRange = 30) => {
   const { user } = useAuth();
-  const { data, loading, error, refetch } = useAnalytics(dateRange);
+  const { analytics: data, loading } = useAnalytics();
+  const [error] = useState(null);
   const [isRealTimeEnabled, setIsRealTimeEnabled] = useState(false);
+
+  const refetch = async () => {
+    // Mock refetch function
+  };
 
   useEffect(() => {
     if (!user) return;

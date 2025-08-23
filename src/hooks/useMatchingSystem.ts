@@ -9,12 +9,11 @@ export interface MatchedRequest {
   category: string;
   budget_min?: number;
   budget_max?: number;
-  currency: string;
   location?: string;
   deadline?: string;
   urgency: string;
   created_at: string;
-  user_id: string;
+  client: string;
   matchScore: number;
   matchReasons: string[];
 }
@@ -98,7 +97,7 @@ export const useMatchingSystem = () => {
             supplier_id
           )
         `)
-        .eq('status', 'open')
+        .eq('status', 'new')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -119,12 +118,11 @@ export const useMatchingSystem = () => {
           category: request.category,
           budget_min: request.budget_min,
           budget_max: request.budget_max,
-          currency: request.currency,
           location: request.location,
           deadline: request.deadline,
           urgency: request.urgency,
           created_at: request.created_at,
-          user_id: request.user_id,
+          client: request.client_id,
           matchScore: score,
           matchReasons: reasons
         };

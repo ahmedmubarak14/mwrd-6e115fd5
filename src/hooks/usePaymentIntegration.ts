@@ -72,9 +72,8 @@ export const usePaymentIntegration = () => {
       await supabase.from('financial_transactions').insert({
         user_id: user?.id,
         amount,
-        currency: 'SAR',
         description: `Payment for offer ${offerId}`,
-        transaction_type: 'payment',
+        type: 'payment',
         status: 'pending',
         metadata: { offer_id: offerId }
       });
@@ -106,9 +105,8 @@ export const usePaymentIntegration = () => {
       await supabase.from('financial_transactions').insert({
         user_id: user?.id,
         amount,
-        currency: 'SAR',
         description: `${planName} subscription`,
-        transaction_type: 'subscription',
+        type: 'subscription',
         status: 'pending',
         metadata: { plan_id: planId, billing_period: billingPeriod }
       });

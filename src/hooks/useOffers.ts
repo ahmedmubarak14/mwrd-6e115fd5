@@ -1,28 +1,25 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { useActivityFeed } from './useActivityFeed';
+import { useToast } from '@/hooks/use-toast';
 
 export interface Offer {
   id: string;
   title: string;
   description: string;
   price: number;
-  currency: string;
-  delivery_time_days: number;
+  delivery_time: number;
   status: 'pending' | 'accepted' | 'rejected';
   client_approval_status: 'pending' | 'approved' | 'rejected';
-  client_approval_notes?: string;
-  client_approval_date?: string;
+  admin_approval_status: 'pending' | 'approved' | 'rejected';
   created_at: string;
   updated_at: string;
   request_id: string;
-  supplier_id: string;
+  vendor_id: string;
   request?: {
     title: string;
     description: string;
-    user_id: string;
+    client_id: string;
     category: string;
     location?: string;
   };
@@ -33,7 +30,7 @@ export const useOffers = (requestId?: string) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
-  const { trackActivity } = useActivityFeed();
+  const { toast } = useToast();
 
   const fetchOffers = async () => {
     if (!user) {
@@ -49,10 +46,10 @@ export const useOffers = (requestId?: string) => {
         .from('offers')
         .select(`
           *,
-          request:requests (
+          requests (
             title,
             description,
-            user_id,
+            client_id,
             category,
             location
           )
@@ -64,7 +61,19 @@ export const useOffers = (requestId?: string) => {
         query = query.eq('request_id', requestId);
       } else {
         // If no requestId, show offers based on user role
-        query = query.eq('supplier_id', user.id);
+        if (user?.role === 'vendor') {
+          query = query.eq('vendor_id', user.id);
+        } else {
+          // For clients, show all offers for their requests
+          const { data: userRequests } = await supabase
+            .from('requests')
+            .select('id')
+            .eq('client_id', user.id);
+          
+          if (userRequests?.length) {
+            query = query.in('request_id', userRequests.map(r => r.id));
+          }
+        }
       }
 
       const { data, error } = await query;
@@ -90,12 +99,10 @@ export const useOffers = (requestId?: string) => {
 
   const updateOfferStatus = async (offerId: string, status: 'approved' | 'rejected', notes?: string) => {
     try {
-      // Only update approval fields; DB trigger handles client_approval_date
       const { error } = await supabase
         .from('offers')
         .update({
           client_approval_status: status,
-          client_approval_notes: notes,
         })
         .eq('id', offerId);
 
@@ -104,23 +111,10 @@ export const useOffers = (requestId?: string) => {
         return false;
       }
 
-      // Track activity
-      const offer = offers.find(o => o.id === offerId);
-      if (offer) {
-        await trackActivity(
-          status === 'approved' ? 'offer_accepted' : 'offer_rejected',
-          `${status === 'approved' ? 'Accepted' : 'Rejected'} offer: ${offer.title}`,
-          `Offer from supplier ${status === 'approved' ? 'accepted' : 'rejected'} with ${notes ? 'feedback' : 'no feedback'}`,
-          { 
-            offer_id: offerId,
-            price: offer.price,
-            supplier_id: offer.supplier_id,
-            feedback: notes 
-          },
-          'offer',
-          offerId
-        );
-      }
+      toast({ 
+        title: "Success", 
+        description: "Offer updated successfully" 
+      });
       
       // Refresh offers after update
       await fetchOffers();
@@ -135,8 +129,7 @@ export const useOffers = (requestId?: string) => {
     title: string;
     description: string;
     price: number;
-    currency: string;
-    delivery_time_days: number;
+    delivery_time: number;
     request_id: string;
   }) => {
     if (!user) throw new Error('User not authenticated');
@@ -144,26 +137,23 @@ export const useOffers = (requestId?: string) => {
     try {
       const { data, error } = await supabase
         .from('offers')
-        .insert([{ ...offerData, supplier_id: user.id }])
+        .insert([{
+          vendor_id: user.id,
+          title: offerData.title,
+          description: offerData.description,
+          price: offerData.price,
+          delivery_time: offerData.delivery_time,
+          request_id: offerData.request_id,
+        }])
         .select()
         .single();
 
       if (error) throw error;
 
-      // Track activity
-      await trackActivity(
-        'offer_submitted',
-        `Submitted offer: ${offerData.title}`,
-        `New offer submitted for ${offerData.price.toLocaleString()} ${offerData.currency} with ${offerData.delivery_time_days} days delivery`,
-        { 
-          price: offerData.price,
-          currency: offerData.currency,
-          delivery_days: offerData.delivery_time_days,
-          request_id: offerData.request_id
-        },
-        'offer',
-        data.id
-      );
+      toast({ 
+        title: "Success", 
+        description: "Offer created successfully" 
+      });
 
       await fetchOffers();
       return data;
@@ -174,7 +164,7 @@ export const useOffers = (requestId?: string) => {
   };
 
   const formatPrice = (offer: Offer) => {
-    return `${offer.price.toLocaleString()} ${offer.currency}`;
+    return `${offer.price.toLocaleString()} SAR`;
   };
 
   const getStatusColor = (status: string) => {

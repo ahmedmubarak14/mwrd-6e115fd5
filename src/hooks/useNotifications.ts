@@ -47,7 +47,7 @@ export const useNotifications = () => {
     try {
       const { error } = await supabase
         .from('notifications')
-        .update({ read_at: new Date().toISOString() })
+        .update({ read: true })
         .eq('id', notificationId)
         .eq('user_id', user?.id);
 
@@ -79,7 +79,7 @@ export const useNotifications = () => {
 
       const { error } = await supabase
         .from('notifications')
-        .update({ read_at: new Date().toISOString() })
+        .update({ read: true })
         .in('id', unreadIds)
         .eq('user_id', user.id);
 

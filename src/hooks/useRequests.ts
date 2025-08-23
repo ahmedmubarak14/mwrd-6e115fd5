@@ -10,15 +10,15 @@ export interface Request {
   category: string;
   budget_min?: number;
   budget_max?: number;
-  currency: string;
   location?: string;
   deadline?: string;
   urgency: 'low' | 'medium' | 'high' | 'urgent';
-  status: 'open' | 'in_progress' | 'completed' | 'cancelled';
+  status: 'new' | 'in_progress' | 'completed' | 'cancelled';
   created_at: string;
   updated_at: string;
-  user_id: string;
-  offers?: { count: number }[];
+  client_id: string;
+  admin_approval_status: string;
+  offers?: any[];
 }
 
 export const useRequests = () => {
@@ -36,9 +36,9 @@ export const useRequests = () => {
         .from('requests')
         .select(`
           *,
-          offers (count)
+          offers (*)
         `)
-        .eq('user_id', user.id)
+        .eq('client_id', user.id)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -65,7 +65,7 @@ export const useRequests = () => {
   };
 
   const getOffersCount = (request: Request) => {
-    return request.offers?.[0]?.count || 0;
+    return request.offers?.length || 0;
   };
 
   const createRequest = async (requestData: {
@@ -74,18 +74,26 @@ export const useRequests = () => {
     category: string;
     budget_min?: number;
     budget_max?: number;
-    currency: string;
     location?: string;
     deadline?: string;
     urgency: 'low' | 'medium' | 'high' | 'urgent';
-    status?: 'open' | 'in_progress' | 'completed' | 'cancelled';
   }) => {
     if (!user) throw new Error('User not authenticated');
 
     try {
       const { data, error } = await supabase
         .from('requests')
-        .insert([{ ...requestData, user_id: user.id }])
+        .insert([{ 
+          client_id: user.id,
+          title: requestData.title,
+          description: requestData.description,
+          category: requestData.category,
+          budget_min: requestData.budget_min,
+          budget_max: requestData.budget_max,
+          location: requestData.location,
+          deadline: requestData.deadline,
+          urgency: requestData.urgency,
+        }])
         .select()
         .single();
 
