@@ -134,7 +134,7 @@ export const EnhancedAnalyticsDashboard = () => {
     {
       title: isRTL ? 'إجمالي العروض' : 'Total Offers',
       value: data?.totalOffers?.toString() || '0',
-      description: `${data?.growth?.offers ? (data.growth.offers > 0 ? '+' : '') + data.growth.offers.toFixed(1) + '%' : '0%'} ${isRTL ? 'من الفترة السابقة' : 'from last period'}`,
+      description: `${data?.growth?.offers ? (data?.growth.offers > 0 ? '+' : '') + data?.growth.offers.toFixed(1) + '%' : '0%'} ${isRTL ? 'من الفترة السابقة' : 'from last period'}`,
       icon: Package,
       color: 'text-primary',
       growth: data?.growth?.offers || 0
@@ -150,7 +150,7 @@ export const EnhancedAnalyticsDashboard = () => {
     {
       title: isRTL ? 'إجمالي الإيرادات' : 'Total Revenue',
       value: data?.totalRevenue?.toLocaleString() || '0',
-      description: `${data?.growth?.revenue ? (data.growth.revenue > 0 ? '+' : '') + data.growth.revenue.toFixed(1) + '%' : '0%'} ${isRTL ? 'من الفترة السابقة' : 'from last period'}`,
+      description: `${data?.growth?.revenue ? (data?.growth.revenue > 0 ? '+' : '') + data?.growth.revenue.toFixed(1) + '%' : '0%'} ${isRTL ? 'من الفترة السابقة' : 'from last period'}`,
       icon: Banknote,
       color: 'text-accent',
       growth: data?.growth?.revenue || 0,
@@ -160,7 +160,7 @@ export const EnhancedAnalyticsDashboard = () => {
     {
       title: isRTL ? 'إجمالي الطلبات' : 'Total Requests',
       value: data?.totalRequests?.toString() || '0',
-      description: `${data?.growth?.requests ? (data.growth.requests > 0 ? '+' : '') + data.growth.requests.toFixed(1) + '%' : '0%'} ${isRTL ? 'من الفترة السابقة' : 'from last period'}`,
+      description: `${data?.growth?.requests ? (data?.growth.requests > 0 ? '+' : '') + data?.growth.requests.toFixed(1) + '%' : '0%'} ${isRTL ? 'من الفترة السابقة' : 'from last period'}`,
       icon: FileText,
       color: 'text-primary',
       growth: data?.growth?.requests || 0
@@ -168,7 +168,7 @@ export const EnhancedAnalyticsDashboard = () => {
     {
       title: isRTL ? 'الطلبات المكتملة' : 'Completed Requests',
       value: data?.completedRequests?.toString() || '0',
-      description: `${data?.totalRequests ? Math.round((data.completedRequests || 0) / data.totalRequests * 100) : 0}% ${isRTL ? 'معدل الإنجاز' : 'completion rate'}`,
+      description: `${data?.totalRequests ? Math.round((data?.completedRequests || 0) / data.totalRequests * 100) : 0}% ${isRTL ? 'معدل الإنجاز' : 'completion rate'}`,
       icon: TrendingUp,
       color: 'text-lime',
       growth: 0
@@ -176,7 +176,7 @@ export const EnhancedAnalyticsDashboard = () => {
     {
       title: isRTL ? 'العروض المستلمة' : 'Offers Received',
       value: data?.totalOffers?.toString() || '0',
-      description: `${data?.totalRequests ? Math.round((data.totalOffers || 0) / data.totalRequests * 100) / 100 : 0} ${isRTL ? 'عروض لكل طلب' : 'offers per request'}`,
+      description: `${data?.totalRequests ? Math.round((data?.totalOffers || 0) / data.totalRequests * 100) / 100 : 0} ${isRTL ? 'عروض لكل طلب' : 'offers per request'}`,
       icon: Package,
       color: 'text-accent',
       growth: data?.growth?.offers || 0
