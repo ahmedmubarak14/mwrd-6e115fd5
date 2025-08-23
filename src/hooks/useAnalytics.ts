@@ -81,7 +81,18 @@ export const useAnalytics = () => {
         ? Math.round(((currentPeriodOffers.data?.length || 0) - (previousPeriodOffers.data?.length || 0)) / (previousPeriodOffers.data?.length) * 100)
         : 0;
 
-      const revenueGrowth = 15; // Placeholder until we have historical revenue data
+      // Calculate revenue growth from financial transactions
+      const [currentRevenue, previousRevenue] = await Promise.all([
+        supabase.from('financial_transactions').select('amount').eq('status', 'completed').gte('created_at', thirtyDaysAgo.toISOString()),
+        supabase.from('financial_transactions').select('amount').eq('status', 'completed').gte('created_at', sixtyDaysAgo.toISOString()).lt('created_at', thirtyDaysAgo.toISOString())
+      ]);
+
+      const currentRevenueTotal = currentRevenue.data?.reduce((sum, t) => sum + (Number(t.amount) || 0), 0) || 0;
+      const previousRevenueTotal = previousRevenue.data?.reduce((sum, t) => sum + (Number(t.amount) || 0), 0) || 0;
+      
+      const revenueGrowth = previousRevenueTotal > 0 
+        ? Math.round(((currentRevenueTotal - previousRevenueTotal) / previousRevenueTotal) * 100)
+        : 0;
 
       const analyticsResult: AnalyticsData = {
         total_users: Number(baseData.total_users) || 0,
@@ -93,8 +104,8 @@ export const useAnalytics = () => {
         completedRequests: completedOrders?.length || 0,
         successRate: Number(baseData.success_rate) || 0,
         totalRevenue: Number(baseData.total_revenue) || 0,
-        clientSatisfaction: 4.2, // Placeholder until we have rating system
-        responseTime: 2.5, // Placeholder until we track response times
+        clientSatisfaction: 0, // Will be calculated from order reviews
+        responseTime: 0, // Will be calculated from message timestamps
         active_users: Number(baseData.active_users) || 0,
         revenue: Number(baseData.total_revenue) || 0,
         period: 'Last 30 Days',

@@ -24,11 +24,12 @@ import {
   Handshake
 } from "lucide-react";
 import { formatDistanceToNow } from 'date-fns';
+import { useNegotiations } from '@/hooks/useNegotiations';
 
 interface NegotiationMessage {
   id: string;
   type: 'offer' | 'counter_offer' | 'message' | 'acceptance' | 'rejection';
-  sender: 'client' | 'supplier';
+  sender: 'client' | 'vendor';
   senderInfo: {
     name: string;
     avatar?: string;
@@ -64,8 +65,9 @@ interface NegotiationThread {
 }
 
 interface NegotiationSystemProps {
+  offerId?: string;
   thread?: NegotiationThread;
-  userRole: 'client' | 'supplier';
+  userRole: 'client' | 'vendor';
   onSendMessage?: (message: string) => void;
   onSendCounterOffer?: (price: number, deliveryTime: number, message: string) => void;
   onAcceptOffer?: () => void;
@@ -73,25 +75,60 @@ interface NegotiationSystemProps {
 }
 
 export const NegotiationSystem: React.FC<NegotiationSystemProps> = ({
+  offerId,
   thread,
   userRole,
-  onSendMessage,
-  onSendCounterOffer,
-  onAcceptOffer,
-  onRejectOffer
+  onSendMessage: customOnSendMessage,
+  onSendCounterOffer: customOnSendCounterOffer,
+  onAcceptOffer: customOnAcceptOffer,
+  onRejectOffer: customOnRejectOffer
 }) => {
   const { language } = useLanguage();
   const isRTL = language === 'ar';
   const [newMessage, setNewMessage] = useState('');
-  const [counterPrice, setCounterPrice] = useState(thread?.currentOffer.price || 0);
-  const [counterDelivery, setCounterDelivery] = useState(thread?.currentOffer.deliveryTime || 0);
   const [counterMessage, setCounterMessage] = useState('');
   const [showCounterForm, setShowCounterForm] = useState(false);
   const [rejectionReason, setRejectionReason] = useState('');
   const [showRejectionForm, setShowRejectionForm] = useState(false);
 
-  // Mock data for demonstration
-  const mockThread: NegotiationThread = thread || {
+  // Use real negotiation data
+  const { 
+    negotiationThread, 
+    loading, 
+    sendMessage, 
+    sendCounterOffer, 
+    acceptOffer, 
+    rejectOffer 
+  } = useNegotiations(offerId);
+
+  // Use provided thread or fetched thread
+  const activeThread = thread || negotiationThread;
+  
+  const [counterPrice, setCounterPrice] = useState(activeThread?.currentOffer.price || 0);
+  const [counterDelivery, setCounterDelivery] = useState(activeThread?.currentOffer.deliveryTime || 0);
+
+  // Update counter values when thread changes
+  useEffect(() => {
+    if (activeThread) {
+      setCounterPrice(activeThread.currentOffer.price);
+      setCounterDelivery(activeThread.currentOffer.deliveryTime);
+    }
+  }, [activeThread]);
+
+  // Loading state
+  if (loading && !activeThread) {
+    return (
+      <div className="max-w-4xl mx-auto space-y-6">
+        <div className="animate-pulse">
+          <div className="h-32 bg-muted rounded-lg mb-6"></div>
+          <div className="h-64 bg-muted rounded-lg"></div>
+        </div>
+      </div>
+    );
+  }
+
+  // Fallback mock data for demonstration when no real data is available
+  const mockThread: NegotiationThread = activeThread || {
     id: '1',
     offerId: 'offer-1',
     originalOffer: {
@@ -110,7 +147,7 @@ export const NegotiationSystem: React.FC<NegotiationSystemProps> = ({
       {
         id: '1',
         type: 'offer',
-        sender: 'supplier',
+        sender: 'vendor',
         senderInfo: {
           name: 'Ahmed Al-Saudi',
           avatar: '/avatar1.jpg',
@@ -144,7 +181,7 @@ export const NegotiationSystem: React.FC<NegotiationSystemProps> = ({
       {
         id: '3',
         type: 'counter_offer',
-        sender: 'supplier',
+        sender: 'vendor',
         senderInfo: {
           name: 'Ahmed Al-Saudi',
           avatar: '/avatar1.jpg',
@@ -163,30 +200,42 @@ export const NegotiationSystem: React.FC<NegotiationSystemProps> = ({
     ]
   };
 
-  const handleSendMessage = () => {
-    if (newMessage.trim() && onSendMessage) {
-      onSendMessage(newMessage.trim());
+  const handleSendMessage = async () => {
+    if (newMessage.trim()) {
+      if (customOnSendMessage) {
+        customOnSendMessage(newMessage.trim());
+      } else if (sendMessage) {
+        await sendMessage(newMessage.trim());
+      }
       setNewMessage('');
     }
   };
 
-  const handleSendCounterOffer = () => {
-    if (onSendCounterOffer) {
-      onSendCounterOffer(counterPrice, counterDelivery, counterMessage);
-      setShowCounterForm(false);
-      setCounterMessage('');
+  const handleSendCounterOffer = async () => {
+    if (customOnSendCounterOffer) {
+      customOnSendCounterOffer(counterPrice, counterDelivery, counterMessage);
+    } else if (sendCounterOffer) {
+      await sendCounterOffer(counterPrice, counterDelivery, counterMessage);
+    }
+    setShowCounterForm(false);
+    setCounterMessage('');
+  };
+
+  const handleAccept = async () => {
+    if (customOnAcceptOffer) {
+      customOnAcceptOffer();
+    } else if (acceptOffer) {
+      await acceptOffer();
     }
   };
 
-  const handleAccept = () => {
-    if (onAcceptOffer) {
-      onAcceptOffer();
-    }
-  };
-
-  const handleReject = () => {
-    if (onRejectOffer && rejectionReason.trim()) {
-      onRejectOffer(rejectionReason.trim());
+  const handleReject = async () => {
+    if (rejectionReason.trim()) {
+      if (customOnRejectOffer) {
+        customOnRejectOffer(rejectionReason.trim());
+      } else if (rejectOffer) {
+        await rejectOffer(rejectionReason.trim());
+      }
       setShowRejectionForm(false);
       setRejectionReason('');
     }
@@ -311,19 +360,19 @@ export const NegotiationSystem: React.FC<NegotiationSystemProps> = ({
                 {isRTL ? 'جلسة تفاوض' : 'Negotiation Session'}
               </CardTitle>
               <p className="text-muted-foreground text-sm mt-1">
-                {mockThread.originalOffer.title}
+                {(activeThread || mockThread).originalOffer.title}
               </p>
             </div>
             <Badge 
-              variant={mockThread.status === 'active' ? 'default' : 'secondary'}
+              variant={(activeThread || mockThread).status === 'active' ? 'default' : 'secondary'}
               className="gap-1"
             >
               <div className={`w-2 h-2 rounded-full ${
-                mockThread.status === 'active' ? 'bg-green-500' : 'bg-gray-500'
+                (activeThread || mockThread).status === 'active' ? 'bg-green-500' : 'bg-gray-500'
               }`} />
               {isRTL ? 
-                (mockThread.status === 'active' ? 'نشط' : 'مكتمل') :
-                (mockThread.status === 'active' ? 'Active' : 'Completed')
+                ((activeThread || mockThread).status === 'active' ? 'نشط' : 'مكتمل') :
+                ((activeThread || mockThread).status === 'active' ? 'Active' : 'Completed')
               }
             </Badge>
           </div>
@@ -332,19 +381,19 @@ export const NegotiationSystem: React.FC<NegotiationSystemProps> = ({
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
               <p className="text-sm text-muted-foreground">{isRTL ? 'السعر الأصلي' : 'Original Price'}</p>
-              <p className="text-lg font-semibold">{mockThread.originalOffer.price.toLocaleString()} SAR</p>
+              <p className="text-lg font-semibold">{(activeThread || mockThread).originalOffer.price.toLocaleString()} SAR</p>
             </div>
             <div className="text-center">
               <p className="text-sm text-muted-foreground">{isRTL ? 'السعر الحالي' : 'Current Price'}</p>
-              <p className="text-lg font-semibold text-primary">{mockThread.currentOffer.price.toLocaleString()} SAR</p>
+              <p className="text-lg font-semibold text-primary">{(activeThread || mockThread).currentOffer.price.toLocaleString()} SAR</p>
             </div>
             <div className="text-center">
               <p className="text-sm text-muted-foreground">{isRTL ? 'التسليم الأصلي' : 'Original Delivery'}</p>
-              <p className="text-lg font-semibold">{mockThread.originalOffer.deliveryTime} {isRTL ? 'يوم' : 'days'}</p>
+              <p className="text-lg font-semibold">{(activeThread || mockThread).originalOffer.deliveryTime} {isRTL ? 'يوم' : 'days'}</p>
             </div>
             <div className="text-center">
               <p className="text-sm text-muted-foreground">{isRTL ? 'التسليم الحالي' : 'Current Delivery'}</p>
-              <p className="text-lg font-semibold text-primary">{mockThread.currentOffer.deliveryTime} {isRTL ? 'يوم' : 'days'}</p>
+              <p className="text-lg font-semibold text-primary">{(activeThread || mockThread).currentOffer.deliveryTime} {isRTL ? 'يوم' : 'days'}</p>
             </div>
           </div>
         </CardContent>
@@ -360,7 +409,7 @@ export const NegotiationSystem: React.FC<NegotiationSystemProps> = ({
         </CardHeader>
         <CardContent>
           <div className="space-y-4 max-h-96 overflow-y-auto">
-            {mockThread.messages.map(renderMessage)}
+            {(activeThread || mockThread).messages.map(renderMessage)}
           </div>
         </CardContent>
       </Card>
@@ -384,8 +433,8 @@ export const NegotiationSystem: React.FC<NegotiationSystemProps> = ({
                   placeholder="0"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  {isRTL ? 'التغيير:' : 'Change:'} {counterPrice - mockThread.currentOffer.price > 0 ? '+' : ''}
-                  {(counterPrice - mockThread.currentOffer.price).toLocaleString()} SAR
+                  {isRTL ? 'التغيير:' : 'Change:'} {counterPrice - (activeThread || mockThread).currentOffer.price > 0 ? '+' : ''}
+                  {(counterPrice - (activeThread || mockThread).currentOffer.price).toLocaleString()} SAR
                 </p>
               </div>
               <div>
@@ -399,8 +448,8 @@ export const NegotiationSystem: React.FC<NegotiationSystemProps> = ({
                   placeholder="0"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  {isRTL ? 'التغيير:' : 'Change:'} {counterDelivery - mockThread.currentOffer.deliveryTime > 0 ? '+' : ''}
-                  {counterDelivery - mockThread.currentOffer.deliveryTime} {isRTL ? 'يوم' : 'days'}
+                  {isRTL ? 'التغيير:' : 'Change:'} {counterDelivery - (activeThread || mockThread).currentOffer.deliveryTime > 0 ? '+' : ''}
+                  {counterDelivery - (activeThread || mockThread).currentOffer.deliveryTime} {isRTL ? 'يوم' : 'days'}
                 </p>
               </div>
             </div>

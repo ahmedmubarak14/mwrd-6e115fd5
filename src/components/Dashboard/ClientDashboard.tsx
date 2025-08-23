@@ -11,6 +11,8 @@ import { EnhancedAnalyticsDashboard } from "@/components/analytics/EnhancedAnaly
 import { useRealTimeAnalytics } from "@/hooks/useRealTimeAnalytics";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import ActivityFeed from "@/components/ActivityFeed";
+import { useUserStats } from "@/hooks/useUserStats";
+import { useRecentItems } from "@/hooks/useRecentItems";
 
 export const ClientDashboard = () => {
   const { t, language } = useLanguage();
@@ -18,6 +20,8 @@ export const ClientDashboard = () => {
   const { toast } = useToast();
   const isRTL = language === 'ar';
   const { data: analyticsData, loading: analyticsLoading } = useRealTimeAnalytics();
+  const { stats: userStats, loading: statsLoading } = useUserStats();
+  const { recentItems, loading: itemsLoading } = useRecentItems();
 
   const handleUpgradeSubscription = () => {
     toast({
@@ -40,64 +44,56 @@ export const ClientDashboard = () => {
     });
   };
 
-  // Real-time stats using analytics data
+  // Real-time stats using analytics data and user stats
   const stats = userProfile?.role === 'vendor' ? [
     { 
       title: t('dashboard.activeOffers'), 
-      value: analyticsData?.totalOffers?.toString() || "0", 
+      value: userStats?.activeOffers?.toString() || analyticsData?.totalOffers?.toString() || "0", 
       icon: Package, 
       color: "text-primary" 
     },
     { 
       title: t('dashboard.totalEarnings'), 
-      value: analyticsData?.totalRevenue?.toLocaleString() || "0", 
+      value: userStats?.totalEarnings?.toLocaleString() || analyticsData?.totalRevenue?.toLocaleString() || "0", 
       icon: Banknote, 
       color: "text-lime", 
       currency: true 
     },
     { 
       title: t('dashboard.successRate'), 
-      value: `${Math.round(analyticsData?.successRate || 0)}%`, 
+      value: `${userStats?.successRate || Math.round(analyticsData?.successRate || 0)}%`, 
       icon: TrendingUp, 
       color: "text-primary" 
     },
     { 
       title: t('dashboard.clientRating'), 
-      value: "4.8", 
+      value: userStats?.clientRating?.toString() || "0.0", 
       icon: Star, 
       color: "text-lime" 
     }
   ] : [
     { 
       title: t('dashboard.totalRequests'), 
-      value: analyticsData?.totalRequests?.toString() || "0", 
+      value: userStats?.totalRequests?.toString() || analyticsData?.totalRequests?.toString() || "0", 
       icon: FileText, 
       color: "text-primary" 
     },
     { 
       title: t('dashboard.pendingOffers'), 
-      value: analyticsData?.totalOffers?.toString() || "0", 
+      value: userStats?.pendingOffers?.toString() || analyticsData?.totalOffers?.toString() || "0", 
       icon: TrendingUp, 
       color: "text-lime" 
     },
     { 
       title: t('dashboard.suppliersConnected'), 
-      value: "12", 
+      value: userStats?.suppliersConnected?.toString() || "0", 
       icon: Users, 
       color: "text-primary" 
     }
   ];
 
-  // Universal recent items that work for both user types
-  const recentItems = userProfile?.role === 'vendor' ? [
-    { id: 1, title: "Office Furniture Package", description: "Modern Supply Co.", value: "9,400", status: "pending", currency: true },
-    { id: 2, title: "Corporate Meeting Setup", description: "Tech Solutions Ltd.", value: "6,800", status: "accepted", currency: true },
-    { id: 3, title: "Exhibition Booth Furniture", description: "Global Exhibitions", value: "15,800", status: "in_progress", currency: true }
-  ] : [
-    { id: 1, title: "AVL Equipment for Conference", status: "pending", value: "3 offers" },
-    { id: 2, title: "Catering Services", status: "active", value: "5 offers" },
-    { id: 3, title: "Booth Design & Setup", status: "completed", value: "2 offers" }
-  ];
+  // Display recent items or loading/empty state
+  const displayRecentItems = recentItems?.length > 0 ? recentItems.slice(0, 3) : [];
 
   return (
     <div className="space-y-4 sm:space-y-6 lg:space-y-8 rtl-text-left">
@@ -135,7 +131,7 @@ export const ClientDashboard = () => {
 
       {/* Enhanced Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
-        {analyticsLoading ? (
+        {(analyticsLoading || statsLoading) ? (
           Array.from({ length: 3 }).map((_, index) => (
             <Card key={index} className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm">
               <CardHeader className="rtl-card-header space-y-0 pb-2 p-4 sm:p-6">
@@ -274,47 +270,77 @@ export const ClientDashboard = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="p-4 sm:p-6">
-          <div className="space-y-3 sm:space-y-4">
-            {recentItems.map((item) => (
-              <div key={item.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 lg:p-6 border rounded-lg sm:rounded-xl hover:shadow-lg transition-all duration-300 bg-background/50 gap-3 sm:gap-4">
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-semibold text-sm sm:text-base lg:text-lg truncate">{item.title}</h4>
-                  <div className="flex items-center gap-2">
-                  <p className="text-muted-foreground text-xs sm:text-sm lg:text-base">
-                    {userProfile?.role === 'vendor' ? item.description : `${item.value}`}
-                  </p>
-                  {userProfile?.role === 'vendor' && item.currency && (
-                      <div className="flex items-center gap-1">
-                        <span className="text-muted-foreground text-xs sm:text-sm lg:text-base">{item.value}</span>
-                        <img 
-                          src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
-                          alt="SAR" 
-                          className="h-3 w-3 sm:h-4 sm:w-4 opacity-70"
-                        />
-                      </div>
-                    )}
+          {itemsLoading ? (
+            <div className="space-y-3 sm:space-y-4">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <div key={index} className="flex items-center justify-between p-3 sm:p-4 lg:p-6 border rounded-lg">
+                  <div className="flex-1">
+                    <div className="h-4 bg-muted rounded animate-pulse mb-2" />
+                    <div className="h-3 bg-muted rounded animate-pulse w-2/3" />
+                  </div>
+                  <div className="w-16 h-6 bg-muted rounded animate-pulse" />
+                </div>
+              ))}
+            </div>
+          ) : displayRecentItems.length > 0 ? (
+            <div className="space-y-3 sm:space-y-4">
+              {displayRecentItems.map((item) => (
+                <div key={item.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 lg:p-6 border rounded-lg sm:rounded-xl hover:shadow-lg transition-all duration-300 bg-background/50 gap-3 sm:gap-4">
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold text-sm sm:text-base lg:text-lg truncate">{item.title}</h4>
+                    <div className="flex items-center gap-2">
+                    <p className="text-muted-foreground text-xs sm:text-sm lg:text-base">
+                      {userProfile?.role === 'vendor' ? item.description : `${item.value}`}
+                    </p>
+                    {userProfile?.role === 'vendor' && item.currency && (
+                        <div className="flex items-center gap-1">
+                          <span className="text-muted-foreground text-xs sm:text-sm lg:text-base">{item.value}</span>
+                          <img 
+                            src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" 
+                            alt="SAR" 
+                            className="h-3 w-3 sm:h-4 sm:w-4 opacity-70"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 lg:gap-4 flex-shrink-0">
+                    <span className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium self-start sm:self-auto ${
+                      item.status === 'active' || item.status === 'accepted' || item.status === 'in_progress' 
+                        ? 'bg-lime/20 text-lime-foreground border border-lime/20' :
+                      item.status === 'pending' 
+                        ? 'bg-accent/20 text-accent-foreground border border-accent/20' :
+                      'bg-primary/20 text-primary-foreground border border-primary/20'
+                    }`}>
+                      {item.status === 'in_progress' ? t('dashboard.inProgress') : item.status}
+                    </span>
+                    <ViewDetailsModal item={{...item, id: typeof item.id === 'number' ? item.id : parseInt(String(item.id)) || 1}} userRole={userProfile?.role}>
+                      <Button variant="outline" size="sm" className="hover-scale w-full sm:w-auto text-xs sm:text-sm rtl-button-gap">
+                        <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
+                        {t('dashboard.view')}
+                      </Button>
+                    </ViewDetailsModal>
                   </div>
                 </div>
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 lg:gap-4 flex-shrink-0">
-                  <span className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium self-start sm:self-auto ${
-                    item.status === 'active' || item.status === 'accepted' || item.status === 'in_progress' 
-                      ? 'bg-lime/20 text-lime-foreground border border-lime/20' :
-                    item.status === 'pending' 
-                      ? 'bg-accent/20 text-accent-foreground border border-accent/20' :
-                    'bg-primary/20 text-primary-foreground border border-primary/20'
-                  }`}>
-                    {item.status === 'in_progress' ? t('dashboard.inProgress') : item.status}
-                  </span>
-                  <ViewDetailsModal item={item} userRole={userProfile?.role}>
-                    <Button variant="outline" size="sm" className="hover-scale w-full sm:w-auto text-xs sm:text-sm rtl-button-gap">
-                      <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
-                      {t('dashboard.view')}
-                    </Button>
-                  </ViewDetailsModal>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <Clock className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-lg font-medium mb-2">
+                {userProfile?.role === 'vendor' 
+                  ? (isRTL ? 'لا توجد عروض حديثة' : 'No Recent Offers')
+                  : (isRTL ? 'لا توجد طلبات حديثة' : 'No Recent Requests')
+                }
+              </h3>
+              <p className="text-muted-foreground">
+                {userProfile?.role === 'vendor'
+                  ? (isRTL ? 'ابدأ بإنشاء عروضك الأولى' : 'Start by creating your first offers')
+                  : (isRTL ? 'ابدأ بإنشاء طلبك الأول' : 'Start by creating your first request')
+                }
+              </p>
+            </div>
+          )}
         </CardContent>
       </Card>
 

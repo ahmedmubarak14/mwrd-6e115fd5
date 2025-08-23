@@ -8,24 +8,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Package, Search, Filter, Eye, Download, Calendar, FileText, CreditCard } from "lucide-react";
+import { Package, Search, Filter, Eye, Download, Calendar, FileText, CreditCard, AlertCircle } from "lucide-react";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 import { useToast } from "@/hooks/use-toast";
 import { Footer } from "@/components/ui/layout/Footer";
+import { useOrders, Order } from "@/hooks/useOrders";
 
-interface Order {
-  id: string;
-  title: string;
-  client: string;
-  amount: number;
-  currency: string;
-  status: 'pending' | 'confirmed' | 'in-progress' | 'completed' | 'cancelled';
-  date: string;
-  description: string;
-  category: string;
-}
 
 export const Orders = () => {
   const { userProfile } = useAuth();
@@ -39,53 +30,7 @@ export const Orders = () => {
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [isExporting, setIsExporting] = useState(false);
 
-  // Mock orders data
-  const orders: Order[] = [
-    {
-      id: "ORD-001",
-      title: isRTL ? "تنظيم معرض تجاري" : "Trade Exhibition Organization",
-      client: isRTL ? "شركة الإبداع التجاري" : "Creative Commerce Co.",
-      amount: 25000,
-      currency: "SAR",
-      status: "confirmed",
-      date: "2024-02-15",
-      description: isRTL ? "تنظيم معرض تجاري شامل مع جميع الخدمات اللوجستية" : "Complete trade exhibition with all logistics services",
-      category: isRTL ? "معارض" : "Exhibitions"
-    },
-    {
-      id: "ORD-002", 
-      title: isRTL ? "حفل زفاف فاخر" : "Luxury Wedding Ceremony",
-      client: isRTL ? "عائلة الأحمد" : "Al-Ahmad Family",
-      amount: 45000,
-      currency: "SAR",
-      status: "in-progress",
-      date: "2024-02-20",
-      description: isRTL ? "حفل زفاف بتصميم فاخر يتضمن الديكور والطعام والتصوير" : "Luxury wedding with design, catering, and photography",
-      category: isRTL ? "حفلات زفاف" : "Weddings"
-    },
-    {
-      id: "ORD-003",
-      title: isRTL ? "مؤتمر تقني" : "Tech Conference",
-      client: isRTL ? "مؤسسة التكنولوجيا" : "Tech Foundation",
-      amount: 32000,
-      currency: "SAR", 
-      status: "pending",
-      date: "2024-03-01",
-      description: isRTL ? "مؤتمر تقني يضم 500 مشارك مع خدمات التقنية والضيافة" : "Tech conference for 500 participants with tech and hospitality services",
-      category: isRTL ? "مؤتمرات" : "Conferences"
-    },
-    {
-      id: "ORD-004",
-      title: isRTL ? "إطلاق منتج جديد" : "Product Launch Event",
-      client: isRTL ? "شركة الابتكار" : "Innovation Corp",
-      amount: 18000,
-      currency: "SAR",
-      status: "completed",
-      date: "2024-01-25",
-      description: isRTL ? "فعالية إطلاق منتج جديد مع إدارة كاملة للحدث" : "New product launch with complete event management",
-      category: isRTL ? "إطلاق منتجات" : "Product Launches"
-    }
-  ];
+  const { orders, loading: ordersLoading, error: ordersError, updateOrderStatus, generateInvoice } = useOrders();
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -130,7 +75,19 @@ export const Orders = () => {
   const handleExportOrders = async () => {
     setIsExporting(true);
     try {
-      // Placeholder for export functionality
+      // Create CSV content
+      const csvContent = orders.map(order => 
+        `${order.id},${order.title},${order.client},${order.amount},${order.status},${order.date}`
+      ).join('\n');
+      
+      // Create and download file
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'orders.csv';
+      a.click();
+      
       toast({
         title: isRTL ? "تم تصدير البيانات" : "Export Successful",
         description: isRTL ? "تم تصدير الطلبات بنجاح" : "Orders exported successfully",
@@ -148,14 +105,19 @@ export const Orders = () => {
 
   const handleGenerateInvoice = async (orderId: string) => {
     try {
-      toast({
-        title: isRTL ? "تم إنشاء الفاتورة" : "Invoice Generated",
-        description: isRTL ? "تم إنشاء الفاتورة بنجاح" : "Invoice generated successfully",
-      });
-    } catch (error) {
+      const result = await generateInvoice(orderId);
+      if (result.success) {
+        toast({
+          title: isRTL ? "تم إنشاء الفاتورة" : "Invoice Generated",
+          description: isRTL ? "تم إنشاء الفاتورة بنجاح" : "Invoice generated successfully",
+        });
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error: any) {
       toast({
         title: isRTL ? "خطأ في الفاتورة" : "Invoice Error",
-        description: isRTL ? "حدث خطأ أثناء إنشاء الفاتورة" : "Error generating invoice",
+        description: error.message || (isRTL ? "حدث خطأ أثناء إنشاء الفاتورة" : "Error generating invoice"),
         variant: "destructive"
       });
     }
@@ -163,14 +125,19 @@ export const Orders = () => {
 
   const handleUpdateOrderStatus = async (orderId: string, newStatus: string) => {
     try {
-      toast({
-        title: isRTL ? "تم تحديث الحالة" : "Status Updated",
-        description: isRTL ? "تم تحديث حالة الطلب بنجاح" : "Order status updated successfully",
-      });
-    } catch (error) {
+      const result = await updateOrderStatus(orderId, newStatus);
+      if (result.success) {
+        toast({
+          title: isRTL ? "تم تحديث الحالة" : "Status Updated",
+          description: isRTL ? "تم تحديث حالة الطلب بنجاح" : "Order status updated successfully",
+        });
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error: any) {
       toast({
         title: isRTL ? "خطأ في التحديث" : "Update Error",
-        description: isRTL ? "حدث خطأ أثناء تحديث الحالة" : "Error updating status",
+        description: error.message || (isRTL ? "حدث خطأ أثناء تحديث الحالة" : "Error updating status"),
         variant: "destructive"
       });
     }
@@ -247,9 +214,32 @@ export const Orders = () => {
               </CardContent>
             </Card>
 
+            {/* Loading State */}
+            {ordersLoading && (
+              <div className="flex justify-center items-center py-12">
+                <LoadingSpinner />
+              </div>
+            )}
+
+            {/* Error State */}
+            {ordersError && (
+              <Card>
+                <CardContent className="py-12 text-center">
+                  <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
+                  <h3 className="text-lg font-medium mb-2">
+                    {isRTL ? 'حدث خطأ' : 'Error Loading Orders'}
+                  </h3>
+                  <p className="text-muted-foreground">
+                    {ordersError}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+
             {/* Orders List */}
-            <div className="grid gap-4">
-              {filteredOrders.map((order) => (
+            {!ordersLoading && !ordersError && (
+              <div className="grid gap-4">
+                {filteredOrders.map((order) => (
                 <Card key={order.id} className="hover:shadow-lg transition-shadow">
                   <CardHeader>
                     <div className={`flex justify-between items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
@@ -318,8 +308,9 @@ export const Orders = () => {
                     </div>
                   </CardContent>
                 </Card>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
 
             {filteredOrders.length === 0 && (
               <Card>
