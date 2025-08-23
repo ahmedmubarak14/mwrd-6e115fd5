@@ -1,15 +1,29 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalAuth } from "@/contexts/useOptionalAuth";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { MobileNavigation } from "@/components/layout/MobileNavigation";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Check, ArrowRight, Star } from "lucide-react";
 import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Link } from "react-router-dom";
 
 export const Pricing = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const authData = useOptionalAuth();
   const [selectedRole, setSelectedRole] = useState<'client' | 'supplier'>('client');
+  const isRTL = language === 'ar';
+
+  // Show loading spinner if auth is loading
+  if (authData?.loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] flex items-center justify-center">
+        <LoadingSpinner size="lg" text={isRTL ? "جارٍ التحميل..." : "Loading..."} />
+      </div>
+    );
+  }
 
   const clientPricingPlans = [
     {
@@ -258,46 +272,79 @@ export const Pricing = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
       {/* Navigation Header */}
-      <nav className="border-b border-white/10 bg-blackChasm/80 backdrop-blur-xl sticky top-0 z-50">
-        <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-12">
-            <Link to="/" className="flex items-center">
+      <header className="h-20 sm:h-24 lg:h-28 border-b backdrop-blur-sm sticky top-0 z-50" style={{ background: 'var(--gradient-header)' }}>
+        <div className="container mx-auto px-3 sm:px-4 lg:px-6 h-full flex items-center justify-between">
+          
+          {/* Logo - positioned based on language */}
+          <div className="rtl-order-1 flex items-center gap-2 sm:gap-4">
+            <Link 
+              to="/landing" 
+              className="flex items-center group"
+            >
               <img 
                 src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
                 alt="MWRD Logo"
-                className="h-12 w-auto"
+                className="h-12 sm:h-20 lg:h-24 w-auto hover:scale-105 transition-transform"
               />
             </Link>
-            
-            <div className="hidden md:flex items-center gap-8">
-              <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
-                {t('language') === 'ar' ? 'المنتج' : 'Product'}
-              </Link>
-              <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
-                {t('language') === 'ar' ? 'الأسعار' : 'Pricing'}
-              </Link>
-              <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
-                {t('language') === 'ar' ? 'الموارد' : 'Resources'}
-              </Link>
-              <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
-                {t('language') === 'ar' ? 'اتصل بنا' : 'Contact'}
-              </Link>
-            </div>
           </div>
-
-          <div className="flex items-center gap-4">
-            <Badge variant="outline" className="border-white/20 text-white/80 px-3 py-1">
-              {t('language') === 'ar' ? 'عر' : 'EN'}
-            </Badge>
-            <Button variant="ghost" className="text-white hover:bg-white/10">
-              {t('language') === 'ar' ? 'تسجيل الدخول' : 'Sign in'}
-            </Button>
-            <Button className="bg-gradient-to-r from-primary to-accent text-white border-0 px-6">
-              {t('language') === 'ar' ? 'ابدأ الآن' : 'Get Started'}
-            </Button>
+          
+          {/* Desktop Navigation Links - centered */}
+          <div className="rtl-order-2 hidden lg:flex items-center gap-8">
+            <Link 
+              to="/why-start-with-mwrd" 
+              className="text-white/90 hover:text-white text-sm font-medium transition-colors"
+            >
+              {isRTL ? "لماذا تبدأ معنا" : "Why Start with Us"}
+            </Link>
+            <Link 
+              to="/what-makes-us-unique" 
+              className="text-white/90 hover:text-white text-sm font-medium transition-colors"
+            >
+              {isRTL ? "ما يميزنا" : "What Makes Us Unique"}
+            </Link>
+            <Link 
+              to="/why-move-to-mwrd" 
+              className="text-white/90 hover:text-white text-sm font-medium transition-colors"
+            >
+              {isRTL ? "لماذا الانتقال إلينا" : "Why Move to Us"}
+            </Link>
+            <span className="text-white text-sm font-medium">
+              {isRTL ? "الأسعار" : "Pricing"}
+            </span>
+          </div>
+          
+          {/* Actions - positioned based on language */}
+          <div className="rtl-order-3 rtl-flex items-center gap-1 sm:gap-2 lg:gap-4">
+            <div className="hidden sm:block">
+              <LanguageSwitcher />
+            </div>
+            
+            <MobileNavigation />
+            
+            {authData?.user ? (
+              <Link to="/dashboard">
+                <Button className="bg-white/10 text-white border border-white/20 hover:bg-white/20 px-3 sm:px-4 lg:px-6 text-sm">
+                  {isRTL ? "لوحة التحكم" : "Dashboard"}
+                </Button>
+              </Link>
+            ) : (
+              <>
+                <Link to="/auth">
+                  <Button variant="ghost" className="text-white hover:bg-white/10 px-3 sm:px-4 text-sm">
+                    {isRTL ? "تسجيل الدخول" : "Login"}
+                  </Button>
+                </Link>
+                <Link to="/auth">
+                  <Button className="bg-white/10 text-white border border-white/20 hover:bg-white/20 px-3 sm:px-4 lg:px-6 text-sm">
+                    {isRTL ? "ابدأ مجاناً" : "Get Started"}
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
-      </nav>
+      </header>
 
       {/* Hero Section */}
       <section className="pt-20 pb-32 px-6">
