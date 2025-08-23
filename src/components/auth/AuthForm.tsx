@@ -32,6 +32,36 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
   const [resetOpen, setResetOpen] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [resetLoading, setResetLoading] = useState(false);
+  const [adminLoading, setAdminLoading] = useState(false);
+
+  const createAdminUser = async () => {
+    setAdminLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('create-admin-user', {
+        body: {
+          email: 'ahmedmubaraks@hotmail.com',
+          password: 'Aa123456',
+          role: 'admin',
+          full_name: 'Ahmed Mubarak'
+        }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Admin User Created",
+        description: "Admin user has been created successfully. You can now login with ahmedmubaraks@hotmail.com",
+      });
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error Creating Admin",
+        description: error.message,
+      });
+    } finally {
+      setAdminLoading(false);
+    }
+  };
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -444,6 +474,23 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
             </TabsContent>
           </Tabs>
         </CardContent>
+        
+        {/* Temporary Admin Creation Button */}
+        <div className="px-6 pb-4">
+          <Button 
+            onClick={createAdminUser}
+            variant="outline"
+            size="sm"
+            disabled={adminLoading}
+            className="w-full text-xs"
+          >
+            {adminLoading ? (
+              <LoadingSpinner size="sm" />
+            ) : (
+              'Create Admin User (Temporary)'
+            )}
+          </Button>
+        </div>
       </Card>
     </div>
   );
