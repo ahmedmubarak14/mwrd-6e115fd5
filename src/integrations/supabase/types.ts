@@ -197,6 +197,50 @@ export type Database = {
           },
         ]
       }
+      categories: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          name_ar: string
+          name_en: string
+          parent_id: string | null
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name_ar: string
+          name_en: string
+          parent_id?: string | null
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name_ar?: string
+          name_en?: string
+          parent_id?: string | null
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       conversations: {
         Row: {
           client_id: string
@@ -651,6 +695,42 @@ export type Database = {
         }
         Relationships: []
       }
+      request_categories: {
+        Row: {
+          category_id: string
+          created_at: string
+          id: string
+          request_id: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          id?: string
+          request_id: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          id?: string
+          request_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "request_categories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "request_categories_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       requests: {
         Row: {
           admin_approval_status: string | null
@@ -663,6 +743,7 @@ export type Database = {
           deadline: string | null
           description: string
           id: string
+          legacy_category: string | null
           location: string | null
           project_id: string | null
           requirements: Json | null
@@ -683,6 +764,7 @@ export type Database = {
           deadline?: string | null
           description: string
           id?: string
+          legacy_category?: string | null
           location?: string | null
           project_id?: string | null
           requirements?: Json | null
@@ -703,6 +785,7 @@ export type Database = {
           deadline?: string | null
           description?: string
           id?: string
+          legacy_category?: string | null
           location?: string | null
           project_id?: string | null
           requirements?: Json | null
@@ -740,6 +823,7 @@ export type Database = {
           email: string
           full_name: string | null
           id: string
+          legacy_category: string | null
           phone: string | null
           portfolio_url: string | null
           role: Database["public"]["Enums"]["user_role"]
@@ -761,6 +845,7 @@ export type Database = {
           email: string
           full_name?: string | null
           id?: string
+          legacy_category?: string | null
           phone?: string | null
           portfolio_url?: string | null
           role?: Database["public"]["Enums"]["user_role"]
@@ -782,6 +867,7 @@ export type Database = {
           email?: string
           full_name?: string | null
           id?: string
+          legacy_category?: string | null
           phone?: string | null
           portfolio_url?: string | null
           role?: Database["public"]["Enums"]["user_role"]
@@ -794,6 +880,42 @@ export type Database = {
           verification_documents?: Json | null
         }
         Relationships: []
+      }
+      vendor_categories: {
+        Row: {
+          category_id: string
+          created_at: string
+          id: string
+          vendor_id: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          id?: string
+          vendor_id: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          id?: string
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendor_categories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vendor_categories_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       video_calls: {
         Row: {

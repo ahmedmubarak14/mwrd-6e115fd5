@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -8,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { X } from 'lucide-react';
 import { useProjects } from '@/hooks/useProjects';
-import { CATEGORIES } from '@/constants/categories';
+import { useCategories } from '@/hooks/useCategories';
 
 interface CreateProjectModalProps {
   open: boolean;
@@ -17,6 +18,7 @@ interface CreateProjectModalProps {
 
 export const CreateProjectModal = ({ open, onClose }: CreateProjectModalProps) => {
   const { createProject } = useProjects();
+  const { categories } = useCategories();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -94,6 +96,20 @@ export const CreateProjectModal = ({ open, onClose }: CreateProjectModalProps) =
     }
   };
 
+  // Get all categories (main + subcategories) for selection
+  const getAllCategories = () => {
+    const allCategories: any[] = [];
+    categories.forEach(category => {
+      allCategories.push(category);
+      if (category.children) {
+        category.children.forEach((child: any) => {
+          allCategories.push({ ...child, parentName: category.name_en });
+        });
+      }
+    });
+    return allCategories;
+  };
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -134,9 +150,9 @@ export const CreateProjectModal = ({ open, onClose }: CreateProjectModalProps) =
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
-                  {CATEGORIES.map((category) => (
-                    <SelectItem key={category.value} value={category.value}>
-                      {category.labelEn}
+                  {getAllCategories().map((category) => (
+                    <SelectItem key={category.id} value={category.slug}>
+                      {category.parentName ? `${category.parentName} → ` : ''}{category.name_en}
                     </SelectItem>
                   ))}
                 </SelectContent>

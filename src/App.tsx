@@ -1,194 +1,131 @@
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { RouteAwareThemeProvider } from "@/contexts/RouteAwareThemeContext";
-import { Landing } from "./pages/Landing";
-import Projects from "./pages/Projects";
+import { RouteAwareThemeProvider } from "@/contexts/RouteAwareThemeProvider";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import RoleProtectedRoute from "@/components/RoleProtectedRoute";
 
-import { Dashboard } from "./pages/Dashboard";
-import { WhyStartWithMWRD } from "./pages/WhyStartWithMWRD";
-import { WhatMakesUsUnique } from "./pages/WhatMakesUsUnique";
-import { WhyMoveToMWRD } from "./pages/WhyMoveToMWRD";
-import { Requests } from "./pages/Requests";
-import { Suppliers } from "./pages/Suppliers";
-import { Pricing } from "./pages/Pricing";
-import { Profile } from "./pages/Profile";
-import { ExpertConsultation } from "./pages/ExpertConsultation";
-import { ManageSubscription } from "./pages/ManageSubscription";
-import { BrowseRequests } from "./pages/BrowseRequests";
-import { MyOffers } from "./pages/MyOffers";
-import { Settings } from "./pages/Settings";
-import { Analytics } from "./pages/Analytics";
-import { Orders } from "./pages/Orders";
-import { Support } from "./pages/Support";
-import PaymentSuccess from "./pages/PaymentSuccess";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
-import { TermsAndConditions } from "./pages/TermsAndConditions";
-import { PrivacyPolicy } from "./pages/PrivacyPolicy";
-import { SupplierDashboard } from "./pages/SupplierDashboard";
-import EnhancedMessages from "./pages/EnhancedMessages";
-
-// Admin Layout and Pages
-import { AdminLayout } from "@/components/admin/AdminLayout";
-import { AdminDashboardOverview } from "@/pages/admin/AdminDashboardOverview";
-import { AdminUsers } from "@/pages/admin/AdminUsers";
-import { AdvancedUserManagement } from "@/components/admin/AdvancedUserManagement";
-import { FinancialDashboard } from "@/components/admin/FinancialDashboard";
-import { SubscriptionManagement } from "@/components/admin/SubscriptionManagement";
-import { PlatformAnalytics } from "@/components/admin/PlatformAnalytics";
-import { RequestsApproval } from "@/pages/admin/RequestsApproval";
-import { OffersManagement } from "@/pages/admin/OffersManagement";
-import { ExpertConsultations } from "@/pages/admin/ExpertConsultations";
+// Pages
+import Index from "@/pages/Index";
+import Auth from "@/pages/Auth";
+import ResetPassword from "@/pages/ResetPassword";
+import Dashboard from "@/pages/Dashboard";
+import Profile from "@/pages/Profile";
+import Settings from "@/pages/Settings";
+import Pricing from "@/pages/Pricing";
+import ManageSubscription from "@/pages/ManageSubscription";
+import PaymentSuccess from "@/pages/PaymentSuccess";
+import Vendors from "@/pages/Vendors";
+import SupplierDashboard from "@/pages/SupplierDashboard";
+import ProcurementRequests from "@/pages/ProcurementRequests";
+import BrowseRequests from "@/pages/BrowseRequests";
+import MyOffers from "@/pages/MyOffers";
+import Orders from "@/pages/Orders";
+import EnhancedMessages from "@/pages/EnhancedMessages";
+import Analytics from "@/pages/Analytics";
+import Projects from "@/pages/Projects";
+import AdminDashboard from "@/pages/admin/AdminDashboard";
+import AdminUsers from "@/pages/admin/AdminUsers";
+import RequestsApproval from "@/pages/admin/RequestsApproval";
+import OffersManagement from "@/pages/admin/OffersManagement";
 import FinancialTransactions from "@/pages/admin/FinancialTransactions";
-import { MobileBottomTabs } from "@/components/navigation/MobileBottomTabs";
-import { ProtectedRoute } from "@/components/routing/ProtectedRoute";
-import { RoleProtectedRoute } from "@/components/routing/RoleProtectedRoute";
-import { AuthRedirect } from "@/components/routing/AuthRedirect";
-import { CallNotificationProvider } from "@/components/conversations/CallNotificationProvider";
-import Auth from "./pages/Auth";
-import ResetPassword from "./pages/ResetPassword";
+import ExpertConsultations from "@/pages/admin/ExpertConsultations";
+import ExpertConsultation from "@/pages/ExpertConsultation";
+import Support from "@/pages/Support";
+import TermsAndConditions from "@/pages/TermsAndConditions";
+import PrivacyPolicy from "@/pages/PrivacyPolicy";
+import WhatMakesUsUnique from "@/pages/WhatMakesUsUnique";
+import WhyStartWithMWRD from "@/pages/WhyStartWithMWRD";
+import WhyMoveToMWRD from "@/pages/WhyMoveToMWRD";
+import Landing from "@/pages/Landing";
+import NotFound from "@/pages/NotFound";
+
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <LanguageProvider>
-      <AuthProvider>
-        <CallNotificationProvider>
-          <TooltipProvider>
-            <BrowserRouter>
-              <RouteAwareThemeProvider>
-              <Routes>
-                <Route path="/" element={
-                  <>
-                    <AuthRedirect />
-                    <Landing />
-                    <MobileBottomTabs />
-                  </>
-                } />
-              <Route path="/landing" element={<Landing />} />
-              
-              <Route path="/dashboard" element={
-                <ProtectedRoute>
-                  <Dashboard />
-                  <MobileBottomTabs />
-                </ProtectedRoute>
-              } />
-          <Route path="/why-start-with-mwrd" element={<WhyStartWithMWRD />} />
-          <Route path="/what-makes-us-unique" element={<WhatMakesUsUnique />} />
-          <Route path="/why-move-to-mwrd" element={<WhyMoveToMWRD />} />
-              <Route path="/projects" element={
-                <ProtectedRoute>
-                  <Projects />
-                  <MobileBottomTabs />
-                </ProtectedRoute>
-              } />
-              <Route path="/requests" element={
-                <ProtectedRoute>
-                  <Requests />
-                  <MobileBottomTabs />
-                </ProtectedRoute>
-              } />
-              <Route path="/suppliers" element={<Suppliers />} />
-              <Route path="/pricing" element={<Pricing />} />
-              <Route path="/profile" element={
-                <ProtectedRoute>
-                  <Profile />
-                  <MobileBottomTabs />
-                </ProtectedRoute>
-              } />
-              <Route path="/manage-subscription" element={
-                <ProtectedRoute>
-                  <ManageSubscription />
-                  <MobileBottomTabs />
-                </ProtectedRoute>
-              } />
-              <Route path="/expert-consultation" element={<ExpertConsultation />} />
-              <Route path="/browse-requests" element={
-                <>
-                  <BrowseRequests />
-                  <MobileBottomTabs />
-                </>
-              } />
-              <Route path="/my-offers" element={
-                <ProtectedRoute>
-                  <MyOffers />
-                  <MobileBottomTabs />
-                </ProtectedRoute>
-              } />
-              <Route path="/analytics" element={
-                <ProtectedRoute>
-                  <Analytics />
-                  <MobileBottomTabs />
-                </ProtectedRoute>
-              } />
-              <Route path="/orders" element={
-                <ProtectedRoute>
-                  <Orders />
-                  <MobileBottomTabs />
-                </ProtectedRoute>
-              } />
-              <Route path="/messages" element={
-                <ProtectedRoute>
-                  <EnhancedMessages />
-                  <MobileBottomTabs />
-                </ProtectedRoute>
-              } />
-              <Route path="/support" element={<Support />} />
-              <Route path="/settings" element={
-                <ProtectedRoute>
-                  <Settings />
-                  <MobileBottomTabs />
-                </ProtectedRoute>
-              } />
-              <Route path="/payment-success" element={<PaymentSuccess />} />
-              <Route path="/client-dashboard" element={
-                <RoleProtectedRoute allowed={['client']}>
-                  <Index />
-                  <MobileBottomTabs />
-                </RoleProtectedRoute>
-              } />
-              <Route path="/supplier-dashboard" element={
-                <RoleProtectedRoute allowed={['vendor']}>
-                  <SupplierDashboard />
-                  <MobileBottomTabs />
-                </RoleProtectedRoute>
-              } />
-              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-              {/* Admin Routes with dedicated layout */}
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<AdminDashboardOverview />} />
-                <Route path="users" element={<AdminUsers />} />
-                <Route path="users/advanced" element={<AdvancedUserManagement />} />
-                <Route path="financial" element={<FinancialDashboard />} />
-                <Route path="financial/transactions" element={<FinancialTransactions />} />
-                <Route path="financial/subscriptions" element={<SubscriptionManagement />} />
-                <Route path="analytics" element={<PlatformAnalytics />} />
-                <Route path="content/requests" element={<RequestsApproval />} />
-                <Route path="content/offers" element={<OffersManagement />} />
-                <Route path="content/consultations" element={<ExpertConsultations />} />
-                <Route path="settings" element={<div>Admin Settings Page</div>} />
-              </Route>
+function QueryClientWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <QueryClientProvider client={queryClient}>
+      {children}
+    </QueryClientProvider>
+  );
+}
 
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-                </Routes>
-                <Toaster />
-                <Sonner />
-              </RouteAwareThemeProvider>
-            </BrowserRouter>
-          </TooltipProvider>
-        </CallNotificationProvider>
-      </AuthProvider>
-     </LanguageProvider>
-  </QueryClientProvider>
-);
+function App() {
+  return (
+    <div className="min-h-screen bg-background">
+      <BrowserRouter>
+        <RouteAwareThemeProvider>
+          <ThemeProvider>
+            <LanguageProvider>
+              <AuthProvider>
+                <QueryClientWrapper>
+                  <TooltipProvider>
+                    <Routes>
+                      <Route path="/" element={<Index />} />
+                      <Route path="/auth" element={<Auth />} />
+                      <Route path="/reset-password" element={<ResetPassword />} />
+                      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                      <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                      <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+                      <Route path="/pricing" element={<Pricing />} />
+                      <Route path="/manage-subscription" element={<ProtectedRoute><ManageSubscription /></ProtectedRoute>} />
+                      <Route path="/payment-success" element={<PaymentSuccess />} />
+                      
+                      {/* Vendor routes (new terminology) */}
+                      <Route path="/vendors" element={<Vendors />} />
+                      <Route path="/vendor-dashboard" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['vendor']}><SupplierDashboard /></RoleProtectedRoute></ProtectedRoute>} />
+                      
+                      {/* Legacy supplier routes - redirect to vendor routes */}
+                      <Route path="/suppliers" element={<Navigate to="/vendors" replace />} />
+                      <Route path="/supplier-dashboard" element={<Navigate to="/vendor-dashboard" replace />} />
+                      
+                      {/* Procurement routes (updated terminology) */}
+                      <Route path="/procurement-requests" element={<ProtectedRoute><ProcurementRequests /></ProtectedRoute>} />
+                      <Route path="/requests" element={<Navigate to="/procurement-requests" replace />} />
+                      
+                      <Route path="/browse-requests" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['vendor']}><BrowseRequests /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/my-offers" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['vendor']}><MyOffers /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+                      <Route path="/messages" element={<ProtectedRoute><EnhancedMessages /></ProtectedRoute>} />
+                      <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
+                      <Route path="/projects" element={<ProtectedRoute><Projects /></ProtectedRoute>} />
+                      
+                      {/* Admin routes */}
+                      <Route path="/admin" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['admin']}><AdminDashboard /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/admin/users" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['admin']}><AdminUsers /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/admin/requests-approval" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['admin']}><RequestsApproval /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/admin/offers-management" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['admin']}><OffersManagement /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/admin/financial-transactions" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['admin']}><FinancialTransactions /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/admin/expert-consultations" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['admin']}><ExpertConsultations /></RoleProtectedRoute></ProtectedRoute>} />
+                      
+                      {/* Other routes */}
+                      <Route path="/expert-consultation" element={<ExpertConsultation />} />
+                      <Route path="/support" element={<Support />} />
+                      <Route path="/terms" element={<TermsAndConditions />} />
+                      <Route path="/privacy" element={<PrivacyPolicy />} />
+                      <Route path="/what-makes-us-unique" element={<WhatMakesUsUnique />} />
+                      <Route path="/why-start-with-mwrd" element={<WhyStartWithMWRD />} />
+                      <Route path="/why-move-to-mwrd" element={<WhyMoveToMWRD />} />
+                      <Route path="/landing" element={<Landing />} />
+                      
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                    <Toaster />
+                    <Sonner />
+                  </TooltipProvider>
+                </QueryClientWrapper>
+              </AuthProvider>
+            </LanguageProvider>
+          </ThemeProvider>
+        </RouteAwareThemeProvider>
+      </BrowserRouter>
+    </div>
+  );
+}
 
 export default App;
