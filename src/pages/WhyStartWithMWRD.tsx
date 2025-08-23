@@ -171,19 +171,19 @@ export const WhyStartWithMWRD = () => {
               
               <div className={isRTL ? 'lg:order-1' : ''}>
                 <div className="relative">
-                  <div className="bg-gradient-to-br from-destructive/10 to-orange-500/10 rounded-2xl p-8">
+                  <div className="bg-white/5 border border-white/20 backdrop-blur-20 rounded-2xl p-8">
                     <div className="space-y-4">
-                      <div className="flex items-center gap-3 text-destructive">
+                      <div className="flex items-center gap-3 text-white">
                         <Clock className="h-5 w-5" />
                         <span>{isRTL ? 'موافقات تستغرق أسابيع' : 'Approvals take weeks'}</span>
                       </div>
-                      <div className="flex items-center gap-3 text-destructive">
+                      <div className="flex items-center gap-3 text-white">
                         <FileCheck className="h-5 w-5" />
                         <span>{isRTL ? 'أوراق متناثرة ومفقودة' : 'Scattered and lost paperwork'}</span>
                       </div>
-                      <div className="flex items-center gap-3 text-destructive">
+                      <div className="flex items-center gap-3 text-white">
                         <Users className="h-5 w-5" />
-                        <span>{isRTL ? 'تواصل مبعثر مع الموردين' : 'Scattered supplier communication'}</span>
+                        <span>{isRTL ? 'تواصل مبعثر مع الموردين' : 'Scattered vendor communication'}</span>
                       </div>
                     </div>
                   </div>
@@ -201,21 +201,21 @@ export const WhyStartWithMWRD = () => {
             <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${isRTL ? 'lg:grid-cols-2' : ''}`}>
               <div className={isRTL ? 'lg:order-1' : ''}>
                 <div className="relative">
-                  <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-8">
+                  <div className="bg-white/5 border border-white/20 backdrop-blur-20 rounded-2xl p-8">
                     <div className="space-y-4">
-                      <div className="flex items-center gap-3 text-primary">
+                      <div className="flex items-center gap-3 text-white">
                         <CheckCircle className="h-5 w-5" />
                         <span>{isRTL ? 'مشتريات مركزية' : 'Centralized purchasing'}</span>
                       </div>
-                      <div className="flex items-center gap-3 text-primary">
+                      <div className="flex items-center gap-3 text-white">
                         <CheckCircle className="h-5 w-5" />
                         <span>{isRTL ? 'موافقات آلية' : 'Automated approvals'}</span>
                       </div>
-                      <div className="flex items-center gap-3 text-primary">
+                      <div className="flex items-center gap-3 text-white">
                         <CheckCircle className="h-5 w-5" />
                         <span>{isRTL ? 'إدارة الموردين' : 'Vendor management'}</span>
                       </div>
-                      <div className="flex items-center gap-3 text-primary">
+                      <div className="flex items-center gap-3 text-white">
                         <CheckCircle className="h-5 w-5" />
                         <span>{isRTL ? 'آمن ومتوافق مع اللوائح' : 'Secure & compliant'}</span>
                       </div>
