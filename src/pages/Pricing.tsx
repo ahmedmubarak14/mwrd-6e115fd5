@@ -1,12 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Check, ArrowRight, Star } from "lucide-react";
 import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Link } from "react-router-dom";
-import { MobileNavigation } from "@/components/layout/MobileNavigation";
 
 export const Pricing = () => {
   const { t } = useLanguage();
@@ -258,8 +257,8 @@ export const Pricing = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-white/10 bg-white/10">
+      {/* Navigation Header */}
+      <nav className="border-b border-white/10 bg-blackChasm/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-12">
             <Link to="/" className="flex items-center">
@@ -271,23 +270,25 @@ export const Pricing = () => {
             </Link>
             
             <div className="hidden md:flex items-center gap-8">
-              <Link to="/why-start-with-mwrd" className="text-white/80 hover:text-white font-medium transition-colors">
-                {t('language') === 'ar' ? 'لماذا نبدأ معنا' : 'Why Start'}  
+              <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
+                {t('language') === 'ar' ? 'المنتج' : 'Product'}
               </Link>
-              <Link to="/what-makes-us-unique" className="text-white/80 hover:text-white font-medium transition-colors">
-                {t('language') === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
-              </Link>
-              <Link to="/why-move-to-mwrd" className="text-white/80 hover:text-white font-medium transition-colors">
-                {t('language') === 'ar' ? 'لماذا الانتقال إلينا' : 'Why Move'}
-              </Link>
-              <Link to="/pricing" className="text-white/80 hover:text-white font-medium transition-colors">
+              <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
                 {t('language') === 'ar' ? 'الأسعار' : 'Pricing'}
+              </Link>
+              <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
+                {t('language') === 'ar' ? 'الموارد' : 'Resources'}
+              </Link>
+              <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
+                {t('language') === 'ar' ? 'اتصل بنا' : 'Contact'}
               </Link>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
-            <LanguageSwitcher />
+            <Badge variant="outline" className="border-white/20 text-white/80 px-3 py-1">
+              {t('language') === 'ar' ? 'عر' : 'EN'}
+            </Badge>
             <Button variant="ghost" className="text-white hover:bg-white/10">
               {t('language') === 'ar' ? 'تسجيل الدخول' : 'Sign in'}
             </Button>
@@ -296,7 +297,7 @@ export const Pricing = () => {
             </Button>
           </div>
         </div>
-      </header>
+      </nav>
 
       {/* Hero Section */}
       <section className="pt-20 pb-32 px-6">
