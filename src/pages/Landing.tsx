@@ -141,16 +141,11 @@ export const Landing = () => {
                 </p>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3">
+              {/* Action Button */}
+              <div className="flex justify-center sm:justify-start">
                 <Link to="/auth" className="group">
-                  <Button size="default" className="px-6 py-3 text-base font-semibold transition-all duration-300 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
-                    {language === 'ar' ? 'ابدأ البحث' : 'Start Sourcing'}
-                  </Button>
-                </Link>
-                <Link to="/auth" className="group">
-                  <Button variant="outline" size="default" className="px-6 py-3 text-base font-semibold border-2 border-white/30 text-white bg-white/5 transition-all duration-300 hover:scale-105 backdrop-blur-15">
-                    {language === 'ar' ? 'انضم كمورد' : 'Join as Vendor'}
+                  <Button size="lg" className="px-8 py-3 text-base font-semibold transition-all duration-300 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
+                    {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
                   </Button>
                 </Link>
               </div>
@@ -422,115 +417,58 @@ export const Landing = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 max-w-7xl mx-auto">
-            {/* For Suppliers */}
-            <div className="space-y-8">
-              <div className="text-center lg:text-left">
-                <h3 className="text-2xl font-black mb-4 text-white">
-                  {language === 'ar' ? 'للموردين' : 'For Suppliers'}
-                </h3>
-                <p className="text-white font-light">
-                  {language === 'ar' ? 'نوسع شبكة عملائك ونزيد من مبيعاتك' : 'Expand your client network and increase your sales'}
-                </p>
-              </div>
-              
-              <div className="space-y-6">
-                {[
-                  {
-                    icon: Globe,
-                    title: language === 'ar' ? 'وصول عالمي' : 'Global Reach',
-                    desc: language === 'ar' ? 'اوصل لعملاء جدد حول العالم' : 'Reach new clients worldwide',
-                    color: '#102C33'
-                  },
-                  {
-                    icon: BarChart3,
-                    title: language === 'ar' ? 'تحليلات متقدمة' : 'Advanced Analytics',
-                    desc: language === 'ar' ? 'تتبع أداءك وحسن استراتيجيتك' : 'Track your performance and improve your strategy',
-                    color: '#004F54'
-                  },
-                  {
-                    icon: CreditCard,
-                    title: language === 'ar' ? 'دفع مضمون' : 'Guaranteed Payment',
-                    desc: language === 'ar' ? 'احصل على مدفوعاتك بأمان وسرعة' : 'Get your payments safely and quickly',
-                    color: '#765A3F'
-                  }
-                ].map((benefit, index) => (
-                  <Card key={index} className="p-6 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/5 border border-white/20 backdrop-blur-20">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${benefit.color}30` }}>
-                        <benefit.icon className="h-6 w-6" style={{ color: benefit.color }} />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="text-lg font-bold mb-2 text-white">{benefit.title}</h4>
-                        <p className="text-white font-light">{benefit.desc}</p>
-                      </div>
+          <div className="max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                {
+                  icon: Globe,
+                  title: language === 'ar' ? 'وصول عالمي' : 'Global Reach',
+                  desc: language === 'ar' ? 'اوصل لعملاء جدد حول العالم' : 'Connect with clients and suppliers worldwide',
+                  color: '#102C33'
+                },
+                {
+                  icon: BarChart3,
+                  title: language === 'ar' ? 'تحليلات متقدمة' : 'Advanced Analytics',
+                  desc: language === 'ar' ? 'تتبع أداءك وحسن استراتيجيتك' : 'Track performance and optimize your strategy',
+                  color: '#004F54'
+                },
+                {
+                  icon: CreditCard,
+                  title: language === 'ar' ? 'دفع مضمون' : 'Secure Payments',
+                  desc: language === 'ar' ? 'احصل على مدفوعاتك بأمان وسرعة' : 'Safe and fast payment processing',
+                  color: '#765A3F'
+                },
+                {
+                  icon: Search,
+                  title: language === 'ar' ? 'بحث ذكي' : 'Smart Search',
+                  desc: language === 'ar' ? 'اعثر على ما تحتاجه بسرعة ودقة' : 'Find what you need quickly and accurately',
+                  color: '#102C33'
+                },
+                {
+                  icon: Star,
+                  title: language === 'ar' ? 'موردون معتمدون' : 'Verified Network',
+                  desc: language === 'ar' ? 'تعامل مع موردين موثوقين ومعتمدين' : 'Trusted and verified business partners',
+                  color: '#004F54'
+                },
+                {
+                  icon: TrendingUp,
+                  title: language === 'ar' ? 'عروض تنافسية' : 'Competitive Edge',
+                  desc: language === 'ar' ? 'احصل على أفضل الأسعار والعروض' : 'Get the best prices and opportunities',
+                  color: '#765A3F'
+                }
+              ].map((benefit, index) => (
+                <Card key={index} className="p-6 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/5 border border-white/20 backdrop-blur-20">
+                  <div className="text-center space-y-4">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${benefit.color}30` }}>
+                      <benefit.icon className="h-6 w-6" style={{ color: benefit.color }} />
                     </div>
-                  </Card>
-                ))}
-              </div>
-
-              <div className="pt-6">
-                <Link to="/auth">
-                  <Button size="lg" className="w-full lg:w-auto px-8 py-3 bg-gradient-to-r from-primary to-accent hover:scale-105 transition-transform text-white">
-                    {language === 'ar' ? 'انضم كمورد' : 'Join as Supplier'}
-                  </Button>
-                </Link>
-              </div>
-            </div>
-
-            {/* For Buyers */}
-            <div className="space-y-8">
-              <div className="text-center lg:text-left">
-                <h3 className="text-2xl font-black mb-4 text-white">
-                  {language === 'ar' ? 'للعملاء' : 'For Buyers'}
-                </h3>
-                <p className="text-white font-light">
-                  {language === 'ar' ? 'احصل على أفضل العروض من موردين موثوقين' : 'Get the best offers from trusted suppliers'}
-                </p>
-              </div>
-              
-              <div className="space-y-6">
-                {[
-                  {
-                    icon: Search,
-                    title: language === 'ar' ? 'بحث ذكي' : 'Smart Search',
-                    desc: language === 'ar' ? 'اعثر على ما تحتاجه بسرعة ودقة' : 'Find what you need quickly and accurately',
-                    color: '#102C33'
-                  },
-                  {
-                    icon: Star,
-                    title: language === 'ar' ? 'موردون معتمدون' : 'Verified Suppliers',
-                    desc: language === 'ar' ? 'تعامل مع موردين موثوقين ومعتمدين' : 'Deal with trusted and verified suppliers',
-                    color: '#004F54'
-                  },
-                  {
-                    icon: TrendingUp,
-                    title: language === 'ar' ? 'عروض تنافسية' : 'Competitive Offers',
-                    desc: language === 'ar' ? 'احصل على أفضل الأسعار والعروض' : 'Get the best prices and offers',
-                    color: '#765A3F'
-                  }
-                ].map((benefit, index) => (
-                  <Card key={index} className="p-6 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/5 border border-white/20 backdrop-blur-20">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${benefit.color}30` }}>
-                        <benefit.icon className="h-6 w-6" style={{ color: benefit.color }} />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="text-lg font-bold mb-2 text-white">{benefit.title}</h4>
-                        <p className="text-white font-light">{benefit.desc}</p>
-                      </div>
+                    <div>
+                      <h4 className="text-lg font-bold mb-2 text-white">{benefit.title}</h4>
+                      <p className="text-white font-light text-sm">{benefit.desc}</p>
                     </div>
-                  </Card>
-                ))}
-              </div>
-
-              <div className="pt-6">
-                <Link to="/auth">
-                  <Button size="lg" className="w-full lg:w-auto px-8 py-3 bg-gradient-to-r from-primary to-accent hover:scale-105 transition-transform text-white">
-                    {language === 'ar' ? 'ابدأ التسوق' : 'Start Shopping'}
-                  </Button>
-                </Link>
-              </div>
+                  </div>
+                </Card>
+              ))}
             </div>
           </div>
         </div>
