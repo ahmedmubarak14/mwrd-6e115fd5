@@ -29,10 +29,7 @@ interface Message {
   created_at: string;
   read_at: string | null;
   message_type: string;
-  message_status: string;
   conversation_id: string | null;
-  request_id: string | null;
-  offer_id: string | null;
   attachment_url?: string | null;
   attachment_type?: string | null;
 }
@@ -40,7 +37,7 @@ interface Message {
 interface Conversation {
   id: string;
   client_id: string;
-  supplier_id: string;
+  vendor_id: string;
   request_id: string | null;
   offer_id: string | null;
   status: string;
@@ -159,7 +156,7 @@ export default function Messages() {
 
       if (error) throw error;
 
-      setConversations(data as Conversation[] || []);
+      setConversations(data || []);
 
       const userIds = new Set<string>();
       data?.forEach(conv => {
@@ -208,7 +205,7 @@ export default function Messages() {
         .order('created_at', { ascending: true });
 
       if (error) throw error;
-      setMessages(data as Message[] || []);
+      setMessages(data || []);
 
       if (data && data.length > 0) {
         const unreadMessages = data.filter(msg => 
@@ -237,7 +234,7 @@ export default function Messages() {
 
     try {
       const recipientId = selectedConversation.client_id === user.id 
-        ? selectedConversation.supplier_id 
+        ? selectedConversation.vendor_id 
         : selectedConversation.client_id;
 
       const { error } = await supabase
@@ -284,7 +281,7 @@ export default function Messages() {
     setUploading(true);
     try {
       const recipientId = selectedConversation.client_id === user.id 
-        ? selectedConversation.supplier_id 
+        ? selectedConversation.vendor_id 
         : selectedConversation.client_id;
 
       const path = `messages/${selectedConversation.id}/${Date.now()}_${file.name}`;
@@ -337,7 +334,7 @@ export default function Messages() {
   const getOtherParticipant = (conversation: Conversation) => {
     if (!user) return null;
     const otherUserId = conversation.client_id === user.id 
-      ? conversation.supplier_id 
+      ? conversation.vendor_id 
       : conversation.client_id;
     return userProfiles[otherUserId] || null;
   };

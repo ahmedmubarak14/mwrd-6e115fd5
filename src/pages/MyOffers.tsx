@@ -250,7 +250,7 @@ export const MyOffers = () => {
                               <Clock className="h-4 w-4 text-accent" />
                               <div>
                                 <p className="text-xs text-muted-foreground">Delivery</p>
-                                <p className="font-semibold text-sm">{offer.delivery_time_days} days</p>
+                                <p className="font-semibold text-sm">{offer.delivery_time || 0} days</p>
                               </div>
                             </div>
                             
@@ -272,10 +272,10 @@ export const MyOffers = () => {
                           </div>
 
                           {/* Approval Notes */}
-                          {offer.client_approval_notes && (
+                          {offer.client_approval_status && offer.client_approval_status !== 'pending' && (
                             <div className="p-3 bg-muted/30 rounded-lg">
                               <p className="text-xs text-muted-foreground mb-1">Client Notes:</p>
-                              <p className="text-sm">{offer.client_approval_notes}</p>
+                              <p className="text-sm">{offer.client_approval_status}</p>
                             </div>
                           )}
                           
@@ -301,7 +301,7 @@ export const MyOffers = () => {
                               <RealTimeChatModal 
                                 requestId={offer.request_id}
                                 offerId={offer.id}
-                                recipientId={offer.request.user_id}
+                                recipientId={offer.request?.client_id || ''}
                               >
                                 <Button size="sm" className="flex-1 sm:flex-initial bg-gradient-to-r from-primary to-accent">
                                   Chat with Client

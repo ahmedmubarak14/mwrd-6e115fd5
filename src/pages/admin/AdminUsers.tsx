@@ -113,7 +113,12 @@ export const AdminUsers = () => {
       const { data, error } = await supabase.rpc('get_user_statistics');
       if (error) throw error;
       if (data && data.length > 0) {
-        setStats(data[0]);
+        setStats({
+          total_users: data[0].total_users,
+          total_clients: data[0].total_clients,
+          total_suppliers: data[0].total_vendors,
+          total_admins: data[0].total_admins
+        });
       }
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -136,11 +141,16 @@ export const AdminUsers = () => {
         const { error: profileError } = await supabase
           .from('user_profiles')
           .insert({
-            id: authData.user.id,
+            user_id: authData.user.id,
             email: newUser.email,
             full_name: newUser.full_name || null,
             company_name: newUser.company_name || null,
-            role: newUser.role
+            role: newUser.role === 'supplier' ? 'vendor' : newUser.role as 'admin' | 'client' | 'vendor',
+            status: 'approved',
+            categories: [],
+            verification_documents: [],
+            subscription_plan: 'free',
+            subscription_status: 'active'
           });
 
         if (profileError) throw profileError;

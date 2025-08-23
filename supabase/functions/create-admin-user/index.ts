@@ -34,14 +34,14 @@ Deno.serve(async (req) => {
 
     console.log('Creating user:', { email, role, full_name });
 
-    // First check if user already exists in profiles
-    const { data: existingProfile } = await supabase
+    // Check if user already exists in profiles (avoid auth.users query issues)
+    const { data: existingProfiles } = await supabase
       .from('user_profiles')
       .select('email')
       .eq('email', email)
-      .single();
+      .limit(1);
 
-    if (existingProfile) {
+    if (existingProfiles && existingProfiles.length > 0) {
       return new Response(
         JSON.stringify({ error: 'User with this email already exists' }), 
         { 
