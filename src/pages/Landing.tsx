@@ -208,7 +208,7 @@ export const Landing = () => {
                 { 
                   icon: Users, 
                   title: language === 'ar' ? 'الموردون' : 'Vendors',
-                  subtitle: language === 'ar' ? 'موردون موثقون' : 'Verified suppliers',
+                  subtitle: language === 'ar' ? 'موردون موثقون' : 'Verified vendors',
                   count: "1,247", 
                   label: language === 'ar' ? 'موردون نشطون' : 'Active vendors', 
                   color: '#3B82F6',
@@ -311,7 +311,7 @@ export const Landing = () => {
                       <p className="text-base leading-relaxed font-medium text-white">
                         {language === 'ar' 
                           ? 'تقنية الذكاء الاصطناعي تحلل احتياجاتك وتوصلك بأفضل الموردين في ثوانٍ. اكتشف فرصاً لم تتخيلها من قبل'
-                          : 'AI technology analyzes your needs and connects you with the best suppliers in seconds. Discover opportunities you never imagined'}
+                          : 'AI technology analyzes your needs and connects you with the best vendors in seconds. Discover opportunities you never imagined'}
                       </p>
                     </Card>
                   </div>
@@ -352,7 +352,7 @@ export const Landing = () => {
                       <p className="text-base leading-relaxed font-medium text-white">
                         {language === 'ar' 
                           ? 'أدوات تفاوض متطورة تسهل التواصل المباشر مع الموردين وتضمن أفضل الصفقات'
-                          : 'Advanced negotiation tools facilitate direct communication with suppliers and ensure the best deals'}
+                          : 'Advanced negotiation tools facilitate direct communication with vendors and ensure the best deals'}
                       </p>
                     </Card>
                   </div>
@@ -438,7 +438,7 @@ export const Landing = () => {
             <div className="space-y-8">
               <div className="text-center lg:text-left">
                 <h3 className="text-2xl font-black mb-4 text-white">
-                  {language === 'ar' ? 'للموردين' : 'For Suppliers'}
+                  {language === 'ar' ? 'للموردين' : 'For Vendors'}
                 </h3>
                 <p className="text-white font-light">
                   {language === 'ar' ? 'نوسع شبكة عملائك ونزيد من مبيعاتك' : 'Expand your client network and increase your sales'}
@@ -488,7 +488,7 @@ export const Landing = () => {
                   {language === 'ar' ? 'للعملاء' : 'For Buyers'}
                 </h3>
                 <p className="text-white font-light">
-                  {language === 'ar' ? 'احصل على أفضل العروض من موردين موثوقين' : 'Get the best offers from trusted suppliers'}
+                  {language === 'ar' ? 'احصل على أفضل العروض من موردين موثوقين' : 'Get the best offers from trusted vendors'}
                 </p>
               </div>
               
@@ -502,8 +502,8 @@ export const Landing = () => {
                   },
                   {
                     icon: Star,
-                    title: language === 'ar' ? 'موردون معتمدون' : 'Verified Suppliers',
-                    desc: language === 'ar' ? 'تعامل مع موردين موثوقين ومعتمدين' : 'Deal with trusted and verified suppliers',
+                    title: language === 'ar' ? 'موردون معتمدون' : 'Verified Vendors',
+                    desc: language === 'ar' ? 'تعامل مع موردين موثوقين ومعتمدين' : 'Deal with trusted and verified vendors',
                     color: '#004F54'
                   },
                   {

@@ -333,7 +333,7 @@ export const Pricing = () => {
               />
               
               <span className={`text-lg font-medium transition-colors text-white ${selectedRole === 'supplier' ? 'opacity-100' : 'opacity-70'}`}>
-                {t('language') === 'ar' ? 'مقدمي الخدمات' : 'Suppliers'}
+                {t('language') === 'ar' ? 'مقدمي الخدمات' : 'Vendors'}
               </span>
               
               {selectedRole === 'supplier' && (
@@ -419,21 +419,21 @@ export const Pricing = () => {
 
       {/* CTA Section */}
       <section className="py-32 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-lime"></div>
-        <div className="container mx-auto text-center relative z-10 text-white">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-black mb-6">
-              {t('language') === 'ar' ? 'هل أنت مستعد لتحويل فعالياتك؟' : 'Are You Ready to Transform Your Events?'}
+        <div className="absolute inset-0 bg-blackChasm/50"></div>
+        <div className="container mx-auto text-center relative z-10">
+          <div className="max-w-4xl mx-auto p-12 bg-white/5 border border-white/20 backdrop-blur-20 rounded-3xl">
+            <h2 className="text-4xl md:text-5xl font-black mb-6 text-white">
+              {t('language') === 'ar' ? 'هل أنت مستعد لتحويل مشترياتك؟' : 'Are You Ready to Transform Your Procurement?'}
             </h2>
-            <p className="text-xl md:text-2xl opacity-90 mb-12 leading-relaxed">
+            <p className="text-xl md:text-2xl text-white/80 mb-12 leading-relaxed">
               {t('language') === 'ar' ? 
-                'انضم إلى آلاف الشركات الرائدة التي اختارت سبلفاي لتحقيق أحلامها في عالم الفعاليات' : 
+                'انضم إلى آلاف الشركات الرائدة التي اختارت MWRD لتحقيق أحلامها في عالم المشتريات' : 
                 'Join thousands of leading companies that chose MWRD to achieve their dreams in the procurement world'
               }
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Link to="/home">
-                <Button size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold px-10 py-5 text-lg shadow-2xl hover-scale">
+                <Button size="lg" className="bg-white text-blackChasm hover:bg-white/90 font-semibold px-10 py-5 text-lg shadow-2xl hover-scale">
                   {t('language') === 'ar' ? 'ابدأ تجربتك المجانية الآن' : 'Start Your Free Trial Now'} 
                   <ArrowRight className="ml-2 h-6 w-6" />
                 </Button>

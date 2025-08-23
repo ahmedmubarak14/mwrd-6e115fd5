@@ -98,13 +98,13 @@ export const WhatMakesUsUnique = () => {
             </Link>
             
             <div className="hidden md:flex items-center gap-8">
-              <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
-                {isRTL ? 'المنتج' : 'Product'}
+              <Link to="/why-start-with-mwrd" className="text-white/80 hover:text-white font-medium transition-colors">
+                {isRTL ? 'لماذا نبدأ معنا' : 'Why Start with Us'}
               </Link>
-              <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
+              <Link to="/pricing" className="text-white/80 hover:text-white font-medium transition-colors">
                 {isRTL ? 'الأسعار' : 'Pricing'}
               </Link>
-              <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
+              <Link to="/why-move-to-mwrd" className="text-white/80 hover:text-white font-medium transition-colors">
                 {isRTL ? 'الموارد' : 'Resources'}
               </Link>
               <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
