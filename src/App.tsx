@@ -7,7 +7,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { RouteAwareThemeProvider } from "@/contexts/RouteAwareThemeContext";
 import { Landing } from "./pages/Landing";
-import { Projects } from "./pages/Projects";
+import Projects from "./pages/Projects";
 
 import { Dashboard } from "./pages/Dashboard";
 import { WhyStartWithMWRD } from "./pages/WhyStartWithMWRD";

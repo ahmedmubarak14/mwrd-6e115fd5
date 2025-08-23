@@ -1,7 +1,25 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { useActivityFeed } from './useActivityFeed';
+import { useToast } from '@/hooks/use-toast';
+
+export interface BOQItem {
+  id: string;
+  project_id: string;
+  item_code?: string;
+  description: string;
+  category: string;
+  unit: string;
+  quantity: number;
+  unit_price?: number;
+  total_price?: number;
+  specifications?: any;
+  notes?: string;
+  status: 'pending' | 'quoted' | 'approved' | 'ordered';
+  vendor_id?: string;
+  created_at: string;
+  updated_at: string;
+}
 
 export interface Project {
   id: string;
@@ -17,16 +35,18 @@ export interface Project {
   category?: string;
   location?: string;
   tags?: string[];
-  metadata?: Record<string, any>;
+  metadata?: any;
   created_at: string;
   updated_at: string;
+  boq_items?: BOQItem[];
+  requests?: any[];
 }
 
 export const useProjects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
-  const { trackActivity } = useActivityFeed();
+  const { toast } = useToast();
 
   const fetchProjects = async () => {
     if (!user) return;
@@ -35,7 +55,11 @@ export const useProjects = () => {
       setLoading(true);
       const { data, error } = await supabase
         .from('projects')
-        .select('*')
+        .select(`
+          *,
+          boq_items (*),
+          requests (*)
+        `)
         .eq('client_id', user.id)
         .order('created_at', { ascending: false });
 
@@ -43,24 +67,25 @@ export const useProjects = () => {
       setProjects((data || []) as Project[]);
     } catch (error) {
       console.error('Error fetching projects:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch projects",
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchProjects();
-  }, [user]);
 
   const createProject = async (projectData: {
     title: string;
     description?: string;
     category?: string;
     budget_total?: number;
+    location?: string;
+    priority: 'low' | 'medium' | 'high' | 'urgent';
     start_date?: string;
     end_date?: string;
-    priority: 'low' | 'medium' | 'high' | 'urgent';
-    location?: string;
     tags?: string[];
   }) => {
     if (!user) throw new Error('User not authenticated');
@@ -78,92 +103,97 @@ export const useProjects = () => {
 
       if (error) throw error;
 
-      // Track activity
-      await trackActivity({
-        user_id: user.id,
-        activity_type: 'project_created',
-        description: `Created project: ${projectData.title}`,
-        title: `New project in ${projectData.category || 'General'}`,
-        metadata: { 
-          category: projectData.category,
-          budget: projectData.budget_total,
-          priority: projectData.priority 
-        }
-      });
-
       await fetchProjects();
+      toast({
+        title: "Success",
+        description: "Project created successfully"
+      });
+      
       return data;
     } catch (error) {
       console.error('Error creating project:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create project",
+        variant: "destructive"
+      });
       throw error;
     }
   };
 
-  const updateProject = async (projectId: string, updates: Partial<Project>) => {
-    if (!user) throw new Error('User not authenticated');
-
+  const updateProject = async (id: string, updates: Partial<Project>) => {
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('projects')
         .update(updates)
-        .eq('id', projectId)
-        .eq('client_id', user.id)
-        .select()
-        .single();
+        .eq('id', id);
 
       if (error) throw error;
 
       await fetchProjects();
-      return data;
+      toast({
+        title: "Success",
+        description: "Project updated successfully"
+      });
     } catch (error) {
       console.error('Error updating project:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update project",
+        variant: "destructive"
+      });
       throw error;
     }
   };
 
-  const deleteProject = async (projectId: string) => {
-    if (!user) throw new Error('User not authenticated');
-
+  const deleteProject = async (id: string) => {
     try {
       const { error } = await supabase
         .from('projects')
         .delete()
-        .eq('id', projectId)
-        .eq('client_id', user.id);
+        .eq('id', id);
 
       if (error) throw error;
 
       await fetchProjects();
+      toast({
+        title: "Success",
+        description: "Project deleted successfully"
+      });
     } catch (error) {
       console.error('Error deleting project:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete project",
+        variant: "destructive"
+      });
       throw error;
     }
   };
+
+  useEffect(() => {
+    fetchProjects();
+  }, [user]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'draft': return 'bg-muted text-muted-foreground';
       case 'active': return 'bg-primary text-primary-foreground';
-      case 'completed': return 'bg-emerald-500 text-white';
+      case 'completed': return 'bg-success text-success-foreground';
       case 'cancelled': return 'bg-destructive text-destructive-foreground';
-      case 'on_hold': return 'bg-yellow-500 text-white';
+      case 'on_hold': return 'bg-warning text-warning-foreground';
       default: return 'bg-muted text-muted-foreground';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'low': return 'bg-blue-500 text-white';
-      case 'medium': return 'bg-yellow-500 text-white';
-      case 'high': return 'bg-orange-500 text-white';
-      case 'urgent': return 'bg-red-500 text-white';
-      default: return 'bg-muted text-muted-foreground';
+      case 'low': return 'text-muted-foreground';
+      case 'medium': return 'text-warning-foreground';
+      case 'high': return 'text-destructive-foreground';
+      case 'urgent': return 'text-destructive-foreground font-bold';
+      default: return 'text-muted-foreground';
     }
-  };
-
-  const formatBudget = (project: Project) => {
-    if (!project.budget_total) return 'Budget not specified';
-    return `${project.budget_total.toLocaleString()} ${project.currency || 'SAR'}`;
   };
 
   return {
@@ -174,7 +204,6 @@ export const useProjects = () => {
     updateProject,
     deleteProject,
     getStatusColor,
-    getPriorityColor,
-    formatBudget
+    getPriorityColor
   };
 };
