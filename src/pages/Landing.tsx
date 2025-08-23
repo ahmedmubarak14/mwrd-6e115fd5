@@ -222,7 +222,7 @@ export const Landing = () => {
                   progress: 70
                 }
               ].map((stat, index) => (
-                <Card key={index} className="glass-card p-3 hover:scale-105 transition-all duration-300 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
+                <Card key={index} className="glass-card p-3 hover:scale-105 transition-all duration-300 animate-fade-in bg-transparent border border-white/20" style={{ animationDelay: `${index * 0.1}s`, background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(20px)' }}>
                   <div className="flex items-start gap-2">
                     <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 glass-card border border-white/20" style={{ backgroundColor: `${stat.color}20`, border: `1px solid ${stat.color}40`, background: `rgba(${stat.color === '#8B5CF6' ? '139, 92, 246' : stat.color === '#3B82F6' ? '59, 130, 246' : stat.color === '#10B981' ? '16, 185, 129' : '245, 158, 11'}, 0.1)`, backdropFilter: 'blur(15px)' }}>
                       <stat.icon className="h-4 w-4" style={{ color: stat.color }} />
@@ -285,7 +285,7 @@ export const Landing = () => {
               <div className="relative mb-32 group">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                   <div className="lg:w-1/2 lg:pr-16">
-                     <Card className="glass-card p-4 hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl">
+                     <Card className="glass-card p-4 hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl bg-transparent border border-white/20" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(20px)' }}>
                       <div className="flex items-center gap-4 mb-6">
                         <div className="w-12 h-12 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-2xl flex items-center justify-center shadow-xl glass-card border border-white/20" style={{ background: 'rgba(102, 2, 60, 0.2)', backdropFilter: 'blur(20px)' }}>
                           <Search className="h-6 w-6 text-white" />
@@ -312,7 +312,7 @@ export const Landing = () => {
                         { icon: Eye, label: language === 'ar' ? 'رؤى متقدمة' : 'Advanced Insights', color: '#004F54' },
                         { icon: TrendingUp, label: language === 'ar' ? 'نمو مضمون' : 'Guaranteed Growth', color: '#765A3F' }
                        ].map((feature, index) => (
-                        <Card key={index} className="glass-card p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl">
+                        <Card key={index} className="glass-card p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl bg-transparent border border-white/20" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(15px)' }}>
                           <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
                           <div className="text-sm font-bold text-white">{feature.label}</div>
                         </Card>
@@ -327,7 +327,7 @@ export const Landing = () => {
               <div className="relative mb-32 group">
                 <div className="flex flex-col lg:flex-row-reverse items-center gap-16">
                   <div className="lg:w-1/2 lg:pl-16">
-                    <Card className="glass-card p-4 hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl">
+                    <Card className="glass-card p-4 hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl bg-transparent border border-white/20" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(20px)' }}>
                       <div className="flex items-center gap-4 mb-6">
                         <div className="w-12 h-12 bg-gradient-to-br from-[#FBA765] to-[#765A3F] rounded-2xl flex items-center justify-center shadow-xl glass-card border border-white/20" style={{ background: 'rgba(251, 167, 101, 0.2)', backdropFilter: 'blur(20px)' }}>
                           <MessageSquare className="h-6 w-6 text-white" />
@@ -354,7 +354,7 @@ export const Landing = () => {
                         { icon: BarChart3, label: language === 'ar' ? 'تحليل السوق' : 'Market Analysis', color: '#66023C' },
                         { icon: HeartHandshake, label: language === 'ar' ? 'ثقة متبادلة' : 'Mutual Trust', color: '#765A3F' }
                        ].map((feature, index) => (
-                        <Card key={index} className="glass-card p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl">
+                        <Card key={index} className="glass-card p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl bg-transparent border border-white/20" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(15px)' }}>
                           <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
                           <div className="text-sm font-bold text-white">{feature.label}</div>
                         </Card>
@@ -369,7 +369,7 @@ export const Landing = () => {
               <div className="relative group">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                    <div className="lg:w-1/2 lg:pr-16">
-                    <Card className="glass-card p-4 hover:shadow-[0_25px_80px_rgba(0,79,84,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl">
+                    <Card className="glass-card p-4 hover:shadow-[0_25px_80px_rgba(0,79,84,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl bg-transparent border border-white/20" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(20px)' }}>
                       <div className="flex items-center gap-4 mb-6">
                         <div className="w-12 h-12 bg-gradient-to-br from-[#004F54] to-[#102C33] rounded-2xl flex items-center justify-center shadow-xl glass-card border border-white/20" style={{ background: 'rgba(0, 79, 84, 0.2)', backdropFilter: 'blur(20px)' }}>
                           <CreditCard className="h-6 w-6 text-white" />
@@ -396,7 +396,7 @@ export const Landing = () => {
                         { icon: CheckCircle, label: language === 'ar' ? 'ضمان الجودة' : 'Quality Assurance', color: '#66023C' },
                         { icon: Award, label: language === 'ar' ? 'خدمة مميزة' : 'Premium Service', color: '#765A3F' }
                        ].map((feature, index) => (
-                        <Card key={index} className="glass-card p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl">
+                        <Card key={index} className="glass-card p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl bg-transparent border border-white/20" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(15px)' }}>
                           <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
                           <div className="text-sm font-bold text-white">{feature.label}</div>
                         </Card>
@@ -432,7 +432,7 @@ export const Landing = () => {
 
           <div className="grid lg:grid-cols-2 gap-16 max-w-7xl mx-auto">
             {/* Suppliers Panel */}
-            <Card className="glass-card p-6 hover:shadow-[0_50px_100px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl group">
+            <Card className="glass-card p-6 hover:shadow-[0_50px_100px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl group bg-transparent border border-white/20" style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(25px)' }}>
               <div className="text-center mb-8">
                 <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-[#FBA765] to-[#765A3F] rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500 glass-card border border-white/30" style={{ background: 'rgba(251, 167, 101, 0.15)', backdropFilter: 'blur(25px)' }}>
                   <Package className="h-8 w-8 text-white" />
@@ -484,7 +484,7 @@ export const Landing = () => {
             </Card>
 
             {/* Buyers Panel */}
-            <Card className="glass-card p-6 hover:shadow-[0_50px_100px_rgba(102,2,60,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl group">
+            <Card className="glass-card p-6 hover:shadow-[0_50px_100px_rgba(102,2,60,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl group bg-transparent border border-white/20" style={{ background: 'rgba(255, 255, 255, 0.08)', backdropFilter: 'blur(25px)' }}>
               <div className="text-center mb-8">
                 <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500 glass-card border border-white/30" style={{ background: 'rgba(102, 2, 60, 0.15)', backdropFilter: 'blur(25px)' }}>
                   <Briefcase className="h-8 w-8 text-white" />
