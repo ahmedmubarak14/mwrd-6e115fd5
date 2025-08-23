@@ -34,6 +34,23 @@ Deno.serve(async (req) => {
 
     console.log('Creating user:', { email, role, full_name });
 
+    // First check if user already exists in profiles
+    const { data: existingProfile } = await supabase
+      .from('user_profiles')
+      .select('email')
+      .eq('email', email)
+      .single();
+
+    if (existingProfile) {
+      return new Response(
+        JSON.stringify({ error: 'User with this email already exists' }), 
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+
     // Create the user with admin privileges
     const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
       email,
@@ -48,7 +65,7 @@ Deno.serve(async (req) => {
     if (authError) {
       console.error('Auth error:', authError);
       return new Response(
-        JSON.stringify({ error: authError.message }), 
+        JSON.stringify({ error: `Authentication error: ${authError.message}` }), 
         { 
           status: 400, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
@@ -56,26 +73,60 @@ Deno.serve(async (req) => {
       );
     }
 
-    console.log('User created successfully:', authUser.user?.id);
+    if (!authUser.user) {
+      return new Response(
+        JSON.stringify({ error: 'Failed to create authentication user' }), 
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
 
-    // Update the user profile with admin role
+    console.log('Auth user created:', authUser.user.id);
+
+    // Create or update the user profile directly
     const { error: profileError } = await supabase
       .from('user_profiles')
-      .update({ 
+      .upsert({ 
+        user_id: authUser.user.id,
+        email: email,
+        full_name: full_name,
         role: role as 'admin' | 'client' | 'vendor',
-        status: 'approved'
-      })
-      .eq('user_id', authUser.user.id);
+        status: 'approved',
+        categories: [],
+        verification_documents: [],
+        subscription_plan: 'premium',
+        subscription_status: 'active'
+      });
 
     if (profileError) {
-      console.error('Profile update error:', profileError);
-      // Don't fail the whole operation for this
+      console.error('Profile creation error:', profileError);
+      
+      // Try to clean up the auth user if profile creation failed
+      try {
+        await supabase.auth.admin.deleteUser(authUser.user.id);
+        console.log('Cleaned up auth user due to profile creation failure');
+      } catch (cleanupError) {
+        console.error('Failed to cleanup auth user:', cleanupError);
+      }
+      
+      return new Response(
+        JSON.stringify({ error: `Profile creation failed: ${profileError.message}` }), 
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
     }
+
+    console.log('User profile created successfully');
 
     return new Response(
       JSON.stringify({ 
         success: true, 
-        user: authUser.user,
+        user_id: authUser.user.id,
+        email: email,
         message: 'Admin user created successfully' 
       }),
       { 
@@ -86,7 +137,10 @@ Deno.serve(async (req) => {
   } catch (error) {
     console.error('Unexpected error:', error);
     return new Response(
-      JSON.stringify({ error: 'Internal server error' }), 
+      JSON.stringify({ 
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      }), 
       { 
         status: 500, 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
