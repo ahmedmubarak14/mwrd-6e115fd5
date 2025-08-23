@@ -105,6 +105,7 @@ const translations = {
     'nav.browseRequests': 'Browse Requests',
     'nav.platform': 'Platform',
     'nav.whyStartWithUs': 'Why Start with Us',
+    'nav.whatMakesUsUnique': 'What Makes Us Unique',
     'nav.whyMoveToUs': 'Why Move to Us',
     'nav.services': 'Our Services',
     
@@ -520,6 +521,7 @@ const translations = {
     'nav.browseRequests': 'تصفح الطلبات',
     'nav.platform': 'المنصة',
     'nav.whyStartWithUs': 'لماذا تبدأ معنا',
+    'nav.whatMakesUsUnique': 'ما يميزنا',
     'nav.whyMoveToUs': 'لماذا تنتقل إلينا',
     'nav.services': 'خدماتنا',
     

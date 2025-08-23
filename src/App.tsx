@@ -10,6 +10,7 @@ import { Landing } from "./pages/Landing";
 import { Home } from "./pages/Home";
 import { Dashboard } from "./pages/Dashboard";
 import { WhyStartWithMWRD } from "./pages/WhyStartWithMWRD";
+import { WhatMakesUsUnique } from "./pages/WhatMakesUsUnique";
 import { WhyMoveToMWRD } from "./pages/WhyMoveToMWRD";
 import { Requests } from "./pages/Requests";
 import { Suppliers } from "./pages/Suppliers";
@@ -68,8 +69,9 @@ const App = () => (
               <Route path="/landing" element={<Landing />} />
               <Route path="/home" element={<Home />} />
               <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-              <Route path="/why-start-with-mwrd" element={<WhyStartWithMWRD />} />
-              <Route path="/why-move-to-mwrd" element={<WhyMoveToMWRD />} />
+          <Route path="/why-start-with-mwrd" element={<WhyStartWithMWRD />} />
+          <Route path="/what-makes-us-unique" element={<WhatMakesUsUnique />} />
+          <Route path="/why-move-to-mwrd" element={<WhyMoveToMWRD />} />
               <Route path="/requests" element={<ProtectedRoute><Requests /></ProtectedRoute>} />
               <Route path="/suppliers" element={<Suppliers />} />
               <Route path="/pricing" element={<Pricing />} />

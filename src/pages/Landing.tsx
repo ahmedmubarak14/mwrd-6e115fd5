@@ -73,8 +73,24 @@ export const Landing = () => {
               />
             </Link>
           </div>
+
+          {/* Desktop Navigation Menu */}
+          <nav className={`hidden lg:flex items-center gap-6 ${language === 'ar' ? 'order-1' : 'order-2'}`}>
+            <Link to="/why-start-with-mwrd" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+              {language === 'ar' ? 'لماذا نبدأ معنا' : 'Why Start with Us'}
+            </Link>
+            <Link to="/what-makes-us-unique" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+              {language === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
+            </Link>
+            <Link to="/why-move-to-mwrd" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+              {language === 'ar' ? 'لماذا الانتقال إلينا' : 'Why Move to Us'}
+            </Link>
+            <Link to="/pricing" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+              {language === 'ar' ? 'الأسعار' : 'Pricing'}
+            </Link>
+          </nav>
           
-          <div className={`flex items-center gap-4 ${language === 'ar' ? 'flex-row-reverse order-1' : 'order-3'}`}>
+          <div className={`flex items-center gap-4 ${language === 'ar' ? 'flex-row-reverse order-2' : 'order-3'}`}>
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>

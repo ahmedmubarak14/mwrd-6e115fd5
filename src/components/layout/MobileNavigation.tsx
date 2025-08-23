@@ -30,6 +30,11 @@ export const MobileNavigation = () => {
       label: t('nav.whyStartWithUs')
     },
     {
+      href: "/what-makes-us-unique",
+      icon: Star,
+      label: t('nav.whatMakesUsUnique')
+    },
+    {
       href: "/why-move-to-mwrd",
       icon: Building2,
       label: t('nav.whyMoveToUs')
