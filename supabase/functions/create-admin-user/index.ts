@@ -13,21 +13,52 @@ interface CreateUserRequest {
 }
 
 Deno.serve(async (req) => {
+  console.log('=== Edge Function Started ===');
+  console.log('Request method:', req.method);
+  console.log('Request headers:', Object.fromEntries(req.headers.entries()));
+  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
+    console.log('Handling CORS preflight request');
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    console.log('=== Environment Check ===');
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+    
+    console.log('SUPABASE_URL exists:', !!supabaseUrl);
+    console.log('SUPABASE_SERVICE_ROLE_KEY exists:', !!supabaseServiceKey);
+    console.log('SUPABASE_URL value:', supabaseUrl ? `${supabaseUrl.substring(0, 20)}...` : 'undefined');
     
     if (!supabaseUrl || !supabaseServiceKey) {
+      console.error('Missing environment variables');
       return new Response(
         JSON.stringify({ error: 'Missing required environment variables' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+    
+    console.log('=== Request Body Parsing ===');
+    let requestBody;
+    try {
+      const rawBody = await req.text();
+      console.log('Raw request body:', rawBody);
+      requestBody = JSON.parse(rawBody);
+      console.log('Parsed request body:', requestBody);
+    } catch (parseError) {
+      console.error('JSON parsing error:', parseError);
+      return new Response(
+        JSON.stringify({ error: 'Invalid JSON in request body' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
+    console.log('=== Field Validation ===');
+    const { email, password, role, full_name } = requestBody as CreateUserRequest;
+    
+    console.log('Extracted fields:', { email, password: password ? '[REDACTED]' : undefined, role, full_name });
     
     // Create admin client using service role key
     const supabase = createClient(supabaseUrl, supabaseServiceKey, {
@@ -37,7 +68,7 @@ Deno.serve(async (req) => {
       }
     });
 
-    const { email, password, role, full_name }: CreateUserRequest = await req.json();
+    console.log('Supabase client created successfully');
 
     if (!email || !password || !role || !full_name) {
       return new Response(
