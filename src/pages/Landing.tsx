@@ -257,10 +257,10 @@ export const Landing = () => {
       </section>
 
       {/* Revolutionary Workflow Section */}
-      <section className="py-32 px-6 bg-section-1 relative overflow-hidden">
+      <section className="py-32 px-6 bg-unified-page relative overflow-hidden">
         {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, #FBA765 2px, transparent 2px)`, backgroundSize: '50px 50px' }}></div>
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, #004F54 2px, transparent 2px)`, backgroundSize: '50px 50px' }}></div>
         </div>
 
         <div className="container mx-auto relative z-10">
@@ -279,7 +279,7 @@ export const Landing = () => {
             {/* Revolutionary Step System */}
             <div className="relative">
               {/* Animated Connection Line */}
-              <div className="absolute left-1/2 top-0 bottom-0 w-2 bg-gradient-to-b from-[#FBA765] via-[#66023C] to-[#004F54] transform -translate-x-1/2 hidden lg:block rounded-full shadow-2xl"></div>
+              <div className="absolute left-1/2 top-0 bottom-0 w-2 bg-gradient-to-b from-[#102C33] via-[#004F54] to-[#765A3F] transform -translate-x-1/2 hidden lg:block rounded-full shadow-2xl"></div>
 
               {/* Step 1: AI-Powered Discovery */}
               <div className="relative mb-32 group">
@@ -287,7 +287,7 @@ export const Landing = () => {
                   <div className="lg:w-1/2 lg:pr-16">
                      <Card className="glass-card p-4 hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl bg-transparent border border-white/20" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(20px)' }}>
                       <div className="flex items-center gap-4 mb-6">
-                        <div className="w-12 h-12 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-2xl flex items-center justify-center shadow-xl glass-card border border-white/20" style={{ background: 'rgba(102, 2, 60, 0.2)', backdropFilter: 'blur(20px)' }}>
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#102C33] to-[#004F54] rounded-2xl flex items-center justify-center shadow-xl glass-card border border-white/20" style={{ background: 'rgba(16, 44, 51, 0.3)', backdropFilter: 'blur(20px)' }}>
                           <Search className="h-6 w-6 text-white" />
                         </div>
                         <div>
@@ -307,10 +307,10 @@ export const Landing = () => {
                   <div className="lg:w-1/2 lg:pl-16">
                     <div className="grid grid-cols-2 gap-6">
                       {[
-                        { icon: Target, label: language === 'ar' ? 'دقة 99%' : '99% Accuracy', color: '#66023C' },
-                        { icon: Zap, label: language === 'ar' ? 'استجابة فورية' : 'Instant Response', color: '#FBA765' },
-                        { icon: Eye, label: language === 'ar' ? 'رؤى متقدمة' : 'Advanced Insights', color: '#004F54' },
-                        { icon: TrendingUp, label: language === 'ar' ? 'نمو مضمون' : 'Guaranteed Growth', color: '#765A3F' }
+                        { icon: Target, label: language === 'ar' ? 'دقة 99%' : '99% Accuracy', color: '#102C33' },
+                        { icon: Zap, label: language === 'ar' ? 'استجابة فورية' : 'Instant Response', color: '#004F54' },
+                        { icon: Eye, label: language === 'ar' ? 'رؤى متقدمة' : 'Advanced Insights', color: '#765A3F' },
+                        { icon: TrendingUp, label: language === 'ar' ? 'نمو مضمون' : 'Guaranteed Growth', color: '#102C33' }
                        ].map((feature, index) => (
                         <Card key={index} className="glass-card p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl bg-transparent border border-white/20" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(15px)' }}>
                           <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
@@ -329,11 +329,11 @@ export const Landing = () => {
                   <div className="lg:w-1/2 lg:pl-16">
                     <Card className="glass-card p-4 hover:shadow-[0_25px_80px_rgba(251,167,101,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl bg-transparent border border-white/20" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(20px)' }}>
                       <div className="flex items-center gap-4 mb-6">
-                        <div className="w-12 h-12 bg-gradient-to-br from-[#FBA765] to-[#765A3F] rounded-2xl flex items-center justify-center shadow-xl glass-card border border-white/20" style={{ background: 'rgba(251, 167, 101, 0.2)', backdropFilter: 'blur(20px)' }}>
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#004F54] to-[#765A3F] rounded-2xl flex items-center justify-center shadow-xl glass-card border border-white/20" style={{ background: 'rgba(0, 79, 84, 0.3)', backdropFilter: 'blur(20px)' }}>
                           <MessageSquare className="h-6 w-6 text-white" />
                         </div>
                         <div>
-                          <span className="text-2xl font-black text-[#FBA765]">02</span>
+                          <span className="text-2xl font-black text-[#004F54]">02</span>
                           <h3 className="text-xl font-bold" style={{ color: '#F1EFE8' }}>
                             {language === 'ar' ? 'تفاوض سلس' : 'Seamless Negotiation'}
                           </h3>
@@ -371,11 +371,11 @@ export const Landing = () => {
                    <div className="lg:w-1/2 lg:pr-16">
                     <Card className="glass-card p-4 hover:shadow-[0_25px_80px_rgba(0,79,84,0.3)] transition-all duration-700 hover:scale-105 rounded-2xl bg-transparent border border-white/20" style={{ background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(20px)' }}>
                       <div className="flex items-center gap-4 mb-6">
-                        <div className="w-12 h-12 bg-gradient-to-br from-[#004F54] to-[#102C33] rounded-2xl flex items-center justify-center shadow-xl glass-card border border-white/20" style={{ background: 'rgba(0, 79, 84, 0.2)', backdropFilter: 'blur(20px)' }}>
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#765A3F] to-[#102C33] rounded-2xl flex items-center justify-center shadow-xl glass-card border border-white/20" style={{ background: 'rgba(118, 90, 63, 0.3)', backdropFilter: 'blur(20px)' }}>
                           <CreditCard className="h-6 w-6 text-white" />
                         </div>
                         <div>
-                          <span className="text-2xl font-black text-[#004F54]">03</span>
+                          <span className="text-2xl font-black text-[#765A3F]">03</span>
                           <h3 className="text-xl font-bold" style={{ color: '#F1EFE8' }}>
                             {language === 'ar' ? 'إنجاز آمن' : 'Secure Completion'}
                           </h3>
@@ -410,8 +410,8 @@ export const Landing = () => {
         </div>
       </section>
 
-      {/* Revolutionary Split Benefits Section */}
-      <section className="py-32 px-6 bg-section-2 relative overflow-hidden">
+      {/* Enhanced Benefits Section */}
+      <section className="py-32 px-6 bg-unified-page relative overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0">
           <div className="absolute top-0 right-0 w-[600px] h-[600px] floating-orb opacity-20"></div>
@@ -538,8 +538,8 @@ export const Landing = () => {
         </div>
       </section>
 
-      {/* Revolutionary Final CTA */}
-      <section className="py-32 px-6 bg-section-3 relative overflow-hidden">
+      {/* Final CTA Section */}
+      <section className="py-32 px-6 bg-unified-page relative overflow-hidden">
         <div className="absolute inset-0 gradient-mesh-bg opacity-10"></div>
         
         <div className="container mx-auto text-center relative z-10">
