@@ -257,9 +257,9 @@ export const Pricing = () => {
   const currentPricingPlans = selectedRole === 'client' ? clientPricingPlans : supplierPricingPlans;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
       {/* Header */}
-      <header className="border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
+      <header className="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-white/10 bg-white/10">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
             <img 
@@ -274,12 +274,12 @@ export const Pricing = () => {
               <LanguageSwitcher />
             </div>
             <Link to="/home" className="hidden md:block">
-              <Button variant="ghost" size="sm" className="hover-scale">
+              <Button variant="ghost" size="lg" className="px-6 bg-white/5 border border-white/20 text-white transition-all duration-300 backdrop-blur-15">
                 {t('language') === 'ar' ? 'تسجيل الدخول' : 'Login'}
               </Button>
             </Link>
             <Link to="/home" className="hidden md:block">
-              <Button size="sm" className="hover-scale bg-gradient-to-r from-primary to-accent">
+              <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
                 {t('language') === 'ar' ? 'ابدأ مجاناً' : 'Start Free'}
               </Button>
             </Link>
@@ -289,21 +289,21 @@ export const Pricing = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="py-24 px-4">
+      <section className="py-24 px-4 mt-20">
         <div className="container mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-lime/10 rounded-full px-6 py-2 mb-6">
-            <Star className="h-4 w-4 text-lime" />
-            <span className="text-sm font-medium text-lime">
+          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/30 backdrop-blur-20 rounded-full px-6 py-2 mb-6">
+            <Star className="h-4 w-4 text-white" />
+            <span className="text-sm font-medium text-white">
               {t('language') === 'ar' ? 'حلول مرنة' : 'Flexible Solutions'}
             </span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            {t('language') === 'ar' ? 'استثمر في نجاح فعالياتك' : 'Invest in Your Events Success'}
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+            {t('language') === 'ar' ? 'استثمر في نجاح أعمالك' : 'Invest in Your Business Success'}
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-12">
+          <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-12">
             {t('language') === 'ar' ? 
-              'باقات مصممة بعناية لتناسب رحلتك في عالم الفعاليات، من البداية المتواضعة إلى القمم العالية' : 
-              'Carefully designed packages to suit your journey in the events world, from humble beginnings to great heights'
+              'باقات مصممة بعناية لتناسب رحلتك في عالم المشتريات، من البداية المتواضعة إلى القمم العالية' : 
+              'Carefully designed packages to suit your journey in the procurement world, from humble beginnings to great heights'
             }
           </p>
           

@@ -84,9 +84,9 @@ export const WhatMakesUsUnique = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
       {/* Header */}
-      <header className="border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
+      <header className="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-white/10 bg-white/10">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo - positioned based on language */}
           <div className={`${isRTL ? 'order-2' : 'order-1'}`}>
@@ -105,12 +105,12 @@ export const WhatMakesUsUnique = () => {
               <LanguageSwitcher />
             </div>
             <Link to="/home" className="hidden md:block">
-              <Button variant="ghost" size="sm" className="hover-scale">
+              <Button variant="ghost" size="lg" className="px-6 bg-white/5 border border-white/20 text-white transition-all duration-300 backdrop-blur-15">
                 {isRTL ? 'تسجيل الدخول' : 'Login'}
               </Button>
             </Link>
             <Link to="/home" className="hidden md:block">
-              <Button size="sm" className="hover-scale bg-gradient-to-r from-primary to-accent">
+              <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
                 {isRTL ? 'ابدأ مجاناً' : 'Start Free'}
               </Button>
             </Link>
@@ -120,22 +120,24 @@ export const WhatMakesUsUnique = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-lime/10 via-primary/5 to-accent/10"></div>
+      <section className="relative py-24 px-4 overflow-hidden mt-20">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, #004F54 2px, transparent 2px)`, backgroundSize: '50px 50px' }}></div>
+        </div>
         <div className="container mx-auto relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-lime/10 rounded-full px-6 py-2 mb-6">
-              <Sparkles className="h-4 w-4 text-lime" />
-              <span className="text-sm font-medium text-lime">
+            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/30 backdrop-blur-20 rounded-full px-6 py-2 mb-6">
+              <Sparkles className="h-4 w-4 text-white" />
+              <span className="text-sm font-medium text-white">
                 {isRTL ? 'مبتكر ومختلف' : 'Innovative & Different'}
               </span>
             </div>
             
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight text-white">
               {isRTL ? 'ما يجعل مورد منصة فريدة ومتميزة' : 'What Makes MWRD Uniquely Powerful'}
             </h1>
             
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8">
+            <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-8">
               {isRTL ? 
                 'ليس مجرد منصة أخرى للمشتريات. مورد حل مبتكر مصمم خصيصاً لتحديات وفرص السوق في منطقة الشرق الأوسط.' :
                 'Not just another procurement platform. MWRD is an innovative solution designed specifically for the challenges and opportunities of the Middle East market.'
@@ -144,14 +146,14 @@ export const WhatMakesUsUnique = () => {
             
             <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
               <Link to="/home">
-                <Button size="lg" className="bg-gradient-to-r from-lime to-primary hover:from-lime/90 hover:to-primary/90 text-white px-8 py-3 hover-scale">
+                <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
                   {isRTL ? 'اكتشف الفرق' : 'Discover the Difference'}
                 </Button>
               </Link>
               <DemoButton 
                 variant="outline" 
                 size="lg" 
-                className="px-8 py-3"
+                className="px-8 py-3 bg-white/5 border border-white/20 text-white backdrop-blur-15"
               />
             </div>
           </div>
@@ -163,10 +165,10 @@ export const WhatMakesUsUnique = () => {
         <div className="container mx-auto">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
                 {isRTL ? 'ميزات فريدة تجعلنا الخيار الأول' : 'Unique Features That Make Us #1'}
               </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              <p className="text-lg text-white/90 max-w-3xl mx-auto">
                 {isRTL ? 
                   'تقنيات متطورة وحلول مبتكرة مصممة خصيصاً لتلبية احتياجات السوق المحلية.' :
                   'Advanced technologies and innovative solutions designed specifically to meet local market needs.'
@@ -176,15 +178,15 @@ export const WhatMakesUsUnique = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {uniqueFeatures.map((feature, index) => (
-                <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-0 bg-card/50 backdrop-blur-sm hover-scale">
+                <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/5 border border-white/20 backdrop-blur-20 hover-scale">
                   <CardContent className="p-6">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-primary/10 to-lime/10 mb-4 group-hover:from-primary/20 group-hover:to-lime/20 transition-colors">
-                      <feature.icon className="h-8 w-8 text-primary" />
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 border border-white/20 backdrop-blur-15 mb-4 group-hover:bg-white/20 transition-colors">
+                      <feature.icon className="h-8 w-8 text-white" />
                     </div>
-                    <h3 className="text-lg font-semibold mb-3">
+                    <h3 className="text-lg font-semibold mb-3 text-white">
                       {isRTL ? feature.titleAr : feature.titleEn}
                     </h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
+                    <p className="text-white/70 text-sm leading-relaxed">
                       {isRTL ? feature.descAr : feature.descEn}
                     </p>
                   </CardContent>
@@ -196,26 +198,26 @@ export const WhatMakesUsUnique = () => {
       </section>
 
       {/* Differentiators Section */}
-      <section className="py-20 px-4 bg-card/30">
+      <section className="py-20 px-4">
         <div className="container mx-auto">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
                 {isRTL ? 'لماذا نتفوق على المنافسين' : 'Why We Outperform Competitors'}
               </h2>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {differentiators.map((diff, index) => (
-                <div key={index} className="flex items-start gap-4 p-6 rounded-xl bg-gradient-to-r from-card to-accent/5 hover:shadow-lg transition-all duration-300">
+                <div key={index} className="flex items-start gap-4 p-6 rounded-xl bg-white/5 border border-white/20 backdrop-blur-20 hover:shadow-lg transition-all duration-300">
                   <div className="flex-shrink-0">
-                    <CheckCircle className="h-6 w-6 text-lime" />
+                    <CheckCircle className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold mb-2">
+                    <h3 className="text-lg font-semibold mb-2 text-white">
                       {isRTL ? diff.titleAr : diff.titleEn}
                     </h3>
-                    <p className="text-muted-foreground leading-relaxed">
+                    <p className="text-white/70 leading-relaxed">
                       {isRTL ? diff.descAr : diff.descEn}
                     </p>
                   </div>

@@ -87,9 +87,9 @@ export const WhyMoveToMWRD = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
       {/* Header */}
-      <header className="border-b bg-card/95 backdrop-blur-sm sticky top-0 z-50">
+      <header className="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-white/10 bg-white/10">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           {/* Logo - positioned based on language */}
           <div className={`${isRTL ? 'order-2' : 'order-1'}`}>
@@ -108,12 +108,12 @@ export const WhyMoveToMWRD = () => {
               <LanguageSwitcher />
             </div>
             <Link to="/home" className="hidden md:block">
-              <Button variant="ghost" size="sm" className="hover-scale">
+              <Button variant="ghost" size="lg" className="px-6 bg-white/5 border border-white/20 text-white transition-all duration-300 backdrop-blur-15">
                 {isRTL ? 'تسجيل الدخول' : 'Login'}
               </Button>
             </Link>
             <Link to="/home" className="hidden md:block">
-              <Button size="sm" className="hover-scale bg-gradient-to-r from-primary to-accent">
+              <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
                 {isRTL ? 'ابدأ مجاناً' : 'Start Free'}
               </Button>
             </Link>
@@ -123,22 +123,24 @@ export const WhyMoveToMWRD = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="relative py-24 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-accent/10 via-primary/5 to-lime/10"></div>
+      <section className="relative py-24 px-4 overflow-hidden mt-20">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, #004F54 2px, transparent 2px)`, backgroundSize: '50px 50px' }}></div>
+        </div>
         <div className="container mx-auto relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 bg-accent/10 rounded-full px-6 py-2 mb-6">
-              <ArrowRight className="h-4 w-4 text-accent" />
-              <span className="text-sm font-medium text-accent">
+            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/30 backdrop-blur-20 rounded-full px-6 py-2 mb-6">
+              <ArrowRight className="h-4 w-4 text-white" />
+              <span className="text-sm font-medium text-white">
                 {isRTL ? 'انتقال سريع وآمن' : 'Quick & Secure Migration'}
               </span>
             </div>
             
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight text-white">
               {isRTL ? 'انتقل إلى إدارة مشتريات أذكى – اختر مورد' : 'Switch to Smarter Procurement – Move to MWRD'}
             </h1>
             
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8">
+            <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-8">
               {isRTL ? 
                 'انتقل من الأدوات اليدوية إلى حل حديث يوفر الوقت ويخفض التكاليف ويؤتمت جميع عمليات المشتريات.' :
                 'Upgrade from manual tools to a modern solution that saves time, cuts costs, and automates your entire purchasing process.'
@@ -147,12 +149,12 @@ export const WhyMoveToMWRD = () => {
             
             <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
               <Link to="/home">
-                <Button size="lg" className="bg-gradient-to-r from-accent to-primary hover:from-accent/90 hover:to-primary/90 text-white px-8 py-3 hover-scale">
+                <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
                   {isRTL ? 'انتقل إلى مورد' : 'Move to MWRD'}
                 </Button>
               </Link>
               <Link to="/pricing">
-                <Button variant="outline" size="lg" className="px-8 py-3 hover-scale">
+                <Button variant="outline" size="lg" className="px-8 py-3 bg-white/5 border border-white/20 text-white backdrop-blur-15">
                   {isRTL ? 'انتقال في أيام وليس أسابيع' : 'Migrate in Days, Not Weeks'}
                 </Button>
               </Link>
