@@ -14,6 +14,7 @@ import { EnterpriseConsultationModal } from "@/components/modals/EnterpriseConsu
 import { dummyApi } from "@/utils/dummyApi";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const ManageSubscription = () => {
   const { user, userProfile, loading } = useAuth();
@@ -736,6 +737,7 @@ export const ManageSubscription = () => {
           </div>
         </main>
       </div>
+      <Footer />
     </div>
   );
 };

@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { dummyApi } from "@/utils/dummyApi";
 import { useState } from "react";
 import { EnhancedAnalyticsDashboard } from "@/components/analytics/EnhancedAnalyticsDashboard";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const Analytics = () => {
   const { userProfile } = useAuth();
@@ -191,6 +192,7 @@ export const Analytics = () => {
           </div>
         </main>
       </div>
+      <Footer />
     </div>
   );
 };

@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { Footer } from '@/components/ui/layout/Footer';
 
 interface Message {
   id: string;
@@ -686,6 +687,7 @@ export default function Messages() {
           </div>
         </main>
       </div>
+      <Footer />
     </div>
   );
 }

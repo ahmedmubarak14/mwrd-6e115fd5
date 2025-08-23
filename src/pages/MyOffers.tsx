@@ -14,6 +14,7 @@ import { useOffers } from "@/hooks/useOffers";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 import { RealTimeChatModal } from "@/components/modals/RealTimeChatModal";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const MyOffers = () => {
   const { userProfile } = useAuth();
@@ -318,6 +319,7 @@ export const MyOffers = () => {
           </div>
         </main>
       </div>
+      <Footer />
     </div>
   );
 };

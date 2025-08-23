@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const Dashboard = () => {
   const { user, userProfile, loading } = useAuth();
@@ -86,6 +87,7 @@ export const Dashboard = () => {
           onSkip={handleOnboardingSkip}
         />
       )}
+      <Footer />
     </div>
   );
 };

@@ -17,6 +17,7 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { RequestOffersModal } from "@/components/modals/RequestOffersModal";
 import { RequestDetailsModal } from "@/components/modals/RequestDetailsModal";
 import { CATEGORIES, getCategoryLabel } from "@/constants/categories";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const Requests = () => {
   const { t, language } = useLanguage();
@@ -352,6 +353,7 @@ export const Requests = () => {
           </div>
         </main>
       </div>
+      <Footer />
     </div>
   );
 };

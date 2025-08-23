@@ -14,6 +14,7 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 import { useToast } from "@/hooks/use-toast";
 import { dummyApi } from "@/utils/dummyApi";
+import { Footer } from "@/components/ui/layout/Footer";
 
 interface Order {
   id: string;
@@ -370,6 +371,7 @@ export const Orders = () => {
           <div />
         </ViewDetailsModal>
       )}
+      <Footer />
     </div>
   );
 };

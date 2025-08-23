@@ -8,6 +8,7 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { ArrowRight, Clock, AlertTriangle, FileText, Database, GraduationCap, PiggyBank, CheckCircle, X, Users, Headphones, Menu } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const WhyMoveToMWRD = () => {
   const { t, language } = useLanguage();
@@ -438,6 +439,7 @@ export const WhyMoveToMWRD = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

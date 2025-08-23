@@ -14,6 +14,7 @@ import { RequestDetailsModal } from "@/components/modals/RequestDetailsModal";
 import { useState, useMemo, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const BrowseRequests = () => {
   const { userProfile } = useAuth();
@@ -349,6 +350,7 @@ export const BrowseRequests = () => {
           </div>
         </main>
       </div>
+      <Footer />
     </div>
   );
 };

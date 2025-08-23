@@ -15,6 +15,7 @@ import { useOffers } from "@/hooks/useOffers";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { CreateOfferModal } from "@/components/modals/CreateOfferModal";
 import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const SupplierDashboard = () => {
   const { userProfile } = useAuth();
@@ -313,6 +314,7 @@ export const SupplierDashboard = () => {
           </div>
         </main>
       </div>
+      <Footer />
     </div>
   );
 };

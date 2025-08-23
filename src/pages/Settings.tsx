@@ -15,6 +15,7 @@ import { User, Bell, Shield, Globe, CreditCard, Key, Lock } from "lucide-react";
 import { useState } from "react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const Settings = () => {
   const { userProfile } = useAuth();
@@ -378,6 +379,7 @@ export const Settings = () => {
           </div>
         </main>
       </div>
+      <Footer />
     </div>
   );
 };

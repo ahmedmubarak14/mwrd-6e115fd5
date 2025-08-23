@@ -6,6 +6,7 @@ import { ShoppingCart, FileCheck, Handshake, Shield, CheckCircle, Clock, Users, 
 import { Link } from "react-router-dom";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
 import { DemoButton } from "@/components/demo/DemoButton";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const WhyStartWithMWRD = () => {
   const { t, language } = useLanguage();
@@ -341,6 +342,7 @@ export const WhyStartWithMWRD = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

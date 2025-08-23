@@ -2,6 +2,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Header } from "@/components/ui/layout/Header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BackToTop } from "@/components/ui/BackToTop";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const TermsAndConditions = () => {
   const { t } = useLanguage();
@@ -142,6 +143,7 @@ export const TermsAndConditions = () => {
         </div>
       </div>
       <BackToTop />
+      <Footer />
     </div>
   );
 };

@@ -16,6 +16,7 @@ import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { useSuppliers } from "@/hooks/useSuppliers";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const Suppliers = () => {
   const { t, language } = useLanguage();
@@ -360,6 +361,7 @@ export const Suppliers = () => {
           </div>
         </main>
       </div>
+      <Footer />
     </div>
   );
 };

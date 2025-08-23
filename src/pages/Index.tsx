@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState } from "react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Footer } from "@/components/ui/layout/Footer";
 
 const Index = () => {
   const { userProfile } = useAuth();
@@ -34,6 +35,7 @@ const Index = () => {
           <ClientDashboard />
         </main>
       </div>
+      <Footer />
     </div>
   );
 };

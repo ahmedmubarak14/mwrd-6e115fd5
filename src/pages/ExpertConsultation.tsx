@@ -15,6 +15,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const ExpertConsultation = () => {
   const navigate = useNavigate();
@@ -372,6 +373,7 @@ export const ExpertConsultation = () => {
           </Button>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

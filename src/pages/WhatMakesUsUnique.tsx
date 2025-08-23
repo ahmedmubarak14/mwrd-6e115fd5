@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
 import { DemoButton } from "@/components/demo/DemoButton";
+import { Footer } from "@/components/ui/layout/Footer";
 
 export const WhatMakesUsUnique = () => {
   const { t, language } = useLanguage();
@@ -367,6 +368,7 @@ export const WhatMakesUsUnique = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };
