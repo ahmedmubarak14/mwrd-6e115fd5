@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalAuth } from "@/contexts/useOptionalAuth";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Brain, Shield, Zap, Users, TrendingUp, Award, CheckCircle, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -9,7 +11,19 @@ import { DemoButton } from "@/components/demo/DemoButton";
 
 export const WhatMakesUsUnique = () => {
   const { t, language } = useLanguage();
+  const authContext = useOptionalAuth();
+  const user = authContext?.user;
+  const userProfile = authContext?.userProfile;
+  const loading = authContext?.loading;
   const isRTL = language === 'ar';
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] flex items-center justify-center">
+        <LoadingSpinner size="lg" text={language === 'ar' ? 'جاري التحميل...' : 'Loading...'} />
+      </div>
+    );
+  }
 
   const uniqueFeatures = [
     {
@@ -85,42 +99,59 @@ export const WhatMakesUsUnique = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C]">
-      {/* Navigation Header */}
-      <header className="border-b border-white/10 bg-white/10 backdrop-blur-xl fixed top-0 left-0 right-0 z-50">
+      {/* Ultra-Modern Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-white/10 bg-white/10">
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-12">
-            <Link to="/" className="flex items-center">
+          <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
+            <Link to={user && userProfile ? "/dashboard" : "/"} className="flex items-center gap-3 group">
               <img 
                 src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
-                alt="MWRD Logo"
-                className="h-14 w-auto"
+                alt="MWRD Logo" 
+                className="h-14 w-auto transition-all duration-500 group-hover:scale-110 drop-shadow-2xl" 
               />
             </Link>
-            
-            <div className="hidden md:flex items-center gap-8">
-              <Link to="/why-start-with-mwrd" className="text-white/80 hover:text-white font-medium transition-colors">
-                {isRTL ? 'لماذا نبدأ معنا' : 'Why Start with Us'}
-              </Link>
-              <Link to="/pricing" className="text-white/80 hover:text-white font-medium transition-colors">
-                {isRTL ? 'الأسعار' : 'Pricing'}
-              </Link>
-              <Link to="/why-move-to-mwrd" className="text-white/80 hover:text-white font-medium transition-colors">
-                {isRTL ? 'الموارد' : 'Resources'}
-              </Link>
-              <Link to="#" className="text-white/80 hover:text-white font-medium transition-colors">
-                {isRTL ? 'اتصل بنا' : 'Contact'}
-              </Link>
-            </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <LanguageSwitcher />
-            <Button variant="ghost" className="text-white hover:bg-white/10">
-              {isRTL ? 'تسجيل الدخول' : 'Sign in'}
-            </Button>
-            <Button className="bg-gradient-to-r from-primary to-accent text-white border-0 px-6">
-              {isRTL ? 'ابدأ الآن' : 'Get Started'}
-            </Button>
+          {/* Desktop Navigation Menu */}
+          <nav className={`hidden lg:flex items-center gap-6 ${language === 'ar' ? 'order-1' : 'order-2'}`}>
+            <Link to="/why-start-with-mwrd" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+              {language === 'ar' ? 'لماذا نبدأ معنا' : 'Why Start with Us'}
+            </Link>
+            <span className="text-white transition-colors text-sm font-bold">
+              {language === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
+            </span>
+            <Link to="/why-move-to-mwrd" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+              {language === 'ar' ? 'لماذا الانتقال إلينا' : 'Why Move to Us'}
+            </Link>
+            <Link to="/pricing" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+              {language === 'ar' ? 'الأسعار' : 'Pricing'}
+            </Link>
+          </nav>
+          
+          <div className={`flex items-center gap-4 ${language === 'ar' ? 'flex-row-reverse order-2' : 'order-3'}`}>
+            <div className="hidden md:block">
+              <LanguageSwitcher />
+            </div>
+            {user && userProfile ? (
+              <Link to="/dashboard" className="hidden md:block">
+                <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
+                  {language === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
+                </Button>
+              </Link>
+            ) : (
+              <>
+                <Link to="/auth" className="hidden md:block">
+                  <Button variant="ghost" size="lg" className="px-6 bg-white/5 border border-white/20 text-white transition-all duration-300 backdrop-blur-15">
+                    {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
+                  </Button>
+                </Link>
+                <Link to="/auth" className="hidden md:block">
+                  <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
+                    {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
+                  </Button>
+                </Link>
+              </>
+            )}
             <MobileNavigation />
           </div>
         </div>
