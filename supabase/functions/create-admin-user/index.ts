@@ -99,8 +99,8 @@ Deno.serve(async (req) => {
 
     console.log('Auth user created:', authUser.user.id);
 
-    // Create or update the user profile directly with proper PostgreSQL types
-    console.log('Creating user profile with data:', {
+    // Create user profile with minimal required data, let schema defaults handle the rest
+    console.log('Creating user profile with minimal data:', {
       user_id: authUser.user.id,
       email: email,
       full_name: full_name,
@@ -114,12 +114,8 @@ Deno.serve(async (req) => {
         email: email,
         full_name: full_name,
         role: role as 'admin' | 'client' | 'vendor',
-        status: 'approved',
-        // Use proper PostgreSQL array literals
-        categories: '{}', // Empty PostgreSQL text array
-        verification_documents: '[]', // Empty JSONB array
-        subscription_plan: 'free', // Use default value from schema
-        subscription_status: 'active'
+        status: 'approved'
+        // Let schema defaults handle: categories, verification_documents, subscription_plan, subscription_status
       });
 
     if (profileError) {
