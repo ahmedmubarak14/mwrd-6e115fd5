@@ -109,20 +109,20 @@ All colors MUST be HSL.
     --shadow-accent: 0 15px 35px -10px rgba(251, 167, 101, 0.3);
     --shadow-bronze: 0 12px 25px -8px rgba(118, 90, 63, 0.25);
     
-    /* Legacy gradients for compatibility */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary-600)), hsl(var(--primary-400)));
-    --gradient-accent: linear-gradient(135deg, hsl(var(--accent-600)), hsl(var(--accent-400)));
-    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary-600) / 0.2);
-    --shadow-glow: 0 0 40px hsl(var(--primary-400) / 0.3);
+    /* Legacy gradients for compatibility - Fixed HSL usage */
+    --gradient-primary: linear-gradient(135deg, hsl(324 96% 20%), hsl(324 70% 35%));
+    --gradient-accent: linear-gradient(135deg, hsl(195 100% 17%), hsl(195 60% 35%));
+    --shadow-elegant: 0 10px 30px -10px hsl(324 96% 20% / 0.2);
+    --shadow-glow: 0 0 40px hsl(324 70% 35% / 0.3);
 
-    /* Sidebar colors */
-    --sidebar-background: var(--background);
-    --sidebar-foreground: var(--neutral-700);
+    /* Sidebar colors matching landing page gradient theme */
+    --sidebar-background: var(--gradient-unified-page);
+    --sidebar-foreground: 0 0% 100%;  /* Pure white text */
     --sidebar-primary: var(--primary-600);
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: var(--neutral-100);
-    --sidebar-accent-foreground: var(--neutral-900);
-    --sidebar-border: var(--neutral-200);
+    --sidebar-accent: 195 100% 16% / 0.2;  /* Accent with transparency */
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 100% / 0.1;  /* White with transparency */
     --sidebar-ring: var(--primary-600);
   }
 
@@ -149,20 +149,20 @@ All colors MUST be HSL.
     --input: var(--neutral-700);
     --ring: var(--primary-600);
 
-    /* Dark mode design tokens */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary-500)), hsl(var(--primary-300)));
-    --gradient-accent: linear-gradient(135deg, hsl(var(--accent-500)), hsl(var(--accent-300)));
-    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary-500) / 0.4);
-    --shadow-glow: 0 0 40px hsl(var(--primary-300) / 0.5);
+    /* Dark mode design tokens - Fixed HSL usage */
+    --gradient-primary: linear-gradient(135deg, hsl(324 80% 25%), hsl(324 60% 50%));
+    --gradient-accent: linear-gradient(135deg, hsl(195 70% 25%), hsl(195 50% 50%));
+    --shadow-elegant: 0 10px 30px -10px hsl(324 80% 25% / 0.4);
+    --shadow-glow: 0 0 40px hsl(324 60% 50% / 0.5);
 
-    /* Dark sidebar colors */
-    --sidebar-background: var(--neutral-900);
-    --sidebar-foreground: var(--neutral-300);
+    /* Dark sidebar colors matching landing page theme */
+    --sidebar-background: var(--gradient-unified-page);
+    --sidebar-foreground: 0 0% 90%;  /* Light text */
     --sidebar-primary: var(--primary-400);
     --sidebar-primary-foreground: var(--neutral-900);
-    --sidebar-accent: var(--neutral-800);
-    --sidebar-accent-foreground: var(--neutral-50);
-    --sidebar-border: var(--neutral-700);
+    --sidebar-accent: 195 100% 16% / 0.3;  /* Accent with more transparency */
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 100% / 0.1;  /* White with transparency */
     --sidebar-ring: var(--primary-400);
   }
 }
