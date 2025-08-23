@@ -29,51 +29,185 @@ export const useMatchingSystem = () => {
     const reasons: string[] = [];
 
     // Base score for all requests
-    score += 10;
+    score += 5;
 
-    // Category matching (if supplier has categories in future)
-    // For now, give bonus for popular categories
-    const popularCategories = ['Audio, Visual & Lighting', 'Catering & Food Services', 'Photography & Videography'];
-    if (popularCategories.includes(request.category)) {
-      score += 20;
-      reasons.push(`Popular category: ${request.category}`);
-    }
-
-    // Urgency bonus
-    if (request.urgency === 'urgent') {
+    // Enhanced Category matching with subcategories
+    const categoryMatches = supplierProfile?.categories?.includes(request.category) || false;
+    if (categoryMatches) {
       score += 30;
-      reasons.push('Urgent request - higher priority');
-    } else if (request.urgency === 'high') {
+      reasons.push(`Expertise in ${request.category}`);
+    } else {
+      // Partial matching for related categories
+      const categoryMapping = {
+        'avl': ['audio', 'visual', 'lighting', 'sound', 'technical'],
+        'catering': ['food', 'beverage', 'hospitality', 'service'],
+        'decoration': ['design', 'decor', 'floral', 'theme', 'creative'],
+        'furniture': ['rental', 'equipment', 'seating', 'staging'],
+        'security': ['safety', 'protection', 'surveillance', 'guard'],
+        'transportation': ['logistics', 'delivery', 'transport', 'vehicle']
+      };
+      
+      const requestKeywords = categoryMapping[request.category] || [];
+      const profileKeywords = (supplierProfile?.bio || '').toLowerCase();
+      const matchingKeywords = requestKeywords.filter(keyword => 
+        profileKeywords.includes(keyword)
+      );
+      
+      if (matchingKeywords.length > 0) {
+        score += 15;
+        reasons.push(`Related experience: ${matchingKeywords.join(', ')}`);
+      }
+    }
+
+    // Supplier rating and experience
+    if (supplierProfile?.rating) {
+      const ratingScore = (supplierProfile.rating / 5) * 20;
+      score += ratingScore;
+      if (supplierProfile.rating >= 4.5) {
+        reasons.push('Highly rated supplier (4.5+ stars)');
+      } else if (supplierProfile.rating >= 4.0) {
+        reasons.push('Well-rated supplier (4.0+ stars)');
+      }
+    }
+
+    // Completed projects experience
+    const completedProjects = supplierProfile?.completedProjects || 0;
+    if (completedProjects >= 50) {
       score += 20;
-      reasons.push('High priority request');
+      reasons.push('Highly experienced (50+ projects)');
+    } else if (completedProjects >= 20) {
+      score += 15;
+      reasons.push('Experienced supplier (20+ projects)');
+    } else if (completedProjects >= 10) {
+      score += 10;
+      reasons.push('Established supplier (10+ projects)');
     }
 
-    // Budget range bonus
-    if (request.budget_min && request.budget_min >= 10000) {
+    // Response time factor
+    const responseTime = supplierProfile?.responseTime || '24h';
+    const hours = parseFloat(responseTime.replace('h', ''));
+    if (hours <= 2) {
+      score += 15;
+      reasons.push('Very fast response time (≤2h)');
+    } else if (hours <= 6) {
+      score += 10;
+      reasons.push('Fast response time (≤6h)');
+    } else if (hours <= 12) {
+      score += 5;
+      reasons.push('Good response time (≤12h)');
+    }
+
+    // Urgency bonus with better logic
+    if (request.urgency === 'urgent') {
       score += 25;
-      reasons.push('High budget request');
-    } else if (request.budget_min && request.budget_min >= 5000) {
+      reasons.push('Urgent request - immediate attention needed');
+      
+      // Extra bonus for suppliers with fast response
+      if (hours <= 2) {
+        score += 10;
+        reasons.push('Perfect for urgent requests');
+      }
+    } else if (request.urgency === 'high') {
       score += 15;
-      reasons.push('Medium budget request');
+      reasons.push('High priority request');
+    } else if (request.urgency === 'medium') {
+      score += 10;
+      reasons.push('Medium priority - good timing');
     }
 
-    // Recent request bonus
-    const daysSinceCreated = Math.floor((Date.now() - new Date(request.created_at).getTime()) / (1000 * 60 * 60 * 24));
-    if (daysSinceCreated <= 1) {
+    // Enhanced Budget analysis
+    const budgetMin = request.budget_min || 0;
+    const budgetMax = request.budget_max || budgetMin * 1.5;
+    const avgBudget = (budgetMin + budgetMax) / 2;
+    
+    // Supplier's typical project range (mock for now)
+    const supplierMinBudget = supplierProfile?.minBudget || 1000;
+    const supplierMaxBudget = supplierProfile?.maxBudget || 100000;
+    
+    if (avgBudget >= supplierMinBudget && avgBudget <= supplierMaxBudget) {
+      score += 20;
+      reasons.push('Budget matches supplier range');
+    } else if (avgBudget >= 20000) {
       score += 15;
-      reasons.push('Recently posted');
+      reasons.push('High value project (20k+ SAR)');
+    } else if (avgBudget >= 10000) {
+      score += 10;
+      reasons.push('Medium value project (10k+ SAR)');
+    } else if (avgBudget >= 5000) {
+      score += 5;
+      reasons.push('Standard project budget');
+    }
+
+    // Recency bonus with decay
+    const daysSinceCreated = Math.floor((Date.now() - new Date(request.created_at).getTime()) / (1000 * 60 * 60 * 24));
+    if (daysSinceCreated <= 0.5) { // Less than 12 hours
+      score += 20;
+      reasons.push('Just posted - be the first to respond!');
+    } else if (daysSinceCreated <= 1) {
+      score += 15;
+      reasons.push('Recently posted (today)');
     } else if (daysSinceCreated <= 3) {
       score += 10;
-      reasons.push('Posted within 3 days');
+      reasons.push('Fresh request (3 days old)');
+    } else if (daysSinceCreated <= 7) {
+      score += 5;
+      reasons.push('Still relevant (1 week old)');
     }
 
-    // Location bonus (simplified - same city gets bonus)
-    if (request.location && supplierProfile?.company_name) {
-      if (request.location.toLowerCase().includes('riyadh') && 
-          supplierProfile.company_name.toLowerCase().includes('riyadh')) {
-        score += 15;
-        reasons.push('Same city location');
+    // Geographic proximity
+    if (request.location && supplierProfile?.address) {
+      const requestLocation = request.location.toLowerCase();
+      const supplierLocation = (supplierProfile.address || '').toLowerCase();
+      
+      // Same city bonus
+      const cities = ['riyadh', 'jeddah', 'dammam', 'mecca', 'medina', 'khobar'];
+      const requestCity = cities.find(city => requestLocation.includes(city));
+      const supplierCity = cities.find(city => supplierLocation.includes(city));
+      
+      if (requestCity && supplierCity && requestCity === supplierCity) {
+        score += 20;
+        reasons.push(`Local supplier in ${requestCity}`);
+      } else if (requestCity && supplierCity) {
+        // Different cities but both major
+        score += 5;
+        reasons.push('Regional coverage available');
       }
+    }
+
+    // Verification and certification bonus
+    if (supplierProfile?.verified) {
+      score += 10;
+      reasons.push('Verified supplier');
+    }
+
+    if (supplierProfile?.certifications?.length > 0) {
+      score += 5;
+      reasons.push('Certified professional');
+    }
+
+    // Portfolio quality (mock scoring)
+    const portfolioItems = supplierProfile?.portfolioItems?.length || 0;
+    if (portfolioItems >= 10) {
+      score += 10;
+      reasons.push('Extensive portfolio (10+ projects)');
+    } else if (portfolioItems >= 5) {
+      score += 5;
+      reasons.push('Good portfolio showcase');
+    }
+
+    // Seasonal and trending factors
+    const currentMonth = new Date().getMonth();
+    const seasonalCategories = {
+      wedding: [4, 5, 9, 10], // May, June, October, November
+      corporate: [0, 1, 8, 9], // January, February, September, October
+      outdoor: [2, 3, 4, 10, 11] // March, April, May, November, December
+    };
+    
+    // Add seasonal bonus for relevant categories
+    if (request.category.toLowerCase().includes('decoration') && 
+        seasonalCategories.wedding.includes(currentMonth)) {
+      score += 5;
+      reasons.push('Peak wedding season');
     }
 
     return { score: Math.min(score, 100), reasons };
