@@ -12,18 +12,25 @@ import {
 } from "lucide-react";
 
 interface MobileBottomTabsProps {
-  userRole: 'client' | 'vendor' | 'admin';
+  userRole?: 'client' | 'vendor' | 'admin';
 }
 
-export const MobileBottomTabs = ({ userRole }: MobileBottomTabsProps) => {
+interface Tab {
+  icon: typeof Home;
+  label: string;
+  path: string;
+  count?: number;
+}
+
+export const MobileBottomTabs = ({ userRole = 'client' }: MobileBottomTabsProps) => {
   const location = useLocation();
   
   // Mock unread counts - replace with real data
   const unreadMessages = 0;
   const unreadNotifications = 0;
 
-  const getTabsForRole = () => {
-    const baseTabs = [
+  const getTabsForRole = (): Tab[] => {
+    const baseTabs: Tab[] = [
       { icon: Home, label: 'Home', path: '/' },
       { icon: Search, label: 'Browse', path: '/browse-requests' },
     ];

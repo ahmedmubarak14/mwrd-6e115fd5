@@ -19,6 +19,7 @@ import {
   ShoppingCart,
   HelpCircle,
   MessageCircle,
+  MessageSquare,
   Lock
 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -40,6 +41,7 @@ interface SidebarProps {
 export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
   const { t, language, setLanguage } = useLanguage();
   const location = useLocation();
+  const collapsed = false; // For now, sidebar is always expanded
 
   const clientMenu = [
     { icon: Home, label: t('nav.dashboard'), href: '/dashboard' },
@@ -142,10 +144,16 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
         {getMenuItems().map((item, index) => {
           if (item.isMessagesDropdown) {
             return (
-              <ConversationsDropdown
-                key={index}
-                isActive={isActive(item.href)}
-              />
+              <ConversationsDropdown key={index}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className={`w-full justify-start gap-3 ${isActive(item.href) ? "bg-primary text-primary-foreground" : ""}`}
+                >
+                  <MessageSquare className="h-4 w-4" />
+                  {!collapsed && <span>Messages</span>}
+                </Button>
+              </ConversationsDropdown>
             );
           }
           
