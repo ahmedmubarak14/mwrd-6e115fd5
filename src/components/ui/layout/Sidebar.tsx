@@ -45,6 +45,7 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
 
   const clientMenu = [
     { icon: Home, label: t('nav.dashboard'), href: '/dashboard' },
+    { icon: FileText, label: 'Projects', href: '/projects' },
     { icon: FileText, label: t('nav.requests'), href: '/requests' },
     { icon: Users, label: t('nav.suppliers'), href: '/suppliers' },
     { icon: MessageCircle, label: t('nav.messages'), href: '/messages', isMessagesDropdown: true },

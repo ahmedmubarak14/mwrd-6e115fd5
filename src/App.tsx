@@ -7,6 +7,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { RouteAwareThemeProvider } from "@/contexts/RouteAwareThemeContext";
 import { Landing } from "./pages/Landing";
+import { Projects } from "./pages/Projects";
 
 import { Dashboard } from "./pages/Dashboard";
 import { WhyStartWithMWRD } from "./pages/WhyStartWithMWRD";
@@ -72,6 +73,7 @@ const App = () => (
           <Route path="/why-start-with-mwrd" element={<WhyStartWithMWRD />} />
           <Route path="/what-makes-us-unique" element={<WhatMakesUsUnique />} />
           <Route path="/why-move-to-mwrd" element={<WhyMoveToMWRD />} />
+              <Route path="/projects" element={<ProtectedRoute><Projects /></ProtectedRoute>} />
               <Route path="/requests" element={<ProtectedRoute><Requests /></ProtectedRoute>} />
               <Route path="/suppliers" element={<Suppliers />} />
               <Route path="/pricing" element={<Pricing />} />

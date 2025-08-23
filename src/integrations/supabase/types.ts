@@ -91,6 +91,68 @@ export type Database = {
           },
         ]
       }
+      boq_items: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          id: string
+          item_code: string | null
+          notes: string | null
+          project_id: string
+          quantity: number
+          specifications: Json | null
+          status: string | null
+          total_price: number | null
+          unit: string
+          unit_price: number | null
+          updated_at: string
+          vendor_id: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description: string
+          id?: string
+          item_code?: string | null
+          notes?: string | null
+          project_id: string
+          quantity: number
+          specifications?: Json | null
+          status?: string | null
+          total_price?: number | null
+          unit: string
+          unit_price?: number | null
+          updated_at?: string
+          vendor_id?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          item_code?: string | null
+          notes?: string | null
+          project_id?: string
+          quantity?: number
+          specifications?: Json | null
+          status?: string | null
+          total_price?: number | null
+          unit?: string
+          unit_price?: number | null
+          updated_at?: string
+          vendor_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_boq_items_project"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       conversations: {
         Row: {
           client_id: string
@@ -485,6 +547,63 @@ export type Database = {
           },
         ]
       }
+      projects: {
+        Row: {
+          budget_total: number | null
+          category: string | null
+          client_id: string
+          created_at: string
+          currency: string | null
+          description: string | null
+          end_date: string | null
+          id: string
+          location: string | null
+          metadata: Json | null
+          priority: string | null
+          start_date: string | null
+          status: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          budget_total?: number | null
+          category?: string | null
+          client_id: string
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          location?: string | null
+          metadata?: Json | null
+          priority?: string | null
+          start_date?: string | null
+          status?: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          budget_total?: number | null
+          category?: string | null
+          client_id?: string
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          location?: string | null
+          metadata?: Json | null
+          priority?: string | null
+          start_date?: string | null
+          status?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       requests: {
         Row: {
           admin_approval_status: string | null
@@ -498,6 +617,7 @@ export type Database = {
           description: string
           id: string
           location: string | null
+          project_id: string | null
           requirements: Json | null
           status: Database["public"]["Enums"]["request_status"]
           title: string
@@ -517,6 +637,7 @@ export type Database = {
           description: string
           id?: string
           location?: string | null
+          project_id?: string | null
           requirements?: Json | null
           status?: Database["public"]["Enums"]["request_status"]
           title: string
@@ -536,6 +657,7 @@ export type Database = {
           description?: string
           id?: string
           location?: string | null
+          project_id?: string | null
           requirements?: Json | null
           status?: Database["public"]["Enums"]["request_status"]
           title?: string
@@ -550,6 +672,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "user_profiles"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
           },
         ]
       }
