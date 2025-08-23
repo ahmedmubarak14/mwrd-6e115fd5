@@ -84,47 +84,47 @@ export const EnhancedAnalyticsDashboard = () => {
   const chartData = [
     {
       name: isRTL ? 'الطلبات' : 'Requests',
-      value: data.totalRequests || 0,
-      growth: data.growth?.requests || 0
+      value: data?.totalRequests || 0,
+      growth: data?.growth?.requests || 0
     },
     {
       name: isRTL ? 'العروض' : 'Offers',
-      value: data.totalOffers || 0,
-      growth: data.growth?.offers || 0
+      value: data?.totalOffers || 0,
+      growth: data?.growth?.offers || 0
     },
     {
       name: isRTL ? 'المقبولة' : 'Accepted',
-      value: data.acceptedOffers || 0,
+      value: data?.acceptedOffers || 0,
       growth: 0
     },
     {
       name: isRTL ? 'المكتملة' : 'Completed',
-      value: data.completedRequests || 0,
+      value: data?.completedRequests || 0,
       growth: 0
     }
   ];
 
   const pieData = [
-    { name: isRTL ? 'مقبولة' : 'Accepted', value: data.acceptedOffers || 0 },
-    { name: isRTL ? 'معلقة' : 'Pending', value: (data.totalOffers || 0) - (data.acceptedOffers || 0) }
+    { name: isRTL ? 'مقبولة' : 'Accepted', value: data?.acceptedOffers || 0 },
+    { name: isRTL ? 'معلقة' : 'Pending', value: (data?.totalOffers || 0) - (data?.acceptedOffers || 0) }
   ];
 
   const performanceMetrics = [
     {
       title: isRTL ? 'معدل النجاح' : 'Success Rate',
-      value: Math.round(data.successRate || 0),
+      value: Math.round(data?.successRate || 0),
       icon: TrendingUp,
       color: 'text-primary'
     },
     {
       title: isRTL ? 'رضا العملاء' : 'Client Satisfaction',
-      value: data.clientSatisfaction || 0,
+      value: data?.clientSatisfaction || 0,
       icon: Users,
       color: 'text-lime'
     },
     {
       title: isRTL ? 'وقت الاستجابة' : 'Response Time',
-      value: data.responseTime || 0,
+      value: data?.responseTime || 0,
       icon: Activity,
       color: 'text-accent'
     }
@@ -133,53 +133,53 @@ export const EnhancedAnalyticsDashboard = () => {
   const stats = userProfile?.role === 'supplier' ? [
     {
       title: isRTL ? 'إجمالي العروض' : 'Total Offers',
-      value: data.totalOffers?.toString() || '0',
-      description: `${data.growth?.offers ? (data.growth.offers > 0 ? '+' : '') + data.growth.offers.toFixed(1) + '%' : '0%'} ${isRTL ? 'من الفترة السابقة' : 'from last period'}`,
+      value: data?.totalOffers?.toString() || '0',
+      description: `${data?.growth?.offers ? (data.growth.offers > 0 ? '+' : '') + data.growth.offers.toFixed(1) + '%' : '0%'} ${isRTL ? 'من الفترة السابقة' : 'from last period'}`,
       icon: Package,
       color: 'text-primary',
-      growth: data.growth?.offers || 0
+      growth: data?.growth?.offers || 0
     },
     {
       title: isRTL ? 'العروض المقبولة' : 'Accepted Offers',
-      value: data.acceptedOffers?.toString() || '0',
-      description: `${Math.round(data.successRate || 0)}% ${isRTL ? 'معدل نجاح' : 'success rate'}`,
+      value: data?.acceptedOffers?.toString() || '0',
+      description: `${Math.round(data?.successRate || 0)}% ${isRTL ? 'معدل نجاح' : 'success rate'}`,
       icon: TrendingUp,
       color: 'text-lime',
       growth: 0
     },
     {
       title: isRTL ? 'إجمالي الإيرادات' : 'Total Revenue',
-      value: data.totalRevenue?.toLocaleString() || '0',
-      description: `${data.growth?.revenue ? (data.growth.revenue > 0 ? '+' : '') + data.growth.revenue.toFixed(1) + '%' : '0%'} ${isRTL ? 'من الفترة السابقة' : 'from last period'}`,
+      value: data?.totalRevenue?.toLocaleString() || '0',
+      description: `${data?.growth?.revenue ? (data.growth.revenue > 0 ? '+' : '') + data.growth.revenue.toFixed(1) + '%' : '0%'} ${isRTL ? 'من الفترة السابقة' : 'from last period'}`,
       icon: Banknote,
       color: 'text-accent',
-      growth: data.growth?.revenue || 0,
+      growth: data?.growth?.revenue || 0,
       currency: true
     }
   ] : [
     {
       title: isRTL ? 'إجمالي الطلبات' : 'Total Requests',
-      value: data.totalRequests?.toString() || '0',
-      description: `${data.growth?.requests ? (data.growth.requests > 0 ? '+' : '') + data.growth.requests.toFixed(1) + '%' : '0%'} ${isRTL ? 'من الفترة السابقة' : 'from last period'}`,
+      value: data?.totalRequests?.toString() || '0',
+      description: `${data?.growth?.requests ? (data.growth.requests > 0 ? '+' : '') + data.growth.requests.toFixed(1) + '%' : '0%'} ${isRTL ? 'من الفترة السابقة' : 'from last period'}`,
       icon: FileText,
       color: 'text-primary',
-      growth: data.growth?.requests || 0
+      growth: data?.growth?.requests || 0
     },
     {
       title: isRTL ? 'الطلبات المكتملة' : 'Completed Requests',
-      value: data.completedRequests?.toString() || '0',
-      description: `${data.totalRequests ? Math.round((data.completedRequests || 0) / data.totalRequests * 100) : 0}% ${isRTL ? 'معدل الإنجاز' : 'completion rate'}`,
+      value: data?.completedRequests?.toString() || '0',
+      description: `${data?.totalRequests ? Math.round((data.completedRequests || 0) / data.totalRequests * 100) : 0}% ${isRTL ? 'معدل الإنجاز' : 'completion rate'}`,
       icon: TrendingUp,
       color: 'text-lime',
       growth: 0
     },
     {
       title: isRTL ? 'العروض المستلمة' : 'Offers Received',
-      value: data.totalOffers?.toString() || '0',
-      description: `${data.totalRequests ? Math.round((data.totalOffers || 0) / data.totalRequests * 100) / 100 : 0} ${isRTL ? 'عروض لكل طلب' : 'offers per request'}`,
+      value: data?.totalOffers?.toString() || '0',
+      description: `${data?.totalRequests ? Math.round((data.totalOffers || 0) / data.totalRequests * 100) / 100 : 0} ${isRTL ? 'عروض لكل طلب' : 'offers per request'}`,
       icon: Package,
       color: 'text-accent',
-      growth: data.growth?.offers || 0
+      growth: data?.growth?.offers || 0
     }
   ];
 
