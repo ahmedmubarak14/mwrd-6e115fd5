@@ -106,40 +106,40 @@ export const OffersManagement = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Offers Management</h1>
-        <p className="text-muted-foreground">Monitor and manage supplier offers</p>
+    <div className={`space-y-6 ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className={isRTL ? 'text-right' : ''}>
+        <h1 className="text-3xl font-bold">{t('admin.offersManagement')}</h1>
+        <p className="text-muted-foreground">{t('admin.offersManagementDesc')}</p>
       </div>
 
       {/* Search and Filters */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <Filter className="h-5 w-5" />
-            Search & Filter
+            {t('admin.searchFilter')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground`} />
               <Input
-                placeholder="Search by title, supplier, request..."
-                className="pl-10"
+                placeholder={t('admin.searchByTitle')}
+                className={`${isRTL ? 'pr-10' : 'pl-10'}`}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-full sm:w-48">
-                <SelectValue placeholder="Filter by status" />
+                <SelectValue placeholder={t('common.filterByStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
+                <SelectItem value="all">{t('admin.allStatuses')}</SelectItem>
+                <SelectItem value="pending">{t('common.pending')}</SelectItem>
+                <SelectItem value="approved">{t('approval.approved')}</SelectItem>
+                <SelectItem value="rejected">{t('approval.rejected')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -152,9 +152,9 @@ export const OffersManagement = () => {
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-8">
               <Package className="h-12 w-12 text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No offers found</h3>
+              <h3 className="text-lg font-semibold mb-2">{t('admin.noOffersFound')}</h3>
               <p className="text-muted-foreground text-center">
-                Try adjusting your search terms or filters
+                {t('admin.noOffersDesc')}
               </p>
             </CardContent>
           </Card>
@@ -178,48 +178,48 @@ export const OffersManagement = () => {
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2">
+                    <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <Users className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">Supplier:</span>
+                      <span className="text-sm text-muted-foreground">{t('admin.supplier')}:</span>
                     </div>
-                    <p className="font-medium">
+                    <p className={`font-medium ${isRTL ? 'text-right' : ''}`}>
                       {offer.user_profiles?.full_name || offer.user_profiles?.email}
                     </p>
                     {offer.user_profiles?.company_name && (
-                      <p className="text-muted-foreground text-xs">
+                      <p className={`text-muted-foreground text-xs ${isRTL ? 'text-right' : ''}`}>
                         {offer.user_profiles.company_name}
                       </p>
                     )}
                   </div>
                   
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2">
+                    <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <Package className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">Request:</span>
+                      <span className="text-sm text-muted-foreground">{t('admin.request')}:</span>
                     </div>
-                    <p className="font-medium">{offer.requests?.title}</p>
-                    <p className="text-muted-foreground text-xs">{offer.requests?.category}</p>
+                    <p className={`font-medium ${isRTL ? 'text-right' : ''}`}>{offer.requests?.title}</p>
+                    <p className={`text-muted-foreground text-xs ${isRTL ? 'text-right' : ''}`}>{offer.requests?.category}</p>
                   </div>
                   
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2">
+                    <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <DollarSign className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">Price:</span>
+                      <span className="text-sm text-muted-foreground">{t('admin.price')}:</span>
                     </div>
-                    <p className="font-medium">
+                    <p className={`font-medium ${isRTL ? 'text-right' : ''}`}>
                       {offer.price.toLocaleString()} {offer.currency}
                     </p>
-                    <div className="flex items-center gap-2">
+                    <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                       <Clock className="h-4 w-4 text-muted-foreground" />
                       <span className="text-xs text-muted-foreground">
-                        {offer.delivery_time_days} days delivery
+                        {offer.delivery_time_days} {t('admin.daysDelivery')}
                       </span>
                     </div>
                   </div>
                 </div>
                 
-                <div className="text-xs text-muted-foreground mt-2">
-                  Created: {new Date(offer.created_at).toLocaleDateString()}
+                <div className={`text-xs text-muted-foreground mt-2 ${isRTL ? 'text-right' : ''}`}>
+                  {t('admin.created')}: {new Date(offer.created_at).toLocaleDateString()}
                 </div>
               </CardHeader>
             </Card>

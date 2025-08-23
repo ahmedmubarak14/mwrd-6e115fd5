@@ -47,11 +47,15 @@ export const AdminLayout = () => {
 
   return (
     <SidebarProvider defaultOpen={sidebarOpen} onOpenChange={setSidebarOpen}>
-      <div className="min-h-screen flex w-full" dir={localStorage.getItem('language') === 'ar' ? 'rtl' : 'ltr'} style={{ background: 'var(--background)' }}>
+      <div 
+        className="min-h-screen flex w-full" 
+        dir={localStorage.getItem('language') === 'ar' ? 'rtl' : 'ltr'} 
+        style={{ background: 'var(--gradient-subtle)' }}
+      >
         <AdminSidebar collapsed={false} />
         <div className="flex-1 flex flex-col min-w-0">
           <AdminHeader />
-          <main className="flex-1 p-6 overflow-auto bg-background">
+          <main className="flex-1 p-6 overflow-auto bg-gradient-subtle">
             <Outlet />
           </main>
         </div>

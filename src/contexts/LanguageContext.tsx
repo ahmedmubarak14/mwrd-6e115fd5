@@ -704,6 +704,53 @@ const translations = {
     'admin.menu.themeDesign': 'التصميم والمظهر',
     'admin.menu.database': 'قاعدة البيانات',
 
+    // Additional Admin translations (removing duplicates)
+    'admin.userManagementDesc': 'إدارة حسابات المستخدمين والأدوار والصلاحيات في المنصة',
+    'admin.addUser': 'إضافة مستخدم',
+    'admin.userList': 'قائمة المستخدمين',
+    'admin.searchUsersDesc': 'البحث وتصفية المستخدمين حسب الدور والمعايير الأخرى',
+    'admin.noName': 'لا يوجد اسم',
+    'admin.noCompany': 'لا توجد شركة',
+    'admin.joined': 'انضم في',
+    'admin.fullName': 'الاسم الكامل',
+    'admin.securePassword': 'كلمة مرور آمنة',
+    'admin.johnDoe': 'أحمد محمد',
+    'admin.companyInc': 'شركة الأعمال المحدودة',
+    'admin.selectRole': 'اختر الدور',
+    'admin.editUser': 'تعديل المستخدم',
+    'admin.viewUser': 'عرض المستخدم',
+    'admin.deleteConfirm': 'هل أنت متأكد من حذف هذا المستخدم؟',
+    'admin.deleteWarning': 'لا يمكن التراجع عن هذا الإجراء.',
+    'admin.resetPasswordConfirm': 'هل أنت متأكد من إعادة تعيين كلمة المرور؟',
+    'admin.resetPasswordWarning': 'سيتم إرسال كلمة مرور جديدة إلى البريد الإلكتروني.',
+    
+    // Offers Management
+    'admin.offersManagementDesc': 'مراقبة وإدارة عروض الموردين',
+    'admin.searchFilter': 'البحث والتصفية',
+    'admin.searchByTitle': 'البحث بالعنوان، المورد، الطلب...',
+    'admin.noOffersFound': 'لم يتم العثور على عروض',
+    'admin.noOffersDesc': 'حاول تعديل كلمات البحث أو المرشحات',
+    'admin.deliveryTime': 'مدة التسليم',
+    'admin.daysDelivery': 'أيام تسليم',
+    'admin.created': 'تم الإنشاء',
+    
+    // Financial Transactions
+    'admin.financialTransactionsDescription': 'عرض وإدارة جميع المعاملات المالية في المنصة',
+    'admin.noTransactionsFound': 'لم يتم العثور على معاملات',
+    
+    // Request Approval
+    'admin.requestsApprovalDesc': 'مراجعة وإدارة طلبات الخدمة المعلقة',
+    'admin.searchRequests': 'البحث في الطلبات...',
+    'admin.noRequestsFound': 'لم يتم العثور على طلبات',
+    'admin.noRequestsDesc': 'حاول تعديل كلمات البحث أو المرشحات',
+    
+    // Common Admin terms
+    'common.all': 'الكل',
+    'common.succeeded': 'نجح',
+    'common.failed': 'فشل',
+    'common.filterByStatus': 'تصفية حسب الحالة',
+    'common.loading': 'جاري التحميل...',
+
     // Supplier Dashboard
     'supplier.welcome': 'مرحباً بك في لوحة مقدم الخدمة',
     'supplier.urgent': 'عاجل',

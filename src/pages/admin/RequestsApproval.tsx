@@ -125,10 +125,10 @@ export const RequestsApproval = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Requests Approval</h1>
-        <p className="text-muted-foreground">Review and manage service request approvals</p>
+    <div className={`space-y-6 ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className={isRTL ? 'text-right' : ''}>
+        <h1 className="text-3xl font-bold">{t('admin.requestsApproval')}</h1>
+        <p className="text-muted-foreground">{t('admin.requestsApprovalDesc')}</p>
       </div>
 
       {/* Search and Filters */}

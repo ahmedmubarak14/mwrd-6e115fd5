@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { 
   Users, 
   UserPlus, 
@@ -68,6 +69,8 @@ export const AdminUsers = () => {
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
+  const { t, language } = useLanguage();
+  const isRTL = language === 'ar';
 
   const [newUser, setNewUser] = useState({
     email: "",
@@ -254,37 +257,37 @@ export const AdminUsers = () => {
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6 lg:space-y-8">
+    <div className={`space-y-4 sm:space-y-6 lg:space-y-8 ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Enhanced Welcome Header */}
       <div className="relative overflow-hidden bg-gradient-to-r from-primary via-accent to-lime text-white rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-6 lg:p-8">
         <div className="absolute inset-0">
-          <div className="absolute top-1/4 right-1/4 w-20 h-20 sm:w-32 sm:h-32 lg:w-64 lg:h-64 bg-white/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 left-1/4 w-24 h-24 sm:w-40 sm:h-40 lg:w-80 lg:h-80 bg-white/5 rounded-full blur-3xl"></div>
+          <div className={`absolute top-1/4 ${isRTL ? 'left-1/4' : 'right-1/4'} w-20 h-20 sm:w-32 sm:h-32 lg:w-64 lg:h-64 bg-white/10 rounded-full blur-3xl`}></div>
+          <div className={`absolute bottom-1/4 ${isRTL ? 'right-1/4' : 'left-1/4'} w-24 h-24 sm:w-40 sm:h-40 lg:w-80 lg:h-80 bg-white/5 rounded-full blur-3xl`}></div>
         </div>
-        <div className="relative z-10 flex items-center justify-between">
-          <div>
-            <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3">User Management</h1>
+        <div className={`relative z-10 flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className={isRTL ? 'text-right' : ''}>
+            <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3">{t('admin.userManagement')}</h1>
             <p className="text-sm sm:text-base lg:text-xl opacity-90 max-w-2xl leading-relaxed">
-              Manage user accounts, roles, and permissions across the platform
+              {t('admin.userManagementDesc')}
             </p>
           </div>
           <Dialog open={isAddUserOpen} onOpenChange={setIsAddUserOpen}>
             <DialogTrigger asChild>
               <Button className="bg-white text-primary hover:bg-white/90 font-semibold px-4 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg hover-scale text-sm sm:text-base">
-                <UserPlus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                Add User
+                <UserPlus className={`h-4 w-4 sm:h-5 sm:w-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t('admin.addUser')}
               </Button>
             </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Add New User</DialogTitle>
+              <DialogTitle>{t('admin.addUserTitle')}</DialogTitle>
               <DialogDescription>
-                Create a new user account with specified role and details.
+                {t('admin.addUserDesc')}
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t('admin.email')}</Label>
                 <Input
                   id="email"
                   type="email"
@@ -294,35 +297,35 @@ export const AdminUsers = () => {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t('admin.password')}</Label>
                 <Input
                   id="password"
                   type="password"
                   value={newUser.password}
                   onChange={(e) => setNewUser(prev => ({ ...prev, password: e.target.value }))}
-                  placeholder="Secure password"
+                  placeholder={t('admin.securePassword')}
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="full_name">Full Name</Label>
+                <Label htmlFor="full_name">{t('admin.fullName')}</Label>
                 <Input
                   id="full_name"
                   value={newUser.full_name}
                   onChange={(e) => setNewUser(prev => ({ ...prev, full_name: e.target.value }))}
-                  placeholder="John Doe"
+                  placeholder={t('admin.johnDoe')}
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="company_name">Company Name</Label>
+                <Label htmlFor="company_name">{t('admin.companyName')}</Label>
                 <Input
                   id="company_name"
                   value={newUser.company_name}
                   onChange={(e) => setNewUser(prev => ({ ...prev, company_name: e.target.value }))}
-                  placeholder="Company Inc."
+                  placeholder={t('admin.companyInc')}
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="role">Role</Label>
+                <Label htmlFor="role">{t('admin.role')}</Label>
                 <Select
                   value={newUser.role}
                   onValueChange={(value: 'client' | 'supplier' | 'admin') => 
@@ -330,22 +333,22 @@ export const AdminUsers = () => {
                   }
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select role" />
+                    <SelectValue placeholder={t('admin.selectRole')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="client">Client</SelectItem>
-                    <SelectItem value="supplier">Supplier</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="client">{t('admin.client')}</SelectItem>
+                    <SelectItem value="supplier">{t('admin.supplier')}</SelectItem>
+                    <SelectItem value="admin">{t('admin.admin')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
-            <div className="flex justify-end gap-2">
+            <div className={`flex gap-2 ${isRTL ? 'justify-start' : 'justify-end'}`}>
               <Button variant="outline" onClick={() => setIsAddUserOpen(false)}>
-                Cancel
+                {t('admin.cancel')}
               </Button>
               <Button onClick={handleAddUser}>
-                Create User
+                {t('admin.createUser')}
               </Button>
             </div>
           </DialogContent>
@@ -358,7 +361,7 @@ export const AdminUsers = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
           <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
             <CardHeader className="space-y-0 pb-2 p-4 sm:p-6">
-              <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">Total Users</CardTitle>
+              <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">{t('admin.totalUsers')}</CardTitle>
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-full flex items-center justify-center">
                 <Users className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
               </div>
@@ -371,7 +374,7 @@ export const AdminUsers = () => {
           </Card>
           <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
             <CardHeader className="space-y-0 pb-2 p-4 sm:p-6">
-              <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">Clients</CardTitle>
+              <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">{t('admin.clients')}</CardTitle>
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-lime/10 rounded-full flex items-center justify-center">
                 <Users className="h-4 w-4 sm:h-5 sm:w-5 text-lime" />
               </div>
@@ -384,7 +387,7 @@ export const AdminUsers = () => {
           </Card>
           <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
             <CardHeader className="space-y-0 pb-2 p-4 sm:p-6">
-              <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">Suppliers</CardTitle>
+              <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">{t('admin.suppliers')}</CardTitle>
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent/10 rounded-full flex items-center justify-center">
                 <Users className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
               </div>
@@ -397,7 +400,7 @@ export const AdminUsers = () => {
           </Card>
           <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
             <CardHeader className="space-y-0 pb-2 p-4 sm:p-6">
-              <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">Admins</CardTitle>
+              <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">{t('admin.admins')}</CardTitle>
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-full flex items-center justify-center">
                 <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
               </div>
@@ -414,38 +417,38 @@ export const AdminUsers = () => {
       {/* Enhanced Filters */}
       <Card className="border-0 bg-card/70 backdrop-blur-sm">
         <CardHeader className="p-4 sm:p-6">
-          <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
+          <CardTitle className={`flex items-center gap-2 text-xl sm:text-2xl ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
               <Search className="h-5 w-5 text-primary" />
             </div>
-            User List
+            {t('admin.userList')}
           </CardTitle>
           <CardDescription className="text-sm sm:text-base">
-            Search and filter users by role and other criteria
+            {t('admin.searchUsersDesc')}
           </CardDescription>
         </CardHeader>
         <CardContent className="p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground`} />
                 <Input
-                  placeholder="Search users..."
+                  placeholder={t('admin.searchUsers')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 h-12 text-sm sm:text-base bg-background/50 border-primary/20 focus:border-primary/50"
+                  className={`${isRTL ? 'pr-10' : 'pl-10'} h-12 text-sm sm:text-base bg-background/50 border-primary/20 focus:border-primary/50`}
                 />
               </div>
             </div>
             <Select value={selectedRole} onValueChange={setSelectedRole}>
               <SelectTrigger className="w-full sm:w-48 h-12 bg-background/50 border-primary/20">
-                <SelectValue placeholder="Filter by role" />
+                <SelectValue placeholder={t('admin.filterByRole')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Roles</SelectItem>
-                <SelectItem value="client">Clients</SelectItem>
-                <SelectItem value="supplier">Suppliers</SelectItem>
-                <SelectItem value="admin">Admins</SelectItem>
+                <SelectItem value="all">{t('admin.allRoles')}</SelectItem>
+                <SelectItem value="client">{t('admin.clients')}</SelectItem>
+                <SelectItem value="supplier">{t('admin.suppliers')}</SelectItem>
+                <SelectItem value="admin">{t('admin.admins')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -453,14 +456,14 @@ export const AdminUsers = () => {
           {/* Enhanced Users List */}
           <div className="space-y-3 sm:space-y-4">
             {filteredUsers.map((user) => (
-              <div key={user.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-6 border rounded-lg sm:rounded-xl hover:shadow-lg transition-all duration-300 bg-background/50 gap-3 sm:gap-4">
-                <div className="flex items-center space-x-4">
+              <div key={user.id} className={`flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-6 border rounded-lg sm:rounded-xl hover:shadow-lg transition-all duration-300 bg-background/50 gap-3 sm:gap-4 ${isRTL ? 'rtl-layout' : ''}`}>
+                <div className={`flex items-center ${isRTL ? 'space-x-reverse space-x-4' : 'space-x-4'}`}>
                   <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-primary/10 flex items-center justify-center">
                     <Users className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                   </div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-medium text-sm sm:text-base">{user.full_name || 'No name'}</h3>
+                  <div className={isRTL ? 'text-right' : ''}>
+                    <div className={`flex items-center gap-2 mb-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <h3 className="font-medium text-sm sm:text-base">{user.full_name || t('admin.noName')}</h3>
                       <Badge variant={getRoleBadgeVariant(user.role)} className="text-xs">
                         {user.role}
                       </Badge>
