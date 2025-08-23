@@ -21,7 +21,7 @@ export const AuthRedirect = () => {
     if (user && userProfile) {
       if (userProfile.role === 'admin') {
         navigate('/admin', { replace: true });
-      } else if (userProfile.role === 'supplier') {
+      } else if (userProfile.role === 'vendor') {
         navigate('/supplier-dashboard', { replace: true });
       } else {
         navigate('/client-dashboard', { replace: true });

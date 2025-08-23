@@ -41,7 +41,7 @@ export const ClientDashboard = () => {
   };
 
   // Real-time stats using analytics data
-  const stats = userProfile?.role === 'supplier' ? [
+  const stats = userProfile?.role === 'vendor' ? [
     { 
       title: t('dashboard.activeOffers'), 
       value: analyticsData?.totalOffers?.toString() || "0", 
@@ -89,7 +89,7 @@ export const ClientDashboard = () => {
   ];
 
   // Universal recent items that work for both user types
-  const recentItems = userProfile?.role === 'supplier' ? [
+  const recentItems = userProfile?.role === 'vendor' ? [
     { id: 1, title: "Office Furniture Package", description: "Modern Supply Co.", value: "9,400", status: "pending", currency: true },
     { id: 2, title: "Corporate Meeting Setup", description: "Tech Solutions Ltd.", value: "6,800", status: "accepted", currency: true },
     { id: 3, title: "Exhibition Booth Furniture", description: "Global Exhibitions", value: "15,800", status: "in_progress", currency: true }
@@ -110,12 +110,12 @@ export const ClientDashboard = () => {
         <div className="relative z-10">
           <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3">{t('dashboard.welcome')}</h1>
           <p className="text-sm sm:text-base lg:text-xl opacity-90 mb-4 sm:mb-6 lg:mb-8 max-w-2xl leading-relaxed">
-            {userProfile?.role === 'supplier' 
+            {userProfile?.role === 'vendor' 
               ? t('dashboard.supplierSubtitle')
               : t('dashboard.subtitle')
             }
           </p>
-          {userProfile?.role === 'supplier' ? (
+          {userProfile?.role === 'vendor' ? (
             <CreateOfferModal>
               <Button className="bg-white text-primary hover:bg-white/90 font-semibold px-4 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg hover-scale w-full sm:w-auto text-sm sm:text-base rtl-button-gap">
                 <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -177,7 +177,7 @@ export const ClientDashboard = () => {
 
       {/* Enhanced Quick Actions - Universal for both user types */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
-        {userProfile?.role === 'supplier' ? (
+        {userProfile?.role === 'vendor' ? (
           <>
             <CreateOfferModal>
               <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer">
@@ -264,10 +264,10 @@ export const ClientDashboard = () => {
       <Card className="border-0 bg-card/70 backdrop-blur-sm">
         <CardHeader className="p-4 sm:p-6">
           <CardTitle className="text-xl sm:text-2xl">
-            {userProfile?.role === 'supplier' ? t('dashboard.recentOffers') : t('dashboard.recentRequests')}
+            {userProfile?.role === 'vendor' ? t('dashboard.recentOffers') : t('dashboard.recentRequests')}
           </CardTitle>
           <CardDescription className="text-sm sm:text-base">
-            {userProfile?.role === 'supplier' 
+            {userProfile?.role === 'vendor' 
               ? t('dashboard.recentOffersDesc')
               : t('dashboard.recentRequestsDesc')
             }
@@ -280,10 +280,10 @@ export const ClientDashboard = () => {
                 <div className="flex-1 min-w-0">
                   <h4 className="font-semibold text-sm sm:text-base lg:text-lg truncate">{item.title}</h4>
                   <div className="flex items-center gap-2">
-                    <p className="text-muted-foreground text-xs sm:text-sm lg:text-base">
-                      {userProfile?.role === 'supplier' ? item.description : `${item.value}`}
-                    </p>
-                    {userProfile?.role === 'supplier' && item.currency && (
+                  <p className="text-muted-foreground text-xs sm:text-sm lg:text-base">
+                    {userProfile?.role === 'vendor' ? item.description : `${item.value}`}
+                  </p>
+                  {userProfile?.role === 'vendor' && item.currency && (
                       <div className="flex items-center gap-1">
                         <span className="text-muted-foreground text-xs sm:text-sm lg:text-base">{item.value}</span>
                         <img 

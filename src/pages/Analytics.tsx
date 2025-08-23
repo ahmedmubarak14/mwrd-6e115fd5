@@ -27,7 +27,7 @@ export const Analytics = () => {
 
   // Mock analytics data based on user role
   const getAnalyticsData = () => {
-    if (userProfile?.role === 'supplier') {
+    if (userProfile?.role === 'vendor') {
       return {
         cards: [
           {

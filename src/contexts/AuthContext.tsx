@@ -2,15 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
-
-interface UserProfile {
-  id: string;
-  email: string;
-  role: 'client' | 'supplier' | 'admin';
-  full_name?: string;
-  company_name?: string;
-  avatar_url?: string;
-}
+import { UserProfile } from '@/types/auth';
 
 interface AuthContextType {
   user: User | null;
@@ -84,14 +76,14 @@ useEffect(() => {
       const { data: userRes } = await supabase.auth.getUser();
       const authUser = userRes.user;
       const email = authUser?.email ?? '';
-      const role = (authUser?.user_metadata?.role as 'client' | 'supplier' | 'admin') ?? 'client';
+      const role = (authUser?.user_metadata?.role as 'client' | 'vendor' | 'admin') ?? 'client';
 
       const { data: created, error: insertError } = await supabase
         .from('user_profiles')
         .insert({
           user_id: userId,
           email,
-          role: role === 'supplier' ? 'vendor' : role,
+          role: role,
           full_name: authUser?.user_metadata?.full_name ?? null,
           company_name: authUser?.user_metadata?.company_name ?? null,
         })
@@ -117,10 +109,7 @@ useEffect(() => {
     try {
       const { error } = await supabase
         .from('user_profiles')
-        .update({
-          ...updates,
-          role: updates.role === 'supplier' ? 'vendor' : updates.role
-        } as any)
+        .update(updates as any)
         .eq('user_id', user.id);
 
       if (error) throw error;

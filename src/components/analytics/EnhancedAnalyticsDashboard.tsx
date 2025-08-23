@@ -130,7 +130,7 @@ export const EnhancedAnalyticsDashboard = () => {
     }
   ];
 
-  const stats = userProfile?.role === 'supplier' ? [
+  const stats = userProfile?.role === 'vendor' ? [
     {
       title: isRTL ? 'إجمالي العروض' : 'Total Offers',
       value: data?.totalOffers?.toString() || '0',
