@@ -17,7 +17,17 @@ interface ProjectDetailsModalProps {
 }
 
 export const ProjectDetailsModal = ({ project, open, onOpenChange }: ProjectDetailsModalProps) => {
-  const { getStatusColor, getPriorityColor, formatBudget } = useProjects();
+  const { getStatusColor, getPriorityColor } = useProjects();
+  
+  const formatBudget = (amount?: number, currency = 'SAR') => {
+    if (!amount) return 'Budget not set';
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: currency,
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
   const { boqItems, loading: boqLoading, getStatusColor: getBOQStatusColor, getTotalValue } = useBOQ(project.id);
   const [showCreateBOQModal, setShowCreateBOQModal] = useState(false);
 
@@ -109,7 +119,7 @@ export const ProjectDetailsModal = ({ project, open, onOpenChange }: ProjectDeta
                       <DollarSign className="h-4 w-4 text-muted-foreground" />
                       <div>
                         <p className="text-sm font-medium">Total Budget</p>
-                        <p className="text-lg">{formatBudget(project)}</p>
+                        <p className="text-lg">{formatBudget(project.budget_total, project.currency)}</p>
                       </div>
                     </div>
                     

@@ -49,6 +49,7 @@ export const CreateBOQItemModal = ({ projectId, open, onOpenChange }: CreateBOQI
     setLoading(true);
     try {
       await createBOQItem({
+        project_id: projectId,
         description: formData.description,
         category: formData.category,
         unit: formData.unit,
