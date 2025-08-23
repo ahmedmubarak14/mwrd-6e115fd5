@@ -54,7 +54,7 @@ import { OfferApprovalCard } from "@/components/admin/OfferApprovalCard";
 interface UserStats {
   total_users: number;
   total_clients: number;
-  total_suppliers: number;
+  total_vendors: number;
   total_admins: number;
 }
 
@@ -63,7 +63,7 @@ interface UserProfile {
   email: string;
   full_name: string;
   company_name: string;
-  role: 'client' | 'supplier' | 'admin';
+  role: 'client' | 'vendor' | 'admin';
   created_at: string;
   avatar_url?: string;
 }
@@ -74,12 +74,13 @@ interface ExpertConsultation {
   full_name: string;
   email: string;
   phone: string | null;
-  company_name: string | null;
-  event_type: string | null;
-  event_date: string | null;
-  budget_range: string | null;
-  message: string;
+  company: string | null;
+  event_type: string;
+  event_description: string | null;
+  message: string | null;
   status: 'pending' | 'contacted' | 'completed' | 'cancelled';
+  scheduled_date: string | null;
+  notes: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -107,7 +108,7 @@ export const AdminDashboard = () => {
     password: "",
     full_name: "",
     company_name: "",
-    role: "client" as 'client' | 'supplier' | 'admin'
+    role: "client" as 'client' | 'vendor' | 'admin'
   });
 
   useEffect(() => {
@@ -125,7 +126,7 @@ export const AdminDashboard = () => {
       const { data, error } = await supabase.rpc('get_user_statistics');
       if (error) throw error;
       if (data && data.length > 0) {
-        setStats(data[0]);
+        setStats(data[0] as UserStats);
       }
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -235,7 +236,7 @@ export const AdminDashboard = () => {
         const { error: profileError } = await supabase
           .from('user_profiles')
           .insert({
-            id: authData.user.id,
+            user_id: authData.user.id,
             email: newUser.email,
             full_name: newUser.full_name,
             company_name: newUser.company_name,
@@ -466,7 +467,7 @@ export const AdminDashboard = () => {
   const filteredConsultations = consultations.filter(consultation => {
     const matchesSearch = consultation.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          consultation.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         consultation.company_name?.toLowerCase().includes(searchTerm.toLowerCase());
+                         consultation.company?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = selectedStatus === "all" || consultation.status === selectedStatus;
     return matchesSearch && matchesStatus;
   });
@@ -568,13 +569,13 @@ export const AdminDashboard = () => {
                     </div>
                     <div>
                       <Label htmlFor="role">Role</Label>
-                      <Select value={newUser.role} onValueChange={(value: 'client' | 'supplier' | 'admin') => setNewUser({ ...newUser, role: value })}>
+                      <Select value={newUser.role} onValueChange={(value: 'client' | 'vendor' | 'admin') => setNewUser({ ...newUser, role: value })}>
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="client">Client</SelectItem>
-                          <SelectItem value="supplier">Supplier</SelectItem>
+                          <SelectItem value="vendor">Vendor</SelectItem>
                           <SelectItem value="admin">Admin</SelectItem>
                         </SelectContent>
                       </Select>
@@ -613,7 +614,7 @@ export const AdminDashboard = () => {
                   <TrendingUp className="h-4 w-4 text-lime" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{stats?.total_suppliers || 0}</div>
+                  <div className="text-2xl font-bold">{stats?.total_vendors || 0}</div>
                 </CardContent>
               </Card>
               <Card>
@@ -678,7 +679,7 @@ export const AdminDashboard = () => {
                     <SelectContent>
                       <SelectItem value="all">All Roles</SelectItem>
                       <SelectItem value="client">Clients</SelectItem>
-                      <SelectItem value="supplier">Suppliers</SelectItem>
+                      <SelectItem value="vendor">Vendors</SelectItem>
                       <SelectItem value="admin">Admins</SelectItem>
                     </SelectContent>
                   </Select>
@@ -703,7 +704,7 @@ export const AdminDashboard = () => {
                         <div className="flex gap-2 mt-2 sm:mt-0">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             user.role === 'admin' ? 'bg-red-100 text-red-800' :
-                            user.role === 'supplier' ? 'bg-lime-100 text-lime-800' :
+                            user.role === 'vendor' ? 'bg-lime-100 text-lime-800' :
                             'bg-blue-100 text-blue-800'
                           }`}>
                             {user.role}
@@ -803,28 +804,22 @@ export const AdminDashboard = () => {
                                 {consultation.phone}
                               </div>
                             )}
-                            {consultation.company_name && (
+                            {consultation.company && (
                               <div className="flex items-center gap-2 text-muted-foreground">
                                 <Building className="h-3 w-3" />
-                                {consultation.company_name}
+                                {consultation.company}
                               </div>
                             )}
-                            {consultation.event_date && (
+                            {consultation.scheduled_date && (
                               <div className="flex items-center gap-2 text-muted-foreground">
                                 <Calendar className="h-3 w-3" />
-                                {new Date(consultation.event_date).toLocaleDateString()}
+                                {new Date(consultation.scheduled_date).toLocaleDateString()}
                               </div>
                             )}
                             {consultation.event_type && (
                               <div className="flex items-center gap-2 text-muted-foreground">
                                 <MessageSquare className="h-3 w-3" />
                                 {consultation.event_type}
-                              </div>
-                            )}
-                            {consultation.budget_range && (
-                              <div className="flex items-center gap-2 text-muted-foreground">
-                                <span className="text-xs">💰</span>
-                                {consultation.budget_range}
                               </div>
                             )}
                             <div className="flex items-center gap-2 text-muted-foreground">

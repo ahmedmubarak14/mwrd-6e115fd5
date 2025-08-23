@@ -51,7 +51,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
           )
         );
 
-        const uploadResult = await uploadFile(file, entityType, entityId);
+        const uploadResult = await uploadFile(file);
         
         if (uploadResult) {
           setUploadedFiles(prev => 

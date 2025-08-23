@@ -154,17 +154,17 @@ export default function Messages() {
       const { data, error } = await supabase
         .from('conversations')
         .select('*')
-        .or(`client_id.eq.${user.id},supplier_id.eq.${user.id}`)
+        .or(`client_id.eq.${user.id},vendor_id.eq.${user.id}`)
         .order('last_message_at', { ascending: false });
 
       if (error) throw error;
 
-      setConversations(data || []);
+      setConversations(data as Conversation[] || []);
 
       const userIds = new Set<string>();
       data?.forEach(conv => {
         userIds.add(conv.client_id);
-        userIds.add(conv.supplier_id);
+        userIds.add(conv.vendor_id);
       });
 
       if (userIds.size > 0) {
@@ -208,7 +208,7 @@ export default function Messages() {
         .order('created_at', { ascending: true });
 
       if (error) throw error;
-      setMessages(data || []);
+      setMessages(data as Message[] || []);
 
       if (data && data.length > 0) {
         const unreadMessages = data.filter(msg => 

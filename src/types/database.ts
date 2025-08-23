@@ -29,9 +29,13 @@ export interface UserProfile {
 // Conversation and Message interfaces for chat functionality
 export interface Conversation {
   id: string;
-  participants: string[];
+  client_id: string;
+  vendor_id: string;
+  request_id?: string;
+  offer_id?: string;
+  status: string;
   last_message?: string;
-  last_activity: string;
+  last_message_at?: string;
   created_at: string;
   updated_at: string;
 }
@@ -42,7 +46,9 @@ export interface Message {
   sender_id: string;
   recipient_id: string;
   content: string;
-  message_status: string;
+  message_type?: string;
+  attachment_url?: string;
+  read_at?: string;
   created_at: string;
   updated_at: string;
 }

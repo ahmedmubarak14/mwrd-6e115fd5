@@ -100,18 +100,17 @@ export const useRequests = () => {
       if (error) throw error;
 
       // Track activity
-      await trackActivity(
-        'request_created',
-        `Created request: ${requestData.title}`,
-        `New ${requestData.category} request for ${requestData.location || 'unspecified location'}`,
-        { 
+      await trackActivity({
+        user_id: user.id,
+        activity_type: 'request_created',
+        description: `Created request: ${requestData.title}`,
+        title: `New ${requestData.category} request`,
+        metadata: { 
           category: requestData.category,
           budget_range: `${requestData.budget_min || 0} - ${requestData.budget_max || 0}`,
           urgency: requestData.urgency 
-        },
-        'request',
-        data.id
-      );
+        }
+      });
 
       await fetchRequests();
       return data;

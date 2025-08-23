@@ -48,7 +48,7 @@ export const BrowseRequests = () => {
           ),
           offers (count)
         `)
-        .eq('status', 'open')
+        .eq('status', 'new')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -59,9 +59,9 @@ export const BrowseRequests = () => {
         category: request.category,
         location: request.location || 'Saudi Arabia',
         budget: request.budget_min && request.budget_max 
-          ? `${request.budget_min.toLocaleString()} - ${request.budget_max.toLocaleString()} ${request.currency}`
+          ? `${request.budget_min.toLocaleString()} - ${request.budget_max.toLocaleString()} SAR`
           : request.budget_min 
-            ? `From ${request.budget_min.toLocaleString()} ${request.currency}`
+            ? `From ${request.budget_min.toLocaleString()} SAR`
             : 'Budget negotiable',
         deadline: request.deadline ? new Date(request.deadline).toLocaleDateString() : 'Flexible',
         urgency: request.urgency.charAt(0).toUpperCase() + request.urgency.slice(1),
