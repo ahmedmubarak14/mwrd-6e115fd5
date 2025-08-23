@@ -123,7 +123,7 @@ export const Orders = () => {
     }
   };
 
-  const handleUpdateOrderStatus = async (orderId: string, newStatus: string) => {
+  const handleUpdateOrderStatus = async (orderId: string, newStatus: 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled') => {
     try {
       const result = await updateOrderStatus(orderId, newStatus);
       if (result.success) {
@@ -298,7 +298,7 @@ export const Orders = () => {
                         <Button 
                           variant="outline" 
                           size="sm"
-                          onClick={() => handleUpdateOrderStatus(order.id, order.status === 'pending' ? 'confirmed' : 'in-progress')}
+                          onClick={() => handleUpdateOrderStatus(order.id, order.status === 'pending' ? 'confirmed' : 'in_progress')}
                           className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
                         >
                           <CreditCard className="h-4 w-4" />

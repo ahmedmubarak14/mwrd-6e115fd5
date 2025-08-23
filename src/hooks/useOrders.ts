@@ -8,7 +8,7 @@ export interface Order {
   client: string;
   amount: number;
   currency: string;
-  status: 'pending' | 'confirmed' | 'in-progress' | 'completed' | 'cancelled';
+  status: 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled';
   date: string;
   description: string;
   category: string;
@@ -60,7 +60,7 @@ export const useOrders = () => {
         client: order.client?.company_name || order.client?.full_name || 'Unknown Client',
         amount: Number(order.amount) || 0,
         currency: 'SAR',
-        status: ['pending', 'confirmed', 'in-progress', 'completed', 'cancelled'].includes(order.status) 
+        status: (['pending', 'confirmed', 'in_progress', 'completed', 'cancelled'] as const).includes(order.status as any) 
           ? order.status as Order['status'] 
           : 'pending',
         date: new Date(order.created_at).toISOString().split('T')[0],
@@ -83,7 +83,7 @@ export const useOrders = () => {
     }
   };
 
-  const updateOrderStatus = async (orderId: string, newStatus: string) => {
+  const updateOrderStatus = async (orderId: string, newStatus: Order['status']) => {
     try {
       const { error } = await supabase
         .from('orders')
