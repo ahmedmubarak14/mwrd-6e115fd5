@@ -7,6 +7,8 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { DashboardThemeToggle } from "@/components/ui/DashboardThemeToggle";
 import { Link, useLocation } from "react-router-dom";
 import { ConversationsDropdown } from "@/components/conversations/ConversationsDropdown";
+import { MobileFriendlyCard } from "@/components/ui/MobileFriendlyCard";
+import { MobileOptimizedButton } from "@/components/ui/MobileOptimizedButton";
 import { 
   Home, 
   FileText, 
@@ -104,91 +106,118 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
   };
 
   return (
-    <div className="w-full lg:w-64 h-full bg-card flex flex-col sidebar-border">
-      {/* User Profile Section */}
-      <div className="p-4 sm:p-6 border-b border-border">
-        <div className="rtl-flex items-center gap-3">
-          <Avatar className="h-12 w-12">
-            <AvatarImage 
-              src={userProfile?.avatar_url} 
-              alt={userProfile?.full_name || userProfile?.email || 'User'} 
-            />
-            <AvatarFallback>
-              {getInitials(userProfile?.full_name || userProfile?.email)}
-            </AvatarFallback>
-          </Avatar>
+    <div className="w-full lg:w-64 h-full bg-gradient-to-br from-primary/5 to-accent/5 flex flex-col border-r border-border/50 backdrop-blur-sm safe-area-pt safe-area-pb animate-fade-in">
+      {/* Enhanced User Profile Section */}
+      <MobileFriendlyCard className="m-3 sm:m-4 p-4 sm:p-5 border border-primary/20 bg-gradient-to-br from-white/80 to-primary/5 backdrop-blur-md">
+        <div className="rtl-flex items-center gap-3 sm:gap-4">
+          <div className="relative">
+            <Avatar className="h-12 w-12 sm:h-14 sm:w-14 border-2 border-primary/20">
+              <AvatarImage 
+                src={userProfile?.avatar_url} 
+                alt={userProfile?.full_name || userProfile?.email || 'User'} 
+              />
+              <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white font-bold">
+                {getInitials(userProfile?.full_name || userProfile?.email)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-lime rounded-full border-2 border-white animate-pulse" />
+          </div>
           <div className="flex-1 min-w-0">
-            <div className="rtl-flex items-center gap-2 mb-1">
-              <h3 className="font-semibold text-sm truncate">
+            <div className="rtl-flex items-center gap-2 mb-1 flex-wrap">
+              <h3 className="font-bold text-sm sm:text-base truncate">
                 {userProfile?.company_name || userProfile?.full_name || 'User'}
               </h3>
-              <Badge variant={getRoleBadgeColor(userProfile?.role || 'client')} className="text-xs">
+              <Badge 
+                variant={getRoleBadgeColor(userProfile?.role || 'client')} 
+                className="text-xs sm:text-sm animate-fade-in"
+              >
                 {getRoleDisplayName(userProfile?.role || 'client')}
               </Badge>
             </div>
-            <p className="text-xs text-muted-foreground truncate">
+            <p className="text-xs sm:text-sm text-muted-foreground truncate font-medium">
+              {userProfile?.email}
+            </p>
+            <p className="text-xs text-muted-foreground truncate opacity-75">
               ID: {userProfile?.id?.slice(0, 8) || 'N/A'}
             </p>
           </div>
         </div>
-      </div>
+      </MobileFriendlyCard>
       
-      <nav className="flex-1 px-3 sm:px-4 py-4 space-y-1 sm:space-y-2">
+      {/* Enhanced Navigation */}
+      <nav className="flex-1 px-3 sm:px-4 py-2 space-y-1 overflow-y-auto">
         {getMenuItems().map((item, index) => {
           if (item.isMessagesDropdown) {
             return (
               <ConversationsDropdown key={index}>
-                <Button
+                <MobileOptimizedButton
                   variant="ghost"
-                  size="sm"
-                  className={`w-full justify-start gap-3 ${isActive(item.href) ? "bg-primary text-primary-foreground" : ""}`}
+                  touchOptimized
+                  className={cn(
+                    "w-full gap-3 h-11 sm:h-12 text-sm sm:text-base rtl-justify-start rtl-flex group",
+                    "transition-all duration-300 hover:bg-primary/10 hover:shadow-md",
+                    isActive(item.href) && "bg-primary/15 text-primary hover:bg-primary/20 shadow-lg"
+                  )}
                 >
-                  <MessageSquare className="h-4 w-4" />
-                  {!collapsed && <span>Messages</span>}
-                </Button>
+                  <div className="relative">
+                    <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                    <div className="absolute -top-1 -right-1 w-2 h-2 bg-lime rounded-full animate-pulse" />
+                  </div>
+                  <span className="truncate font-medium">Messages</span>
+                </MobileOptimizedButton>
               </ConversationsDropdown>
             );
           }
           
           return (
-            <Link key={index} to={item.href}>
-              <Button
+            <Link key={index} to={item.href} className="block">
+              <MobileOptimizedButton
                 variant="ghost"
+                touchOptimized
                 className={cn(
-                  "w-full gap-3 h-10 sm:h-12 text-sm sm:text-base rtl-justify-start rtl-flex",
-                  isActive(item.href) && "bg-primary/10 text-primary hover:bg-primary/20"
+                  "w-full gap-3 h-11 sm:h-12 text-sm sm:text-base rtl-justify-start rtl-flex group",
+                  "transition-all duration-300 hover:bg-primary/10 hover:shadow-md hover:scale-[1.02]",
+                  isActive(item.href) && "bg-primary/15 text-primary hover:bg-primary/20 shadow-lg scale-[1.02]"
                 )}
               >
-                <item.icon className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                <span className="truncate">{item.label}</span>
-              </Button>
+                <item.icon className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                <span className="truncate font-medium">{item.label}</span>
+                {isActive(item.href) && (
+                  <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-6 bg-primary rounded-r animate-fade-in" />
+                )}
+              </MobileOptimizedButton>
             </Link>
           );
         })}
       </nav>
 
-      {/* Controls - Always visible with proper RTL support */}
-      <div className="mt-auto p-3 sm:p-4 border-t bg-primary/5 space-y-3">
-        <div className="space-y-2">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-            Theme / المظهر
-          </p>
-          <DashboardThemeToggle />
-        </div>
-        
-        <div className="space-y-2">
-          <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-            Language / اللغة
-          </p>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
-            className="w-full text-xs sm:text-sm rtl-flex"
-          >
-            🌐 {language === 'en' ? 'العربية' : 'English'}
-          </Button>
-        </div>
+      {/* Enhanced Controls */}
+      <div className="mt-auto p-3 sm:p-4">
+        <MobileFriendlyCard className="bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/10 p-4">
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+                🎨 {language === 'ar' ? 'المظهر' : 'Theme'}
+              </p>
+              <DashboardThemeToggle />
+            </div>
+            
+            <div className="space-y-2">
+              <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
+                🌐 {language === 'ar' ? 'اللغة' : 'Language'}
+              </p>
+              <MobileOptimizedButton
+                variant="outline"
+                size="sm"
+                touchOptimized
+                onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
+                className="w-full text-xs sm:text-sm rtl-flex hover:bg-primary/10 hover:border-primary/30"
+              >
+                {language === 'en' ? '🇸🇦 العربية' : '🇺🇸 English'}
+              </MobileOptimizedButton>
+            </div>
+          </div>
+        </MobileFriendlyCard>
       </div>
     </div>
   );
