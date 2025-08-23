@@ -209,11 +209,14 @@ export const AdminDashboardOverview = () => {
 
   return (
     <div className="space-y-4 sm:space-y-6 lg:space-y-8 rtl-text-left">
-      {/* Enhanced Welcome Header */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-primary via-accent to-lime text-white rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-6 lg:p-8">
+      {/* Enhanced Welcome Header with consistent gradient */}
+      <div 
+        className="relative overflow-hidden text-white rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-6 lg:p-8"
+        style={{ background: 'var(--gradient-hero-overlay)' }}
+      >
         <div className="absolute inset-0">
-          <div className="absolute top-1/4 right-1/4 w-20 h-20 sm:w-32 sm:h-32 lg:w-64 lg:h-64 bg-white/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 left-1/4 w-24 h-24 sm:w-40 sm:h-40 lg:w-80 lg:h-80 bg-white/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/4 right-1/4 w-20 h-20 sm:w-32 sm:h-32 lg:w-64 lg:h-64 bg-white/5 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-1/4 left-1/4 w-24 h-24 sm:w-40 sm:h-40 lg:w-80 lg:h-80 bg-white/3 rounded-full blur-3xl"></div>
         </div>
         <div className="relative z-10">
           <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3">{t('admin.welcome')}</h1>
@@ -252,20 +255,23 @@ export const AdminDashboardOverview = () => {
         </div>
       </div>
 
-      {/* Enhanced Stats Overview */}
+      {/* Enhanced Stats Overview with consistent card styling */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
         {statCards.map((card, index) => (
-          <Card key={index} className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={card.action}>
+          <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer card-trust" onClick={card.action}>
             <CardHeader className="rtl-card-header space-y-0 pb-2 p-4 sm:p-6">
               <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
                 {card.title}
               </CardTitle>
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-full flex items-center justify-center">
+              <div 
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center"
+                style={{ background: 'var(--gradient-glass-bg)' }}
+              >
                 <card.icon className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
               </div>
             </CardHeader>
             <CardContent className="p-4 sm:p-6 pt-0">
-              <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              <div className="text-2xl sm:text-3xl font-bold gradient-text-hero">
                 {card.value}
               </div>
               <div className={`flex items-center justify-between text-xs text-muted-foreground mt-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
@@ -286,13 +292,16 @@ export const AdminDashboardOverview = () => {
         ))}
       </div>
 
-      {/* Enhanced Two Column Layout */}
+      {/* Enhanced Two Column Layout with glass card styling */}
       <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
         {/* Recent Activity */}
-        <Card className="border-0 bg-card/70 backdrop-blur-sm">
+        <Card className="border-0 bg-card/70 backdrop-blur-sm card-trust">
           <CardHeader className="p-4 sm:p-6">
             <CardTitle className={`flex items-center gap-2 text-xl sm:text-2xl ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+              <div 
+                className="w-10 h-10 rounded-full flex items-center justify-center"
+                style={{ background: 'var(--gradient-glass-bg)' }}
+              >
                 <Activity className="h-5 w-5 text-primary" />
               </div>
               {t('analytics.recentActivity')}
@@ -304,7 +313,7 @@ export const AdminDashboardOverview = () => {
           <CardContent className="p-4 sm:p-6">
             <div className="space-y-3 sm:space-y-4">
               {recentActivity.length > 0 ? recentActivity.slice(0, 5).map((activity) => (
-                <div key={activity.id} className={`flex items-start gap-3 p-3 sm:p-4 rounded-lg sm:rounded-xl border bg-background/50 hover:shadow-lg transition-all duration-300 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div key={activity.id} className={`flex items-start gap-3 p-3 sm:p-4 rounded-lg sm:rounded-xl border bg-background/50 hover:shadow-lg transition-all duration-300 hover-lift ${isRTL ? 'flex-row-reverse' : ''}`}>
                   <div className="w-2 h-2 rounded-full bg-lime mt-2"></div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm sm:text-base font-medium">
@@ -336,10 +345,13 @@ export const AdminDashboardOverview = () => {
         </Card>
 
         {/* Quick Actions */}
-        <Card className="border-0 bg-card/70 backdrop-blur-sm">
+        <Card className="border-0 bg-card/70 backdrop-blur-sm card-trust">
           <CardHeader className="p-4 sm:p-6">
             <CardTitle className={`flex items-center gap-2 text-xl sm:text-2xl ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
+              <div 
+                className="w-10 h-10 rounded-full flex items-center justify-center"
+                style={{ background: 'var(--gradient-glass-bg)' }}
+              >
                 <Zap className="h-5 w-5 text-accent" />
               </div>
               {t('admin.quickActions')}
@@ -350,10 +362,13 @@ export const AdminDashboardOverview = () => {
           </CardHeader>
           <CardContent className="p-4 sm:p-6">
             <div className="grid gap-3 sm:gap-4">
-              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={() => navigate('/admin/users?action=create')}>
+              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer card-trust" onClick={() => navigate('/admin/users?action=create')}>
                 <CardHeader className="pb-4 p-3 sm:p-4">
                   <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <div className="w-10 h-10 bg-gradient-to-r from-primary/20 to-accent/20 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-accent/30 transition-all duration-300">
+                    <div 
+                      className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-105 transition-all duration-300"
+                      style={{ background: 'var(--gradient-glass-bg)' }}
+                    >
                       <UserPlus className="h-5 w-5 text-primary" />
                     </div>
                     <div>
@@ -364,10 +379,13 @@ export const AdminDashboardOverview = () => {
                 </CardHeader>
               </Card>
               
-              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={() => navigate('/admin/content/requests')}>
+              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer card-trust" onClick={() => navigate('/admin/content/requests')}>
                 <CardHeader className="pb-4 p-3 sm:p-4">
                   <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <div className="w-10 h-10 bg-gradient-to-r from-accent/20 to-lime/20 rounded-xl flex items-center justify-center group-hover:from-accent/30 group-hover:to-lime/30 transition-all duration-300">
+                    <div 
+                      className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-105 transition-all duration-300"
+                      style={{ background: 'var(--gradient-glass-bg)' }}
+                    >
                       <FileText className="h-5 w-5 text-accent" />
                     </div>
                     <div>
@@ -378,10 +396,13 @@ export const AdminDashboardOverview = () => {
                 </CardHeader>
               </Card>
 
-              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={() => navigate('/admin/financial')}>
+              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer card-trust" onClick={() => navigate('/admin/financial')}>
                 <CardHeader className="pb-4 p-3 sm:p-4">
                   <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <div className="w-10 h-10 bg-gradient-to-r from-lime/20 to-primary/20 rounded-xl flex items-center justify-center group-hover:from-lime/30 group-hover:to-primary/30 transition-all duration-300">
+                    <div 
+                      className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-105 transition-all duration-300"
+                      style={{ background: 'var(--gradient-glass-bg)' }}
+                    >
                       <DollarSign className="h-5 w-5 text-lime" />
                     </div>
                     <div>
@@ -392,10 +413,13 @@ export const AdminDashboardOverview = () => {
                 </CardHeader>
               </Card>
 
-              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer" onClick={() => navigate('/admin/analytics')}>
+              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer card-trust" onClick={() => navigate('/admin/analytics')}>
                 <CardHeader className="pb-4 p-3 sm:p-4">
                   <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <div className="w-10 h-10 bg-gradient-to-r from-primary/20 to-lime/20 rounded-xl flex items-center justify-center group-hover:from-primary/30 group-hover:to-lime/30 transition-all duration-300">
+                    <div 
+                      className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-105 transition-all duration-300"
+                      style={{ background: 'var(--gradient-glass-bg)' }}
+                    >
                       <BarChart3 className="h-5 w-5 text-primary" />
                     </div>
                     <div>

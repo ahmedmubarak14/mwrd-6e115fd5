@@ -109,7 +109,7 @@ export const RouteAwareThemeProvider: React.FC<{ children: React.ReactNode }> = 
       mediaQuery.addEventListener('change', handleChange);
       return () => mediaQuery.removeEventListener('change', handleChange);
     }
-  }, [theme, isDashboardRoute, forceLightMode, location.pathname]);
+  }, [theme, isDashboardRoute, forceLightMode]);
 
   const handleSetTheme = (newTheme: Theme) => {
     // Only allow theme changes on dashboard routes
