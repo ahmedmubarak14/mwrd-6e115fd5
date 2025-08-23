@@ -189,7 +189,7 @@ export const Requests = () => {
                 </CardHeader>
                 <CardContent className="p-4 sm:p-6 pt-0">
                   <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                    {filteredRequests.filter(r => r.status === 'open').length}
+                    {filteredRequests.filter(r => r.status === 'new').length}
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">Currently open</p>
                 </CardContent>
@@ -257,7 +257,7 @@ export const Requests = () => {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-start gap-3">
                               <div className={`w-2 h-12 rounded-full ${
-                                request.status === 'open' ? 'bg-lime' :
+                                request.status === 'new' ? 'bg-lime' :
                                 request.status === 'in_progress' ? 'bg-accent' : 'bg-primary'
                               }`}></div>
                               <div className="flex-1">
@@ -288,7 +288,7 @@ export const Requests = () => {
                           <div className="flex items-center gap-2 p-3 bg-lime/5 rounded-lg">
                           <div className="flex items-center gap-1">
                             <span className="text-lime text-lg font-bold">{formatBudget(request)}</span>
-                            <span className="text-lime text-sm">{request.currency}</span>
+                            <span className="text-lime text-sm">{request.currency || 'USD'}</span>
                           </div>
                           </div>
                           
@@ -312,7 +312,11 @@ export const Requests = () => {
                         {/* Action buttons */}
                         <div className="flex flex-col sm:flex-row gap-2 pl-5">
                           <RequestDetailsModal 
-                            request={request}
+                            request={{
+                              ...request,
+                              currency: request.currency || 'USD',
+                              user_id: request.client_id
+                            }}
                             userRole={userProfile?.role as any}
                           >
                             <Button size="sm" className="flex-1 sm:flex-initial bg-gradient-to-r from-primary to-accent hover-scale">
@@ -320,7 +324,7 @@ export const Requests = () => {
                               {t('common.view')}
                             </Button>
                           </RequestDetailsModal>
-                          {request.status === 'open' && (
+                          {request.status === 'new' && (
                             <Button 
                               size="sm" 
                               variant="outline" 

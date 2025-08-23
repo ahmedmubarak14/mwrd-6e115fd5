@@ -65,7 +65,12 @@ export const OffersManagement = () => {
         return;
       }
 
-      setOffers(data || []);
+      const formattedOffers = (data || []).map((offer: any) => ({
+        ...offer,
+        currency: 'USD', // Add default currency since not in database yet
+        delivery_time_days: offer.delivery_time || 0
+      }));
+      setOffers(formattedOffers);
     } catch (error) {
       console.error('Error fetching offers:', error);
       showError('Failed to load offers');

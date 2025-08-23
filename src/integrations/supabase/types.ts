@@ -460,6 +460,7 @@ export type Database = {
           category: string
           client_id: string
           created_at: string
+          currency: string | null
           deadline: string | null
           description: string
           id: string
@@ -478,6 +479,7 @@ export type Database = {
           category: string
           client_id: string
           created_at?: string
+          currency?: string | null
           deadline?: string | null
           description: string
           id?: string
@@ -496,6 +498,7 @@ export type Database = {
           category?: string
           client_id?: string
           created_at?: string
+          currency?: string | null
           deadline?: string | null
           description?: string
           id?: string
@@ -588,6 +591,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_platform_statistics: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          total_admins: number
+          total_clients: number
+          total_offers: number
+          total_orders: number
+          total_requests: number
+          total_users: number
+          total_vendors: number
+        }[]
+      }
       get_user_role: {
         Args: { user_uuid: string }
         Returns: Database["public"]["Enums"]["user_role"]

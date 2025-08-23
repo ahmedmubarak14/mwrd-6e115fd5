@@ -22,6 +22,13 @@ Deno.serve(async (req) => {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     
+    if (!supabaseUrl || !supabaseServiceKey) {
+      return new Response(
+        JSON.stringify({ error: 'Missing required environment variables' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
     // Create admin client using service role key
     const supabase = createClient(supabaseUrl, supabaseServiceKey, {
       auth: {
@@ -32,6 +39,13 @@ Deno.serve(async (req) => {
 
     const { email, password, role, full_name }: CreateUserRequest = await req.json();
 
+    if (!email || !password || !role || !full_name) {
+      return new Response(
+        JSON.stringify({ error: 'Missing required fields: email, password, role, full_name' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     console.log('Creating user:', { email, role, full_name });
 
     // Check if user already exists in profiles (avoid auth.users query issues)
@@ -39,9 +53,9 @@ Deno.serve(async (req) => {
       .from('user_profiles')
       .select('email')
       .eq('email', email)
-      .limit(1);
+      .maybeSingle();
 
-    if (existingProfiles && existingProfiles.length > 0) {
+    if (existingProfiles) {
       return new Response(
         JSON.stringify({ error: 'User with this email already exists' }), 
         { 

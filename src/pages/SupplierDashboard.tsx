@@ -264,7 +264,7 @@ export const SupplierDashboard = () => {
                               <DollarSign className="h-4 w-4 text-lime" />
                               <div>
                                 <p className="text-xs text-muted-foreground">{t('browseRequests.budget')}</p>
-                                <p className="font-semibold text-sm">{formatBudget(request)} {request.currency}</p>
+                                <p className="font-semibold text-sm">{formatBudget(request)} {request.currency || 'USD'}</p>
                               </div>
                             </div>
                             

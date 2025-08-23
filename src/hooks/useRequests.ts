@@ -10,6 +10,7 @@ export interface Request {
   category: string;
   budget_min?: number;
   budget_max?: number;
+  currency?: string;
   location?: string;
   deadline?: string;
   urgency: 'low' | 'medium' | 'high' | 'urgent';

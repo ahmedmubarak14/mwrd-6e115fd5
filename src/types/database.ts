@@ -62,6 +62,7 @@ export interface Request {
   category: string;
   budget_min?: number;
   budget_max?: number;
+  currency?: string;
   urgency: string;
   status: RequestStatus;
   admin_approval_status: string;
@@ -96,7 +97,9 @@ export interface Offer {
   title: string;
   description: string;
   price: number;
+  currency?: string;
   delivery_time?: number;
+  delivery_time_days?: number;
   status: string;
   client_approval_status: string;
   admin_approval_status: string;

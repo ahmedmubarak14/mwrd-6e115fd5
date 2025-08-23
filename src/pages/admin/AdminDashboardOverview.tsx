@@ -34,10 +34,14 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 interface DashboardStats {
   total_users: number;
-  active_subscriptions: number;
-  monthly_revenue: number;
+  total_clients: number;
+  total_vendors: number;
+  total_admins: number;
   total_requests: number;
   total_offers: number;
+  total_orders: number;
+  active_subscriptions: number;
+  monthly_revenue: number;
   total_transactions: number;
 }
 
@@ -46,6 +50,8 @@ interface RecentActivity {
   action: string;
   user_id: string;
   resource_type: string;
+  resource_id: string;
+  timestamp: string;
   created_at: string;
   metadata: any;
 }
@@ -71,21 +77,58 @@ export const AdminDashboardOverview = () => {
       const { data: statsData, error: statsError } = await supabase
         .rpc('get_platform_statistics');
       
-      if (statsError) throw statsError;
-      
-      if (statsData && statsData.length > 0) {
-        setStats(statsData[0]);
+      if (statsError) {
+        console.error('Error fetching stats:', statsError);
+        setStats({
+          total_users: 0,
+          total_clients: 0,
+          total_vendors: 0,
+          total_admins: 0,
+          total_requests: 0,
+          total_offers: 0,
+          total_orders: 0,
+          active_subscriptions: 0,
+          monthly_revenue: 0,
+          total_transactions: 0
+        });
+      } else {
+        const statResult = Array.isArray(statsData) ? statsData[0] : statsData;
+        setStats({
+          total_users: statResult?.total_users || 0,
+          total_clients: statResult?.total_clients || 0,
+          total_vendors: statResult?.total_vendors || 0,
+          total_admins: statResult?.total_admins || 0,
+          total_requests: statResult?.total_requests || 0,
+          total_offers: statResult?.total_offers || 0,
+          total_orders: statResult?.total_orders || 0,
+          active_subscriptions: 0, // Not available from function yet
+          monthly_revenue: 0, // Not available from function yet
+          total_transactions: 0 // Not available from function yet
+        });
       }
 
       // Fetch recent activity
       const { data: activityData, error: activityError } = await supabase
-        .from('activity_logs')
+        .from('audit_log')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(10);
       
-      if (activityError) throw activityError;
-      setRecentActivity(activityData || []);
+      if (activityError) {
+        console.error('Error fetching activity:', activityError);
+      } else {
+        const formattedActivity = (activityData || []).map(item => ({
+          id: item.id,
+          action: item.action,
+          user_id: item.user_id || '',
+          resource_type: item.entity_type,
+          resource_id: item.entity_id,
+          timestamp: item.created_at,
+          created_at: item.created_at,
+          metadata: item.new_values || {}
+        }));
+        setRecentActivity(formattedActivity);
+      }
       
     } catch (error: any) {
       console.error('Error fetching dashboard data:', error);

@@ -59,7 +59,11 @@ export const RequestsApproval = () => {
         return;
       }
 
-      setRequests(data || []);
+      const formattedRequests = (data || []).map(request => ({
+        ...request,
+        currency: request.currency || 'USD'
+      }));
+      setRequests(formattedRequests);
     } catch (error) {
       console.error('Error fetching requests:', error);
       showError('Failed to load requests');

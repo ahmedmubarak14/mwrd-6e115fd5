@@ -9,6 +9,7 @@ export interface MatchedRequest {
   category: string;
   budget_min?: number;
   budget_max?: number;
+  currency?: string;
   location?: string;
   deadline?: string;
   urgency: string;
