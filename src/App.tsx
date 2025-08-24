@@ -52,13 +52,13 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <LanguageProvider>
-          <RouteAwareThemeProvider>
-            <AuthProvider>
-              <CallNotificationProvider>
-                <TooltipProvider>
-                  <Toaster />
-                  <PushNotificationManager />
-                  <BrowserRouter>
+          <BrowserRouter>
+            <RouteAwareThemeProvider>
+              <AuthProvider>
+                <CallNotificationProvider>
+                  <TooltipProvider>
+                    <Toaster />
+                    <PushNotificationManager />
                     <Routes>
                       {/* Public Routes */}
                       <Route path="/" element={<Index />} />
@@ -226,11 +226,11 @@ const App = () => (
                       {/* 404 Route */}
                       <Route path="*" element={<NotFound />} />
                     </Routes>
-                  </BrowserRouter>
-                </TooltipProvider>
-              </CallNotificationProvider>
-            </AuthProvider>
-          </RouteAwareThemeProvider>
+                  </TooltipProvider>
+                </CallNotificationProvider>
+              </AuthProvider>
+            </RouteAwareThemeProvider>
+          </BrowserRouter>
         </LanguageProvider>
       </ThemeProvider>
     </QueryClientProvider>
