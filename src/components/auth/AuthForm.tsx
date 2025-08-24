@@ -14,6 +14,7 @@ import { UserProfile } from "@/types/database";
 import { CRDocumentUpload } from "@/components/verification/CRDocumentUpload";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle, Info } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 interface AuthFormProps {
@@ -21,6 +22,7 @@ interface AuthFormProps {
 }
 
 export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
+  const navigate = useNavigate();
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const [registrationStep, setRegistrationStep] = useState<'details' | 'verification'>('details');
   const [formData, setFormData] = useState({
@@ -121,6 +123,10 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
     setRegisteredUserId(null);
   };
 
+  const handleLogoClick = () => {
+    navigate('/');
+  };
+
   // Client CR Upload Flow
   if (mode === 'signup' && registrationStep === 'verification' && formData.role === 'client') {
     return (
@@ -194,13 +200,16 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
           <CardContent className="p-8">
             {/* Logo Section - Inside Card */}
             <div className="text-center mb-6">
-              <Link to="/" className="inline-block">
+              <div 
+                onClick={handleLogoClick}
+                className="inline-block cursor-pointer"
+              >
                 <img 
                   src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
                   alt="MWRD Logo" 
                   className="h-16 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg cursor-pointer"
                 />
-              </Link>
+              </div>
             </div>
 
             {/* Welcome Text - Inside Card */}
