@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
@@ -152,14 +151,19 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5 p-4">
         <div className="w-full max-w-md space-y-6">
+          <div className="text-center space-y-4">
+            <img 
+              src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
+              alt="MWRD Logo" 
+              className="h-16 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg"
+            />
+            <div>
+              <h1 className="text-2xl font-bold">Complete Your Registration</h1>
+              <p className="text-muted-foreground">Upload your Commercial Registration to activate your account</p>
+            </div>
+          </div>
           <Card>
-            <CardHeader className="text-center">
-              <CardTitle className="text-2xl">Complete Your Registration</CardTitle>
-              <CardDescription>
-                Upload your Commercial Registration to activate your account
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-6 pt-6">
               <Alert>
                 <Info className="h-4 w-4" />
                 <AlertDescription>
@@ -208,11 +212,18 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5 p-4">
       <div className="w-full max-w-md space-y-6">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold">Welcome to MWRD</h1>
-          <p className="text-muted-foreground">
-            {mode === 'signin' ? 'Sign in to your account' : 'Create your account'}
-          </p>
+        <div className="text-center space-y-4">
+          <img 
+            src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
+            alt="MWRD Logo" 
+            className="h-16 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg"
+          />
+          <div>
+            <h1 className="text-3xl font-bold">Welcome to MWRD</h1>
+            <p className="text-muted-foreground">
+              {mode === 'signin' ? 'Sign in to your account' : 'Create your account'}
+            </p>
+          </div>
         </div>
 
         <Tabs value={mode} onValueChange={(value) => setMode(value as 'signin' | 'signup')}>
