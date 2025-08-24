@@ -52,85 +52,74 @@ All colors MUST be HSL.
     --orange: 29 78% 68%;         /* #FBA765 - Cozy Nook */
 
     /* Main Design System Colors */
-    --background: 0 0% 100%;           /* Pure white background */
-    --foreground: 195 49% 10%;         /* Black Chasm text */
-    --card: 0 0% 100%;                 /* Pure white cards */
-    --card-foreground: 195 49% 10%;    /* Black Chasm text */
-    --popover: 0 0% 100%;              /* Pure white popover background */
-    --popover-foreground: 195 49% 10%; /* Black Chasm text */
-    --primary: 324 96% 20%;            /* Tyrian Purple */
-    --primary-foreground: 0 0% 100%;   /* White text on primary */
-    --secondary: 195 100% 17%;         /* Transporter Green */
-    --secondary-foreground: 0 0% 100%; /* White text on secondary */
-    --muted: 40 8% 85%;                /* Light muted background */
-    --muted-foreground: 195 20% 35%;   /* Muted text */
-    --accent: 195 100% 17%;            /* Transporter Green */
-    --accent-foreground: 0 0% 100%;    /* White text on accent */
-    --lime: 29 78% 68%;                /* Cozy Nook orange */
-    --lime-foreground: 195 49% 10%;    /* Dark text on lime */
-    --destructive: 0 84.2% 60.2%;      /* Red for destructive actions */
-    --destructive-foreground: 0 0% 100%; /* White text on destructive */
-    --border: 40 10% 75%;              /* Border color */
-    --input: 40 8% 85%;                /* Input background */
-    --ring: 324 96% 20%;               /* Focus ring color */
+    --background: 195 49% 10%;           /* Dark background for all pages */
+    --foreground: 40 15% 91%;            /* Light text */
+    --card: 195 35% 15%;                 /* Dark cards */
+    --card-foreground: 40 15% 91%;       /* Light card text */
+    --popover: 195 35% 15%;              /* Dark popover background */
+    --popover-foreground: 40 15% 91%;    /* Light popover text */
+    --primary: 324 96% 20%;              /* Tyrian Purple */
+    --primary-foreground: 40 15% 91%;    /* Light text on primary */
+    --secondary: 195 100% 17%;           /* Transporter Green */
+    --secondary-foreground: 40 15% 91%;  /* Light text on secondary */
+    --muted: 195 35% 15%;                /* Dark muted background */
+    --muted-foreground: 195 10% 65%;     /* Light muted text */
+    --accent: 195 100% 17%;              /* Transporter Green */
+    --accent-foreground: 40 15% 91%;     /* Light text on accent */
+    --lime: 29 78% 68%;                  /* Cozy Nook orange */
+    --lime-foreground: 195 49% 10%;      /* Dark text on lime */
+    --destructive: 0 62.8% 30.6%;        /* Darker red */
+    --destructive-foreground: 40 15% 91%; /* Light text on destructive */
+    --border: 195 25% 25%;               /* Dark border */
+    --input: 195 35% 15%;                /* Dark input background */
+    --ring: 324 96% 20%;                 /* Focus ring color */
     --radius: 0.75rem;
 
-    /* Simplified Brand Color Gradient System */
-    --gradient-primary: linear-gradient(135deg, hsl(324 96% 20%) 0%, hsl(324 70% 35%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(195 100% 17%) 0%, hsl(195 60% 35%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(195 49% 10%) 0%, hsl(324 96% 20%) 50%, hsl(195 100% 17%) 100%);
-    
-    /* Simplified shadows */
-    --shadow-card: 0 10px 30px -5px hsl(195 49% 10% / 0.1);
-    --shadow-elegant: 0 25px 50px -15px hsl(324 96% 20% / 0.2);
+    /* Unified Page Background */
+    --unified-page: linear-gradient(135deg, hsl(195 49% 10%) 0%, hsl(324 96% 20%) 50%, hsl(195 100% 17%) 100%);
 
-    /* Sidebar colors - using solid colors instead of gradients */
+    /* Sidebar colors */
     --sidebar-background: 195 49% 10%;
-    --sidebar-foreground: 0 0% 100%;
+    --sidebar-foreground: 40 15% 91%;
     --sidebar-primary: 324 96% 20%;
-    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-primary-foreground: 40 15% 91%;
     --sidebar-accent: 195 100% 17%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 0 0% 100% / 0.1;
+    --sidebar-accent-foreground: 40 15% 91%;
+    --sidebar-border: 40 15% 91% / 0.1;
     --sidebar-ring: 324 96% 20%;
   }
 
   .dark {
-    --background: 195 49% 10%;         /* Black Chasm dark background */
-    --foreground: 40 15% 91%;          /* Fuji Snow text */
-    --card: 195 35% 15%;               /* Dark card background */
-    --card-foreground: 40 15% 91%;     /* Light card text */
-    --popover: 195 35% 15%;            /* Dark popover background */
-    --popover-foreground: 40 15% 91%;  /* Light popover text */
-    --primary: 324 96% 20%;            /* Keep Tyrian Purple in dark */
-    --primary-foreground: 40 15% 91%;  /* Light text on primary */
-    --secondary: 195 80% 22%;          /* Darker Transporter Green */
-    --secondary-foreground: 40 15% 91%; /* Light text on secondary */
-    --muted: 195 35% 15%;              /* Dark muted background */
-    --muted-foreground: 195 10% 65%;   /* Light muted text */
-    --accent: 195 80% 22%;             /* Darker Transporter Green */
-    --accent-foreground: 40 15% 91%;   /* Light text on accent */
-    --lime: 29 78% 68%;                /* Keep Cozy Nook orange */
-    --lime-foreground: 195 49% 10%;    /* Dark text on lime */
-    --destructive: 0 62.8% 30.6%;      /* Darker red for dark mode */
-    --destructive-foreground: 40 15% 91%; /* Light text on destructive */
-    --border: 195 25% 25%;             /* Dark border */
-    --input: 195 35% 15%;              /* Dark input background */
-    --ring: 324 96% 20%;               /* Focus ring color */
+    /* Keep dark theme variables the same as default since we're using dark theme as primary */
+    --background: 195 49% 10%;
+    --foreground: 40 15% 91%;
+    --card: 195 35% 15%;
+    --card-foreground: 40 15% 91%;
+    --popover: 195 35% 15%;
+    --popover-foreground: 40 15% 91%;
+    --primary: 324 96% 20%;
+    --primary-foreground: 40 15% 91%;
+    --secondary: 195 80% 22%;
+    --secondary-foreground: 40 15% 91%;
+    --muted: 195 35% 15%;
+    --muted-foreground: 195 10% 65%;
+    --accent: 195 80% 22%;
+    --accent-foreground: 40 15% 91%;
+    --lime: 29 78% 68%;
+    --lime-foreground: 195 49% 10%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 40 15% 91%;
+    --border: 195 25% 25%;
+    --input: 195 35% 15%;
+    --ring: 324 96% 20%;
 
-    /* Dark mode gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(324 80% 25%) 0%, hsl(324 60% 50%) 100%);
-    --gradient-secondary: linear-gradient(135deg, hsl(195 70% 25%) 0%, hsl(195 50% 50%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(195 49% 10%) 0%, hsl(324 80% 25%) 50%, hsl(195 70% 25%) 100%);
-
-    /* Dark sidebar colors */
     --sidebar-background: 195 49% 10%;
-    --sidebar-foreground: 0 0% 90%;
+    --sidebar-foreground: 40 15% 91%;
     --sidebar-primary: 324 70% 35%;
     --sidebar-primary-foreground: 195 49% 10%;
     --sidebar-accent: 195 70% 25%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 0 0% 100% / 0.1;
+    --sidebar-accent-foreground: 40 15% 91%;
+    --sidebar-border: 40 15% 91% / 0.1;
     --sidebar-ring: 324 70% 35%;
   }
 }
@@ -138,15 +127,32 @@ All colors MUST be HSL.
 @layer base {
   * {
     @apply border-border;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    height: 100%;
+    scroll-behavior: smooth;
   }
 
   body {
-    @apply bg-background text-foreground;
+    height: 100%;
     font-family: 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-weight: 500;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background: var(--unified-page);
+    color: hsl(var(--foreground));
+    overflow-x: hidden;
+  }
+
+  #root {
+    height: 100%;
+    min-height: 100vh;
+    width: 100%;
   }
 
   .font-arabic {
@@ -156,6 +162,23 @@ All colors MUST be HSL.
   /* RTL support */
   [dir="rtl"] {
     text-align: right;
+  }
+
+  /* Page-specific backgrounds */
+  .bg-unified-page {
+    background: var(--unified-page);
+  }
+
+  .bg-landing {
+    background: var(--unified-page);
+  }
+
+  .bg-dashboard {
+    background: var(--unified-page);
+  }
+
+  .bg-auth {
+    background: var(--unified-page);
   }
 
   /* Enhanced Animation classes */
@@ -185,21 +208,16 @@ All colors MUST be HSL.
 
   .hover-lift:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-elegant);
   }
 
   .gradient-text {
-    background: var(--gradient-primary);
+    background: linear-gradient(135deg, hsl(324 96% 20%) 0%, hsl(324 70% 35%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  /* Simplified background classes */
-  .bg-hero {
-    background: var(--gradient-hero);
-  }
-
+  /* Glass effect */
   .bg-glass {
     background: hsl(var(--background) / 0.8);
     backdrop-filter: blur(10px);
@@ -239,18 +257,6 @@ All colors MUST be HSL.
     }
   }
 
-  /* Smooth scroll behavior */
-  html {
-    scroll-behavior: smooth;
-  }
-
-  /* Enhanced Arabic typography */
-  .font-arabic {
-    font-family: 'Cairo', 'Noto Sans Arabic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.7;
-    letter-spacing: 0.025em;
-  }
-
   /* Mobile optimizations */
   .safe-area-pb {
     padding-bottom: env(safe-area-inset-bottom);
@@ -263,5 +269,31 @@ All colors MUST be HSL.
   .mobile-touch-target {
     min-height: 44px;
     min-width: 44px;
+  }
+
+  /* Layout fixes */
+  .rtl-flex {
+    display: flex;
+    flex-direction: row;
+  }
+
+  [dir="rtl"] .rtl-flex {
+    flex-direction: row-reverse;
+  }
+
+  .rtl-order-1 {
+    order: 1;
+  }
+
+  .rtl-order-3 {
+    order: 3;
+  }
+
+  [dir="rtl"] .rtl-order-1 {
+    order: 3;
+  }
+
+  [dir="rtl"] .rtl-order-3 {
+    order: 1;
   }
 }

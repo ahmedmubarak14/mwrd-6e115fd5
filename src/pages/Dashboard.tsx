@@ -8,7 +8,7 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Clock, AlertTriangle, CheckCircle } from "lucide-react";
+import { Clock, AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {

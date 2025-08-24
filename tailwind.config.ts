@@ -64,6 +64,12 @@ const config: Config = {
           ring: "hsl(var(--sidebar-ring))",
         },
       },
+      backgroundImage: {
+        'unified-page': 'var(--unified-page)',
+        'landing': 'var(--unified-page)',
+        'dashboard': 'var(--unified-page)',
+        'auth': 'var(--unified-page)',
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

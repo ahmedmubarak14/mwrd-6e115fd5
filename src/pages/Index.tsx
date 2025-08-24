@@ -5,9 +5,9 @@ import { ProcurementClientDashboard } from "@/components/Dashboard/ProcurementCl
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState } from "react";
-import { Sheet } from "@/components/ui/sheet";
-import { MobileSheet } from "@/components/ui/MobileSheet";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Footer } from "@/components/ui/layout/Footer";
+import { MobileContainer } from "@/components/ui/MobileContainer";
 
 const Index = () => {
   const { userProfile } = useAuth();
@@ -17,28 +17,35 @@ const Index = () => {
   const isRTL = language === 'ar';
 
   return (
-    <div className="min-h-screen bg-background">
+    <MobileContainer 
+      pageType="landing"
+      dir={isRTL ? 'rtl' : 'ltr'}
+    >
       <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
       
       {/* Mobile Sidebar */}
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <MobileSheet>
+        <SheetContent 
+          side={isRTL ? "right" : "left"} 
+          className="p-0 w-80 bg-unified-page border-none"
+        >
           <Sidebar userRole={userProfile?.role || 'client'} userProfile={userProfile} />
-        </MobileSheet>
+        </SheetContent>
       </Sheet>
 
-      <div className="rtl-flex">
+      <div className="flex flex-1 min-h-0">
         {/* Desktop Sidebar - position based on language */}
-        <div className="hidden lg:block rtl-order-1">
+        <div className="hidden lg:block">
           <Sidebar userRole={userProfile?.role || 'client'} userProfile={userProfile} />
         </div>
         
-        <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
+        <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-auto min-w-0">
           <ProcurementClientDashboard />
         </main>
       </div>
+      
       <Footer />
-    </div>
+    </MobileContainer>
   );
 };
 

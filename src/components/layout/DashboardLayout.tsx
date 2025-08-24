@@ -21,17 +21,18 @@ export const DashboardLayout = ({ children, className }: DashboardLayoutProps) =
 
   return (
     <MobileContainer 
-      className={`min-h-screen bg-unified-page ${className || ''}`}
+      pageType="dashboard"
+      className={className}
       dir={isRTL ? 'rtl' : 'ltr'}
     >
       <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
       
-      <div className="flex flex-1">
+      <div className="flex flex-1 min-h-0">
         {/* Mobile Sidebar */}
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
           <SheetContent 
             side={isRTL ? "right" : "left"} 
-            className="p-0 w-80 bg-unified-page"
+            className="p-0 w-80 bg-unified-page border-none"
           >
             <Sidebar 
               userRole={userProfile?.role as 'client' | 'vendor' | 'admin'}
@@ -49,7 +50,7 @@ export const DashboardLayout = ({ children, className }: DashboardLayoutProps) =
         </div>
 
         {/* Main Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto min-w-0">
           {children}
         </main>
       </div>
