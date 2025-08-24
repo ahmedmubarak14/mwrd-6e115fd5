@@ -79,7 +79,7 @@ export const AdminHeader = () => {
           <SidebarTrigger className="lg:hidden h-8 w-8 sm:h-10 sm:w-10 text-white hover:bg-white/10" />
           
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/landing')}
             className="flex items-center gap-2 hover:scale-105 transition-transform"
           >
             <img 
