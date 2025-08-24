@@ -1,6 +1,7 @@
+
 import { Header } from "@/components/ui/layout/Header";
 import { Sidebar } from "@/components/ui/layout/Sidebar";
-import { ClientDashboard } from "@/components/Dashboard/ClientDashboard";
+import { ProcurementClientDashboard } from "@/components/Dashboard/ProcurementClientDashboard";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState } from "react";
@@ -33,7 +34,7 @@ const Index = () => {
         </div>
         
         <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
-          <ClientDashboard />
+          <ProcurementClientDashboard />
         </main>
       </div>
       <Footer />

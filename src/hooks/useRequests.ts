@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { useActivityFeed } from './useActivityFeed';
 
 export interface Request {
   id: string;
@@ -28,7 +27,6 @@ export const useRequests = () => {
   const [requests, setRequests] = useState<Request[]>([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
-  const { trackActivity } = useActivityFeed();
 
   const fetchRequests = async () => {
     if (!user) return;
@@ -76,6 +74,16 @@ export const useRequests = () => {
 
   const getOffersCount = (request: Request) => {
     return request.offers?.length || 0;
+  };
+
+  const trackActivity = async (activityData: any) => {
+    try {
+      await supabase
+        .from('activity_feed')
+        .insert(activityData);
+    } catch (error) {
+      console.error('Error tracking activity:', error);
+    }
   };
 
   const createRequest = async (requestData: {

@@ -1,6 +1,6 @@
 
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
-import { ClientDashboard } from "@/components/Dashboard/ClientDashboard";
+import { ProcurementClientDashboard } from "@/components/Dashboard/ProcurementClientDashboard";
 import { SupplierDashboard } from "@/pages/SupplierDashboard";
 import { AdminDashboard } from "@/pages/AdminDashboard";
 import { useAuth } from "@/contexts/AuthContext";
@@ -26,7 +26,7 @@ const Dashboard = () => {
       case 'admin':
         return <AdminDashboard />;
       default:
-        return <ClientDashboard />;
+        return <ProcurementClientDashboard />;
     }
   };
 
