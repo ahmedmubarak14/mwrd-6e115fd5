@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -18,6 +19,7 @@ export interface Request {
   created_at: string;
   updated_at: string;
   client_id: string;
+  user_id: string; // Add this for compatibility
   admin_approval_status: string;
   offers?: any[];
 }
@@ -43,7 +45,14 @@ export const useRequests = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setRequests((data || []) as Request[]);
+      
+      // Map client_id to user_id for compatibility
+      const mappedData = (data || []).map(request => ({
+        ...request,
+        user_id: request.client_id
+      })) as Request[];
+      
+      setRequests(mappedData);
     } catch (error) {
       console.error('Error fetching requests:', error);
     } finally {
