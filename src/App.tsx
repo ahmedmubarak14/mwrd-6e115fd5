@@ -31,17 +31,17 @@ import CreateRequest from "@/pages/CreateRequest";
 import AdminDashboard from './pages/admin/AdminDashboard';
 import Messages from './pages/Messages';
 import Suppliers from './pages/Suppliers';
-import Analytics from './pages/Analytics';
-import Orders from './pages/Orders';
-import Settings from './pages/Settings';
-import Support from './pages/Support';
-import BrowseRequests from './pages/BrowseRequests';
-import MyOffers from './pages/MyOffers';
-import ManageSubscription from './pages/ManageSubscription';
-import SupplierDashboard from './pages/SupplierDashboard';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import TermsAndConditions from './pages/TermsAndConditions';
-import Pricing from './pages/Pricing';
+import { Analytics } from './pages/Analytics';
+import { Orders } from './pages/Orders';
+import { Settings } from './pages/Settings';
+import { Support } from './pages/Support';
+import { BrowseRequests } from './pages/BrowseRequests';
+import { MyOffers } from './pages/MyOffers';
+import { ManageSubscription } from './pages/ManageSubscription';
+import { SupplierDashboard } from './pages/SupplierDashboard';
+import { PrivacyPolicy } from './pages/PrivacyPolicy';
+import { TermsAndConditions } from './pages/TermsAndConditions';
+import { Pricing } from './pages/Pricing';
 
 function App() {
   return (
