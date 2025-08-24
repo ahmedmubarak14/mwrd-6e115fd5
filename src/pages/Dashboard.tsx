@@ -1,6 +1,7 @@
+
 import { Header } from "@/components/ui/layout/Header";
 import { Sidebar } from "@/components/ui/layout/Sidebar";
-import { ClientDashboard } from "@/components/Dashboard/ClientDashboard";
+import { ProcurementClientDashboard } from "@/components/Dashboard/ProcurementClientDashboard";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { AuthForm } from "@/components/auth/AuthForm";
@@ -28,6 +29,9 @@ export const Dashboard = () => {
       navigate('/');
     } else if (userProfile?.role === 'admin' && !loading) {
       navigate('/admin');
+    } else if (userProfile?.role === 'vendor' && !loading) {
+      // Redirect suppliers to their dedicated dashboard
+      navigate('/supplier-dashboard');
     }
   }, [user, userProfile, loading, navigate]);
 
@@ -62,34 +66,36 @@ export const Dashboard = () => {
 
   return (
     <MobileContainer>
-      <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
-      
-      {/* Mobile Sidebar */}
-      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <MobileSheet>
-          <Sidebar userRole={userProfile.role} userProfile={userProfile} />
-        </MobileSheet>
-      </Sheet>
-
-      <div className="rtl-flex">
-        {/* Desktop Sidebar - position based on language */}
-        <div className="hidden lg:block rtl-order-1">
-          <Sidebar userRole={userProfile.role} userProfile={userProfile} />
-        </div>
+      <div className={isRTL ? 'rtl' : 'ltr'}>
+        <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
         
-        <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
-          <ClientDashboard />
-        </main>
-      </div>
+        {/* Mobile Sidebar */}
+        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+          <MobileSheet>
+            <Sidebar userRole={userProfile.role} userProfile={userProfile} />
+          </MobileSheet>
+        </Sheet>
 
-      {/* Onboarding Flow */}
-      {shouldShowOnboarding && !onboardingComplete && (
-        <OnboardingFlow 
-          onComplete={handleOnboardingComplete}
-          onSkip={handleOnboardingSkip}
-        />
-      )}
-      <Footer />
+        <div className={`flex ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+          {/* Desktop Sidebar */}
+          <div className="hidden lg:block">
+            <Sidebar userRole={userProfile.role} userProfile={userProfile} />
+          </div>
+          
+          <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden">
+            <ProcurementClientDashboard />
+          </main>
+        </div>
+
+        {/* Onboarding Flow */}
+        {shouldShowOnboarding && !onboardingComplete && (
+          <OnboardingFlow 
+            onComplete={handleOnboardingComplete}
+            onSkip={handleOnboardingSkip}
+          />
+        )}
+        <Footer />
+      </div>
     </MobileContainer>
   );
 };
