@@ -16,6 +16,7 @@ import { useState } from "react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Footer } from "@/components/ui/layout/Footer";
+import { PushNotificationManager } from "@/components/notifications/PushNotificationManager";
 
 export const Settings = () => {
   const { userProfile } = useAuth();
@@ -29,13 +30,6 @@ export const Settings = () => {
     toast({
       title: isRTL ? "تم الحفظ" : "Saved",
       description: isRTL ? "تم حفظ إعدادات الملف الشخصي" : "Profile settings have been saved",
-    });
-  };
-
-  const handleSaveNotifications = () => {
-    toast({
-      title: isRTL ? "تم الحفظ" : "Saved",
-      description: isRTL ? "تم حفظ إعدادات الإشعارات" : "Notification settings have been saved",
     });
   };
 
@@ -194,53 +188,7 @@ export const Settings = () => {
 
               {/* Notifications Settings */}
               <TabsContent value="notifications">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className={isRTL ? 'text-right' : 'text-left'}>
-                      {isRTL ? "إعدادات الإشعارات" : "Notification Settings"}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
-                        <Label className="text-base">
-                          {isRTL ? "إشعارات البريد الإلكتروني" : "Email Notifications"}
-                        </Label>
-                        <p className="text-sm text-muted-foreground">
-                          {isRTL ? "تلقي إشعارات حول الطلبات والعروض" : "Receive notifications about requests and offers"}
-                        </p>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-                    <Separator />
-                    <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
-                        <Label className="text-base">
-                          {isRTL ? "إشعارات الرسائل النصية" : "SMS Notifications"}
-                        </Label>
-                        <p className="text-sm text-muted-foreground">
-                          {isRTL ? "تلقي تحديثات مهمة عبر الرسائل النصية" : "Receive important updates via SMS"}
-                        </p>
-                      </div>
-                      <Switch />
-                    </div>
-                    <Separator />
-                    <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <div className={`space-y-0.5 ${isRTL ? 'text-right' : 'text-left'}`}>
-                        <Label className="text-base">
-                          {isRTL ? "إشعارات التطبيق" : "Push Notifications"}
-                        </Label>
-                        <p className="text-sm text-muted-foreground">
-                          {isRTL ? "تلقي إشعارات فورية في التطبيق" : "Receive instant notifications in the app"}
-                        </p>
-                      </div>
-                      <Switch defaultChecked />
-                    </div>
-                    <Button onClick={handleSaveNotifications} className="w-full">
-                      {isRTL ? "حفظ التغييرات" : "Save Changes"}
-                    </Button>
-                  </CardContent>
-                </Card>
+                <PushNotificationManager />
               </TabsContent>
 
               {/* Security Settings */}
