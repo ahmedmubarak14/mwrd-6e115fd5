@@ -13,7 +13,7 @@ import { RealTimeChatModal } from "@/components/modals/RealTimeChatModal";
 import { OfferDetailsModal } from "@/components/modals/OfferDetailsModal";
 import { OfferComparisonModal } from "@/components/enhanced/OfferComparisonModal";
 import { useUserProfiles } from "@/hooks/useUserProfiles";
-import { useOffers } from "@/hooks/useOffers";
+import { useOffers, Offer } from "@/hooks/useOffers";
 import { BarChart3, CheckCircle, XCircle } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -31,10 +31,13 @@ interface OfferRow {
   currency: string;
   delivery_time?: number;
   delivery_time_days: number;
+  status: 'pending' | 'accepted' | 'rejected';
   client_approval_status: 'pending' | 'approved' | 'rejected';
+  admin_approval_status: 'pending' | 'approved' | 'rejected';
   client_approval_notes?: string | null;
   client_approval_date?: string | null;
   created_at: string;
+  updated_at: string;
   vendor_id: string;
   request_id: string;
   request?: { title: string; client_id: string } | null;
@@ -97,6 +100,9 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
         ...offer,
         currency: offer.currency || 'SAR',
         delivery_time_days: offer.delivery_time_days || offer.delivery_time || 0,
+        status: offer.status || 'pending',
+        admin_approval_status: offer.admin_approval_status || 'pending',
+        updated_at: offer.updated_at || offer.created_at,
         vendor: offer.user_profiles
       }));
 
@@ -207,7 +213,28 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
   };
 
   const pendingOffers = offers.filter(o => o.client_approval_status === 'pending');
-  const selectedOffersData = offers.filter(o => selectedOffers.includes(o.id));
+  
+  // Convert OfferRow to Offer for comparison modal
+  const selectedOffersData: Offer[] = offers.filter(o => selectedOffers.includes(o.id)).map(offer => ({
+    id: offer.id,
+    title: offer.title,
+    description: offer.description,
+    price: offer.price,
+    currency: offer.currency,
+    delivery_time: offer.delivery_time || offer.delivery_time_days,
+    delivery_time_days: offer.delivery_time_days,
+    status: offer.status,
+    client_approval_status: offer.client_approval_status,
+    admin_approval_status: offer.admin_approval_status,
+    client_approval_notes: offer.client_approval_notes,
+    client_approval_date: offer.client_approval_date,
+    created_at: offer.created_at,
+    updated_at: offer.updated_at,
+    request_id: offer.request_id,
+    vendor_id: offer.vendor_id,
+    request: offer.request,
+    vendor: offer.vendor
+  }));
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

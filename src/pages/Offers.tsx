@@ -87,8 +87,9 @@ export const Offers = () => {
     }
   };
 
-  const handleOfferAction = async (offerId: string, action: 'approved' | 'rejected', notes?: string) => {
-    const success = await updateOfferStatus(offerId, action, notes);
+  const handleOfferAction = async (offerId: string, action: 'approve' | 'reject', notes?: string) => {
+    const mappedAction = action === 'approve' ? 'approved' : 'rejected';
+    const success = await updateOfferStatus(offerId, mappedAction, notes);
     if (success) {
       setSelectedOffers(prev => prev.filter(id => id !== offerId));
       await refetch();
@@ -367,7 +368,7 @@ export const Offers = () => {
                             <>
                               <Button 
                                 size="sm"
-                                onClick={() => handleOfferAction(offer.id, 'approved')}
+                                onClick={() => handleOfferAction(offer.id, 'approve')}
                                 className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
                               >
                                 <CheckCircle className="h-4 w-4" />
@@ -376,7 +377,7 @@ export const Offers = () => {
                               <Button 
                                 variant="destructive"
                                 size="sm"
-                                onClick={() => handleOfferAction(offer.id, 'rejected')}
+                                onClick={() => handleOfferAction(offer.id, 'reject')}
                                 className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
                               >
                                 <XCircle className="h-4 w-4" />

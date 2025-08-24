@@ -9,44 +9,32 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { MessageSquare, Search, Plus, Users, Clock, MoreHorizontal } from "lucide-react";
+import { MessageCircle, Search, Plus, Phone, Video, Archive, Trash2, Star } from "lucide-react";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { RealTimeChatModal } from "@/components/modals/RealTimeChatModal";
+import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Footer } from "@/components/ui/layout/Footer";
-import { supabase } from "@/integrations/supabase/client";
-import { format } from "date-fns";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 interface Conversation {
   id: string;
-  client_id: string;
-  vendor_id: string;
-  request_id?: string;
-  offer_id?: string;
-  status: string;
-  last_message?: string;
-  last_message_at?: string;
-  created_at: string;
-  updated_at: string;
+  participants: string[];
+  last_message: string;
+  last_message_at: string;
   unread_count: number;
-  participant?: {
+  other_participant: {
     id: string;
     full_name: string;
     company_name?: string;
     email: string;
     avatar_url?: string;
   };
-  request?: {
-    id: string;
-    title: string;
-  };
-  offer?: {
-    id: string;
-    title: string;
-  };
+  request_id?: string;
+  offer_id?: string;
+  request_title?: string;
+  offer_title?: string;
 }
 
 export const Messages = () => {
@@ -59,62 +47,85 @@ export const Messages = () => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
 
-  const fetchConversations = async () => {
+  const loadConversations = async () => {
     if (!userProfile?.id) return;
     
     setLoading(true);
     try {
-      // Get conversations where user is either client or vendor
-      const { data, error } = await supabase
-        .from('conversations')
+      const { data: messages, error } = await supabase
+        .from('messages')
         .select(`
-          *,
-          requests:request_id(id, title),
-          offers:offer_id(id, title)
+          id,
+          conversation_id,
+          sender_id,
+          recipient_id,
+          content,
+          created_at,
+          request_id,
+          offer_id,
+          read_at,
+          requests!messages_request_id_fkey(title),
+          offers!messages_offer_id_fkey(title)
         `)
-        .or(`client_id.eq.${userProfile.id},vendor_id.eq.${userProfile.id}`)
-        .order('updated_at', { ascending: false });
+        .or(`sender_id.eq.${userProfile.id},recipient_id.eq.${userProfile.id}`)
+        .order('created_at', { ascending: false });
 
       if (error) throw error;
 
-      // For each conversation, get the other participant's info and unread count
-      const conversationsWithParticipants = await Promise.all(
-        (data || []).map(async (conv) => {
-          const isClient = conv.client_id === userProfile.id;
-          const participantId = isClient ? conv.vendor_id : conv.client_id;
-          
-          // Get participant info
-          const { data: participantData } = await supabase
+      // Group messages by conversation and get the latest message for each
+      const conversationMap = new Map<string, any>();
+      
+      for (const message of messages || []) {
+        const conversationKey = message.conversation_id || 
+          [message.sender_id, message.recipient_id].sort().join('-');
+        
+        if (!conversationMap.has(conversationKey)) {
+          const otherParticipantId = message.sender_id === userProfile.id 
+            ? message.recipient_id 
+            : message.sender_id;
+
+          // Fetch participant details
+          const { data: participant } = await supabase
             .from('user_profiles')
             .select('id, full_name, company_name, email, avatar_url')
-            .eq('user_id', participantId)
+            .eq('id', otherParticipantId)
             .single();
 
-          // Get unread message count
-          const { count } = await supabase
-            .from('messages')
-            .select('id', { count: 'exact' })
-            .eq('conversation_id', conv.id)
-            .eq('recipient_id', userProfile.id)
-            .is('read_at', null);
+          conversationMap.set(conversationKey, {
+            id: conversationKey,
+            participants: [message.sender_id, message.recipient_id],
+            last_message: message.content,
+            last_message_at: message.created_at,
+            unread_count: 0,
+            other_participant: participant,
+            request_id: message.request_id,
+            offer_id: message.offer_id,
+            request_title: message.requests?.title,
+            offer_title: message.offers?.title
+          });
+        }
+      }
 
-          return {
-            ...conv,
-            participant: participantData,
-            unread_count: count || 0
-          };
-        })
-      );
+      // Count unread messages for each conversation
+      for (const [conversationId, conversation] of conversationMap) {
+        const { count } = await supabase
+          .from('messages')
+          .select('*', { count: 'exact', head: true })
+          .eq('conversation_id', conversationId)
+          .eq('recipient_id', userProfile.id)
+          .is('read_at', null);
+        
+        conversation.unread_count = count || 0;
+      }
 
-      setConversations(conversationsWithParticipants);
+      setConversations(Array.from(conversationMap.values()));
     } catch (error: any) {
-      console.error('Error fetching conversations:', error);
+      console.error('Error loading conversations:', error);
       toast({
-        title: isRTL ? "خطأ" : "Error",
-        description: isRTL ? "فشل في تحميل المحادثات" : "Failed to load conversations",
-        variant: "destructive"
+        title: isRTL ? 'خطأ' : 'Error',
+        description: isRTL ? 'فشل في تحميل المحادثات' : 'Failed to load conversations',
+        variant: 'destructive'
       });
     } finally {
       setLoading(false);
@@ -122,27 +133,20 @@ export const Messages = () => {
   };
 
   useEffect(() => {
-    fetchConversations();
-  }, [userProfile]);
+    loadConversations();
+  }, [userProfile?.id]);
 
   // Subscribe to real-time updates
   useEffect(() => {
     if (!userProfile?.id) return;
 
     const channel = supabase
-      .channel('conversations_changes')
+      .channel('messages_changes')
       .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'conversations' },
-        (payload) => {
-          console.log('Conversation updated:', payload);
-          fetchConversations();
-        }
-      )
-      .on('postgres_changes',
         { event: '*', schema: 'public', table: 'messages' },
         (payload) => {
           console.log('Message updated:', payload);
-          fetchConversations();
+          loadConversations();
         }
       )
       .subscribe();
@@ -152,55 +156,38 @@ export const Messages = () => {
     };
   }, [userProfile?.id]);
 
-  const filteredConversations = conversations.filter(conv => {
-    const participantName = conv.participant?.company_name || conv.participant?.full_name || '';
-    const requestTitle = conv.request?.title || '';
-    const offerTitle = conv.offer?.title || '';
-    
+  const filteredConversations = conversations.filter(conversation => {
+    const searchLower = searchTerm.toLowerCase();
     return (
-      participantName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      requestTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      offerTitle.toLowerCase().includes(searchTerm.toLowerCase())
+      conversation.other_participant?.full_name?.toLowerCase().includes(searchLower) ||
+      conversation.other_participant?.company_name?.toLowerCase().includes(searchLower) ||
+      conversation.other_participant?.email?.toLowerCase().includes(searchLower) ||
+      conversation.last_message?.toLowerCase().includes(searchLower) ||
+      conversation.request_title?.toLowerCase().includes(searchLower) ||
+      conversation.offer_title?.toLowerCase().includes(searchLower)
     );
   });
 
-  const markAsRead = async (conversationId: string) => {
-    if (!userProfile?.id) return;
+  const formatTimeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
     
-    const { error } = await supabase
-      .from('messages')
-      .update({ read_at: new Date().toISOString() })
-      .eq('conversation_id', conversationId)
-      .eq('recipient_id', userProfile.id)
-      .is('read_at', null);
-
-    if (!error) {
-      fetchConversations();
-    }
+    if (diffInMinutes < 1) return isRTL ? 'الآن' : 'Now';
+    if (diffInMinutes < 60) return isRTL ? `منذ ${diffInMinutes} دقيقة` : `${diffInMinutes}m ago`;
+    
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) return isRTL ? `منذ ${diffInHours} ساعة` : `${diffInHours}h ago`;
+    
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays < 7) return isRTL ? `منذ ${diffInDays} أيام` : `${diffInDays}d ago`;
+    
+    return date.toLocaleDateString();
   };
 
-  const deleteConversation = async (conversationId: string) => {
-    const { error } = await supabase
-      .from('conversations')
-      .update({ status: 'archived' })
-      .eq('id', conversationId);
-
-    if (error) {
-      toast({
-        title: isRTL ? "خطأ" : "Error",
-        description: isRTL ? "فشل في حذف المحادثة" : "Failed to delete conversation",
-        variant: "destructive"
-      });
-    } else {
-      toast({
-        title: isRTL ? "تم الحذف" : "Deleted",
-        description: isRTL ? "تم أرشفة المحادثة" : "Conversation archived",
-      });
-      fetchConversations();
-    }
+  const getTotalUnreadCount = () => {
+    return conversations.reduce((total, conv) => total + conv.unread_count, 0);
   };
-
-  const totalUnread = conversations.reduce((sum, conv) => sum + conv.unread_count, 0);
 
   return (
     <div className={`min-h-screen bg-background ${isRTL ? 'font-arabic' : ''}`}>
@@ -218,19 +205,20 @@ export const Messages = () => {
         </div>
         
         <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
-          <div className="max-w-7xl mx-auto space-y-6">
+          <div className="max-w-4xl mx-auto space-y-6">
             <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
               <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
-                <h1 className="text-3xl font-bold mb-2">
+                <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
+                  <MessageCircle className="h-8 w-8" />
                   {isRTL ? 'الرسائل' : 'Messages'}
-                  {totalUnread > 0 && (
-                    <Badge className="ml-2" variant="destructive">
-                      {totalUnread}
+                  {getTotalUnreadCount() > 0 && (
+                    <Badge variant="destructive" className="ml-2">
+                      {getTotalUnreadCount()}
                     </Badge>
                   )}
                 </h1>
                 <p className="text-muted-foreground">
-                  {isRTL ? 'تواصل مع الموردين والعملاء' : 'Communicate with vendors and clients'}
+                  {isRTL ? 'تواصل مع الموردين والعملاء' : 'Communicate with suppliers and clients'}
                 </p>
               </div>
             </div>
@@ -250,25 +238,26 @@ export const Messages = () => {
               </CardContent>
             </Card>
 
-            {loading && (
+            {loading ? (
               <div className="flex justify-center items-center py-12">
                 <LoadingSpinner />
               </div>
-            )}
-
-            {!loading && (
-              <div className="space-y-4">
+            ) : (
+              <div className="space-y-2">
                 {filteredConversations.length === 0 ? (
                   <Card>
                     <CardContent className="py-12 text-center">
-                      <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                      <MessageCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                       <h3 className="text-lg font-medium mb-2">
-                        {isRTL ? 'لا توجد محادثات' : 'No Conversations'}
+                        {searchTerm 
+                          ? (isRTL ? 'لا توجد محادثات مطابقة' : 'No matching conversations')
+                          : (isRTL ? 'لا توجد محادثات' : 'No conversations')
+                        }
                       </h3>
                       <p className="text-muted-foreground">
                         {searchTerm 
-                          ? (isRTL ? 'لم يتم العثور على محادثات تطابق البحث' : 'No conversations match your search')
-                          : (isRTL ? 'ابدأ محادثة من صفحة العروض أو الطلبات' : 'Start a conversation from offers or requests page')
+                          ? (isRTL ? 'جرب مصطلح بحث مختلف' : 'Try a different search term')
+                          : (isRTL ? 'ابدأ محادثة من خلال الرد على عرض أو طلب' : 'Start a conversation by responding to an offer or request')
                         }
                       </p>
                     </CardContent>
@@ -276,94 +265,68 @@ export const Messages = () => {
                 ) : (
                   filteredConversations.map((conversation) => (
                     <Card key={conversation.id} className="hover:shadow-md transition-shadow">
-                      <CardHeader>
-                        <div className={`flex items-start justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                          <div className={`flex items-start gap-4 flex-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                            <Avatar className="h-12 w-12">
-                              <AvatarImage src={conversation.participant?.avatar_url} />
-                              <AvatarFallback>
-                                {(conversation.participant?.company_name?.[0] || 
-                                  conversation.participant?.full_name?.[0] || 
-                                  conversation.participant?.email?.[0] || '?').toUpperCase()}
-                              </AvatarFallback>
-                            </Avatar>
-                            
-                            <div className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
-                              <CardTitle className="text-lg mb-1">
-                                {conversation.participant?.company_name || conversation.participant?.full_name || 'Unknown User'}
-                              </CardTitle>
-                              <CardDescription className="mb-2">
-                                {conversation.request && (
-                                  <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded mr-2">
-                                    {isRTL ? 'طلب: ' : 'Request: '}{conversation.request.title}
-                                  </span>
+                      <CardContent className="p-4">
+                        <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          <Avatar className="h-12 w-12">
+                            <AvatarImage 
+                              src={conversation.other_participant?.avatar_url} 
+                              alt={conversation.other_participant?.full_name}
+                            />
+                            <AvatarFallback>
+                              {conversation.other_participant?.full_name?.charAt(0) || 
+                               conversation.other_participant?.email?.charAt(0) || '?'}
+                            </AvatarFallback>
+                          </Avatar>
+
+                          <div className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+                            <div className={`flex justify-between items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                              <div>
+                                <h3 className="font-semibold">
+                                  {conversation.other_participant?.company_name || 
+                                   conversation.other_participant?.full_name ||
+                                   conversation.other_participant?.email}
+                                </h3>
+                                {conversation.request_title && (
+                                  <p className="text-xs text-muted-foreground">
+                                    {isRTL ? 'طلب: ' : 'Request: '}{conversation.request_title}
+                                  </p>
                                 )}
-                                {conversation.offer && (
-                                  <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
-                                    {isRTL ? 'عرض: ' : 'Offer: '}{conversation.offer.title}
-                                  </span>
+                                {conversation.offer_title && (
+                                  <p className="text-xs text-muted-foreground">
+                                    {isRTL ? 'عرض: ' : 'Offer: '}{conversation.offer_title}
+                                  </p>
                                 )}
-                              </CardDescription>
-                              
-                              {conversation.last_message && (
-                                <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
-                                  {conversation.last_message}
-                                </p>
-                              )}
-                              
-                              <div className={`flex items-center gap-2 text-xs text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
-                                <Clock className="h-3 w-3" />
-                                {conversation.last_message_at 
-                                  ? format(new Date(conversation.last_message_at), 'MMM dd, HH:mm')
-                                  : format(new Date(conversation.created_at), 'MMM dd, HH:mm')
-                                }
+                              </div>
+                              <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                                {conversation.unread_count > 0 && (
+                                  <Badge variant="destructive" className="text-xs">
+                                    {conversation.unread_count}
+                                  </Badge>
+                                )}
+                                <span className="text-xs text-muted-foreground">
+                                  {formatTimeAgo(conversation.last_message_at)}
+                                </span>
                               </div>
                             </div>
+                            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                              {conversation.last_message}
+                            </p>
                           </div>
-                          
-                          <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                            {conversation.unread_count > 0 && (
-                              <Badge variant="destructive" className="h-6 min-w-6 flex items-center justify-center">
-                                {conversation.unread_count}
-                              </Badge>
-                            )}
-                            
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm">
-                                  <MoreHorizontal className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent>
-                                <DropdownMenuItem onClick={() => markAsRead(conversation.id)}>
-                                  {isRTL ? 'تحديد كمقروء' : 'Mark as Read'}
-                                </DropdownMenuItem>
-                                <DropdownMenuItem 
-                                  onClick={() => deleteConversation(conversation.id)}
-                                  className="text-destructive"
-                                >
-                                  {isRTL ? 'أرشفة المحادثة' : 'Archive Conversation'}
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
+
+                          <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                            <RealTimeChatModal 
+                              recipientId={conversation.other_participant.id}
+                              recipientName={conversation.other_participant?.company_name || 
+                                           conversation.other_participant?.full_name ||
+                                           conversation.other_participant?.email}
+                              requestId={conversation.request_id}
+                              offerId={conversation.offer_id}
+                            >
+                              <Button variant="outline" size="sm">
+                                <MessageCircle className="h-4 w-4" />
+                              </Button>
+                            </RealTimeChatModal>
                           </div>
-                        </div>
-                      </CardHeader>
-                      
-                      <CardContent>
-                        <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                          <RealTimeChatModal 
-                            recipientId={conversation.participant?.id || ''}
-                            recipientName={conversation.participant?.company_name || conversation.participant?.full_name || 'User'}
-                            requestId={conversation.request_id}
-                            offerId={conversation.offer_id}
-                            existingConversationId={conversation.id}
-                          >
-                            <Button className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}>
-                              <MessageSquare className="h-4 w-4" />
-                              {isRTL ? 'فتح المحادثة' : 'Open Chat'}
-                            </Button>
-                          </RealTimeChatModal>
                         </div>
                       </CardContent>
                     </Card>
