@@ -1,3 +1,4 @@
+
 import { useEffect, useMemo, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,8 +11,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { OfferApprovalCard } from "@/components/admin/OfferApprovalCard";
 import { RealTimeChatModal } from "@/components/modals/RealTimeChatModal";
 import { OfferDetailsModal } from "@/components/modals/OfferDetailsModal";
+import { OfferComparisonModal } from "@/components/enhanced/OfferComparisonModal";
 import { useUserProfiles } from "@/hooks/useUserProfiles";
 import { useOffers } from "@/hooks/useOffers";
+import { BarChart3, CheckCircle, XCircle } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface RequestOffersModalProps {
   children: React.ReactNode;
@@ -24,7 +28,9 @@ interface OfferRow {
   title: string;
   description: string;
   price: number;
+  currency: string;
   delivery_time?: number;
+  delivery_time_days: number;
   client_approval_status: 'pending' | 'approved' | 'rejected';
   client_approval_notes?: string | null;
   client_approval_date?: string | null;
@@ -32,6 +38,11 @@ interface OfferRow {
   vendor_id: string;
   request_id: string;
   request?: { title: string; client_id: string } | null;
+  vendor?: {
+    full_name: string;
+    company_name?: string;
+    email: string;
+  };
 }
 
 export const RequestOffersModal = ({ children, requestId, requestTitle }: RequestOffersModalProps) => {
@@ -39,6 +50,7 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
   const [loading, setLoading] = useState(false);
   const [offers, setOffers] = useState<OfferRow[]>([]);
   const [requestOwnerId, setRequestOwnerId] = useState<string | null>(null);
+  const [selectedOffers, setSelectedOffers] = useState<string[]>([]);
 
   const { userProfile } = useAuth();
   const { language } = useLanguage();
@@ -64,18 +76,33 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
       
       setRequestOwnerId(requestData?.client_id || null);
 
-      // Then fetch offers
+      // Then fetch offers with vendor information
       const { data, error } = await supabase
         .from('offers')
-        .select(`*, request:requests(title, client_id)`) 
+        .select(`
+          *, 
+          request:requests(title, client_id),
+          user_profiles:vendor_id(
+            full_name,
+            company_name,
+            email
+          )
+        `) 
         .eq('request_id', requestId)
         .order('created_at', { ascending: false });
+      
       if (error) throw error;
 
-      const list = (data || []) as OfferRow[];
-      setOffers(list);
+      const transformedOffers = (data || []).map(offer => ({
+        ...offer,
+        currency: offer.currency || 'SAR',
+        delivery_time_days: offer.delivery_time_days || offer.delivery_time || 0,
+        vendor: offer.user_profiles
+      }));
 
-      const supplierIds = Array.from(new Set(list.map(o => o.vendor_id)));
+      setOffers(transformedOffers as OfferRow[]);
+
+      const supplierIds = Array.from(new Set(transformedOffers.map(o => o.vendor_id)));
       if (supplierIds.length > 0) await fetchMultipleProfiles(supplierIds);
     } catch (err: any) {
       console.error('Error loading offers:', err);
@@ -92,11 +119,32 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, requestId]);
 
+  // Subscribe to real-time updates
+  useEffect(() => {
+    if (!open) return;
+
+    const channel = supabase
+      .channel('request_offers_changes')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'offers', filter: `request_id=eq.${requestId}` },
+        (payload) => {
+          console.log('Offer updated:', payload);
+          loadOffers();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [open, requestId]);
+
   const onApprove = async (id: string, notes: string) => {
     console.log('Attempting to approve offer:', { id, notes, userProfile: userProfile?.id, requestOwnerId });
     const ok = await updateOfferStatus(id, 'approved', notes);
     if (ok) {
-      toast({ title: isRTL ? 'تم القبول' : 'Approved', description: isRTL ? 'تم قبول العرض.' : 'Offer approved.' });
+      toast({ title: isRTL ? 'تم القبول' : 'Approved', description: isRTL ? 'تم قبول العرض وإنشاء طلب جديد.' : 'Offer approved and new order created.' });
+      setSelectedOffers(prev => prev.filter(offerId => offerId !== id));
       await loadOffers();
     } else {
       console.error('Failed to approve offer - check database permissions and RLS policies');
@@ -113,6 +161,7 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
     const ok = await updateOfferStatus(id, 'rejected', notes);
     if (ok) {
       toast({ title: isRTL ? 'تم الرفض' : 'Rejected', description: isRTL ? 'تم رفض العرض.' : 'Offer rejected.' });
+      setSelectedOffers(prev => prev.filter(offerId => offerId !== id));
       await loadOffers();
     } else {
       console.error('Failed to reject offer - check database permissions and RLS policies');
@@ -123,13 +172,11 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
       });
     }
   };
+
   // Determine user permissions and role
   const isAdmin = userProfile?.role === 'admin';
   const isRequestOwner = !!userProfile?.id && !!requestOwnerId && userProfile.id === requestOwnerId;
   const canManage = isAdmin || isRequestOwner;
-  
-  // Fixed logic: if user can manage offers, they should be able to approve/reject (client or admin role)
-  // If they can't manage, they're viewing as a vendor
   const userRole = canManage ? (isAdmin ? 'admin' : 'client') : 'vendor';
   
   console.log('Permission check:', { 
@@ -142,65 +189,165 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
     userRole 
   });
 
+  const handleOfferSelection = (offerId: string, selected: boolean) => {
+    if (selected) {
+      setSelectedOffers(prev => [...prev, offerId]);
+    } else {
+      setSelectedOffers(prev => prev.filter(id => id !== offerId));
+    }
+  };
+
+  const handleSelectAll = () => {
+    const pendingOffers = offers.filter(o => o.client_approval_status === 'pending');
+    if (selectedOffers.length === pendingOffers.length) {
+      setSelectedOffers([]);
+    } else {
+      setSelectedOffers(pendingOffers.map(o => o.id));
+    }
+  };
+
+  const pendingOffers = offers.filter(o => o.client_approval_status === 'pending');
+  const selectedOffersData = offers.filter(o => selectedOffers.includes(o.id));
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader>
-          <DialogTitle className={isRTL ? 'text-right' : ''}>
-            {isRTL ? 'العروض للطلب' : 'Offers for Request'}{requestTitle ? `: ${requestTitle}` : ''}
-          </DialogTitle>
+      <DialogContent className="max-w-4xl max-h-[90vh] flex flex-col">
+        <DialogHeader className="pb-4">
+          <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <DialogTitle className={isRTL ? 'text-right' : ''}>
+              {isRTL ? 'العروض للطلب' : 'Offers for Request'}{requestTitle ? `: ${requestTitle}` : ''}
+            </DialogTitle>
+            <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              {canManage && pendingOffers.length > 1 && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleSelectAll}
+                  className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
+                >
+                  <Checkbox 
+                    checked={selectedOffers.length === pendingOffers.length}
+                    onCheckedChange={handleSelectAll}
+                  />
+                  {selectedOffers.length === pendingOffers.length 
+                    ? (isRTL ? 'إلغاء الكل' : 'Deselect All')
+                    : (isRTL ? 'تحديد الكل' : 'Select All')
+                  }
+                </Button>
+              )}
+              {selectedOffers.length > 1 && canManage && (
+                <OfferComparisonModal 
+                  offers={selectedOffersData}
+                  onOfferAction={async (offerId, action, notes) => {
+                    if (action === 'approve') {
+                      await onApprove(offerId, notes || '');
+                    } else {
+                      await onReject(offerId, notes || '');
+                    }
+                  }}
+                >
+                  <Button className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}>
+                    <BarChart3 className="h-4 w-4" />
+                    {isRTL ? `مقارنة (${selectedOffers.length})` : `Compare (${selectedOffers.length})`}
+                  </Button>
+                </OfferComparisonModal>
+              )}
+            </div>
+          </div>
         </DialogHeader>
-        {loading ? (
-          <div className="py-10 flex items-center justify-center">
-            <LoadingSpinner text={isRTL ? 'جارٍ التحميل...' : 'Loading...'} />
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {offers.length === 0 ? (
-              <Card>
-                <CardContent className="py-10 text-center text-muted-foreground">
-                  {isRTL ? 'لا توجد عروض بعد.' : 'No offers yet.'}
-                </CardContent>
-              </Card>
-            ) : (
-              offers.map((offer) => {
-                const supplier = getProfile(offer.vendor_id);
-                const supplierName = supplier?.full_name || supplier?.email || 'Supplier';
-                return (
-                  <div key={offer.id} className="space-y-2">
-                    <OfferApprovalCard 
-                      offer={offer as any}
-                      onApprove={onApprove}
-                      onReject={onReject}
-                      userRole={userRole as any}
-                    />
-                    <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <RealTimeChatModal 
-                        recipientId={offer.vendor_id}
-                        recipientName={supplierName}
-                        requestId={offer.request_id}
-                        offerId={offer.id}
-                      >
-                        <Button variant="outline" size="sm">
-                          {isRTL ? 'مراسلة المورّد' : 'Message Supplier'}
-                        </Button>
-                      </RealTimeChatModal>
 
-                      <OfferDetailsModal offerId={offer.id} userRole={userRole as any} onUpdated={loadOffers}>
-                        <Button variant="outline" size="sm">
-                          {isRTL ? 'عرض التفاصيل' : 'View Details'}
-                        </Button>
-                      </OfferDetailsModal>
+        <div className="flex-1 overflow-y-auto">
+          {loading ? (
+            <div className="py-10 flex items-center justify-center">
+              <LoadingSpinner text={isRTL ? 'جارٍ التحميل...' : 'Loading...'} />
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {offers.length === 0 ? (
+                <Card>
+                  <CardContent className="py-10 text-center text-muted-foreground">
+                    {isRTL ? 'لا توجد عروض بعد.' : 'No offers yet.'}
+                  </CardContent>
+                </Card>
+              ) : (
+                offers.map((offer) => {
+                  const supplier = getProfile(offer.vendor_id) || offer.vendor;
+                  const supplierName = supplier?.company_name || supplier?.full_name || supplier?.email || 'Supplier';
+                  
+                  return (
+                    <div key={offer.id} className="space-y-2">
+                      <div className={`flex items-start gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        {canManage && offer.client_approval_status === 'pending' && (
+                          <Checkbox
+                            checked={selectedOffers.includes(offer.id)}
+                            onCheckedChange={(checked) => handleOfferSelection(offer.id, checked as boolean)}
+                            className="mt-4"
+                          />
+                        )}
+                        <div className="flex-1">
+                          <OfferApprovalCard 
+                            offer={offer as any}
+                            onApprove={onApprove}
+                            onReject={onReject}
+                            userRole={userRole as any}
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''} ml-8`}>
+                        <RealTimeChatModal 
+                          recipientId={offer.vendor_id}
+                          recipientName={supplierName}
+                          requestId={offer.request_id}
+                          offerId={offer.id}
+                        >
+                          <Button variant="outline" size="sm">
+                            {isRTL ? 'مراسلة المورّد' : 'Message Supplier'}
+                          </Button>
+                        </RealTimeChatModal>
+
+                        <OfferDetailsModal 
+                          offerId={offer.id} 
+                          userRole={userRole as any} 
+                          onUpdated={loadOffers}
+                        >
+                          <Button variant="outline" size="sm">
+                            {isRTL ? 'عرض التفاصيل' : 'View Details'}
+                          </Button>
+                        </OfferDetailsModal>
+
+                        {canManage && offer.client_approval_status === 'pending' && (
+                          <>
+                            <Button 
+                              size="sm"
+                              onClick={() => onApprove(offer.id, '')}
+                              className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
+                            >
+                              <CheckCircle className="h-4 w-4" />
+                              {isRTL ? 'قبول سريع' : 'Quick Accept'}
+                            </Button>
+                            <Button 
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => onReject(offer.id, '')}
+                              className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
+                            >
+                              <XCircle className="h-4 w-4" />
+                              {isRTL ? 'رفض سريع' : 'Quick Reject'}
+                            </Button>
+                          </>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        )}
+                  );
+                })
+              )}
+            </div>
+          )}
+        </div>
       </DialogContent>
     </Dialog>
   );

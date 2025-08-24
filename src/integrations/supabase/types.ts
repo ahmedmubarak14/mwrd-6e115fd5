@@ -511,9 +511,13 @@ export type Database = {
       offers: {
         Row: {
           admin_approval_status: string | null
+          client_approval_date: string | null
+          client_approval_notes: string | null
           client_approval_status: string | null
           created_at: string
+          currency: string | null
           delivery_time: number | null
+          delivery_time_days: number | null
           description: string
           id: string
           price: number
@@ -525,9 +529,13 @@ export type Database = {
         }
         Insert: {
           admin_approval_status?: string | null
+          client_approval_date?: string | null
+          client_approval_notes?: string | null
           client_approval_status?: string | null
           created_at?: string
+          currency?: string | null
           delivery_time?: number | null
+          delivery_time_days?: number | null
           description: string
           id?: string
           price: number
@@ -539,9 +547,13 @@ export type Database = {
         }
         Update: {
           admin_approval_status?: string | null
+          client_approval_date?: string | null
+          client_approval_notes?: string | null
           client_approval_status?: string | null
           created_at?: string
+          currency?: string | null
           delivery_time?: number | null
+          delivery_time_days?: number | null
           description?: string
           id?: string
           price?: number
@@ -574,10 +586,12 @@ export type Database = {
           client_id: string
           completion_date: string | null
           created_at: string
+          currency: string | null
           delivery_date: string | null
           description: string | null
           id: string
           notes: string | null
+          offer_id: string | null
           request_id: string
           status: Database["public"]["Enums"]["order_status"]
           title: string
@@ -589,10 +603,12 @@ export type Database = {
           client_id: string
           completion_date?: string | null
           created_at?: string
+          currency?: string | null
           delivery_date?: string | null
           description?: string | null
           id?: string
           notes?: string | null
+          offer_id?: string | null
           request_id: string
           status?: Database["public"]["Enums"]["order_status"]
           title: string
@@ -604,10 +620,12 @@ export type Database = {
           client_id?: string
           completion_date?: string | null
           created_at?: string
+          currency?: string | null
           delivery_date?: string | null
           description?: string | null
           id?: string
           notes?: string | null
+          offer_id?: string | null
           request_id?: string
           status?: Database["public"]["Enums"]["order_status"]
           title?: string
@@ -621,6 +639,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "user_profiles"
             referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "orders_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "offers"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "orders_request_id_fkey"
