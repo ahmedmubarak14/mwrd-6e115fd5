@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Plus, Search, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -7,13 +8,26 @@ import { useProjects } from '@/hooks/useProjects';
 import { ProjectCard } from '@/components/projects/ProjectCard';
 import { CreateProjectModal } from '@/components/projects/CreateProjectModal';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { Header } from "@/components/ui/layout/Header";
+import { Sidebar } from "@/components/ui/layout/Sidebar";
+import { Sheet } from "@/components/ui/sheet";
+import { MobileSheet } from "@/components/ui/MobileSheet";
+import { MobileContainer } from "@/components/ui/MobileContainer";
+import { Footer } from "@/components/ui/layout/Footer";
+import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Projects() {
   const { projects, loading, getStatusColor, getPriorityColor } = useProjects();
+  const { userProfile } = useAuth();
+  const { language } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [priorityFilter, setPriorityFilter] = useState<string>('all');
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const isRTL = language === 'ar';
 
   const filteredProjects = projects.filter(project => {
     const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -41,111 +55,140 @@ export default function Projects() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <LoadingSpinner />
-      </div>
+      <MobileContainer>
+        <div className={isRTL ? 'rtl' : 'ltr'}>
+          <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
+          <div className="flex items-center justify-center min-h-screen">
+            <LoadingSpinner />
+          </div>
+        </div>
+      </MobileContainer>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Projects</h1>
-          <p className="text-muted-foreground">Manage your procurement projects</p>
+    <MobileContainer>
+      <div className={isRTL ? 'rtl' : 'ltr'}>
+        <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
+        
+        {/* Mobile Sidebar */}
+        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+          <MobileSheet>
+            <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
+          </MobileSheet>
+        </Sheet>
+
+        <div className={`flex ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+          {/* Desktop Sidebar */}
+          <div className="hidden lg:block">
+            <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
+          </div>
+          
+          <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden">
+            <div className="container mx-auto px-4 py-8">
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h1 className="text-3xl font-bold text-foreground">Projects</h1>
+                  <p className="text-muted-foreground">Manage your procurement projects</p>
+                </div>
+                <Button onClick={() => setShowCreateModal(true)} className="flex items-center gap-2">
+                  <Plus className="h-4 w-4" />
+                  New Project
+                </Button>
+              </div>
+
+              {/* Filters */}
+              <div className="bg-card rounded-lg border p-6 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search projects..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger>
+                      <Filter className="h-4 w-4 mr-2" />
+                      <SelectValue placeholder="Filter by status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="draft">Draft</SelectItem>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="completed">Completed</SelectItem>
+                      <SelectItem value="on_hold">On Hold</SelectItem>
+                      <SelectItem value="cancelled">Cancelled</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Select value={priorityFilter} onValueChange={setPriorityFilter}>
+                    <SelectTrigger>
+                      <Filter className="h-4 w-4 mr-2" />
+                      <SelectValue placeholder="Filter by priority" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Priority</SelectItem>
+                      <SelectItem value="low">Low</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="high">High</SelectItem>
+                      <SelectItem value="urgent">Urgent</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <div className="text-sm text-muted-foreground flex items-center">
+                    Showing {filteredProjects.length} of {projects.length} projects
+                  </div>
+                </div>
+              </div>
+
+              {/* Projects Grid */}
+              {filteredProjects.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="bg-muted rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                    <Plus className="h-8 w-8 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-lg font-medium text-foreground mb-2">No projects found</h3>
+                  <p className="text-muted-foreground mb-4">
+                    {searchTerm || statusFilter !== 'all' || priorityFilter !== 'all'
+                      ? 'Try adjusting your filters to see more results.'
+                      : 'Create your first project to get started with procurement management.'}
+                  </p>
+                  {!searchTerm && statusFilter === 'all' && priorityFilter === 'all' && (
+                    <Button onClick={() => setShowCreateModal(true)}>
+                      Create Your First Project
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredProjects.map((project) => (
+                    <ProjectCard
+                      key={project.id}
+                      project={project}
+                      onView={handleView}
+                      onEdit={handleEdit}
+                      onDelete={handleDelete}
+                      getStatusColor={getStatusColor}
+                      getPriorityColor={getPriorityColor}
+                    />
+                  ))}
+                </div>
+              )}
+
+              <CreateProjectModal 
+                open={showCreateModal} 
+                onClose={() => setShowCreateModal(false)} 
+              />
+            </div>
+          </main>
         </div>
-        <Button onClick={() => setShowCreateModal(true)} className="flex items-center gap-2">
-          <Plus className="h-4 w-4" />
-          New Project
-        </Button>
+
+        <Footer />
       </div>
-
-      {/* Filters */}
-      <div className="bg-card rounded-lg border p-6 mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search projects..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger>
-              <Filter className="h-4 w-4 mr-2" />
-              <SelectValue placeholder="Filter by status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="draft">Draft</SelectItem>
-              <SelectItem value="active">Active</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
-              <SelectItem value="on_hold">On Hold</SelectItem>
-              <SelectItem value="cancelled">Cancelled</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Select value={priorityFilter} onValueChange={setPriorityFilter}>
-            <SelectTrigger>
-              <Filter className="h-4 w-4 mr-2" />
-              <SelectValue placeholder="Filter by priority" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Priority</SelectItem>
-              <SelectItem value="low">Low</SelectItem>
-              <SelectItem value="medium">Medium</SelectItem>
-              <SelectItem value="high">High</SelectItem>
-              <SelectItem value="urgent">Urgent</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <div className="text-sm text-muted-foreground flex items-center">
-            Showing {filteredProjects.length} of {projects.length} projects
-          </div>
-        </div>
-      </div>
-
-      {/* Projects Grid */}
-      {filteredProjects.length === 0 ? (
-        <div className="text-center py-12">
-          <div className="bg-muted rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-            <Plus className="h-8 w-8 text-muted-foreground" />
-          </div>
-          <h3 className="text-lg font-medium text-foreground mb-2">No projects found</h3>
-          <p className="text-muted-foreground mb-4">
-            {searchTerm || statusFilter !== 'all' || priorityFilter !== 'all'
-              ? 'Try adjusting your filters to see more results.'
-              : 'Create your first project to get started with procurement management.'}
-          </p>
-          {!searchTerm && statusFilter === 'all' && priorityFilter === 'all' && (
-            <Button onClick={() => setShowCreateModal(true)}>
-              Create Your First Project
-            </Button>
-          )}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              onView={handleView}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-              getStatusColor={getStatusColor}
-              getPriorityColor={getPriorityColor}
-            />
-          ))}
-        </div>
-      )}
-
-      <CreateProjectModal 
-        open={showCreateModal} 
-        onClose={() => setShowCreateModal(false)} 
-      />
-    </div>
+    </MobileContainer>
   );
 }
