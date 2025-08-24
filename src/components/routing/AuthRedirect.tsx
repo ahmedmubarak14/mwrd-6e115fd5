@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -24,7 +25,7 @@ export const AuthRedirect = () => {
       } else if (userProfile.role === 'vendor') {
         navigate('/supplier-dashboard', { replace: true });
       } else {
-        navigate('/client-dashboard', { replace: true });
+        navigate('/dashboard', { replace: true });
       }
     }
   }, [user, userProfile, loading, navigate, location.pathname]);
