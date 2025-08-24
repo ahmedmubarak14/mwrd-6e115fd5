@@ -12,7 +12,6 @@ import ProcurementRequests from './pages/ProcurementRequests';
 import Projects from './pages/Projects';
 import ProjectDetails from './pages/ProjectDetails';
 import Offers from './pages/Offers';
-import AdminDashboard from './pages/admin/AdminDashboard';
 import { AdminUsers } from './pages/admin/AdminUsers';
 import AdminRequests from './pages/admin/AdminRequests';
 import AdminProjects from './pages/admin/AdminProjects';
@@ -29,14 +28,15 @@ import ActivityFeed from './pages/ActivityFeed';
 import AdminOffers from './pages/admin/AdminOffers';
 import CreateProcurementRequest from "@/pages/CreateProcurementRequest";
 import CreateRequest from "@/pages/CreateRequest";
+import AdminDashboard from './pages/admin/AdminDashboard';
 
 function App() {
   return (
     <QueryClient>
       <AuthProvider>
         <LanguageProvider>
-          <RouteAwareThemeProvider>
-            <Router>
+          <Router>
+            <RouteAwareThemeProvider>
               <Routes>
                 {/* Public Routes */}
                 <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
@@ -78,9 +78,9 @@ function App() {
                 {/* Catch-all route for 404 Not Found */}
                 <Route path="*" element={<div>Not Found</div>} />
               </Routes>
-            </Router>
-            <Toaster />
-          </RouteAwareThemeProvider>
+              <Toaster />
+            </RouteAwareThemeProvider>
+          </Router>
         </LanguageProvider>
       </AuthProvider>
     </QueryClient>
