@@ -43,7 +43,7 @@ export const RoleProtectedRoute = ({ children, allowed }: RoleProtectedRouteProp
     const homeByRole: Record<string, string> = {
       client: '/dashboard',
       vendor: '/vendor-dashboard',
-      admin: '/admin/dashboard',
+      admin: '/admin',
     };
 
     const suggested = role ? homeByRole[role] : '/landing';

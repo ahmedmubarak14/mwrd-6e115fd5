@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { RouteAwareThemeProvider } from "./components/RouteAwareThemeProvider";
+// Fix the import statements - use default imports instead of named imports
 import Profile from "./pages/Profile";
 import { Landing } from "./pages/Landing";
 import Auth from "./pages/Auth";
@@ -14,7 +15,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import { EnhancedVendorDashboard } from "@/components/vendor/EnhancedVendorDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
-import { AdminLayout } from "@/components/admin/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import { AdminDashboardOverview } from "./pages/admin/AdminDashboardOverview";
 import AdminRequests from "./pages/admin/AdminRequests";
 import AdminOffers from "./pages/admin/AdminOffers";
@@ -23,8 +24,6 @@ import CategoryManagement from "./pages/admin/CategoryManagement";
 import { OffersManagement } from "./pages/admin/OffersManagement";
 import { RequestsApproval } from "./pages/admin/RequestsApproval";
 import FinancialTransactions from "./pages/admin/FinancialTransactions";
-import AdminFinancialDashboard from "./pages/admin/AdminFinancialDashboard";
-import AdminAnalyticsDashboard from "./pages/admin/AdminAnalyticsDashboard";
 import { ExpertConsultations } from "./pages/admin/ExpertConsultations";
 import Settings from "./pages/Settings";
 import Requests from "./pages/Requests";
@@ -83,6 +82,7 @@ function App() {
                   <Toaster />
                   <Sonner />
                   <Routes>
+                    {/* Root Route - Redirect only */}
                     <Route
                       path="/"
                       element={
@@ -207,7 +207,6 @@ function App() {
                         </ProtectedRoute>
                       }
                     />
-                    
                     <Route
                       path="/requests"
                       element={
@@ -377,40 +376,95 @@ function App() {
                       }
                     />
 
-                    {/* Admin Routes - All nested under AdminLayout */}
+                    {/* Admin Routes */}
                     <Route
                       path="/admin"
                       element={
                         <RoleProtectedRoute allowed={['admin']}>
-                          <AdminLayout />
+                          <AdminDashboard />
                         </RoleProtectedRoute>
                       }
-                    >
-                      <Route index element={<AdminDashboardOverview />} />
-                      <Route path="dashboard" element={<AdminDashboardOverview />} />
-                      <Route path="users" element={<AdminUsers />} />
-                      <Route path="users/advanced" element={<AdminUsers />} />
-                      <Route path="financial" element={<AdminFinancialDashboard />} />
-                      <Route path="financial/transactions" element={<FinancialTransactions />} />
-                      <Route path="financial/subscriptions" element={<AdminFinancialDashboard />} />
-                      <Route path="analytics" element={<AdminAnalyticsDashboard />} />
-                      <Route path="analytics/users" element={<AdminAnalyticsDashboard />} />
-                      <Route path="analytics/reports" element={<AdminAnalyticsDashboard />} />
-                      <Route path="content/requests" element={<RequestsApproval />} />
-                      <Route path="content/offers" element={<OffersManagement />} />
-                      <Route path="content/consultations" element={<ExpertConsultations />} />
-                      <Route path="settings" element={<CategoryManagement />} />
-                      <Route path="settings/theme" element={<CategoryManagement />} />
-                      <Route path="settings/database" element={<CategoryManagement />} />
-                      <Route path="requests" element={<AdminRequests />} />
-                      <Route path="offers" element={<AdminOffers />} />
-                      <Route path="projects" element={<AdminProjects />} />
-                      <Route path="categories" element={<CategoryManagement />} />
-                      <Route path="offers-management" element={<OffersManagement />} />
-                      <Route path="requests-approval" element={<RequestsApproval />} />
-                      <Route path="financial-transactions" element={<FinancialTransactions />} />
-                      <Route path="expert-consultations" element={<ExpertConsultations />} />
-                    </Route>
+                    />
+                    <Route
+                      path="/admin/dashboard"
+                      element={
+                        <RoleProtectedRoute allowed={['admin']}>
+                          <AdminDashboardOverview />
+                        </RoleProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/users"
+                      element={
+                        <RoleProtectedRoute allowed={['admin']}>
+                          <AdminUsers />
+                        </RoleProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/requests"
+                      element={
+                        <RoleProtectedRoute allowed={['admin']}>
+                          <AdminRequests />
+                        </RoleProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/offers"
+                      element={
+                        <RoleProtectedRoute allowed={['admin']}>
+                          <AdminOffers />
+                        </RoleProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/projects"
+                      element={
+                        <RoleProtectedRoute allowed={['admin']}>
+                          <AdminProjects />
+                        </RoleProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/categories"
+                      element={
+                        <RoleProtectedRoute allowed={['admin']}>
+                          <CategoryManagement />
+                        </RoleProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/offers-management"
+                      element={
+                        <RoleProtectedRoute allowed={['admin']}>
+                          <OffersManagement />
+                        </RoleProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/requests-approval"
+                      element={
+                        <RoleProtectedRoute allowed={['admin']}>
+                          <RequestsApproval />
+                        </RoleProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/financial-transactions"
+                      element={
+                        <RoleProtectedRoute allowed={['admin']}>
+                          <FinancialTransactions />
+                        </RoleProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/expert-consultations"
+                      element={
+                        <RoleProtectedRoute allowed={['admin']}>
+                          <ExpertConsultations />
+                        </RoleProtectedRoute>
+                      }
+                    />
 
                     {/* 404 Route */}
                     <Route path="*" element={<NotFound />} />

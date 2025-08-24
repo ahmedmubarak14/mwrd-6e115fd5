@@ -1,6 +1,6 @@
-
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { ProcurementClientDashboard } from "@/components/Dashboard/ProcurementClientDashboard";
+import { AdminDashboard } from "@/pages/AdminDashboard";
 import { useAuth } from "@/contexts/AuthContext";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -14,14 +14,10 @@ const Dashboard = () => {
   const { userProfile, loading } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect based on user role
+  // Redirect vendors to their dedicated dashboard
   useEffect(() => {
-    if (!loading && userProfile) {
-      if (userProfile.role === 'vendor') {
-        navigate('/vendor-dashboard');
-      } else if (userProfile.role === 'admin') {
-        navigate('/admin/dashboard');
-      }
+    if (!loading && userProfile?.role === 'vendor') {
+      navigate('/vendor-dashboard');
     }
   }, [loading, userProfile, navigate]);
 
@@ -35,18 +31,9 @@ const Dashboard = () => {
     );
   }
 
-  // Only render for clients
-  if (userProfile?.role !== 'client') {
-    return (
-      <DashboardLayout>
-        <div className="flex justify-center items-center min-h-[400px]">
-          <LoadingSpinner size="lg" />
-        </div>
-      </DashboardLayout>
-    );
-  }
-
   const renderVerificationBanner = () => {
+    if (!userProfile || userProfile.role !== 'client') return null;
+
     const isVerified = userProfile.verification_status === 'approved';
     const isRejected = userProfile.verification_status === 'rejected';
     const isPending = userProfile.verification_status === 'pending' || userProfile.verification_status === 'under_review';
@@ -118,10 +105,19 @@ const Dashboard = () => {
     );
   };
 
+  const renderDashboard = () => {
+    switch (userProfile?.role) {
+      case 'admin':
+        return <AdminDashboard />;
+      default:
+        return <ProcurementClientDashboard />;
+    }
+  };
+
   return (
     <DashboardLayout>
       {renderVerificationBanner()}
-      <ProcurementClientDashboard />
+      {renderDashboard()}
     </DashboardLayout>
   );
 };

@@ -1,47 +1,38 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 type Theme = 'light' | 'dark' | 'system';
-type ThemeMode = 'auto' | 'manual';
 
-interface ThemeContextType {
+interface RouteAwareThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
-  mode: ThemeMode;
-  setMode: (mode: ThemeMode) => void;
-  effectiveTheme: 'light' | 'dark';
-  isDashboard: boolean;
+  resolvedTheme: 'light' | 'dark';
   isDashboardRoute: boolean;
   forceLightMode: boolean;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const RouteAwareThemeContext = createContext<RouteAwareThemeContextType | undefined>(undefined);
 
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
+export const useRouteAwareTheme = () => {
+  const context = useContext(RouteAwareThemeContext);
   if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+    throw new Error('useRouteAwareTheme must be used within a RouteAwareThemeProvider');
   }
   return context;
 };
 
-// Export alias for compatibility
-export const useRouteAwareTheme = useTheme;
-
-// Routes that are considered landing/marketing pages (force light mode in auto)
+// Routes that should always use light mode
 const LANDING_ROUTES = [
+  '/',
   '/landing',
-  '/auth', 
-  '/login',
-  '/register',
-  '/why-start-with-mwrd',
-  '/what-makes-us-unique', 
-  '/why-move-to-mwrd',
-  '/terms',
-  '/privacy',
   '/pricing',
+  '/suppliers',
+  '/why-start-with-mwrd',
+  '/why-move-to-mwrd',
+  '/privacy-policy',
+  '/terms-and-conditions',
+  '/support'
 ];
 
 // Routes that are considered dashboard routes (can use dark mode)
@@ -51,86 +42,116 @@ const DASHBOARD_ROUTES = [
   '/admin',
   '/profile',
   '/settings',
-  '/requests',
-  '/offers',
-  '/projects',
-  '/vendors',
-  '/messages',
-  '/orders',
   '/analytics',
-  '/activity-feed',
+  '/orders',
+  '/messages',
+  '/my-offers',
+  '/browse-requests',
+  '/requests',
   '/expert-consultation',
-  '/support',
-  '/manage-subscription',
+  '/manage-subscription'
 ];
 
 export const RouteAwareThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
-  const [theme, setTheme] = useLocalStorage<Theme>('theme', 'light');
-  const [mode, setMode] = useLocalStorage<ThemeMode>('themeMode', 'auto');
-  const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('light');
-  
+  const [storedTheme, setStoredTheme] = useLocalStorage<Theme>('theme', 'light');
+  const [theme, setTheme] = useState<Theme>(storedTheme);
+  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
+
   // Determine if current route is a dashboard route
-  const isDashboard = DASHBOARD_ROUTES.some(route => location.pathname.startsWith(route));
-  const isDashboardRoute = isDashboard;
-  const isLanding = LANDING_ROUTES.some(route => location.pathname.startsWith(route));
-  const forceLightMode = isLanding && mode === 'auto';
+  const isDashboardRoute = DASHBOARD_ROUTES.some(route => 
+    location.pathname.startsWith(route)
+  );
 
-  // Listen to system theme changes
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = (e: MediaQueryListEvent) => {
-      setSystemTheme(e.matches ? 'dark' : 'light');
-    };
-    
-    setSystemTheme(mediaQuery.matches ? 'dark' : 'light');
-    mediaQuery.addEventListener('change', handleChange);
-    
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
+  // Determine if current route should force light mode
+  const forceLightMode = LANDING_ROUTES.some(route => 
+    location.pathname === route || (route === '/' && location.pathname === '/')
+  );
 
-  // Calculate effective theme
-  const getEffectiveTheme = (): 'light' | 'dark' => {
-    if (mode === 'manual') {
-      return theme === 'system' ? systemTheme : theme;
-    }
-    
-    // Auto mode: force light for landing pages, allow dark for dashboard
-    if (isLanding) {
-      return 'light';
-    }
-    
-    if (isDashboard) {
-      return theme === 'system' ? systemTheme : theme;
-    }
-    
-    // Default fallback
-    return 'light';
-  };
-
-  const effectiveTheme = getEffectiveTheme();
-
-  // Apply theme to document
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.remove('light', 'dark');
-    root.classList.add(effectiveTheme);
-  }, [effectiveTheme]);
+    
+    const getResolvedTheme = (): 'light' | 'dark' => {
+      // Force light mode for landing pages
+      if (forceLightMode) {
+        return 'light';
+      }
 
-  const value: ThemeContextType = {
-    theme,
-    setTheme,
-    mode,
-    setMode,
-    effectiveTheme,
-    isDashboard,
-    isDashboardRoute,
-    forceLightMode,
+      // For dashboard routes, respect user's theme preference
+      if (isDashboardRoute) {
+        if (theme === 'system') {
+          try {
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          } catch (error) {
+            console.warn('Unable to detect system theme preference:', error);
+            return 'light';
+          }
+        }
+        return theme as 'light' | 'dark';
+      }
+
+      // Default to light for other routes
+      return 'light';
+    };
+
+    try {
+      const resolved = getResolvedTheme();
+      setResolvedTheme(resolved);
+
+      // Apply theme classes safely
+      root.classList.remove('light', 'dark');
+      root.classList.add(resolved);
+
+      // Set a data attribute as fallback
+      root.setAttribute('data-theme', resolved);
+
+      // Listen for system theme changes only for dashboard routes with system theme
+      if (isDashboardRoute && theme === 'system' && !forceLightMode) {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const handleChange = () => {
+          try {
+            const newResolved = getResolvedTheme();
+            setResolvedTheme(newResolved);
+            root.classList.remove('light', 'dark');
+            root.classList.add(newResolved);
+            root.setAttribute('data-theme', newResolved);
+          } catch (error) {
+            console.warn('Error handling theme change:', error);
+          }
+        };
+        
+        mediaQuery.addEventListener('change', handleChange);
+        return () => mediaQuery.removeEventListener('change', handleChange);
+      }
+    } catch (error) {
+      console.warn('Error applying theme:', error);
+      // Fallback to light theme
+      root.classList.remove('light', 'dark');
+      root.classList.add('light');
+      root.setAttribute('data-theme', 'light');
+      setResolvedTheme('light');
+    }
+  }, [theme, isDashboardRoute, forceLightMode, location.pathname]);
+
+  const handleSetTheme = (newTheme: Theme) => {
+    // Only allow theme changes on dashboard routes
+    if (isDashboardRoute && !forceLightMode) {
+      setTheme(newTheme);
+      setStoredTheme(newTheme);
+    }
   };
 
   return (
-    <ThemeContext.Provider value={value}>
+    <RouteAwareThemeContext.Provider 
+      value={{ 
+        theme: forceLightMode ? 'light' : theme, 
+        setTheme: handleSetTheme, 
+        resolvedTheme,
+        isDashboardRoute,
+        forceLightMode
+      }}
+    >
       {children}
-    </ThemeContext.Provider>
+    </RouteAwareThemeContext.Provider>
   );
 };
