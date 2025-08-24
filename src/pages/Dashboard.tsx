@@ -1,7 +1,6 @@
 
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { ProcurementClientDashboard } from "@/components/Dashboard/ProcurementClientDashboard";
-import { SupplierDashboard } from "@/pages/SupplierDashboard";
 import { AdminDashboard } from "@/pages/AdminDashboard";
 import { useAuth } from "@/contexts/AuthContext";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
@@ -10,10 +9,18 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Dashboard = () => {
   const { userProfile, loading } = useAuth();
   const navigate = useNavigate();
+
+  // Redirect vendors to their dedicated dashboard
+  useEffect(() => {
+    if (!loading && userProfile?.role === 'vendor') {
+      navigate('/supplier-dashboard');
+    }
+  }, [loading, userProfile, navigate]);
 
   if (loading) {
     return (
@@ -101,8 +108,6 @@ const Dashboard = () => {
 
   const renderDashboard = () => {
     switch (userProfile?.role) {
-      case 'vendor':
-        return <SupplierDashboard />;
       case 'admin':
         return <AdminDashboard />;
       default:
