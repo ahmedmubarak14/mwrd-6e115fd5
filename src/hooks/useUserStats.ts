@@ -12,6 +12,7 @@ export interface UserStats {
   successRate: number;
   completedOrders: number;
   responseTime: number;
+  totalSpend?: number;
 }
 
 export const useUserStats = () => {

@@ -36,7 +36,7 @@ export const ProcurementRequestForm = () => {
     title: '',
     description: '',
     location: '',
-    urgency: 'medium',
+    urgency: 'medium' as 'low' | 'medium' | 'high' | 'urgent',
     budget_min: '',
     budget_max: '',
     currency: 'SAR',

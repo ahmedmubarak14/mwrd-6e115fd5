@@ -26,23 +26,23 @@ import { BrowseRequests } from "./pages/BrowseRequests";
 import { Profile } from "./pages/Profile";
 import { Settings } from "./pages/Settings";
 import { Analytics } from "./pages/Analytics";
-import { Projects } from "./pages/Projects";
+import Projects from "./pages/Projects";
 import { ExpertConsultation } from "./pages/ExpertConsultation";
-import { ProcurementRequests } from "./pages/ProcurementRequests";
+import ProcurementRequests from "./pages/ProcurementRequests";
 import { Orders } from "./pages/Orders";
 import Vendors from "./pages/Vendors";
-import { EnhancedMessages } from "./pages/EnhancedMessages";
+import EnhancedMessages from "./pages/EnhancedMessages";
 import { Pricing } from "./pages/Pricing";
 import { ManageSubscription } from "./pages/ManageSubscription";
-import { PaymentSuccess } from "./pages/PaymentSuccess";
+import PaymentSuccess from "./pages/PaymentSuccess";
 import Support from "./pages/Support";
 import { WhatMakesUsUnique } from "./pages/WhatMakesUsUnique";
 import { WhyMoveToMWRD } from "./pages/WhyMoveToMWRD";
 import { WhyStartWithMWRD } from "./pages/WhyStartWithMWRD";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import { TermsAndConditions } from "./pages/TermsAndConditions";
-import { ResetPassword } from "./pages/ResetPassword";
-import { NotFound } from "./pages/NotFound";
+import ResetPassword from "./pages/ResetPassword";
+import NotFound from "./pages/NotFound";
 import "./App.css";
 
 const queryClient = new QueryClient();
@@ -207,7 +207,7 @@ const App = () => (
                       <Route
                         path="/supplier-dashboard"
                         element={
-                          <RoleProtectedRoute allowedRoles={['vendor']}>
+                          <RoleProtectedRoute allowed={['vendor']}>
                             <ProcurementSupplierDashboard />
                           </RoleProtectedRoute>
                         }
@@ -217,7 +217,7 @@ const App = () => (
                       <Route
                         path="/admin"
                         element={
-                          <RoleProtectedRoute allowedRoles={['admin']}>
+                          <RoleProtectedRoute allowed={['admin']}>
                             <AdminDashboard />
                           </RoleProtectedRoute>
                         }
