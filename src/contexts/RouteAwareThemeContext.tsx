@@ -13,6 +13,8 @@ interface ThemeContextType {
   setMode: (mode: ThemeMode) => void;
   effectiveTheme: 'light' | 'dark';
   isDashboard: boolean;
+  isDashboardRoute: boolean;
+  forceLightMode: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -24,6 +26,9 @@ export const useTheme = () => {
   }
   return context;
 };
+
+// Export alias for compatibility
+export const useRouteAwareTheme = useTheme;
 
 // Routes that are considered landing/marketing pages (force light mode in auto)
 const LANDING_ROUTES = [
@@ -67,7 +72,9 @@ export const RouteAwareThemeProvider: React.FC<{ children: React.ReactNode }> = 
   
   // Determine if current route is a dashboard route
   const isDashboard = DASHBOARD_ROUTES.some(route => location.pathname.startsWith(route));
+  const isDashboardRoute = isDashboard;
   const isLanding = LANDING_ROUTES.some(route => location.pathname.startsWith(route));
+  const forceLightMode = isLanding && mode === 'auto';
 
   // Listen to system theme changes
   useEffect(() => {
@@ -117,6 +124,8 @@ export const RouteAwareThemeProvider: React.FC<{ children: React.ReactNode }> = 
     setMode,
     effectiveTheme,
     isDashboard,
+    isDashboardRoute,
+    forceLightMode,
   };
 
   return (
