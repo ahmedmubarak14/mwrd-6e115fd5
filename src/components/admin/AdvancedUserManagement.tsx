@@ -1,41 +1,33 @@
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { UserProfile } from "@/types/database";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Search, Filter, UserCheck, UserX, Users } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { useToastFeedback } from "@/hooks/useToastFeedback";
-import { UserCheck, UserX, Shield, Search, Users, Building } from "lucide-react";
-import type { UserProfile } from "@/types/database";
 
-export function AdvancedUserManagement() {
+export const AdvancedUserManagement = () => {
   const [users, setUsers] = useState<UserProfile[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [roleFilter, setRoleFilter] = useState("all");
-  const { showSuccess, showError } = useToastFeedback();
+  const [roleFilter, setRoleFilter] = useState<string>("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const { toast } = useToast();
 
   useEffect(() => {
     fetchUsers();
-    
-    // Set up real-time subscription
-    const channel = supabase
-      .channel('user-management')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'user_profiles' }, (payload) => {
-        console.log('User change received!', payload);
-        fetchUsers(); // Refresh data
-      })
-      .subscribe();
-
-    return () => {
-      if (channel) {
-        supabase.removeChannel(channel);
-      }
-    };
   }, []);
+
+  useEffect(() => {
+    filterUsers();
+  }, [users, searchTerm, roleFilter, statusFilter]);
 
   const fetchUsers = async () => {
     try {
@@ -45,14 +37,59 @@ export function AdvancedUserManagement() {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setUsers(data || []);
+      if (error) {
+        console.error('Error fetching users:', error);
+        toast({
+          title: "Error",
+          description: "Failed to fetch users",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (data) {
+        // Transform the data to match our UserProfile interface by casting verification_status
+        const transformedUsers: UserProfile[] = data.map(user => ({
+          ...user,
+          verification_status: user.verification_status as 'pending' | 'approved' | 'rejected' | 'under_review'
+        }));
+        setUsers(transformedUsers);
+      }
     } catch (error) {
       console.error('Error fetching users:', error);
-      showError("Failed to fetch users");
+      toast({
+        title: "Error",
+        description: "Failed to fetch users",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
+  };
+
+  const filterUsers = () => {
+    let filtered = users;
+
+    // Search filter
+    if (searchTerm) {
+      filtered = filtered.filter(user =>
+        user.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.company_name?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Role filter
+    if (roleFilter !== "all") {
+      filtered = filtered.filter(user => user.role === roleFilter);
+    }
+
+    // Status filter
+    if (statusFilter !== "all") {
+      filtered = filtered.filter(user => user.status === statusFilter);
+    }
+
+    setFilteredUsers(filtered);
   };
 
   const updateUserStatus = async (userId: string, newStatus: 'pending' | 'approved' | 'blocked' | 'rejected') => {
@@ -60,27 +97,32 @@ export function AdvancedUserManagement() {
       const { error } = await supabase
         .from('user_profiles')
         .update({ status: newStatus })
-        .eq('user_id', userId);
+        .eq('id', userId);
 
-      if (error) throw error;
-
-      // Create audit log entry
-      await supabase
-        .from('notifications')
-        .insert({
-          user_id: userId,
-          type: 'status_change',
-          title: 'Status Updated',
-          message: `Your account status has been changed to ${newStatus}`,
-          category: 'account',
-          priority: 'high'
+      if (error) {
+        console.error('Error updating user status:', error);
+        toast({
+          title: "Error",
+          description: "Failed to update user status",
+          variant: "destructive",
         });
+        return;
+      }
 
-      showSuccess(`User status updated to ${newStatus}`);
-      fetchUsers(); // Refresh the list
+      toast({
+        title: "Success",
+        description: "User status updated successfully",
+      });
+
+      // Refresh users list
+      fetchUsers();
     } catch (error) {
       console.error('Error updating user status:', error);
-      showError("Failed to update user status");
+      toast({
+        title: "Error",
+        description: "Failed to update user status",
+        variant: "destructive",
+      });
     }
   };
 
@@ -89,101 +131,98 @@ export function AdvancedUserManagement() {
       const { error } = await supabase
         .from('user_profiles')
         .update({ role: newRole })
-        .eq('user_id', userId);
+        .eq('id', userId);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error updating user role:', error);
+        toast({
+          title: "Error",
+          description: "Failed to update user role",
+          variant: "destructive",
+        });
+        return;
+      }
 
-      showSuccess(`User role updated to ${newRole}`);
+      toast({
+        title: "Success",
+        description: "User role updated successfully",
+      });
+
+      // Refresh users list
       fetchUsers();
     } catch (error) {
       console.error('Error updating user role:', error);
-      showError("Failed to update user role");
+      toast({
+        title: "Error",
+        description: "Failed to update user role",
+        variant: "destructive",
+      });
     }
   };
 
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = user.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.company_name?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || user.status === statusFilter;
-    const matchesRole = roleFilter === "all" || user.role === roleFilter;
-    
-    return matchesSearch && matchesStatus && matchesRole;
-  });
+  const getStatusBadge = (status: string) => {
+    const variants = {
+      pending: "secondary",
+      approved: "default",
+      blocked: "destructive",
+      rejected: "destructive"
+    } as const;
 
-  const getStatusBadgeVariant = (status: string) => {
-    switch (status) {
-      case 'approved': return 'default';
-      case 'pending': return 'secondary';
-      case 'blocked': return 'destructive';
-      case 'rejected': return 'outline';
-      default: return 'secondary';
-    }
+    return (
+      <Badge variant={variants[status as keyof typeof variants] || "secondary"}>
+        {status}
+      </Badge>
+    );
   };
 
-  const getRoleBadgeVariant = (role: string) => {
-    switch (role) {
-      case 'admin': return 'destructive';
-      case 'vendor': return 'default';
-      case 'client': return 'secondary';
-      default: return 'outline';
-    }
+  const getRoleBadge = (role: string) => {
+    const variants = {
+      admin: "destructive",
+      client: "default",
+      vendor: "secondary"
+    } as const;
+
+    return (
+      <Badge variant={variants[role as keyof typeof variants] || "secondary"}>
+        {role}
+      </Badge>
+    );
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center p-8">
-        <LoadingSpinner />
+      <div className="flex justify-center items-center min-h-[400px]">
+        <LoadingSpinner size="lg" />
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">User Management</h2>
-          <p className="text-muted-foreground">Manage clients, vendors, and user permissions</p>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Badge variant="outline">
-            <Users className="w-4 h-4 mr-1" />
-            {users.length} Total Users
-          </Badge>
-        </div>
-      </div>
-
-      {/* Search and Filters */}
       <Card>
         <CardHeader>
-          <CardTitle>Search & Filter</CardTitle>
-          <CardDescription>Find and filter users by various criteria</CardDescription>
+          <CardTitle className="flex items-center gap-2">
+            <Users className="h-5 w-5" />
+            Advanced User Management
+          </CardTitle>
+          <CardDescription>
+            Manage user accounts, roles, and permissions
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col md:flex-row gap-4">
+          {/* Filters */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search by name, email, or company..."
+                  placeholder="Search users..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className="pl-8"
                 />
               </div>
             </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filter by status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="blocked">Blocked</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
-              </SelectContent>
-            </Select>
             <Select value={roleFilter} onValueChange={setRoleFilter}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Filter by role" />
@@ -195,112 +234,116 @@ export function AdvancedUserManagement() {
                 <SelectItem value="admin">Admins</SelectItem>
               </SelectContent>
             </Select>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="approved">Approved</SelectItem>
+                <SelectItem value="blocked">Blocked</SelectItem>
+                <SelectItem value="rejected">Rejected</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-        </CardContent>
-      </Card>
 
-      {/* User List */}
-      <div className="grid gap-4">
-        {filteredUsers.map((user) => (
-          <Card key={user.id}>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                    {user.role === 'vendor' ? (
-                      <Building className="w-6 h-6" />
-                    ) : (
-                      <Users className="w-6 h-6" />
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">{user.full_name || user.email}</h3>
-                    <p className="text-sm text-muted-foreground">{user.email}</p>
-                    {user.company_name && (
-                      <p className="text-sm text-muted-foreground">{user.company_name}</p>
-                    )}
-                    <p className="text-xs text-muted-foreground">
-                      Joined {new Date(user.created_at).toLocaleDateString()}
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-4">
-                  <div className="flex flex-col space-y-2">
-                    <div className="flex space-x-2">
-                      <Badge variant={getRoleBadgeVariant(user.role)}>
-                        {user.role}
-                      </Badge>
-                      <Badge variant={getStatusBadgeVariant(user.status)}>
-                        {user.status}
-                      </Badge>
-                    </div>
-                    
-                    {user.status === 'pending' && (
-                      <div className="flex space-x-2">
-                        <Button
-                          size="sm"
-                          onClick={() => updateUserStatus(user.user_id, 'approved')}
-                          className="h-8"
-                        >
-                          <UserCheck className="w-4 h-4 mr-1" />
-                          Approve
-                        </Button>
+          {/* Users Table */}
+          <div className="border rounded-lg">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>User</TableHead>
+                  <TableHead>Role</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Verification</TableHead>
+                  <TableHead>Created</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredUsers.map((user) => (
+                  <TableRow key={user.id}>
+                    <TableCell>
+                      <div>
+                        <div className="font-medium">
+                          {user.full_name || user.email}
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {user.email}
+                        </div>
+                        {user.company_name && (
+                          <div className="text-sm text-muted-foreground">
+                            {user.company_name}
+                          </div>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Select
+                        value={user.role}
+                        onValueChange={(value) => updateUserRole(user.id, value as 'admin' | 'client' | 'vendor')}
+                      >
+                        <SelectTrigger className="w-[100px]">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="client">Client</SelectItem>
+                          <SelectItem value="vendor">Vendor</SelectItem>
+                          <SelectItem value="admin">Admin</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      <Select
+                        value={user.status}
+                        onValueChange={(value) => updateUserStatus(user.id, value as 'pending' | 'approved' | 'blocked' | 'rejected')}
+                      >
+                        <SelectTrigger className="w-[120px]">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="pending">Pending</SelectItem>
+                          <SelectItem value="approved">Approved</SelectItem>
+                          <SelectItem value="blocked">Blocked</SelectItem>
+                          <SelectItem value="rejected">Rejected</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      {getStatusBadge(user.verification_status || 'pending')}
+                    </TableCell>
+                    <TableCell>
+                      {new Date(user.created_at).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => updateUserStatus(user.user_id, 'rejected')}
-                          className="h-8"
+                          onClick={() => updateUserStatus(user.id, user.status === 'approved' ? 'blocked' : 'approved')}
                         >
-                          <UserX className="w-4 h-4 mr-1" />
-                          Reject
+                          {user.status === 'approved' ? (
+                            <UserX className="h-4 w-4" />
+                          ) : (
+                            <UserCheck className="h-4 w-4" />
+                          )}
                         </Button>
                       </div>
-                    )}
-                    
-                    {user.status === 'approved' && (
-                      <Button
-                        size="sm"
-                        variant="destructive"
-                        onClick={() => updateUserStatus(user.user_id, 'blocked')}
-                        className="h-8"
-                      >
-                        <UserX className="w-4 h-4 mr-1" />
-                        Block
-                      </Button>
-                    )}
-                    
-                    {user.status === 'blocked' && (
-                      <Button
-                        size="sm"
-                        onClick={() => updateUserStatus(user.user_id, 'approved')}
-                        className="h-8"
-                      >
-                        <UserCheck className="w-4 h-4 mr-1" />
-                        Unblock
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-        
-        {filteredUsers.length === 0 && (
-          <Card>
-            <CardContent className="p-8">
-              <div className="text-center">
-                <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">No users found</h3>
-                <p className="text-muted-foreground">
-                  No users match your current search and filter criteria.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+
+          {filteredUsers.length === 0 && (
+            <div className="text-center py-8 text-muted-foreground">
+              No users found matching your criteria.
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
-}
+};
