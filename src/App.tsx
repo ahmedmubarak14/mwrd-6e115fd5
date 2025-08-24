@@ -57,6 +57,7 @@ import { TermsAndConditions } from "./pages/TermsAndConditions";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { RoleProtectedRoute } from "./components/routing/RoleProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
 import { AuthProvider } from "./contexts/AuthContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
@@ -370,89 +371,89 @@ function App() {
                   <Route
                     path="/admin"
                     element={
-                      <ProtectedRoute requiredRole="admin">
+                      <RoleProtectedRoute allowed={['admin']}>
                         <AdminDashboard />
-                      </ProtectedRoute>
+                      </RoleProtectedRoute>
                     }
                   />
                   <Route
                     path="/admin/dashboard"
                     element={
-                      <ProtectedRoute requiredRole="admin">
+                      <RoleProtectedRoute allowed={['admin']}>
                         <AdminDashboardOverview />
-                      </ProtectedRoute>
+                      </RoleProtectedRoute>
                     }
                   />
                   <Route
                     path="/admin/users"
                     element={
-                      <ProtectedRoute requiredRole="admin">
+                      <RoleProtectedRoute allowed={['admin']}>
                         <AdminUsers />
-                      </ProtectedRoute>
+                      </RoleProtectedRoute>
                     }
                   />
                   <Route
                     path="/admin/requests"
                     element={
-                      <ProtectedRoute requiredRole="admin">
+                      <RoleProtectedRoute allowed={['admin']}>
                         <AdminRequests />
-                      </ProtectedRoute>
+                      </RoleProtectedRoute>
                     }
                   />
                   <Route
                     path="/admin/offers"
                     element={
-                      <ProtectedRoute requiredRole="admin">
+                      <RoleProtectedRoute allowed={['admin']}>
                         <AdminOffers />
-                      </ProtectedRoute>
+                      </RoleProtectedRoute>
                     }
                   />
                   <Route
                     path="/admin/projects"
                     element={
-                      <ProtectedRoute requiredRole="admin">
+                      <RoleProtectedRoute allowed={['admin']}>
                         <AdminProjects />
-                      </ProtectedRoute>
+                      </RoleProtectedRoute>
                     }
                   />
                   <Route
                     path="/admin/categories"
                     element={
-                      <ProtectedRoute requiredRole="admin">
+                      <RoleProtectedRoute allowed={['admin']}>
                         <CategoryManagement />
-                      </ProtectedRoute>
+                      </RoleProtectedRoute>
                     }
                   />
                   <Route
                     path="/admin/offers-management"
                     element={
-                      <ProtectedRoute requiredRole="admin">
+                      <RoleProtectedRoute allowed={['admin']}>
                         <OffersManagement />
-                      </ProtectedRoute>
+                      </RoleProtectedRoute>
                     }
                   />
                   <Route
                     path="/admin/requests-approval"
                     element={
-                      <ProtectedRoute requiredRole="admin">
+                      <RoleProtectedRoute allowed={['admin']}>
                         <RequestsApproval />
-                      </ProtectedRoute>
+                      </RoleProtectedRoute>
                     }
                   />
                   <Route
                     path="/admin/financial-transactions"
                     element={
-                      <ProtectedRoute requiredRole="admin">
+                      <RoleProtectedRoute allowed={['admin']}>
                         <FinancialTransactions />
-                      </ProtectedRoute>
+                      </RoleProtectedRoute>
                     }
                   />
                   <Route
                     path="/admin/expert-consultations"
                     element={
-                      <ProtectedRoute requiredRole="admin">
+                      <RoleProtectedRoute allowed={['admin']}>
                         <ExpertConsultations />
-                      </ProtectedRoute>
+                      </RoleProtectedRoute>
                     }
                   />
 
