@@ -13,7 +13,7 @@ import Auth from "./pages/Auth";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
-import { EnhancedSupplierDashboard } from "@/components/vendor/EnhancedSupplierDashboard";
+import { EnhancedVendorDashboard } from "@/components/vendor/EnhancedVendorDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import { AdminDashboardOverview } from "./pages/admin/AdminDashboardOverview";
@@ -40,7 +40,6 @@ import Projects from "./pages/Projects";
 import CreateProject from "./pages/CreateProject";
 import EditProject from "./pages/EditProject";
 import ProjectDetails from "./pages/ProjectDetails";
-import Suppliers from "./pages/Suppliers";
 import Vendors from "./pages/Vendors";
 import { Analytics } from "./pages/Analytics";
 import ActivityFeed from "./pages/ActivityFeed";
@@ -185,10 +184,10 @@ function App() {
                       }
                     />
                     <Route
-                      path="/supplier-dashboard"
+                      path="/vendor-dashboard"
                       element={
                         <RoleProtectedRoute allowed={['vendor']}>
-                          <EnhancedSupplierDashboard />
+                          <EnhancedVendorDashboard />
                         </RoleProtectedRoute>
                       }
                     />
@@ -317,14 +316,6 @@ function App() {
                       element={
                         <ProtectedRoute>
                           <ProjectDetails />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/suppliers"
-                      element={
-                        <ProtectedRoute>
-                          <Suppliers />
                         </ProtectedRoute>
                       }
                     />
