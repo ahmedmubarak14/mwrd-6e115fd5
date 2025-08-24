@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Header } from "@/components/ui/layout/Header";
 import { Sidebar } from "@/components/ui/layout/Sidebar";
@@ -17,7 +18,7 @@ import { Footer } from "@/components/ui/layout/Footer";
 import { UnifiedVerificationStatus } from '@/components/verification/UnifiedVerificationStatus';
 import { VerificationGuard } from '@/components/verification/VerificationGuard';
 
-export const EnhancedSupplierDashboard = () => {
+export const EnhancedVendorDashboard = () => {
   const { userProfile } = useAuth();
   const { language, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -89,9 +90,9 @@ export const EnhancedSupplierDashboard = () => {
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                 <div>
                   <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
-                    {t('supplier.welcome')}
+                    {t('vendor.welcome')}
                   </h1>
-                  <p className="text-muted-foreground text-sm sm:text-base">{t('supplier.subtitle')}</p>
+                  <p className="text-muted-foreground text-sm sm:text-base">{t('vendor.subtitle')}</p>
                 </div>
               </div>
             </div>

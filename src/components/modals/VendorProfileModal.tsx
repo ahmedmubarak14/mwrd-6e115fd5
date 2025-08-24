@@ -1,3 +1,4 @@
+
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,9 +25,9 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useToast } from "@/hooks/use-toast";
 import { useRealTimeChat } from "@/hooks/useRealTimeChat";
 
-interface SupplierProfileModalProps {
+interface VendorProfileModalProps {
   children: React.ReactNode;
-  supplier: {
+  vendor: {
     id: string | number;
     name: string;
     category: string;
@@ -45,7 +46,7 @@ interface SupplierProfileModalProps {
   };
 }
 
-export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModalProps) => {
+export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps) => {
   const { t } = useLanguage();
   const { toast } = useToast();
   const { startConversation, sendMessage } = useRealTimeChat();
@@ -53,12 +54,12 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
   const [isLoadingCall, setIsLoadingCall] = useState(false);
   const [isLoadingMessage, setIsLoadingMessage] = useState(false);
 
-  const supplierInfo = {
-    name: isArabic ? supplier.name : supplier.englishName,
-    category: isArabic ? supplier.category : supplier.englishCategory,
-    location: isArabic ? supplier.location : supplier.englishLocation,
-    description: isArabic ? supplier.description : supplier.englishDescription,
-    responseTime: isArabic ? supplier.responseTime : supplier.englishResponseTime
+  const vendorInfo = {
+    name: isArabic ? vendor.name : vendor.englishName,
+    category: isArabic ? vendor.category : vendor.englishCategory,
+    location: isArabic ? vendor.location : vendor.englishLocation,
+    description: isArabic ? vendor.description : vendor.englishDescription,
+    responseTime: isArabic ? vendor.responseTime : vendor.englishResponseTime
   };
 
   const portfolioItems = [
@@ -86,17 +87,17 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
   const handleSendMessage = async () => {
     setIsLoadingMessage(true);
     try {
-      const conversation = await startConversation(supplier.id.toString());
+      const conversation = await startConversation(vendor.id.toString());
       if (conversation) {
         await sendMessage(
           conversation.id, 
           t("Hello, I'm interested in your services."), 
-          supplier.id.toString()
+          vendor.id.toString()
         );
         
         toast({
           title: t("Message Sent"),
-          description: t(`Your message has been sent to ${supplierInfo.name}. They typically respond within ${supplierInfo.responseTime}.`),
+          description: t(`Your message has been sent to ${vendorInfo.name}. They typically respond within ${vendorInfo.responseTime}.`),
         });
       }
     } catch (error) {
@@ -116,7 +117,7 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
       // Placeholder for video call functionality
       toast({
         title: t("Video Call Initiated"),
-        description: t(`Connecting to ${supplierInfo.name}... They will be notified of your call request.`),
+        description: t(`Connecting to ${vendorInfo.name}... They will be notified of your call request.`),
       });
     } catch (error) {
       toast({
@@ -139,23 +140,23 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
           <div className="flex items-start gap-4">
             <Avatar className="h-16 w-16">
               <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white font-bold text-xl">
-                {supplierInfo.name.charAt(0)}
+                {vendorInfo.name.charAt(0)}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1">
-              <DialogTitle className="text-2xl">{supplierInfo.name}</DialogTitle>
+              <DialogTitle className="text-2xl">{vendorInfo.name}</DialogTitle>
               <DialogDescription className="text-lg text-primary font-medium">
-                {supplierInfo.category}
+                {vendorInfo.category}
               </DialogDescription>
               <div className="flex items-center gap-4 mt-2">
                 <div className="flex items-center gap-1">
                   <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  <span className="font-semibold">{supplier.rating}</span>
-                  <span className="text-muted-foreground">({supplier.reviews} reviews)</span>
+                  <span className="font-semibold">{vendor.rating}</span>
+                  <span className="text-muted-foreground">({vendor.reviews} reviews)</span>
                 </div>
                 <div className="flex items-center gap-1 text-muted-foreground">
                   <MapPin className="h-4 w-4" />
-                  <span>{supplierInfo.location}</span>
+                  <span>{vendorInfo.location}</span>
                 </div>
               </div>
             </div>
@@ -193,7 +194,7 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
           <div className="grid grid-cols-3 gap-4">
             <Card>
               <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-primary">{supplier.completedProjects}+</div>
+                <div className="text-2xl font-bold text-primary">{vendor.completedProjects}+</div>
                 <p className="text-sm text-muted-foreground">Projects Completed</p>
               </CardContent>
             </Card>
@@ -201,7 +202,7 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
               <CardContent className="p-4 text-center">
                 <div className="flex items-center justify-center gap-1">
                   <Clock className="h-4 w-4 text-accent" />
-                  <span className="font-bold text-accent">{supplierInfo.responseTime}</span>
+                  <span className="font-bold text-accent">{vendorInfo.responseTime}</span>
                 </div>
                 <p className="text-sm text-muted-foreground">Avg Response Time</p>
               </CardContent>
@@ -220,7 +221,7 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
               <CardTitle>About</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground leading-relaxed">{supplierInfo.description}</p>
+              <p className="text-muted-foreground leading-relaxed">{vendorInfo.description}</p>
             </CardContent>
           </Card>
 
@@ -291,7 +292,7 @@ export const SupplierProfileModal = ({ children, supplier }: SupplierProfileModa
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-sm text-muted-foreground mb-4">
-                All communication with this supplier happens within the MWRD platform to ensure security and transparency.
+                All communication with this vendor happens within the MWRD platform to ensure security and transparency.
               </p>
               <div className="flex gap-2">
                 <Button 

@@ -1,4 +1,3 @@
-
 import { Header } from "@/components/ui/layout/Header";
 import { Sidebar } from "@/components/ui/layout/Sidebar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,7 +17,7 @@ import { CreateOfferModal } from "@/components/modals/CreateOfferModal";
 import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 import { Footer } from "@/components/ui/layout/Footer";
 
-export const ProcurementSupplierDashboard = () => {
+export const ProcurementVendorDashboard = () => {
   const { userProfile } = useAuth();
   const { language, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -97,7 +96,7 @@ export const ProcurementSupplierDashboard = () => {
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                 <div>
                   <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
-                    {isRTL ? 'مرحباً بك في منصة الموردين' : 'Welcome to Supplier Platform'}
+                    {isRTL ? 'مرحباً بك في منصة الموردين' : 'Welcome to Vendor Platform'}
                   </h1>
                   <p className="text-muted-foreground text-sm sm:text-base">
                     {isRTL ? 'اكتشف فرص التوريد وقدم عروضاً تنافسية' : 'Discover procurement opportunities and submit competitive offers'}

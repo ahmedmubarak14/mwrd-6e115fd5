@@ -1,16 +1,12 @@
 
-import React from 'react';
-import { VendorDirectory } from '@/components/vendors/VendorDirectory';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { VendorDirectory } from "@/components/vendors/VendorDirectory";
 
-const Vendors: React.FC = () => {
-  const { language } = useLanguage();
-  const isRTL = language === 'ar';
-
+const Vendors = () => {
   return (
-    <div className="min-h-screen bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
+    <DashboardLayout>
       <VendorDirectory />
-    </div>
+    </DashboardLayout>
   );
 };
 

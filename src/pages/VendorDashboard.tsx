@@ -15,7 +15,7 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { CreateOfferModal } from "@/components/modals/CreateOfferModal";
 import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 
-export const SupplierDashboard = () => {
+export const VendorDashboard = () => {
   const { userProfile } = useAuth();
   const { language, t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState("");
@@ -85,9 +85,9 @@ export const SupplierDashboard = () => {
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <div>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
-                {t('supplier.welcome')}
+                {t('vendor.welcome')}
               </h1>
-              <p className="text-muted-foreground text-sm sm:text-base">{t('supplier.subtitle')}</p>
+              <p className="text-muted-foreground text-sm sm:text-base">{t('vendor.subtitle')}</p>
             </div>
           </div>
         </div>
@@ -96,7 +96,7 @@ export const SupplierDashboard = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
           <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-              <CardTitle className="text-sm font-medium text-muted-foreground">{t('supplier.totalOffers')}</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">{t('vendor.totalOffers')}</CardTitle>
               <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                 <Package className="h-5 w-5 text-primary" />
               </div>
@@ -111,7 +111,7 @@ export const SupplierDashboard = () => {
           
           <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-              <CardTitle className="text-sm font-medium text-muted-foreground">{t('supplier.acceptedOffers')}</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">{t('vendor.acceptedOffers')}</CardTitle>
               <div className="w-10 h-10 bg-lime/10 rounded-full flex items-center justify-center">
                 <TrendingUp className="h-5 w-5 text-lime" />
               </div>
@@ -126,7 +126,7 @@ export const SupplierDashboard = () => {
           
           <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-              <CardTitle className="text-sm font-medium text-muted-foreground">{t('supplier.pendingOffers')}</CardTitle>
+              <CardTitle className="text-sm font-medium text-muted-foreground">{t('vendor.pendingOffers')}</CardTitle>
               <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
                 <Clock className="h-5 w-5 text-accent" />
               </div>
@@ -171,7 +171,7 @@ export const SupplierDashboard = () => {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input 
-                  placeholder={t('supplier.searchRequests')}
+                  placeholder={t('vendor.searchRequests')}
                   className="pl-10 h-12 text-sm sm:text-base bg-background/50 border-primary/20 focus:border-primary/50"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -180,7 +180,7 @@ export const SupplierDashboard = () => {
               
               <Select value={categoryFilter} onValueChange={setCategoryFilter}>
                 <SelectTrigger className="h-12 bg-background/50 border-primary/20">
-                  <SelectValue placeholder={t('supplier.filterByCategory')} />
+                  <SelectValue placeholder={t('vendor.filterByCategory')} />
                 </SelectTrigger>
                 <SelectContent className="z-50 bg-popover">
                   <SelectItem value="all">All Categories</SelectItem>
@@ -202,7 +202,7 @@ export const SupplierDashboard = () => {
               <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                 <Package className="h-5 w-5 text-primary" />
               </div>
-              {t('supplier.availableRequests')}
+              {t('vendor.availableRequests')}
             </CardTitle>
             <CardDescription className="text-sm sm:text-base">{t('dashboard.findOpportunities')}</CardDescription>
           </CardHeader>
@@ -280,7 +280,7 @@ export const SupplierDashboard = () => {
                           onClick={() => handleSubmitOffer(request.id)}
                         >
                           <Plus className="h-4 w-4 mr-2" />
-                          {t('supplier.submitOffer')}
+                          {t('vendor.submitOffer')}
                         </Button>
                         <Button 
                           size="sm" 
@@ -288,7 +288,7 @@ export const SupplierDashboard = () => {
                           className="flex-1 sm:flex-initial hover-scale rtl-button-gap"
                         >
                           <Eye className="h-4 w-4 mr-2" />
-                          {t('supplier.viewDetails')}
+                          {t('vendor.viewDetails')}
                         </Button>
                       </div>
                     </div>
