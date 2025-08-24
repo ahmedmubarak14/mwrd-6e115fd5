@@ -14,9 +14,10 @@ import { CalendarIcon, Upload, Plus, X, ArrowLeft, ArrowRight, Check } from 'luc
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
-import { useRequests, BOQItem } from '@/hooks/useRequests';
+import { useRequests } from '@/hooks/useRequests';
 import { useCategories } from '@/hooks/useCategories';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { BOQItem } from '@/types/boq';
 
 interface ProcurementRequestFormProps {
   onSuccess?: () => void;
@@ -159,14 +160,12 @@ export const ProcurementRequestForm: React.FC<ProcurementRequestFormProps> = ({ 
 
       const result = await createRequest(requestData);
       
-      if (result.success) {
+      if (result) {
         toast({
           title: isRTL ? "تم إنشاء الطلب" : "Request Created",
           description: isRTL ? "تم إنشاء طلب الشراء بنجاح" : "Procurement request created successfully"
         });
         onSuccess?.();
-      } else {
-        throw new Error(result.error);
       }
     } catch (error: any) {
       toast({
@@ -195,8 +194,11 @@ export const ProcurementRequestForm: React.FC<ProcurementRequestFormProps> = ({ 
                 <Label>{isRTL ? 'الفئات المطلوبة' : 'Required Categories'}</Label>
                 <CategorySelector
                   selectedCategory=""
-                  multiple={true}
-                  onChange={(categoryIds: string[]) => setSelectedCategories(categoryIds)}
+                  onChange={(categoryId: string) => {
+                    if (categoryId && !selectedCategories.includes(categoryId)) {
+                      setSelectedCategories([...selectedCategories, categoryId]);
+                    }
+                  }}
                 />
               </div>
               
