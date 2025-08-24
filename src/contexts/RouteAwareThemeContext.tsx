@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
@@ -38,7 +39,6 @@ const LANDING_ROUTES = [
 // Routes that are considered dashboard routes (can use dark mode)
 const DASHBOARD_ROUTES = [
   '/dashboard',
-  '/client-dashboard',
   '/supplier-dashboard',
   '/admin',
   '/profile',

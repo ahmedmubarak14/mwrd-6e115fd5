@@ -1,3 +1,4 @@
+
 import { useEffect } from "react";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { useNavigate } from "react-router-dom";
@@ -32,7 +33,7 @@ const Auth = () => {
       onAuthSuccess={(u) => {
         if (u.role === "admin") navigate("/admin");
         else if (u.role === "vendor") navigate("/supplier-dashboard");
-        else navigate("/client-dashboard");
+        else navigate("/dashboard");
       }}
     />
   );

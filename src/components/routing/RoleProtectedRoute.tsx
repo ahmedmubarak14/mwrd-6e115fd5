@@ -1,3 +1,4 @@
+
 import { ReactNode, useEffect, useRef } from 'react';
 import { Navigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -40,7 +41,7 @@ export const RoleProtectedRoute = ({ children, allowed }: RoleProtectedRouteProp
 
   if (!role || !allowed.includes(role)) {
     const homeByRole: Record<string, string> = {
-      client: '/client-dashboard',
+      client: '/dashboard',
       vendor: '/supplier-dashboard',
       admin: '/admin',
     };
@@ -51,7 +52,7 @@ export const RoleProtectedRoute = ({ children, allowed }: RoleProtectedRouteProp
         <Card className="max-w-lg w-full">
           <CardHeader>
             <CardTitle>Access denied</CardTitle>
-            <CardDescription>You don’t have permission to view this page.</CardDescription>
+            <CardDescription>You don't have permission to view this page.</CardDescription>
           </CardHeader>
           <CardContent className="flex gap-3">
             <Button asChild>

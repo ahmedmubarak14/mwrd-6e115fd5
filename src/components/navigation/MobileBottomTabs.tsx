@@ -1,3 +1,4 @@
+
 import { Link, useLocation } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -82,7 +83,7 @@ export const MobileBottomTabs = () => {
         <div className="flex">
           {tabs.map((tab) => {
             const isActive = location.pathname === tab.path || 
-              (tab.path === '/dashboard' && ['/client-dashboard', '/supplier-dashboard'].includes(location.pathname));
+              (tab.path === '/dashboard' && location.pathname === '/supplier-dashboard');
             const IconComponent = tab.icon;
             
             // Skip auth-required tabs if user is not logged in
