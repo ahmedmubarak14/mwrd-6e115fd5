@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Header } from "@/components/ui/layout/Header";
 import { Sidebar } from "@/components/ui/layout/Sidebar";
@@ -11,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
-import { EnhancedAnalyticsDashboard } from "@/components/analytics/EnhancedAnalyticsDashboard";
+import { BasicAnalyticsDashboard } from "@/components/analytics/BasicAnalyticsDashboard";
 import { Footer } from "@/components/ui/layout/Footer";
 
 export const Analytics = () => {
@@ -179,7 +180,7 @@ export const Analytics = () => {
         
         <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
           <div className="max-w-7xl mx-auto space-y-6">
-            <EnhancedAnalyticsDashboard />
+            <BasicAnalyticsDashboard />
           </div>
         </main>
       </div>
