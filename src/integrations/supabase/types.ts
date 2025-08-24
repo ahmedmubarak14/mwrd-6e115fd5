@@ -954,6 +954,59 @@ export type Database = {
           },
         ]
       }
+      vendor_profiles_extended: {
+        Row: {
+          business_size: string | null
+          certifications: string[] | null
+          coverage_locations: string[] | null
+          created_at: string
+          employee_count: string | null
+          equipment: string[] | null
+          established_year: number | null
+          experience_years: number | null
+          id: string
+          team_size: string | null
+          updated_at: string
+          vendor_id: string
+        }
+        Insert: {
+          business_size?: string | null
+          certifications?: string[] | null
+          coverage_locations?: string[] | null
+          created_at?: string
+          employee_count?: string | null
+          equipment?: string[] | null
+          established_year?: number | null
+          experience_years?: number | null
+          id?: string
+          team_size?: string | null
+          updated_at?: string
+          vendor_id: string
+        }
+        Update: {
+          business_size?: string | null
+          certifications?: string[] | null
+          coverage_locations?: string[] | null
+          created_at?: string
+          employee_count?: string | null
+          equipment?: string[] | null
+          established_year?: number | null
+          experience_years?: number | null
+          id?: string
+          team_size?: string | null
+          updated_at?: string
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendor_profiles_extended_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: true
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       verification_requests: {
         Row: {
           created_at: string

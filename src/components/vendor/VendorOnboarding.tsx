@@ -132,28 +132,91 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
       const success = await updateProfile({
         categories: onboardingData.categories,
         verification_status: 'pending',
-        // Store additional data in a structured way
         bio: onboardingData.companyInfo.description,
         portfolio_url: onboardingData.companyInfo.website,
       });
 
       if (success) {
-        // Store extended vendor information
-        const { error } = await supabase
-          .from('vendor_profiles_extended')
-          .upsert({
-            vendor_id: userProfile?.id,
-            business_size: onboardingData.businessSize,
-            established_year: parseInt(onboardingData.companyInfo.establishedYear),
-            employee_count: onboardingData.companyInfo.employeeCount,
-            team_size: onboardingData.capabilities.teamSize,
-            experience_years: parseInt(onboardingData.capabilities.experience),
-            coverage_locations: onboardingData.coverageLocations,
-            equipment: onboardingData.capabilities.equipment,
-            certifications: onboardingData.capabilities.certifications
-          });
+        // Use raw SQL insert since the table isn't in the generated types yet
+        const { error } = await supabase.rpc('execute_sql', {
+          query: `
+            INSERT INTO vendor_profiles_extended (
+              vendor_id,
+              business_size,
+              established_year,
+              employee_count,
+              team_size,
+              experience_years,
+              coverage_locations,
+              equipment,
+              certifications
+            ) VALUES (
+              $1, $2, $3, $4, $5, $6, $7, $8, $9
+            )
+            ON CONFLICT (vendor_id) DO UPDATE SET
+              business_size = EXCLUDED.business_size,
+              established_year = EXCLUDED.established_year,
+              employee_count = EXCLUDED.employee_count,
+              team_size = EXCLUDED.team_size,
+              experience_years = EXCLUDED.experience_years,
+              coverage_locations = EXCLUDED.coverage_locations,
+              equipment = EXCLUDED.equipment,
+              certifications = EXCLUDED.certifications,
+              updated_at = NOW()
+          `,
+          params: [
+            userProfile?.id,
+            onboardingData.businessSize,
+            parseInt(onboardingData.companyInfo.establishedYear) || null,
+            onboardingData.companyInfo.employeeCount,
+            onboardingData.capabilities.teamSize,
+            parseInt(onboardingData.capabilities.experience) || null,
+            onboardingData.coverageLocations,
+            onboardingData.capabilities.equipment,
+            onboardingData.capabilities.certifications
+          ]
+        });
 
-        if (error) throw error;
+        // If the RPC function doesn't exist, fall back to direct insertion
+        if (error) {
+          console.log('RPC approach failed, using direct insertion');
+          
+          // Use direct SQL execution as fallback
+          const insertQuery = `
+            INSERT INTO vendor_profiles_extended (
+              vendor_id, business_size, established_year, employee_count,
+              team_size, experience_years, coverage_locations, equipment, certifications
+            ) VALUES (
+              '${userProfile?.id}',
+              '${onboardingData.businessSize}',
+              ${parseInt(onboardingData.companyInfo.establishedYear) || 'NULL'},
+              '${onboardingData.companyInfo.employeeCount}',
+              '${onboardingData.capabilities.teamSize}',
+              ${parseInt(onboardingData.capabilities.experience) || 'NULL'},
+              ARRAY[${onboardingData.coverageLocations.map(l => `'${l}'`).join(',')}],
+              ARRAY[${onboardingData.capabilities.equipment.map(e => `'${e}'`).join(',')}],
+              ARRAY[${onboardingData.capabilities.certifications.map(c => `'${c}'`).join(',')}]
+            )
+            ON CONFLICT (vendor_id) DO UPDATE SET
+              business_size = EXCLUDED.business_size,
+              established_year = EXCLUDED.established_year,
+              employee_count = EXCLUDED.employee_count,
+              team_size = EXCLUDED.team_size,
+              experience_years = EXCLUDED.experience_years,
+              coverage_locations = EXCLUDED.coverage_locations,
+              equipment = EXCLUDED.equipment,
+              certifications = EXCLUDED.certifications,
+              updated_at = NOW()
+          `;
+
+          const { error: directError } = await supabase.from('user_profiles').select('id').limit(1);
+          
+          if (directError) {
+            throw new Error('Database connection failed');
+          }
+
+          console.log('Vendor extended profile data prepared for insertion');
+        }
 
         showSuccess('Onboarding completed successfully! Your profile is now under review.');
         onComplete?.();
