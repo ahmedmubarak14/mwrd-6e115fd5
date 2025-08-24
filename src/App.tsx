@@ -29,6 +29,19 @@ import AdminOffers from './pages/admin/AdminOffers';
 import CreateProcurementRequest from "@/pages/CreateProcurementRequest";
 import CreateRequest from "@/pages/CreateRequest";
 import AdminDashboard from './pages/admin/AdminDashboard';
+import Messages from './pages/Messages';
+import Suppliers from './pages/Suppliers';
+import Analytics from './pages/Analytics';
+import Orders from './pages/Orders';
+import Settings from './pages/Settings';
+import Support from './pages/Support';
+import BrowseRequests from './pages/BrowseRequests';
+import MyOffers from './pages/MyOffers';
+import ManageSubscription from './pages/ManageSubscription';
+import SupplierDashboard from './pages/SupplierDashboard';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsAndConditions from './pages/TermsAndConditions';
+import Pricing from './pages/Pricing';
 
 function App() {
   return (
@@ -43,9 +56,14 @@ function App() {
                 <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
                 <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
                 <Route path="/reset-password/:token" element={<PublicRoute><ResetPassword /></PublicRoute>} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+                <Route path="/pricing" element={<Pricing />} />
 
                 {/* Protected Routes */}
                 <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="/supplier-dashboard" element={<ProtectedRoute><SupplierDashboard /></ProtectedRoute>} />
                 <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                 <Route path="/requests" element={<ProtectedRoute><Requests /></ProtectedRoute>} />
                 <Route path="/procurement-requests" element={<ProtectedRoute><ProcurementRequests /></ProtectedRoute>} />
@@ -55,6 +73,19 @@ function App() {
                 <Route path="/activity" element={<ProtectedRoute><ActivityFeed /></ProtectedRoute>} />
                 <Route path="/projects/create" element={<ProtectedRoute><CreateProject /></ProtectedRoute>} />
                 <Route path="/projects/:id/edit" element={<ProtectedRoute><EditProject /></ProtectedRoute>} />
+                
+                {/* Core Application Routes */}
+                <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
+                <Route path="/suppliers" element={<ProtectedRoute><Suppliers /></ProtectedRoute>} />
+                <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
+                <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+                <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+                <Route path="/support" element={<ProtectedRoute><Support /></ProtectedRoute>} />
+                <Route path="/manage-subscription" element={<ProtectedRoute><ManageSubscription /></ProtectedRoute>} />
+                
+                {/* Vendor-Specific Routes */}
+                <Route path="/browse-requests" element={<ProtectedRoute><BrowseRequests /></ProtectedRoute>} />
+                <Route path="/my-offers" element={<ProtectedRoute><MyOffers /></ProtectedRoute>} />
 
                 {/* Admin Routes */}
                 <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
@@ -63,7 +94,7 @@ function App() {
                 <Route path="/admin/projects" element={<ProtectedRoute><AdminProjects /></ProtectedRoute>} />
                 <Route path="/admin/offers" element={<ProtectedRoute><AdminOffers /></ProtectedRoute>} />
                 
-                {/* Add new routes for form pages */}
+                {/* Form Creation Routes */}
                 <Route path="/requests/create" element={
                   <ProtectedRoute>
                     <CreateRequest />
