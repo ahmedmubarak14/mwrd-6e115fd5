@@ -218,7 +218,7 @@ export const EnhancedSupplierDashboard = () => {
                   </div>
                 </div>
               </CardContent>
-            </div>
+            </Card>
 
             {/* Opportunities List with Verification Guard */}
             <VerificationGuard
