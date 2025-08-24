@@ -123,7 +123,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
   };
 
   const handleLogoClick = () => {
-    navigate('/');
+    navigate('/landing');
   };
 
   // Client CR Upload Flow
