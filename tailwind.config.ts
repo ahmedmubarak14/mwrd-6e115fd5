@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -71,23 +72,23 @@ export default {
 					foreground: 'hsl(var(--lime-foreground))'
 				},
 				bronze: {
-					DEFAULT: '40 28% 35%',     /* #765A3F - Bronze/Brown */
-					foreground: '0 0% 100%'
+					DEFAULT: 'hsl(40 28% 35%)',     /* #765A3F - Bronze/Brown */
+					foreground: 'hsl(0 0% 100%)'
 				},
 				orange: {
-					DEFAULT: '29 78% 68%',    /* #FBA765 - Cozy Nook */
+					DEFAULT: 'hsl(29 78% 68%)',    /* #FBA765 - Cozy Nook */
 					foreground: 'hsl(var(--primary-900))'
 				},
 				darkGreen: {
-					DEFAULT: '195 100% 16%',   /* #004F54 - Transporter Green */
-					foreground: '0 0% 100%'
+					DEFAULT: 'hsl(195 100% 16%)',   /* #004F54 - Transporter Green */
+					foreground: 'hsl(0 0% 100%)'
 				},
 				blackChasm: {
-					DEFAULT: '195 49% 10%',    /* #102C33 - Black Chasm */
-					foreground: '0 0% 100%'
+					DEFAULT: 'hsl(195 49% 10%)',    /* #102C33 - Black Chasm */
+					foreground: 'hsl(0 0% 100%)'
 				},
 				fujiSnow: {
-					DEFAULT: '40 15% 91%',     /* #F1EFE8 - Fuji Snow */
+					DEFAULT: 'hsl(40 15% 91%)',     /* #F1EFE8 - Fuji Snow */
 					foreground: 'hsl(var(--neutral-900))'
 				}
 			},

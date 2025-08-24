@@ -1,266 +1,164 @@
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { ProcurementRequestForm } from "@/components/procurement/ProcurementRequestForm";
-import { useRequests } from "@/hooks/useRequests";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useAuth } from "@/contexts/AuthContext";
-import { Header } from "@/components/ui/layout/Header";
-import { Sidebar } from "@/components/ui/layout/Sidebar";
-import { Footer } from "@/components/ui/layout/Footer";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { MobileNavigation } from "@/components/layout/MobileNavigation";
-import { Plus, Clock, DollarSign, MapPin, AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useState } from "react";
+import { Plus, FileText, Calendar, MapPin, Clock, Package, DollarSign } from "lucide-react";
+import { format } from "date-fns";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
-const ProcurementRequests: React.FC = () => {
-  const { language } = useLanguage();
-  const { userProfile } = useAuth();
+// Mock data for demonstration
+const mockRequests = [
+  {
+    id: '1',
+    title: 'Office Furniture Procurement',
+    description: 'Need office chairs, desks, and filing cabinets for new branch office',
+    category: 'Office Equipment',
+    budget: '$15,000',
+    deadline: '2024-02-15',
+    status: 'open',
+    location: 'Riyadh, Saudi Arabia',
+    created_at: '2024-01-15',
+  },
+  {
+    id: '2',
+    title: 'IT Equipment Purchase',
+    description: 'Laptops, monitors, and networking equipment for IT department',
+    category: 'Technology',
+    budget: '$25,000',
+    deadline: '2024-02-28',
+    status: 'in_progress',
+    location: 'Jeddah, Saudi Arabia',
+    created_at: '2024-01-10',
+  },
+];
+
+const ProcurementRequests = () => {
+  const { t, language } = useLanguage();
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [loading] = useState(false);
   const isRTL = language === 'ar';
-  const { requests, loading } = useRequests();
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'new': return 'bg-blue-100 text-blue-700';
-      case 'in_progress': return 'bg-yellow-100 text-yellow-700';
-      case 'completed': return 'bg-green-100 text-green-700';
-      case 'disputed': return 'bg-red-100 text-red-700';
-      case 'cancelled': return 'bg-gray-100 text-gray-700';
-      default: return 'bg-muted text-muted-foreground';
-    }
-  };
-
-  const getStatusLabel = (status: string) => {
-    const labels = {
-      new: isRTL ? 'جديد' : 'New',
-      in_progress: isRTL ? 'قيد التنفيذ' : 'In Progress',
-      completed: isRTL ? 'مكتمل' : 'Completed',
-      disputed: isRTL ? 'متنازع عليه' : 'Disputed',
-      cancelled: isRTL ? 'ملغي' : 'Cancelled'
-    };
-    return labels[status as keyof typeof labels] || status;
-  };
-
-  const getUrgencyColor = (urgency: string) => {
-    switch (urgency) {
-      case 'low': return 'bg-green-100 text-green-700';
-      case 'medium': return 'bg-yellow-100 text-yellow-700';
-      case 'high': return 'bg-orange-100 text-orange-700';
-      case 'urgent': return 'bg-red-100 text-red-700';
-      default: return 'bg-muted text-muted-foreground';
-    }
-  };
-
-  const getUrgencyLabel = (urgency: string) => {
-    const labels = {
-      low: isRTL ? 'منخفض' : 'Low',
-      medium: isRTL ? 'متوسط' : 'Medium',
-      high: isRTL ? 'عالي' : 'High',
-      urgent: isRTL ? 'عاجل' : 'Urgent'
-    };
-    return labels[urgency as keyof typeof labels] || urgency;
-  };
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="flex justify-center items-center min-h-[400px]">
+          <LoadingSpinner size="lg" />
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-subtle" dir={isRTL ? 'rtl' : 'ltr'}>
-      <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
-      
-      {/* Mobile Navigation Sheet */}
-      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent 
-          side={isRTL ? "right" : "left"} 
-          className="w-80 p-0 flex flex-col"
-        >
-          <MobileNavigation />
-        </SheetContent>
-      </Sheet>
-
-      <div className="flex min-h-[calc(100vh-80px)]">
-        {/* Desktop Sidebar */}
-        <div className="hidden lg:block">
-          <Sidebar />
+    <DashboardLayout>
+      <div className="container mx-auto space-y-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+              {t('procurement.title')}
+            </h1>
+            <p className="text-muted-foreground mt-1">
+              {t('procurement.description')}
+            </p>
+          </div>
+          
+          <Dialog open={createModalOpen} onOpenChange={setCreateModalOpen}>
+            <DialogTrigger asChild>
+              <Button size="lg" className="gap-2 w-full sm:w-auto">
+                <Plus className="h-4 w-4" />
+                {t('procurement.createNew')}
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>{t('procurement.createNew')}</DialogTitle>
+              </DialogHeader>
+              <ProcurementRequestForm 
+                onSuccess={() => setCreateModalOpen(false)} 
+              />
+            </DialogContent>
+          </Dialog>
         </div>
 
-        {/* Main Content */}
-        <main className="flex-1 p-4 lg:p-6 overflow-auto">
-          <div className="container mx-auto max-w-7xl">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h1 className="text-3xl font-bold mb-2">
-                  {isRTL ? 'طلبات الشراء' : 'Procurement Requests'}
-                </h1>
-                <p className="text-muted-foreground">
-                  {isRTL ? 
-                    'إدارة طلبات الشراء والمناقصات الخاصة بك' :
-                    'Manage your procurement requests and tenders'
-                  }
-                </p>
-              </div>
-              
-              <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
-                <DialogTrigger asChild>
-                  <Button>
-                    <Plus className="h-4 w-4 mr-2" />
-                    {isRTL ? 'طلب شراء جديد' : 'New Procurement Request'}
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto">
-                  <ProcurementRequestForm />
-                </DialogContent>
-              </Dialog>
-            </div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {mockRequests.map((request) => (
+            <Card 
+              key={request.id} 
+              className="cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-[1.02]"
+            >
+              <CardHeader>
+                <div className="flex justify-between items-start gap-2">
+                  <CardTitle className="text-lg leading-tight">{request.title}</CardTitle>
+                  <Badge variant={
+                    request.status === 'open' ? 'default' :
+                    request.status === 'in_progress' ? 'secondary' : 'outline'
+                  }>
+                    {request.status.replace('_', ' ')}
+                  </Badge>
+                </div>
+                <CardDescription className="line-clamp-2">
+                  {request.description}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3 text-sm">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Package className="h-4 w-4 flex-shrink-0" />
+                    <span className="truncate">{request.category}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <DollarSign className="h-4 w-4 flex-shrink-0" />
+                    <span className="font-medium text-foreground">{request.budget}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <MapPin className="h-4 w-4 flex-shrink-0" />
+                    <span className="truncate">{request.location}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Calendar className="h-4 w-4 flex-shrink-0" />
+                    <span>
+                      Deadline: {format(new Date(request.deadline), 'MMM dd, yyyy')}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Clock className="h-4 w-4 flex-shrink-0" />
+                    <span>Created: {format(new Date(request.created_at), 'MMM dd, yyyy')}</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
-            {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[...Array(6)].map((_, i) => (
-                  <Card key={i} className="animate-pulse">
-                    <CardHeader>
-                      <div className="h-4 bg-muted rounded w-3/4"></div>
-                      <div className="h-3 bg-muted rounded w-1/2"></div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-2">
-                        <div className="h-3 bg-muted rounded"></div>
-                        <div className="h-3 bg-muted rounded w-4/5"></div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : requests.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {requests.map((request) => (
-                  <Card key={request.id} className="hover:shadow-lg transition-all duration-200">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <CardTitle className="text-lg mb-2 line-clamp-2">
-                            {request.title}
-                          </CardTitle>
-                          <div className="flex items-center gap-2">
-                            <Badge className={getStatusColor(request.status)}>
-                              {getStatusLabel(request.status)}
-                            </Badge>
-                            <Badge className={getUrgencyColor(request.urgency)}>
-                              {getUrgencyLabel(request.urgency)}
-                            </Badge>
-                          </div>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    
-                    <CardContent className="space-y-4">
-                      {request.description && (
-                        <p className="text-sm text-muted-foreground line-clamp-3">
-                          {request.description}
-                        </p>
-                      )}
-                      
-                      <div className="space-y-2">
-                        {/* Budget Range */}
-                        {(request.budget_min || request.budget_max) && (
-                          <div className="flex items-center gap-2 text-sm">
-                            <DollarSign className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-muted-foreground">
-                              {isRTL ? 'الميزانية:' : 'Budget:'}
-                            </span>
-                            <span className="font-medium">
-                              {request.budget_min && request.budget_max ? 
-                                `${request.budget_min.toLocaleString()} - ${request.budget_max.toLocaleString()} SAR` :
-                                request.budget_min ? 
-                                  `${request.budget_min.toLocaleString()}+ SAR` :
-                                  `${request.budget_max?.toLocaleString()} SAR`
-                              }
-                            </span>
-                          </div>
-                        )}
-                        
-                        {/* Location */}
-                        {request.location && (
-                          <div className="flex items-center gap-2 text-sm">
-                            <MapPin className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-muted-foreground">
-                              {isRTL ? 'الموقع:' : 'Location:'}
-                            </span>
-                            <span className="font-medium">{request.location}</span>
-                          </div>
-                        )}
-                        
-                        {/* Deadline */}
-                        {request.deadline && (
-                          <div className="flex items-center gap-2 text-sm">
-                            <Clock className="h-4 w-4 text-muted-foreground" />
-                            <span className="text-muted-foreground">
-                              {isRTL ? 'الموعد النهائي:' : 'Deadline:'}
-                            </span>
-                            <span className="font-medium">
-                              {new Date(request.deadline).toLocaleDateString(isRTL ? 'ar-SA' : 'en-US')}
-                            </span>
-                          </div>
-                        )}
-                        
-                        {/* Category */}
-                        {request.category && (
-                          <div className="flex items-center gap-2 text-sm">
-                            <span className="text-muted-foreground">
-                              {isRTL ? 'الفئة:' : 'Category:'}
-                            </span>
-                            <Badge variant="outline" className="text-xs">
-                              {request.category}
-                            </Badge>
-                          </div>
-                        )}
-                      </div>
-                      
-                      <div className="flex gap-2 pt-2 border-t">
-                        <Button variant="outline" size="sm" className="flex-1">
-                          {isRTL ? 'عرض التفاصيل' : 'View Details'}
-                        </Button>
-                        <Button size="sm" className="flex-1" disabled={request.status !== 'new'}>
-                          {isRTL ? 'عرض العروض' : 'View Offers'}
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <Card>
-                <CardContent className="py-12 text-center">
-                  <AlertCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-medium mb-2">
-                    {isRTL ? 'لا توجد طلبات شراء بعد' : 'No procurement requests yet'}
-                  </h3>
-                  <p className="text-muted-foreground mb-6">
-                    {isRTL ? 
-                      'ابدأ بإنشاء طلب شراء جديد للحصول على عروض من الموردين المعتمدين' :
-                      'Start by creating a new procurement request to get offers from verified vendors'
-                    }
-                  </p>
-                  <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
-                    <DialogTrigger asChild>
-                      <Button>
-                        <Plus className="h-4 w-4 mr-2" />
-                        {isRTL ? 'إنشاء طلب شراء' : 'Create Procurement Request'}
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-7xl max-h-[90vh] overflow-y-auto">
-                      <ProcurementRequestForm />
-                    </DialogContent>
-                  </Dialog>
-                </CardContent>
-              </Card>
-            )}
+        {mockRequests.length === 0 && (
+          <div className="text-center py-12">
+            <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+            <h3 className="text-lg font-semibold mb-2">{t('procurement.noRequests')}</h3>
+            <p className="text-muted-foreground mb-4">{t('procurement.createFirst')}</p>
+            <Dialog open={createModalOpen} onOpenChange={setCreateModalOpen}>
+              <DialogTrigger asChild>
+                <Button>
+                  <Plus className="h-4 w-4 mr-2" />
+                  {t('procurement.createNew')}
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle>{t('procurement.createNew')}</DialogTitle>
+                </DialogHeader>
+                <ProcurementRequestForm 
+                  onSuccess={() => setCreateModalOpen(false)} 
+                />
+              </DialogContent>
+            </Dialog>
           </div>
-        </main>
+        )}
       </div>
-
-      <Footer />
-    </div>
+    </DashboardLayout>
   );
 };
 
