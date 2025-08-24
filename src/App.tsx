@@ -1,10 +1,9 @@
-
 import "./App.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { RouteAwareThemeProvider } from "./components/RouteAwareThemeProvider";
 // Fix the import statements - use default imports instead of named imports
@@ -92,10 +91,6 @@ function App() {
                         </ProtectedRoute>
                       }
                     />
-                    
-                    {/* Backward Compatibility Redirects */}
-                    <Route path="/suppliers" element={<Navigate to="/vendors" replace />} />
-                    <Route path="/supplier-dashboard" element={<Navigate to="/vendor-dashboard" replace />} />
                     
                     {/* Public Routes */}
                     <Route

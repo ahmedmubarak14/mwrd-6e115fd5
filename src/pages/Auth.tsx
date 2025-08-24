@@ -1,42 +1,41 @@
+
 import { useEffect } from "react";
-import { useAuth } from "@/contexts/AuthContext";
+import { AuthForm } from "@/components/auth/AuthForm";
 import { useNavigate } from "react-router-dom";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 const Auth = () => {
-  const { user, userProfile, loading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (loading) {
-      return;
+    document.title = "Sign in | MWRD";
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute("content", "Sign in to MWRD to manage users, requests, and offers.");
+    } else {
+      const m = document.createElement("meta");
+      m.name = "description";
+      m.content = "Sign in to MWRD to manage users, requests, and offers.";
+      document.head.appendChild(m);
     }
-
-    if (!user) {
-      console.log('No user authenticated, redirecting to /login');
-      navigate('/login');
-      return;
+    const link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    if (link) {
+      link.href = `${window.location.origin}/auth`;
+    } else {
+      const l = document.createElement("link");
+      l.rel = "canonical";
+      l.href = `${window.location.origin}/auth`;
+      document.head.appendChild(l);
     }
-
-    if (user && userProfile) {
-      console.log('User authenticated, redirecting based on role:', userProfile.role);
-      switch (userProfile.role) {
-        case 'admin':
-          navigate('/admin');
-          break;
-        case 'vendor':
-          navigate('/vendor-dashboard');
-          break;
-        default:
-          navigate('/dashboard');
-      }
-    }
-  }, [user, userProfile, loading, navigate]);
+  }, []);
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <LoadingSpinner size="lg" />
-    </div>
+    <AuthForm
+      onAuthSuccess={(u) => {
+        if (u.role === "admin") navigate("/admin");
+        else if (u.role === "vendor") navigate("/supplier-dashboard");
+        else navigate("/dashboard");
+      }}
+    />
   );
 };
 
