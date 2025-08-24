@@ -71,6 +71,21 @@ const queryClient = new QueryClient({
   },
 });
 
+// Create a wrapper component that includes the RouteAwareThemeProvider
+const AppContent = () => {
+  return (
+    <RouteAwareThemeProvider>
+      <TooltipProvider>
+        <div className="App">
+          <AuthRedirect />
+          <RouterProvider router={router} />
+          <Toaster />
+        </div>
+      </TooltipProvider>
+    </RouteAwareThemeProvider>
+  );
+};
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -401,15 +416,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <LanguageProvider>
-            <RouteAwareThemeProvider>
-              <TooltipProvider>
-                <div className="App">
-                  <AuthRedirect />
-                  <RouterProvider router={router} />
-                  <Toaster />
-                </div>
-              </TooltipProvider>
-            </RouteAwareThemeProvider>
+            <AppContent />
           </LanguageProvider>
         </AuthProvider>
       </QueryClientProvider>
