@@ -5,20 +5,18 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { 
-  CheckCircle, 
-  XCircle, 
+  Eye, 
+  Check, 
+  X, 
   Clock, 
-  FileText, 
-  Eye,
-  User,
+  User, 
   Building,
-  RefreshCw
+  FileText,
+  Download
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
-import { useAuth } from '@/contexts/AuthContext';
 
 interface VerificationRequest {
   id: string;
@@ -27,6 +25,8 @@ interface VerificationRequest {
   document_url: string;
   status: string;
   submitted_at: string;
+  reviewed_at?: string;
+  reviewed_by?: string;
   reviewer_notes?: string;
   user_profiles?: {
     id: string;
@@ -40,30 +40,28 @@ export const VerificationQueue = () => {
   const [requests, setRequests] = useState<VerificationRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState<string | null>(null);
-  const [selectedRequest, setSelectedRequest] = useState<VerificationRequest | null>(null);
-  const [reviewNotes, setReviewNotes] = useState('');
-  const [documentDialog, setDocumentDialog] = useState(false);
-  const { userProfile } = useAuth();
+  const [reviewNotes, setReviewNotes] = useState<{ [key: string]: string }>({});
   const { showSuccess, showError } = useToastFeedback();
 
   const fetchVerificationRequests = async () => {
     try {
-      setLoading(true);
       const { data, error } = await supabase
         .from('verification_requests')
         .select(`
           *,
-          user_profiles:user_id (
-            id,
-            full_name,
-            company_name,
-            email
-          )
+          user_profiles!inner(id, full_name, company_name, email)
         `)
         .order('submitted_at', { ascending: false });
 
       if (error) throw error;
-      setRequests(data || []);
+      
+      // Transform the data to match our interface
+      const transformedData = (data || []).map(item => ({
+        ...item,
+        user_profiles: Array.isArray(item.user_profiles) ? item.user_profiles[0] : item.user_profiles
+      }));
+      
+      setRequests(transformedData);
     } catch (error: any) {
       console.error('Error fetching verification requests:', error);
       showError('Failed to load verification requests');
@@ -76,42 +74,27 @@ export const VerificationQueue = () => {
     fetchVerificationRequests();
   }, []);
 
-  const handleApprove = async (requestId: string) => {
-    await processRequest(requestId, 'approved', reviewNotes);
-  };
-
-  const handleReject = async (requestId: string) => {
-    if (!reviewNotes.trim()) {
-      showError('Please provide rejection notes');
-      return;
-    }
-    await processRequest(requestId, 'rejected', reviewNotes);
-  };
-
-  const processRequest = async (requestId: string, status: 'approved' | 'rejected', notes: string) => {
+  const handleStatusUpdate = async (requestId: string, newStatus: 'approved' | 'rejected') => {
+    setProcessing(requestId);
     try {
-      setProcessing(requestId);
-      
       const { error } = await supabase
         .from('verification_requests')
         .update({
-          status,
+          status: newStatus,
           reviewed_at: new Date().toISOString(),
-          reviewed_by: userProfile?.user_id,
-          reviewer_notes: notes
+          reviewed_by: (await supabase.auth.getUser()).data.user?.id,
+          reviewer_notes: reviewNotes[requestId] || null
         })
         .eq('id', requestId);
 
       if (error) throw error;
 
-      showSuccess(`Verification ${status} successfully`);
-      setSelectedRequest(null);
-      setReviewNotes('');
-      setDocumentDialog(false);
-      await fetchVerificationRequests();
+      showSuccess(`Verification ${newStatus} successfully`);
+      fetchVerificationRequests();
+      setReviewNotes(prev => ({ ...prev, [requestId]: '' }));
     } catch (error: any) {
-      console.error('Error processing verification:', error);
-      showError(`Failed to ${status} verification`);
+      console.error('Error updating verification status:', error);
+      showError('Failed to update verification status');
     } finally {
       setProcessing(null);
     }
@@ -119,221 +102,157 @@ export const VerificationQueue = () => {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'approved': return <Badge className="bg-success">Approved</Badge>;
-      case 'rejected': return <Badge variant="destructive">Rejected</Badge>;
-      case 'under_review': return <Badge variant="outline">Under Review</Badge>;
-      default: return <Badge variant="secondary">Pending</Badge>;
+      case 'approved':
+        return <Badge className="bg-green-500">Approved</Badge>;
+      case 'rejected':
+        return <Badge variant="destructive">Rejected</Badge>;
+      case 'under_review':
+        return <Badge variant="outline">Under Review</Badge>;
+      default:
+        return <Badge variant="secondary">Pending</Badge>;
     }
   };
 
-  const pendingRequests = requests.filter(r => r.status === 'pending' || r.status === 'under_review');
-  const processedRequests = requests.filter(r => r.status === 'approved' || r.status === 'rejected');
+  if (loading) {
+    return (
+      <Card>
+        <CardContent className="p-6">
+          <div className="flex justify-center">Loading verification requests...</div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold">Verification Queue</h2>
-          <p className="text-muted-foreground">Review and approve Commercial Registration documents</p>
-        </div>
-        <Button
-          variant="outline"
-          onClick={fetchVerificationRequests}
-          disabled={loading}
-        >
-          <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-          Refresh
-        </Button>
-      </div>
-
-      {/* Pending Requests */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Clock className="h-5 w-5" />
-            Pending Reviews ({pendingRequests.length})
+            <FileText className="h-5 w-5" />
+            Verification Queue
           </CardTitle>
           <CardDescription>
-            Documents awaiting review and approval
+            Review and approve client Commercial Registration documents
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          {pendingRequests.length === 0 ? (
-            <Alert>
-              <CheckCircle className="h-4 w-4" />
-              <AlertDescription>No pending verification requests</AlertDescription>
-            </Alert>
-          ) : (
-            <div className="space-y-4">
-              {pendingRequests.map((request) => (
-                <div key={request.id} className="border rounded-lg p-4 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <User className="h-4 w-4" />
-                        <span className="font-medium">
-                          {request.user_profiles?.full_name || 'Unknown User'}
-                        </span>
-                        {getStatusBadge(request.status)}
+      </Card>
+
+      {requests.length === 0 ? (
+        <Alert>
+          <AlertDescription>No verification requests pending review.</AlertDescription>
+        </Alert>
+      ) : (
+        <div className="grid gap-4">
+          {requests.map((request) => (
+            <Card key={request.id}>
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <User className="h-4 w-4" />
+                      <span className="font-medium">
+                        {request.user_profiles?.full_name || 'Unknown User'}
+                      </span>
+                      {getStatusBadge(request.status)}
+                    </div>
+                    
+                    {request.user_profiles?.company_name && (
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Building className="h-4 w-4" />
+                        <span>{request.user_profiles.company_name}</span>
                       </div>
-                      {request.user_profiles?.company_name && (
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Building className="h-3 w-3" />
-                          {request.user_profiles.company_name}
-                        </div>
-                      )}
-                      <p className="text-sm text-muted-foreground">
-                        {request.user_profiles?.email}
-                      </p>
+                    )}
+                    
+                    <div className="text-sm text-muted-foreground">
+                      Email: {request.user_profiles?.email}
                     </div>
-                    <div className="text-right text-sm text-muted-foreground">
-                      <p>Submitted:</p>
-                      <p>{new Date(request.submitted_at).toLocaleDateString()}</p>
+                    
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Clock className="h-4 w-4" />
+                      <span>Submitted: {new Date(request.submitted_at).toLocaleDateString()}</span>
                     </div>
                   </div>
+                </div>
 
+                <div className="space-y-4">
                   <div className="flex gap-2">
-                    <Dialog open={documentDialog && selectedRequest?.id === request.id} onOpenChange={setDocumentDialog}>
-                      <DialogTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => window.open(request.document_url, '_blank')}
+                    >
+                      <Eye className="h-4 w-4 mr-1" />
+                      View Document
+                    </Button>
+                    
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        const link = document.createElement('a');
+                        link.href = request.document_url;
+                        link.download = `CR_${request.user_profiles?.company_name || 'document'}.pdf`;
+                        link.click();
+                      }}
+                    >
+                      <Download className="h-4 w-4 mr-1" />
+                      Download
+                    </Button>
+                  </div>
+
+                  {request.status === 'pending' && (
+                    <>
+                      <Textarea
+                        placeholder="Add review notes (optional for approval, required for rejection)..."
+                        value={reviewNotes[request.id] || ''}
+                        onChange={(e) => setReviewNotes(prev => ({ ...prev, [request.id]: e.target.value }))}
+                        rows={3}
+                      />
+                      
+                      <div className="flex gap-2">
                         <Button
-                          variant="outline"
+                          onClick={() => handleStatusUpdate(request.id, 'approved')}
+                          disabled={processing === request.id}
                           size="sm"
-                          onClick={() => {
-                            setSelectedRequest(request);
-                            setReviewNotes(request.reviewer_notes || '');
-                          }}
+                          className="bg-green-500 hover:bg-green-600"
                         >
-                          <Eye className="h-4 w-4 mr-1" />
-                          Review Document
+                          <Check className="h-4 w-4 mr-1" />
+                          {processing === request.id ? 'Processing...' : 'Approve'}
                         </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-4xl">
-                        <DialogHeader>
-                          <DialogTitle>Review Commercial Registration</DialogTitle>
-                        </DialogHeader>
-                        <div className="space-y-4">
-                          {/* User Info */}
-                          <div className="grid grid-cols-2 gap-4 p-4 bg-muted rounded-lg">
-                            <div>
-                              <label className="text-sm font-medium">Full Name:</label>
-                              <p>{request.user_profiles?.full_name || 'N/A'}</p>
-                            </div>
-                            <div>
-                              <label className="text-sm font-medium">Company:</label>
-                              <p>{request.user_profiles?.company_name || 'N/A'}</p>
-                            </div>
-                            <div>
-                              <label className="text-sm font-medium">Email:</label>
-                              <p>{request.user_profiles?.email}</p>
-                            </div>
-                            <div>
-                              <label className="text-sm font-medium">Submitted:</label>
-                              <p>{new Date(request.submitted_at).toLocaleString()}</p>
-                            </div>
-                          </div>
+                        
+                        <Button
+                          onClick={() => handleStatusUpdate(request.id, 'rejected')}
+                          disabled={processing === request.id || !reviewNotes[request.id]?.trim()}
+                          variant="destructive"
+                          size="sm"
+                        >
+                          <X className="h-4 w-4 mr-1" />
+                          {processing === request.id ? 'Processing...' : 'Reject'}
+                        </Button>
+                      </div>
+                      
+                      {!reviewNotes[request.id]?.trim() && (
+                        <p className="text-sm text-muted-foreground">
+                          Note: Rejection requires review notes to inform the client.
+                        </p>
+                      )}
+                    </>
+                  )}
 
-                          {/* Document Viewer */}
-                          <div className="border rounded-lg p-4">
-                            <div className="flex items-center justify-between mb-4">
-                              <h4 className="font-medium">Commercial Registration Document</h4>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => window.open(request.document_url, '_blank')}
-                              >
-                                <FileText className="h-4 w-4 mr-1" />
-                                Open in New Tab
-                              </Button>
-                            </div>
-                            <iframe
-                              src={request.document_url}
-                              className="w-full h-96 border rounded"
-                              title="Commercial Registration Document"
-                            />
-                          </div>
-
-                          {/* Review Notes */}
-                          <div className="space-y-2">
-                            <label className="text-sm font-medium">Review Notes:</label>
-                            <Textarea
-                              value={reviewNotes}
-                              onChange={(e) => setReviewNotes(e.target.value)}
-                              placeholder="Add notes about the verification (required for rejection)"
-                              rows={3}
-                            />
-                          </div>
-
-                          {/* Action Buttons */}
-                          <div className="flex justify-end gap-2">
-                            <Button
-                              variant="outline"
-                              onClick={() => {
-                                setDocumentDialog(false);
-                                setSelectedRequest(null);
-                                setReviewNotes('');
-                              }}
-                            >
-                              Cancel
-                            </Button>
-                            <Button
-                              variant="destructive"
-                              onClick={() => handleReject(request.id)}
-                              disabled={processing === request.id}
-                            >
-                              <XCircle className="h-4 w-4 mr-1" />
-                              {processing === request.id ? 'Processing...' : 'Reject'}
-                            </Button>
-                            <Button
-                              onClick={() => handleApprove(request.id)}
-                              disabled={processing === request.id}
-                            >
-                              <CheckCircle className="h-4 w-4 mr-1" />
-                              {processing === request.id ? 'Processing...' : 'Approve'}
-                            </Button>
-                          </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
+                  {request.reviewer_notes && (
+                    <Alert>
+                      <AlertDescription>
+                        <strong>Review Notes:</strong><br />
+                        {request.reviewer_notes}
+                      </AlertDescription>
+                    </Alert>
+                  )}
                 </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Processed Requests */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Reviews ({processedRequests.slice(0, 10).length})</CardTitle>
-          <CardDescription>
-            Recently processed verification requests
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {processedRequests.slice(0, 10).map((request) => (
-              <div key={request.id} className="flex items-center justify-between p-3 border rounded-lg">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">
-                      {request.user_profiles?.full_name || 'Unknown User'}
-                    </span>
-                    {getStatusBadge(request.status)}
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    {request.user_profiles?.email}
-                  </p>
-                </div>
-                <div className="text-right text-sm text-muted-foreground">
-                  <p>Processed:</p>
-                  <p>{new Date(request.submitted_at).toLocaleDateString()}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

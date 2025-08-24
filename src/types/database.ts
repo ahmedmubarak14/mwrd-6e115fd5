@@ -22,6 +22,10 @@ export interface UserProfile {
   subscription_plan: string;
   subscription_status: string;
   subscription_expires_at?: string;
+  verification_status?: 'pending' | 'approved' | 'rejected' | 'under_review';
+  verification_notes?: string;
+  verified_at?: string;
+  verified_by?: string;
   created_at: string;
   updated_at: string;
 }

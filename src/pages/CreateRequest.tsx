@@ -14,7 +14,7 @@ const CreateRequest = () => {
               Create a new service request to connect with qualified suppliers
             </p>
           </div>
-          <EnhancedRequestForm />
+          <EnhancedRequestForm onSubmit={() => {}} />
         </div>
       </VerificationGuard>
     </DashboardLayout>
