@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
@@ -154,7 +153,7 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
         <div className="w-full max-w-md space-y-6">
           <div className="text-center space-y-4">
-            <Link to="/" className="inline-block">
+            <Link to="/landing" className="inline-block">
               <img 
                 src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
                 alt="MWRD Logo" 
@@ -217,7 +216,7 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-4">
-          <Link to="/" className="inline-block">
+          <Link to="/landing" className="inline-block">
             <img 
               src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
               alt="MWRD Logo" 
