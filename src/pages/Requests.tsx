@@ -8,14 +8,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CreateRequestModal } from "@/components/modals/CreateRequestModal";
 import { RequestDetailsModal } from "@/components/modals/RequestDetailsModal";
-import { useState } from "react";
 import { Calendar, Package, MapPin, Clock, Plus } from "lucide-react";
 import { format } from "date-fns";
 
 const Requests = () => {
   const { t } = useLanguage();
   const { requests, loading } = useRequests();
-  const [selectedRequest, setSelectedRequest] = useState(null);
 
   if (loading) {
     return (
@@ -49,49 +47,51 @@ const Requests = () => {
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {requests?.map((request) => (
-            <Card 
-              key={request.id} 
-              className="cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => setSelectedRequest(request)}
+            <RequestDetailsModal
+              key={request.id}
+              request={request}
+              userRole="client"
             >
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-lg">{request.title}</CardTitle>
-                  <Badge variant={
-                    request.status === 'new' ? 'default' :
-                    request.status === 'in_progress' ? 'secondary' :
-                    request.status === 'completed' ? 'outline' : 'destructive'
-                  }>
-                    {request.status}
-                  </Badge>
-                </div>
-                <CardDescription className="line-clamp-2">
-                  {request.description}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <Package className="h-4 w-4" />
-                    <span>{request.category}</span>
+              <Card className="cursor-pointer hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div className="flex justify-between items-start">
+                    <CardTitle className="text-lg">{request.title}</CardTitle>
+                    <Badge variant={
+                      request.status === 'new' ? 'default' :
+                      request.status === 'in_progress' ? 'secondary' :
+                      request.status === 'completed' ? 'outline' : 'destructive'
+                    }>
+                      {request.status}
+                    </Badge>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4" />
-                    <span>{request.location || 'Not specified'}</span>
+                  <CardDescription className="line-clamp-2">
+                    {request.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                      <Package className="h-4 w-4" />
+                      <span>{request.category}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <MapPin className="h-4 w-4" />
+                      <span>{request.location || 'Not specified'}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      <span>
+                        {request.deadline ? format(new Date(request.deadline), 'MMM dd, yyyy') : 'No deadline'}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4" />
+                      <span>{format(new Date(request.created_at), 'MMM dd, yyyy')}</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Calendar className="h-4 w-4" />
-                    <span>
-                      {request.deadline ? format(new Date(request.deadline), 'MMM dd, yyyy') : 'No deadline'}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-4 w-4" />
-                    <span>{format(new Date(request.created_at), 'MMM dd, yyyy')}</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </RequestDetailsModal>
           ))}
         </div>
 
@@ -107,13 +107,6 @@ const Requests = () => {
               </Button>
             </CreateRequestModal>
           </div>
-        )}
-
-        {selectedRequest && (
-          <RequestDetailsModal
-            request={selectedRequest}
-            onClose={() => setSelectedRequest(null)}
-          />
         )}
       </div>
     </DashboardLayout>
