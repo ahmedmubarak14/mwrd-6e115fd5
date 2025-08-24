@@ -46,7 +46,7 @@ export const RoleProtectedRoute = ({ children, allowed }: RoleProtectedRouteProp
       admin: '/admin',
     };
 
-    const suggested = role ? homeByRole[role] : '/';
+    const suggested = role ? homeByRole[role] : '/landing';
     return (
       <div className="min-h-[60vh] flex items-center justify-center p-6">
         <Card className="max-w-lg w-full">
@@ -59,7 +59,7 @@ export const RoleProtectedRoute = ({ children, allowed }: RoleProtectedRouteProp
               <Link to={suggested}>Go to your dashboard</Link>
             </Button>
             <Button asChild variant="outline">
-              <Link to="/">Return home</Link>
+              <Link to="/landing">Return home</Link>
             </Button>
           </CardContent>
         </Card>
