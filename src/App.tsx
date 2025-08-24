@@ -13,8 +13,7 @@ import Auth from "./pages/Auth";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
-import { SupplierDashboard } from "./pages/SupplierDashboard";
-// Fix the import statement for AdminUsers
+import { EnhancedSupplierDashboard } from "@/components/vendor/EnhancedSupplierDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import { AdminDashboardOverview } from "./pages/admin/AdminDashboardOverview";
@@ -189,7 +188,7 @@ function App() {
                       path="/supplier-dashboard"
                       element={
                         <RoleProtectedRoute allowed={['vendor']}>
-                          <SupplierDashboard />
+                          <EnhancedSupplierDashboard />
                         </RoleProtectedRoute>
                       }
                     />
