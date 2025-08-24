@@ -148,14 +148,6 @@ export const ProcurementRequestForm: React.FC<ProcurementRequestFormProps> = ({ 
         location: formData.location || undefined,
         deadline: deadline?.toISOString().split('T')[0] || undefined,
         urgency: formData.urgency,
-        // Store additional data in metadata/description for now
-        metadata: {
-          categories: selectedCategories,
-          boq_items: boqItems,
-          payment_terms: formData.payment_terms,
-          delivery_requirements: formData.delivery_requirements,
-          quality_standards: formData.quality_standards
-        }
       };
 
       const result = await createRequest(requestData);
@@ -194,9 +186,9 @@ export const ProcurementRequestForm: React.FC<ProcurementRequestFormProps> = ({ 
                 <Label>{isRTL ? 'الفئات المطلوبة' : 'Required Categories'}</Label>
                 <CategorySelector
                   selectedCategory=""
-                  onChange={(categoryId: string) => {
-                    if (categoryId && !selectedCategories.includes(categoryId)) {
-                      setSelectedCategories([...selectedCategories, categoryId]);
+                  onCategoryChange={(category: string, subcategory: string, requirements: Record<string, any>) => {
+                    if (category && !selectedCategories.includes(category)) {
+                      setSelectedCategories([...selectedCategories, category]);
                     }
                   }}
                 />
