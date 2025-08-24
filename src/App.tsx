@@ -6,15 +6,15 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { RouteAwareThemeProvider } from "@/contexts/RouteAwareThemeProvider";
-import ProtectedRoute from "@/components/ProtectedRoute";
-import RoleProtectedRoute from "@/components/RoleProtectedRoute";
+import { RouteAwareThemeProvider } from "@/contexts/RouteAwareThemeContext";
+import ProtectedRoute from "@/components/routing/ProtectedRoute";
+import RoleProtectedRoute from "@/components/routing/RoleProtectedRoute";
 
 // Pages
 import Index from "@/pages/Index";
 import Auth from "@/pages/Auth";
 import ResetPassword from "@/pages/ResetPassword";
-import Dashboard from "@/pages/Dashboard";
+import { Dashboard } from "@/pages/Dashboard";
 import Profile from "@/pages/Profile";
 import Settings from "@/pages/Settings";
 import Pricing from "@/pages/Pricing";
@@ -29,12 +29,12 @@ import Orders from "@/pages/Orders";
 import EnhancedMessages from "@/pages/EnhancedMessages";
 import Analytics from "@/pages/Analytics";
 import Projects from "@/pages/Projects";
-import AdminDashboard from "@/pages/admin/AdminDashboard";
+import AdminDashboard from "@/pages/AdminDashboard";
 import AdminUsers from "@/pages/admin/AdminUsers";
-import RequestsApproval from "@/pages/admin/RequestsApproval";
-import OffersManagement from "@/pages/admin/OffersManagement";
+import { RequestsApproval } from "@/pages/admin/RequestsApproval";
+import { OffersManagement } from "@/pages/admin/OffersManagement";
 import FinancialTransactions from "@/pages/admin/FinancialTransactions";
-import ExpertConsultations from "@/pages/admin/ExpertConsultations";
+import { ExpertConsultations } from "@/pages/admin/ExpertConsultations";
 import ExpertConsultation from "@/pages/ExpertConsultation";
 import Support from "@/pages/Support";
 import TermsAndConditions from "@/pages/TermsAndConditions";
@@ -44,6 +44,7 @@ import WhyStartWithMWRD from "@/pages/WhyStartWithMWRD";
 import WhyMoveToMWRD from "@/pages/WhyMoveToMWRD";
 import Landing from "@/pages/Landing";
 import NotFound from "@/pages/NotFound";
+import AdminCategoryManagement from "@/pages/admin/CategoryManagement";
 
 const queryClient = new QueryClient();
 
@@ -102,6 +103,7 @@ function App() {
                       <Route path="/admin/offers-management" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['admin']}><OffersManagement /></RoleProtectedRoute></ProtectedRoute>} />
                       <Route path="/admin/financial-transactions" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['admin']}><FinancialTransactions /></RoleProtectedRoute></ProtectedRoute>} />
                       <Route path="/admin/expert-consultations" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['admin']}><ExpertConsultations /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/admin/categories" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['admin']}><AdminCategoryManagement /></RoleProtectedRoute></ProtectedRoute>} />
                       
                       {/* Other routes */}
                       <Route path="/expert-consultation" element={<ExpertConsultation />} />

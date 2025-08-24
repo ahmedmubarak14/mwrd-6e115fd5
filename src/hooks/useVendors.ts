@@ -72,7 +72,20 @@ export const useVendors = () => {
 
       // Apply filters
       if (filters.categories && filters.categories.length > 0) {
-        query = query.in('vendor_categories.category_id', filters.categories);
+        // Filter by categories through the junction table
+        const { data: vendorIds } = await supabase
+          .from('vendor_categories')
+          .select('vendor_id')
+          .in('category_id', filters.categories);
+        
+        if (vendorIds && vendorIds.length > 0) {
+          query = query.in('id', vendorIds.map(v => v.vendor_id));
+        } else {
+          // No vendors found with these categories
+          setVendors([]);
+          setTotalCount(0);
+          return;
+        }
       }
 
       if (filters.location) {
@@ -99,6 +112,7 @@ export const useVendors = () => {
 
       if (error) throw error;
 
+      // Type assertion with proper typing
       setVendors((data || []) as VendorWithCategories[]);
       setTotalCount(count || 0);
     } catch (error) {
