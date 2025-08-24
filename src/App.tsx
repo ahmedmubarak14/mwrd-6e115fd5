@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -16,11 +15,11 @@ import { AuthRedirect } from "@/components/routing/AuthRedirect";
 import Index from "./pages/Index";
 import { Landing } from "./pages/Landing";
 import Auth from "./pages/Auth";
-import { Dashboard } from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import { AdminDashboard } from "./pages/AdminDashboard";
 import { ProcurementSupplierDashboard } from "./pages/ProcurementSupplierDashboard";
-import { Requests } from "./pages/Requests";
-import { Suppliers } from "./pages/Suppliers";
+import Requests from "./pages/Requests";
+import Suppliers from "./pages/Suppliers";
 import { MyOffers } from "./pages/MyOffers";
 import { BrowseRequests } from "./pages/BrowseRequests";
 import { Profile } from "./pages/Profile";

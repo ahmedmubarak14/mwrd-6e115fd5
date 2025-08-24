@@ -58,8 +58,9 @@ const Requests = () => {
                 <div className="flex justify-between items-start">
                   <CardTitle className="text-lg">{request.title}</CardTitle>
                   <Badge variant={
-                    request.status === 'open' ? 'default' :
-                    request.status === 'closed' ? 'secondary' : 'outline'
+                    request.status === 'new' ? 'default' :
+                    request.status === 'in_progress' ? 'secondary' :
+                    request.status === 'completed' ? 'outline' : 'destructive'
                   }>
                     {request.status}
                   </Badge>
@@ -111,8 +112,7 @@ const Requests = () => {
         {selectedRequest && (
           <RequestDetailsModal
             request={selectedRequest}
-            open={!!selectedRequest}
-            onOpenChange={() => setSelectedRequest(null)}
+            onClose={() => setSelectedRequest(null)}
           />
         )}
       </div>
