@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
@@ -5,14 +6,14 @@ import { LanguageProvider } from './contexts/LanguageContext';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Profile from './pages/Profile';
+import { Profile } from './pages/Profile';
 import Requests from './pages/Requests';
 import ProcurementRequests from './pages/ProcurementRequests';
 import Projects from './pages/Projects';
 import ProjectDetails from './pages/ProjectDetails';
 import Offers from './pages/Offers';
 import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminUsers from './pages/admin/AdminUsers';
+import { AdminUsers } from './pages/admin/AdminUsers';
 import AdminRequests from './pages/admin/AdminRequests';
 import AdminProjects from './pages/admin/AdminProjects';
 import ProtectedRoute from './components/ProtectedRoute';
