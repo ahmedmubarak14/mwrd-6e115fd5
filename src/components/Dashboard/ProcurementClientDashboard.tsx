@@ -1,186 +1,272 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, FileText, Package, TrendingUp, Users, DollarSign } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { 
+  FileText, 
+  Package, 
+  TrendingUp, 
+  Users, 
+  Clock, 
+  CheckCircle, 
+  AlertCircle,
+  Plus,
+  Eye,
+  MessageSquare
+} from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
-export const ProcurementClientDashboard = () => {
-  const navigate = useNavigate();
+interface ProcurementClientDashboardProps {
+  userProfile?: any;
+}
+
+export const ProcurementClientDashboard = ({ userProfile }: ProcurementClientDashboardProps) => {
+  const { t } = useLanguage();
+
+  // Mock data - replace with real data from your API
+  const stats = {
+    activeRequests: 12,
+    totalOffers: 45,
+    completedProjects: 8,
+    totalSpent: 125000
+  };
+
+  const recentRequests = [
+    {
+      id: 1,
+      title: 'Office Furniture Procurement',
+      status: 'active',
+      offers: 5,
+      deadline: '2024-02-15',
+      budget: 25000
+    },
+    {
+      id: 2,
+      title: 'IT Equipment Purchase',
+      status: 'pending',
+      offers: 3,
+      deadline: '2024-02-20',
+      budget: 50000
+    },
+    {
+      id: 3,
+      title: 'Marketing Materials',
+      status: 'completed',
+      offers: 8,
+      deadline: '2024-01-30',
+      budget: 15000
+    }
+  ];
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'active':
+        return 'bg-green-100 text-green-800';
+      case 'pending':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'completed':
+        return 'bg-blue-100 text-blue-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'active':
+        return <Clock className="h-4 w-4" />;
+      case 'pending':
+        return <AlertCircle className="h-4 w-4" />;
+      case 'completed':
+        return <CheckCircle className="h-4 w-4" />;
+      default:
+        return <FileText className="h-4 w-4" />;
+    }
+  };
 
   return (
     <div className="space-y-6">
-      {/* Header Section */}
-      <div className="space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-        <p className="text-muted-foreground">
-          Track your procurement requests, vendor performance, and overall efficiency.
+      {/* Welcome Section */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border">
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          Welcome back, {userProfile?.full_name || 'User'}!
+        </h1>
+        <p className="text-gray-600">
+          Manage your procurement requests and track offers from vendors.
         </p>
       </div>
 
+      {/* Quick Actions */}
+      <div className="flex flex-wrap gap-4">
+        <Button className="flex items-center gap-2">
+          <Plus className="h-4 w-4" />
+          Create New Request
+        </Button>
+        <Button variant="outline" className="flex items-center gap-2">
+          <Eye className="h-4 w-4" />
+          Browse Vendors
+        </Button>
+        <Button variant="outline" className="flex items-center gap-2">
+          <MessageSquare className="h-4 w-4" />
+          Messages
+        </Button>
+      </div>
+
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="hover:shadow-lg transition-shadow">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Requests</CardTitle>
+            <CardTitle className="text-sm font-medium">Active Requests</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">45</div>
+            <div className="text-2xl font-bold">{stats.activeRequests}</div>
             <p className="text-xs text-muted-foreground">
-              +20% from last month
+              <Badge variant="secondary">+2 this week</Badge>
             </p>
           </CardContent>
         </Card>
-        
-        <Card className="hover:shadow-lg transition-shadow">
+
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Offers</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Offers</CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">12</div>
+            <div className="text-2xl font-bold">{stats.totalOffers}</div>
             <p className="text-xs text-muted-foreground">
-              +10% from last month
+              <Badge variant="secondary">+12 this month</Badge>
             </p>
           </CardContent>
         </Card>
-        
-        <Card className="hover:shadow-lg transition-shadow">
+
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Approved Budget</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Completed Projects</CardTitle>
+            <CheckCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$23,456</div>
+            <div className="text-2xl font-bold">{stats.completedProjects}</div>
             <p className="text-xs text-muted-foreground">
-              +15% from last month
+              <Badge variant="secondary">+1 this month</Badge>
             </p>
           </CardContent>
         </Card>
-        
-        <Card className="hover:shadow-lg transition-shadow">
+
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Vendors</CardTitle>
-            <Building2 className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Total Spent</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">156</div>
+            <div className="text-2xl font-bold">
+              {new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'SAR',
+                minimumFractionDigits: 0
+              }).format(stats.totalSpent)}
+            </div>
             <p className="text-xs text-muted-foreground">
-              +12 from last month
+              <Badge variant="secondary">This year</Badge>
             </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Recent Activity */}
+      {/* Recent Requests */}
       <Card>
         <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
-          <CardDescription>Latest procurement activities and updates.</CardDescription>
+          <CardTitle className="flex items-center justify-between">
+            Recent Procurement Requests
+            <Button variant="outline" size="sm">View All</Button>
+          </CardTitle>
         </CardHeader>
-        <CardContent className="pl-2">
-          <ul className="list-none space-y-2">
-            <li className="py-2 border-b last:border-none">
-              <p className="text-sm font-medium">New request: IT Equipment</p>
-              <p className="text-xs text-muted-foreground">2 hours ago</p>
-            </li>
-            <li className="py-2 border-b last:border-none">
-              <p className="text-sm font-medium">Offer received: Construction Materials</p>
-              <p className="text-xs text-muted-foreground">5 hours ago</p>
-            </li>
-            <li className="py-2 border-b last:border-none">
-              <p className="text-sm font-medium">Budget approved: Office Supplies</p>
-              <p className="text-xs text-muted-foreground">1 day ago</p>
-            </li>
-          </ul>
+        <CardContent>
+          <div className="space-y-4">
+            {recentRequests.map((request) => (
+              <div key={request.id} className="flex items-center justify-between p-4 border rounded-lg">
+                <div className="flex items-center space-x-4">
+                  <div className={`p-2 rounded-full ${getStatusColor(request.status)}`}>
+                    {getStatusIcon(request.status)}
+                  </div>
+                  <div>
+                    <h3 className="font-medium">{request.title}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Budget: {new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'SAR',
+                        minimumFractionDigits: 0
+                      }).format(request.budget)}
+                    </p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <Badge className={getStatusColor(request.status)}>
+                    {request.status}
+                  </Badge>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {request.offers} offers • Due {request.deadline}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
         </CardContent>
       </Card>
 
-      {/* Quick Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
-          <CardDescription>Manage your procurement tasks efficiently.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Button className="w-full">Create New Request</Button>
-          <Button variant="secondary" className="w-full">View Pending Offers</Button>
-        </CardContent>
-      </Card>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent Requests */}
+      {/* Progress Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <FileText className="h-5 w-5" />
-              Recent Requests
-            </CardTitle>
-            <CardDescription>Your recently submitted procurement requests.</CardDescription>
+            <CardTitle>Monthly Progress</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
-              <div>
-                <p className="font-medium">IT Equipment</p>
-                <p className="text-sm text-muted-foreground">Due: 2023-12-15</p>
+            <div>
+              <div className="flex justify-between text-sm mb-2">
+                <span>Requests Created</span>
+                <span>8/10</span>
               </div>
-              <Badge>Pending</Badge>
+              <Progress value={80} />
             </div>
-            
-            <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
-              <div>
-                <p className="font-medium">Office Supplies</p>
-                <p className="text-sm text-muted-foreground">Due: 2023-12-20</p>
+            <div>
+              <div className="flex justify-between text-sm mb-2">
+                <span>Offers Reviewed</span>
+                <span>25/30</span>
               </div>
-              <Badge variant="success">Approved</Badge>
+              <Progress value={83} />
             </div>
-            
-            <Button variant="outline" className="w-full">
-              <FileText className="mr-2 h-4 w-4" />
-              View All Requests
-            </Button>
+            <div>
+              <div className="flex justify-between text-sm mb-2">
+                <span>Projects Completed</span>
+                <span>3/5</span>
+              </div>
+              <Progress value={60} />
+            </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Building2 className="h-5 w-5" />
-              Top Vendors
-            </CardTitle>
+            <CardTitle>Quick Stats</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                  <Building2 className="h-4 w-4 text-primary-foreground" />
-                </div>
-                <div>
-                  <p className="font-medium">Tech Solutions Inc</p>
-                  <p className="text-sm text-muted-foreground">IT Equipment</p>
-                </div>
-              </div>
-              <Badge>4.9★</Badge>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">Average Response Time</span>
+              <span className="font-medium">2.5 hours</span>
             </div>
-            
-            <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-accent rounded-full flex items-center justify-center">
-                  <Building2 className="h-4 w-4 text-accent-foreground" />
-                </div>
-                <div>
-                  <p className="font-medium">Industrial Supply Co</p>
-                  <p className="text-sm text-muted-foreground">Manufacturing</p>
-                </div>
-              </div>
-              <Badge>4.8★</Badge>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">Vendor Rating</span>
+              <span className="font-medium">4.8/5.0</span>
             </div>
-            
-            <Button variant="outline" className="w-full" onClick={() => navigate('/vendors')}>
-              <Building2 className="mr-2 h-4 w-4" />
-              View All Vendors
-            </Button>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">Success Rate</span>
+              <span className="font-medium">92%</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">Cost Savings</span>
+              <span className="font-medium text-green-600">15%</span>
+            </div>
           </CardContent>
         </Card>
       </div>

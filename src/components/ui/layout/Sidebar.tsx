@@ -40,7 +40,7 @@ interface SidebarProps {
 export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { logout } = useAuth();
+  const { signOut } = useAuth();
   const { language, t } = useLanguage();
   const [quickActionsOpen, setQuickActionsOpen] = useState(true);
   const [exploreOpen, setExploreOpen] = useState(true);
@@ -289,7 +289,7 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
         </div>
       </ScrollArea>
       <div className="p-4">
-        <Button variant="outline" className="w-full" onClick={() => logout()}>
+        <Button variant="outline" className="w-full" onClick={() => signOut()}>
           {t('auth.logout')}
         </Button>
       </div>
