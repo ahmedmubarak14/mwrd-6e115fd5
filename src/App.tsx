@@ -9,65 +9,65 @@ import { RouteAwareThemeProvider } from "./components/RouteAwareThemeProvider";
 // Fix the import statements - use default imports instead of named imports
 import Profile from "./pages/Profile";
 import Index from "./pages/Index";
-import Landing from "./pages/Landing";
+import { Landing } from "./pages/Landing";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 // Fix the import statement for AdminUsers
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminDashboardOverview from "./pages/admin/AdminDashboardOverview";
+import { AdminDashboardOverview } from "./pages/admin/AdminDashboardOverview";
 import AdminRequests from "./pages/admin/AdminRequests";
 import AdminOffers from "./pages/admin/AdminOffers";
 import AdminProjects from "./pages/admin/AdminProjects";
 import CategoryManagement from "./pages/admin/CategoryManagement";
-import OffersManagement from "./pages/admin/OffersManagement";
-import RequestsApproval from "./pages/admin/RequestsApproval";
+import { OffersManagement } from "./pages/admin/OffersManagement";
+import { RequestsApproval } from "./pages/admin/RequestsApproval";
 import FinancialTransactions from "./pages/admin/FinancialTransactions";
-import ExpertConsultations from "./pages/admin/ExpertConsultations";
-import Settings from "./pages/Settings";
+import { ExpertConsultations } from "./pages/admin/ExpertConsultations";
+import { Settings } from "./pages/Settings";
 import Requests from "./pages/Requests";
 import CreateRequest from "./pages/CreateRequest";
 import CreateProcurementRequest from "./pages/CreateProcurementRequest";
-import BrowseRequests from "./pages/BrowseRequests";
+import { BrowseRequests } from "./pages/BrowseRequests";
 import ProcurementRequests from "./pages/ProcurementRequests";
 import Offers from "./pages/Offers";
-import MyOffers from "./pages/MyOffers";
+import { MyOffers } from "./pages/MyOffers";
 import Messages from "./pages/Messages";
 import EnhancedMessages from "./pages/EnhancedMessages";
-import Orders from "./pages/Orders";
+import { Orders } from "./pages/Orders";
 import Projects from "./pages/Projects";
 import CreateProject from "./pages/CreateProject";
 import EditProject from "./pages/EditProject";
 import ProjectDetails from "./pages/ProjectDetails";
 import Suppliers from "./pages/Suppliers";
 import Vendors from "./pages/Vendors";
-import SupplierDashboard from "./pages/SupplierDashboard";
-import ProcurementSupplierDashboard from "./pages/ProcurementSupplierDashboard";
-import Analytics from "./pages/Analytics";
+import { SupplierDashboard } from "./pages/SupplierDashboard";
+import { ProcurementSupplierDashboard } from "./pages/ProcurementSupplierDashboard";
+import { Analytics } from "./pages/Analytics";
 import ActivityFeed from "./pages/ActivityFeed";
-import ExpertConsultation from "./pages/ExpertConsultation";
-import Support from "./pages/Support";
-import Pricing from "./pages/Pricing";
-import ManageSubscription from "./pages/ManageSubscription";
+import { ExpertConsultation } from "./pages/ExpertConsultation";
+import { Support } from "./pages/Support";
+import { Pricing } from "./pages/Pricing";
+import { ManageSubscription } from "./pages/ManageSubscription";
 import PaymentSuccess from "./pages/PaymentSuccess";
-import WhyStartWithMWRD from "./pages/WhyStartWithMWRD";
-import WhatMakesUsUnique from "./pages/WhatMakesUsUnique";
-import WhyMoveToMWRD from "./pages/WhyMoveToMWRD";
-import TermsAndConditions from "./pages/TermsAndConditions";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
+import { WhyStartWithMWRD } from "./pages/WhyStartWithMWRD";
+import { WhatMakesUsUnique } from "./pages/WhatMakesUsUnique";
+import { WhyMoveToMWRD } from "./pages/WhyMoveToMWRD";
+import { TermsAndConditions } from "./pages/TermsAndConditions";
+import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
-import { ProtectedRoute } from "./components/ProtectedRoute";
-import { PublicRoute } from "./components/PublicRoute";
-import { AuthContextProvider } from "./contexts/AuthContext";
-import { LanguageContextProvider } from "./contexts/LanguageContext";
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute";
+import { AuthProvider } from "./contexts/AuthContext";
+import { LanguageProvider } from "./contexts/LanguageContext";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthContextProvider>
-        <LanguageContextProvider>
+      <AuthProvider>
+        <LanguageProvider>
           <RouteAwareThemeProvider>
             <TooltipProvider>
               <Toaster />
@@ -462,8 +462,8 @@ function App() {
               </BrowserRouter>
             </TooltipProvider>
           </RouteAwareThemeProvider>
-        </LanguageContextProvider>
-      </AuthContextProvider>
+        </LanguageProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
