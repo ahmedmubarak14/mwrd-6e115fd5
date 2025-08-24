@@ -6,14 +6,15 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CreateRequestModal } from "@/components/modals/CreateRequestModal";
 import { RequestDetailsModal } from "@/components/modals/RequestDetailsModal";
 import { Calendar, Package, MapPin, Clock, Plus } from "lucide-react";
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 const Requests = () => {
   const { t } = useLanguage();
   const { requests, loading } = useRequests();
+  const navigate = useNavigate();
 
   if (loading) {
     return (
@@ -37,12 +38,14 @@ const Requests = () => {
               {t('requests.description')}
             </p>
           </div>
-          <CreateRequestModal>
-            <Button size="lg" className="gap-2">
-              <Plus className="h-4 w-4" />
-              {t('requests.createNew')}
-            </Button>
-          </CreateRequestModal>
+          <Button 
+            size="lg" 
+            className="gap-2"
+            onClick={() => navigate('/requests/create')}
+          >
+            <Plus className="h-4 w-4" />
+            {t('requests.createNew')}
+          </Button>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -100,12 +103,10 @@ const Requests = () => {
             <Package className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
             <h3 className="text-lg font-semibold mb-2">{t('requests.noRequests')}</h3>
             <p className="text-muted-foreground mb-4">{t('requests.createFirst')}</p>
-            <CreateRequestModal>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                {t('requests.createNew')}
-              </Button>
-            </CreateRequestModal>
+            <Button onClick={() => navigate('/requests/create')}>
+              <Plus className="h-4 w-4 mr-2" />
+              {t('requests.createNew')}
+            </Button>
           </div>
         )}
       </div>

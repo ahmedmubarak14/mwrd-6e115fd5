@@ -1,5 +1,4 @@
 
-import { useState } from "react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useRequests } from "@/hooks/useRequests";
@@ -7,14 +6,15 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CreateRequestModal } from "@/components/modals/CreateRequestModal";
 import { RequestDetailsModal } from "@/components/modals/RequestDetailsModal";
 import { Calendar, Package, MapPin, Clock, Plus, FileText } from "lucide-react";
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 const ProcurementRequests = () => {
   const { t } = useLanguage();
   const { requests, loading } = useRequests();
+  const navigate = useNavigate();
 
   if (loading) {
     return (
@@ -38,12 +38,14 @@ const ProcurementRequests = () => {
               Manage your procurement requests and track their progress
             </p>
           </div>
-          <CreateRequestModal>
-            <Button size="lg" className="gap-2">
-              <Plus className="h-4 w-4" />
-              Create New Request
-            </Button>
-          </CreateRequestModal>
+          <Button 
+            size="lg" 
+            className="gap-2"
+            onClick={() => navigate('/procurement-requests/create')}
+          >
+            <Plus className="h-4 w-4" />
+            Create New Request
+          </Button>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -104,12 +106,10 @@ const ProcurementRequests = () => {
             <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
             <h3 className="text-lg font-semibold mb-2">No procurement requests found</h3>
             <p className="text-muted-foreground mb-4">Create your first procurement request to get started</p>
-            <CreateRequestModal>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Create New Request
-              </Button>
-            </CreateRequestModal>
+            <Button onClick={() => navigate('/procurement-requests/create')}>
+              <Plus className="h-4 w-4 mr-2" />
+              Create New Request
+            </Button>
           </div>
         )}
       </div>
