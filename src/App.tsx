@@ -69,11 +69,11 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <LanguageProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <RouteAwareThemeProvider>
+          <BrowserRouter>
+            <RouteAwareThemeProvider>
+              <TooltipProvider>
+                <Toaster />
+                <Sonner />
                 <Routes>
                   {/* Public Routes */}
                   <Route
@@ -460,9 +460,9 @@ function App() {
                   {/* 404 Route */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
-              </RouteAwareThemeProvider>
-            </BrowserRouter>
-          </TooltipProvider>
+              </TooltipProvider>
+            </RouteAwareThemeProvider>
+          </BrowserRouter>
         </LanguageProvider>
       </AuthProvider>
     </QueryClientProvider>
