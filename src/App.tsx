@@ -1,3 +1,4 @@
+
 import "./App.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -11,6 +12,8 @@ import Profile from "./pages/Profile";
 import Index from "./pages/Index";
 import { Landing } from "./pages/Landing";
 import Auth from "./pages/Auth";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 // Fix the import statement for AdminUsers
 import AdminUsers from "./pages/admin/AdminUsers";
@@ -56,7 +59,7 @@ import { WhyMoveToMWRD } from "./pages/WhyMoveToMWRD";
 import { TermsAndConditions } from "./pages/TermsAndConditions";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
-import ProtectedRoute from "./components/ProtectedRoute";
+import { ProtectedRoute } from "./components/routing/ProtectedRoute";
 import { RoleProtectedRoute } from "./components/routing/RoleProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -105,6 +108,22 @@ function App() {
                       element={
                         <PublicRoute>
                           <Auth />
+                        </PublicRoute>
+                      }
+                    />
+                    <Route
+                      path="/login"
+                      element={
+                        <PublicRoute>
+                          <Login />
+                        </PublicRoute>
+                      }
+                    />
+                    <Route
+                      path="/register"
+                      element={
+                        <PublicRoute>
+                          <Register />
                         </PublicRoute>
                       }
                     />
