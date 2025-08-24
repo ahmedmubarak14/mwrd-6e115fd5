@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
@@ -188,36 +189,45 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
-      <div className="w-full max-w-md space-y-6">
-        <div className="text-center space-y-4">
+      <div className="w-full max-w-md">
+        {/* Logo Section */}
+        <div className="text-center mb-8">
           <Link to="/" className="inline-block">
             <img 
               src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
               alt="MWRD Logo" 
-              className="h-16 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg cursor-pointer"
+              className="h-20 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg cursor-pointer"
             />
           </Link>
-          <div>
-            <h1 className="text-3xl font-bold text-white">Welcome to MWRD</h1>
-            <p className="text-white/80">
-              {mode === 'signin' ? 'Sign in to your account' : 'Create your account'}
-            </p>
-          </div>
         </div>
 
-        <Tabs value={mode} onValueChange={(value) => setMode(value as 'signin' | 'signup')}>
-          <TabsList className="grid w-full grid-cols-2 bg-white/10 border border-white/20">
-            <TabsTrigger value="signin" className="text-white data-[state=active]:bg-primary data-[state=active]:text-white">Sign In</TabsTrigger>
-            <TabsTrigger value="signup" className="text-white data-[state=active]:bg-primary data-[state=active]:text-white">Sign Up</TabsTrigger>
-          </TabsList>
+        {/* Welcome Text */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-white mb-2">Welcome to MWRD</h1>
+          <p className="text-white/70 text-lg">Sign in to your account or create a new one</p>
+        </div>
 
-          <TabsContent value="signin">
-            <Card className="bg-white/5 border border-white/20 backdrop-blur-20">
-              <CardHeader>
-                <CardTitle className="text-white">Sign In</CardTitle>
-                <CardDescription className="text-white/80">Enter your credentials to access your account</CardDescription>
-              </CardHeader>
-              <CardContent>
+        {/* Main Card */}
+        <Card className="bg-white/10 border border-white/20 backdrop-blur-lg rounded-3xl shadow-2xl">
+          <CardContent className="p-8">
+            {/* Tab Selection */}
+            <Tabs value={mode} onValueChange={(value) => setMode(value as 'signin' | 'signup')} className="mb-6">
+              <TabsList className="grid w-full grid-cols-2 bg-white/20 rounded-2xl p-1 h-12">
+                <TabsTrigger 
+                  value="signin" 
+                  className="text-white data-[state=active]:bg-white data-[state=active]:text-gray-800 rounded-xl font-medium transition-all duration-200"
+                >
+                  Login
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="signup" 
+                  className="text-white data-[state=active]:bg-white data-[state=active]:text-gray-800 rounded-xl font-medium transition-all duration-200"
+                >
+                  Register
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="signin" className="mt-6">
                 <Auth
                   supabaseClient={supabase}
                   view="sign_in"
@@ -227,77 +237,94 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
                       default: {
                         colors: {
                           brand: 'hsl(324 96% 20%)',
-                          brandAccent: 'hsl(324 96% 20%)',
+                          brandAccent: 'hsl(324 96% 15%)',
+                          inputBackground: 'rgba(255, 255, 255, 0.1)',
+                          inputBorder: 'rgba(255, 255, 255, 0.2)',
+                          inputText: 'white',
+                          inputPlaceholder: 'rgba(255, 255, 255, 0.6)',
                         }
                       }
+                    },
+                    className: {
+                      container: 'auth-container',
+                      button: 'w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-medium py-3 px-4 rounded-2xl transition-all duration-200',
+                      input: 'w-full bg-white/10 border border-white/20 text-white placeholder:text-white/60 rounded-2xl px-4 py-3 focus:border-white/40 focus:ring-1 focus:ring-white/20',
+                      label: 'text-white font-medium mb-2 block',
                     }
                   }}
                   providers={[]}
+                  localization={{
+                    variables: {
+                      sign_in: {
+                        email_label: 'Email',
+                        password_label: 'Password',
+                        button_label: 'Sign In',
+                        loading_button_label: 'Signing in...',
+                        link_text: "Forgot your password?"
+                      }
+                    }
+                  }}
                 />
-              </CardContent>
-            </Card>
-          </TabsContent>
+              </TabsContent>
 
-          <TabsContent value="signup">
-            <Card className="bg-white/5 border border-white/20 backdrop-blur-20">
-              <CardHeader>
-                <CardTitle className="text-white">Create Account</CardTitle>
-                <CardDescription className="text-white/80">Fill in your details to get started</CardDescription>
-              </CardHeader>
-              <CardContent>
+              <TabsContent value="signup" className="mt-6">
                 <form onSubmit={handleSignUp} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-white">Email *</Label>
+                    <Label htmlFor="email" className="text-white font-medium">Email</Label>
                     <Input
                       id="email"
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                       required
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                      placeholder="Enter your email"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60 rounded-2xl px-4 py-3 h-12 focus:border-white/40"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="password" className="text-white">Password *</Label>
+                    <Label htmlFor="password" className="text-white font-medium">Password</Label>
                     <Input
                       id="password"
                       type="password"
                       value={formData.password}
                       onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
                       required
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                      placeholder="Enter your password"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60 rounded-2xl px-4 py-3 h-12 focus:border-white/40"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="full_name" className="text-white">Full Name *</Label>
+                    <Label htmlFor="full_name" className="text-white font-medium">Full Name</Label>
                     <Input
                       id="full_name"
                       value={formData.full_name}
                       onChange={(e) => setFormData(prev => ({ ...prev, full_name: e.target.value }))}
                       required
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                      placeholder="Enter your full name"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60 rounded-2xl px-4 py-3 h-12 focus:border-white/40"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="company_name" className="text-white">Company Name</Label>
+                    <Label htmlFor="company_name" className="text-white font-medium">Company Name</Label>
                     <Input
                       id="company_name"
                       value={formData.company_name}
                       onChange={(e) => setFormData(prev => ({ ...prev, company_name: e.target.value }))}
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                      placeholder="Enter your company name"
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60 rounded-2xl px-4 py-3 h-12 focus:border-white/40"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="role" className="text-white">Account Type *</Label>
+                    <Label htmlFor="role" className="text-white font-medium">Account Type</Label>
                     <Select value={formData.role} onValueChange={(value) => setFormData(prev => ({ ...prev, role: value as any }))}>
-                      <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                      <SelectTrigger className="bg-white/10 border-white/20 text-white rounded-2xl h-12">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-card border-white/20">
+                      <SelectContent className="bg-card border-white/20 rounded-xl">
                         <SelectItem value="client">Client (Request Services)</SelectItem>
                         <SelectItem value="vendor">Vendor (Provide Services)</SelectItem>
                       </SelectContent>
@@ -305,7 +332,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
                   </div>
 
                   {formData.role === 'client' && (
-                    <Alert className="bg-white/10 border-white/20">
+                    <Alert className="bg-white/10 border-white/20 rounded-xl">
                       <Info className="h-4 w-4 text-white" />
                       <AlertDescription className="text-white/90">
                         As a client, you'll need to upload your Commercial Registration for account verification after registration.
@@ -313,14 +340,32 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
                     </Alert>
                   )}
 
-                  <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white" disabled={loading}>
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-medium py-3 px-4 rounded-2xl transition-all duration-200 h-12" 
+                    disabled={loading}
+                  >
                     {loading ? 'Creating Account...' : 'Create Account'}
                   </Button>
                 </form>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+              </TabsContent>
+            </Tabs>
+
+            {/* Create Admin User Button (Temporary) */}
+            <div className="mt-6 pt-6 border-t border-white/10">
+              <Button 
+                variant="outline" 
+                className="w-full bg-white/5 border-white/20 text-white/80 hover:bg-white/10 hover:text-white rounded-2xl h-12"
+                onClick={() => {
+                  // Temporary admin creation functionality
+                  console.log('Create admin user clicked');
+                }}
+              >
+                Create Admin User (Temporary)
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
