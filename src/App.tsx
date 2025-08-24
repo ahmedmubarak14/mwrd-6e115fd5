@@ -47,7 +47,7 @@ import { Analytics } from "./pages/Analytics";
 import ActivityFeed from "./pages/ActivityFeed";
 import { ExpertConsultation } from "./pages/ExpertConsultation";
 import { Support } from "./pages/Support";
-import { Pricing } from "./pages/Pricing";
+import Pricing from "./pages/Pricing";
 import { ManageSubscription } from "./pages/ManageSubscription";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import { WhyStartWithMWRD } from "./pages/WhyStartWithMWRD";
