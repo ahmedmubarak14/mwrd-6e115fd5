@@ -7,8 +7,8 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { RouteAwareThemeProvider } from "@/contexts/RouteAwareThemeContext";
-import ProtectedRoute from "@/components/routing/ProtectedRoute";
-import RoleProtectedRoute from "@/components/routing/RoleProtectedRoute";
+import { ProtectedRoute } from "@/components/routing/ProtectedRoute";
+import { RoleProtectedRoute } from "@/components/routing/RoleProtectedRoute";
 
 // Pages
 import Index from "@/pages/Index";
@@ -27,7 +27,7 @@ import BrowseRequests from "@/pages/BrowseRequests";
 import MyOffers from "@/pages/MyOffers";
 import Orders from "@/pages/Orders";
 import EnhancedMessages from "@/pages/EnhancedMessages";
-import Analytics from "@/pages/Analytics";
+import { Analytics } from "@/pages/Analytics";
 import Projects from "@/pages/Projects";
 import AdminDashboard from "@/pages/AdminDashboard";
 import AdminUsers from "@/pages/admin/AdminUsers";
@@ -79,7 +79,7 @@ function App() {
                       
                       {/* Vendor routes (new terminology) */}
                       <Route path="/vendors" element={<Vendors />} />
-                      <Route path="/vendor-dashboard" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['vendor']}><SupplierDashboard /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/vendor-dashboard" element={<ProtectedRoute><RoleProtectedRoute allowed={['vendor']}><SupplierDashboard /></RoleProtectedRoute></ProtectedRoute>} />
                       
                       {/* Legacy supplier routes - redirect to vendor routes */}
                       <Route path="/suppliers" element={<Navigate to="/vendors" replace />} />
@@ -89,21 +89,21 @@ function App() {
                       <Route path="/procurement-requests" element={<ProtectedRoute><ProcurementRequests /></ProtectedRoute>} />
                       <Route path="/requests" element={<Navigate to="/procurement-requests" replace />} />
                       
-                      <Route path="/browse-requests" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['vendor']}><BrowseRequests /></RoleProtectedRoute></ProtectedRoute>} />
-                      <Route path="/my-offers" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['vendor']}><MyOffers /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/browse-requests" element={<ProtectedRoute><RoleProtectedRoute allowed={['vendor']}><BrowseRequests /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/my-offers" element={<ProtectedRoute><RoleProtectedRoute allowed={['vendor']}><MyOffers /></RoleProtectedRoute></ProtectedRoute>} />
                       <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
                       <Route path="/messages" element={<ProtectedRoute><EnhancedMessages /></ProtectedRoute>} />
                       <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
                       <Route path="/projects" element={<ProtectedRoute><Projects /></ProtectedRoute>} />
                       
                       {/* Admin routes */}
-                      <Route path="/admin" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['admin']}><AdminDashboard /></RoleProtectedRoute></ProtectedRoute>} />
-                      <Route path="/admin/users" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['admin']}><AdminUsers /></RoleProtectedRoute></ProtectedRoute>} />
-                      <Route path="/admin/requests-approval" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['admin']}><RequestsApproval /></RoleProtectedRoute></ProtectedRoute>} />
-                      <Route path="/admin/offers-management" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['admin']}><OffersManagement /></RoleProtectedRoute></ProtectedRoute>} />
-                      <Route path="/admin/financial-transactions" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['admin']}><FinancialTransactions /></RoleProtectedRoute></ProtectedRoute>} />
-                      <Route path="/admin/expert-consultations" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['admin']}><ExpertConsultations /></RoleProtectedRoute></ProtectedRoute>} />
-                      <Route path="/admin/categories" element={<ProtectedRoute><RoleProtectedRoute allowedRoles={['admin']}><AdminCategoryManagement /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/admin" element={<ProtectedRoute><RoleProtectedRoute allowed={['admin']}><AdminDashboard /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/admin/users" element={<ProtectedRoute><RoleProtectedRoute allowed={['admin']}><AdminUsers /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/admin/requests-approval" element={<ProtectedRoute><RoleProtectedRoute allowed={['admin']}><RequestsApproval /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/admin/offers-management" element={<ProtectedRoute><RoleProtectedRoute allowed={['admin']}><OffersManagement /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/admin/financial-transactions" element={<ProtectedRoute><RoleProtectedRoute allowed={['admin']}><FinancialTransactions /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/admin/expert-consultations" element={<ProtectedRoute><RoleProtectedRoute allowed={['admin']}><ExpertConsultations /></RoleProtectedRoute></ProtectedRoute>} />
+                      <Route path="/admin/categories" element={<ProtectedRoute><RoleProtectedRoute allowed={['admin']}><AdminCategoryManagement /></RoleProtectedRoute></ProtectedRoute>} />
                       
                       {/* Other routes */}
                       <Route path="/expert-consultation" element={<ExpertConsultation />} />

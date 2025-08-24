@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useCategories } from '@/hooks/useCategories';
@@ -24,7 +23,7 @@ interface Category {
 }
 
 export const CategoryManagement: React.FC = () => {
-  const { categories, loading, createCategory, updateCategory, deleteCategory, fetchCategories } = useCategories();
+  const { categories, loading, createCategory, updateCategory, deleteCategory, refetch } = useCategories();
   const { toast } = useToast();
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -38,7 +37,7 @@ export const CategoryManagement: React.FC = () => {
   });
 
   useEffect(() => {
-    fetchCategories();
+    refetch();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -61,7 +60,7 @@ export const CategoryManagement: React.FC = () => {
       
       setIsDialogOpen(false);
       resetForm();
-      fetchCategories();
+      refetch();
     } catch (error) {
       toast({
         title: "Error",
@@ -79,7 +78,7 @@ export const CategoryManagement: React.FC = () => {
           title: "Success",
           description: "Category deleted successfully"
         });
-        fetchCategories();
+        refetch();
       } catch (error) {
         toast({
           title: "Error",
@@ -118,7 +117,7 @@ export const CategoryManagement: React.FC = () => {
   const renderCategoryTree = (cats: Category[], level = 0) => {
     return cats.map(category => (
       <div key={category.id} className="space-y-2">
-        <Card className={`ml-${level * 4}`}>
+        <Card className={`${level > 0 ? 'ml-8' : ''}`}>
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">

@@ -112,8 +112,9 @@ export const useVendors = () => {
 
       if (error) throw error;
 
-      // Type assertion with proper typing
-      setVendors((data || []) as VendorWithCategories[]);
+      // Cast data with proper error handling
+      const vendorData = (data || []) as unknown as VendorWithCategories[];
+      setVendors(vendorData);
       setTotalCount(count || 0);
     } catch (error) {
       console.error('Error fetching vendors:', error);
@@ -144,7 +145,7 @@ export const useVendors = () => {
         .single();
 
       if (error) throw error;
-      return data as VendorWithCategories;
+      return data as unknown as VendorWithCategories;
     } catch (error) {
       console.error('Error fetching vendor:', error);
       return null;
@@ -212,7 +213,7 @@ export const useVendors = () => {
         .eq('vendor_categories.category_id', categoryId);
 
       if (error) throw error;
-      return (data || []) as VendorWithCategories[];
+      return (data || []) as unknown as VendorWithCategories[];
     } catch (error) {
       console.error('Error fetching vendors by category:', error);
       return [];
