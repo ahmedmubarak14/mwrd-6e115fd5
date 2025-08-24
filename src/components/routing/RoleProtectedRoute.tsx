@@ -42,7 +42,7 @@ export const RoleProtectedRoute = ({ children, allowed }: RoleProtectedRouteProp
   if (!role || !allowed.includes(role)) {
     const homeByRole: Record<string, string> = {
       client: '/dashboard',
-      vendor: '/supplier-dashboard',
+      vendor: '/vendor-dashboard',
       admin: '/admin',
     };
 

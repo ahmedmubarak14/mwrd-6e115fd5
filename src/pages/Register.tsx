@@ -16,7 +16,7 @@ const Register = () => {
         if (user.role === "admin") {
           navigate("/admin");
         } else if (user.role === "vendor") {
-          navigate("/supplier-dashboard");
+          navigate("/vendor-dashboard");
         } else {
           navigate("/dashboard");
         }

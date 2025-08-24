@@ -32,7 +32,7 @@ const Auth = () => {
     <AuthForm
       onAuthSuccess={(u) => {
         if (u.role === "admin") navigate("/admin");
-        else if (u.role === "vendor") navigate("/supplier-dashboard");
+        else if (u.role === "vendor") navigate("/vendor-dashboard");
         else navigate("/dashboard");
       }}
     />
