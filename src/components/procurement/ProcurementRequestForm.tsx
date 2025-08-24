@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -129,7 +128,7 @@ export const ProcurementRequestForm = () => {
           title: '',
           description: '',
           location: '',
-          urgency: 'medium',
+          urgency: 'medium' as 'low' | 'medium' | 'high' | 'urgent',
           budget_min: '',
           budget_max: '',
           currency: 'SAR',
@@ -300,7 +299,12 @@ export const ProcurementRequestForm = () => {
               
               <div>
                 <Label>{isRTL ? 'الأولوية' : 'Urgency'}</Label>
-                <Select value={formData.urgency} onValueChange={(value) => setFormData({...formData, urgency: value})}>
+                <Select 
+                  value={formData.urgency} 
+                  onValueChange={(value: 'low' | 'medium' | 'high' | 'urgent') => 
+                    setFormData({...formData, urgency: value})
+                  }
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>

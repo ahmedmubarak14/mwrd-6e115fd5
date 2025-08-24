@@ -35,7 +35,7 @@ import EnhancedMessages from "./pages/EnhancedMessages";
 import { Pricing } from "./pages/Pricing";
 import { ManageSubscription } from "./pages/ManageSubscription";
 import PaymentSuccess from "./pages/PaymentSuccess";
-import Support from "./pages/Support";
+import { Support } from "./pages/Support";
 import { WhatMakesUsUnique } from "./pages/WhatMakesUsUnique";
 import { WhyMoveToMWRD } from "./pages/WhyMoveToMWRD";
 import { WhyStartWithMWRD } from "./pages/WhyStartWithMWRD";
@@ -63,7 +63,7 @@ const App = () => (
                       {/* Public Routes */}
                       <Route path="/" element={<Index />} />
                       <Route path="/landing" element={<Landing />} />
-                      <Route path="/auth" element={<AuthRedirect><Auth /></AuthRedirect>} />
+                      <Route path="/auth" element={<AuthRedirect />} />
                       <Route path="/pricing" element={<Pricing />} />
                       <Route path="/support" element={<Support />} />
                       <Route path="/what-makes-us-unique" element={<WhatMakesUsUnique />} />
