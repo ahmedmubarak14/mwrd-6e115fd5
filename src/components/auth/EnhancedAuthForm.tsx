@@ -140,7 +140,7 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
   // Vendor Onboarding Flow
   if (mode === 'signup' && registrationStep === 'onboarding' && formData.role === 'vendor') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
         <VendorOnboarding onComplete={handleOnboardingComplete} />
       </div>
     );
@@ -149,7 +149,7 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
   // Client CR Upload Flow
   if (mode === 'signup' && registrationStep === 'verification' && formData.role === 'client') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
         <div className="w-full max-w-md space-y-6">
           <div className="text-center space-y-4">
             <img 
@@ -158,15 +158,15 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
               className="h-16 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg"
             />
             <div>
-              <h1 className="text-2xl font-bold">Complete Your Registration</h1>
-              <p className="text-muted-foreground">Upload your Commercial Registration to activate your account</p>
+              <h1 className="text-2xl font-bold text-white">Complete Your Registration</h1>
+              <p className="text-white/80">Upload your Commercial Registration to activate your account</p>
             </div>
           </div>
-          <Card>
+          <Card className="bg-white/5 border border-white/20 backdrop-blur-20">
             <CardContent className="space-y-6 pt-6">
-              <Alert>
-                <Info className="h-4 w-4" />
-                <AlertDescription>
+              <Alert className="bg-white/10 border-white/20">
+                <Info className="h-4 w-4 text-white" />
+                <AlertDescription className="text-white/90">
                   Your account has been created for <strong>{formData.email}</strong>.
                   Please upload your Commercial Registration to complete the verification process.
                 </AlertDescription>
@@ -178,9 +178,9 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
               />
 
               {crUploaded && (
-                <Alert>
-                  <CheckCircle className="h-4 w-4" />
-                  <AlertDescription>
+                <Alert className="bg-green-500/20 border-green-400/30">
+                  <CheckCircle className="h-4 w-4 text-green-400" />
+                  <AlertDescription className="text-white/90">
                     Document uploaded successfully! Your account will be reviewed within 24-48 hours.
                   </AlertDescription>
                 </Alert>
@@ -190,14 +190,14 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
                 <Button
                   variant="outline"
                   onClick={() => setRegistrationStep('details')}
-                  className="flex-1"
+                  className="flex-1 bg-white/10 border-white/20 text-white hover:bg-white/20"
                 >
                   Back
                 </Button>
                 <Button
                   onClick={completeRegistration}
                   disabled={!crUploaded}
-                  className="flex-1"
+                  className="flex-1 bg-primary hover:bg-primary/90 text-white"
                 >
                   Complete Registration
                 </Button>
@@ -210,7 +210,7 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-4">
           <img 
@@ -219,24 +219,24 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
             className="h-16 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg"
           />
           <div>
-            <h1 className="text-3xl font-bold">Welcome to MWRD</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-3xl font-bold text-white">Welcome to MWRD</h1>
+            <p className="text-white/80">
               {mode === 'signin' ? 'Sign in to your account' : 'Create your account'}
             </p>
           </div>
         </div>
 
         <Tabs value={mode} onValueChange={(value) => setMode(value as 'signin' | 'signup')}>
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signin">Sign In</TabsTrigger>
-            <TabsTrigger value="signup">Sign Up</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 bg-white/10 border border-white/20">
+            <TabsTrigger value="signin" className="text-white data-[state=active]:bg-primary data-[state=active]:text-white">Sign In</TabsTrigger>
+            <TabsTrigger value="signup" className="text-white data-[state=active]:bg-primary data-[state=active]:text-white">Sign Up</TabsTrigger>
           </TabsList>
 
           <TabsContent value="signin">
-            <Card>
+            <Card className="bg-white/5 border border-white/20 backdrop-blur-20">
               <CardHeader>
-                <CardTitle>Sign In</CardTitle>
-                <CardDescription>Enter your credentials to access your account</CardDescription>
+                <CardTitle className="text-white">Sign In</CardTitle>
+                <CardDescription className="text-white/80">Enter your credentials to access your account</CardDescription>
               </CardHeader>
               <CardContent>
                 <Auth
@@ -247,8 +247,8 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
                     variables: {
                       default: {
                         colors: {
-                          brand: 'hsl(var(--primary))',
-                          brandAccent: 'hsl(var(--primary))',
+                          brand: 'hsl(324 96% 20%)',
+                          brandAccent: 'hsl(324 96% 20%)',
                         }
                       }
                     }
@@ -260,102 +260,106 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
           </TabsContent>
 
           <TabsContent value="signup">
-            <Card>
+            <Card className="bg-white/5 border border-white/20 backdrop-blur-20">
               <CardHeader>
-                <CardTitle>Create Account</CardTitle>
-                <CardDescription>Choose your account type and fill in your details</CardDescription>
+                <CardTitle className="text-white">Create Account</CardTitle>
+                <CardDescription className="text-white/80">Choose your account type and fill in your details</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSignUp} className="space-y-4">
                   {/* Account Type Selection */}
                   <div className="space-y-3">
-                    <Label>Account Type *</Label>
+                    <Label className="text-white">Account Type *</Label>
                     <div className="grid grid-cols-2 gap-3">
                       <Card 
-                        className={`cursor-pointer transition-all ${formData.role === 'client' ? 'ring-2 ring-primary bg-primary/5' : 'hover:bg-muted/50'}`}
+                        className={`cursor-pointer transition-all ${formData.role === 'client' ? 'ring-2 ring-primary bg-primary/20 border-primary/30' : 'bg-white/5 border-white/20 hover:bg-white/10'}`}
                         onClick={() => setFormData(prev => ({ ...prev, role: 'client' }))}
                       >
                         <CardContent className="p-4 text-center">
-                          <User className="h-8 w-8 mx-auto mb-2 text-primary" />
-                          <div className="font-semibold">Client</div>
-                          <div className="text-xs text-muted-foreground">Request Services</div>
+                          <User className="h-8 w-8 mx-auto mb-2 text-white" />
+                          <div className="font-semibold text-white">Client</div>
+                          <div className="text-xs text-white/60">Request Services</div>
                         </CardContent>
                       </Card>
                       
                       <Card 
-                        className={`cursor-pointer transition-all ${formData.role === 'vendor' ? 'ring-2 ring-primary bg-primary/5' : 'hover:bg-muted/50'}`}
+                        className={`cursor-pointer transition-all ${formData.role === 'vendor' ? 'ring-2 ring-primary bg-primary/20 border-primary/30' : 'bg-white/5 border-white/20 hover:bg-white/10'}`}
                         onClick={() => setFormData(prev => ({ ...prev, role: 'vendor' }))}
                       >
                         <CardContent className="p-4 text-center">
-                          <Building className="h-8 w-8 mx-auto mb-2 text-primary" />
-                          <div className="font-semibold">Vendor</div>
-                          <div className="text-xs text-muted-foreground">Provide Services</div>
+                          <Building className="h-8 w-8 mx-auto mb-2 text-white" />
+                          <div className="font-semibold text-white">Vendor</div>
+                          <div className="text-xs text-white/60">Provide Services</div>
                         </CardContent>
                       </Card>
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email *</Label>
+                    <Label htmlFor="email" className="text-white">Email *</Label>
                     <Input
                       id="email"
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                       required
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="password">Password *</Label>
+                    <Label htmlFor="password" className="text-white">Password *</Label>
                     <Input
                       id="password"
                       type="password"
                       value={formData.password}
                       onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
                       required
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="full_name">Full Name *</Label>
+                    <Label htmlFor="full_name" className="text-white">Full Name *</Label>
                     <Input
                       id="full_name"
                       value={formData.full_name}
                       onChange={(e) => setFormData(prev => ({ ...prev, full_name: e.target.value }))}
                       required
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="company_name">Company Name</Label>
+                    <Label htmlFor="company_name" className="text-white">Company Name</Label>
                     <Input
                       id="company_name"
                       value={formData.company_name}
                       onChange={(e) => setFormData(prev => ({ ...prev, company_name: e.target.value }))}
                       placeholder={formData.role === 'vendor' ? 'Your business name' : 'Your company name'}
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                     />
                   </div>
 
                   {formData.role === 'client' && (
-                    <Alert>
-                      <Info className="h-4 w-4" />
-                      <AlertDescription>
+                    <Alert className="bg-white/10 border-white/20">
+                      <Info className="h-4 w-4 text-white" />
+                      <AlertDescription className="text-white/90">
                         As a client, you'll need to upload your Commercial Registration for account verification after registration.
                       </AlertDescription>
                     </Alert>
                   )}
 
                   {formData.role === 'vendor' && (
-                    <Alert>
-                      <Building className="h-4 w-4" />
-                      <AlertDescription>
+                    <Alert className="bg-white/10 border-white/20">
+                      <Building className="h-4 w-4 text-white" />
+                      <AlertDescription className="text-white/90">
                         As a vendor, you'll complete a detailed onboarding process to set up your business profile and service categories.
                       </AlertDescription>
                     </Alert>
                   )}
 
-                  <Button type="submit" className="w-full" disabled={loading}>
+                  <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white" disabled={loading}>
                     {loading ? 'Creating Account...' : 'Create Account'}
                   </Button>
                 </form>
