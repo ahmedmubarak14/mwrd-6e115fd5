@@ -70,7 +70,7 @@ export const MyOffers = () => {
                     </Badge>
                   </div>
                   <CardDescription className="line-clamp-2">
-                    {offer.message || 'No description provided'}
+                    {offer.description || 'No description provided'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>

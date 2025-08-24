@@ -78,25 +78,18 @@ const Orders = () => {
                   <div className="space-y-3">
                     <div className="flex items-center gap-2 text-sm">
                       <DollarSign className="h-4 w-4 text-green-500" />
-                      <span className="font-medium">${order.total_amount?.toLocaleString() || 'Amount not set'}</span>
+                      <span className="font-medium">{order.amount?.toLocaleString() || 'Amount not set'} {order.currency}</span>
                     </div>
                     
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Calendar className="h-4 w-4" />
-                      <span>Created {format(new Date(order.created_at), 'MMM dd, yyyy')}</span>
+                      <span>Created {format(new Date(order.date), 'MMM dd, yyyy')}</span>
                     </div>
 
                     {order.delivery_date && (
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Calendar className="h-4 w-4" />
                         <span>Delivery {format(new Date(order.delivery_date), 'MMM dd, yyyy')}</span>
-                      </div>
-                    )}
-
-                    {order.delivery_address && (
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <MapPin className="h-4 w-4" />
-                        <span className="truncate">{order.delivery_address}</span>
                       </div>
                     )}
                     
