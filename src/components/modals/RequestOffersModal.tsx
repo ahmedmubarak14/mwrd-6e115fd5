@@ -40,7 +40,7 @@ interface OfferRow {
   updated_at: string;
   vendor_id: string;
   request_id: string;
-  request?: { title: string; client_id: string } | null;
+  request?: { title: string; client_id: string; description?: string; category?: string } | null;
   vendor?: {
     full_name: string;
     company_name?: string;
@@ -68,7 +68,7 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
       // First, fetch request details to get owner ID
       const { data: requestData, error: requestError } = await supabase
         .from('requests')
-        .select('client_id')
+        .select('client_id, title, description, category')
         .eq('id', requestId)
         .single();
       
@@ -84,7 +84,6 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
         .from('offers')
         .select(`
           *, 
-          request:requests(title, client_id),
           user_profiles:vendor_id(
             full_name,
             company_name,
@@ -103,7 +102,13 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
         status: offer.status || 'pending',
         admin_approval_status: offer.admin_approval_status || 'pending',
         updated_at: offer.updated_at || offer.created_at,
-        vendor: offer.user_profiles
+        vendor: offer.user_profiles,
+        request: requestData ? {
+          title: requestData.title,
+          client_id: requestData.client_id,
+          description: requestData.description || '',
+          category: requestData.category || ''
+        } : null
       }));
 
       setOffers(transformedOffers as OfferRow[]);
@@ -214,7 +219,7 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
 
   const pendingOffers = offers.filter(o => o.client_approval_status === 'pending');
   
-  // Convert OfferRow to Offer for comparison modal
+  // Convert OfferRow to Offer for comparison modal with proper typing
   const selectedOffersData: Offer[] = offers.filter(o => selectedOffers.includes(o.id)).map(offer => ({
     id: offer.id,
     title: offer.title,
@@ -232,8 +237,14 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
     updated_at: offer.updated_at,
     request_id: offer.request_id,
     vendor_id: offer.vendor_id,
-    request: offer.request,
-    vendor: offer.vendor
+    requests: offer.request ? {
+      title: offer.request.title,
+      description: offer.request.description || '',
+      client_id: offer.request.client_id,
+      category: offer.request.category || '',
+      location: undefined
+    } : undefined,
+    user_profiles: offer.vendor
   }));
 
   return (
@@ -328,8 +339,6 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
                         <RealTimeChatModal 
                           recipientId={offer.vendor_id}
                           recipientName={supplierName}
-                          requestId={offer.request_id}
-                          offerId={offer.id}
                         >
                           <Button variant="outline" size="sm">
                             {isRTL ? 'مراسلة المورّد' : 'Message Supplier'}

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Header } from "@/components/ui/layout/Header";
@@ -31,10 +30,7 @@ interface Conversation {
     email: string;
     avatar_url?: string;
   };
-  request_id?: string;
-  offer_id?: string;
-  request_title?: string;
-  offer_title?: string;
+  conversation_id?: string;
 }
 
 export const Messages = () => {
@@ -53,70 +49,56 @@ export const Messages = () => {
     
     setLoading(true);
     try {
-      const { data: messages, error } = await supabase
-        .from('messages')
-        .select(`
-          id,
-          conversation_id,
-          sender_id,
-          recipient_id,
-          content,
-          created_at,
-          request_id,
-          offer_id,
-          read_at,
-          requests!messages_request_id_fkey(title),
-          offers!messages_offer_id_fkey(title)
-        `)
-        .or(`sender_id.eq.${userProfile.id},recipient_id.eq.${userProfile.id}`)
-        .order('created_at', { ascending: false });
+      // First, get all conversations for the user
+      const { data: conversationData, error: convError } = await supabase
+        .from('conversations')
+        .select('*')
+        .or(`client_id.eq.${userProfile.id},vendor_id.eq.${userProfile.id}`)
+        .order('last_message_at', { ascending: false });
 
-      if (error) throw error;
+      if (convError) throw convError;
 
-      // Group messages by conversation and get the latest message for each
+      // Then get messages for each conversation to get the latest message
       const conversationMap = new Map<string, any>();
       
-      for (const message of messages || []) {
-        const conversationKey = message.conversation_id || 
-          [message.sender_id, message.recipient_id].sort().join('-');
-        
-        if (!conversationMap.has(conversationKey)) {
-          const otherParticipantId = message.sender_id === userProfile.id 
-            ? message.recipient_id 
-            : message.sender_id;
+      for (const conv of conversationData || []) {
+        const otherParticipantId = conv.client_id === userProfile.id 
+          ? conv.vendor_id 
+          : conv.client_id;
 
-          // Fetch participant details
-          const { data: participant } = await supabase
-            .from('user_profiles')
-            .select('id, full_name, company_name, email, avatar_url')
-            .eq('id', otherParticipantId)
-            .single();
+        // Fetch participant details
+        const { data: participant } = await supabase
+          .from('user_profiles')
+          .select('id, full_name, company_name, email, avatar_url')
+          .eq('id', otherParticipantId)
+          .single();
 
-          conversationMap.set(conversationKey, {
-            id: conversationKey,
-            participants: [message.sender_id, message.recipient_id],
-            last_message: message.content,
-            last_message_at: message.created_at,
-            unread_count: 0,
-            other_participant: participant,
-            request_id: message.request_id,
-            offer_id: message.offer_id,
-            request_title: message.requests?.title,
-            offer_title: message.offers?.title
-          });
-        }
-      }
+        // Get latest message for this conversation
+        const { data: latestMessage } = await supabase
+          .from('messages')
+          .select('content, created_at')
+          .eq('conversation_id', conv.id)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single();
 
-      // Count unread messages for each conversation
-      for (const [conversationId, conversation] of conversationMap) {
+        // Count unread messages
         const { count } = await supabase
           .from('messages')
           .select('*', { count: 'exact', head: true })
-          .eq('conversation_id', conversationId)
+          .eq('conversation_id', conv.id)
           .eq('recipient_id', userProfile.id)
           .is('read_at', null);
-        
-        conversation.unread_count = count || 0;
+
+        conversationMap.set(conv.id, {
+          id: conv.id,
+          participants: [conv.client_id, conv.vendor_id],
+          last_message: latestMessage?.content || conv.last_message || 'No messages yet',
+          last_message_at: latestMessage?.created_at || conv.last_message_at || conv.created_at,
+          unread_count: count || 0,
+          other_participant: participant,
+          conversation_id: conv.id
+        });
       }
 
       setConversations(Array.from(conversationMap.values()));
@@ -162,9 +144,7 @@ export const Messages = () => {
       conversation.other_participant?.full_name?.toLowerCase().includes(searchLower) ||
       conversation.other_participant?.company_name?.toLowerCase().includes(searchLower) ||
       conversation.other_participant?.email?.toLowerCase().includes(searchLower) ||
-      conversation.last_message?.toLowerCase().includes(searchLower) ||
-      conversation.request_title?.toLowerCase().includes(searchLower) ||
-      conversation.offer_title?.toLowerCase().includes(searchLower)
+      conversation.last_message?.toLowerCase().includes(searchLower)
     );
   });
 
@@ -286,16 +266,6 @@ export const Messages = () => {
                                    conversation.other_participant?.full_name ||
                                    conversation.other_participant?.email}
                                 </h3>
-                                {conversation.request_title && (
-                                  <p className="text-xs text-muted-foreground">
-                                    {isRTL ? 'طلب: ' : 'Request: '}{conversation.request_title}
-                                  </p>
-                                )}
-                                {conversation.offer_title && (
-                                  <p className="text-xs text-muted-foreground">
-                                    {isRTL ? 'عرض: ' : 'Offer: '}{conversation.offer_title}
-                                  </p>
-                                )}
                               </div>
                               <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                                 {conversation.unread_count > 0 && (
@@ -319,8 +289,6 @@ export const Messages = () => {
                               recipientName={conversation.other_participant?.company_name || 
                                            conversation.other_participant?.full_name ||
                                            conversation.other_participant?.email}
-                              requestId={conversation.request_id}
-                              offerId={conversation.offer_id}
                             >
                               <Button variant="outline" size="sm">
                                 <MessageCircle className="h-4 w-4" />
