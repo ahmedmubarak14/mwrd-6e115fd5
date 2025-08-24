@@ -15,7 +15,6 @@ import { CRDocumentUpload } from "@/components/verification/CRDocumentUpload";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle, Info } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 interface AuthFormProps {
   onAuthSuccess?: (user: UserProfile) => void;
@@ -133,13 +132,16 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
         <div className="w-full max-w-md space-y-6">
           <div className="text-center space-y-4">
-            <Link to="/" className="inline-block">
+            <div 
+              onClick={handleLogoClick}
+              className="inline-block cursor-pointer"
+            >
               <img 
                 src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
                 alt="MWRD Logo" 
                 className="h-16 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg cursor-pointer"
               />
-            </Link>
+            </div>
             <div>
               <h1 className="text-2xl font-bold text-white">Complete Your Registration</h1>
               <p className="text-white/80">Upload your Commercial Registration to activate your account</p>
