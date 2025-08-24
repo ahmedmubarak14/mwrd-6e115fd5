@@ -1,3 +1,4 @@
+
 import "./App.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -8,7 +9,6 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { RouteAwareThemeProvider } from "./components/RouteAwareThemeProvider";
 // Fix the import statements - use default imports instead of named imports
 import Profile from "./pages/Profile";
-import Index from "./pages/Index";
 import { Landing } from "./pages/Landing";
 import Auth from "./pages/Auth";
 import Login from "./pages/Login";
@@ -43,8 +43,6 @@ import EditProject from "./pages/EditProject";
 import ProjectDetails from "./pages/ProjectDetails";
 import Suppliers from "./pages/Suppliers";
 import Vendors from "./pages/Vendors";
-import { SupplierDashboard } from "./pages/SupplierDashboard";
-import { ProcurementSupplierDashboard } from "./pages/ProcurementSupplierDashboard";
 import { Analytics } from "./pages/Analytics";
 import ActivityFeed from "./pages/ActivityFeed";
 import { ExpertConsultation } from "./pages/ExpertConsultation";
@@ -86,12 +84,11 @@ function App() {
                   <Toaster />
                   <Sonner />
                   <Routes>
-                    {/* Root Route - Protected Dashboard */}
+                    {/* Root Route - Redirect only */}
                     <Route
                       path="/"
                       element={
                         <ProtectedRoute>
-                          <Index />
                           <AuthRedirect />
                         </ProtectedRoute>
                       }
@@ -329,22 +326,6 @@ function App() {
                       element={
                         <ProtectedRoute>
                           <Vendors />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/supplier-dashboard"
-                      element={
-                        <ProtectedRoute>
-                          <SupplierDashboard />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/procurement-supplier-dashboard"
-                      element={
-                        <ProtectedRoute>
-                          <ProcurementSupplierDashboard />
                         </ProtectedRoute>
                       }
                     />

@@ -18,15 +18,10 @@ export const AuthRedirect = () => {
     // Only redirect from root path
     if (location.pathname !== '/') return;
 
-    // If user is authenticated, redirect to appropriate dashboard
+    // If user is authenticated, redirect to dashboard
     if (user && userProfile) {
-      if (userProfile.role === 'admin') {
-        navigate('/admin', { replace: true });
-      } else if (userProfile.role === 'vendor') {
-        navigate('/supplier-dashboard', { replace: true });
-      } else {
-        navigate('/dashboard', { replace: true });
-      }
+      // All users go to the same dashboard route - role-based rendering is handled in the Dashboard component
+      navigate('/dashboard', { replace: true });
     }
   }, [user, userProfile, loading, navigate, location.pathname]);
 
