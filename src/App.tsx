@@ -1,4 +1,3 @@
-
 import "./App.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -14,6 +13,7 @@ import Auth from "./pages/Auth";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import { SupplierDashboard } from "./pages/SupplierDashboard";
 // Fix the import statement for AdminUsers
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -183,6 +183,14 @@ function App() {
                         <ProtectedRoute>
                           <Dashboard />
                         </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/supplier-dashboard"
+                      element={
+                        <RoleProtectedRoute allowed={['vendor']}>
+                          <SupplierDashboard />
+                        </RoleProtectedRoute>
                       }
                     />
                     <Route
