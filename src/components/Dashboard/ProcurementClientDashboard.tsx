@@ -2,52 +2,61 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { MobileFriendlyCard } from "@/components/ui/MobileFriendlyCard";
-import { MobileOptimizedButton } from "@/components/ui/MobileOptimizedButton";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { Plus, FileText, Users, TrendingUp, Package, Banknote, Clock, Eye, ShoppingCart, BarChart3, Target } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { CreateRequestModal } from "@/components/modals/CreateRequestModal";
-import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useUserStats } from "@/hooks/useUserStats";
 import { useRecentItems } from "@/hooks/useRecentItems";
 import { useRealTimeAnalytics } from "@/hooks/useRealTimeAnalytics";
+import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
+import { useNavigate } from "react-router-dom";
 
 export const ProcurementClientDashboard = () => {
   const { t, language } = useLanguage();
   const { userProfile } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const isRTL = language === 'ar';
   
   const { data: analyticsData, loading: analyticsLoading } = useRealTimeAnalytics();
-  const { stats: userStats, loading: statsLoading } = useUserStats();
+  const { stats: userStats, loading: statsLoading, error: statsError } = useUserStats();
   const { recentItems, loading: itemsLoading } = useRecentItems();
 
   const handleCreateProcurement = () => {
-    window.location.href = '/procurement-requests';
+    navigate('/procurement-requests');
   };
 
   const handleViewSuppliers = () => {
-    window.location.href = '/suppliers';
+    navigate('/suppliers');
   };
 
   const handleViewRequests = () => {
-    window.location.href = '/requests';
+    navigate('/requests');
   };
+
+  // Show error state if stats failed to load
+  if (statsError) {
+    toast({
+      title: "Error loading dashboard data",
+      description: statsError,
+      variant: "destructive",
+    });
+  }
 
   // Procurement-focused stats for clients
   const procurementStats = [
     {
       title: isRTL ? 'طلبات التوريد النشطة' : 'Active Procurement Requests',
-      value: userStats?.totalRequests?.toString() || analyticsData?.totalRequests?.toString() || "0",
+      value: userStats?.totalRequests?.toString() || "0",
       icon: FileText,
       color: "text-primary",
       bgColor: "bg-primary/10"
     },
     {
       title: isRTL ? 'العروض المستلمة' : 'Received Offers',
-      value: userStats?.pendingOffers?.toString() || analyticsData?.totalOffers?.toString() || "0",
+      value: userStats?.pendingOffers?.toString() || "0",
       icon: Package,
       color: "text-lime",
       bgColor: "bg-lime/10"
@@ -261,15 +270,19 @@ export const ProcurementClientDashboard = () => {
               <h3 className="text-lg font-medium mb-2">
                 {isRTL ? 'لا توجد طلبات حديثة' : 'No Recent Requests'}
               </h3>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground mb-4">
                 {isRTL ? 'ابدأ بإنشاء طلب التوريد الأول' : 'Start by creating your first procurement request'}
               </p>
+              <Button onClick={handleCreateProcurement}>
+                <Plus className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {isRTL ? 'إنشاء طلب توريد' : 'Create Request'}
+              </Button>
             </div>
           )}
         </CardContent>
       </Card>
 
-      {/* Procurement Analytics Preview */}
+      {/* Real Analytics Preview - No longer placeholders */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         <Card className="border-0 bg-card/70 backdrop-blur-sm">
           <CardHeader>
@@ -279,9 +292,22 @@ export const ProcurementClientDashboard = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-center py-8 text-muted-foreground">
-              <Target className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p>{isRTL ? 'سيتم عرض تحليل الإنفاق هنا' : 'Spend analytics will be displayed here'}</p>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-muted-foreground">
+                  {isRTL ? 'إجمالي الإنفاق هذا الشهر' : 'Total Spend This Month'}
+                </span>
+                <div className="flex items-center gap-1">
+                  <span className="font-semibold">{userStats?.totalSpend?.toLocaleString() || '0'}</span>
+                  <img src="/lovable-uploads/15dca457-47b5-47cc-802f-12b66c558eee.png" alt="SAR" className="h-4 w-4 opacity-70" />
+                </div>
+              </div>
+              <div className="h-2 bg-muted rounded-full overflow-hidden">
+                <div className="h-full bg-primary/70 rounded-full" style={{ width: userStats?.totalSpend ? `${Math.min((userStats.totalSpend / 10000) * 100, 100)}%` : '0%' }} />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {isRTL ? 'مقارنة مع الشهر الماضي' : 'Compared to last month'}
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -290,13 +316,32 @@ export const ProcurementClientDashboard = () => {
           <CardHeader>
             <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Clock className="h-5 w-5 text-accent" />
-              {isRTL ? 'المواعيد النهائية القادمة' : 'Upcoming Deadlines'}
+              {isRTL ? 'المواعيد النهائية القادمة' : 'Active Requests Status'}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-center py-8 text-muted-foreground">
-              <Clock className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p>{isRTL ? 'لا توجد مواعيد نهائية قادمة' : 'No upcoming deadlines'}</p>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-muted-foreground">
+                  {isRTL ? 'الطلبات النشطة' : 'Active Requests'}
+                </span>
+                <span className="font-semibold">{userStats?.totalRequests || 0}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-muted-foreground">
+                  {isRTL ? 'العروض المعلقة' : 'Pending Offers'}
+                </span>
+                <span className="font-semibold">{userStats?.pendingOffers || 0}</span>
+              </div>
+              {(userStats?.totalRequests || 0) === 0 ? (
+                <p className="text-xs text-muted-foreground">
+                  {isRTL ? 'لا توجد طلبات نشطة حالياً' : 'No active requests currently'}
+                </p>
+              ) : (
+                <p className="text-xs text-muted-foreground">
+                  {isRTL ? 'تتم مراجعة العروض الواردة' : 'Reviewing incoming offers'}
+                </p>
+              )}
             </div>
           </CardContent>
         </Card>

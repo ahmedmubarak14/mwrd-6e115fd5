@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -83,34 +84,51 @@ export const useUserStats = () => {
         };
 
       } else if (isClient) {
-        // Client stats
-        const [requestsResult, offersResult, conversationsResult] = await Promise.all([
+        // Client stats - FIXED: First get client's requests, then get offers on those requests
+        const [requestsResult, conversationsResult, transactionsResult] = await Promise.all([
           // Total requests
           supabase
             .from('requests')
             .select('id')
             .eq('client_id', userId),
           
-          // Pending offers (offers on client's requests)
-          supabase
-            .from('offers')
-            .select('id, request_id')
-            .eq('status', 'pending')
-            .in('request_id', []),
-          
           // Connected suppliers (unique conversations)
           supabase
             .from('conversations')
             .select('vendor_id')
-            .eq('client_id', userId)
+            .eq('client_id', userId),
+
+          // Total spend from completed transactions
+          supabase
+            .from('financial_transactions')
+            .select('amount')
+            .eq('user_id', userId)
+            .eq('status', 'completed')
+            .eq('type', 'payment')
         ]);
 
+        // Now get pending offers on client's requests - FIXED BUG
+        const clientRequestIds = requestsResult.data?.map(r => r.id) || [];
+        let pendingOffersCount = 0;
+        
+        if (clientRequestIds.length > 0) {
+          const offersResult = await supabase
+            .from('offers')
+            .select('id')
+            .eq('status', 'pending')
+            .in('request_id', clientRequestIds);
+          
+          pendingOffersCount = offersResult.data?.length || 0;
+        }
+
         const uniqueSuppliers = new Set(conversationsResult.data?.map(c => c.vendor_id) || []).size;
+        const totalSpend = transactionsResult.data?.reduce((sum, t) => sum + (Number(t.amount) || 0), 0) || 0;
 
         stats = {
           totalRequests: requestsResult.data?.length || 0,
-          pendingOffers: offersResult.data?.length || 0,
+          pendingOffers: pendingOffersCount,
           suppliersConnected: uniqueSuppliers,
+          totalSpend: totalSpend,
           responseTime: 1.8 // Simplified
         };
       }
