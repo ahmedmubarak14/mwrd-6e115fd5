@@ -63,7 +63,7 @@ import { RoleProtectedRoute } from "./components/routing/RoleProtectedRoute";
 import { AuthRedirect } from "./components/routing/AuthRedirect";
 import PublicRoute from "./components/PublicRoute";
 import { AuthProvider } from "./contexts/AuthContext";
-import { LanguageProvider } from "./contexts/LanguageProvider";
+import { LanguageProvider } from "./contexts/LanguageContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
