@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -69,11 +70,12 @@ function App() {
               <LanguageProvider>
                 <TooltipProvider>
                   <SmoothScroll />
+                  <AuthRedirect />
                   <Routes>
                     <Route path="/" element={<Index />} />
                     <Route path="/landing" element={<Landing />} />
                     
-                    <Route path="/auth" element={<AuthRedirect><Auth /></AuthRedirect>} />
+                    <Route path="/auth" element={<Auth />} />
                     
                     <Route path="/reset-password" element={<ResetPassword />} />
                     
