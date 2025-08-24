@@ -1,527 +1,306 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+
+import { useState, useEffect } from "react";
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { Eye, EyeOff, User, Building2, Mail, Lock } from "lucide-react";
-import { Link } from "react-router-dom";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useToastFeedback } from "@/hooks/useToastFeedback";
+import { useAuth } from "@/contexts/AuthContext";
+import { UserProfile } from "@/types/database";
+import { CRDocumentUpload } from "@/components/verification/CRDocumentUpload";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { CheckCircle, Info } from "lucide-react";
 
 interface AuthFormProps {
-  onAuthSuccess: (userData: { id: string; email: string; role: 'client' | 'vendor' | 'admin' }) => void;
+  onAuthSuccess?: (user: UserProfile) => void;
 }
 
 export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
-  const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState<'client' | 'vendor'>('client');
-  const [companyName, setCompanyName] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const { toast } = useToast();
-  const { t, language } = useLanguage();
-  const [resetOpen, setResetOpen] = useState(false);
-  const [resetEmail, setResetEmail] = useState("");
-  const [resetLoading, setResetLoading] = useState(false);
-  const [adminLoading, setAdminLoading] = useState(false);
-  const [showForceCreate, setShowForceCreate] = useState(false);
+  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
+  const [registrationStep, setRegistrationStep] = useState<'details' | 'verification'>('details');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    full_name: '',
+    company_name: '',
+    role: 'client' as 'client' | 'vendor' | 'admin'
+  });
+  const [loading, setLoading] = useState(false);
+  const [registeredUserId, setRegisteredUserId] = useState<string | null>(null);
+  const [crUploaded, setCrUploaded] = useState(false);
+  const { showSuccess, showError, showInfo } = useToastFeedback();
+  const { userProfile } = useAuth();
 
-  const createAdminUser = async (force = false) => {
-    setAdminLoading(true);
-    setShowForceCreate(false);
+  // Handle successful authentication
+  useEffect(() => {
+    if (userProfile) {
+      onAuthSuccess?.(userProfile);
+    }
+  }, [userProfile, onAuthSuccess]);
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.email || !formData.password || !formData.full_name) {
+      showError('Please fill in all required fields');
+      return;
+    }
+
+    setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('create-admin-user', {
-        body: {
-          email: 'ahmedmubaraks@hotmail.com',
-          password: 'Aa123456',
-          role: 'admin',
-          full_name: 'Ahmed Mubarak',
-          force
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            full_name: formData.full_name,
+            company_name: formData.company_name,
+            role: formData.role
+          }
         }
       });
 
       if (error) throw error;
 
-      toast({
-        title: "Admin User Created",
-        description: "Admin user has been created successfully. You can now login with ahmedmubaraks@hotmail.com",
-      });
-    } catch (error: any) {
-      // Handle specific "user already exists" error
-      if (error.message?.includes('User already exists') && !force) {
-        toast({
-          variant: "destructive", 
-          title: "User Already Exists",
-          description: "The admin user already exists. Use 'Force Create' to recreate it.",
-        });
-        setShowForceCreate(true);
-        return;
-      }
-      
-      toast({
-        variant: "destructive",
-        title: "Error Creating Admin",
-        description: error.message,
-      });
-    } finally {
-      setAdminLoading(false);
-    }
-  };
-
-  const handleAuth = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      if (isLogin) {
-        // Login logic
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
-        if (error) throw error;
-
-        // Get or create user profile
-        const { data: profileMaybe, error: profileError } = await supabase
-          .from('user_profiles')
-          .select('*')
-          .eq('user_id', data.user.id)
-          .maybeSingle();
-
-        let effectiveRole: 'client' | 'vendor' | 'admin' =
-          (data.user.user_metadata?.role as 'client' | 'vendor' | 'admin') ?? 'client';
-
-        if (profileError) {
-          console.error('Error fetching profile during login:', profileError);
-        }
-
-        let profile = profileMaybe as any;
-
-        if (!profile) {
-          const { data: created, error: insertError } = await supabase
-            .from('user_profiles')
-            .insert({
-              user_id: data.user.id,
-              email: data.user.email!,
-              role: effectiveRole,
-              full_name: data.user.user_metadata?.full_name ?? null,
-              company_name: data.user.user_metadata?.company_name ?? null,
-            })
-            .select('*')
-            .single();
-
-          if (insertError) {
-            throw insertError;
-          } else {
-            profile = created;
-            toast({
-              title: language === 'ar' ? 'تم إنشاء الملف الشخصي' : 'Profile created',
-              description: language === 'ar'
-                ? 'تم إعداد ملفك الشخصي لأول مرة.'
-                : 'We set up your profile for the first time.',
-            });
-          }
+      if (data.user) {
+        setRegisteredUserId(data.user.id);
+        if (formData.role === 'client') {
+          showInfo('Account created! Please upload your Commercial Registration to complete verification.');
+          setRegistrationStep('verification');
         } else {
-          effectiveRole = (profile.role as any) ?? effectiveRole;
-        }
-
-        onAuthSuccess({
-          id: data.user.id,
-          email: data.user.email!,
-          role: effectiveRole,
-        });
-
-        toast({
-          title: language === 'ar' ? "تم تسجيل الدخول بنجاح" : "Login successful",
-          description: language === 'ar' ? "مرحباً بك مرة أخرى!" : "Welcome back!",
-        });
-      } else {
-        // Registration logic
-        if (password !== confirmPassword) {
-          throw new Error(language === 'ar' ? "كلمات المرور غير متطابقة" : "Passwords don't match");
-        }
-
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/dashboard`,
-            data: {
-              role,
-              full_name: fullName,
-              company_name: role === 'vendor' ? companyName : null,
-            }
-          }
-        });
-
-        if (error) throw error;
-
-        if (data.user && !data.session) {
-          // User needs to confirm email
-          toast({
-            title: language === 'ar' ? "تأكيد البريد الإلكتروني مطلوب" : "Email confirmation required",
-            description: language === 'ar' ? 
-              "يرجى فتح بريدك الإلكتروني والنقر على رابط التأكيد لإكمال إنشاء الحساب" : 
-              "Please check your email and click the confirmation link to complete account creation",
-          });
-          return;
-        }
-
-        // If user is immediately authenticated (email confirmation disabled)
-        if (data.user && data.session) {
-          onAuthSuccess({
+          showSuccess('Account created successfully! Please check your email for verification.');
+          onAuthSuccess?.({
             id: data.user.id,
-            email: data.user.email!,
-            role
-          });
-
-          toast({
-            title: language === 'ar' ? "تم إنشاء الحساب بنجاح" : "Account created successfully",
-            description: language === 'ar' ? "مرحباً بك في مورد!" : "Welcome to MWRD!",
+            user_id: data.user.id,
+            email: formData.email,
+            full_name: formData.full_name,
+            company_name: formData.company_name,
+            role: formData.role,
+            status: 'approved',
+            verification_status: 'approved',
+            avatar_url: null,
+            phone: null,
+            address: null,
+            bio: null,
+            portfolio_url: null,
+            verification_documents: [],
+            categories: [],
+            subscription_plan: 'free',
+            subscription_status: 'active',
+            subscription_expires_at: null,
+            verified_at: null,
+            verified_by: null,
+            verification_notes: null,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
           });
         }
       }
     } catch (error: any) {
-      // Handle specific error cases
-      let errorMessage = error.message;
-      let errorTitle = language === 'ar' ? "خطأ في المصادقة" : "Authentication error";
-      
-      if (error.message.includes('User already registered') || error.message.includes('already been registered')) {
-        if (isLogin) {
-          errorMessage = language === 'ar' 
-            ? 'بريد إلكتروني أو كلمة مرور غير صحيحة. حاول مرة أخرى أو اعد تعيين كلمة المرور.'
-            : 'Invalid email or password. Please try again or reset your password.';
-        } else {
-          errorMessage = language === 'ar'
-            ? 'يوجد حساب بهذا البريد الإلكتروني بالفعل. يرجى تسجيل الدخول بدلاً من ذلك.'
-            : 'An account with this email already exists. Please try logging in instead.';
-          errorTitle = language === 'ar' ? "البريد الإلكتروني مستخدم" : "Email already exists";
-        }
-      }
-      
-      toast({
-        variant: "destructive",
-        title: errorTitle,
-        description: errorMessage,
-      });
+      console.error('Sign up error:', error);
+      showError(error.message || 'Failed to create account');
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
-  
-  const handlePasswordReset = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setResetLoading(true);
-    try {
-      const redirectTo = `${window.location.origin}/reset-password`;
-      const { error } = await supabase.auth.resetPasswordForEmail((resetEmail || email), { redirectTo });
-      if (error) throw error;
-      toast({
-        title: language === 'ar' ? 'تم إرسال رابط إعادة التعيين' : 'Password reset email sent',
-        description: language === 'ar' ? 'تحقق من بريدك الإلكتروني واتبع التعليمات.' : 'Check your email and follow the instructions.',
-      });
-      setResetOpen(false);
-    } catch (err: any) {
-      toast({
-        variant: 'destructive',
-        title: language === 'ar' ? 'فشل إعادة التعيين' : 'Reset failed',
-        description: err.message,
-      });
-    } finally {
-      setResetLoading(false);
-    }
+
+  const handleCRUploadSuccess = () => {
+    setCrUploaded(true);
+    showSuccess('Commercial Registration uploaded successfully! Your account will be reviewed within 24-48 hours.');
   };
+
+  const completeRegistration = () => {
+    showInfo('Registration complete! You can now sign in. Your account will be activated after document verification.');
+    setMode('signin');
+    setRegistrationStep('details');
+    setCrUploaded(false);
+    setRegisteredUserId(null);
+  };
+
+  if (mode === 'signup' && registrationStep === 'verification' && formData.role === 'client') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5 p-4">
+        <div className="w-full max-w-md space-y-6">
+          <Card>
+            <CardHeader className="text-center">
+              <CardTitle className="text-2xl">Complete Your Registration</CardTitle>
+              <CardDescription>
+                Upload your Commercial Registration to activate your account
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <Alert>
+                <Info className="h-4 w-4" />
+                <AlertDescription>
+                  Your account has been created for <strong>{formData.email}</strong>.
+                  Please upload your Commercial Registration to complete the verification process.
+                </AlertDescription>
+              </Alert>
+
+              <CRDocumentUpload
+                onUploadSuccess={handleCRUploadSuccess}
+                isRequired={true}
+              />
+
+              {crUploaded && (
+                <Alert>
+                  <CheckCircle className="h-4 w-4" />
+                  <AlertDescription>
+                    Document uploaded successfully! Your account will be reviewed within 24-48 hours.
+                  </AlertDescription>
+                </Alert>
+              )}
+
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setRegistrationStep('details')}
+                  className="flex-1"
+                >
+                  Back
+                </Button>
+                <Button
+                  onClick={completeRegistration}
+                  disabled={!crUploaded}
+                  className="flex-1"
+                >
+                  Complete Registration
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
-      <Card className="w-full max-w-md" style={{ backgroundColor: '#102C33', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
-        <CardHeader className="text-center">
-          <Link to="/" className="inline-block">
-            <img 
-              src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
-              alt="MWRD Logo"
-              className="h-16 w-auto mx-auto mb-4 hover:scale-105 transition-transform"
-            />
-          </Link>
-          <CardTitle className="text-2xl" style={{ color: '#F1EFE8' }}>
-            {language === 'ar' ? 'مرحباً بك في مورد' : 'Welcome to MWRD'}
-          </CardTitle>
-          <CardDescription style={{ color: '#F1EFE8', opacity: 0.8 }}>
-            {language === 'ar' ? 'سجل دخولك أو أنشئ حساباً جديداً' : 'Sign in to your account or create a new one'}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Tabs value={isLogin ? 'login' : 'register'} onValueChange={(value) => setIsLogin(value === 'login')}>
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">
-                {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
-              </TabsTrigger>
-              <TabsTrigger value="register">
-                {language === 'ar' ? 'إنشاء حساب' : 'Register'}
-              </TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="login">
-              <form onSubmit={handleAuth} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email" style={{ color: '#F1EFE8' }}>
-                    {language === 'ar' ? 'البريد الإلكتروني' : 'Email'}
-                  </Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/5 p-4">
+      <div className="w-full max-w-md space-y-6">
+        <div className="text-center space-y-2">
+          <h1 className="text-3xl font-bold">Welcome to MWRD</h1>
+          <p className="text-muted-foreground">
+            {mode === 'signin' ? 'Sign in to your account' : 'Create your account'}
+          </p>
+        </div>
+
+        <Tabs value={mode} onValueChange={(value) => setMode(value as 'signin' | 'signup')}>
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="signin">Sign In</TabsTrigger>
+            <TabsTrigger value="signup">Sign Up</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="signin">
+            <Card>
+              <CardHeader>
+                <CardTitle>Sign In</CardTitle>
+                <CardDescription>Enter your credentials to access your account</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Auth
+                  supabaseClient={supabase}
+                  view="sign_in"
+                  appearance={{
+                    theme: ThemeSupa,
+                    variables: {
+                      default: {
+                        colors: {
+                          brand: 'hsl(var(--primary))',
+                          brandAccent: 'hsl(var(--primary))',
+                        }
+                      }
+                    }
+                  }}
+                  providers={[]}
+                />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="signup">
+            <Card>
+              <CardHeader>
+                <CardTitle>Create Account</CardTitle>
+                <CardDescription>Fill in your details to get started</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSignUp} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email *</Label>
                     <Input
                       id="email"
                       type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      value={formData.email}
+                      onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                       required
-                      className="pl-10"
-                      placeholder={language === 'ar' ? 'أدخل بريدك الإلكتروني' : 'Enter your email'}
                     />
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="password" style={{ color: '#F1EFE8' }}>
-                    {language === 'ar' ? 'كلمة المرور' : 'Password'}
-                  </Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+
+                  <div className="space-y-2">
+                    <Label htmlFor="password">Password *</Label>
                     <Input
                       id="password"
-                      type={showPassword ? "text" : "password"}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      type="password"
+                      value={formData.password}
+                      onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
                       required
-                      className="pl-10 pr-10"
-                      placeholder={language === 'ar' ? 'أدخل كلمة المرور' : 'Enter your password'}
                     />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="absolute right-2 top-2 h-7 w-7 p-0"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </Button>
                   </div>
-                </div>
-                <Button 
-                  type="submit" 
-                  className="w-full bg-gradient-to-r from-primary to-accent hover-scale"
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <LoadingSpinner size="sm" />
-                  ) : (
-                    language === 'ar' ? 'تسجيل الدخول' : 'Sign In'
-                  )}
-                </Button>
-                <Dialog open={resetOpen} onOpenChange={setResetOpen}>
-                  <DialogTrigger asChild>
-                    <button type="button" className="mx-auto block text-sm text-primary hover:underline">
-                      {language === 'ar' ? 'هل نسيت كلمة المرور؟' : 'Forgot your password?'}
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>{language === 'ar' ? 'إعادة تعيين كلمة المرور' : 'Reset your password'}</DialogTitle>
-                      <DialogDescription>
-                        {language === 'ar' ? 'سنرسل رابط إعادة التعيين إلى بريدك الإلكتروني.' : 'We will email you a reset link.'}
-                      </DialogDescription>
-                    </DialogHeader>
-                    <form onSubmit={handlePasswordReset} className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="resetEmail">{language === 'ar' ? 'البريد الإلكتروني' : 'Email'}</Label>
-                        <Input
-                          id="resetEmail"
-                          type="email"
-                          value={resetEmail || email}
-                          onChange={(e) => setResetEmail(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <DialogFooter>
-                        <Button type="submit" disabled={resetLoading} className="bg-gradient-to-r from-primary to-accent">
-                          {resetLoading ? <LoadingSpinner size="sm" /> : (language === 'ar' ? 'إرسال رابط' : 'Send reset link')}
-                        </Button>
-                      </DialogFooter>
-                    </form>
-                  </DialogContent>
-                </Dialog>
-              </form>
-            </TabsContent>
-            
-            <TabsContent value="register">
-              <form onSubmit={handleAuth} className="space-y-4">
-                <div className="space-y-2">
-                  <Label style={{ color: '#F1EFE8' }}>
-                    {language === 'ar' ? 'نوع الحساب' : 'Account Type'}
-                  </Label>
-                  <RadioGroup value={role} onValueChange={(value: 'client' | 'vendor') => setRole(value)}>
-                    <div className="flex items-center space-x-2 space-x-reverse">
-                      <RadioGroupItem value="client" id="client" />
-                      <Label htmlFor="client" className="flex items-center gap-2" style={{ color: '#F1EFE8' }}>
-                        <User className="h-4 w-4" />
-                        {language === 'ar' ? 'عميل (مدير مشتريات)' : 'Client (Procurement Manager)'}
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2 space-x-reverse">
-                      <RadioGroupItem value="vendor" id="vendor" />
-                      <Label htmlFor="vendor" className="flex items-center gap-2" style={{ color: '#F1EFE8' }}>
-                        <Building2 className="h-4 w-4" />
-                        {language === 'ar' ? 'مقدم خدمة' : 'Service Provider'}
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="fullName" style={{ color: '#F1EFE8' }}>
-                    {language === 'ar' ? 'الاسم الكامل' : 'Full Name'}
-                  </Label>
-                  <Input
-                    id="fullName"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    required
-                    placeholder={language === 'ar' ? 'أدخل اسمك الكامل' : 'Enter your full name'}
-                  />
-                </div>
-
-                {role === 'vendor' && (
                   <div className="space-y-2">
-                    <Label htmlFor="companyName" style={{ color: '#F1EFE8' }}>
-                      {language === 'ar' ? 'اسم الشركة' : 'Company Name'}
-                    </Label>
+                    <Label htmlFor="full_name">Full Name *</Label>
                     <Input
-                      id="companyName"
-                      value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
+                      id="full_name"
+                      value={formData.full_name}
+                      onChange={(e) => setFormData(prev => ({ ...prev, full_name: e.target.value }))}
                       required
-                      placeholder={language === 'ar' ? 'أدخل اسم الشركة' : 'Enter company name'}
                     />
                   </div>
-                )}
 
-                <div className="space-y-2">
-                  <Label htmlFor="registerEmail" style={{ color: '#F1EFE8' }}>
-                    {language === 'ar' ? 'البريد الإلكتروني' : 'Email'}
-                  </Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <div className="space-y-2">
+                    <Label htmlFor="company_name">Company Name</Label>
                     <Input
-                      id="registerEmail"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="pl-10"
-                      placeholder={language === 'ar' ? 'أدخل بريدك الإلكتروني' : 'Enter your email'}
+                      id="company_name"
+                      value={formData.company_name}
+                      onChange={(e) => setFormData(prev => ({ ...prev, company_name: e.target.value }))}
                     />
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="registerPassword" style={{ color: '#F1EFE8' }}>
-                    {language === 'ar' ? 'كلمة المرور' : 'Password'}
-                  </Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      id="registerPassword"
-                      type={showPassword ? "text" : "password"}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      className="pl-10 pr-10"
-                      placeholder={language === 'ar' ? 'أدخل كلمة المرور' : 'Enter your password'}
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="absolute right-2 top-2 h-7 w-7 p-0"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </Button>
+                  <div className="space-y-2">
+                    <Label htmlFor="role">Account Type *</Label>
+                    <Select value={formData.role} onValueChange={(value) => setFormData(prev => ({ ...prev, role: value as any }))}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="client">Client (Request Services)</SelectItem>
+                        <SelectItem value="vendor">Vendor (Provide Services)</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword" style={{ color: '#F1EFE8' }}>
-                    {language === 'ar' ? 'تأكيد كلمة المرور' : 'Confirm Password'}
-                  </Label>
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                    placeholder={language === 'ar' ? 'أعد إدخال كلمة المرور' : 'Re-enter your password'}
-                  />
-                </div>
-
-                <Button 
-                  type="submit" 
-                  className="w-full bg-gradient-to-r from-primary to-accent hover-scale"
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <LoadingSpinner size="sm" />
-                  ) : (
-                    language === 'ar' ? 'إنشاء حساب' : 'Create Account'
+                  {formData.role === 'client' && (
+                    <Alert>
+                      <Info className="h-4 w-4" />
+                      <AlertDescription>
+                        As a client, you'll need to upload your Commercial Registration for account verification after registration.
+                      </AlertDescription>
+                    </Alert>
                   )}
-                </Button>
-              </form>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-        
-        {/* Temporary Admin Creation Button */}
-        <div className="px-6 pb-4 space-y-2">
-          <Button 
-            onClick={() => createAdminUser(false)}
-            variant="outline"
-            size="sm"
-            disabled={adminLoading}
-            className="w-full text-xs"
-          >
-            {adminLoading ? (
-              <LoadingSpinner size="sm" />
-            ) : (
-              'Create Admin User (Temporary)'
-            )}
-          </Button>
-          
-          {showForceCreate && (
-            <Button 
-              onClick={() => createAdminUser(true)}
-              variant="destructive"
-              size="sm"
-              disabled={adminLoading}
-              className="w-full text-xs"
-            >
-              {adminLoading ? (
-                <LoadingSpinner size="sm" />
-              ) : (
-                'Force Create (Delete Existing)'
-              )}
-            </Button>
-          )}
-        </div>
-      </Card>
+
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? 'Creating Account...' : 'Create Account'}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 };

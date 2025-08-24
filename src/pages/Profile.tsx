@@ -1,454 +1,281 @@
-import { Header } from "@/components/ui/layout/Header";
-import { Sidebar } from "@/components/ui/layout/Sidebar";
-import { useAuth } from "@/contexts/AuthContext";
+
+import { useState } from "react";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { useState, useRef } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { Camera, Key, User, Mail, Building, Shield } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { Footer } from "@/components/ui/layout/Footer";
+import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToastFeedback } from "@/hooks/useToastFeedback";
+import { User, Building, FileText, Settings } from "lucide-react";
+import { CRDocumentUpload } from "@/components/verification/CRDocumentUpload";
+import { VerificationStatus } from "@/components/verification/VerificationStatus";
 
-export const Profile = () => {
-  const { userProfile, loading } = useAuth();
-  const { t, language } = useLanguage();
-  const isRTL = language === 'ar';
-  const { toast } = useToast();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isChangingPassword, setIsChangingPassword] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [uploading, setUploading] = useState(false);
+const Profile = () => {
+  const { userProfile, updateProfile } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const { showSuccess } = useToastFeedback();
+
   const [formData, setFormData] = useState({
-    full_name: userProfile?.full_name || '',
-    company_name: userProfile?.company_name || ''
-  });
-  const [passwordData, setPasswordData] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
+    full_name: userProfile?.full_name || "",
+    company_name: userProfile?.company_name || "",
+    phone: userProfile?.phone || "",
+    address: userProfile?.address || "",
+    bio: userProfile?.bio || "",
+    portfolio_url: userProfile?.portfolio_url || "",
   });
 
   const handleSave = async () => {
+    setLoading(true);
     try {
-      const { error } = await supabase
-        .from('user_profiles')
-        .update(formData)
-        .eq('id', userProfile?.id);
-
-      if (error) throw error;
-
-      toast({
-        title: "Profile updated",
-        description: "Your profile has been updated successfully.",
-      });
-      setIsEditing(false);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update profile.",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    try {
-      setUploading(true);
-      const file = event.target.files?.[0];
-      if (!file) return;
-
-      // Check file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        toast({
-          title: "Error",
-          description: "File size must be less than 5MB.",
-          variant: "destructive",
-        });
-        return;
+      const success = await updateProfile(formData);
+      if (success) {
+        showSuccess("Profile updated successfully");
       }
-
-      // Check file type
-      if (!file.type.startsWith('image/')) {
-        toast({
-          title: "Error",
-          description: "Please select an image file.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${userProfile?.id}/avatar.${fileExt}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(fileName, file, { upsert: true });
-
-      if (uploadError) throw uploadError;
-
-      const { data: publicUrl } = supabase.storage
-        .from('avatars')
-        .getPublicUrl(fileName);
-
-      const { error: updateError } = await supabase
-        .from('user_profiles')
-        .update({ avatar_url: publicUrl.publicUrl })
-        .eq('id', userProfile?.id);
-
-      if (updateError) throw updateError;
-
-      toast({
-        title: "Success",
-        description: "Profile picture updated successfully.",
-      });
-
-      // Refresh the page to show new avatar
-      window.location.reload();
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to upload image.",
-        variant: "destructive",
-      });
     } finally {
-      setUploading(false);
+      setLoading(false);
     }
   };
 
-  const handlePasswordChange = async () => {
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
-      toast({
-        title: "Error",
-        description: "New passwords don't match.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (passwordData.newPassword.length < 6) {
-      toast({
-        title: "Error",
-        description: "Password must be at least 6 characters long.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      const { error } = await supabase.auth.updateUser({
-        password: passwordData.newPassword
-      });
-
-      if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: "Password changed successfully.",
-      });
-
-      setIsChangingPassword(false);
-      setPasswordData({
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-      });
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to change password.",
-        variant: "destructive",
-      });
+  const getVerificationBadge = () => {
+    if (!userProfile) return null;
+    
+    switch (userProfile.verification_status) {
+      case 'approved':
+        return <Badge className="bg-success">Verified</Badge>;
+      case 'rejected':
+        return <Badge variant="destructive">Rejected</Badge>;
+      case 'under_review':
+        return <Badge variant="outline">Under Review</Badge>;
+      default:
+        return <Badge variant="secondary">Pending Verification</Badge>;
     }
   };
 
-  const getUserInitials = (name?: string, email?: string) => {
-    if (name) {
-      return name
-        .split(' ')
-        .map(n => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2);
-    }
-    if (email) {
-      return email[0].toUpperCase();
-    }
-    return 'U';
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
+  if (!userProfile) return null;
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
-      
-      {/* Mobile Sidebar */}
-      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
-          <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
-        </SheetContent>
-      </Sheet>
-
-      <div className="rtl-flex">
-        {/* Desktop Sidebar - position based on language */}
-        <div className="hidden lg:block rtl-order-1">
-          <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
+    <DashboardLayout>
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Profile Settings</h1>
+            <p className="text-muted-foreground">
+              Manage your account information and verification status
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            {getVerificationBadge()}
+          </div>
         </div>
-        
-        <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
-          <div className="max-w-4xl mx-auto space-y-6">
-            {/* Profile Header - Salla/Zid Style */}
-            <Card className="border-0 bg-gradient-to-r from-primary/10 via-accent/10 to-lime/10">
-              <CardContent className="p-6 lg:p-8">
-                <div className="flex flex-col sm:flex-row items-center gap-6">
-                  <div className="relative">
-                    <Avatar className="h-24 w-24 lg:h-32 lg:w-32 border-4 border-white shadow-lg">
-                      <AvatarImage src={userProfile?.avatar_url} />
-                      <AvatarFallback className="text-2xl bg-primary/10 text-primary">
-                        {getUserInitials(userProfile?.full_name, userProfile?.email)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <Button
-                      size="sm"
-                      className="absolute -bottom-2 -right-2 rounded-full h-10 w-10 p-0 shadow-lg"
-                      onClick={() => fileInputRef.current?.click()}
-                      disabled={uploading}
-                    >
-                      <Camera className="h-4 w-4" />
-                    </Button>
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      onChange={handleImageUpload}
-                      accept="image/*"
-                      className="hidden"
-                    />
-                  </div>
-                  <div className="text-center sm:text-left flex-1">
-                    <h1 className="text-3xl lg:text-4xl font-bold mb-2">
-                      {userProfile?.full_name || userProfile?.email?.split('@')[0] || 'Welcome'}
-                    </h1>
-                    <div className="flex flex-col sm:flex-row items-center gap-2 mb-4">
-                      <div className="flex items-center gap-2">
-                        <div className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          userProfile?.role === 'admin' ? 'bg-red-100 text-red-800' :
-                          userProfile?.role === 'vendor' ? 'bg-lime-100 text-lime-800' :
-                          'bg-blue-100 text-blue-800'
-                        }`}>
-                          <Shield className="h-3 w-3 inline mr-1" />
-                          {userProfile?.role}
-                        </div>
-                        {userProfile?.company_name && (
-                          <div className="px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-800">
-                            <Building className="h-3 w-3 inline mr-1" />
-                            {userProfile.company_name}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <p className="text-muted-foreground flex items-center justify-center sm:justify-start gap-2">
-                      <Mail className="h-4 w-4" />
-                      {userProfile?.email}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
 
-            {/* Profile Information Cards */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Personal Information */}
+        <Tabs defaultValue="profile" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="profile" className="flex items-center gap-2">
+              <User className="h-4 w-4" />
+              Profile
+            </TabsTrigger>
+            <TabsTrigger value="verification" className="flex items-center gap-2">
+              <FileText className="h-4 w-4" />
+              Verification
+            </TabsTrigger>
+            <TabsTrigger value="settings" className="flex items-center gap-2">
+              <Settings className="h-4 w-4" />
+              Settings
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="profile">
+            <div className="grid gap-6">
               <Card>
                 <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <User className="h-5 w-5 text-primary" />
-                    <CardTitle>Personal Information</CardTitle>
-                  </div>
+                  <CardTitle className="flex items-center gap-2">
+                    <User className="h-5 w-5" />
+                    Personal Information
+                  </CardTitle>
                   <CardDescription>
-                    Manage your personal details and preferences.
+                    Update your personal details and contact information
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="full_name">Full Name</Label>
+                      <Input
+                        id="full_name"
+                        value={formData.full_name}
+                        onChange={(e) =>
+                          setFormData((prev) => ({ ...prev, full_name: e.target.value }))
+                        }
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        value={userProfile.email}
+                        disabled
+                        className="bg-muted"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Phone</Label>
+                      <Input
+                        id="phone"
+                        value={formData.phone}
+                        onChange={(e) =>
+                          setFormData((prev) => ({ ...prev, phone: e.target.value }))
+                        }
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="role">Role</Label>
+                      <Input
+                        id="role"
+                        value={userProfile.role}
+                        disabled
+                        className="bg-muted"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="address">Address</Label>
+                    <Input
+                      id="address"
+                      value={formData.address}
+                      onChange={(e) =>
+                        setFormData((prev) => ({ ...prev, address: e.target.value }))
+                      }
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Building className="h-5 w-5" />
+                    Company Information
+                  </CardTitle>
+                  <CardDescription>
+                    Company details and business information
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="email">📧 Email</Label>
+                    <Label htmlFor="company_name">Company Name</Label>
                     <Input
-                      id="email"
-                      value={userProfile?.email || ''}
-                      disabled
-                      className="bg-muted"
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="full_name">👤 Full Name</Label>
-                    <Input
-                      id="full_name"
-                      value={isEditing ? formData.full_name : userProfile?.full_name || ''}
-                      onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                      disabled={!isEditing}
-                      className={!isEditing ? "bg-muted" : ""}
+                      id="company_name"
+                      value={formData.company_name}
+                      onChange={(e) =>
+                        setFormData((prev) => ({ ...prev, company_name: e.target.value }))
+                      }
                     />
                   </div>
 
-                  {userProfile?.role === 'vendor' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="bio">Company Description</Label>
+                    <Textarea
+                      id="bio"
+                      value={formData.bio}
+                      onChange={(e) =>
+                        setFormData((prev) => ({ ...prev, bio: e.target.value }))
+                      }
+                      placeholder="Describe your company and services..."
+                      rows={4}
+                    />
+                  </div>
+
+                  {userProfile.role === 'vendor' && (
                     <div className="space-y-2">
-                      <Label htmlFor="company_name">🏢 Company Name</Label>
+                      <Label htmlFor="portfolio_url">Portfolio URL</Label>
                       <Input
-                        id="company_name"
-                        value={isEditing ? formData.company_name : userProfile?.company_name || ''}
-                        onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
-                        disabled={!isEditing}
-                        className={!isEditing ? "bg-muted" : ""}
+                        id="portfolio_url"
+                        value={formData.portfolio_url}
+                        onChange={(e) =>
+                          setFormData((prev) => ({ ...prev, portfolio_url: e.target.value }))
+                        }
+                        placeholder="https://your-portfolio.com"
                       />
                     </div>
                   )}
-
-                  <div className="space-y-2">
-                    <Label htmlFor="role">🛡️ Role</Label>
-                    <Input
-                      id="role"
-                      value={userProfile?.role || ''}
-                      disabled
-                      className="bg-muted capitalize"
-                    />
-                  </div>
-
-                  <div className="flex gap-2 pt-4">
-                    {!isEditing ? (
-                      <Button onClick={() => setIsEditing(true)} className="w-full">
-                        ✏️ Edit Profile
-                      </Button>
-                    ) : (
-                      <>
-                        <Button onClick={handleSave} className="flex-1">
-                          💾 Save Changes
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          onClick={() => {
-                            setIsEditing(false);
-                            setFormData({
-                              full_name: userProfile?.full_name || '',
-                              company_name: userProfile?.company_name || ''
-                            });
-                          }}
-                          className="flex-1"
-                        >
-                          ❌ Cancel
-                        </Button>
-                      </>
-                    )}
-                  </div>
                 </CardContent>
               </Card>
 
-              {/* Security Settings */}
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <Key className="h-5 w-5 text-primary" />
-                    <CardTitle>Security Settings</CardTitle>
-                  </div>
-                  <CardDescription>
-                    Manage your account security and password.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="p-4 border rounded-lg bg-muted/50">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                        <Key className="h-4 w-4 text-green-600" />
-                      </div>
-                      <div>
-                        <p className="font-medium">Password Protection</p>
-                        <p className="text-sm text-muted-foreground">Your account is secured with a password</p>
-                      </div>
+              <div className="flex justify-end">
+                <Button onClick={handleSave} disabled={loading}>
+                  {loading ? "Saving..." : "Save Changes"}
+                </Button>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="verification">
+            <div className="space-y-6">
+              <VerificationStatus />
+              
+              {(userProfile.verification_status === 'pending' || 
+                userProfile.verification_status === 'rejected') && 
+                userProfile.role === 'client' && (
+                <CRDocumentUpload
+                  onUploadSuccess={() => window.location.reload()}
+                  isRequired={true}
+                />
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="settings">
+            <Card>
+              <CardHeader>
+                <CardTitle>Account Settings</CardTitle>
+                <CardDescription>
+                  Manage your account preferences and security settings
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label>Account Status</Label>
+                    <div className="flex items-center gap-2 mt-1">
+                      <Badge variant={userProfile.status === 'approved' ? 'default' : 'secondary'}>
+                        {userProfile.status}
+                      </Badge>
                     </div>
                   </div>
+                  
+                  <div>
+                    <Label>Subscription Plan</Label>
+                    <div className="flex items-center gap-2 mt-1">
+                      <Badge variant="outline">
+                        {userProfile.subscription_plan}
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
 
-                  <Dialog open={isChangingPassword} onOpenChange={setIsChangingPassword}>
-                    <DialogTrigger asChild>
-                      <Button variant="outline" className="w-full">
-                        🔐 Change Password
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Change Password</DialogTitle>
-                        <DialogDescription>
-                          Enter your new password below. Make sure it's at least 6 characters long.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="newPassword">New Password</Label>
-                          <Input
-                            id="newPassword"
-                            type="password"
-                            value={passwordData.newPassword}
-                            onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="confirmPassword">Confirm Password</Label>
-                          <Input
-                            id="confirmPassword"
-                            type="password"
-                            value={passwordData.confirmPassword}
-                            onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
-                          />
-                        </div>
-                        <div className="flex gap-2 pt-4">
-                          <Button onClick={handlePasswordChange} className="flex-1">
-                            Update Password
-                          </Button>
-                          <Button 
-                            variant="outline" 
-                            onClick={() => {
-                              setIsChangingPassword(false);
-                              setPasswordData({
-                                currentPassword: '',
-                                newPassword: '',
-                                confirmPassword: ''
-                              });
-                            }}
-                            className="flex-1"
-                          >
-                            Cancel
-                          </Button>
-                        </div>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </main>
+                <div>
+                  <Label>Member Since</Label>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {new Date(userProfile.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
-
-      {/* Footer */}
-      <Footer />
-    </div>
+    </DashboardLayout>
   );
 };
+
+export default Profile;
