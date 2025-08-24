@@ -28,7 +28,7 @@ const LANDING_ROUTES = [
   '/',
   '/landing',
   '/pricing',
-  '/suppliers',
+  '/vendors',
   '/why-start-with-mwrd',
   '/why-move-to-mwrd',
   '/privacy-policy',
@@ -39,7 +39,7 @@ const LANDING_ROUTES = [
 // Routes that are considered dashboard routes (can use dark mode)
 const DASHBOARD_ROUTES = [
   '/dashboard',
-  '/supplier-dashboard',
+  '/vendor-dashboard',
   '/admin',
   '/profile',
   '/settings',
