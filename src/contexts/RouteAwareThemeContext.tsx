@@ -55,7 +55,7 @@ const DASHBOARD_ROUTES = [
 
 export const RouteAwareThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
-  const [storedTheme, setStoredTheme] = useLocalStorage<Theme>('theme', 'system');
+  const [storedTheme, setStoredTheme] = useLocalStorage<Theme>('theme', 'light');
   const [theme, setTheme] = useState<Theme>(storedTheme);
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
 
@@ -81,7 +81,12 @@ export const RouteAwareThemeProvider: React.FC<{ children: React.ReactNode }> = 
       // For dashboard routes, respect user's theme preference
       if (isDashboardRoute) {
         if (theme === 'system') {
-          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          try {
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          } catch (error) {
+            console.warn('Unable to detect system theme preference:', error);
+            return 'light';
+          }
         }
         return theme as 'light' | 'dark';
       }
@@ -90,26 +95,44 @@ export const RouteAwareThemeProvider: React.FC<{ children: React.ReactNode }> = 
       return 'light';
     };
 
-    const resolved = getResolvedTheme();
-    setResolvedTheme(resolved);
+    try {
+      const resolved = getResolvedTheme();
+      setResolvedTheme(resolved);
 
-    root.classList.remove('light', 'dark');
-    root.classList.add(resolved);
+      // Apply theme classes safely
+      root.classList.remove('light', 'dark');
+      root.classList.add(resolved);
 
-    // Listen for system theme changes only for dashboard routes with system theme
-    if (isDashboardRoute && theme === 'system' && !forceLightMode) {
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      const handleChange = () => {
-        const newResolved = getResolvedTheme();
-        setResolvedTheme(newResolved);
-        root.classList.remove('light', 'dark');
-        root.classList.add(newResolved);
-      };
-      
-      mediaQuery.addEventListener('change', handleChange);
-      return () => mediaQuery.removeEventListener('change', handleChange);
+      // Set a data attribute as fallback
+      root.setAttribute('data-theme', resolved);
+
+      // Listen for system theme changes only for dashboard routes with system theme
+      if (isDashboardRoute && theme === 'system' && !forceLightMode) {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const handleChange = () => {
+          try {
+            const newResolved = getResolvedTheme();
+            setResolvedTheme(newResolved);
+            root.classList.remove('light', 'dark');
+            root.classList.add(newResolved);
+            root.setAttribute('data-theme', newResolved);
+          } catch (error) {
+            console.warn('Error handling theme change:', error);
+          }
+        };
+        
+        mediaQuery.addEventListener('change', handleChange);
+        return () => mediaQuery.removeEventListener('change', handleChange);
+      }
+    } catch (error) {
+      console.warn('Error applying theme:', error);
+      // Fallback to light theme
+      root.classList.remove('light', 'dark');
+      root.classList.add('light');
+      root.setAttribute('data-theme', 'light');
+      setResolvedTheme('light');
     }
-  }, [theme, isDashboardRoute, forceLightMode]);
+  }, [theme, isDashboardRoute, forceLightMode, location.pathname]);
 
   const handleSetTheme = (newTheme: Theme) => {
     // Only allow theme changes on dashboard routes
