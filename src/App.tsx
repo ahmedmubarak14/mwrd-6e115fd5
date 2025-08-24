@@ -1,4 +1,5 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -71,14 +72,14 @@ const queryClient = new QueryClient({
   },
 });
 
-// Create a wrapper component that includes the RouteAwareThemeProvider
-const AppContent = () => {
+// Root layout component that wraps all routes
+const RootLayout = () => {
   return (
     <RouteAwareThemeProvider>
       <TooltipProvider>
         <div className="App">
           <AuthRedirect />
-          <RouterProvider router={router} />
+          <Outlet />
           <Toaster />
         </div>
       </TooltipProvider>
@@ -89,324 +90,330 @@ const AppContent = () => {
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Index />,
-  },
-  {
-    path: '/landing',
-    element: <Landing />,
-  },
-  {
-    path: '/auth',
-    element: <Auth />,
-  },
-  {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/register',
-    element: <Register />,
-  },
-  {
-    path: '/dashboard',
-    element: (
-      <ProtectedRoute>
-        <Dashboard />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/requests',
-    element: (
-      <ProtectedRoute>
-        <Requests />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/requests/create',
-    element: (
-      <ProtectedRoute>
-        <CreateRequest />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/browse-requests',
-    element: <BrowseRequests />,
-  },
-  {
-    path: '/offers',
-    element: (
-      <ProtectedRoute>
-        <Offers />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/my-offers',
-    element: (
-      <ProtectedRoute>
-        <MyOffers />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/enhanced-messages',
-    element: (
-      <ProtectedRoute>
-        <EnhancedMessages />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/messages',
-    element: (
-      <ProtectedRoute>
-        <EnhancedMessages />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/profile',
-    element: (
-      <ProtectedRoute>
-        <Profile />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/settings',
-    element: (
-      <ProtectedRoute>
-        <Settings />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/vendors',
-    element: <Vendors />,
-  },
-  {
-    path: '/projects',
-    element: (
-      <ProtectedRoute>
-        <Projects />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/projects/create',
-    element: (
-      <ProtectedRoute>
-        <CreateProject />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/projects/:id/edit',
-    element: (
-      <ProtectedRoute>
-        <EditProject />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/projects/:id',
-    element: (
-      <ProtectedRoute>
-        <ProjectDetails />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/orders',
-    element: (
-      <ProtectedRoute>
-        <Orders />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/analytics',
-    element: (
-      <ProtectedRoute>
-        <Analytics />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/support',
-    element: (
-      <ProtectedRoute>
-        <Support />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/activity-feed',
-    element: (
-      <ProtectedRoute>
-        <ActivityFeed />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/payment-success',
-    element: (
-      <ProtectedRoute>
-        <PaymentSuccess />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/manage-subscription',
-    element: (
-      <ProtectedRoute>
-        <ManageSubscription />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/procurement-requests',
-    element: (
-      <ProtectedRoute>
-        <ProcurementRequests />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/procurement-requests/create',
-    element: (
-      <ProtectedRoute>
-        <CreateProcurementRequest />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/expert-consultation',
-    element: (
-      <ProtectedRoute>
-        <ExpertConsultation />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: '/pricing',
-    element: <Pricing />,
-  },
-  {
-    path: '/why-start-with-mwrd',
-    element: <WhyStartWithMWRD />,
-  },
-  {
-    path: '/what-makes-us-unique',
-    element: <WhatMakesUsUnique />,
-  },
-  {
-    path: '/why-move-to-mwrd',
-    element: <WhyMoveToMWRD />,
-  },
-  {
-    path: '/terms-and-conditions',
-    element: <TermsAndConditions />,
-  },
-  {
-    path: '/privacy-policy',
-    element: <PrivacyPolicy />,
-  },
-  // Admin routes
-  {
-    path: '/admin',
-    element: (
-      <RoleProtectedRoute allowed={['admin']}>
-        <AdminDashboardOverview />
-      </RoleProtectedRoute>
-    ),
-  },
-  {
-    path: '/admin/users',
-    element: (
-      <RoleProtectedRoute allowed={['admin']}>
-        <AdminUsers />
-      </RoleProtectedRoute>
-    ),
-  },
-  {
-    path: '/admin/requests',
-    element: (
-      <RoleProtectedRoute allowed={['admin']}>
-        <AdminRequests />
-      </RoleProtectedRoute>
-    ),
-  },
-  {
-    path: '/admin/offers',
-    element: (
-      <RoleProtectedRoute allowed={['admin']}>
-        <AdminOffers />
-      </RoleProtectedRoute>
-    ),
-  },
-  {
-    path: '/admin/projects',
-    element: (
-      <RoleProtectedRoute allowed={['admin']}>
-        <AdminProjects />
-      </RoleProtectedRoute>
-    ),
-  },
-  {
-    path: '/admin/analytics',
-    element: (
-      <RoleProtectedRoute allowed={['admin']}>
-        <Analytics />
-      </RoleProtectedRoute>
-    ),
-  },
-  {
-    path: '/admin/requests-approval',
-    element: (
-      <RoleProtectedRoute allowed={['admin']}>
-        <RequestsApproval />
-      </RoleProtectedRoute>
-    ),
-  },
-  {
-    path: '/admin/offers-management',
-    element: (
-      <RoleProtectedRoute allowed={['admin']}>
-        <OffersManagement />
-      </RoleProtectedRoute>
-    ),
-  },
-  {
-    path: '/admin/category-management',
-    element: (
-      <RoleProtectedRoute allowed={['admin']}>
-        <CategoryManagement />
-      </RoleProtectedRoute>
-    ),
-  },
-  {
-    path: '/admin/expert-consultations',
-    element: (
-      <RoleProtectedRoute allowed={['admin']}>
-        <ExpertConsultations />
-      </RoleProtectedRoute>
-    ),
-  },
-  {
-    path: '/admin/financial-transactions',
-    element: (
-      <RoleProtectedRoute allowed={['admin']}>
-        <FinancialTransactions />
-      </RoleProtectedRoute>
-    ),
-  },
-  {
-    path: '*',
-    element: <NotFound />,
+    element: <RootLayout />,
+    children: [
+      {
+        index: true,
+        element: <Index />,
+      },
+      {
+        path: 'landing',
+        element: <Landing />,
+      },
+      {
+        path: 'auth',
+        element: <Auth />,
+      },
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'register',
+        element: <Register />,
+      },
+      {
+        path: 'dashboard',
+        element: (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'requests',
+        element: (
+          <ProtectedRoute>
+            <Requests />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'requests/create',
+        element: (
+          <ProtectedRoute>
+            <CreateRequest />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'browse-requests',
+        element: <BrowseRequests />,
+      },
+      {
+        path: 'offers',
+        element: (
+          <ProtectedRoute>
+            <Offers />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'my-offers',
+        element: (
+          <ProtectedRoute>
+            <MyOffers />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'enhanced-messages',
+        element: (
+          <ProtectedRoute>
+            <EnhancedMessages />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'messages',
+        element: (
+          <ProtectedRoute>
+            <EnhancedMessages />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'profile',
+        element: (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'settings',
+        element: (
+          <ProtectedRoute>
+            <Settings />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'vendors',
+        element: <Vendors />,
+      },
+      {
+        path: 'projects',
+        element: (
+          <ProtectedRoute>
+            <Projects />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'projects/create',
+        element: (
+          <ProtectedRoute>
+            <CreateProject />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'projects/:id/edit',
+        element: (
+          <ProtectedRoute>
+            <EditProject />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'projects/:id',
+        element: (
+          <ProtectedRoute>
+            <ProjectDetails />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'orders',
+        element: (
+          <ProtectedRoute>
+            <Orders />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'analytics',
+        element: (
+          <ProtectedRoute>
+            <Analytics />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'support',
+        element: (
+          <ProtectedRoute>
+            <Support />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'activity-feed',
+        element: (
+          <ProtectedRoute>
+            <ActivityFeed />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'payment-success',
+        element: (
+          <ProtectedRoute>
+            <PaymentSuccess />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'manage-subscription',
+        element: (
+          <ProtectedRoute>
+            <ManageSubscription />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'procurement-requests',
+        element: (
+          <ProtectedRoute>
+            <ProcurementRequests />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'procurement-requests/create',
+        element: (
+          <ProtectedRoute>
+            <CreateProcurementRequest />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'expert-consultation',
+        element: (
+          <ProtectedRoute>
+            <ExpertConsultation />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'pricing',
+        element: <Pricing />,
+      },
+      {
+        path: 'why-start-with-mwrd',
+        element: <WhyStartWithMWRD />,
+      },
+      {
+        path: 'what-makes-us-unique',
+        element: <WhatMakesUsUnique />,
+      },
+      {
+        path: 'why-move-to-mwrd',
+        element: <WhyMoveToMWRD />,
+      },
+      {
+        path: 'terms-and-conditions',
+        element: <TermsAndConditions />,
+      },
+      {
+        path: 'privacy-policy',
+        element: <PrivacyPolicy />,
+      },
+      // Admin routes
+      {
+        path: 'admin',
+        element: (
+          <RoleProtectedRoute allowed={['admin']}>
+            <AdminDashboardOverview />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/users',
+        element: (
+          <RoleProtectedRoute allowed={['admin']}>
+            <AdminUsers />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/requests',
+        element: (
+          <RoleProtectedRoute allowed={['admin']}>
+            <AdminRequests />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/offers',
+        element: (
+          <RoleProtectedRoute allowed={['admin']}>
+            <AdminOffers />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/projects',
+        element: (
+          <RoleProtectedRoute allowed={['admin']}>
+            <AdminProjects />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/analytics',
+        element: (
+          <RoleProtectedRoute allowed={['admin']}>
+            <Analytics />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/requests-approval',
+        element: (
+          <RoleProtectedRoute allowed={['admin']}>
+            <RequestsApproval />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/offers-management',
+        element: (
+          <RoleProtectedRoute allowed={['admin']}>
+            <OffersManagement />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/category-management',
+        element: (
+          <RoleProtectedRoute allowed={['admin']}>
+            <CategoryManagement />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/expert-consultations',
+        element: (
+          <RoleProtectedRoute allowed={['admin']}>
+            <ExpertConsultations />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin/financial-transactions',
+        element: (
+          <RoleProtectedRoute allowed={['admin']}>
+            <FinancialTransactions />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: '*',
+        element: <NotFound />,
+      },
+    ],
   },
 ]);
 
@@ -416,7 +423,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <LanguageProvider>
-            <AppContent />
+            <RouterProvider router={router} />
           </LanguageProvider>
         </AuthProvider>
       </QueryClientProvider>
