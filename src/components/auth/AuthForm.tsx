@@ -14,6 +14,7 @@ import { UserProfile } from "@/types/database";
 import { CRDocumentUpload } from "@/components/verification/CRDocumentUpload";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle, Info } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface AuthFormProps {
   onAuthSuccess?: (user: UserProfile) => void;
@@ -120,16 +121,19 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
     setRegisteredUserId(null);
   };
 
+  // Client CR Upload Flow
   if (mode === 'signup' && registrationStep === 'verification' && formData.role === 'client') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
         <div className="w-full max-w-md space-y-6">
           <div className="text-center space-y-4">
-            <img 
-              src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
-              alt="MWRD Logo" 
-              className="h-16 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg"
-            />
+            <Link to="/" className="inline-block">
+              <img 
+                src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
+                alt="MWRD Logo" 
+                className="h-16 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg cursor-pointer"
+              />
+            </Link>
             <div>
               <h1 className="text-2xl font-bold text-white">Complete Your Registration</h1>
               <p className="text-white/80">Upload your Commercial Registration to activate your account</p>
@@ -186,11 +190,13 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-4">
-          <img 
-            src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
-            alt="MWRD Logo" 
-            className="h-16 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg"
-          />
+          <Link to="/" className="inline-block">
+            <img 
+              src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
+              alt="MWRD Logo" 
+              className="h-16 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg cursor-pointer"
+            />
+          </Link>
           <div>
             <h1 className="text-3xl font-bold text-white">Welcome to MWRD</h1>
             <p className="text-white/80">
