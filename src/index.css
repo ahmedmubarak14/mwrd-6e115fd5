@@ -70,7 +70,7 @@ All colors MUST be HSL.
     --lime-foreground: 195 49% 10%;      /* Dark text on lime */
     --destructive: 0 62.8% 30.6%;        /* Darker red */
     --destructive-foreground: 40 15% 91%; /* Light text on destructive */
-    --border: 195 25% 25%;               /* Dark border */
+    --border: 195 25% 25% / 0;           /* Transparent borders */
     --input: 195 35% 15%;                /* Dark input background */
     --ring: 324 96% 20%;                 /* Focus ring color */
     --radius: 0.75rem;
@@ -85,7 +85,7 @@ All colors MUST be HSL.
     --sidebar-primary-foreground: 40 15% 91%;
     --sidebar-accent: 195 100% 17%;
     --sidebar-accent-foreground: 40 15% 91%;
-    --sidebar-border: 40 15% 91% / 0.1;
+    --sidebar-border: 40 15% 91% / 0;
     --sidebar-ring: 324 96% 20%;
   }
 
@@ -109,7 +109,7 @@ All colors MUST be HSL.
     --lime-foreground: 195 49% 10%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 40 15% 91%;
-    --border: 195 25% 25%;
+    --border: 195 25% 25% / 0;
     --input: 195 35% 15%;
     --ring: 324 96% 20%;
 
@@ -119,14 +119,13 @@ All colors MUST be HSL.
     --sidebar-primary-foreground: 195 49% 10%;
     --sidebar-accent: 195 70% 25%;
     --sidebar-accent-foreground: 40 15% 91%;
-    --sidebar-border: 40 15% 91% / 0.1;
+    --sidebar-border: 40 15% 91% / 0;
     --sidebar-ring: 324 70% 35%;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -221,7 +220,6 @@ All colors MUST be HSL.
   .bg-glass {
     background: hsl(var(--background) / 0.8);
     backdrop-filter: blur(10px);
-    border: 1px solid hsl(var(--border) / 0.2);
   }
 
   @keyframes fade-in {

@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -53,7 +54,7 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
   };
 
   return (
-    <header className="h-20 sm:h-24 lg:h-28 border-b backdrop-blur-sm sticky top-0 z-50" style={{ background: 'var(--gradient-header)' }}>
+    <header className="h-20 sm:h-24 lg:h-28 backdrop-blur-sm sticky top-0 z-50 shadow-sm" style={{ background: 'var(--gradient-header)' }}>
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 h-full flex items-center justify-between">
         
         {/* Logo - positioned based on language */}
@@ -87,7 +88,7 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
               <input
                 type="text"
                 placeholder={t('dashboard.search')}
-                className="rtl-pl-4 rtl-pr-4 py-2 border border-white/20 rounded-lg w-80 bg-white/10 text-white placeholder:text-white/60 focus:bg-white/20 transition-colors rtl-text-left cursor-pointer"
+                className="rtl-pl-4 rtl-pr-4 py-2 rounded-lg w-80 bg-white/10 text-white placeholder:text-white/60 focus:bg-white/20 transition-colors rtl-text-left cursor-pointer shadow-sm"
                 readOnly
               />
             </div>

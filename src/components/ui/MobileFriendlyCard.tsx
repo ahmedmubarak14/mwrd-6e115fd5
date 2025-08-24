@@ -1,3 +1,4 @@
+
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import React from "react";
@@ -20,7 +21,7 @@ export const MobileFriendlyCard = ({
         touchOptimized && "active:scale-[0.98] hover:scale-[1.02] cursor-pointer",
         "p-4 sm:p-6 lg:p-8", // Progressive padding
         "rounded-xl sm:rounded-2xl", // Larger radius on mobile
-        "border-0 bg-card/70 backdrop-blur-sm",
+        "bg-card/70 backdrop-blur-sm shadow-sm",
         "hover:shadow-xl hover:bg-card/80",
         className
       )}
