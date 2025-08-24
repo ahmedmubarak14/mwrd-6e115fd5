@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
@@ -190,26 +189,26 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
       <div className="w-full max-w-md">
-        {/* Logo Section */}
-        <div className="text-center mb-8">
-          <Link to="/" className="inline-block">
-            <img 
-              src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
-              alt="MWRD Logo" 
-              className="h-20 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg cursor-pointer"
-            />
-          </Link>
-        </div>
-
-        {/* Welcome Text */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Welcome to MWRD</h1>
-          <p className="text-white/70 text-lg">Sign in to your account or create a new one</p>
-        </div>
-
         {/* Main Card */}
         <Card className="bg-white/10 border border-white/20 backdrop-blur-lg rounded-3xl shadow-2xl">
           <CardContent className="p-8">
+            {/* Logo Section - Inside Card */}
+            <div className="text-center mb-6">
+              <Link to="/" className="inline-block">
+                <img 
+                  src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
+                  alt="MWRD Logo" 
+                  className="h-16 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg cursor-pointer"
+                />
+              </Link>
+            </div>
+
+            {/* Welcome Text - Inside Card */}
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-white mb-2">Welcome to MWRD</h1>
+              <p className="text-white/70">Sign in to your account or create a new one</p>
+            </div>
+
             {/* Tab Selection */}
             <Tabs value={mode} onValueChange={(value) => setMode(value as 'signin' | 'signup')} className="mb-6">
               <TabsList className="grid w-full grid-cols-2 bg-white/20 rounded-2xl p-1 h-12">
