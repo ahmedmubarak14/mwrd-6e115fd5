@@ -1,3 +1,4 @@
+
 import "./App.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -15,7 +16,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import { EnhancedVendorDashboard } from "@/components/vendor/EnhancedVendorDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
-import AdminDashboard from "./pages/admin/AdminDashboard";
+import { AdminLayout } from "./components/admin/AdminLayout";
 import { AdminDashboardOverview } from "./pages/admin/AdminDashboardOverview";
 import AdminRequests from "./pages/admin/AdminRequests";
 import AdminOffers from "./pages/admin/AdminOffers";
@@ -376,95 +377,27 @@ function App() {
                       }
                     />
 
-                    {/* Admin Routes */}
+                    {/* Admin Routes - All using AdminLayout */}
                     <Route
                       path="/admin"
                       element={
                         <RoleProtectedRoute allowed={['admin']}>
-                          <AdminDashboard />
+                          <AdminLayout />
                         </RoleProtectedRoute>
                       }
-                    />
-                    <Route
-                      path="/admin/dashboard"
-                      element={
-                        <RoleProtectedRoute allowed={['admin']}>
-                          <AdminDashboardOverview />
-                        </RoleProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin/users"
-                      element={
-                        <RoleProtectedRoute allowed={['admin']}>
-                          <AdminUsers />
-                        </RoleProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin/requests"
-                      element={
-                        <RoleProtectedRoute allowed={['admin']}>
-                          <AdminRequests />
-                        </RoleProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin/offers"
-                      element={
-                        <RoleProtectedRoute allowed={['admin']}>
-                          <AdminOffers />
-                        </RoleProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin/projects"
-                      element={
-                        <RoleProtectedRoute allowed={['admin']}>
-                          <AdminProjects />
-                        </RoleProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin/categories"
-                      element={
-                        <RoleProtectedRoute allowed={['admin']}>
-                          <CategoryManagement />
-                        </RoleProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin/offers-management"
-                      element={
-                        <RoleProtectedRoute allowed={['admin']}>
-                          <OffersManagement />
-                        </RoleProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin/requests-approval"
-                      element={
-                        <RoleProtectedRoute allowed={['admin']}>
-                          <RequestsApproval />
-                        </RoleProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin/financial-transactions"
-                      element={
-                        <RoleProtectedRoute allowed={['admin']}>
-                          <FinancialTransactions />
-                        </RoleProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin/expert-consultations"
-                      element={
-                        <RoleProtectedRoute allowed={['admin']}>
-                          <ExpertConsultations />
-                        </RoleProtectedRoute>
-                      }
-                    />
+                    >
+                      <Route index element={<AdminDashboardOverview />} />
+                      <Route path="dashboard" element={<AdminDashboardOverview />} />
+                      <Route path="users" element={<AdminUsers />} />
+                      <Route path="requests" element={<AdminRequests />} />
+                      <Route path="offers" element={<AdminOffers />} />
+                      <Route path="projects" element={<AdminProjects />} />
+                      <Route path="categories" element={<CategoryManagement />} />
+                      <Route path="offers-management" element={<OffersManagement />} />
+                      <Route path="requests-approval" element={<RequestsApproval />} />
+                      <Route path="financial-transactions" element={<FinancialTransactions />} />
+                      <Route path="expert-consultations" element={<ExpertConsultations />} />
+                    </Route>
 
                     {/* 404 Route */}
                     <Route path="*" element={<NotFound />} />

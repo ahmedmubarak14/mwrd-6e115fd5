@@ -1,6 +1,6 @@
+
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { ProcurementClientDashboard } from "@/components/Dashboard/ProcurementClientDashboard";
-import { AdminDashboard } from "@/pages/AdminDashboard";
 import { useAuth } from "@/contexts/AuthContext";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -14,14 +14,29 @@ const Dashboard = () => {
   const { userProfile, loading } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect vendors to their dedicated dashboard
+  // Redirect based on user role
   useEffect(() => {
-    if (!loading && userProfile?.role === 'vendor') {
-      navigate('/vendor-dashboard');
+    if (!loading && userProfile) {
+      if (userProfile.role === 'vendor') {
+        navigate('/vendor-dashboard');
+      } else if (userProfile.role === 'admin') {
+        navigate('/admin/dashboard');
+      }
     }
   }, [loading, userProfile, navigate]);
 
   if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="flex justify-center items-center min-h-[400px]">
+          <LoadingSpinner size="lg" />
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  // Only render for client users
+  if (userProfile?.role !== 'client') {
     return (
       <DashboardLayout>
         <div className="flex justify-center items-center min-h-[400px]">
@@ -105,19 +120,10 @@ const Dashboard = () => {
     );
   };
 
-  const renderDashboard = () => {
-    switch (userProfile?.role) {
-      case 'admin':
-        return <AdminDashboard />;
-      default:
-        return <ProcurementClientDashboard />;
-    }
-  };
-
   return (
     <DashboardLayout>
       {renderVerificationBanner()}
-      {renderDashboard()}
+      <ProcurementClientDashboard />
     </DashboardLayout>
   );
 };
