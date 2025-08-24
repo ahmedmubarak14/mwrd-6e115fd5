@@ -1,41 +1,30 @@
-
-import { useEffect } from "react";
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Auth = () => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    document.title = "Sign in | MWRD";
-    const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute("content", "Sign in to MWRD to manage users, requests, and offers.");
-    } else {
-      const m = document.createElement("meta");
-      m.name = "description";
-      m.content = "Sign in to MWRD to manage users, requests, and offers.";
-      document.head.appendChild(m);
-    }
-    const link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
-    if (link) {
-      link.href = `${window.location.origin}/auth`;
-    } else {
-      const l = document.createElement("link");
-      l.rel = "canonical";
-      l.href = `${window.location.origin}/auth`;
-      document.head.appendChild(l);
-    }
-  }, []);
+  const { t } = useLanguage();
 
   return (
-    <AuthForm
-      onAuthSuccess={(u) => {
-        if (u.role === "admin") navigate("/admin");
-        else if (u.role === "vendor") navigate("/vendor-dashboard");
-        else navigate("/dashboard");
-      }}
-    />
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <Card className="w-full max-w-md mx-4">
+        <CardHeader>
+          <CardTitle className="text-2xl text-center">{t('auth.welcome')}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <AuthForm
+            onAuthSuccess={(u) => {
+              if (u.role === "admin") navigate("/admin/dashboard");
+              else if (u.role === "vendor") navigate("/vendor-dashboard");
+              else navigate("/dashboard");
+            }}
+          />
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
