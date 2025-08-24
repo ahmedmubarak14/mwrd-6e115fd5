@@ -1,3 +1,4 @@
+
 import "./App.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -42,10 +43,10 @@ import EditProject from "./pages/EditProject";
 import ProjectDetails from "./pages/ProjectDetails";
 import Suppliers from "./pages/Suppliers";
 import Vendors from "./pages/Vendors";
-import Analytics from "./pages/Analytics";
+import { Analytics } from "./pages/Analytics";
 import ActivityFeed from "./pages/ActivityFeed";
 import { ExpertConsultation } from "./pages/ExpertConsultation";
-import Support from "./pages/Support";
+import { Support } from "./pages/Support";
 import { Pricing } from "./pages/Pricing";
 import { ManageSubscription } from "./pages/ManageSubscription";
 import PaymentSuccess from "./pages/PaymentSuccess";
