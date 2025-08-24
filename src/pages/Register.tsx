@@ -1,6 +1,6 @@
 
 import { useEffect } from "react";
-import { AuthForm } from "@/components/auth/AuthForm";
+import { EnhancedAuthForm } from "@/components/auth/EnhancedAuthForm";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -11,11 +11,15 @@ const Register = () => {
   }, []);
 
   return (
-    <AuthForm
-      onAuthSuccess={(u) => {
-        if (u.role === "admin") navigate("/admin");
-        else if (u.role === "vendor") navigate("/supplier-dashboard");
-        else navigate("/dashboard");
+    <EnhancedAuthForm
+      onAuthSuccess={(user) => {
+        if (user.role === "admin") {
+          navigate("/admin");
+        } else if (user.role === "vendor") {
+          navigate("/supplier-dashboard");
+        } else {
+          navigate("/dashboard");
+        }
       }}
     />
   );
