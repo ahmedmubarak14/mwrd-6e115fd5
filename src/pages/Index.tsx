@@ -20,6 +20,7 @@ const Index = () => {
     <MobileContainer 
       pageType="landing"
       dir={isRTL ? 'rtl' : 'ltr'}
+      className="h-screen"
     >
       <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
       
@@ -27,19 +28,19 @@ const Index = () => {
       <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
         <SheetContent 
           side={isRTL ? "right" : "left"} 
-          className="p-0 w-80 bg-unified-page border-none"
+          className="p-0 w-80 bg-unified-page"
         >
           <Sidebar userRole={userProfile?.role || 'client'} userProfile={userProfile} />
         </SheetContent>
       </Sheet>
 
-      <div className="flex flex-1 min-h-0">
+      <div className="flex flex-1 min-h-0 h-full">
         {/* Desktop Sidebar - position based on language */}
         <div className="hidden lg:block">
           <Sidebar userRole={userProfile?.role || 'client'} userProfile={userProfile} />
         </div>
         
-        <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-auto min-w-0">
+        <main className="flex-1 overflow-auto min-w-0 h-full">
           <ProcurementClientDashboard />
         </main>
       </div>

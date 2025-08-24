@@ -31,9 +31,9 @@ export const MobileContainer = ({
   return (
     <div 
       className={cn(
-        "min-h-screen w-full",
+        "min-h-screen w-full h-full",
         getBackgroundClass(),
-        withBottomPadding && "pb-20 md:pb-0", // Add padding for mobile bottom tabs
+        withBottomPadding && "pb-20 md:pb-0",
         "safe-area-pt safe-area-pb",
         className
       )}

@@ -19,8 +19,8 @@ export const MobileFriendlyCard = ({
       className={cn(
         "transition-all duration-200",
         touchOptimized && "active:scale-[0.98] hover:scale-[1.02] cursor-pointer",
-        "p-4 sm:p-6 lg:p-8", // Progressive padding
-        "rounded-xl sm:rounded-2xl", // Larger radius on mobile
+        "p-4 sm:p-6 lg:p-8",
+        "rounded-xl sm:rounded-2xl",
         "bg-card/70 backdrop-blur-sm shadow-sm",
         "hover:shadow-xl hover:bg-card/80",
         className

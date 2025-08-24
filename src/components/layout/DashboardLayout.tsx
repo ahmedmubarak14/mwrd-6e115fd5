@@ -32,7 +32,7 @@ export const DashboardLayout = ({ children, className }: DashboardLayoutProps) =
         <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
           <SheetContent 
             side={isRTL ? "right" : "left"} 
-            className="p-0 w-80 bg-unified-page border-none"
+            className="p-0 w-80 bg-unified-page"
           >
             <Sidebar 
               userRole={userProfile?.role as 'client' | 'vendor' | 'admin'}
@@ -50,7 +50,7 @@ export const DashboardLayout = ({ children, className }: DashboardLayoutProps) =
         </div>
 
         {/* Main Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto min-w-0">
+        <main className="flex-1 overflow-auto min-w-0">
           {children}
         </main>
       </div>

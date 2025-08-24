@@ -54,8 +54,8 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
   };
 
   return (
-    <header className="h-20 sm:h-24 lg:h-28 backdrop-blur-sm sticky top-0 z-50 shadow-sm" style={{ background: 'var(--gradient-header)' }}>
-      <div className="container mx-auto px-3 sm:px-4 lg:px-6 h-full flex items-center justify-between">
+    <header className="h-20 sm:h-24 lg:h-28 backdrop-blur-sm sticky top-0 z-50 shadow-sm w-full" style={{ background: 'var(--gradient-header)' }}>
+      <div className="w-full px-3 sm:px-4 lg:px-6 h-full flex items-center justify-between">
         
         {/* Logo - positioned based on language */}
         <div className="rtl-order-1 flex items-center gap-2 sm:gap-4">

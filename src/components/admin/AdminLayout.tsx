@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -48,14 +49,14 @@ export const AdminLayout = () => {
   return (
     <SidebarProvider defaultOpen={sidebarOpen} onOpenChange={setSidebarOpen}>
       <div 
-        className="min-h-screen flex w-full" 
+        className="min-h-screen flex w-full h-screen" 
         dir={localStorage.getItem('language') === 'ar' ? 'rtl' : 'ltr'} 
         style={{ background: 'var(--gradient-subtle)' }}
       >
         <AdminSidebar collapsed={false} />
-        <div className="flex-1 flex flex-col min-w-0">
+        <div className="flex-1 flex flex-col min-w-0 h-full">
           <AdminHeader />
-          <main className="flex-1 p-6 overflow-auto bg-gradient-subtle">
+          <main className="flex-1 overflow-auto bg-gradient-subtle">
             <Outlet />
           </main>
         </div>
