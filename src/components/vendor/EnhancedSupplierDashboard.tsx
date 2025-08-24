@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Header } from "@/components/ui/layout/Header";
 import { Sidebar } from "@/components/ui/layout/Sidebar";
@@ -15,7 +14,7 @@ import { useMatchingSystem } from "@/hooks/useMatchingSystem";
 import { useOffers } from "@/hooks/useOffers";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Footer } from "@/components/ui/layout/Footer";
-import { VendorVerificationStatus } from './VendorVerificationStatus';
+import { UnifiedVerificationStatus } from '@/components/verification/UnifiedVerificationStatus';
 import { VerificationGuard } from '@/components/verification/VerificationGuard';
 
 export const EnhancedSupplierDashboard = () => {
@@ -98,7 +97,7 @@ export const EnhancedSupplierDashboard = () => {
             </div>
 
             {/* Verification Status */}
-            <VendorVerificationStatus />
+            <UnifiedVerificationStatus showActions={true} showAccessLevels={true} />
 
             {/* Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
