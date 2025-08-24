@@ -9,7 +9,7 @@ import { RouteAwareThemeProvider } from '@/contexts/RouteAwareThemeContext';
 import { CallNotificationProvider } from '@/components/conversations/CallNotificationProvider';
 import { ProtectedRoute } from '@/components/routing/ProtectedRoute';
 import { RoleProtectedRoute } from '@/components/routing/RoleProtectedRoute';
-import { PublicRoute } from '@/components/PublicRoute';
+import PublicRoute from '@/components/PublicRoute';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 // Page imports using named imports
@@ -111,17 +111,17 @@ const RootLayout = () => {
           <Route path="/payment-success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
 
           {/* Admin routes */}
-          <Route path="/admin" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminDashboard /></RoleProtectedRoute>} />
-          <Route path="/admin/dashboard" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminDashboardPage /></RoleProtectedRoute>} />
-          <Route path="/admin/users" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminUsers /></RoleProtectedRoute>} />
-          <Route path="/admin/requests" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminRequests /></RoleProtectedRoute>} />
-          <Route path="/admin/offers" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminOffers /></RoleProtectedRoute>} />
-          <Route path="/admin/projects" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminProjects /></RoleProtectedRoute>} />
-          <Route path="/admin/categories" element={<RoleProtectedRoute allowedRoles={['admin']}><CategoryManagement /></RoleProtectedRoute>} />
-          <Route path="/admin/requests-approval" element={<RoleProtectedRoute allowedRoles={['admin']}><RequestsApproval /></RoleProtectedRoute>} />
-          <Route path="/admin/offers-management" element={<RoleProtectedRoute allowedRoles={['admin']}><OffersManagement /></RoleProtectedRoute>} />
-          <Route path="/admin/expert-consultations" element={<RoleProtectedRoute allowedRoles={['admin']}><ExpertConsultations /></RoleProtectedRoute>} />
-          <Route path="/admin/financial-transactions" element={<RoleProtectedRoute allowedRoles={['admin']}><FinancialTransactions /></RoleProtectedRoute>} />
+          <Route path="/admin" element={<RoleProtectedRoute><AdminDashboard /></RoleProtectedRoute>} />
+          <Route path="/admin/dashboard" element={<RoleProtectedRoute><AdminDashboardPage /></RoleProtectedRoute>} />
+          <Route path="/admin/users" element={<RoleProtectedRoute><AdminUsers /></RoleProtectedRoute>} />
+          <Route path="/admin/requests" element={<RoleProtectedRoute><AdminRequests /></RoleProtectedRoute>} />
+          <Route path="/admin/offers" element={<RoleProtectedRoute><AdminOffers /></RoleProtectedRoute>} />
+          <Route path="/admin/projects" element={<RoleProtectedRoute><AdminProjects /></RoleProtectedRoute>} />
+          <Route path="/admin/categories" element={<RoleProtectedRoute><CategoryManagement /></RoleProtectedRoute>} />
+          <Route path="/admin/requests-approval" element={<RoleProtectedRoute><RequestsApproval /></RoleProtectedRoute>} />
+          <Route path="/admin/offers-management" element={<RoleProtectedRoute><OffersManagement /></RoleProtectedRoute>} />
+          <Route path="/admin/expert-consultations" element={<RoleProtectedRoute><ExpertConsultations /></RoleProtectedRoute>} />
+          <Route path="/admin/financial-transactions" element={<RoleProtectedRoute><FinancialTransactions /></RoleProtectedRoute>} />
 
           {/* Fallback route */}
           <Route path="*" element={<NotFound />} />
