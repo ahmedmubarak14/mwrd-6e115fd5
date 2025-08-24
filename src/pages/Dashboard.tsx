@@ -1,4 +1,3 @@
-
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { ProcurementClientDashboard } from "@/components/Dashboard/ProcurementClientDashboard";
 import { AdminDashboard } from "@/pages/AdminDashboard";
@@ -18,7 +17,7 @@ const Dashboard = () => {
   // Redirect vendors to their dedicated dashboard
   useEffect(() => {
     if (!loading && userProfile?.role === 'vendor') {
-      navigate('/supplier-dashboard');
+      navigate('/vendor-dashboard');
     }
   }, [loading, userProfile, navigate]);
 
