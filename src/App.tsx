@@ -9,45 +9,45 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { RouteAwareThemeProvider } from "@/contexts/RouteAwareThemeContext";
 import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
-import { Index } from "@/pages/Index";
+import Index from "@/pages/Index";
 import { Landing } from "@/pages/Landing";
-import { Auth } from "@/pages/Auth";
-import { ResetPassword } from "@/pages/ResetPassword";
-import { Dashboard } from "@/pages/Dashboard";
+import Auth from "@/pages/Auth";
+import ResetPassword from "@/pages/ResetPassword";
+import Dashboard from "@/pages/Dashboard";
 import { SupplierDashboard } from "@/pages/SupplierDashboard";
 import { BrowseRequests } from "@/pages/BrowseRequests";
 import { MyOffers } from "@/pages/MyOffers";
-import { Requests } from "@/pages/Requests";
+import Requests from "@/pages/Requests";
 import { Profile } from "@/pages/Profile";
 import { Settings } from "@/pages/Settings";
-import { Suppliers } from "@/pages/Suppliers";
-import { Vendors } from "@/pages/Vendors";
-import { Projects } from "@/pages/Projects";
+import Suppliers from "@/pages/Suppliers";
+import Vendors from "@/pages/Vendors";
+import Projects from "@/pages/Projects";
 import { Orders } from "@/pages/Orders";
 import { Analytics } from "@/pages/Analytics";
 import { Support } from "@/pages/Support";
-import { EnhancedMessages } from "@/pages/EnhancedMessages";
-import { ProcurementRequests } from "@/pages/ProcurementRequests";
+import EnhancedMessages from "@/pages/EnhancedMessages";
+import ProcurementRequests from "@/pages/ProcurementRequests";
 import { ProcurementSupplierDashboard } from "@/pages/ProcurementSupplierDashboard";
 import { ExpertConsultation } from "@/pages/ExpertConsultation";
 import { Pricing } from "@/pages/Pricing";
-import { PaymentSuccess } from "@/pages/PaymentSuccess";
+import PaymentSuccess from "@/pages/PaymentSuccess";
 import { ManageSubscription } from "@/pages/ManageSubscription";
 import { WhyStartWithMWRD } from "@/pages/WhyStartWithMWRD";
 import { WhyMoveToMWRD } from "@/pages/WhyMoveToMWRD";
 import { WhatMakesUsUnique } from "@/pages/WhatMakesUsUnique";
 import { TermsAndConditions } from "@/pages/TermsAndConditions";
 import { PrivacyPolicy } from "@/pages/PrivacyPolicy";
-import { NotFound } from "@/pages/NotFound";
+import NotFound from "@/pages/NotFound";
 import { ProtectedRoute } from "@/components/routing/ProtectedRoute";
 import { RoleProtectedRoute } from "@/components/routing/RoleProtectedRoute";
 import { AuthRedirect } from "@/components/routing/AuthRedirect";
 import { AdminDashboard } from "@/pages/AdminDashboard";
 import { AdminUsers } from "@/pages/admin/AdminUsers";
-import { CategoryManagement } from "@/pages/admin/CategoryManagement";
+import CategoryManagement from "@/pages/admin/CategoryManagement";
 import { RequestsApproval } from "@/pages/admin/RequestsApproval";
 import { OffersManagement } from "@/pages/admin/OffersManagement";
-import { FinancialTransactions } from "@/pages/admin/FinancialTransactions";
+import FinancialTransactions from "@/pages/admin/FinancialTransactions";
 import { ExpertConsultations } from "@/pages/admin/ExpertConsultations";
 import { AdminDashboardOverview } from "@/pages/admin/AdminDashboardOverview";
 
@@ -90,7 +90,7 @@ function App() {
                     
                     <Route path="/supplier-dashboard" element={
                       <ProtectedRoute>
-                        <RoleProtectedRoute allowedRoles={['supplier']}>
+                        <RoleProtectedRoute allowed={['vendor']}>
                           <SupplierDashboard />
                         </RoleProtectedRoute>
                       </ProtectedRoute>
@@ -176,7 +176,7 @@ function App() {
                     
                     <Route path="/procurement-supplier-dashboard" element={
                       <ProtectedRoute>
-                        <RoleProtectedRoute allowedRoles={['supplier']}>
+                        <RoleProtectedRoute allowed={['vendor']}>
                           <ProcurementSupplierDashboard />
                         </RoleProtectedRoute>
                       </ProtectedRoute>
@@ -209,7 +209,7 @@ function App() {
                     {/* Admin Routes */}
                     <Route path="/admin" element={
                       <ProtectedRoute>
-                        <RoleProtectedRoute allowedRoles={['admin']}>
+                        <RoleProtectedRoute allowed={['admin']}>
                           <AdminDashboard />
                         </RoleProtectedRoute>
                       </ProtectedRoute>
