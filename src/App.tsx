@@ -1,4 +1,3 @@
-
 import "./App.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -61,9 +60,10 @@ import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
 import { ProtectedRoute } from "./components/routing/ProtectedRoute";
 import { RoleProtectedRoute } from "./components/routing/RoleProtectedRoute";
+import { AuthRedirect } from "./components/routing/AuthRedirect";
 import PublicRoute from "./components/PublicRoute";
 import { AuthProvider } from "./contexts/AuthContext";
-import { LanguageProvider } from "./contexts/LanguageContext";
+import { LanguageProvider } from "./contexts/LanguageProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -86,15 +86,18 @@ function App() {
                   <Toaster />
                   <Sonner />
                   <Routes>
-                    {/* Public Routes */}
+                    {/* Root Route - Protected Dashboard */}
                     <Route
                       path="/"
                       element={
-                        <PublicRoute>
+                        <ProtectedRoute>
                           <Index />
-                        </PublicRoute>
+                          <AuthRedirect />
+                        </ProtectedRoute>
                       }
                     />
+                    
+                    {/* Public Routes */}
                     <Route
                       path="/landing"
                       element={
