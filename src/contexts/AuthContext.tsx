@@ -10,6 +10,8 @@ interface AuthContextType {
   userProfile: UserProfile | null;
   loading: boolean;
   signOut: () => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  register: (email: string, password: string, name: string, role: 'client' | 'vendor') => Promise<void>;
   updateProfile: (updates: Partial<UserProfile>) => Promise<boolean>;
 }
 
@@ -103,6 +105,37 @@ useEffect(() => {
     }
   };
 
+  const login = async (email: string, password: string): Promise<void> => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      throw error;
+    }
+  };
+
+  const register = async (email: string, password: string, name: string, role: 'client' | 'vendor'): Promise<void> => {
+    const redirectUrl = `${window.location.origin}/`;
+    
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: redirectUrl,
+        data: {
+          full_name: name,
+          role: role,
+        }
+      }
+    });
+
+    if (error) {
+      throw error;
+    }
+  };
+
   const updateProfile = async (updates: Partial<UserProfile>): Promise<boolean> => {
     if (!user || !userProfile) return false;
 
@@ -150,6 +183,8 @@ useEffect(() => {
     userProfile,
     loading,
     signOut,
+    login,
+    register,
     updateProfile,
   };
 
