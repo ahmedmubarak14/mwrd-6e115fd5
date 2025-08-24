@@ -18,7 +18,7 @@ interface RequestDetailsModalProps {
     category: string;
     budget_min?: number;
     budget_max?: number;
-    currency: string;
+    currency?: string;
     location?: string;
     deadline?: string;
     urgency: string;
@@ -36,11 +36,12 @@ export const RequestDetailsModal = ({ children, request, userRole = 'client' }: 
 
   const formatBudget = () => {
     if (!request.budget_min && !request.budget_max) return 'Budget not specified';
+    const currency = request.currency || 'USD';
     if (request.budget_min && request.budget_max) {
-      return `${request.budget_min.toLocaleString()} - ${request.budget_max.toLocaleString()} ${request.currency}`;
+      return `${request.budget_min.toLocaleString()} - ${request.budget_max.toLocaleString()} ${currency}`;
     }
-    if (request.budget_min) return `From ${request.budget_min.toLocaleString()} ${request.currency}`;
-    if (request.budget_max) return `Up to ${request.budget_max.toLocaleString()} ${request.currency}`;
+    if (request.budget_min) return `From ${request.budget_min.toLocaleString()} ${currency}`;
+    if (request.budget_max) return `Up to ${request.budget_max.toLocaleString()} ${currency}`;
     return 'Budget not specified';
   };
 
