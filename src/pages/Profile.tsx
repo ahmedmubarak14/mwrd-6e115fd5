@@ -8,11 +8,28 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToastFeedback } from "@/hooks/useToastFeedback";
-import { User, Building, FileText, Settings } from "lucide-react";
+import { User, Building, FileText, Settings, Tags } from "lucide-react";
 import { CRDocumentUpload } from "@/components/verification/CRDocumentUpload";
 import { VerificationStatus } from "@/components/verification/VerificationStatus";
+
+// Service categories for vendors
+const SERVICE_CATEGORIES = [
+  "Construction & Building",
+  "Electrical Services",
+  "Plumbing & HVAC",
+  "Interior Design",
+  "Landscaping",
+  "Cleaning Services",
+  "Security Services",
+  "IT & Technology",
+  "Catering & Food Services",
+  "Transportation & Logistics",
+  "Professional Services",
+  "Marketing & Advertising"
+];
 
 const Profile = () => {
   const { userProfile, updateProfile } = useAuth();
@@ -26,6 +43,7 @@ const Profile = () => {
     address: userProfile?.address || "",
     bio: userProfile?.bio || "",
     portfolio_url: userProfile?.portfolio_url || "",
+    categories: userProfile?.categories || [],
   });
 
   const handleSave = async () => {
@@ -38,6 +56,15 @@ const Profile = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCategoryChange = (category: string, checked: boolean) => {
+    setFormData(prev => ({
+      ...prev,
+      categories: checked 
+        ? [...prev.categories, category]
+        : prev.categories.filter(c => c !== category)
+    }));
   };
 
   const getVerificationBadge = () => {
@@ -73,11 +100,17 @@ const Profile = () => {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="profile" className="flex items-center gap-2">
               <User className="h-4 w-4" />
               Profile
             </TabsTrigger>
+            {userProfile.role === 'vendor' && (
+              <TabsTrigger value="categories" className="flex items-center gap-2">
+                <Tags className="h-4 w-4" />
+                Categories
+              </TabsTrigger>
+            )}
             <TabsTrigger value="verification" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Verification
@@ -183,14 +216,20 @@ const Profile = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="bio">Company Description</Label>
+                    <Label htmlFor="bio">
+                      {userProfile.role === 'vendor' ? 'Company Description & Services' : 'Company Description'}
+                    </Label>
                     <Textarea
                       id="bio"
                       value={formData.bio}
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, bio: e.target.value }))
                       }
-                      placeholder="Describe your company and services..."
+                      placeholder={
+                        userProfile.role === 'vendor' 
+                          ? "Describe your company, services, and expertise..."
+                          : "Describe your company and business..."
+                      }
                       rows={4}
                     />
                   </div>
@@ -219,17 +258,96 @@ const Profile = () => {
             </div>
           </TabsContent>
 
+          {userProfile.role === 'vendor' && (
+            <TabsContent value="categories">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Tags className="h-5 w-5" />
+                    Service Categories
+                  </CardTitle>
+                  <CardDescription>
+                    Select the categories of services you provide. This helps clients find you for relevant requests.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {SERVICE_CATEGORIES.map((category) => (
+                      <div key={category} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={category}
+                          checked={formData.categories.includes(category)}
+                          onCheckedChange={(checked) => 
+                            handleCategoryChange(category, checked as boolean)
+                          }
+                        />
+                        <Label 
+                          htmlFor={category} 
+                          className="text-sm font-normal cursor-pointer"
+                        >
+                          {category}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {formData.categories.length > 0 && (
+                    <div className="mt-4">
+                      <Label className="text-sm font-medium">Selected Categories:</Label>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {formData.categories.map((category) => (
+                          <Badge key={category} variant="secondary">
+                            {category}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex justify-end mt-6">
+                    <Button onClick={handleSave} disabled={loading}>
+                      {loading ? "Saving..." : "Save Categories"}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          )}
+
           <TabsContent value="verification">
             <div className="space-y-6">
               <VerificationStatus />
               
+              {/* Allow both clients and vendors to upload CR documents */}
               {(userProfile.verification_status === 'pending' || 
-                userProfile.verification_status === 'rejected') && 
-                userProfile.role === 'client' && (
+                userProfile.verification_status === 'rejected' || 
+                !userProfile.verification_status) && (
                 <CRDocumentUpload
                   onUploadSuccess={() => window.location.reload()}
                   isRequired={true}
                 />
+              )}
+
+              {/* Additional information for vendors */}
+              {userProfile.role === 'vendor' && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Vendor Verification Requirements</CardTitle>
+                    <CardDescription>
+                      As a vendor, verification is required to access bidding and order management features
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2 text-sm">
+                      <p>✓ Commercial Registration (CR) certificate</p>
+                      <p>✓ Valid business license</p>
+                      <p>✓ Company profile and service categories</p>
+                      <p className="text-muted-foreground mt-3">
+                        Once verified, you'll be able to bid on requests, receive orders, and access full messaging capabilities.
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
               )}
             </div>
           </TabsContent>
