@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
+import { RouteAwareThemeProvider } from './components/RouteAwareThemeProvider';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
@@ -55,74 +56,76 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <LanguageProvider>
-        <Router>
-          <Routes>
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            
-            {/* Client Routes */}
-            <Route path="/client/*" element={
-              <RoleProtectedRoute allowedRoles={['client']}>
-                <DashboardLayout>
-                  <Routes>
-                    <Route path="dashboard" element={<Dashboard />} />
-                    <Route path="profile" element={<Profile />} />
-                    {/* Add more client routes here */}
-                  </Routes>
-                </DashboardLayout>
-              </RoleProtectedRoute>
-            } />
+        <RouteAwareThemeProvider>
+          <Router>
+            <Routes>
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              
+              {/* Client Routes */}
+              <Route path="/client/*" element={
+                <RoleProtectedRoute allowedRoles={['client']}>
+                  <DashboardLayout>
+                    <Routes>
+                      <Route path="dashboard" element={<Dashboard />} />
+                      <Route path="profile" element={<Profile />} />
+                      {/* Add more client routes here */}
+                    </Routes>
+                  </DashboardLayout>
+                </RoleProtectedRoute>
+              } />
 
-            {/* Vendor Routes */}
-            <Route path="/vendor/*" element={
-              <RoleProtectedRoute allowedRoles={['vendor']}>
-                <DashboardLayout>
-                  <Routes>
-                    <Route path="dashboard" element={<Dashboard />} />
-                    <Route path="profile" element={<Profile />} />
-                    {/* Add more vendor routes here */}
-                  </Routes>
-                </DashboardLayout>
-              </RoleProtectedRoute>
-            } />
+              {/* Vendor Routes */}
+              <Route path="/vendor/*" element={
+                <RoleProtectedRoute allowedRoles={['vendor']}>
+                  <DashboardLayout>
+                    <Routes>
+                      <Route path="dashboard" element={<Dashboard />} />
+                      <Route path="profile" element={<Profile />} />
+                      {/* Add more vendor routes here */}
+                    </Routes>
+                  </DashboardLayout>
+                </RoleProtectedRoute>
+              } />
 
-            {/* Admin Routes */}
-            <Route path="/admin/*" element={
-              <RoleProtectedRoute allowedRoles={['admin']}>
-                <AdminLayout />
-              </RoleProtectedRoute>
-            }>
-              <Route path="dashboard" element={<AdminDashboard />} />
-              <Route path="users" element={<AdminUsers />} />
-              <Route path="requests" element={<AdminRequests />} />
-              <Route path="offers" element={<AdminOffers />} />
-              <Route path="projects" element={<AdminProjects />} />
-              <Route path="financial-transactions" element={<AdminFinancialTransactions />} />
-              <Route path="support" element={<AdminSupport />} />
-              <Route path="content/consultations" element={<ExpertConsultations />} />
-              <Route path="category-management" element={<CategoryManagement />} />
-              <Route path="verification" element={<AdminVerificationQueue />} />
-              <Route path="analytics" element={<AdminAnalytics />} />
-              <Route path="subscriptions" element={<AdminSubscriptions />} />
-              <Route path="orders" element={<AdminOrders />} />
-            </Route>
+              {/* Admin Routes */}
+              <Route path="/admin/*" element={
+                <RoleProtectedRoute allowedRoles={['admin']}>
+                  <AdminLayout />
+                </RoleProtectedRoute>
+              }>
+                <Route path="dashboard" element={<AdminDashboard />} />
+                <Route path="users" element={<AdminUsers />} />
+                <Route path="requests" element={<AdminRequests />} />
+                <Route path="offers" element={<AdminOffers />} />
+                <Route path="projects" element={<AdminProjects />} />
+                <Route path="financial-transactions" element={<AdminFinancialTransactions />} />
+                <Route path="support" element={<AdminSupport />} />
+                <Route path="content/consultations" element={<ExpertConsultations />} />
+                <Route path="category-management" element={<CategoryManagement />} />
+                <Route path="verification" element={<AdminVerificationQueue />} />
+                <Route path="analytics" element={<AdminAnalytics />} />
+                <Route path="subscriptions" element={<AdminSubscriptions />} />
+                <Route path="orders" element={<AdminOrders />} />
+              </Route>
 
-            {/* Public Route for Dashboard (accessible to all authenticated users) */}
-            <Route path="/dashboard" element={
-              <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-                <Dashboard />
-              </RoleProtectedRoute>
-            } />
+              {/* Public Route for Dashboard (accessible to all authenticated users) */}
+              <Route path="/dashboard" element={
+                <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+                  <Dashboard />
+                </RoleProtectedRoute>
+              } />
 
-            {/* Default route */}
-            <Route path="/" element={<Navigate to="/dashboard" />} />
+              {/* Default route */}
+              <Route path="/" element={<Navigate to="/dashboard" />} />
 
-            {/* Catch-all route for 404 Not Found */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Router>
+              {/* Catch-all route for 404 Not Found */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Router>
+        </RouteAwareThemeProvider>
       </LanguageProvider>
     </AuthProvider>
   );
