@@ -9,7 +9,7 @@ import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
-import AdminDashboard from './pages/admin/AdminDashboard';
+import { AdminDashboardOverview } from './pages/admin/AdminDashboardOverview';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminRequests from './pages/admin/AdminRequests';
 import AdminOffers from './pages/admin/AdminOffers';
@@ -96,7 +96,7 @@ const App: React.FC = () => {
                   <AdminLayout />
                 </RoleProtectedRoute>
               }>
-                <Route path="dashboard" element={<AdminDashboard />} />
+                <Route path="dashboard" element={<AdminDashboardOverview />} />
                 <Route path="users" element={<AdminUsers />} />
                 <Route path="requests" element={<AdminRequests />} />
                 <Route path="offers" element={<AdminOffers />} />
