@@ -94,8 +94,6 @@ export const translations = {
       viewMessages: "View Messages",
       viewMessagesDescription: "Check your conversations",
       recentActivity: "Recent Activity",
-      pendingRequests: "Pending Requests",
-      activeOffers: "Active Offers",
       viewAllRequests: "View All Requests",
       performanceOverview: "Performance Overview",
       active: "Active",
@@ -103,6 +101,19 @@ export const translations = {
         completionRate: "Completion Rate",
         avgResponseTime: "Avg Response Time",
         successRate: "Success Rate"
+      },
+      client: {
+        welcomeBack: "Welcome back!",
+        manageYourProcurement: "Manage your procurement activities",
+        totalSpent: "Total Spent",
+        activeBids: "Active Bids",
+        avgSavings: "Average Savings",
+        createNewRequest: "Create New Request",
+        browseVendors: "Browse Vendors",
+        viewAllOrders: "View All Orders",
+        requestsPosted: "Requests Posted",
+        ordersCompleted: "Orders Completed",
+        avgOrderValue: "Average Order Value"
       },
     },
     request: {
@@ -439,8 +450,6 @@ export const translations = {
       viewMessages: "عرض الرسائل",
       viewMessagesDescription: "تحقق من محادثاتك",
       recentActivity: "النشاط الأخير",
-      pendingRequests: "الطلبات المعلقة",
-      activeOffers: "العروض النشطة",
       viewAllRequests: "عرض جميع الطلبات",
       performanceOverview: "نظرة عامة على الأداء",
       active: "نشط",
@@ -448,6 +457,19 @@ export const translations = {
         completionRate: "معدل الإنجاز",
         avgResponseTime: "متوسط وقت الاستجابة",
         successRate: "معدل النجاح"
+      },
+      client: {
+        welcomeBack: "مرحباً بعودتك!",
+        manageYourProcurement: "إدارة أنشطة المشتريات الخاصة بك",
+        totalSpent: "إجمالي المصروفات",
+        activeBids: "المناقصات النشطة",
+        avgSavings: "متوسط التوفير",
+        createNewRequest: "إنشاء طلب جديد",
+        browseVendors: "تصفح الموردين",
+        viewAllOrders: "عرض جميع الطلبات",
+        requestsPosted: "الطلبات المنشورة",
+        ordersCompleted: "الطلبات المكتملة",
+        avgOrderValue: "متوسط قيمة الطلب"
       },
     },
     request: {
