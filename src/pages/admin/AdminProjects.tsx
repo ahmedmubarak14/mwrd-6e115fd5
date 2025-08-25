@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -56,7 +55,7 @@ const AdminProjects = () => {
         .from('projects')
         .select(`
           *,
-          client:user_profiles!projects_client_id_fkey(full_name, company_name, email),
+          client:client_id(full_name, company_name, email),
           boq_items(id, status, total_price),
           requests(id, status, title)
         `)
