@@ -26,7 +26,7 @@ export const CRDocumentUpload = ({
   const [uploading, setUploading] = useState(false);
   const { showSuccess, showError } = useToastFeedback();
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputEvent>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       // Validate file type
@@ -58,7 +58,6 @@ export const CRDocumentUpload = ({
       }
 
       const fileExt = file.name.split('.').pop();
-      // Fix: Put user ID first to match RLS policy expectations
       const fileName = `${user.id}/cr-documents/${Date.now()}.${fileExt}`;
 
       const { data, error } = await supabase.storage
@@ -67,24 +66,23 @@ export const CRDocumentUpload = ({
 
       if (error) throw error;
 
-      const { data: { publicUrl } } = supabase.storage
-        .from('chat-files')
-        .getPublicUrl(data.path);
+      // Store only the file path, not the public URL
+      const filePath = data.path;
 
-      // Create verification request
+      // Create verification request with file path
       const { error: insertError } = await supabase
         .from('verification_requests')
         .insert({
           user_id: user.id,
           document_type: 'commercial_registration',
-          document_url: publicUrl,
+          document_url: filePath, // Store file path instead of public URL
           status: 'pending'
         });
 
       if (insertError) throw insertError;
 
       showSuccess('Commercial Registration uploaded successfully');
-      onUploadSuccess?.(publicUrl);
+      onUploadSuccess?.(filePath);
       setFile(null);
     } catch (error: any) {
       console.error('Upload error:', error);

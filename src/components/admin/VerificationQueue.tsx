@@ -70,9 +70,48 @@ export const VerificationQueue = () => {
     }
   };
 
-  useEffect(() => {
-    fetchVerificationRequests();
-  }, []);
+  const generateSignedUrl = async (filePath: string, expiresIn: number = 3600): Promise<string | null> => {
+    try {
+      // If the path is already a full URL, it's from old data - return as is
+      if (filePath.startsWith('http')) {
+        return filePath;
+      }
+
+      // Generate signed URL for the file path
+      const { data, error } = await supabase.storage
+        .from('chat-files')
+        .createSignedUrl(filePath, expiresIn);
+
+      if (error) {
+        console.error('Error creating signed URL:', error);
+        showError('Failed to generate document access URL');
+        return null;
+      }
+
+      return data.signedUrl;
+    } catch (error: any) {
+      console.error('Error generating signed URL:', error);
+      showError('Failed to access document');
+      return null;
+    }
+  };
+
+  const handleViewDocument = async (filePath: string) => {
+    const signedUrl = await generateSignedUrl(filePath);
+    if (signedUrl) {
+      window.open(signedUrl, '_blank');
+    }
+  };
+
+  const handleDownloadDocument = async (filePath: string, companyName?: string) => {
+    const signedUrl = await generateSignedUrl(filePath, 300); // 5 minutes for download
+    if (signedUrl) {
+      const link = document.createElement('a');
+      link.href = signedUrl;
+      link.download = `CR_${companyName || 'document'}.pdf`;
+      link.click();
+    }
+  };
 
   const handleStatusUpdate = async (requestId: string, newStatus: 'approved' | 'rejected') => {
     setProcessing(requestId);
@@ -112,6 +151,10 @@ export const VerificationQueue = () => {
         return <Badge variant="secondary">Pending</Badge>;
     }
   };
+
+  useEffect(() => {
+    fetchVerificationRequests();
+  }, []);
 
   if (loading) {
     return (
@@ -179,7 +222,7 @@ export const VerificationQueue = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => window.open(request.document_url, '_blank')}
+                      onClick={() => handleViewDocument(request.document_url)}
                     >
                       <Eye className="h-4 w-4 mr-1" />
                       View Document
@@ -188,12 +231,7 @@ export const VerificationQueue = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => {
-                        const link = document.createElement('a');
-                        link.href = request.document_url;
-                        link.download = `CR_${request.user_profiles?.company_name || 'document'}.pdf`;
-                        link.click();
-                      }}
+                      onClick={() => handleDownloadDocument(request.document_url, request.user_profiles?.company_name)}
                     >
                       <Download className="h-4 w-4 mr-1" />
                       Download
