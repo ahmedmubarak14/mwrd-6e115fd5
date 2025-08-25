@@ -163,6 +163,7 @@ export const translations = {
     'admin.projects': 'Projects',
     'admin.orders': 'Orders',
     'admin.financialTransactions': 'Financial Transactions',
+    'admin.subscriptions': 'Subscription Management',
     'admin.supportTickets': 'Support Tickets',
     'admin.expertConsultations': 'Expert Consultations',
     'admin.categoryManagement': 'Category Management',
@@ -182,6 +183,9 @@ export const translations = {
     'admin.reviewVerifications': 'Review Verifications',
     'admin.systemSettings': 'System Settings',
     'admin.adminUser': 'Admin User',
+    'admin.subscriptionsDescription': 'Manage user subscriptions and billing',
+    'admin.userSubscriptions': 'User Subscriptions',
+    'admin.subscriptionsOverview': 'Overview of all user subscription statuses',
     
     // Status translations
     'status.active': 'In Progress',
@@ -507,6 +511,7 @@ export const translations = {
     'admin.projects': 'المشاريع',
     'admin.orders': 'الطلبات',
     'admin.financialTransactions': 'المعاملات المالية',
+    'admin.subscriptions': 'إدارة الاشتراكات',
     'admin.supportTickets': 'تذاكر الدعم',
     'admin.expertConsultations': 'استشارات الخبراء',
     'admin.categoryManagement': 'إدارة الفئات',
@@ -526,6 +531,9 @@ export const translations = {
     'admin.reviewVerifications': 'مراجعة التحقق',
     'admin.systemSettings': 'إعدادات النظام',
     'admin.adminUser': 'مستخدم الإدارة',
+    'admin.subscriptionsDescription': 'إدارة اشتراكات المستخدمين والفوترة',
+    'admin.userSubscriptions': 'اشتراكات المستخدمين',
+    'admin.subscriptionsOverview': 'نظرة عامة على جميع حالات اشتراكات المستخدمين',
     
     // Status translations
     'status.active': 'قيد التنفيذ',

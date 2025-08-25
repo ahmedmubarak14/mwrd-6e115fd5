@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
@@ -8,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { format } from "date-fns";
 import { DollarSign, TrendingUp, CreditCard } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface Transaction {
   id: string;
@@ -29,8 +31,7 @@ export default function FinancialTransactions() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const { t, language } = useLanguage();
-  const isRTL = language === 'ar';
+  const { t, isRTL } = useLanguage();
 
   useEffect(() => {
     fetchTransactions();
@@ -97,17 +98,17 @@ export default function FinancialTransactions() {
   }
 
   return (
-    <div className="space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
-      <div>
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className={cn(isRTL ? "text-right" : "text-left")}>
         <h1 className="text-2xl font-bold">{t('admin.financialTransactions')}</h1>
-        <p className="text-muted-foreground">{t('admin.financialTransactionsDescription')}</p>
+        <p className="text-muted-foreground">{t('financial.monitorRevenue')}</p>
       </div>
 
       {/* Search and Filter */}
-      <div className="flex flex-col sm:flex-row gap-4">
+      <div className={cn("flex flex-col sm:flex-row gap-4", isRTL && "sm:flex-row-reverse")}>
         <div className="flex-1">
           <Input
-            placeholder={t('common.search')}
+            placeholder={t('common.searchPlaceholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full"
@@ -120,7 +121,7 @@ export default function FinancialTransactions() {
           <SelectContent>
             <SelectItem value="all">{t('common.all')}</SelectItem>
             <SelectItem value="pending">{t('common.pending')}</SelectItem>
-            <SelectItem value="succeeded">{t('common.succeeded')}</SelectItem>
+            <SelectItem value="succeeded">{t('common.completed')}</SelectItem>
             <SelectItem value="failed">{t('common.failed')}</SelectItem>
           </SelectContent>
         </Select>
@@ -131,22 +132,22 @@ export default function FinancialTransactions() {
         {filteredTransactions.length === 0 ? (
           <Card>
             <CardContent className="p-6 text-center">
-              <p className="text-muted-foreground">{t('admin.noTransactionsFound')}</p>
+              <p className="text-muted-foreground">{t('financial.noTransactions')}</p>
             </CardContent>
           </Card>
         ) : (
           filteredTransactions.map((transaction) => (
             <Card key={transaction.id}>
               <CardHeader className="pb-3">
-                <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
+                  <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
                     {getTransactionTypeIcon(transaction.transaction_type)}
-                    <div className={isRTL ? 'text-right' : ''}>
+                    <div className={cn(isRTL ? "text-right" : "text-left")}>
                       <CardTitle className="text-lg">
                         {transaction.amount} {transaction.currency}
                       </CardTitle>
                       <p className="text-sm text-muted-foreground">
-                        {transaction.user_profiles?.full_name || transaction.user_profiles?.email}
+                        {transaction.user_profiles?.full_name || transaction.user_profiles?.email || t('financial.unknownUser')}
                       </p>
                     </div>
                   </div>
@@ -160,7 +161,7 @@ export default function FinancialTransactions() {
                   {transaction.description && (
                     <p className="text-sm">{transaction.description}</p>
                   )}
-                  <div className={`flex items-center justify-between text-xs text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <div className={cn("flex items-center justify-between text-xs text-muted-foreground", isRTL && "flex-row-reverse")}>
                     <span>{t('common.type')}: {transaction.transaction_type}</span>
                     <span>{format(new Date(transaction.created_at), 'PPp')}</span>
                   </div>

@@ -18,7 +18,8 @@ import {
   UserCheck,
   FolderOpen,
   Building2,
-  Ticket
+  Ticket,
+  Crown
 } from "lucide-react";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -68,6 +69,11 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
       name: t('admin.financialTransactions'),
       href: "/admin/financial-transactions",
       icon: CreditCard,
+    },
+    {
+      name: t('admin.subscriptions'),
+      href: "/admin/subscriptions",
+      icon: Crown,
     },
     {
       name: t('admin.supportTickets'),
