@@ -52,19 +52,11 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
     }
   };
 
-  const getTitle = () => {
-    switch (mode) {
-      case 'signin': return 'Sign In';
-      case 'reset': return 'Reset Password';
-      default: return 'Sign In';
-    }
-  };
-
   const getDescription = () => {
     switch (mode) {
-      case 'signin': return 'Enter your credentials to access your account';
-      case 'reset': return 'Enter your email address to receive a password reset link';
-      default: return 'Enter your credentials to access your account';
+      case 'signin': return 'Sign in to your account';
+      case 'reset': return 'Reset your password';
+      default: return 'Sign in to your account';
     }
   };
 
@@ -84,11 +76,6 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
             <div className="space-y-2">
               <h1 className="text-3xl font-bold text-white">Welcome to MWRD</h1>
               <p className="text-white/80">{getDescription()}</p>
-            </div>
-            
-            <div className="flex items-center gap-2 justify-center">
-              <Shield className="h-5 w-5 text-primary" />
-              <CardTitle className="text-2xl text-white">{getTitle()}</CardTitle>
             </div>
           </CardHeader>
           

@@ -248,12 +248,6 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
 
               <TabsContent value="signin">
                 <div className="space-y-4">
-                  <div className="flex items-center gap-2 justify-center">
-                    <Shield className="h-5 w-5 text-primary" />
-                    <CardTitle className="text-white">Sign In</CardTitle>
-                  </div>
-                  <CardDescription className="text-white/80 text-center">Enter your credentials to access your account</CardDescription>
-                  
                   <Auth
                     supabaseClient={supabase}
                     view="sign_in"
@@ -275,12 +269,6 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
 
               <TabsContent value="signup">
                 <div className="space-y-4">
-                  <div className="flex items-center gap-2 justify-center">
-                    <Shield className="h-5 w-5 text-primary" />
-                    <CardTitle className="text-white">Create Account</CardTitle>
-                  </div>
-                  <CardDescription className="text-white/80 text-center">Choose your account type and fill in your details</CardDescription>
-                  
                   <form onSubmit={handleSignUp} className="space-y-4">
                     {/* Account Type Selection */}
                     <div className="space-y-3">
