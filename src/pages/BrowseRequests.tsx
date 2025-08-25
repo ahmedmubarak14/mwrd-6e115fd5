@@ -2,6 +2,7 @@
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useMatchingSystem } from "@/hooks/useMatchingSystem";
+import { useCategories } from "@/hooks/useCategories";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -12,12 +13,13 @@ import { Search, Package, MapPin, Calendar, DollarSign, Clock, Plus, Eye } from 
 import { useState } from "react";
 
 const BrowseRequests = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { matchedRequests, loading } = useMatchingSystem();
+  const { categories, loading: categoriesLoading } = useCategories();
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
 
-  if (loading) {
+  if (loading || categoriesLoading) {
     return (
       <DashboardLayout>
         <div className="flex justify-center items-center min-h-[400px]">
@@ -52,6 +54,18 @@ const BrowseRequests = () => {
       case 'low': return 'secondary';
       default: return 'default';
     }
+  };
+
+  // Get all categories including subcategories for the filter
+  const getAllCategories = () => {
+    const allCats: any[] = [];
+    categories.forEach(category => {
+      allCats.push(category);
+      if (category.children && category.children.length > 0) {
+        allCats.push(...category.children);
+      }
+    });
+    return allCats;
   };
 
   return (
@@ -91,11 +105,11 @@ const BrowseRequests = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
-                <SelectItem value="AVL">AVL Equipment</SelectItem>
-                <SelectItem value="Hospitality">Hospitality</SelectItem>
-                <SelectItem value="Booth Stands">Booth Stands</SelectItem>
-                <SelectItem value="Photography">Photography</SelectItem>
-                <SelectItem value="Security">Security</SelectItem>
+                {getAllCategories().map((category) => (
+                  <SelectItem key={category.id} value={category.slug}>
+                    {language === 'ar' ? category.name_ar : category.name_en}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </CardContent>
