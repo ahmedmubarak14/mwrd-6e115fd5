@@ -23,32 +23,32 @@ export const MobileNavigation = () => {
     {
       href: "/landing#platform",
       icon: Zap,
-      label: t('nav.platform')
+      label: t('landing.platform') || t('platform') || 'Platform'
     },
     {
       href: "/why-start-with-mwrd",
       icon: TrendingUp,
-      label: t('nav.whyStartWithUs')
+      label: t('landing.whyStartWithUs') || t('whyStartWithUs') || 'Why Start With Us'
     },
     {
       href: "/what-makes-us-unique",
       icon: Star,
-      label: t('nav.whatMakesUsUnique')
+      label: t('landing.whatMakesUsUnique') || t('whatMakesUsUnique') || 'What Makes Us Unique'
     },
     {
       href: "/why-move-to-mwrd",
       icon: Building2,
-      label: t('nav.whyMoveToUs')
+      label: t('landing.whyMoveToUs') || t('whyMoveToUs') || 'Why Move To Us'
     },
     {
       href: "/landing#services",
       icon: Sparkles,
-      label: t('nav.services')
+      label: t('landing.services') || t('services') || 'Services'
     },
     {
       href: "/pricing",
       icon: Star,
-      label: t('nav.pricing')
+      label: t('landing.pricing') || t('pricing') || 'Pricing'
     }
   ];
 
@@ -111,12 +111,12 @@ export const MobileNavigation = () => {
               <div className={`flex gap-3 mt-8 pt-6 border-t border-border/50 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Link to="/login" onClick={handleLinkClick} className="flex-1">
                   <Button variant="outline" size="lg" className="w-full hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation">
-                    {t('auth.login')}
+                    {t('login') || t('auth.login') || 'Login'}
                   </Button>
                 </Link>
                 <Link to="/register" onClick={handleLinkClick} className="flex-1">
                   <Button size="lg" className="w-full bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation">
-                    {t('auth.register')}
+                    {t('register') || t('auth.register') || 'Register'}
                   </Button>
                 </Link>
               </div>
