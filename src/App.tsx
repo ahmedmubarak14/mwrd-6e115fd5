@@ -1,8 +1,10 @@
+
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { RouteAwareThemeProvider } from './contexts/RouteAwareThemeContext';
+import { SecurityProvider } from './contexts/SecurityContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
@@ -26,7 +28,6 @@ import NotFound from './pages/NotFound';
 import Auth from './pages/Auth';
 import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import AdminOrders from './pages/admin/AdminOrders';
-import { SecurityProvider } from './contexts/SecurityContext';
 
 interface RoleProtectedRouteProps {
   children: React.ReactNode;
@@ -70,84 +71,92 @@ const RootRedirect: React.FC = () => {
   return <Navigate to="/landing" replace />;
 };
 
+const AppRoutes: React.FC = () => {
+  return (
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/landing" element={<Landing />} />
+      <Route path="/auth" element={<Auth />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      
+      {/* Client Routes */}
+      <Route path="/client/*" element={
+        <RoleProtectedRoute allowedRoles={['client']}>
+          <DashboardLayout>
+            <Routes>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="profile" element={<Profile />} />
+              {/* Add more client routes here */}
+            </Routes>
+          </DashboardLayout>
+        </RoleProtectedRoute>
+      } />
+
+      {/* Vendor Routes */}
+      <Route path="/vendor/*" element={
+        <RoleProtectedRoute allowedRoles={['vendor']}>
+          <DashboardLayout>
+            <Routes>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="profile" element={<Profile />} />
+              {/* Add more vendor routes here */}
+            </Routes>
+          </DashboardLayout>
+        </RoleProtectedRoute>
+      } />
+
+      {/* Admin Routes */}
+      <Route path="/admin/*" element={
+        <RoleProtectedRoute allowedRoles={['admin']}>
+          <AdminLayout />
+        </RoleProtectedRoute>
+      }>
+        <Route path="dashboard" element={<AdminDashboardOverview />} />
+        <Route path="users" element={<AdminUsers />} />
+        <Route path="requests" element={<AdminRequests />} />
+        <Route path="offers" element={<AdminOffers />} />
+        <Route path="projects" element={<AdminProjects />} />
+        <Route path="financial-transactions" element={<AdminFinancialTransactions />} />
+        <Route path="support" element={<AdminSupport />} />
+        <Route path="content/consultations" element={<ExpertConsultations />} />
+        <Route path="category-management" element={<CategoryManagement />} />
+        <Route path="verification" element={<AdminVerificationQueue />} />
+        <Route path="analytics" element={<AdminAnalytics />} />
+        <Route path="subscriptions" element={<AdminSubscriptions />} />
+        <Route path="orders" element={<AdminOrders />} />
+      </Route>
+
+      {/* Public Route for Dashboard (accessible to all authenticated users) */}
+      <Route path="/dashboard" element={
+        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+          <Dashboard />
+        </RoleProtectedRoute>
+      } />
+
+      {/* Root route with smart redirect */}
+      <Route path="/" element={<RootRedirect />} />
+
+      {/* Catch-all route for 404 Not Found */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+};
+
 const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <SecurityProvider>
-        <Router>
-          <RouteAwareThemeProvider>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/landing" element={<Landing />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              
-              {/* Client Routes */}
-              <Route path="/client/*" element={
-                <RoleProtectedRoute allowedRoles={['client']}>
-                  <DashboardLayout>
-                    <Routes>
-                      <Route path="dashboard" element={<Dashboard />} />
-                      <Route path="profile" element={<Profile />} />
-                      {/* Add more client routes here */}
-                    </Routes>
-                  </DashboardLayout>
-                </RoleProtectedRoute>
-              } />
-
-              {/* Vendor Routes */}
-              <Route path="/vendor/*" element={
-                <RoleProtectedRoute allowedRoles={['vendor']}>
-                  <DashboardLayout>
-                    <Routes>
-                      <Route path="dashboard" element={<Dashboard />} />
-                      <Route path="profile" element={<Profile />} />
-                      {/* Add more vendor routes here */}
-                    </Routes>
-                  </DashboardLayout>
-                </RoleProtectedRoute>
-              } />
-
-              {/* Admin Routes */}
-              <Route path="/admin/*" element={
-                <RoleProtectedRoute allowedRoles={['admin']}>
-                  <AdminLayout />
-                </RoleProtectedRoute>
-              }>
-                <Route path="dashboard" element={<AdminDashboardOverview />} />
-                <Route path="users" element={<AdminUsers />} />
-                <Route path="requests" element={<AdminRequests />} />
-                <Route path="offers" element={<AdminOffers />} />
-                <Route path="projects" element={<AdminProjects />} />
-                <Route path="financial-transactions" element={<AdminFinancialTransactions />} />
-                <Route path="support" element={<AdminSupport />} />
-                <Route path="content/consultations" element={<ExpertConsultations />} />
-                <Route path="category-management" element={<CategoryManagement />} />
-                <Route path="verification" element={<AdminVerificationQueue />} />
-                <Route path="analytics" element={<AdminAnalytics />} />
-                <Route path="subscriptions" element={<AdminSubscriptions />} />
-                <Route path="orders" element={<AdminOrders />} />
-              </Route>
-
-              {/* Public Route for Dashboard (accessible to all authenticated users) */}
-              <Route path="/dashboard" element={
-                <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-                  <Dashboard />
-                </RoleProtectedRoute>
-              } />
-
-              {/* Root route with smart redirect */}
-              <Route path="/" element={<RootRedirect />} />
-
-              {/* Catch-all route for 404 Not Found */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </RouteAwareThemeProvider>
-        </Router>
-      </SecurityProvider>
-    </AuthProvider>
+    <LanguageProvider>
+      <AuthProvider>
+        <SecurityProvider>
+          <Router>
+            <RouteAwareThemeProvider>
+              <AppRoutes />
+            </RouteAwareThemeProvider>
+          </Router>
+        </SecurityProvider>
+      </AuthProvider>
+    </LanguageProvider>
   );
 };
 
