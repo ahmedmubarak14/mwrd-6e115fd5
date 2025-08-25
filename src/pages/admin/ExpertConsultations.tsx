@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Search, Filter, MessageSquare, Calendar, User, Phone } from "lucide-react";
 import { useToastFeedback } from "@/hooks/useToastFeedback";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { cn } from "@/lib/utils";
 
 interface Consultation {
   id: string;
@@ -27,13 +29,12 @@ interface Consultation {
 }
 
 export const ExpertConsultations = () => {
-  const { t, language } = useLanguage();
+  const { t, isRTL, formatDate } = useLanguage();
   const { showSuccess, showError } = useToastFeedback();
   const [consultations, setConsultations] = useState<Consultation[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const isRTL = language === 'ar';
 
   useEffect(() => {
     fetchConsultations();
@@ -56,14 +57,14 @@ export const ExpertConsultations = () => {
 
       if (error) {
         console.error('Error fetching consultations:', error);
-        showError('Failed to load consultations');
+        showError(t('error.general'));
         return;
       }
 
       setConsultations(data || []);
     } catch (error) {
       console.error('Error fetching consultations:', error);
-      showError('Failed to load consultations');
+      showError(t('error.general'));
     } finally {
       setLoading(false);
     }
@@ -77,14 +78,14 @@ export const ExpertConsultations = () => {
         .eq('id', consultationId);
 
       if (error) {
-        showError('Failed to update consultation status');
+        showError(t('error.general'));
         return;
       }
 
-      showSuccess(`Consultation status updated to ${status}`);
+      showSuccess(t('success.updated'));
       await fetchConsultations();
     } catch (error) {
-      showError('Failed to update consultation status');
+      showError(t('error.general'));
     }
   };
 
@@ -115,41 +116,42 @@ export const ExpertConsultations = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Expert Consultations</h1>
-        <p className="text-muted-foreground">Manage consultation requests and appointments</p>
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className={cn(isRTL ? "text-right" : "text-left")}>
+        <h1 className="text-3xl font-bold">{t('admin.expertConsultations')}</h1>
+        <p className="text-muted-foreground">{t('admin.expertConsultations')}</p>
       </div>
 
       {/* Search and Filters */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <Filter className="h-5 w-5" />
-            Search & Filter
+            {t('common.filter')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className={cn("absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground", isRTL ? "right-3" : "left-3")} />
               <Input
-                placeholder="Search by name, email, company, event type..."
-                className="pl-10"
+                placeholder={t('common.search')}
+                className={cn(isRTL ? "pr-10 text-right" : "pl-10 text-left")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                dir={isRTL ? 'rtl' : 'ltr'}
               />
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-full sm:w-48">
-                <SelectValue placeholder="Filter by status" />
+                <SelectValue placeholder={t('common.status')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="scheduled">Scheduled</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
+                <SelectItem value="all">{t('common.status')}</SelectItem>
+                <SelectItem value="pending">{t('status.pending')}</SelectItem>
+                <SelectItem value="scheduled">{t('status.active')}</SelectItem>
+                <SelectItem value="completed">{t('status.completed')}</SelectItem>
+                <SelectItem value="cancelled">{t('status.cancelled')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -162,9 +164,9 @@ export const ExpertConsultations = () => {
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-8">
               <MessageSquare className="h-12 w-12 text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No consultations found</h3>
+              <h3 className="text-lg font-semibold mb-2">{t('search.noResults')}</h3>
               <p className="text-muted-foreground text-center">
-                Try adjusting your search terms or filters
+                {t('search.noResults')}
               </p>
             </CardContent>
           </Card>
@@ -172,12 +174,12 @@ export const ExpertConsultations = () => {
           filteredConsultations.map((consultation) => (
             <Card key={consultation.id} className="hover:shadow-md transition-shadow">
               <CardHeader>
-                <div className="flex justify-between items-start gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
+                <div className={cn("flex justify-between items-start gap-4", isRTL && "flex-row-reverse")}>
+                  <div className={cn("flex-1", isRTL ? "text-right" : "text-left")}>
+                    <div className={cn("flex items-center gap-2 mb-2", isRTL && "flex-row-reverse justify-end")}>
                       <CardTitle className="text-lg">{consultation.full_name}</CardTitle>
                       <Badge variant={getStatusBadgeVariant(consultation.status)}>
-                        {consultation.status}
+                        {t(`status.${consultation.status}`)}
                       </Badge>
                     </div>
                     <CardDescription className="text-sm">
@@ -187,14 +189,14 @@ export const ExpertConsultations = () => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
+                  <div className={cn("space-y-2", isRTL ? "text-right" : "text-left")}>
+                    <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse justify-end")}>
                       <User className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">Contact:</span>
+                      <span className="text-sm text-muted-foreground">{t('vendors.contact')}:</span>
                     </div>
                     <p className="font-medium">{consultation.email}</p>
                     {consultation.phone && (
-                      <div className="flex items-center gap-2">
+                      <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse justify-end")}>
                         <Phone className="h-4 w-4 text-muted-foreground" />
                         <span className="text-sm">{consultation.phone}</span>
                       </div>
@@ -204,50 +206,50 @@ export const ExpertConsultations = () => {
                     )}
                   </div>
                   
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
+                  <div className={cn("space-y-2", isRTL ? "text-right" : "text-left")}>
+                    <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse justify-end")}>
                       <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">Event Details:</span>
+                      <span className="text-sm text-muted-foreground">{t('common.details')}:</span>
                     </div>
                     {consultation.event_date && (
                       <p className="font-medium">
-                        {new Date(consultation.event_date).toLocaleDateString()}
+                        {formatDate(new Date(consultation.event_date))}
                       </p>
                     )}
                     {consultation.location && (
                       <p className="text-sm text-muted-foreground">{consultation.location}</p>
                     )}
                     {consultation.budget_range && (
-                      <p className="text-sm font-medium">Budget: {consultation.budget_range}</p>
+                      <p className="text-sm font-medium">{t('common.price')}: {consultation.budget_range}</p>
                     )}
                   </div>
                   
-                  <div className="space-y-2">
-                    <span className="text-sm text-muted-foreground">Message:</span>
+                  <div className={cn("space-y-2", isRTL ? "text-right" : "text-left")}>
+                    <span className="text-sm text-muted-foreground">{t('messages.title')}:</span>
                     <p className="text-sm bg-muted/50 p-2 rounded">{consultation.message}</p>
                   </div>
                 </div>
                 
-                <div className="text-xs text-muted-foreground mt-4">
-                  Submitted: {new Date(consultation.created_at).toLocaleDateString()}
+                <div className={cn("text-xs text-muted-foreground mt-4", isRTL ? "text-right" : "text-left")}>
+                  {t('common.date')}: {formatDate(new Date(consultation.created_at))}
                 </div>
               </CardHeader>
               
               {consultation.status === 'pending' && (
                 <CardContent className="pt-0">
-                  <div className="flex gap-2">
+                  <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
                     <Button
                       size="sm"
                       onClick={() => updateConsultationStatus(consultation.id, 'scheduled')}
                     >
-                      Mark as Scheduled
+                      {t('status.active')}
                     </Button>
                     <Button
                       size="sm"
                       variant="outline"
                       onClick={() => updateConsultationStatus(consultation.id, 'cancelled')}
                     >
-                      Cancel
+                      {t('status.cancelled')}
                     </Button>
                   </div>
                 </CardContent>
@@ -255,12 +257,12 @@ export const ExpertConsultations = () => {
               
               {consultation.status === 'scheduled' && (
                 <CardContent className="pt-0">
-                  <div className="flex gap-2">
+                  <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
                     <Button
                       size="sm"
                       onClick={() => updateConsultationStatus(consultation.id, 'completed')}
                     >
-                      Mark as Completed
+                      {t('status.completed')}
                     </Button>
                   </div>
                 </CardContent>

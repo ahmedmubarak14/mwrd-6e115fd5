@@ -20,10 +20,13 @@ import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { useAuth } from "@/contexts/AuthContext";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { cn } from "@/lib/utils";
 
 export const AdminSupport = () => {
   const { tickets, loading, updateTicketStatus, assignTicket } = useSupportTickets();
   const { userProfile } = useAuth();
+  const { t, isRTL, formatDate } = useLanguage();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -38,7 +41,7 @@ export const AdminSupport = () => {
   }, [userProfile, loading, navigate]);
 
   if (loading) {
-    return <LoadingSpinner text="Loading support tickets..." />;
+    return <LoadingSpinner text={t('common.loading')} />;
   }
 
   if (userProfile?.role !== 'admin') {
@@ -95,24 +98,24 @@ export const AdminSupport = () => {
   const TicketCard = ({ ticket }: { ticket: any }) => (
     <Card className="hover:shadow-md transition-shadow">
       <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <div className="flex-1">
-            <CardTitle className="text-lg flex items-center gap-2">
+        <div className={cn("flex items-start justify-between", isRTL && "flex-row-reverse")}>
+          <div className={cn("flex-1", isRTL ? "text-right" : "text-left")}>
+            <CardTitle className={cn("text-lg flex items-center gap-2", isRTL && "flex-row-reverse justify-end")}>
               {getStatusIcon(ticket.status)}
               {ticket.subject}
             </CardTitle>
             <CardDescription className="mt-1">
-              <div className="flex items-center gap-2 text-sm">
+              <div className={cn("flex items-center gap-2 text-sm", isRTL && "flex-row-reverse justify-end")}>
                 <User className="h-3 w-3" />
-                {ticket.user_profiles?.full_name || ticket.user_profiles?.company_name || 'Unknown User'}
+                {ticket.user_profiles?.full_name || ticket.user_profiles?.company_name || t('admin.adminUser')}
                 <span>•</span>
                 <span>{ticket.user_profiles?.email}</span>
               </div>
             </CardDescription>
           </div>
-          <div className="flex gap-2">
+          <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
             <Badge variant={getPriorityColor(ticket.priority)}>
-              {ticket.priority}
+              {t(`requests.priority.${ticket.priority}`)}
             </Badge>
             <Badge variant="outline">
               {ticket.category}
@@ -121,11 +124,11 @@ export const AdminSupport = () => {
         </div>
       </CardHeader>
       <CardContent className="pt-0">
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-muted-foreground">
-            Created: {new Date(ticket.created_at).toLocaleDateString()}
+        <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
+          <div className={cn("text-sm text-muted-foreground", isRTL ? "text-right" : "text-left")}>
+            {t('common.date')}: {formatDate(new Date(ticket.created_at))}
           </div>
-          <div className="flex gap-2">
+          <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
             <Select
               value={ticket.status}
               onValueChange={(value) => handleStatusChange(ticket.id, value)}
@@ -134,18 +137,19 @@ export const AdminSupport = () => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="open">Open</SelectItem>
-                <SelectItem value="in_progress">In Progress</SelectItem>
-                <SelectItem value="closed">Closed</SelectItem>
+                <SelectItem value="open">{t('common.open')}</SelectItem>
+                <SelectItem value="in_progress">{t('status.active')}</SelectItem>
+                <SelectItem value="closed">{t('common.close')}</SelectItem>
               </SelectContent>
             </Select>
             <Button 
               variant="outline" 
               size="sm"
               onClick={() => handleViewConversation(ticket)}
+              className={cn("flex items-center", isRTL && "flex-row-reverse")}
             >
-              <MessageSquare className="h-4 w-4 mr-2" />
-              View Chat
+              <MessageSquare className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
+              {t('common.view')}
             </Button>
           </div>
         </div>
@@ -154,20 +158,20 @@ export const AdminSupport = () => {
   );
 
   return (
-    <div className="space-y-6">
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold">Support Management</h1>
+      <div className={cn(isRTL ? "text-right" : "text-left")}>
+        <h1 className="text-3xl font-bold">{t('admin.supportTickets')}</h1>
         <p className="text-muted-foreground mt-2">
-          Manage customer support tickets and conversations
+          {t('admin.supportTickets')}
         </p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Open Tickets</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('common.open')}</CardTitle>
             <AlertCircle className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent>
@@ -175,8 +179,8 @@ export const AdminSupport = () => {
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">In Progress</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('status.active')}</CardTitle>
             <Clock className="h-4 w-4 text-warning" />
           </CardHeader>
           <CardContent>
@@ -184,8 +188,8 @@ export const AdminSupport = () => {
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Closed Today</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('status.completed')}</CardTitle>
             <CheckCircle className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
@@ -197,8 +201,8 @@ export const AdminSupport = () => {
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Tickets</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('admin.supportTickets')}</CardTitle>
             <Ticket className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
@@ -210,55 +214,56 @@ export const AdminSupport = () => {
       {/* Filters */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <Filter className="h-5 w-5" />
-            Filters
+            {t('common.filter')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Search className={cn("absolute top-3 h-4 w-4 text-muted-foreground", isRTL ? "right-3" : "left-3")} />
               <Input
-                placeholder="Search tickets..."
+                placeholder={t('common.search')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className={cn(isRTL ? "pr-10 text-right" : "pl-10 text-left")}
+                dir={isRTL ? 'rtl' : 'ltr'}
               />
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={t('common.status')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="open">Open</SelectItem>
-                <SelectItem value="in_progress">In Progress</SelectItem>
-                <SelectItem value="closed">Closed</SelectItem>
+                <SelectItem value="all">{t('common.status')}</SelectItem>
+                <SelectItem value="open">{t('common.open')}</SelectItem>
+                <SelectItem value="in_progress">{t('status.active')}</SelectItem>
+                <SelectItem value="closed">{t('common.close')}</SelectItem>
               </SelectContent>
             </Select>
             <Select value={priorityFilter} onValueChange={setPriorityFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Priority" />
+                <SelectValue placeholder={t('requests.priority.high')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Priority</SelectItem>
-                <SelectItem value="urgent">Urgent</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
+                <SelectItem value="all">{t('requests.priority.high')}</SelectItem>
+                <SelectItem value="urgent">{t('requests.priority.high')}</SelectItem>
+                <SelectItem value="high">{t('requests.priority.high')}</SelectItem>
+                <SelectItem value="medium">{t('requests.priority.medium')}</SelectItem>
+                <SelectItem value="low">{t('requests.priority.low')}</SelectItem>
               </SelectContent>
             </Select>
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Category" />
+                <SelectValue placeholder={t('common.category')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
-                <SelectItem value="general">General</SelectItem>
-                <SelectItem value="technical">Technical</SelectItem>
-                <SelectItem value="billing">Billing</SelectItem>
-                <SelectItem value="account">Account</SelectItem>
+                <SelectItem value="all">{t('common.category')}</SelectItem>
+                <SelectItem value="general">{t('common.info')}</SelectItem>
+                <SelectItem value="technical">{t('common.info')}</SelectItem>
+                <SelectItem value="billing">{t('common.info')}</SelectItem>
+                <SelectItem value="account">{t('common.info')}</SelectItem>
               </SelectContent>
             </Select>
             <Button 
@@ -270,7 +275,7 @@ export const AdminSupport = () => {
                 setCategoryFilter('all');
               }}
             >
-              Clear Filters
+              {t('search.clearFilters')}
             </Button>
           </div>
         </CardContent>
@@ -279,10 +284,10 @@ export const AdminSupport = () => {
       {/* Tickets Tabs */}
       <Tabs defaultValue="all" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="all">All Tickets ({filteredTickets.length})</TabsTrigger>
-          <TabsTrigger value="open">Open ({openTickets.length})</TabsTrigger>
-          <TabsTrigger value="in_progress">In Progress ({inProgressTickets.length})</TabsTrigger>
-          <TabsTrigger value="closed">Closed ({closedTickets.length})</TabsTrigger>
+          <TabsTrigger value="all">{t('common.status')} ({filteredTickets.length})</TabsTrigger>
+          <TabsTrigger value="open">{t('common.open')} ({openTickets.length})</TabsTrigger>
+          <TabsTrigger value="in_progress">{t('status.active')} ({inProgressTickets.length})</TabsTrigger>
+          <TabsTrigger value="closed">{t('common.close')} ({closedTickets.length})</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="space-y-4">
@@ -290,7 +295,7 @@ export const AdminSupport = () => {
             <Card>
               <CardContent className="py-8 text-center">
                 <Ticket className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-muted-foreground">No support tickets found</p>
+                <p className="text-muted-foreground">{t('search.noResults')}</p>
               </CardContent>
             </Card>
           ) : (

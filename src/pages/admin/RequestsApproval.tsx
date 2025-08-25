@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Search, Filter, CheckCircle, XCircle, Clock, FileText } from "lucide-react";
 import { useToastFeedback } from "@/hooks/useToastFeedback";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { cn } from "@/lib/utils";
 
 interface Request {
   id: string;
@@ -26,13 +28,12 @@ interface Request {
 }
 
 export const RequestsApproval = () => {
-  const { t, language } = useLanguage();
+  const { t, isRTL, formatCurrency } = useLanguage();
   const { showSuccess, showError } = useToastFeedback();
   const [requests, setRequests] = useState<Request[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("pending");
-  const isRTL = language === 'ar';
 
   useEffect(() => {
     fetchRequests();
@@ -55,7 +56,7 @@ export const RequestsApproval = () => {
 
       if (error) {
         console.error('Error fetching requests:', error);
-        showError('Failed to load requests');
+        showError(t('error.general'));
         return;
       }
 
@@ -66,7 +67,7 @@ export const RequestsApproval = () => {
       setRequests(formattedRequests);
     } catch (error) {
       console.error('Error fetching requests:', error);
-      showError('Failed to load requests');
+      showError(t('error.general'));
     } finally {
       setLoading(false);
     }
@@ -80,14 +81,14 @@ export const RequestsApproval = () => {
         .eq('id', requestId);
 
       if (error) {
-        showError('Failed to update request status');
+        showError(t('error.general'));
         return;
       }
 
-      showSuccess(`Request ${status} successfully`);
+      showSuccess(t('success.updated'));
       await fetchRequests();
     } catch (error) {
-      showError('Failed to update request status');
+      showError(t('error.general'));
     }
   };
 
@@ -113,11 +114,11 @@ export const RequestsApproval = () => {
   };
 
   const formatBudget = (request: Request) => {
-    if (!request.budget_min && !request.budget_max) return 'Budget not specified';
+    if (!request.budget_min && !request.budget_max) return t('common.price');
     if (request.budget_min && request.budget_max) {
       return `${request.budget_min.toLocaleString()} - ${request.budget_max.toLocaleString()} ${request.currency}`;
     }
-    return 'Budget negotiable';
+    return t('common.price');
   };
 
   if (loading) {
@@ -125,8 +126,8 @@ export const RequestsApproval = () => {
   }
 
   return (
-    <div className={`space-y-6 ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className={isRTL ? 'text-right' : ''}>
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className={cn(isRTL ? "text-right" : "text-left")}>
         <h1 className="text-3xl font-bold">{t('admin.requestsApproval')}</h1>
         <p className="text-muted-foreground">{t('admin.requestsApprovalDesc')}</p>
       </div>
@@ -134,31 +135,32 @@ export const RequestsApproval = () => {
       {/* Search and Filters */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <Filter className="h-5 w-5" />
-            Search & Filter
+            {t('common.filter')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className={cn("absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground", isRTL ? "right-3" : "left-3")} />
               <Input
-                placeholder="Search by title, category, client name..."
-                className="pl-10"
+                placeholder={t('common.search')}
+                className={cn(isRTL ? "pr-10 text-right" : "pl-10 text-left")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                dir={isRTL ? 'rtl' : 'ltr'}
               />
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-full sm:w-48">
-                <SelectValue placeholder="Filter by status" />
+                <SelectValue placeholder={t('common.status')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
+                <SelectItem value="all">{t('common.status')}</SelectItem>
+                <SelectItem value="pending">{t('status.pending')}</SelectItem>
+                <SelectItem value="approved">{t('status.approved')}</SelectItem>
+                <SelectItem value="rejected">{t('status.rejected')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -171,9 +173,9 @@ export const RequestsApproval = () => {
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-8">
               <FileText className="h-12 w-12 text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No requests found</h3>
+              <h3 className="text-lg font-semibold mb-2">{t('search.noResults')}</h3>
               <p className="text-muted-foreground text-center">
-                Try adjusting your search terms or filters
+                {t('search.noResults')}
               </p>
             </CardContent>
           </Card>
@@ -181,12 +183,12 @@ export const RequestsApproval = () => {
           filteredRequests.map((request) => (
             <Card key={request.id} className="hover:shadow-md transition-shadow">
               <CardHeader>
-                <div className="flex justify-between items-start gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
+                <div className={cn("flex justify-between items-start gap-4", isRTL && "flex-row-reverse")}>
+                  <div className={cn("flex-1", isRTL ? "text-right" : "text-left")}>
+                    <div className={cn("flex items-center gap-2 mb-2", isRTL && "flex-row-reverse justify-end")}>
                       <CardTitle className="text-lg">{request.title}</CardTitle>
                       <Badge variant={getStatusBadgeVariant(request.admin_approval_status)}>
-                        {request.admin_approval_status}
+                        {t(`status.${request.admin_approval_status}`)}
                       </Badge>
                     </div>
                     <CardDescription className="text-sm">
@@ -196,8 +198,8 @@ export const RequestsApproval = () => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 text-sm">
-                  <div>
-                    <span className="text-muted-foreground">Client:</span>
+                  <div className={cn(isRTL ? "text-right" : "text-left")}>
+                    <span className="text-muted-foreground">{t('common.name')}:</span>
                     <p className="font-medium">
                       {request.user_profiles?.full_name || request.user_profiles?.email}
                     </p>
@@ -208,17 +210,17 @@ export const RequestsApproval = () => {
                     )}
                   </div>
                   
-                  <div>
-                    <span className="text-muted-foreground">Category:</span>
+                  <div className={cn(isRTL ? "text-right" : "text-left")}>
+                    <span className="text-muted-foreground">{t('common.category')}:</span>
                     <p className="font-medium">{request.category}</p>
-                    <span className="text-muted-foreground">Budget:</span>
+                    <span className="text-muted-foreground">{t('common.price')}:</span>
                     <p className="font-medium">{formatBudget(request)}</p>
                   </div>
                   
-                  <div>
-                    <span className="text-muted-foreground">Urgency:</span>
+                  <div className={cn(isRTL ? "text-right" : "text-left")}>
+                    <span className="text-muted-foreground">{t('requests.priority.high')}:</span>
                     <p className="font-medium">{request.urgency}</p>
-                    <span className="text-muted-foreground">Created:</span>
+                    <span className="text-muted-foreground">{t('common.date')}:</span>
                     <p className="font-medium">
                       {new Date(request.created_at).toLocaleDateString()}
                     </p>
@@ -228,23 +230,23 @@ export const RequestsApproval = () => {
               
               {request.admin_approval_status === 'pending' && (
                 <CardContent className="pt-0">
-                  <div className="flex gap-2">
+                  <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
                     <Button
                       size="sm"
                       onClick={() => updateRequestStatus(request.id, 'approved')}
-                      className="flex items-center gap-1"
+                      className={cn("flex items-center gap-1", isRTL && "flex-row-reverse")}
                     >
                       <CheckCircle className="h-4 w-4" />
-                      Approve
+                      {t('status.approved')}
                     </Button>
                     <Button
                       size="sm"
                       variant="destructive"
                       onClick={() => updateRequestStatus(request.id, 'rejected')}
-                      className="flex items-center gap-1"
+                      className={cn("flex items-center gap-1", isRTL && "flex-row-reverse")}
                     >
                       <XCircle className="h-4 w-4" />
-                      Reject
+                      {t('status.rejected')}
                     </Button>
                   </div>
                 </CardContent>

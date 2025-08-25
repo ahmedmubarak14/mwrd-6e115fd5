@@ -5,26 +5,30 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AdvancedUserManagement } from "@/components/admin/AdvancedUserManagement";
 import { VerificationQueue } from "@/components/admin/VerificationQueue";
 import { Users, FileCheck } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { cn } from "@/lib/utils";
 
 const AdminUsers = () => {
+  const { t, isRTL } = useLanguage();
+
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">User Management</h1>
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className={cn(isRTL ? "text-right" : "text-left")}>
+        <h1 className="text-3xl font-bold">{t('users.management')}</h1>
         <p className="text-muted-foreground">
-          Manage users, roles, and verification requests
+          {t('users.manageDescription')}
         </p>
       </div>
 
       <Tabs defaultValue="users" className="space-y-6">
         <TabsList>
-          <TabsTrigger value="users" className="flex items-center gap-2">
+          <TabsTrigger value="users" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <Users className="h-4 w-4" />
-            Users
+            {t('admin.users')}
           </TabsTrigger>
-          <TabsTrigger value="verification" className="flex items-center gap-2">
+          <TabsTrigger value="verification" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <FileCheck className="h-4 w-4" />
-            Verification Queue
+            {t('users.verificationQueue')}
           </TabsTrigger>
         </TabsList>
 
