@@ -1,3 +1,4 @@
+
 import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -11,7 +12,7 @@ import { SecurityProvider } from "./contexts/SecurityContext";
 import { ProtectedRoute } from "./components/routing/ProtectedRoute";
 import { RoleProtectedRoute } from "./components/routing/RoleProtectedRoute";
 import { AuthRedirect } from "./components/routing/AuthRedirect";
-import { PublicRoute } from "./components/PublicRoute";
+import PublicRoute from "./components/PublicRoute";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { LoadingFallback } from "./components/LoadingFallback";
 
@@ -25,15 +26,9 @@ const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const Profile = lazy(() => import("./pages/Profile"));
 const BrowseRequests = lazy(() => import("./pages/BrowseRequests"));
 const CreateRequest = lazy(() => import("./pages/CreateRequest"));
-const MyRequests = lazy(() => import("./pages/MyRequests"));
 const MyOffers = lazy(() => import("./pages/MyOffers"));
 const Messages = lazy(() => import("./pages/Messages"));
 const Settings = lazy(() => import("./pages/Settings"));
-const Help = lazy(() => import("./pages/Help"));
-const About = lazy(() => import("./pages/About"));
-const Contact = lazy(() => import("./pages/Contact"));
-const Privacy = lazy(() => import("./pages/Privacy"));
-const Terms = lazy(() => import("./pages/Terms"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
@@ -61,11 +56,6 @@ function App() {
                           {/* Public Routes */}
                           <Route path="/" element={<Index />} />
                           <Route path="/landing" element={<Landing />} />
-                          <Route path="/about" element={<About />} />
-                          <Route path="/contact" element={<Contact />} />
-                          <Route path="/privacy" element={<Privacy />} />
-                          <Route path="/terms" element={<Terms />} />
-                          <Route path="/help" element={<Help />} />
                           
                           {/* Auth Routes */}
                           <Route path="/auth" element={
@@ -119,14 +109,6 @@ function App() {
                             <ProtectedRoute>
                               <RoleProtectedRoute allowed={['client']}>
                                 <CreateRequest />
-                              </RoleProtectedRoute>
-                            </ProtectedRoute>
-                          } />
-                          
-                          <Route path="/my-requests" element={
-                            <ProtectedRoute>
-                              <RoleProtectedRoute allowed={['client']}>
-                                <MyRequests />
                               </RoleProtectedRoute>
                             </ProtectedRoute>
                           } />
