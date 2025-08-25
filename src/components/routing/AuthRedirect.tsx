@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -21,6 +20,15 @@ export const AuthRedirect = () => {
 
     // If user is authenticated, redirect to appropriate dashboard
     if (user && userProfile) {
+      const targetPath = location.state?.from?.pathname;
+      
+      // If there's a specific path they were trying to access, go there
+      if (targetPath && targetPath !== '/auth') {
+        navigate(targetPath, { replace: true });
+        return;
+      }
+
+      // Otherwise redirect to role-appropriate dashboard
       switch (userProfile.role) {
         case 'admin':
           navigate('/admin/dashboard', { replace: true });
@@ -34,7 +42,7 @@ export const AuthRedirect = () => {
           break;
       }
     }
-  }, [user, userProfile, loading, navigate, location.pathname]);
+  }, [user, userProfile, loading, navigate, location.pathname, location.state]);
 
   return null;
 };

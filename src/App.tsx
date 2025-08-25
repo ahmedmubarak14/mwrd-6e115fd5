@@ -63,7 +63,7 @@ function App() {
                             </PublicRoute>
                           } />
                           
-                          {/* Protected Routes */}
+                          {/* Client Dashboard */}
                           <Route path="/dashboard" element={
                             <ProtectedRoute>
                               <RoleProtectedRoute allowed={['client']}>
@@ -72,6 +72,7 @@ function App() {
                             </ProtectedRoute>
                           } />
                           
+                          {/* Vendor Dashboard */}
                           <Route path="/vendor/dashboard" element={
                             <ProtectedRoute>
                               <RoleProtectedRoute allowed={['vendor']}>
