@@ -23,32 +23,32 @@ export const MobileNavigation = () => {
     {
       href: "/landing#platform",
       icon: Zap,
-      label: t('nav.platform')
+      label: t('Platform')
     },
     {
       href: "/why-start-with-mwrd",
       icon: TrendingUp,
-      label: t('nav.whyStartWithUs')
+      label: t('Why Start With Us')
     },
     {
       href: "/what-makes-us-unique",
       icon: Star,
-      label: t('nav.whatMakesUsUnique')
+      label: t('What Makes Us Unique')
     },
     {
       href: "/why-move-to-mwrd",
       icon: Building2,
-      label: t('nav.whyMoveToUs')
+      label: t('Why Move To Us')
     },
     {
       href: "/landing#services",
       icon: Sparkles,
-      label: t('nav.services')
+      label: t('Services')
     },
     {
       href: "/pricing",
       icon: Star,
-      label: t('nav.pricing')
+      label: t('Pricing')
     }
   ];
 
@@ -111,12 +111,12 @@ export const MobileNavigation = () => {
               <div className={`flex gap-3 mt-8 pt-6 border-t border-border/50 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Link to="/auth" onClick={handleLinkClick} className="flex-1">
                   <Button variant="outline" size="lg" className="w-full hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation">
-                    {t('auth.login')}
+                    {t('Login')}
                   </Button>
                 </Link>
                 <Link to="/auth" onClick={handleLinkClick} className="flex-1">
                   <Button size="lg" className="w-full bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation">
-                    {t('auth.startFree')}
+                    {t('Start Free')}
                   </Button>
                 </Link>
               </div>
