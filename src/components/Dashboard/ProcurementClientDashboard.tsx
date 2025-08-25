@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { AlertTriangle, FileText, CheckCircle, Clock, DollarSign } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 import { Alert } from "@/components/ui/alert";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -8,12 +8,14 @@ import { useRealTimeAnalytics } from "@/hooks/useRealTimeAnalytics";
 import { useToast } from "@/hooks/use-toast";
 import { DashboardHeader } from "./DashboardHeader";
 import { DashboardTabs } from "./DashboardTabs";
-import { StatsGrid } from "../dashboard/shared/StatsGrid";
+import { ClientStatsCards } from "../dashboard/client/ClientStatsCards";
+import { ClientQuickActions } from "../dashboard/client/ClientQuickActions";
+import { ClientOverviewMetrics } from "../dashboard/client/ClientOverviewMetrics";
 import { LoadingState } from "../dashboard/shared/LoadingState";
 import { EmptyState } from "../dashboard/shared/EmptyState";
 
 export const ProcurementClientDashboard = () => {
-  const { isRTL, t, formatCurrency } = useLanguage();
+  const { isRTL, t } = useLanguage();
   const { userProfile } = useAuth();
   const { metrics, isLoading, error } = useRealTimeAnalytics();
   const { toast } = useToast();
@@ -64,7 +66,7 @@ export const ProcurementClientDashboard = () => {
     }
   };
 
-  const handleDrillDown = (cardKey: string) => {
+  const handleCardClick = (cardKey: string) => {
     toast({
       title: t('action.viewDetails'),
       description: t('dashboard.drillDownMessage').replace('{section}', cardKey),
@@ -84,38 +86,6 @@ export const ProcurementClientDashboard = () => {
     );
   }
 
-  // Prepare stats data with translations - using correct property names from AnalyticsMetrics
-  const statsData = [
-    {
-      key: 'totalRequests',
-      title: t('dashboard.stats.totalRequests'),
-      value: metrics?.activeRequests || 0, // Using activeRequests from AnalyticsMetrics interface
-      icon: FileText,
-      trend: { value: 12, isPositive: true }
-    },
-    {
-      key: 'activeProjects', 
-      title: t('dashboard.stats.activeProjects'),
-      value: metrics?.totalUsers || 0, // Using available property from interface
-      icon: Clock,
-      trend: { value: 8, isPositive: true }
-    },
-    {
-      key: 'completedOrders',
-      title: t('dashboard.stats.completedOrders'), 
-      value: metrics?.totalOrders || 0, // Using totalOrders from AnalyticsMetrics interface
-      icon: CheckCircle,
-      trend: { value: 15, isPositive: true }
-    },
-    {
-      key: 'savings',
-      title: t('dashboard.stats.savings'),
-      value: formatCurrency(metrics?.totalRevenue || 0), // Using totalRevenue from interface
-      icon: DollarSign,
-      trend: { value: 23, isPositive: true }
-    },
-  ];
-
   return (
     <div className={`p-4 sm:p-6 space-y-6 ${isRTL ? 'rtl' : 'ltr'}`}>
       <DashboardHeader
@@ -126,18 +96,42 @@ export const ProcurementClientDashboard = () => {
       />
 
       {metrics && Object.keys(metrics).length > 0 ? (
-        <StatsGrid 
-          stats={statsData}
-          onCardClick={handleDrillDown}
-          isLoading={isLoading}
-        />
+        <>
+          <ClientStatsCards 
+            metrics={metrics}
+            isLoading={isLoading}
+            onCardClick={handleCardClick}
+          />
+
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            <div className="xl:col-span-2">
+              <ClientQuickActions 
+                recentActivity={{
+                  newMessages: 3,
+                  pendingRequests: metrics?.activeRequests || 0,
+                  activeOffers: 8
+                }}
+              />
+            </div>
+            <div>
+              <ClientOverviewMetrics 
+                metrics={{
+                  completionRate: 78,
+                  avgResponseTime: '4.2h',
+                  successRate: 94,
+                  activeProjects: metrics?.totalUsers || 0
+                }}
+                isLoading={isLoading}
+              />
+            </div>
+          </div>
+        </>
       ) : (
         <EmptyState 
           title={t('dashboard.emptyState.title')}
           description={t('dashboard.emptyState.description')}
           actionLabel={t('dashboard.emptyState.action')}
           onAction={() => {/* Navigate to create request */}}
-          icon={<FileText className="h-12 w-12" />}
         />
       )}
 
