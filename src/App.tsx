@@ -17,10 +17,10 @@ import AdminFinancialTransactions from './pages/admin/FinancialTransactions';
 import { AdminSupport } from './pages/admin/AdminSupport';
 import { ExpertConsultations } from './pages/admin/ExpertConsultations';
 import CategoryManagement from './pages/admin/CategoryManagement';
-import AdminVerificationQueue from './pages/admin/AdminVerificationQueue';
-import AdminAnalytics from './pages/admin/AdminAnalytics';
+import { AdminVerificationQueue } from './pages/admin/AdminVerificationQueue';
+import { AdminAnalytics } from './pages/admin/AdminAnalytics';
 import { AdminLayout } from './components/admin/AdminLayout';
-import DashboardLayout from './components/layout/DashboardLayout';
+import { DashboardLayout } from './components/layout/DashboardLayout';
 import NotFound from './pages/NotFound';
 import Auth from './pages/Auth';
 import AdminSubscriptions from './pages/admin/AdminSubscriptions';
@@ -89,97 +89,25 @@ const App: React.FC = () => {
             } />
 
             {/* Admin Routes */}
-            <Route path="/admin/dashboard" element={
+            <Route path="/admin/*" element={
               <RoleProtectedRoute allowedRoles={['admin']}>
-                <AdminLayout>
-                  <AdminDashboard />
-                </AdminLayout>
+                <AdminLayout />
               </RoleProtectedRoute>
-            } />
-            <Route path="/admin/users" element={
-              <RoleProtectedRoute allowedRoles={['admin']}>
-                <AdminLayout>
-                  <AdminUsers />
-                </AdminLayout>
-              </RoleProtectedRoute>
-            } />
-            <Route path="/admin/requests" element={
-              <RoleProtectedRoute allowedRoles={['admin']}>
-                <AdminLayout>
-                  <AdminRequests />
-                </AdminLayout>
-              </RoleProtectedRoute>
-            } />
-            <Route path="/admin/offers" element={
-              <RoleProtectedRoute allowedRoles={['admin']}>
-                <AdminLayout>
-                  <AdminOffers />
-                </AdminLayout>
-              </RoleProtectedRoute>
-            } />
-            <Route path="/admin/projects" element={
-              <RoleProtectedRoute allowedRoles={['admin']}>
-                <AdminLayout>
-                  <AdminProjects />
-                </AdminLayout>
-              </RoleProtectedRoute>
-            } />
-            <Route path="/admin/financial-transactions" element={
-              <RoleProtectedRoute allowedRoles={['admin']}>
-                <AdminLayout>
-                  <AdminFinancialTransactions />
-                </AdminLayout>
-              </RoleProtectedRoute>
-            } />
-            <Route path="/admin/support" element={
-              <RoleProtectedRoute allowedRoles={['admin']}>
-                <AdminLayout>
-                  <AdminSupport />
-                </AdminLayout>
-              </RoleProtectedRoute>
-            } />
-            <Route path="/admin/content/consultations" element={
-              <RoleProtectedRoute allowedRoles={['admin']}>
-                <AdminLayout>
-                  <ExpertConsultations />
-                </AdminLayout>
-              </RoleProtectedRoute>
-            } />
-            <Route path="/admin/category-management" element={
-              <RoleProtectedRoute allowedRoles={['admin']}>
-                <AdminLayout>
-                  <CategoryManagement />
-                </AdminLayout>
-              </RoleProtectedRoute>
-            } />
-            <Route path="/admin/verification" element={
-              <RoleProtectedRoute allowedRoles={['admin']}>
-                <AdminLayout>
-                  <AdminVerificationQueue />
-                </AdminLayout>
-              </RoleProtectedRoute>
-            } />
-            <Route path="/admin/analytics" element={
-              <RoleProtectedRoute allowedRoles={['admin']}>
-                <AdminLayout>
-                  <AdminAnalytics />
-                </AdminLayout>
-              </RoleProtectedRoute>
-            } />
-            <Route path="/admin/subscriptions" element={
-              <RoleProtectedRoute allowedRoles={['admin']}>
-                <AdminLayout>
-                  <AdminSubscriptions />
-                </AdminLayout>
-              </RoleProtectedRoute>
-            } />
-            <Route path="/admin/orders" element={
-              <RoleProtectedRoute allowedRoles={['admin']}>
-                <AdminLayout>
-                  <AdminOrders />
-                </AdminLayout>
-              </RoleProtectedRoute>
-            } />
+            }>
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="requests" element={<AdminRequests />} />
+              <Route path="offers" element={<AdminOffers />} />
+              <Route path="projects" element={<AdminProjects />} />
+              <Route path="financial-transactions" element={<AdminFinancialTransactions />} />
+              <Route path="support" element={<AdminSupport />} />
+              <Route path="content/consultations" element={<ExpertConsultations />} />
+              <Route path="category-management" element={<CategoryManagement />} />
+              <Route path="verification" element={<AdminVerificationQueue />} />
+              <Route path="analytics" element={<AdminAnalytics />} />
+              <Route path="subscriptions" element={<AdminSubscriptions />} />
+              <Route path="orders" element={<AdminOrders />} />
+            </Route>
 
             {/* Public Route for Dashboard (accessible to all authenticated users) */}
             <Route path="/dashboard" element={
