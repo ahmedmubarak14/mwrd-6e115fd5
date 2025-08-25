@@ -84,6 +84,12 @@ const translations = {
     'common.succeeded': 'Succeeded',
     'common.failed': 'Failed',
     'common.type': 'Type',
+    'common.of': 'of',
+    'common.urgency': 'Urgency',
+    'common.urgent': 'Urgent',
+    'common.high': 'High',
+    'common.medium': 'Medium',
+    'common.low': 'Low',
     
     // App
     'app.name': 'MWRD',
@@ -330,6 +336,12 @@ const translations = {
     'common.succeeded': 'نجح',
     'common.failed': 'فشل',
     'common.type': 'النوع',
+    'common.of': 'من',
+    'common.urgency': 'الأولوية',
+    'common.urgent': 'عاجل',
+    'common.high': 'عالي',
+    'common.medium': 'متوسط',
+    'common.low': 'منخفض',
     
     // App
     'app.name': 'مورد',
