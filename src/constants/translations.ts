@@ -1129,25 +1129,19 @@ export const translations = {
 };
 
 export const getTranslation = (key: string, language: 'en' | 'ar'): string => {
-  const keys = key.split('.');
-  let value: any = translations[language];
+  // Try to get the translation directly using the flat key structure
+  const translation = translations[language]?.[key];
   
-  for (const k of keys) {
-    if (value && typeof value === 'object' && k in value) {
-      value = value[k];
-    } else {
-      // Fallback to English if translation not found
-      value = translations.en;
-      for (const fallbackKey of keys) {
-        if (value && typeof value === 'object' && fallbackKey in value) {
-          value = value[fallbackKey];
-        } else {
-          return key; // Return key if translation not found
-        }
-      }
-      break;
-    }
+  if (translation && typeof translation === 'string') {
+    return translation;
   }
   
-  return typeof value === 'string' ? value : key;
+  // Fallback to English if not found in the requested language
+  const englishTranslation = translations.en[key];
+  if (englishTranslation && typeof englishTranslation === 'string') {
+    return englishTranslation;
+  }
+  
+  // Return the key itself if no translation found
+  return key;
 };
