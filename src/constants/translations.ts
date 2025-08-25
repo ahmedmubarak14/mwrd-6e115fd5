@@ -154,7 +154,7 @@ export const translations = {
     'common.manageDescription': 'Manage and oversee all aspects of the platform',
     'common.open': 'Open',
     'common.info': 'Information',
-    
+
     // Admin Dashboard translations
     'admin.title': 'Admin Panel',
     'admin.dashboard': 'Dashboard',
@@ -220,22 +220,51 @@ export const translations = {
     'admin.allStatus': 'All Status',
     'admin.contacted': 'Contacted',
     'admin.noConsultations': 'No consultation requests found.',
-    
-    // Status translations
+
+    // Missing AdminDashboardOverview translations
+    'admin.loadingDashboard': 'Loading dashboard...',
+    'admin.welcomeBack': 'Welcome back to your admin dashboard',
+    'admin.totalClients': 'Total Clients',
+    'admin.activeClientAccounts': 'Active client accounts',
+    'admin.totalVendors': 'Total Vendors',
+    'admin.registeredVendors': 'Registered vendors',
+    'admin.activeRequests': 'Active Requests',
+    'admin.currentlyBeingProcessed': 'Currently being processed',
+    'admin.inProgressOrders': 'In progress orders',
+    'admin.completedOrders': 'Completed Orders',
+    'admin.successfullyDelivered': 'Successfully delivered',
+    'admin.pendingOffers': 'Pending Offers',
+    'admin.awaitingAdminApproval': 'Awaiting admin approval',
+    'admin.requireAttention': 'Require attention',
+    'admin.revenue': 'Revenue',
+    'admin.platformCommissionEarned': 'Platform commission earned',
+    'admin.requiresImmediateAttention': 'Requires Immediate Attention',
+    'admin.pendingOfferApprovals': 'Pending Offer Approvals',
+    'admin.offersAwaitingReview': 'offers awaiting review',
+    'admin.openSupportTickets': 'Open Support Tickets',
+    'admin.ticketsNeedResponse': 'tickets need response',
+    'admin.allCaughtUp': 'All caught up!',
+    'admin.platformPerformance': 'Platform Performance',
+    'admin.userGrowthMetric': 'User Growth',
+    'admin.completionRate': 'Completion Rate',
+    'admin.quickAccess': 'Quick Access',
+    'admin.jumpToKeyFunctions': 'Jump to key administrative functions',
+    'admin.viewRequests': 'View Requests',
+    'admin.reviewOffers': 'Review Offers',
+    'admin.supportCenter': 'Support Center',
+    'admin.errorLoadingStats': 'Error loading dashboard statistics',
+
     'status.active': 'In Progress',
     'status.completed': 'Today Closed',
-    
-    // Search translations
+
     'search.clearFilters': 'Clear All',
     'search.noResults': 'No tickets found matching your criteria.',
-    
-    // Requests priority translations
+
     'requests.priority.urgent': 'Urgent',
     'requests.priority.high': 'High',
     'requests.priority.medium': 'Medium',
     'requests.priority.low': 'Low',
-    
-    // Advanced User Management translations
+
     'users.management': 'User Management',
     'users.manageDescription': 'Manage user accounts, roles, and permissions across the platform',
     'users.advancedManagement': 'Advanced User Management',
@@ -272,8 +301,7 @@ export const translations = {
     'users.sendMessage': 'Send Message',
     'users.activityLog': 'Activity Log',
     'users.noActivity': 'No recent activity found',
-    
-    // Platform Analytics translations
+
     'analytics.platformAnalytics': 'Platform Analytics',
     'analytics.monitorDescription': 'Monitor platform usage, activity, and performance metrics',
     'analytics.totalUsers': 'Total Users',
@@ -308,8 +336,7 @@ export const translations = {
     'analytics.trafficSources': 'Traffic Sources',
     'analytics.popularFeatures': 'Popular Features',
     'analytics.systemHealth': 'System Health',
-    
-    // Verification Queue translations
+
     'verification.queue': 'Verification Queue',
     'verification.reviewDescription': 'Review and approve client Commercial Registration documents',
     'verification.noPending': 'No verification requests pending review.',
@@ -337,8 +364,7 @@ export const translations = {
     'verification.fileSize': 'File Size',
     'verification.uploadDate': 'Upload Date',
     'verification.approvalHistory': 'Approval History',
-    
-    // Financial Dashboard translations
+
     'financial.dashboard': 'Financial Dashboard',
     'financial.monitorRevenue': 'Monitor revenue, transactions, and financial health',
     'financial.totalRevenue': 'Total Revenue',
@@ -372,15 +398,14 @@ export const translations = {
     'financial.topPerformers': 'Top Performers',
     'financial.revenueByCategory': 'Revenue by Category',
     'financial.monthlyTrends': 'Monthly Trends',
-    
-    // Common time periods
+
     'time.last24hours': 'Last 24 hours',
     'time.last7days': 'Last 7 days',
     'time.last30days': 'Last 30 days',
     'time.last3months': 'Last 3 months',
     'time.lastYear': 'Last year',
   },
-  
+
   ar: {
     'common.error': 'خطأ',
     'common.success': 'نجاح',
@@ -536,7 +561,7 @@ export const translations = {
     'common.manageDescription': 'إدارة والإشراف على جميع جوانب المنصة',
     'common.open': 'مفتوح',
     'common.info': 'معلومات',
-    
+
     // Admin Dashboard translations
     'admin.title': 'لوحة الإدارة',
     'admin.dashboard': 'لوحة التحكم',
@@ -602,22 +627,51 @@ export const translations = {
     'admin.allStatus': 'جميع الحالات',
     'admin.contacted': 'تم التواصل',
     'admin.noConsultations': 'لم يتم العثور على طلبات استشارة.',
-    
-    // Status translations
+
+    // Missing AdminDashboardOverview Arabic translations
+    'admin.loadingDashboard': 'جاري تحميل لوحة التحكم...',
+    'admin.welcomeBack': 'مرحباً بك في لوحة التحكم الإدارية',
+    'admin.totalClients': 'إجمالي العملاء',
+    'admin.activeClientAccounts': 'حسابات العملاء النشطة',
+    'admin.totalVendors': 'إجمالي الموردين',
+    'admin.registeredVendors': 'الموردون المسجلون',
+    'admin.activeRequests': 'الطلبات النشطة',
+    'admin.currentlyBeingProcessed': 'قيد المعالجة حالياً',
+    'admin.inProgressOrders': 'الطلبات قيد التنفيذ',
+    'admin.completedOrders': 'الطلبات المكتملة',
+    'admin.successfullyDelivered': 'تم التسليم بنجاح',
+    'admin.pendingOffers': 'العروض المعلقة',
+    'admin.awaitingAdminApproval': 'في انتظار موافقة الإدارة',
+    'admin.requireAttention': 'تتطلب الانتباه',
+    'admin.revenue': 'الإيرادات',
+    'admin.platformCommissionEarned': 'عمولة المنصة المكتسبة',
+    'admin.requiresImmediateAttention': 'يتطلب انتباهاً فورياً',
+    'admin.pendingOfferApprovals': 'موافقات العروض المعلقة',
+    'admin.offersAwaitingReview': 'عروض في انتظار المراجعة',
+    'admin.openSupportTickets': 'تذاكر الدعم المفتوحة',
+    'admin.ticketsNeedResponse': 'تذاكر تحتاج رد',
+    'admin.allCaughtUp': 'كل شيء محدث!',
+    'admin.platformPerformance': 'أداء المنصة',
+    'admin.userGrowthMetric': 'نمو المستخدمين',
+    'admin.completionRate': 'معدل الإتمام',
+    'admin.quickAccess': 'وصول سريع',
+    'admin.jumpToKeyFunctions': 'الانتقال إلى الوظائف الإدارية الرئيسية',
+    'admin.viewRequests': 'عرض الطلبات',
+    'admin.reviewOffers': 'مراجعة العروض',
+    'admin.supportCenter': 'مركز الدعم',
+    'admin.errorLoadingStats': 'خطأ في تحميل إحصائيات لوحة التحكم',
+
     'status.active': 'قيد التنفيذ',
     'status.completed': 'مغلقة اليوم',
-    
-    // Search translations
+
     'search.clearFilters': 'مسح الكل',
     'search.noResults': 'لا توجد تذاكر تطابق معاييرك.',
-    
-    // Requests priority translations
+
     'requests.priority.urgent': 'عاجل',
     'requests.priority.high': 'عالي',
     'requests.priority.medium': 'متوسط',
     'requests.priority.low': 'منخفض',
-    
-    // Advanced User Management translations
+
     'users.management': 'إدارة المستخدمين',
     'users.manageDescription': 'إدارة حسابات المستخدمين والأدوار والصلاحيات عبر المنصة',
     'users.advancedManagement': 'إدارة المستخدمين المتقدمة',
@@ -654,8 +708,7 @@ export const translations = {
     'users.sendMessage': 'إرسال رسالة',
     'users.activityLog': 'سجل النشاط',
     'users.noActivity': 'لم يتم العثور على نشاط حديث',
-    
-    // Platform Analytics translations
+
     'analytics.platformAnalytics': 'تحليلات المنصة',
     'analytics.monitorDescription': 'مراقبة استخدام المنصة والنشاط ومقاييس الأداء',
     'analytics.totalUsers': 'إجمالي المستخدمين',
@@ -690,8 +743,7 @@ export const translations = {
     'analytics.trafficSources': 'مصادر الزيارات',
     'analytics.popularFeatures': 'الميزات الشائعة',
     'analytics.systemHealth': 'صحة النظام',
-    
-    // Verification Queue translations
+
     'verification.queue': 'قائمة انتظار التحقق',
     'verification.reviewDescription': 'مراجعة والموافقة على وثائق السجل التجاري للعملاء',
     'verification.noPending': 'لا توجد طلبات تحقق في انتظار المراجعة.',
@@ -719,8 +771,7 @@ export const translations = {
     'verification.fileSize': 'حجم الملف',
     'verification.uploadDate': 'تاريخ الرفع',
     'verification.approvalHistory': 'تاريخ الموافقة',
-    
-    // Financial Dashboard translations
+
     'financial.dashboard': 'لوحة القيادة المالية',
     'financial.monitorRevenue': 'مراقبة الإيرادات والمعاملات والصحة المالية',
     'financial.totalRevenue': 'إجمالي الإيرادات',
@@ -754,8 +805,7 @@ export const translations = {
     'financial.topPerformers': 'الأفضل أداءً',
     'financial.revenueByCategory': 'الإيرادات حسب الفئة',
     'financial.monthlyTrends': 'الاتجاهات الشهرية',
-    
-    // Common time periods
+
     'time.last24hours': 'آخر 24 ساعة',
     'time.last7days': 'آخر 7 أيام',
     'time.last30days': 'آخر 30 يوماً',
