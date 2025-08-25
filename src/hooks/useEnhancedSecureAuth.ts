@@ -113,9 +113,51 @@ export const useEnhancedSecureAuth = () => {
     }
   };
 
+  const securePasswordReset = async (email: string) => {
+    const clientIP = 'password-reset';
+    
+    // Rate limiting check
+    if (!rateLimiter.isAllowed(clientIP, 3, 3600000)) { // 3 attempts per hour
+      showError('Too many password reset attempts. Please try again later.');
+      return { error: { message: 'Rate limit exceeded' } };
+    }
+
+    if (!validateEmailDomain(email)) {
+      showError('Please use a valid email address.');
+      return { error: { message: 'Invalid email' } };
+    }
+
+    setLoading(true);
+    
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(
+        email.toLowerCase().trim(),
+        {
+          redirectTo: `${window.location.origin}/reset-password`
+        }
+      );
+
+      if (error) {
+        await logSecurityEvent('password_reset_failed', { email, error: error.message });
+        return { error };
+      }
+
+      await logSecurityEvent('password_reset_requested', { email });
+      showSuccess('Password reset link sent to your email.');
+      
+      return { error: null };
+    } catch (error) {
+      await logSecurityEvent('password_reset_error', { email, error: String(error) });
+      return { error: { message: 'An unexpected error occurred' } };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     secureSignUp,
     secureSignIn,
+    securePasswordReset,
     loading,
     validatePassword
   };
