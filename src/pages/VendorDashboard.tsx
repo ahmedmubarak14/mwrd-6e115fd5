@@ -1,4 +1,3 @@
-
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,7 +16,7 @@ import { CreateOfferModal } from "@/components/modals/CreateOfferModal";
 import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 import { UnifiedVerificationStatus } from "@/components/verification/UnifiedVerificationStatus";
 
-export const VendorDashboard = () => {
+const VendorDashboard = () => {
   const { userProfile } = useAuth();
   const { language, t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState("");
@@ -102,7 +101,7 @@ export const VendorDashboard = () => {
 
   return (
     <DashboardLayout className={isRTL ? 'font-arabic' : ''}>
-      <div className="max-w-6xl mx-auto space-y-6">
+      <div className="max-w-6xl mx-auto space-y-6 p-4 sm:p-6">
         {/* Verification Status - Only show for non-verified users */}
         {needsVerificationGuidance && (
           <UnifiedVerificationStatus 
@@ -117,9 +116,11 @@ export const VendorDashboard = () => {
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <div>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
-                {t('vendor.welcome')}
+                {t('vendor.welcome') || 'Welcome to Vendor Dashboard'}
               </h1>
-              <p className="text-muted-foreground text-sm sm:text-base">{t('vendor.subtitle')}</p>
+              <p className="text-muted-foreground text-sm sm:text-base">
+                {t('vendor.subtitle') || 'Find and submit offers for procurement requests'}
+              </p>
             </div>
           </div>
         </div>
@@ -194,16 +195,18 @@ export const VendorDashboard = () => {
               <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                 <Search className="h-5 w-5 text-primary" />
               </div>
-              {t('browseRequests.searchAndFilter')}
+              {t('browseRequests.searchAndFilter') || 'Search & Filter'}
             </CardTitle>
-            <CardDescription className="text-sm sm:text-base">{t('browseRequests.filterDescription')}</CardDescription>
+            <CardDescription className="text-sm sm:text-base">
+              {t('browseRequests.filterDescription') || 'Find the perfect opportunities for your business'}
+            </CardDescription>
           </CardHeader>
           <CardContent className="p-4 sm:p-6">
             <div className="space-y-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input 
-                  placeholder={t('vendor.searchRequests')}
+                  placeholder={t('vendor.searchRequests') || 'Search requests...'}
                   className="pl-10 h-12 text-sm sm:text-base bg-background/50 border-primary/20 focus:border-primary/50"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -212,10 +215,10 @@ export const VendorDashboard = () => {
               
               <Select value={categoryFilter} onValueChange={setCategoryFilter}>
                 <SelectTrigger className="h-12 bg-background/50 border-primary/20">
-                  <SelectValue placeholder={t('vendor.filterByCategory')} />
+                  <SelectValue placeholder={t('vendor.filterByCategory') || 'Filter by category'} />
                 </SelectTrigger>
                 <SelectContent className="z-50 bg-popover">
-                  <SelectItem value="all">{t('common.all')} {t('browseRequests.filterByCategory')}</SelectItem>
+                  <SelectItem value="all">{t('common.all') || 'All'} {t('browseRequests.filterByCategory') || 'Categories'}</SelectItem>
                   {categoriesLoading ? (
                     <SelectItem value="" disabled>
                       <LoadingSpinner size="sm" />
@@ -242,17 +245,19 @@ export const VendorDashboard = () => {
               <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                 <Package className="h-5 w-5 text-primary" />
               </div>
-              {t('vendor.availableRequests')}
+              {t('vendor.availableRequests') || 'Available Requests'}
             </CardTitle>
-            <CardDescription className="text-sm sm:text-base">{t('dashboard.findOpportunities')}</CardDescription>
+            <CardDescription className="text-sm sm:text-base">
+              {t('dashboard.findOpportunities') || 'Find opportunities that match your expertise'}
+            </CardDescription>
           </CardHeader>
           <CardContent className="p-0">
             {filteredRequests.length === 0 ? (
               <div className="text-center py-12">
                 <div className="text-muted-foreground">
                   <Search className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <h3 className="text-lg font-semibold mb-2">{t('browseRequests.noResults')}</h3>
-                  <p>{t('browseRequests.noResultsDesc')}</p>
+                  <h3 className="text-lg font-semibold mb-2">{t('browseRequests.noResults') || 'No Results'}</h3>
+                  <p>{t('browseRequests.noResultsDesc') || 'Try adjusting your search or filters'}</p>
                 </div>
               </div>
             ) : (
@@ -290,7 +295,7 @@ export const VendorDashboard = () => {
                         <div className="flex items-center gap-2 p-3 bg-lime/5 rounded-lg">
                           <DollarSign className="h-4 w-4 text-lime" />
                           <div>
-                            <p className="text-xs text-muted-foreground">{t('browseRequests.budget')}</p>
+                            <p className="text-xs text-muted-foreground">{t('browseRequests.budget') || 'Budget'}</p>
                             <p className="font-semibold text-sm">{formatBudget(request)} {request.currency || 'USD'}</p>
                           </div>
                         </div>
@@ -299,7 +304,7 @@ export const VendorDashboard = () => {
                           <div className="flex items-center gap-2 p-3 bg-accent/5 rounded-lg">
                             <Calendar className="h-4 w-4 text-accent" />
                             <div>
-                              <p className="text-xs text-muted-foreground">{t('browseRequests.deadline')}</p>
+                              <p className="text-xs text-muted-foreground">{t('browseRequests.deadline') || 'Deadline'}</p>
                               <p className="font-semibold text-sm">{new Date(request.deadline).toLocaleDateString()}</p>
                             </div>
                           </div>
@@ -308,7 +313,7 @@ export const VendorDashboard = () => {
                         <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-lg">
                           <Clock className="h-4 w-4 text-primary" />
                           <div>
-                            <p className="text-xs text-muted-foreground">{t('browseRequests.posted')}</p>
+                            <p className="text-xs text-muted-foreground">{t('browseRequests.posted') || 'Posted'}</p>
                             <p className="font-semibold text-sm">{new Date(request.created_at).toLocaleDateString()}</p>
                           </div>
                         </div>
@@ -320,7 +325,7 @@ export const VendorDashboard = () => {
                           onClick={() => handleSubmitOffer(request.id)}
                         >
                           <Plus className="h-4 w-4 mr-2" />
-                          {t('vendor.submitOffer')}
+                          {t('vendor.submitOffer') || 'Submit Offer'}
                         </Button>
                         <Button 
                           size="sm" 
@@ -328,7 +333,7 @@ export const VendorDashboard = () => {
                           className="flex-1 sm:flex-initial hover-scale rtl-button-gap"
                         >
                           <Eye className="h-4 w-4 mr-2" />
-                          {t('vendor.viewDetails')}
+                          {t('vendor.viewDetails') || 'View Details'}
                         </Button>
                       </div>
                     </div>
@@ -342,3 +347,5 @@ export const VendorDashboard = () => {
     </DashboardLayout>
   );
 };
+
+export default VendorDashboard;
