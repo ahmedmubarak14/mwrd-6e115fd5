@@ -1,3 +1,4 @@
+
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -20,8 +21,8 @@ export const MobileSheet = ({
     <SheetContent 
       side={side || (isRTL ? "right" : "left")} 
       className={cn(
-        "w-80 p-0 flex flex-col mobile-slide-up",
-        "safe-area-pt safe-area-pb",
+        "w-[90vw] max-w-sm p-0 flex flex-col mobile-slide-up",
+        "safe-area-pt safe-area-pb bg-background/95 backdrop-blur-md",
         className
       )}
       {...props}

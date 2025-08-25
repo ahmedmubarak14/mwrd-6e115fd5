@@ -107,11 +107,11 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
   };
 
   return (
-    <div className="w-full lg:w-64 h-full flex flex-col backdrop-blur-sm safe-area-pt safe-area-pb animate-fade-in shadow-sm" style={{ background: 'var(--gradient-unified-page)' }}>
+    <div className="w-full lg:w-64 h-full flex flex-col backdrop-blur-sm safe-area-pt safe-area-pb animate-fade-in shadow-sm overflow-hidden" style={{ background: 'var(--gradient-unified-page)' }}>
       {/* Enhanced User Profile Section */}
-      <MobileFriendlyCard className="m-3 sm:m-4 p-4 sm:p-5 bg-white/10 backdrop-blur-md">
+      <MobileFriendlyCard className="m-3 sm:m-4 p-4 sm:p-5 bg-white/10 backdrop-blur-md shrink-0">
         <div className="rtl-flex items-center gap-3 sm:gap-4">
-          <div className="relative">
+          <div className="relative shrink-0">
             <Avatar className="h-12 w-12 sm:h-14 sm:w-14 shadow-md">
               <AvatarImage 
                 src={userProfile?.avatar_url} 
@@ -130,7 +130,7 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
               </h3>
               <Badge 
                 variant={getRoleBadgeColor(userProfile?.role || 'client')} 
-                className="text-xs sm:text-sm animate-fade-in bg-white/20 text-white"
+                className="text-xs sm:text-sm animate-fade-in bg-white/20 text-white shrink-0"
               >
                 {getRoleDisplayName(userProfile?.role || 'client')}
               </Badge>
@@ -146,7 +146,7 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
       </MobileFriendlyCard>
       
       {/* Enhanced Navigation */}
-      <nav className="flex-1 px-3 sm:px-4 py-2 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-3 sm:px-4 py-2 space-y-1 overflow-y-auto min-h-0">
         {getMenuItems().map((item, index) => {
           if (item.isMessagesDropdown) {
             return (
@@ -160,8 +160,8 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
                     isActive(item.href) && "bg-white/20 text-white hover:bg-white/25 shadow-lg"
                   )}
                 >
-                  <div className="relative">
-                    <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                  <div className="relative shrink-0">
+                    <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 group-hover:scale-110 transition-transform" />
                     <div className="absolute -top-1 -right-1 w-2 h-2 bg-orange rounded-full animate-pulse" />
                   </div>
                   <span className="truncate font-medium">Messages</span>
@@ -181,7 +181,7 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
                   isActive(item.href) && "bg-white/20 text-white hover:bg-white/25 shadow-lg scale-[1.02]"
                 )}
               >
-                <item.icon className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 group-hover:scale-110 transition-transform" />
+                <item.icon className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 group-hover:scale-110 transition-transform" />
                 <span className="truncate font-medium">{item.label}</span>
                 {isActive(item.href) && (
                   <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-6 bg-white rounded-r animate-fade-in" />
@@ -193,7 +193,7 @@ export const Sidebar = ({ userRole = 'client', userProfile }: SidebarProps) => {
       </nav>
 
       {/* Enhanced Controls */}
-      <div className="mt-auto p-3 sm:p-4">
+      <div className="mt-auto p-3 sm:p-4 shrink-0">
         <MobileFriendlyCard className="bg-white/10 p-4 backdrop-blur-md">
           <div className="space-y-4">
             <div className="space-y-2">

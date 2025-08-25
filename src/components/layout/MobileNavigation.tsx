@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Menu, X, Zap, TrendingUp, Building2, Sparkles, Star } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -59,11 +60,14 @@ export const MobileNavigation = () => {
     <div className="md:hidden">
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="sm" className="p-2">
+          <Button variant="ghost" size="sm" className="p-2 touch-manipulation">
             <Menu className="h-6 w-6" />
           </Button>
         </SheetTrigger>
-        <SheetContent side={isRTL ? "left" : "right"} className="w-80 p-0 safe-area-pt safe-area-pb animate-slide-in-right">
+        <SheetContent 
+          side={isRTL ? "left" : "right"} 
+          className="w-[90vw] max-w-sm p-0 safe-area-pt safe-area-pb animate-slide-in-right bg-background/95 backdrop-blur-md"
+        >
           <SheetHeader className={`p-6 border-b ${isRTL ? 'text-right' : 'text-left'} bg-gradient-to-br from-primary/5 to-accent/5`}>
             <SheetTitle className={`flex items-center gap-3 ${isRTL ? 'justify-end' : 'justify-start'}`}>
               <Link to="/landing" onClick={handleLinkClick}>
@@ -92,7 +96,7 @@ export const MobileNavigation = () => {
                     <Link
                       to={item.href}
                       onClick={handleLinkClick}
-                      className={`flex items-center gap-3 p-4 rounded-xl hover:bg-primary/10 transition-all duration-300 hover:shadow-md hover:scale-[1.02] active:scale-95 ${isRTL ? 'flex-row-reverse text-right' : ''} group`}
+                      className={`flex items-center gap-3 p-4 rounded-xl hover:bg-primary/10 transition-all duration-300 hover:shadow-md hover:scale-[1.02] active:scale-95 touch-manipulation ${isRTL ? 'flex-row-reverse text-right' : ''} group`}
                     >
                       <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                         <item.icon className="h-5 w-5 text-primary group-hover:scale-110 transition-transform" />
@@ -106,18 +110,17 @@ export const MobileNavigation = () => {
               {/* Enhanced Login and Start Free buttons */}
               <div className={`flex gap-3 mt-8 pt-6 border-t border-border/50 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Link to="/auth" onClick={handleLinkClick} className="flex-1">
-                  <Button variant="outline" size="lg" className="w-full hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-95">
+                  <Button variant="outline" size="lg" className="w-full hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation">
                     {t('auth.login')}
                   </Button>
                 </Link>
                 <Link to="/auth" onClick={handleLinkClick} className="flex-1">
-                  <Button size="lg" className="w-full bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-95">
+                  <Button size="lg" className="w-full bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation">
                     {t('auth.startFree')}
                   </Button>
                 </Link>
               </div>
             </nav>
-            
           </div>
         </SheetContent>
       </Sheet>
