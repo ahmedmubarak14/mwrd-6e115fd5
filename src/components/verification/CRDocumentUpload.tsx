@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -26,7 +25,7 @@ export const CRDocumentUpload = ({
   const [uploading, setUploading] = useState(false);
   const { showSuccess, showError } = useToastFeedback();
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputEvent>) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       // Validate file type
