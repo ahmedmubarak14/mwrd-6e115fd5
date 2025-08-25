@@ -10,6 +10,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { useCategories } from '@/hooks/useCategories';
 import { useToast } from '@/hooks/use-toast';
 import { Plus, Edit, Trash2, ChevronRight } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { cn } from '@/lib/utils';
 
 interface Category {
   id: string;
@@ -25,6 +27,7 @@ interface Category {
 export const CategoryManagement: React.FC = () => {
   const { categories, loading, createCategory, updateCategory, deleteCategory, refetch } = useCategories();
   const { toast } = useToast();
+  const { t, isRTL } = useLanguage();
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -47,14 +50,14 @@ export const CategoryManagement: React.FC = () => {
       if (editingCategory) {
         await updateCategory(editingCategory.id, formData);
         toast({
-          title: "Success",
-          description: "Category updated successfully"
+          title: t('common.success'),
+          description: t('category.categoryUpdated')
         });
       } else {
         await createCategory(formData);
         toast({
-          title: "Success", 
-          description: "Category created successfully"
+          title: t('common.success'), 
+          description: t('category.categoryCreated')
         });
       }
       
@@ -63,26 +66,26 @@ export const CategoryManagement: React.FC = () => {
       refetch();
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to save category",
+        title: t('common.error'),
+        description: t('common.createError'),
         variant: "destructive"
       });
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (window.confirm('Are you sure you want to delete this category?')) {
+    if (window.confirm(t('category.deleteCategoryConfirm'))) {
       try {
         await deleteCategory(id);
         toast({
-          title: "Success",
-          description: "Category deleted successfully"
+          title: t('common.success'),
+          description: t('category.categoryDeleted')
         });
         refetch();
       } catch (error) {
         toast({
-          title: "Error",
-          description: "Failed to delete category",
+          title: t('common.error'),
+          description: t('common.deleteError'),
           variant: "destructive"
         });
       }
@@ -117,20 +120,20 @@ export const CategoryManagement: React.FC = () => {
   const renderCategoryTree = (cats: Category[], level = 0) => {
     return cats.map(category => (
       <div key={category.id} className="space-y-2">
-        <Card className={`${level > 0 ? 'ml-8' : ''}`}>
+        <Card className={`${level > 0 ? (isRTL ? 'mr-8' : 'ml-8') : ''}`}>
           <CardContent className="p-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                {level > 0 && <ChevronRight className="h-4 w-4 text-muted-foreground" />}
-                <div>
+            <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
+              <div className={cn("flex items-center space-x-2", isRTL && "flex-row-reverse space-x-reverse")}>
+                {level > 0 && <ChevronRight className={cn("h-4 w-4 text-muted-foreground", isRTL && "transform rotate-180")} />}
+                <div className={cn(isRTL ? "text-right" : "text-left")}>
                   <h4 className="font-medium">{category.name_en}</h4>
                   <p className="text-sm text-muted-foreground">{category.name_ar}</p>
                   <Badge variant={category.is_active ? "default" : "secondary"}>
-                    {category.is_active ? "Active" : "Inactive"}
+                    {category.is_active ? t('common.active') : t('common.inactive')}
                   </Badge>
                 </div>
               </div>
-              <div className="flex space-x-2">
+              <div className={cn("flex space-x-2", isRTL && "flex-row-reverse space-x-reverse")}>
                 <Button
                   variant="outline"
                   size="sm"
@@ -157,39 +160,43 @@ export const CategoryManagement: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center p-8">Loading categories...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">
+        {t('category.loadingCategories')}
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold">Category Management</h1>
-          <p className="text-muted-foreground">Manage procurement categories and subcategories</p>
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
+        <div className={cn(isRTL ? "text-right" : "text-left")}>
+          <h1 className="text-3xl font-bold">{t('category.management')}</h1>
+          <p className="text-muted-foreground">{t('category.manageDescription')}</p>
         </div>
         
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={resetForm}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Category
+              <Plus className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
+              {t('category.addCategory')}
             </Button>
           </DialogTrigger>
           
           <DialogContent>
             <DialogHeader>
               <DialogTitle>
-                {editingCategory ? 'Edit Category' : 'Create Category'}
+                {editingCategory ? t('category.editCategory') : t('category.createCategory')}
               </DialogTitle>
               <DialogDescription>
-                {editingCategory ? 'Update category details' : 'Add a new procurement category'}
+                {editingCategory ? t('category.updateCategory') : t('category.categoryDetails')}
               </DialogDescription>
             </DialogHeader>
             
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="name_en">English Name</Label>
+                  <Label htmlFor="name_en">{t('category.englishName')}</Label>
                   <Input
                     id="name_en"
                     value={formData.name_en}
@@ -198,7 +205,7 @@ export const CategoryManagement: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="name_ar">Arabic Name</Label>
+                  <Label htmlFor="name_ar">{t('category.arabicName')}</Label>
                   <Input
                     id="name_ar"
                     value={formData.name_ar}
@@ -209,7 +216,7 @@ export const CategoryManagement: React.FC = () => {
               </div>
               
               <div>
-                <Label htmlFor="slug">Slug</Label>
+                <Label htmlFor="slug">{t('category.slug')}</Label>
                 <Input
                   id="slug"
                   value={formData.slug}
@@ -218,21 +225,21 @@ export const CategoryManagement: React.FC = () => {
                 />
               </div>
               
-              <div className="flex items-center space-x-2">
+              <div className={cn("flex items-center space-x-2", isRTL && "flex-row-reverse space-x-reverse")}>
                 <Switch
                   id="is_active"
                   checked={formData.is_active}
                   onCheckedChange={(checked) => setFormData(prev => ({ ...prev, is_active: checked }))}
                 />
-                <Label htmlFor="is_active">Active</Label>
+                <Label htmlFor="is_active">{t('category.isActive')}</Label>
               </div>
               
-              <div className="flex justify-end space-x-2">
+              <div className={cn("flex justify-end space-x-2", isRTL && "flex-row-reverse space-x-reverse")}>
                 <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  Cancel
+                  {t('common.cancel')}
                 </Button>
                 <Button type="submit">
-                  {editingCategory ? 'Update' : 'Create'}
+                  {editingCategory ? t('common.update') : t('common.create')}
                 </Button>
               </div>
             </form>
@@ -241,7 +248,13 @@ export const CategoryManagement: React.FC = () => {
       </div>
 
       <div className="space-y-4">
-        {categories && renderCategoryTree(categories)}
+        {categories && categories.length > 0 ? renderCategoryTree(categories) : (
+          <Card>
+            <CardContent className="p-8 text-center text-muted-foreground">
+              {t('category.noCategories')}
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );
