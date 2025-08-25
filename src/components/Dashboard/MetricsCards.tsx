@@ -31,38 +31,38 @@ export const MetricsCards = ({ metrics, onCardClick }: MetricsCardsProps) => {
 
   const cards = [
     {
-      title: t('admin.totalUsers') || 'Total Users',
+      title: t('admin.totalUsers') === 'admin.totalUsers' ? 'Total Users' : t('admin.totalUsers'),
       value: formatNumber(metrics?.totalUsers || 0),
       change: `+${metrics?.userGrowth || '0'}%`,
       trend: 'up',
-      period: t('analytics.fromLastMonth') || 'from last month',
+      period: t('analytics.fromLastMonth') === 'analytics.fromLastMonth' ? 'from last month' : t('analytics.fromLastMonth'),
       icon: Users,
       color: 'text-blue-600'
     },
     {
-      title: t('admin.activeRequests') || 'Active Requests',
+      title: t('admin.activeRequests') === 'admin.activeRequests' ? 'Active Requests' : t('admin.activeRequests'),
       value: formatNumber(metrics?.activeRequests || 0),
       change: `+${metrics?.requestGrowth || '0'}%`,
       trend: 'up',
-      period: t('analytics.fromLastWeek') || 'from last week',
+      period: t('analytics.fromLastWeek') === 'analytics.fromLastWeek' ? 'from last week' : t('analytics.fromLastWeek'),
       icon: Activity,
       color: 'text-green-600'
     },
     {
-      title: t('admin.revenue') || 'Revenue',
+      title: t('admin.revenue') === 'admin.revenue' ? 'Revenue' : t('admin.revenue'),
       value: formatCurrency(metrics?.totalRevenue || 0),
       change: `+${metrics?.revenueGrowth || '0'}%`,
       trend: 'up',
-      period: t('analytics.fromLastMonth') || 'from last month',
+      period: t('analytics.fromLastMonth') === 'analytics.fromLastMonth' ? 'from last month' : t('analytics.fromLastMonth'),
       icon: DollarSign,
       color: 'text-purple-600'
     },
     {
-      title: t('orders.title') || 'Orders',
+      title: t('orders.title') === 'orders.title' ? 'Orders' : t('orders.title'),
       value: formatNumber(metrics?.totalOrders || 0),
       change: `-${metrics?.orderDecline || '0'}%`,
       trend: 'down',
-      period: t('analytics.fromLastWeek') || 'from last week',
+      period: t('analytics.fromLastWeek') === 'analytics.fromLastWeek' ? 'from last week' : t('analytics.fromLastWeek'),
       icon: ShoppingCart,
       color: 'text-orange-600'
     }

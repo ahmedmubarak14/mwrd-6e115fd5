@@ -17,10 +17,12 @@ export const DashboardHeader = ({ onRefresh, onExport, isRefreshing, isExporting
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
-          {t('dashboard.title') || 'Dashboard'}
+          {t('dashboard.title') === 'dashboard.title' ? 'Dashboard' : t('dashboard.title')}
         </h1>
         <p className="text-muted-foreground mt-1">
-          {t('dashboard.welcomeMessage') || 'Welcome to your procurement dashboard'}
+          {t('dashboard.welcomeMessage') === 'dashboard.welcomeMessage' 
+            ? 'Welcome to your procurement dashboard' 
+            : t('dashboard.welcomeMessage')}
         </p>
       </div>
       
@@ -33,7 +35,7 @@ export const DashboardHeader = ({ onRefresh, onExport, isRefreshing, isExporting
           className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
         >
           <Clock className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-          {t('common.refresh') || 'Refresh'}
+          {t('common.refresh') === 'common.refresh' ? 'Refresh' : t('common.refresh')}
         </Button>
         
         <Button 
@@ -48,7 +50,10 @@ export const DashboardHeader = ({ onRefresh, onExport, isRefreshing, isExporting
           ) : (
             <FileText className="h-4 w-4" />
           )}
-          {isExporting ? (t('common.exporting') || 'Exporting...') : (t('analytics.export') || 'Export')}
+          {isExporting 
+            ? (t('common.exporting') === 'common.exporting' ? 'Exporting...' : t('common.exporting'))
+            : (t('analytics.export') === 'analytics.export' ? 'Export' : t('analytics.export'))
+          }
         </Button>
       </div>
     </div>
