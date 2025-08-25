@@ -1,52 +1,51 @@
+
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import ResetPasswordPage from './pages/ResetPasswordPage';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
-import ProfilePage from './pages/ProfilePage';
+import Profile from './pages/Profile';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminRequests from './pages/admin/AdminRequests';
 import AdminOffers from './pages/admin/AdminOffers';
 import AdminProjects from './pages/admin/AdminProjects';
 import AdminFinancialTransactions from './pages/admin/FinancialTransactions';
-import AdminSupport from './pages/admin/AdminSupport';
-import ExpertConsultations from './pages/admin/ExpertConsultations';
+import { AdminSupport } from './pages/admin/AdminSupport';
+import { ExpertConsultations } from './pages/admin/ExpertConsultations';
 import CategoryManagement from './pages/admin/CategoryManagement';
-import VerificationQueue from './pages/admin/VerificationQueue';
-import AnalyticsDashboard from './pages/admin/AnalyticsDashboard';
-import AdminLayout from './components/layout/AdminLayout';
-import ClientLayout from './components/layout/ClientLayout';
-import VendorLayout from './components/layout/VendorLayout';
-import NotFoundPage from './pages/NotFoundPage';
-import UnauthorizedPage from './pages/UnauthorizedPage';
-import { Role } from './types';
+import AdminVerificationQueue from './pages/admin/AdminVerificationQueue';
+import AdminAnalytics from './pages/admin/AdminAnalytics';
+import { AdminLayout } from './components/admin/AdminLayout';
+import DashboardLayout from './components/layout/DashboardLayout';
+import NotFound from './pages/NotFound';
+import Auth from './pages/Auth';
 import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import AdminOrders from './pages/admin/AdminOrders';
 
 interface RoleProtectedRouteProps {
   children: React.ReactNode;
-  allowedRoles: Role[];
+  allowedRoles: ('client' | 'vendor' | 'admin')[];
 }
 
 const RoleProtectedRoute: React.FC<RoleProtectedRouteProps> = ({ children, allowedRoles }) => {
-  const { userProfile, isLoading } = useAuth();
+  const { userProfile, loading } = useAuth();
 
-  if (isLoading) {
+  if (loading) {
     return <div>Loading...</div>; // Show a loading indicator while checking authentication
   }
 
   if (!userProfile) {
     // Redirect to login if not authenticated
-    return <Navigate to="/login" />;
+    return <Navigate to="/auth" />;
   }
 
-  if (!allowedRoles.includes(userProfile.role as Role)) {
+  if (!allowedRoles.includes(userProfile.role as 'client' | 'vendor' | 'admin')) {
     // Redirect to unauthorized page if role is not allowed
-    return <Navigate to="/unauthorized" />;
+    return <Navigate to="/auth" />;
   }
 
   return <>{children}</>;
@@ -58,34 +57,34 @@ const App: React.FC = () => {
       <LanguageProvider>
         <Router>
           <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/unauthorized" element={<UnauthorizedPage />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             
             {/* Client Routes */}
             <Route path="/client/*" element={
               <RoleProtectedRoute allowedRoles={['client']}>
-                <ClientLayout>
+                <DashboardLayout>
                   <Routes>
                     <Route path="dashboard" element={<Dashboard />} />
-                    <Route path="profile" element={<ProfilePage />} />
+                    <Route path="profile" element={<Profile />} />
                     {/* Add more client routes here */}
                   </Routes>
-                </ClientLayout>
+                </DashboardLayout>
               </RoleProtectedRoute>
             } />
 
             {/* Vendor Routes */}
             <Route path="/vendor/*" element={
               <RoleProtectedRoute allowedRoles={['vendor']}>
-                <VendorLayout>
+                <DashboardLayout>
                   <Routes>
                     <Route path="dashboard" element={<Dashboard />} />
-                    <Route path="profile" element={<ProfilePage />} />
+                    <Route path="profile" element={<Profile />} />
                     {/* Add more vendor routes here */}
                   </Routes>
-                </VendorLayout>
+                </DashboardLayout>
               </RoleProtectedRoute>
             } />
 
@@ -156,31 +155,31 @@ const App: React.FC = () => {
             <Route path="/admin/verification" element={
               <RoleProtectedRoute allowedRoles={['admin']}>
                 <AdminLayout>
-                  <VerificationQueue />
+                  <AdminVerificationQueue />
                 </AdminLayout>
               </RoleProtectedRoute>
             } />
             <Route path="/admin/analytics" element={
               <RoleProtectedRoute allowedRoles={['admin']}>
                 <AdminLayout>
-                  <AnalyticsDashboard />
+                  <AdminAnalytics />
                 </AdminLayout>
               </RoleProtectedRoute>
             } />
-        <Route path="/admin/subscriptions" element={
-          <RoleProtectedRoute allowedRoles={['admin']}>
-            <AdminLayout>
-              <AdminSubscriptions />
-            </AdminLayout>
-          </RoleProtectedRoute>
-        } />
-        <Route path="/admin/orders" element={
-          <RoleProtectedRoute allowedRoles={['admin']}>
-            <AdminLayout>
-              <AdminOrders />
-            </AdminLayout>
-          </RoleProtectedRoute>
-        } />
+            <Route path="/admin/subscriptions" element={
+              <RoleProtectedRoute allowedRoles={['admin']}>
+                <AdminLayout>
+                  <AdminSubscriptions />
+                </AdminLayout>
+              </RoleProtectedRoute>
+            } />
+            <Route path="/admin/orders" element={
+              <RoleProtectedRoute allowedRoles={['admin']}>
+                <AdminLayout>
+                  <AdminOrders />
+                </AdminLayout>
+              </RoleProtectedRoute>
+            } />
 
             {/* Public Route for Dashboard (accessible to all authenticated users) */}
             <Route path="/dashboard" element={
@@ -189,8 +188,11 @@ const App: React.FC = () => {
               </RoleProtectedRoute>
             } />
 
+            {/* Default route */}
+            <Route path="/" element={<Navigate to="/dashboard" />} />
+
             {/* Catch-all route for 404 Not Found */}
-            <Route path="*" element={<NotFoundPage />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
       </LanguageProvider>
