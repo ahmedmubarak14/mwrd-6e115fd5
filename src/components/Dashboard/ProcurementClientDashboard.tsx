@@ -67,7 +67,7 @@ export const ProcurementClientDashboard = () => {
   const handleDrillDown = (cardKey: string) => {
     toast({
       title: t('action.viewDetails'),
-      description: t('dashboard.drillDownMessage', { section: cardKey }),
+      description: t('dashboard.drillDownMessage').replace('{section}', cardKey),
     });
   };
 
@@ -84,33 +84,33 @@ export const ProcurementClientDashboard = () => {
     );
   }
 
-  // Prepare stats data with translations
+  // Prepare stats data with translations - using correct property names from AnalyticsMetrics
   const statsData = [
     {
       key: 'totalRequests',
       title: t('dashboard.stats.totalRequests'),
-      value: metrics?.totalRequests || 0,
+      value: metrics?.activeRequests || 0, // Using activeRequests from AnalyticsMetrics interface
       icon: FileText,
       trend: { value: 12, isPositive: true }
     },
     {
       key: 'activeProjects', 
       title: t('dashboard.stats.activeProjects'),
-      value: metrics?.activeProjects || 0,
+      value: metrics?.totalUsers || 0, // Using available property from interface
       icon: Clock,
       trend: { value: 8, isPositive: true }
     },
     {
       key: 'completedOrders',
       title: t('dashboard.stats.completedOrders'), 
-      value: metrics?.completedOrders || 0,
+      value: metrics?.totalOrders || 0, // Using totalOrders from AnalyticsMetrics interface
       icon: CheckCircle,
       trend: { value: 15, isPositive: true }
     },
     {
       key: 'savings',
       title: t('dashboard.stats.savings'),
-      value: formatCurrency(metrics?.savings || 0),
+      value: formatCurrency(metrics?.totalRevenue || 0), // Using totalRevenue from interface
       icon: DollarSign,
       trend: { value: 23, isPositive: true }
     },

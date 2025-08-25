@@ -23,10 +23,10 @@ export const UnifiedVerificationBanner: React.FC<UnifiedVerificationBannerProps>
   
   if (!userProfile) return null;
   
-  const { isVerified, isPending, isRejected } = getVerificationStatus(userProfile);
+  const { isFullyVerified, isPending, isRejected } = getVerificationStatus(userProfile);
   
   // Don't show banner if already verified
-  if (isVerified) return null;
+  if (isFullyVerified) return null;
 
   const getAlertContent = () => {
     if (isRejected) {
