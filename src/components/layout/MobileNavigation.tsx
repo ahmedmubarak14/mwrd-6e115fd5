@@ -23,32 +23,32 @@ export const MobileNavigation = () => {
     {
       href: "/landing#platform",
       icon: Zap,
-      label: t('nav.platform') || 'Platform'
+      label: language === 'ar' ? 'المنصة' : 'Platform'
     },
     {
       href: "/why-start-with-mwrd",
       icon: TrendingUp,
-      label: t('nav.whyStartWithUs') || 'Why Start With Us'
+      label: language === 'ar' ? 'لماذا تبدأ معنا' : 'Why Start With Us'
     },
     {
       href: "/what-makes-us-unique",
       icon: Star,
-      label: t('nav.whatMakesUsUnique') || 'What Makes Us Unique'
+      label: language === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'
     },
     {
       href: "/why-move-to-mwrd",
       icon: Building2,
-      label: t('nav.whyMoveToUs') || 'Why Move To Us'
+      label: language === 'ar' ? 'لماذا تنتقل إلينا' : 'Why Move To Us'
     },
     {
       href: "/landing#services",
       icon: Sparkles,
-      label: t('nav.services') || 'Services'
+      label: language === 'ar' ? 'الخدمات' : 'Services'
     },
     {
       href: "/pricing",
       icon: Star,
-      label: t('nav.pricing') || 'Pricing'
+      label: language === 'ar' ? 'الأسعار' : 'Pricing'
     }
   ];
 
@@ -111,12 +111,12 @@ export const MobileNavigation = () => {
               <div className={`flex gap-4 mt-10 pt-8 border-t border-border/50 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Link to="/login" onClick={handleLinkClick} className="flex-1">
                   <Button variant="outline" size="lg" className="w-full h-12 hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation font-semibold">
-                    {t('auth.login') || 'Login'}
+                    {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
                   </Button>
                 </Link>
                 <Link to="/register" onClick={handleLinkClick} className="flex-1">
                   <Button size="lg" className="w-full h-12 bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation font-semibold">
-                    {t('auth.register') || 'Register'}
+                    {language === 'ar' ? 'إنشاء حساب' : 'Register'}
                   </Button>
                 </Link>
               </div>
