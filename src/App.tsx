@@ -17,7 +17,7 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { LoadingFallback } from "./components/LoadingFallback";
 
 // Lazy load components
-const Index = lazy(() => import("./pages/Index"));
+const Landing = lazy(() => import("./pages/Landing"));
 const Login = lazy(() => import("./pages/Login"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const VendorDashboard = lazy(() => import("./pages/VendorDashboard"));
@@ -52,8 +52,8 @@ function App() {
                     <div className="min-h-screen bg-background font-sans antialiased">
                       <Suspense fallback={<LoadingFallback />}>
                         <Routes>
-                          {/* Public Routes */}
-                          <Route path="/" element={<Index />} />
+                          {/* Landing Page */}
+                          <Route path="/" element={<Landing />} />
                           
                           {/* Login Route */}
                           <Route path="/login" element={
