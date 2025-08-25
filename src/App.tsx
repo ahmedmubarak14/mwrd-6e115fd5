@@ -31,7 +31,6 @@ import { AdminAnalytics } from './pages/admin/AdminAnalytics';
 import { AdminLayout } from './components/admin/AdminLayout';
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import NotFound from './pages/NotFound';
-import Auth from './pages/Auth';
 import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import AdminOrders from './pages/admin/AdminOrders';
 
@@ -49,12 +48,12 @@ const RoleProtectedRoute: React.FC<RoleProtectedRouteProps> = ({ children, allow
 
   if (!userProfile) {
     // Redirect to login if not authenticated
-    return <Navigate to="/auth" />;
+    return <Navigate to="/login" />;
   }
 
   if (!allowedRoles.includes(userProfile.role as 'client' | 'vendor' | 'admin')) {
     // Redirect to unauthorized page if role is not allowed
-    return <Navigate to="/auth" />;
+    return <Navigate to="/login" />;
   }
 
   return <>{children}</>;
@@ -86,7 +85,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/what-makes-us-unique" element={<WhatMakesUsUnique />} />
       <Route path="/why-move-to-mwrd" element={<WhyMoveToMWRD />} />
       <Route path="/pricing" element={<Pricing />} />
-      <Route path="/auth" element={<Auth />} />
+      <Route path="/auth" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
