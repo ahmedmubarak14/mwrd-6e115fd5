@@ -177,6 +177,13 @@ const AppRoutes: React.FC = () => {
         </RoleProtectedRoute>
       } />
 
+      {/* Profile Route - Accessible to all authenticated users */}
+      <Route path="/profile" element={
+        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+          <Profile />
+        </RoleProtectedRoute>
+      } />
+
       <Route path="/projects" element={
         <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
           <Projects />
