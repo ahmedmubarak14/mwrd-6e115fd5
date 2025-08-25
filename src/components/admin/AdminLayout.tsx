@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -9,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
 import { AdminCommandPalette } from "./AdminCommandPalette";
+import { AdminRouter } from "@/pages/admin/AdminRouter";
 
 export const AdminLayout = () => {
   const { user, userProfile, loading } = useAuth();
@@ -57,7 +57,7 @@ export const AdminLayout = () => {
         <div className="flex-1 flex flex-col min-w-0 h-full">
           <AdminHeader />
           <main className="flex-1 overflow-auto bg-gradient-subtle">
-            <Outlet />
+            <AdminRouter />
           </main>
         </div>
         <AdminCommandPalette />
