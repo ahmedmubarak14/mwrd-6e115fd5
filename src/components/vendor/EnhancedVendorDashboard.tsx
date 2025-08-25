@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Header } from "@/components/ui/layout/Header";
 import { Sidebar } from "@/components/ui/layout/Sidebar";
@@ -13,11 +12,11 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useMatchingSystem } from "@/hooks/useMatchingSystem";
 import { useOffers } from "@/hooks/useOffers";
+import { useCategories } from "@/hooks/useCategories";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Footer } from "@/components/ui/layout/Footer";
 import { UnifiedVerificationStatus } from '@/components/verification/UnifiedVerificationStatus';
 import { VerificationGuard } from '@/components/verification/VerificationGuard';
-import { CATEGORIES } from "@/constants/categories";
 
 export const EnhancedVendorDashboard = () => {
   const { userProfile } = useAuth();
@@ -30,6 +29,7 @@ export const EnhancedVendorDashboard = () => {
   
   const { matchedRequests, loading: matchingLoading } = useMatchingSystem();
   const { offers, loading: offersLoading } = useOffers();
+  const { categories, loading: categoriesLoading } = useCategories();
 
   if (matchingLoading || offersLoading) {
     return <LoadingSpinner />;
@@ -65,6 +65,19 @@ export const EnhancedVendorDashboard = () => {
       case 'low': return 'secondary';
       default: return 'default';
     }
+  };
+
+  const getAllCategoriesForFilter = () => {
+    const allCats: any[] = [];
+    categories.forEach(category => {
+      allCats.push(category);
+      if (category.children && category.children.length > 0) {
+        category.children.forEach(child => {
+          allCats.push({ ...child, isChild: true, parentName: language === 'ar' ? category.name_ar : category.name_en });
+        });
+      }
+    });
+    return allCats;
   };
 
   return (
@@ -194,11 +207,19 @@ export const EnhancedVendorDashboard = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">{t('common.all')} {t('browseRequests.filterByCategory')}</SelectItem>
-                      {CATEGORIES.map((category) => (
-                        <SelectItem key={category.value} value={category.value}>
-                          {language === 'ar' ? category.labelAr : category.labelEn}
+                      {categoriesLoading ? (
+                        <SelectItem value="" disabled>
+                          <LoadingSpinner size="sm" />
                         </SelectItem>
-                      ))}
+                      ) : (
+                        getAllCategoriesForFilter().map((category) => (
+                          <SelectItem key={category.id} value={category.slug}>
+                            {category.isChild && "  ↳ "}
+                            {language === 'ar' ? category.name_ar : category.name_en}
+                            {category.isChild && ` (${category.parentName})`}
+                          </SelectItem>
+                        ))
+                      )}
                     </SelectContent>
                   </Select>
 
