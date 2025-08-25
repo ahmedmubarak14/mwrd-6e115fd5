@@ -44,34 +44,34 @@ export const MobileBottomTabs = () => {
     
     if (userRole === 'admin') {
       return [
-        { icon: Home, label: t('nav.dashboard'), path: '/admin', requiresAuth: true },
-        { icon: Search, label: t('nav.users'), path: '/admin/users', requiresAuth: true },
-        { icon: TrendingUp, label: t('nav.analytics'), path: '/admin/analytics', requiresAuth: true },
-        { icon: Settings, label: t('nav.settings'), path: '/settings', requiresAuth: true },
-        { icon: User, label: t('nav.profile'), path: '/profile', requiresAuth: true },
+        { icon: Home, label: 'Dashboard', path: '/admin', requiresAuth: true },
+        { icon: Search, label: 'Users', path: '/admin/users', requiresAuth: true },
+        { icon: TrendingUp, label: 'Analytics', path: '/admin/analytics', requiresAuth: true },
+        { icon: Settings, label: 'Settings', path: '/settings', requiresAuth: true },
+        { icon: User, label: 'Profile', path: '/profile', requiresAuth: true },
       ];
     }
 
     const baseTabs: Tab[] = [
-      { icon: Home, label: t('nav.home'), path: '/dashboard', requiresAuth: true },
-      { icon: Search, label: t('nav.browse'), path: '/browse-requests' },
+      { icon: Home, label: 'Home', path: '/dashboard', requiresAuth: true },
+      { icon: Search, label: 'Browse', path: '/browse-requests' },
     ];
 
     if (userRole === 'vendor') {
       return [
         ...baseTabs,
-        { icon: Package, label: t('nav.myOffers'), path: '/my-offers', requiresAuth: true },
-        { icon: MessageSquare, label: t('nav.messages'), path: '/messages', count: unreadMessages, requiresAuth: true },
-        { icon: User, label: t('nav.profile'), path: '/profile', requiresAuth: true },
+        { icon: Package, label: 'My Offers', path: '/my-offers', requiresAuth: true },
+        { icon: MessageSquare, label: 'Messages', path: '/messages', count: unreadMessages, requiresAuth: true },
+        { icon: User, label: 'Profile', path: '/profile', requiresAuth: true },
       ];
     }
 
     // Default client tabs
     return [
       ...baseTabs,
-      { icon: PlusCircle, label: t('nav.create'), path: '/requests', requiresAuth: true },
-      { icon: MessageSquare, label: t('nav.messages'), path: '/messages', count: unreadMessages, requiresAuth: true },
-      { icon: User, label: t('nav.profile'), path: '/profile', requiresAuth: true },
+      { icon: PlusCircle, label: 'Create', path: '/requests', requiresAuth: true },
+      { icon: MessageSquare, label: 'Messages', path: '/messages', count: unreadMessages, requiresAuth: true },
+      { icon: User, label: 'Profile', path: '/profile', requiresAuth: true },
     ];
   };
 
