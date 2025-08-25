@@ -109,10 +109,20 @@ export const CreateProjectModal = ({ open, onOpenChange }: CreateProjectModalPro
   const getAllCategories = () => {
     const allCats: any[] = [];
     categories.forEach(category => {
-      allCats.push(category);
+      // Only add categories that have valid slugs (not empty strings)
+      if (category.slug && category.slug.trim() !== '') {
+        allCats.push(category);
+      }
       if (category.children && category.children.length > 0) {
         category.children.forEach(child => {
-          allCats.push({ ...child, isChild: true, parentName: language === 'ar' ? category.name_ar : category.name_en });
+          // Only add child categories that have valid slugs
+          if (child.slug && child.slug.trim() !== '') {
+            allCats.push({ 
+              ...child, 
+              isChild: true, 
+              parentName: language === 'ar' ? category.name_ar : category.name_en 
+            });
+          }
         });
       }
     });
@@ -147,7 +157,7 @@ export const CreateProjectModal = ({ open, onOpenChange }: CreateProjectModalPro
                 </SelectTrigger>
                 <SelectContent>
                   {categoriesLoading ? (
-                    <SelectItem value="loading" disabled>Loading categories...</SelectItem>
+                    <SelectItem value="loading-placeholder" disabled>Loading categories...</SelectItem>
                   ) : (
                     getAllCategories().map((category) => (
                       <SelectItem key={category.id} value={category.slug}>
