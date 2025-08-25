@@ -77,9 +77,11 @@ const AppRoutes: React.FC = () => {
       {/* Public Routes */}
       <Route path="/landing" element={<Landing />} />
       <Route path="/auth" element={<Auth />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
+      
+      {/* Redirect old auth routes to new consolidated auth route */}
+      <Route path="/login" element={<Navigate to="/auth" replace />} />
+      <Route path="/register" element={<Navigate to="/auth" replace />} />
+      <Route path="/forgot-password" element={<Navigate to="/auth" replace />} />
       
       {/* Client Routes */}
       <Route path="/client/*" element={
