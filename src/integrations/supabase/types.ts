@@ -733,6 +733,36 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limits: {
+        Row: {
+          action_type: string
+          attempt_count: number | null
+          created_at: string | null
+          id: string
+          ip_address: unknown | null
+          user_id: string | null
+          window_start: string | null
+        }
+        Insert: {
+          action_type: string
+          attempt_count?: number | null
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          user_id?: string | null
+          window_start?: string | null
+        }
+        Update: {
+          action_type?: string
+          attempt_count?: number | null
+          created_at?: string | null
+          id?: string
+          ip_address?: unknown | null
+          user_id?: string | null
+          window_start?: string | null
+        }
+        Relationships: []
+      }
       request_categories: {
         Row: {
           category_id: string
@@ -1001,6 +1031,13 @@ export type Database = {
             referencedRelation: "user_profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "vendor_categories_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_public_info"
+            referencedColumns: ["id"]
+          },
         ]
       }
       vendor_profiles_extended: {
@@ -1052,6 +1089,13 @@ export type Database = {
             columns: ["vendor_id"]
             isOneToOne: true
             referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vendor_profiles_extended_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: true
+            referencedRelation: "vendor_public_info"
             referencedColumns: ["id"]
           },
         ]
@@ -1170,7 +1214,42 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      vendor_public_info: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          categories: string[] | null
+          company_name: string | null
+          created_at: string | null
+          full_name: string | null
+          id: string | null
+          portfolio_url: string | null
+          verification_status: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          categories?: string[] | null
+          company_name?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string | null
+          portfolio_url?: string | null
+          verification_status?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          categories?: string[] | null
+          company_name?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string | null
+          portfolio_url?: string | null
+          verification_status?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       get_analytics_data: {

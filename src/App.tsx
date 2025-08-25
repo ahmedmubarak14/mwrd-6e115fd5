@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
@@ -27,6 +26,7 @@ import NotFound from './pages/NotFound';
 import Auth from './pages/Auth';
 import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import AdminOrders from './pages/admin/AdminOrders';
+import { SecurityProvider } from './contexts/SecurityContext';
 
 interface RoleProtectedRouteProps {
   children: React.ReactNode;
@@ -73,7 +73,7 @@ const RootRedirect: React.FC = () => {
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <LanguageProvider>
+      <SecurityProvider>
         <Router>
           <RouteAwareThemeProvider>
             <Routes>
@@ -146,7 +146,7 @@ const App: React.FC = () => {
             </Routes>
           </RouteAwareThemeProvider>
         </Router>
-      </LanguageProvider>
+      </SecurityProvider>
     </AuthProvider>
   );
 };
