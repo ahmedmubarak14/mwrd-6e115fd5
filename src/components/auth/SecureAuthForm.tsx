@@ -70,30 +70,26 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
-      <div className="w-full max-w-md space-y-6">
-        <div className="text-center space-y-4">
-          <Link to="/landing" className="inline-block">
-            <img 
-              src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
-              alt="MWRD Logo" 
-              className="h-16 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg cursor-pointer"
-            />
-          </Link>
-          <div>
-            <h1 className="text-3xl font-bold text-white">Welcome to MWRD</h1>
-            <p className="text-white/80">{getDescription()}</p>
-          </div>
-        </div>
-
+      <div className="w-full max-w-md">
         <Card className="bg-white/5 border border-white/20 backdrop-blur-20">
-          <CardHeader className="space-y-1">
-            <div className="flex items-center gap-2">
+          <CardHeader className="space-y-6 text-center">
+            <Link to="/landing" className="inline-block">
+              <img 
+                src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
+                alt="MWRD Logo" 
+                className="h-16 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg cursor-pointer"
+              />
+            </Link>
+            
+            <div className="space-y-2">
+              <h1 className="text-3xl font-bold text-white">Welcome to MWRD</h1>
+              <p className="text-white/80">{getDescription()}</p>
+            </div>
+            
+            <div className="flex items-center gap-2 justify-center">
               <Shield className="h-5 w-5 text-primary" />
               <CardTitle className="text-2xl text-white">{getTitle()}</CardTitle>
             </div>
-            <CardDescription className="text-white/80">
-              {getDescription()}
-            </CardDescription>
           </CardHeader>
           
           <CardContent className="space-y-4">
