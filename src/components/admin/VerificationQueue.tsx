@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -18,7 +17,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
-import { generateDocumentSignedUrl, verifyFileExists } from '@/utils/documentStorage';
+import { generateDocumentSignedUrl, verifyFileExists, extractFilePath } from '@/utils/documentStorage';
 
 interface VerificationRequest {
   id: string;
@@ -69,7 +68,11 @@ export const VerificationQueue = () => {
       // Check document availability for each request
       transformedData.forEach(async (request) => {
         setDocumentStatus(prev => ({ ...prev, [request.id]: 'checking' }));
-        const verification = await verifyFileExists(request.document_url);
+        
+        // Extract file path from URL or use direct path
+        const filePath = extractFilePath(request.document_url);
+        const verification = await verifyFileExists(filePath);
+        
         setDocumentStatus(prev => ({ 
           ...prev, 
           [request.id]: verification.success ? 'available' : 'missing' 
@@ -92,7 +95,9 @@ export const VerificationQueue = () => {
       return;
     }
 
-    const result = await generateDocumentSignedUrl(filePath);
+    // Extract file path before generating signed URL
+    const actualFilePath = extractFilePath(filePath);
+    const result = await generateDocumentSignedUrl(actualFilePath);
     if (result.success && result.signedUrl) {
       window.open(result.signedUrl, '_blank');
     } else {
@@ -108,7 +113,9 @@ export const VerificationQueue = () => {
       return;
     }
 
-    const result = await generateDocumentSignedUrl(filePath, 300); // 5 minutes for download
+    // Extract file path before generating signed URL
+    const actualFilePath = extractFilePath(filePath);
+    const result = await generateDocumentSignedUrl(actualFilePath, 300); // 5 minutes for download
     if (result.success && result.signedUrl) {
       const link = document.createElement('a');
       link.href = result.signedUrl;
