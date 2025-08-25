@@ -76,6 +76,14 @@ const translations = {
     'common.deselectAll': 'Deselect All',
     'common.profile': 'Profile',
     'common.signOut': 'Sign Out',
+    'common.settings': 'Settings',
+    'common.viewAll': 'View All',
+    'common.filterByStatus': 'Filter by Status',
+    'common.all': 'All',
+    'common.pending': 'Pending',
+    'common.succeeded': 'Succeeded',
+    'common.failed': 'Failed',
+    'common.type': 'Type',
     
     // App
     'app.name': 'MWRD',
@@ -284,6 +292,14 @@ const translations = {
     'common.deselectAll': 'إلغاء اختيار الكل',
     'common.profile': 'الملف الشخصي',
     'common.signOut': 'تسجيل الخروج',
+    'common.settings': 'الإعدادات',
+    'common.viewAll': 'عرض الكل',
+    'common.filterByStatus': 'تصفية حسب الحالة',
+    'common.all': 'الكل',
+    'common.pending': 'قيد الانتظار',
+    'common.succeeded': 'نجح',
+    'common.failed': 'فشل',
+    'common.type': 'النوع',
     
     // App
     'app.name': 'مورد',
