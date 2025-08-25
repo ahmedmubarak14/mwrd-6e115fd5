@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { LanguageProvider } from './contexts/LanguageContext';
@@ -23,8 +22,8 @@ import Vendors from './pages/Vendors';
 import Messages from './pages/Messages';
 import Orders from './pages/Orders';
 import Settings from './pages/Settings';
-import ManageSubscription from './pages/ManageSubscription';
-import Support from './pages/Support';
+import { ManageSubscription } from './pages/ManageSubscription';
+import { Support } from './pages/Support';
 import { AdminDashboardOverview } from './pages/admin/AdminDashboardOverview';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminRequests from './pages/admin/AdminRequests';
