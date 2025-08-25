@@ -139,7 +139,36 @@ export const translations = {
 
     // Profile
     'profile.loading': 'Loading profile...',
-    'profile.loadingDescription': 'Please wait while we load your profile information'
+    'profile.loadingDescription': 'Please wait while we load your profile information',
+
+    // Vendor
+    vendor: {
+      welcome: "Welcome to Vendor Dashboard",
+      subtitle: "Find and submit offers for procurement requests",
+      totalOffers: "Total Offers",
+      acceptedOffers: "Accepted Offers", 
+      pendingOffers: "Pending Offers",
+      submittedThisMonth: "Submitted this month",
+      successRate: "Success Rate",
+      awaitingClientResponse: "Awaiting client response",
+      successfullyWon: "Successfully won",
+      findOpportunities: "Find Opportunities",
+      filterDescription: "Search and filter procurement opportunities that match your expertise",
+      searchRequests: "Search requests...",
+      opportunitiesFound: "opportunities found",
+      availableOpportunities: "Available Opportunities",
+      submitOffersToWin: "Submit competitive offers to win projects",
+      completeVerificationToSubmit: "Complete verification to submit offers",
+      noOpportunities: "No Opportunities Found",
+      noOpportunitiesDesc: "Check back later for new procurement opportunities that match your profile",
+      budget: "Budget",
+      negotiable: "Negotiable",
+      deadline: "Deadline", 
+      posted: "Posted",
+      viewDetails: "View Details",
+      submitOffer: "Submit Offer",
+      verificationRequired: "Verification Required"
+    }
   },
   ar: {
     // Navigation
@@ -275,7 +304,36 @@ export const translations = {
 
     // Profile
     'profile.loading': 'جاري تحميل الملف الشخصي...',
-    'profile.loadingDescription': 'يرجى الانتظار أثناء تحميل معلومات ملفك الشخصي'
+    'profile.loadingDescription': 'يرجى الانتظار أثناء تحميل معلومات ملفك الشخصي',
+
+    // Vendor
+    vendor: {
+      welcome: "مرحباً بك في لوحة تحكم المورد",
+      subtitle: "ابحث عن طلبات التوريد وقدم عروضك",
+      totalOffers: "إجمالي العروض",
+      acceptedOffers: "العروض المقبولة",
+      pendingOffers: "العروض المعلقة", 
+      submittedThisMonth: "المقدمة هذا الشهر",
+      successRate: "معدل النجاح",
+      awaitingClientResponse: "في انتظار رد العميل",
+      successfullyWon: "تم الفوز بها بنجاح",
+      findOpportunities: "البحث عن الفرص",
+      filterDescription: "ابحث وصفي فرص التوريد التي تتناسب مع خبرتك",
+      searchRequests: "البحث في الطلبات...",
+      opportunitiesFound: "فرصة متاحة",
+      availableOpportunities: "الفرص المتاحة",
+      submitOffersToWin: "قدم عروضاً تنافسية للفوز بالمشاريع",
+      completeVerificationToSubmit: "أكمل التحقق لتتمكن من تقديم العروض",
+      noOpportunities: "لا توجد فرص متاحة",
+      noOpportunitiesDesc: "تحقق لاحقاً من وجود فرص توريد جديدة تتناسب مع ملفك الشخصي",
+      budget: "الميزانية",
+      negotiable: "قابل للتفاوض",
+      deadline: "الموعد النهائي",
+      posted: "تاريخ النشر",
+      viewDetails: "عرض التفاصيل",
+      submitOffer: "تقديم عرض",
+      verificationRequired: "التحقق مطلوب"
+    }
   }
 };
 
