@@ -17,7 +17,7 @@ import { ErrorBoundary } from "./components/ErrorBoundary";
 import { LoadingFallback } from "./components/LoadingFallback";
 
 // Lazy load components
-const Landing = lazy(() => import("./pages/Landing"));
+const Landing = lazy(() => import("./pages/Landing").then(module => ({ default: module.default || module.Landing || module })));
 const Login = lazy(() => import("./pages/Login"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const VendorDashboard = lazy(() => import("./pages/VendorDashboard"));
