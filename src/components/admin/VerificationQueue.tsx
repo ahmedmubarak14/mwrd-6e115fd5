@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,10 +13,12 @@ import {
   User, 
   Building,
   FileText,
-  Download
+  Download,
+  AlertTriangle
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
+import { generateDocumentSignedUrl, verifyFileExists } from '@/utils/documentStorage';
 
 interface VerificationRequest {
   id: string;
@@ -40,6 +43,7 @@ export const VerificationQueue = () => {
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState<string | null>(null);
   const [reviewNotes, setReviewNotes] = useState<{ [key: string]: string }>({});
+  const [documentStatus, setDocumentStatus] = useState<{ [key: string]: 'checking' | 'available' | 'missing' }>({});
   const { showSuccess, showError } = useToastFeedback();
 
   const fetchVerificationRequests = async () => {
@@ -61,6 +65,17 @@ export const VerificationQueue = () => {
       }));
       
       setRequests(transformedData);
+
+      // Check document availability for each request
+      transformedData.forEach(async (request) => {
+        setDocumentStatus(prev => ({ ...prev, [request.id]: 'checking' }));
+        const verification = await verifyFileExists(request.document_url);
+        setDocumentStatus(prev => ({ 
+          ...prev, 
+          [request.id]: verification.success ? 'available' : 'missing' 
+        }));
+      });
+
     } catch (error: any) {
       console.error('Error fetching verification requests:', error);
       showError('Failed to load verification requests');
@@ -69,58 +84,38 @@ export const VerificationQueue = () => {
     }
   };
 
-  const generateSignedUrl = async (filePath: string, expiresIn: number = 3600): Promise<string | null> => {
-    try {
-      let actualFilePath = filePath;
+  const handleViewDocument = async (filePath: string, requestId: string) => {
+    const status = documentStatus[requestId];
+    
+    if (status === 'missing') {
+      showError('Document not found in storage. The file may have been deleted or corrupted.');
+      return;
+    }
 
-      // Check if the stored value is a full public URL from old records
-      if (filePath.startsWith('http')) {
-        // Extract the file path from the public URL format:
-        // https://jpxqywtitjjphkiuokov.supabase.co/storage/v1/object/public/chat-files/path/to/file.ext
-        const urlParts = filePath.split('/storage/v1/object/public/chat-files/');
-        if (urlParts.length === 2) {
-          actualFilePath = urlParts[1];
-          console.log('Extracted file path from public URL:', actualFilePath);
-        } else {
-          console.error('Unable to extract file path from URL:', filePath);
-          showError('Invalid document URL format');
-          return null;
-        }
-      }
-
-      // Generate signed URL for the file path
-      const { data, error } = await supabase.storage
-        .from('chat-files')
-        .createSignedUrl(actualFilePath, expiresIn);
-
-      if (error) {
-        console.error('Error creating signed URL:', error);
-        showError('Failed to generate document access URL');
-        return null;
-      }
-
-      return data.signedUrl;
-    } catch (error: any) {
-      console.error('Error generating signed URL:', error);
-      showError('Failed to access document');
-      return null;
+    const result = await generateDocumentSignedUrl(filePath);
+    if (result.success && result.signedUrl) {
+      window.open(result.signedUrl, '_blank');
+    } else {
+      showError(result.error || 'Failed to access document');
     }
   };
 
-  const handleViewDocument = async (filePath: string) => {
-    const signedUrl = await generateSignedUrl(filePath);
-    if (signedUrl) {
-      window.open(signedUrl, '_blank');
+  const handleDownloadDocument = async (filePath: string, companyName?: string, requestId?: string) => {
+    const status = requestId ? documentStatus[requestId] : undefined;
+    
+    if (status === 'missing') {
+      showError('Document not found in storage. Cannot download missing file.');
+      return;
     }
-  };
 
-  const handleDownloadDocument = async (filePath: string, companyName?: string) => {
-    const signedUrl = await generateSignedUrl(filePath, 300); // 5 minutes for download
-    if (signedUrl) {
+    const result = await generateDocumentSignedUrl(filePath, 300); // 5 minutes for download
+    if (result.success && result.signedUrl) {
       const link = document.createElement('a');
-      link.href = signedUrl;
+      link.href = result.signedUrl;
       link.download = `CR_${companyName || 'document'}.pdf`;
       link.click();
+    } else {
+      showError(result.error || 'Failed to download document');
     }
   };
 
@@ -160,6 +155,21 @@ export const VerificationQueue = () => {
         return <Badge variant="outline">Under Review</Badge>;
       default:
         return <Badge variant="secondary">Pending</Badge>;
+    }
+  };
+
+  const getDocumentStatusIndicator = (requestId: string) => {
+    const status = documentStatus[requestId];
+    
+    switch (status) {
+      case 'checking':
+        return <Badge variant="outline">Checking...</Badge>;
+      case 'available':
+        return <Badge variant="default" className="bg-green-500">Available</Badge>;
+      case 'missing':
+        return <Badge variant="destructive">Missing</Badge>;
+      default:
+        return <Badge variant="secondary">Unknown</Badge>;
     }
   };
 
@@ -225,15 +235,31 @@ export const VerificationQueue = () => {
                       <Clock className="h-4 w-4" />
                       <span>Submitted: {new Date(request.submitted_at).toLocaleDateString()}</span>
                     </div>
+
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium">Document Status:</span>
+                      {getDocumentStatusIndicator(request.id)}
+                    </div>
                   </div>
                 </div>
+
+                {documentStatus[request.id] === 'missing' && (
+                  <Alert variant="destructive" className="mb-4">
+                    <AlertTriangle className="h-4 w-4" />
+                    <AlertDescription>
+                      <strong>Warning:</strong> The uploaded document file is missing from storage. 
+                      This request may need to be rejected and the user asked to re-upload their document.
+                    </AlertDescription>
+                  </Alert>
+                )}
 
                 <div className="space-y-4">
                   <div className="flex gap-2">
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => handleViewDocument(request.document_url)}
+                      onClick={() => handleViewDocument(request.document_url, request.id)}
+                      disabled={documentStatus[request.id] === 'missing'}
                     >
                       <Eye className="h-4 w-4 mr-1" />
                       View Document
@@ -242,7 +268,12 @@ export const VerificationQueue = () => {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => handleDownloadDocument(request.document_url, request.user_profiles?.company_name)}
+                      onClick={() => handleDownloadDocument(
+                        request.document_url, 
+                        request.user_profiles?.company_name,
+                        request.id
+                      )}
+                      disabled={documentStatus[request.id] === 'missing'}
                     >
                       <Download className="h-4 w-4 mr-1" />
                       Download
@@ -261,7 +292,7 @@ export const VerificationQueue = () => {
                       <div className="flex gap-2">
                         <Button
                           onClick={() => handleStatusUpdate(request.id, 'approved')}
-                          disabled={processing === request.id}
+                          disabled={processing === request.id || documentStatus[request.id] === 'missing'}
                           size="sm"
                           className="bg-green-500 hover:bg-green-600"
                         >
@@ -280,7 +311,13 @@ export const VerificationQueue = () => {
                         </Button>
                       </div>
                       
-                      {!reviewNotes[request.id]?.trim() && (
+                      {documentStatus[request.id] === 'missing' && (
+                        <p className="text-sm text-destructive">
+                          Note: Cannot approve request with missing document. Consider rejecting and asking user to re-upload.
+                        </p>
+                      )}
+                      
+                      {!reviewNotes[request.id]?.trim() && documentStatus[request.id] !== 'missing' && (
                         <p className="text-sm text-muted-foreground">
                           Note: Rejection requires review notes to inform the client.
                         </p>

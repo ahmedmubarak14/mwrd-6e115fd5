@@ -7,6 +7,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Upload, FileText, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
 import { supabase } from '@/integrations/supabase/client';
+import { uploadDocument } from '@/utils/documentStorage';
 
 interface CRDocumentUploadProps {
   onUploadSuccess?: (documentUrl: string) => void;
@@ -46,26 +47,6 @@ export const CRDocumentUpload = ({
     }
   };
 
-  const verifyFileExists = async (filePath: string): Promise<boolean> => {
-    try {
-      const { data, error } = await supabase.storage
-        .from('chat-files')
-        .list(filePath.substring(0, filePath.lastIndexOf('/')), {
-          search: filePath.substring(filePath.lastIndexOf('/') + 1)
-        });
-      
-      if (error) {
-        console.error('Error verifying file:', error);
-        return false;
-      }
-      
-      return data && data.length > 0;
-    } catch (error) {
-      console.error('Error during file verification:', error);
-      return false;
-    }
-  };
-
   const handleUpload = async () => {
     if (!file) return;
 
@@ -77,53 +58,36 @@ export const CRDocumentUpload = ({
         return;
       }
 
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${user.id}/cr-documents/${Date.now()}.${fileExt}`;
+      console.log('Starting upload process for user:', user.id);
 
-      console.log('Starting upload to:', fileName);
-
-      // Upload file to storage
-      const { data, error } = await supabase.storage
-        .from('chat-files')
-        .upload(fileName, file, {
-          cacheControl: '3600',
-          upsert: false
-        });
-
-      if (error) {
-        console.error('Upload error:', error);
-        throw new Error(`Upload failed: ${error.message}`);
+      // Use the new document storage utility
+      const uploadResult = await uploadDocument(file, user.id, 'cr-documents');
+      
+      if (!uploadResult.success) {
+        throw new Error(uploadResult.error || 'Upload failed');
       }
 
-      console.log('Upload successful, file path:', data.path);
+      console.log('Upload successful, saving to database:', uploadResult.filePath);
 
-      // Verify the file actually exists
-      const fileExists = await verifyFileExists(data.path);
-      if (!fileExists) {
-        throw new Error('File upload completed but file verification failed');
-      }
-
-      console.log('File verification successful');
-
-      // Store the file path (not public URL) in verification_requests
+      // Store the verification request in database
       const { error: insertError } = await supabase
         .from('verification_requests')
         .insert({
           user_id: user.id,
           document_type: 'commercial_registration',
-          document_url: data.path, // Store file path for private bucket
+          document_url: uploadResult.filePath!, // Store file path for private bucket
           status: 'pending'
         });
 
       if (insertError) {
         console.error('Database insert error:', insertError);
-        // If database insert fails, try to clean up the uploaded file
-        await supabase.storage.from('chat-files').remove([data.path]);
+        // Clean up the uploaded file if database insert fails
+        await supabase.storage.from('chat-files').remove([uploadResult.filePath!]);
         throw new Error(`Failed to save verification request: ${insertError.message}`);
       }
 
       showSuccess('Commercial Registration uploaded successfully');
-      onUploadSuccess?.(data.path);
+      onUploadSuccess?.(uploadResult.filePath!);
       setFile(null);
 
       // Reset file input
