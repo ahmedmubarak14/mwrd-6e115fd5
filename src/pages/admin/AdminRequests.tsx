@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -22,9 +21,9 @@ interface AdminRequest {
   currency?: string;
   location?: string;
   deadline?: string;
-  urgency: 'low' | 'medium' | 'high' | 'urgent';
-  status: 'new' | 'in_progress' | 'completed' | 'cancelled';
-  admin_approval_status: 'pending' | 'approved' | 'rejected';
+  urgency: string;
+  status: string;
+  admin_approval_status: string;
   created_at: string;
   updated_at: string;
   client_id: string;
@@ -70,7 +69,7 @@ const AdminRequests = () => {
         }
       }));
 
-      setRequests(transformedData);
+      setRequests(transformedData as AdminRequest[]);
     } catch (error) {
       console.error('Error fetching requests:', error);
       toast({

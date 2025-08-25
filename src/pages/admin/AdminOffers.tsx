@@ -19,9 +19,9 @@ interface AdminOffer {
   price: number;
   currency: string;
   delivery_time_days: number;
-  status: 'pending' | 'accepted' | 'rejected';
-  client_approval_status: 'pending' | 'approved' | 'rejected';
-  admin_approval_status: 'pending' | 'approved' | 'rejected';
+  status: string;
+  client_approval_status: string;
+  admin_approval_status: string;
   created_at: string;
   updated_at: string;
   vendor_id: string;
@@ -88,7 +88,7 @@ const AdminOffers = () => {
         })
       );
 
-      setOffers(enrichedOffers);
+      setOffers(enrichedOffers as AdminOffer[]);
     } catch (error) {
       console.error('Error fetching offers:', error);
       toast({
@@ -139,7 +139,6 @@ const AdminOffers = () => {
         .insert([{
           user_id: user?.id,
           subject: `Offer Issue - ${type.charAt(0).toUpperCase() + type.slice(1)}`,
-          message: `Admin escalation for offer: ${offer.title} (ID: ${offerId})`,
           category: 'offer_issue',
           priority: 'high',
           status: 'open'
@@ -166,10 +165,11 @@ const AdminOffers = () => {
       const { data, error } = await supabase
         .from('conversations')
         .insert([{
-          participants: [user?.id, vendorId, clientId],
-          type: 'group',
-          title: `Offer Discussion - ${offerId}`,
-          admin_initiated: true
+          client_id: clientId,
+          vendor_id: vendorId,
+          offer_id: offerId,
+          status: 'active',
+          conversation_type: 'business'
         }])
         .select()
         .single();
@@ -182,6 +182,7 @@ const AdminOffers = () => {
         .insert([{
           conversation_id: data.id,
           sender_id: user?.id,
+          recipient_id: vendorId,
           content: 'Admin has initiated this conversation regarding the offer. Please discuss any concerns or questions here.',
           message_type: 'text'
         }]);
@@ -544,7 +545,6 @@ const AdminOffers = () => {
         <TabsContent value="pending" className="space-y-4">
           {pendingOffers.map((offer) => (
             <Card key={offer.id}>
-              {/* Same offer card structure but filtered for pending */}
               <CardContent className="p-4">
                 <div className="text-sm text-muted-foreground mb-2">
                   {offer.title} - Pending admin approval since {format(new Date(offer.created_at), 'MMM dd, yyyy')}

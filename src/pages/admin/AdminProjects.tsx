@@ -16,12 +16,12 @@ interface AdminProject {
   id: string;
   title: string;
   description?: string;
-  status: 'draft' | 'active' | 'completed' | 'cancelled' | 'on_hold';
+  status: string;
   budget_total?: number;
   currency?: string;
   start_date?: string;
   end_date?: string;
-  priority: 'low' | 'medium' | 'high' | 'urgent';
+  priority: string;
   category?: string;
   location?: string;
   created_at: string;
@@ -72,7 +72,7 @@ const AdminProjects = () => {
         }
       }));
 
-      setProjects(transformedData);
+      setProjects(transformedData as AdminProject[]);
     } catch (error) {
       console.error('Error fetching projects:', error);
       toast({
@@ -85,7 +85,7 @@ const AdminProjects = () => {
     }
   };
 
-  const updateProjectStatus = async (projectId: string, status: AdminProject['status']) => {
+  const updateProjectStatus = async (projectId: string, status: string) => {
     try {
       const { error } = await supabase
         .from('projects')
