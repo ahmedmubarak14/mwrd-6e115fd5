@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -23,7 +24,7 @@ export const AuthRedirect = () => {
       const targetPath = location.state?.from?.pathname;
       
       // If there's a specific path they were trying to access, go there
-      if (targetPath && targetPath !== '/auth') {
+      if (targetPath && targetPath !== '/login' && targetPath !== '/auth') {
         navigate(targetPath, { replace: true });
         return;
       }

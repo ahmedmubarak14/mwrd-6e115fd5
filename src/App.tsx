@@ -1,5 +1,4 @@
 
-
 import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -19,7 +18,7 @@ import { LoadingFallback } from "./components/LoadingFallback";
 
 // Lazy load components
 const Index = lazy(() => import("./pages/Index"));
-const Auth = lazy(() => import("./pages/Auth"));
+const Login = lazy(() => import("./pages/Login"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const VendorDashboard = lazy(() => import("./pages/VendorDashboard"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
@@ -56,10 +55,10 @@ function App() {
                           {/* Public Routes */}
                           <Route path="/" element={<Index />} />
                           
-                          {/* Auth Routes */}
-                          <Route path="/auth" element={
+                          {/* Login Route */}
+                          <Route path="/login" element={
                             <PublicRoute>
-                              <Auth />
+                              <Login />
                             </PublicRoute>
                           } />
                           
@@ -135,6 +134,9 @@ function App() {
 
                           {/* Auth Redirect */}
                           <Route path="/auth-redirect" element={<AuthRedirect />} />
+                          
+                          {/* Redirect /auth to /login for backward compatibility */}
+                          <Route path="/auth" element={<Navigate to="/login" replace />} />
                           
                           {/* 404 Route */}
                           <Route path="/404" element={<NotFound />} />
