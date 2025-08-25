@@ -1,564 +1,688 @@
 
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalAuth } from "@/contexts/useOptionalAuth";
+import { Sidebar } from "@/components/ui/layout/Sidebar";
+import { Sheet } from "@/components/ui/sheet";
+import { MobileSheet } from "@/components/ui/MobileSheet";
+import { useState } from "react";
 import { 
+  ArrowRight, 
+  Users, 
   Shield, 
   Zap, 
-  Users, 
-  Clock, 
+  TrendingUp, 
+  Star, 
+  Building2, 
   CheckCircle, 
-  Star,
-  ArrowRight,
-  Building,
-  UserCheck,
-  Award,
-  TrendingUp,
+  BarChart3, 
+  HeartHandshake, 
+  Sparkles, 
+  Search,
+  Handshake,
+  CreditCard,
+  Target,
+  Rocket,
   Globe,
-  Phone,
-  Mail,
-  MapPin,
-  Facebook,
-  Twitter,
-  Linkedin,
-  Instagram
-} from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { InteractiveDemo } from '@/components/demo/InteractiveDemo';
+  Award,
+  FileText,
+  MessageSquare,
+  Package,
+  ThumbsUp,
+  Briefcase,
+  Eye,
+  DollarSign,
+  Clock,
+  UserPlus,
+  Menu,
+  Settings,
+  Database,
+  Workflow,
+  PieChart,
+  Users2
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import { MobileNavigation } from "@/components/layout/MobileNavigation";
+import { BackToTop } from "@/components/ui/BackToTop";
+import { SmoothScroll } from "@/components/ui/SmoothScroll";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { Footer } from "@/components/ui/layout/Footer";
+import { cn } from "@/lib/utils";
 
 export const Landing = () => {
-  const [isDemoOpen, setIsDemoOpen] = useState(false);
+  const { t, language } = useLanguage();
+  const auth = useOptionalAuth();
+  const user = auth?.user;
+  const userProfile = auth?.userProfile;
+  const loading = auth?.loading;
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const isRTL = language === 'ar';
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <LoadingSpinner 
+          size="lg" 
+          text={language === 'ar' ? 'جاري التحميل...' : 'Loading...'} 
+          className="animate-fade-in" 
+        />
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <div className="flex items-center">
+    <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] overflow-hidden">
+      <SmoothScroll />
+      
+      {/* Show sidebar for logged-in users */}
+      {user && userProfile && (
+        <>
+          {/* Mobile Sidebar */}
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <MobileSheet>
+              <Sidebar userRole={userProfile.role} userProfile={userProfile} />
+            </MobileSheet>
+          </Sheet>
+          
+          {/* Desktop Sidebar - Fixed positioning */}
+          <div className="fixed left-0 top-0 bottom-0 z-40 hidden lg:block">
+            <div className="w-64 h-full">
+              <Sidebar userRole={userProfile.role} userProfile={userProfile} />
+            </div>
+          </div>
+        </>
+      )}
+      
+      {/* Ultra-Modern Header */}
+      <header className={cn(
+        "fixed top-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-white/10 bg-white/10",
+        user && userProfile ? "left-0 lg:left-64" : "left-0"
+      )}>
+        <div className="container mx-auto px-6 h-20 flex items-center justify-between">
+          {/* Mobile menu button for logged-in users */}
+          {user && userProfile && (
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="lg:hidden p-2 text-white hover:bg-white/10"
+              onClick={() => setMobileMenuOpen(true)}
+            >
+              <Menu className="h-6 w-6" />
+            </Button>
+          )}
+          
+          <div className={`${language === 'ar' ? 'order-3' : 'order-1'} ${user && userProfile ? 'lg:hidden' : ''}`}>
+            <Link to={user && userProfile ? "/dashboard" : "/"} className="flex items-center gap-3 group">
               <img 
                 src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
                 alt="MWRD Logo" 
-                className="h-10 w-auto"
+                className="h-14 w-auto transition-all duration-500 group-hover:scale-110 drop-shadow-2xl" 
               />
-            </div>
+            </Link>
+          </div>
 
-            {/* Navigation Links */}
-            <div className="hidden md:flex items-center space-x-8">
-              <Link to="/why-start-with-mwrd" className="text-gray-700 hover:text-primary transition-colors">
-                Why Start with Us
+          {/* Desktop Navigation Menu - Hide for logged-in users since they have sidebar */}
+          {!user && (
+            <nav className={`hidden lg:flex items-center gap-6 ${language === 'ar' ? 'order-1' : 'order-2'}`}>
+              <Link to="/why-start-with-mwrd" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+                {language === 'ar' ? 'لماذا نبدأ معنا' : 'Why Start with Us'}
               </Link>
-              <Link to="/what-makes-us-unique" className="text-gray-700 hover:text-primary transition-colors">
-                What Makes Us Unique
+              <Link to="/what-makes-us-unique" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+                {language === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
               </Link>
-              <Link to="/why-move-to-mwrd" className="text-gray-700 hover:text-primary transition-colors">
-                Why Move to Us
+              <Link to="/why-move-to-mwrd" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+                {language === 'ar' ? 'لماذا الانتقال إلينا' : 'Why Move to Us'}
               </Link>
-              <Link to="/pricing" className="text-gray-700 hover:text-primary transition-colors">
-                Pricing
+              <Link to="/pricing" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+                {language === 'ar' ? 'الأسعار' : 'Pricing'}
               </Link>
+            </nav>
+          )}
+          
+          <div className={`flex items-center gap-4 ${language === 'ar' ? 'flex-row-reverse order-2' : 'order-3'}`}>
+            <div className="hidden md:block">
+              <LanguageSwitcher />
             </div>
-
-            {/* Auth Buttons */}
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" asChild>
-                <Link to="/login">Sign In</Link>
-              </Button>
-              <Button asChild>
-                <Link to="/register">Get Started</Link>
-              </Button>
-            </div>
+            {user && userProfile ? (
+              <Link to="/dashboard" className="hidden md:block">
+                <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
+                  {language === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
+                </Button>
+              </Link>
+            ) : (
+              <>
+                <Link to="/enhanced-login" className="hidden md:block">
+                  <Button variant="ghost" size="lg" className="px-6 bg-white/5 border border-white/20 text-white transition-all duration-300 backdrop-blur-15">
+                    {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
+                  </Button>
+                </Link>
+                <Link to="/enhanced-register" className="hidden md:block">
+                  <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
+                    {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
+                  </Button>
+                </Link>
+              </>
+            )}
+            {/* Mobile Navigation - Only show for non-logged-in users */}
+            {!user && <MobileNavigation />}
           </div>
         </div>
-      </nav>
+      </header>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden pt-16 pb-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <Badge className="w-fit bg-primary/10 text-primary border-primary/20">
-                  🚀 Transform Your Business Operations
-                </Badge>
-                <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                  The Future of
-                  <span className="text-primary block">
-                    Business Procurement
-                  </span>
+      <section className={cn(
+        "relative min-h-screen flex items-center overflow-hidden",
+        user && userProfile ? "lg:pl-64" : ""
+      )}>
+        <div className="container mx-auto px-6 pt-20 pb-16 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto">
+            
+            {/* Left Content */}
+            <div className={`${language === 'ar' ? 'lg:order-2 text-right' : 'lg:order-1'} space-y-8`}>
+              
+              {/* Badge */}
+              <div className="inline-block">
+                <div className="px-4 py-2 text-sm text-white rounded-full bg-white/10 border border-white/30 backdrop-blur-20">
+                  {language === 'ar' ? '🚀 منصة المشتريات الذكية' : '🚀 Smart Procurement Platform'}
+                </div>
+              </div>
+
+              {/* Main Brand */}
+              <div className="space-y-3">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-black">
+                  <span className="text-white">MWRD</span>
+                  <span className="text-white"> | {language === 'ar' ? 'مورد' : 'مورد'}</span>
                 </h1>
-                <p className="text-xl text-gray-600 max-w-lg">
-                  Connect with verified vendors, streamline your procurement process, 
-                  and grow your business with our intelligent matching platform.
+                <p className="text-base text-white font-medium">
+                  {language === 'ar' ? 'منصة ذكية تربط الشركات بأفضل الموردين في المملكة العربية السعودية' : 'Smart platform connecting businesses with top suppliers in Saudi Arabia'}
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="text-lg px-8" asChild>
-                  <Link to="/register">
-                    Start Free Trial <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
-                </Button>
-                <Button size="lg" variant="outline" className="text-lg px-8" onClick={() => setIsDemoOpen(true)}>
-                  Watch Demo
-                </Button>
+              {/* Hero Headline */}
+              <div className="space-y-4">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight">
+                  {language === 'ar' ? 'تواصل. مصدر. وريد.' : 'Connect. Source. Supply.'}
+                </h2>
+                <p className="text-base text-white leading-relaxed max-w-2xl">
+                  {language === 'ar' 
+                    ? 'منصة B2B مهنية تربط العملاء بالموردين المؤهلين من خلال نظام طلب عروض الأسعار الذكي. احصل على عروض أسعار تنافسية، وقارن المقترحات، وأدر سلسلة التوريد الخاصة بك بكفاءة.'
+                    : 'A professional B2B marketplace connecting clients with qualified vendors through our smart RFQ system. Get competitive quotes, compare proposals, and manage your supply chain efficiently.'}
+                </p>
               </div>
 
-              {/* Social Proof */}
-              <div className="flex items-center space-x-6 pt-4">
-                <div className="flex -space-x-2">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 border-2 border-white" />
+              {/* Action Button */}
+              <div className="flex justify-center sm:justify-start">
+                <Link to="/enhanced-register" className="group">
+                  <Button size="lg" className="px-8 py-3 text-base font-semibold transition-all duration-300 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
+                    {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Features List */}
+              <div className="space-y-4">
+                {[
+                  { text: language === 'ar' ? 'أرسل طلبات عروض الأسعار واحصل على عروض تنافسية' : 'Submit RFQs and receive competitive bids' },
+                  { text: language === 'ar' ? 'تواصل مع موردين معتمدين في قطاعك' : 'Connect with verified vendors in your sector' },
+                  { text: language === 'ar' ? 'معاملات آمنة وتتبع الطلبات' : 'Secure transactions and order tracking' }
+                ].map((feature, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <CheckCircle className="h-5 w-5 text-green-400 flex-shrink-0" />
+                    <span className="text-white">{feature.text}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Trust Badge */}
+              <div className="pt-8">
+                <p className="text-white text-sm mb-2">
+                  {language === 'ar' ? 'موثوق من قبل أكثر من 500+ شركة' : 'Trusted by 500+ businesses'}
+                </p>
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
-                <div className="text-sm text-gray-600">
-                  <span className="font-semibold">2,500+</span> businesses trust MWRD
-                </div>
               </div>
             </div>
 
-            {/* Interactive Demo Placeholder */}
-            <div className="lg:pl-12">
-              <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-8 text-center">
-                <h3 className="text-2xl font-bold mb-4">Interactive Platform Demo</h3>
-                <p className="text-gray-600 mb-6">Experience MWRD's powerful features in action</p>
-                <Button onClick={() => setIsDemoOpen(true)} className="bg-primary hover:bg-primary/90">
-                  Launch Interactive Demo
+            {/* Right Stats Cards */}
+            <div className={`${language === 'ar' ? 'lg:order-1' : 'lg:order-2'} space-y-6`}>
+              {[
+                { 
+                  icon: FileText, 
+                  title: language === 'ar' ? 'نظام طلب التسعير' : 'RFQ System',
+                  subtitle: language === 'ar' ? 'عروض ذكية' : 'Smart bidding',
+                  count: "24", 
+                  label: language === 'ar' ? 'طلبات نشطة' : 'Active RFQs', 
+                  color: '#8B5CF6',
+                  progress: 60
+                },
+                { 
+                  icon: Users, 
+                  title: language === 'ar' ? 'الموردون' : 'Vendors',
+                  subtitle: language === 'ar' ? 'موردون موثقون' : 'Verified vendors',
+                  count: "1,247", 
+                  label: language === 'ar' ? 'موردون نشطون' : 'Active vendors', 
+                  color: '#3B82F6',
+                  progress: 85
+                },
+                { 
+                  icon: Shield, 
+                  title: language === 'ar' ? 'آمان' : 'Secure',
+                  subtitle: language === 'ar' ? 'معاملات موثقة' : 'Verified transactions',
+                  count: "99.9%", 
+                  label: language === 'ar' ? 'معدل النجاح' : 'Success rate', 
+                  color: '#10B981',
+                  progress: 99
+                },
+                { 
+                  icon: Clock, 
+                  title: language === 'ar' ? 'سريع' : 'Fast',
+                  subtitle: language === 'ar' ? 'متوسط الاستجابة' : 'Average response',
+                  count: "4.2h", 
+                  label: language === 'ar' ? 'وقت استجابة العرض' : 'Bid response time', 
+                  color: '#F59E0B',
+                  progress: 70
+                }
+              ].map((stat, index) => (
+                <Card key={index} className="p-3 hover:scale-105 transition-all duration-300 animate-fade-in bg-white/5 border border-white/20 backdrop-blur-20" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="flex items-start gap-2">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${stat.color}20`, border: `1px solid ${stat.color}40` }}>
+                      <stat.icon className="h-4 w-4" style={{ color: stat.color }} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1">
+                        <h3 className="font-semibold text-white text-sm">{stat.title}</h3>
+                      </div>
+                      <p className="text-xs text-white mb-1">{stat.subtitle}</p>
+                      <div className="flex items-end justify-between">
+                        <div>
+                          <div className="text-lg font-black text-white mb-1">{stat.count}</div>
+                          <div className="text-xs text-white">{stat.label}</div>
+                        </div>
+                      </div>
+                      <div className="w-full bg-white/10 rounded-full h-1 mt-2">
+                        <div 
+                          className="h-1 rounded-full transition-all duration-1000" 
+                          style={{ 
+                            backgroundColor: stat.color, 
+                            width: `${stat.progress}%`
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Revolutionary Workflow Section */}
+      <section className="py-32 px-6 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, #004F54 2px, transparent 2px)`, backgroundSize: '50px 50px' }}></div>
+        </div>
+
+        <div className="container mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
+              {language === 'ar' ? 'كيف نعيد تشكيل المشتريات التجارية؟' : 'How We\'re Reshaping B2B Procurement'}
+            </h2>
+            <p className="text-lg max-w-3xl mx-auto font-light text-white">
+              {language === 'ar' 
+                ? 'نظام ثوري يدمج الذكاء الاصطناعي مع سوق المشتريات التجارية لتقديم تجربة لا مثيل لها'
+                : 'A revolutionary system that merges AI with B2B procurement marketplace to deliver an unmatched experience'}
+            </p>
+          </div>
+
+          <div className="max-w-7xl mx-auto">
+            {/* Revolutionary Step System */}
+            <div className="relative">
+              {/* Animated Connection Line */}
+              <div className="absolute left-1/2 top-0 bottom-0 w-2 bg-gradient-to-b from-[#102C33] via-[#004F54] to-[#765A3F] transform -translate-x-1/2 hidden lg:block rounded-full shadow-2xl"></div>
+
+              {/* Step 1: AI-Powered Discovery */}
+              <div className="relative mb-32 group">
+                <div className="flex flex-col lg:flex-row items-center gap-16">
+                  <div className="lg:w-1/2 lg:pr-16">
+                     <Card className="p-4 hover:shadow-2xl transition-all duration-700 hover:scale-105 rounded-2xl bg-white/5 border border-white/20 backdrop-blur-20">
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#102C33] to-[#004F54] rounded-2xl flex items-center justify-center shadow-xl border border-white/20 backdrop-blur-20">
+                          <Search className="h-6 w-6 text-white" />
+                        </div>
+                        <div>
+                          <span className="text-2xl font-black text-white">01</span>
+                          <h3 className="text-xl font-bold text-white">
+                            {language === 'ar' ? 'اكتشاف ذكي' : 'AI-Powered Discovery'}
+                          </h3>
+                        </div>
+                      </div>
+                      <p className="text-base leading-relaxed font-medium text-white">
+                        {language === 'ar' 
+                          ? 'تقنية الذكاء الاصطناعي تحلل احتياجاتك وتوصلك بأفضل الموردين في ثوانٍ. اكتشف فرصاً لم تتخيلها من قبل'
+                          : 'AI technology analyzes your needs and connects you with the best vendors in seconds. Discover opportunities you never imagined'}
+                      </p>
+                    </Card>
+                  </div>
+                  <div className="lg:w-1/2 lg:pl-16">
+                    <div className="grid grid-cols-2 gap-6">
+                      {[
+                        { icon: Target, label: language === 'ar' ? 'دقة 99%' : '99% Accuracy', color: '#102C33' },
+                        { icon: Zap, label: language === 'ar' ? 'استجابة فورية' : 'Instant Response', color: '#004F54' },
+                        { icon: Eye, label: language === 'ar' ? 'رؤى متقدمة' : 'Advanced Insights', color: '#765A3F' },
+                        { icon: TrendingUp, label: language === 'ar' ? 'نمو مضمون' : 'Guaranteed Growth', color: '#102C33' }
+                       ].map((feature, index) => (
+                        <Card key={index} className="p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl bg-white/5 border border-white/20 backdrop-blur-15">
+                          <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
+                          <div className="text-sm font-bold text-white">{feature.label}</div>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 2: Seamless Negotiation */}
+              <div className="relative mb-32 group">
+                <div className="flex flex-col lg:flex-row-reverse items-center gap-16">
+                  <div className="lg:w-1/2 lg:pl-16">
+                    <Card className="p-4 hover:shadow-2xl transition-all duration-700 hover:scale-105 rounded-2xl bg-white/5 border border-white/20 backdrop-blur-20">
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#102C33] to-[#004F54] rounded-2xl flex items-center justify-center shadow-xl border border-white/20 backdrop-blur-20">
+                          <MessageSquare className="h-6 w-6 text-white" />
+                        </div>
+                        <div>
+                          <span className="text-2xl font-black text-white">02</span>
+                          <h3 className="text-xl font-bold text-white">
+                            {language === 'ar' ? 'تفاوض سلس' : 'Seamless Negotiation'}
+                          </h3>
+                        </div>
+                      </div>
+                      <p className="text-base leading-relaxed font-medium text-white">
+                        {language === 'ar' 
+                          ? 'أدوات تفاوض متطورة تسهل التواصل المباشر مع الموردين وتضمن أفضل الصفقات'
+                          : 'Advanced negotiation tools facilitate direct communication with vendors and ensure the best deals'}
+                      </p>
+                    </Card>
+                  </div>
+                  <div className="lg:w-1/2 lg:pr-16">
+                    <div className="grid grid-cols-2 gap-6">
+                      {[
+                        { icon: MessageSquare, label: language === 'ar' ? 'دردشة مباشرة' : 'Real-time Chat', color: '#102C33' },
+                        { icon: FileText, label: language === 'ar' ? 'مشاركة المستندات' : 'Document Sharing', color: '#004F54' },
+                        { icon: BarChart3, label: language === 'ar' ? 'مقارنة الأسعار' : 'Price Comparison', color: '#765A3F' },
+                        { icon: Handshake, label: language === 'ar' ? 'اتفاقيات آمنة' : 'Secure Agreements', color: '#102C33' }
+                      ].map((feature, index) => (
+                        <Card key={index} className="p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl bg-white/5 border border-white/20 backdrop-blur-15">
+                          <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
+                          <div className="text-sm font-bold text-white">{feature.label}</div>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 3: Secure Completion */}
+              <div className="relative mb-16 group">
+                <div className="flex flex-col lg:flex-row items-center gap-16">
+                  <div className="lg:w-1/2 lg:pr-16">
+                    <Card className="p-4 hover:shadow-2xl transition-all duration-700 hover:scale-105 rounded-2xl bg-white/5 border border-white/20 backdrop-blur-20">
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#102C33] to-[#004F54] rounded-2xl flex items-center justify-center shadow-xl border border-white/20 backdrop-blur-20">
+                          <Shield className="h-6 w-6 text-white" />
+                        </div>
+                        <div>
+                          <span className="text-2xl font-black text-white">03</span>
+                          <h3 className="text-xl font-bold text-white">
+                            {language === 'ar' ? 'إنجاز آمن' : 'Secure Completion'}
+                          </h3>
+                        </div>
+                      </div>
+                      <p className="text-base leading-relaxed font-medium text-white">
+                        {language === 'ar' 
+                          ? 'نظام دفع آمن وتتبع الطلبات يضمن وصول منتجاتك في الوقت المحدد بأعلى جودة'
+                          : 'Secure payment system and order tracking ensures your products arrive on time with the highest quality'}
+                      </p>
+                    </Card>
+                  </div>
+                  <div className="lg:w-1/2 lg:pl-16">
+                    <div className="grid grid-cols-2 gap-6">
+                      {[
+                        { icon: CreditCard, label: language === 'ar' ? 'حماية الدفع' : 'Payment Protection', color: '#102C33' },
+                        { icon: Award, label: language === 'ar' ? 'ضمان الجودة' : 'Quality Assurance', color: '#004F54' },
+                        { icon: Package, label: language === 'ar' ? 'تتبع التسليم' : 'Delivery Tracking', color: '#765A3F' },
+                        { icon: ThumbsUp, label: language === 'ar' ? 'رضا مضمون' : 'Guaranteed Satisfaction', color: '#102C33' }
+                      ].map((feature, index) => (
+                        <Card key={index} className="p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl bg-white/5 border border-white/20 backdrop-blur-15">
+                          <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
+                          <div className="text-sm font-bold text-white">{feature.label}</div>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Smart Platform Section */}
+      <section className="py-32 px-6 relative overflow-hidden">
+        <div className="container mx-auto relative z-10">
+          <div className="text-center mb-20">
+            <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
+              {language === 'ar' ? 'منصتنا الذكية' : 'Our Smart Platform'}
+            </h2>
+            <p className="text-lg max-w-3xl mx-auto font-light text-white">
+              {language === 'ar' 
+                ? 'كل ما تحتاجه لإدارة المشتريات بكفاءة'
+                : 'Everything you need to manage procurement efficiently.'}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+            {[
+              {
+                icon: Database,
+                title: language === 'ar' ? 'منصة شاملة' : 'All-in-One Platform',
+                desc: language === 'ar' ? 'إدارة الموردين والطلبات والمشاريع والمدفوعات في مكان واحد' : 'Manage suppliers, requests, projects, and payments in one place.',
+                color: '#102C33'
+              },
+              {
+                icon: Workflow,
+                title: language === 'ar' ? 'سير عمل آلي' : 'Automated Workflows',
+                desc: language === 'ar' ? 'تبسيط العمليات وتقليل الجهد اليدوي' : 'Streamline processes and reduce manual effort.',
+                color: '#004F54'
+              },
+              {
+                icon: PieChart,
+                title: language === 'ar' ? 'تحليلات متقدمة' : 'Advanced Analytics',
+                desc: language === 'ar' ? 'احصل على رؤى قيمة لتحسين الأداء واتخاذ قرارات مدروسة' : 'Gain valuable insights to improve performance and make informed decisions.',
+                color: '#765A3F'
+              },
+              {
+                icon: Users2,
+                title: language === 'ar' ? 'تعاون سلس' : 'Seamless Collaboration',
+                desc: language === 'ar' ? 'تواصل وتعاون مع الموردين والعملاء بكفاءة' : 'Communicate and collaborate with suppliers and clients efficiently.',
+                color: '#102C33'
+              }
+            ].map((feature, index) => (
+              <Card key={index} className="p-6 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/5 border border-white/20 backdrop-blur-20">
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${feature.color}30` }}>
+                    <feature.icon className="h-8 w-8" style={{ color: feature.color }} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-2 text-white">{feature.title}</h3>
+                    <p className="text-white font-light leading-relaxed">{feature.desc}</p>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Enhanced Services & Benefits Section */}
+      <section className="py-32 px-6 relative overflow-hidden">
+        <div className="container mx-auto relative z-10">
+          <div className="text-center mb-20">
+            <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
+              {language === 'ar' ? 'خدماتنا ومزايانا' : 'Our Services & Benefits'}
+            </h2>
+            <p className="text-lg max-w-3xl mx-auto font-light text-white">
+              {language === 'ar' 
+                ? 'نقدم مجموعة واسعة من الخدمات لتلبية احتياجات أعمالك'
+                : 'We offer a wide range of services to meet your business needs'}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 max-w-7xl mx-auto">
+            {/* Our Services */}
+            <div className="space-y-8">
+              <div className="text-center lg:text-left">
+                <h3 className="text-2xl font-black mb-4 text-white">
+                  {language === 'ar' ? 'خدماتنا' : 'Our Services'}
+                </h3>
+                <p className="text-white font-light">
+                  {language === 'ar' ? 'نقدم مجموعة واسعة من الخدمات لتلبية احتياجات أعمالك' : 'We offer a wide range of services to meet your business needs.'}
+                </p>
+              </div>
+              
+              <div className="space-y-6">
+                {[
+                  {
+                    icon: Users,
+                    title: language === 'ar' ? 'إدارة الموردين' : 'Supplier Management',
+                    desc: language === 'ar' ? 'ابحث وأدر أفضل الموردين بكفاءة' : 'Find and manage top suppliers efficiently.',
+                    color: '#102C33'
+                  },
+                  {
+                    icon: FileText,
+                    title: language === 'ar' ? 'إدارة الطلبات' : 'Request Management',
+                    desc: language === 'ar' ? 'أنشئ وأدر الطلبات بسهولة' : 'Create and manage requests with ease.',
+                    color: '#004F54'
+                  },
+                  {
+                    icon: Briefcase,
+                    title: language === 'ar' ? 'إدارة المشاريع' : 'Project Management',
+                    desc: language === 'ar' ? 'تتبع المشاريع واضمن التسليم في الوقت المحدد' : 'Track projects and ensure on-time delivery.',
+                    color: '#765A3F'
+                  },
+                  {
+                    icon: CreditCard,
+                    title: language === 'ar' ? 'إدارة المدفوعات' : 'Payment Management',
+                    desc: language === 'ar' ? 'أدر المدفوعات بأمان وكفاءة' : 'Manage payments securely and efficiently.',
+                    color: '#102C33'
+                  }
+                ].map((service, index) => (
+                  <Card key={index} className="p-6 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/5 border border-white/20 backdrop-blur-20">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${service.color}30` }}>
+                        <service.icon className="h-6 w-6" style={{ color: service.color }} />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-lg font-bold mb-2 text-white">{service.title}</h4>
+                        <p className="text-white font-light">{service.desc}</p>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Benefits */}
+            <div className="space-y-8">
+              <div className="text-center lg:text-left">
+                <h3 className="text-2xl font-black mb-4 text-white">
+                  {language === 'ar' ? 'مزايا استخدام منصتنا' : 'Benefits of Using Our Platform'}
+                </h3>
+                <p className="text-white font-light">
+                  {language === 'ar' ? 'اكتشف كيف يمكن لمنصتنا مساعدتك في تحقيق أهداف عملك' : 'Discover how our platform can help you achieve your business goals.'}
+                </p>
+              </div>
+              
+              <div className="space-y-6">
+                {[
+                  {
+                    icon: DollarSign,
+                    title: language === 'ar' ? 'توفير التكاليف' : 'Cost Savings',
+                    desc: language === 'ar' ? 'قلل من التكاليف التشغيلية وزد من الكفاءة' : 'Reduce operational costs and increase efficiency.',
+                    color: '#102C33'
+                  },
+                  {
+                    icon: Clock,
+                    title: language === 'ar' ? 'توفير الوقت' : 'Time Savings',
+                    desc: language === 'ar' ? 'بسّط العمليات واحفظ وقتاً ثميناً' : 'Streamline processes and save valuable time.',
+                    color: '#004F54'
+                  },
+                  {
+                    icon: TrendingUp,
+                    title: language === 'ar' ? 'زيادة الإنتاجية' : 'Increased Productivity',
+                    desc: language === 'ar' ? 'زد من إنتاجية فريقك وحسّن الأداء' : 'Increase your team\'s productivity and improve performance.',
+                    color: '#765A3F'
+                  },
+                  {
+                    icon: HeartHandshake,
+                    title: language === 'ar' ? 'تحسين العلاقات' : 'Improved Relationships',
+                    desc: language === 'ar' ? 'عزز العلاقات مع الموردين والعملاء' : 'Enhance relationships with suppliers and clients.',
+                    color: '#102C33'
+                  }
+                ].map((benefit, index) => (
+                  <Card key={index} className="p-6 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/5 border border-white/20 backdrop-blur-20">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${benefit.color}30` }}>
+                        <benefit.icon className="h-6 w-6" style={{ color: benefit.color }} />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-lg font-bold mb-2 text-white">{benefit.title}</h4>
+                        <p className="text-white font-light">{benefit.desc}</p>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="py-20 px-6 relative overflow-hidden">
+        <div className="container mx-auto text-center relative z-10">
+          <div className="max-w-4xl mx-auto space-y-8">
+            <h2 className="text-3xl md:text-4xl font-black text-white">
+              {language === 'ar' ? 'انضم إلى الثورة' : 'Join the Revolution'}
+            </h2>
+            <p className="text-lg text-white font-light max-w-2xl mx-auto">
+              {language === 'ar' 
+                ? 'كن جزءاً من مستقبل التجارة الإلكترونية B2B وابدأ رحلتك معنا اليوم'
+                : 'Be part of the future of B2B e-commerce and start your journey with us today'}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/enhanced-register">
+                <Button size="lg" className="px-8 py-3 bg-gradient-to-r from-primary to-accent hover:scale-105 transition-transform text-lg text-white">
+                  {language === 'ar' ? 'ابدأ رحلتك' : 'Start Your Journey'}
                 </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Interactive Demo Modal */}
-      <InteractiveDemo 
-        isOpen={isDemoOpen}
-        onClose={() => setIsDemoOpen(false)}
-      />
-
-      {/* Features Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Key Features
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Explore the powerful features that make MWRD the ultimate platform 
-              for business procurement and vendor management.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Feature Card 1 */}
-            <Card className="border-2 border-transparent hover:border-primary/20 transition-all duration-300">
-              <CardHeader className="text-center pb-4">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center">
-                  <Shield className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle className="text-xl">Secure Platform</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center text-gray-600">
-                  Enterprise-grade security measures to protect your data and transactions.
-                </CardDescription>
-              </CardContent>
-            </Card>
-
-            {/* Feature Card 2 */}
-            <Card className="border-2 border-transparent hover:border-primary/20 transition-all duration-300">
-              <CardHeader className="text-center pb-4">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center">
-                  <Zap className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle className="text-xl">Intelligent Matching</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center text-gray-600">
-                  AI-powered matching algorithm connects you with the best vendors for your needs.
-                </CardDescription>
-              </CardContent>
-            </Card>
-
-            {/* Feature Card 3 */}
-            <Card className="border-2 border-transparent hover:border-primary/20 transition-all duration-300">
-              <CardHeader className="text-center pb-4">
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center">
-                  <Users className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle className="text-xl">Vendor Network</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center text-gray-600">
-                  Access a diverse network of verified vendors across various industries.
-                </CardDescription>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-16 bg-primary text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { label: 'Active Users', value: '15K+' },
-              { label: 'Successful Projects', value: '8.2K+' },
-              { label: 'Verified Vendors', value: '3.5K+' },
-              { label: 'Countries Served', value: '25+' }
-            ].map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2">{stat.value}</div>
-                <div className="text-white/80">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              How MWRD Works
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our streamlined process makes it easy for businesses to connect, 
-              collaborate, and grow together.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                step: '01',
-                title: 'Post Your Requirements',
-                description: 'Share your project details and specifications with our verified vendor network.',
-                icon: Building
-              },
-              {
-                step: '02',
-                title: 'Get Matched & Compare',
-                description: 'Receive qualified proposals and compare offers from pre-vetted vendors.',
-                icon: UserCheck
-              },
-              {
-                step: '03',
-                title: 'Execute & Grow',
-                description: 'Work with your chosen vendor and track progress through our platform.',
-                icon: TrendingUp
-              }
-            ].map((step) => (
-              <Card key={step.step} className="border-2 border-transparent hover:border-primary/20 transition-all duration-300 group">
-                <CardHeader className="text-center pb-4">
-                  <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors mb-4">
-                    <step.icon className="h-8 w-8 text-primary" />
-                  </div>
-                  <div className="text-4xl font-bold text-primary mb-2">{step.step}</div>
-                  <CardTitle className="text-xl">{step.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-center text-gray-600">
-                    {step.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              What Our Clients Say
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Real stories from businesses that have transformed their operations 
-              with MWRD.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                quote: 'MWRD has revolutionized our procurement process. We now connect with top-tier vendors effortlessly.',
-                author: 'Sarah L., CEO',
-                company: 'Tech Solutions Inc.'
-              },
-              {
-                quote: 'The intelligent matching feature saved us countless hours. We found the perfect vendor for our project in no time.',
-                author: 'David K., Project Manager',
-                company: 'Global Innovations Ltd.'
-              },
-              {
-                quote: 'We\'ve seen a significant increase in efficiency since implementing MWRD. It\'s a game-changer for our business.',
-                author: 'Emily R., Operations Director',
-                company: 'Pioneer Enterprises'
-              }
-            ].map((testimonial) => (
-              <Card key={testimonial.author} className="border-2 border-transparent hover:border-primary/20 transition-all duration-300">
-                <CardContent className="space-y-4">
-                  <div className="text-gray-700 italic">“{testimonial.quote}”</div>
-                  <div className="font-semibold text-gray-900">{testimonial.author}</div>
-                  <div className="text-gray-600">{testimonial.company}</div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Flexible Pricing Plans
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Choose the plan that best fits your business needs and start 
-              transforming your procurement process today.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Free Plan */}
-            <Card className="border-2 border-gray-200">
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl font-bold">Free</CardTitle>
-                <CardDescription className="text-gray-600">
-                  Get started with our basic features.
-                </CardDescription>
-                <div className="text-4xl font-bold mt-4">$0<span className="text-sm text-gray-600">/month</span></div>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Basic vendor matching</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Limited project postings</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Clock className="h-4 w-4 text-gray-400" />
-                  <span className="text-gray-400">Standard support</span>
-                </div>
-                <Button className="w-full" variant="outline">Get Started</Button>
-              </CardContent>
-            </Card>
-
-            {/* Pro Plan */}
-            <Card className="border-2 border-primary">
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl font-bold">Pro</CardTitle>
-                <CardDescription className="text-gray-600">
-                  Unlock advanced features for growing businesses.
-                </CardDescription>
-                <div className="text-4xl font-bold mt-4">$99<span className="text-sm text-gray-600">/month</span></div>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Advanced vendor matching</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Unlimited project postings</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Priority support</span>
-                </div>
-                <Button className="w-full">Upgrade to Pro</Button>
-              </CardContent>
-            </Card>
-
-            {/* Enterprise Plan */}
-            <Card className="border-2 border-gray-200">
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl font-bold">Enterprise</CardTitle>
-                <CardDescription className="text-gray-600">
-                  Custom solutions for large organizations.
-                </CardDescription>
-                <div className="text-4xl font-bold mt-4">Contact Us</div>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Custom vendor matching</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>Dedicated account manager</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span>24/7 premium support</span>
-                </div>
-                <Button className="w-full" variant="outline">Contact Sales</Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Awards Section */}
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Recognized and Awarded
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our commitment to excellence has been recognized by industry leaders.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                title: 'Best Procurement Platform',
-                organization: 'Global Tech Awards',
-                icon: Award
-              },
-              {
-                title: 'Innovation in Vendor Management',
-                organization: 'Business Innovation Summit',
-                icon: Star
-              },
-              {
-                title: 'Top Business Solution',
-                organization: 'Enterprise Solutions Magazine',
-                icon: Globe
-              }
-            ].map((award) => (
-              <Card key={award.title} className="border-2 border-transparent hover:border-primary/20 transition-all duration-300">
-                <CardHeader className="text-center pb-4">
-                  <div className="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center">
-                    <award.icon className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle className="text-xl">{award.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-center text-gray-600">
-                    Awarded by {award.organization} for excellence in business solutions.
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-primary to-purple-600 text-white">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Ready to Transform Your Business?
-          </h2>
-          <p className="text-xl mb-8 text-white/90">
-            Join thousands of businesses already growing with MWRD. 
-            Start your free trial today and experience the difference.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="text-lg px-8" asChild>
-              <Link to="/register">
-                Start Free Trial <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
-            </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 border-white text-white hover:bg-white hover:text-primary">
-              Contact Sales
-            </Button>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            {/* Company Info */}
-            <div className="space-y-4">
-              <img 
-                src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
-                alt="MWRD Logo" 
-                className="h-10 w-auto"
-              />
-              <p className="text-gray-400">
-                Transforming business procurement through intelligent vendor matching 
-                and streamlined collaboration.
-              </p>
-              <div className="flex space-x-4">
-                <Facebook className="h-5 w-5 text-gray-400 hover:text-white cursor-pointer" />
-                <Twitter className="h-5 w-5 text-gray-400 hover:text-white cursor-pointer" />
-                <Linkedin className="h-5 w-5 text-gray-400 hover:text-white cursor-pointer" />
-                <Instagram className="h-5 w-5 text-gray-400 hover:text-white cursor-pointer" />
-              </div>
-            </div>
+      <Footer />
 
-            {/* Quick Links */}
-            <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
-              <div className="space-y-2">
-                <Link to="/why-start-with-mwrd" className="block text-gray-400 hover:text-white">Why Start with Us</Link>
-                <Link to="/what-makes-us-unique" className="block text-gray-400 hover:text-white">What Makes Us Unique</Link>
-                <Link to="/why-move-to-mwrd" className="block text-gray-400 hover:text-white">Why Move to Us</Link>
-                <Link to="/pricing" className="block text-gray-400 hover:text-white">Pricing</Link>
-              </div>
-            </div>
-
-            {/* Support */}
-            <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <div className="space-y-2">
-                <a href="#" className="block text-gray-400 hover:text-white">Help Center</a>
-                <a href="#" className="block text-gray-400 hover:text-white">Contact Support</a>
-                <a href="#" className="block text-gray-400 hover:text-white">Privacy Policy</a>
-                <a href="#" className="block text-gray-400 hover:text-white">Terms of Service</a>
-              </div>
-            </div>
-
-            {/* Contact */}
-            <div>
-              <h4 className="font-semibold mb-4">Contact Us</h4>
-              <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <Mail className="h-4 w-4 text-gray-400" />
-                  <span className="text-gray-400">support@mwrd.com</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Phone className="h-4 w-4 text-gray-400" />
-                  <span className="text-gray-400">+1 (555) 123-4567</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <MapPin className="h-4 w-4 text-gray-400" />
-                  <span className="text-gray-400">New York, NY</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400">
-              © 2024 MWRD. All rights reserved.
-            </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link to="/privacy-policy" className="text-gray-400 hover:text-white">Privacy</Link>
-              <Link to="/terms-and-conditions" className="text-gray-400 hover:text-white">Terms</Link>
-              <a href="#" className="text-gray-400 hover:text-white">Cookies</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <BackToTop />
     </div>
   );
 };
