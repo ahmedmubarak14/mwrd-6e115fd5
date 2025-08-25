@@ -24,6 +24,8 @@ import Orders from './pages/Orders';
 import Settings from './pages/Settings';
 import { ManageSubscription } from './pages/ManageSubscription';
 import { Support } from './pages/Support';
+import BrowseRequests from './pages/BrowseRequests';
+import { MyOffers } from './pages/MyOffers';
 import { AdminDashboardOverview } from './pages/admin/AdminDashboardOverview';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminRequests from './pages/admin/AdminRequests';
@@ -131,6 +133,19 @@ const AppRoutes: React.FC = () => {
       <Route path="/vendor-dashboard" element={
         <RoleProtectedRoute allowedRoles={['vendor']}>
           <VendorDashboard />
+        </RoleProtectedRoute>
+      } />
+
+      {/* Vendor-specific Routes */}
+      <Route path="/browse-requests" element={
+        <RoleProtectedRoute allowedRoles={['vendor', 'admin']}>
+          <BrowseRequests />
+        </RoleProtectedRoute>
+      } />
+
+      <Route path="/my-offers" element={
+        <RoleProtectedRoute allowedRoles={['vendor', 'admin']}>
+          <MyOffers />
         </RoleProtectedRoute>
       } />
 
