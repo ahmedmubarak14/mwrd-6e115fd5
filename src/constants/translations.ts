@@ -43,6 +43,7 @@ export const translations = {
     'common.settings': 'Settings',
     'common.profile': 'Profile',
     'common.logout': 'Logout',
+    'common.signOut': 'Sign Out',
     'common.home': 'Home',
     'common.dashboard': 'Dashboard',
     'common.users': 'Users',
@@ -186,6 +187,8 @@ export const translations = {
     'admin.subscriptionsDescription': 'Manage user subscriptions and billing',
     'admin.userSubscriptions': 'User Subscriptions',
     'admin.subscriptionsOverview': 'Overview of all user subscription statuses',
+    'admin.searchPlaceholder': 'Search admin panel...',
+    'admin.notificationsDemo': 'Notifications feature coming soon',
     
     // Status translations
     'status.active': 'In Progress',
@@ -391,6 +394,7 @@ export const translations = {
     'common.settings': 'إعدادات',
     'common.profile': 'الملف الشخصي',
     'common.logout': 'تسجيل الخروج',
+    'common.signOut': 'تسجيل الخروج',
     'common.home': 'الرئيسية',
     'common.dashboard': 'لوحة التحكم',
     'common.users': 'المستخدمون',
@@ -534,6 +538,8 @@ export const translations = {
     'admin.subscriptionsDescription': 'إدارة اشتراكات المستخدمين والفوترة',
     'admin.userSubscriptions': 'اشتراكات المستخدمين',
     'admin.subscriptionsOverview': 'نظرة عامة على جميع حالات اشتراكات المستخدمين',
+    'admin.searchPlaceholder': 'البحث في لوحة الإدارة...',
+    'admin.notificationsDemo': 'ميزة الإشعارات قريباً',
     
     // Status translations
     'status.active': 'قيد التنفيذ',
