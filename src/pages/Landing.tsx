@@ -181,10 +181,10 @@ export const Landing = () => {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-4 rtl:space-x-reverse">
             <LanguageSwitcher />
-            <Link to="/auth">
+            <Link to="/enhanced-login">
               <Button variant="ghost">{t('auth.login')}</Button>
             </Link>
-            <Link to="/auth">
+            <Link to="/enhanced-register">
               <Button>{t('auth.startFree')}</Button>
             </Link>
           </div>
@@ -215,7 +215,7 @@ export const Landing = () => {
             </p>
             
             <div className={`flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-fade-in ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-              <Link to="/auth">
+              <Link to="/enhanced-register">
                 <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300 hover:scale-105">
                   <Sparkles className="w-5 h-5 mr-2 rtl:ml-2 rtl:mr-0" />
                   {t('auth.startFree')}
@@ -488,7 +488,7 @@ export const Landing = () => {
               : 'Join our platform and start managing your procurement efficiently.'
             }
           </p>
-          <Link to="/auth">
+          <Link to="/enhanced-register">
             <Button size="lg" className="bg-accent text-primary hover:bg-accent-foreground hover:text-accent">
               {language === 'ar' ? 'ابدأ مجاناً' : 'Get Started for Free'}
             </Button>
@@ -547,7 +547,7 @@ export const Landing = () => {
             {/* Get Started */}
             <div className="space-y-4">
               <h3 className="font-semibold">{language === 'ar' ? 'ابدأ الآن' : 'Get Started'}</h3>
-              <Link to="/auth">
+              <Link to="/enhanced-register">
                 <Button className="w-full">
                   {t('auth.startFree')}
                 </Button>

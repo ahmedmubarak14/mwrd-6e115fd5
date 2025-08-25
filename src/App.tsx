@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { LanguageProvider } from './contexts/LanguageContext';
@@ -11,6 +10,8 @@ import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import { Landing } from './pages/Landing';
+import EnhancedLogin from './pages/EnhancedLogin';
+import EnhancedRegister from './pages/EnhancedRegister';
 import { AdminDashboardOverview } from './pages/admin/AdminDashboardOverview';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminRequests from './pages/admin/AdminRequests';
@@ -77,6 +78,10 @@ const AppRoutes: React.FC = () => {
       {/* Public Routes */}
       <Route path="/landing" element={<Landing />} />
       <Route path="/auth" element={<Auth />} />
+      
+      {/* Enhanced Auth Routes */}
+      <Route path="/enhanced-login" element={<EnhancedLogin />} />
+      <Route path="/enhanced-register" element={<EnhancedRegister />} />
       
       {/* Redirect old auth routes to new consolidated auth route */}
       <Route path="/login" element={<Navigate to="/auth" replace />} />
