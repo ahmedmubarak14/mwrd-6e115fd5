@@ -62,9 +62,7 @@ export const ConsolidatedVendorDashboard = () => {
         {/* Verification Banner - Only show for non-verified users */}
         {needsVerificationGuidance && (
           <UnifiedVerificationBanner 
-            showActions={true}
-            showAccessLevels={true}
-            compact={false}
+            userProfile={userProfile}
           />
         )}
 

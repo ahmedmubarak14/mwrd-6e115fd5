@@ -99,7 +99,7 @@ export const VendorOpportunitiesList: React.FC<VendorOpportunitiesListProps> = (
           <EmptyState 
             title={t('vendor.noOpportunities') || 'No opportunities found'}
             description={t('vendor.noOpportunitiesDesc') || 'Check back later for new procurement opportunities'}
-            icon={Target}
+            icon={<Target className="h-12 w-12" />}
           />
         </CardContent>
       </Card>

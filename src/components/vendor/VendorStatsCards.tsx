@@ -2,7 +2,6 @@
 import React from 'react';
 import { Package, TrendingUp, Clock, Award } from 'lucide-react';
 import { StatsGrid } from '@/components/dashboard/shared/StatsGrid';
-import { DashboardCard } from '@/components/dashboard/shared/DashboardCard';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useOffers } from '@/hooks/useOffers';
 
@@ -25,14 +24,16 @@ export const VendorStatsCards: React.FC<VendorStatsCardsProps> = ({ loading = fa
     ? Math.round((stats.approvedOffers / stats.totalOffers) * 100) 
     : 0;
 
-  const cards = [
+  const statsData = [
     {
+      key: 'totalOffers',
       title: t('vendor.totalOffers'),
       value: stats.totalOffers,
       description: t('vendor.submittedThisMonth'),
       icon: Package,
     },
     {
+      key: 'acceptedOffers',
       title: t('vendor.acceptedOffers'),
       value: stats.approvedOffers,
       description: `${t('vendor.successRate')}: ${successRate}%`,
@@ -40,12 +41,14 @@ export const VendorStatsCards: React.FC<VendorStatsCardsProps> = ({ loading = fa
       trend: { value: successRate, isPositive: successRate > 50 }
     },
     {
+      key: 'pendingOffers',
       title: t('vendor.pendingOffers'),
       value: stats.pendingOffers,
       description: t('vendor.awaitingClientResponse'),
       icon: Clock,
     },
     {
+      key: 'completedProjects',
       title: t('dashboard.completedProjects'),
       value: stats.completedProjects,
       description: t('vendor.successfullyWon'),
@@ -54,19 +57,10 @@ export const VendorStatsCards: React.FC<VendorStatsCardsProps> = ({ loading = fa
   ];
 
   return (
-    <StatsGrid>
-      {cards.map((card, index) => (
-        <DashboardCard
-          key={index}
-          title={card.title}
-          value={card.value}
-          description={card.description}
-          icon={card.icon}
-          trend={card.trend}
-          isLoading={loading}
-          className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover:scale-105"
-        />
-      ))}
-    </StatsGrid>
+    <StatsGrid
+      stats={statsData}
+      isLoading={loading}
+      columns={4}
+    />
   );
 };
