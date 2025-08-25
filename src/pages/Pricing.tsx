@@ -6,7 +6,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Header } from "@/components/ui/layout/Header";
 import { Footer } from "@/components/ui/layout/Footer";
 import { MobileContainer } from "@/components/ui/MobileContainer";
 import { PricingHeader } from "@/components/pricing/PricingHeader";
@@ -132,10 +131,59 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-unified-page">
-      <Header />
+    <div className="min-h-screen bg-landing">
+      {/* Landing Page Header - same as used on landing page */}
+      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-background/80 border-b border-border/40">
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <img 
+              src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
+              alt="MWRD Logo"
+              className="h-8 w-auto"
+            />
+          </div>
+          
+          <nav className="hidden md:flex items-center space-x-6">
+            <a href="/landing" className="text-foreground hover:text-primary transition-colors">
+              {isRTL ? 'الرئيسية' : 'Home'}
+            </a>
+            <a href="/pricing" className="text-primary font-medium">
+              {isRTL ? 'الأسعار' : 'Pricing'}
+            </a>
+            <a href="/support" className="text-foreground hover:text-primary transition-colors">
+              {isRTL ? 'الدعم' : 'Support'}
+            </a>
+          </nav>
+
+          <div className="flex items-center space-x-4">
+            {user ? (
+              <a 
+                href="/dashboard" 
+                className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
+              >
+                {isRTL ? 'لوحة التحكم' : 'Dashboard'}
+              </a>
+            ) : (
+              <>
+                <a 
+                  href="/login" 
+                  className="text-foreground hover:text-primary transition-colors"
+                >
+                  {isRTL ? 'تسجيل الدخول' : 'Sign In'}
+                </a>
+                <a 
+                  href="/register" 
+                  className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
+                >
+                  {isRTL ? 'إنشاء حساب' : 'Sign Up'}
+                </a>
+              </>
+            )}
+          </div>
+        </div>
+      </header>
       
-      <MobileContainer pageType="landing" className="pt-0">
+      <MobileContainer pageType="landing" className="pt-16">
         <main className="relative min-h-screen">
           {/* Background with same gradient as landing page */}
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background/95 to-accent/5" />
