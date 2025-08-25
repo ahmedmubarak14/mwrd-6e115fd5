@@ -682,23 +682,42 @@ export const translations = {
 };
 
 export const getTranslation = (key: string, language: 'en' | 'ar' = 'en'): string => {
+  const translationObj = translations[language];
+  
+  // First, try direct key lookup (for keys like 'admin.dashboard')
+  if (translationObj && translationObj[key]) {
+    return translationObj[key];
+  }
+  
+  // If direct lookup fails, try nested object navigation
   const keys = key.split('.');
-  let translation: any = translations[language];
+  let translation: any = translationObj;
   
   for (const k of keys) {
     if (translation && typeof translation === 'object' && k in translation) {
       translation = translation[k];
     } else {
       // Fallback to English if Arabic translation is missing
-      translation = translations.en;
-      for (const fallbackKey of keys) {
-        if (translation && typeof translation === 'object' && fallbackKey in translation) {
-          translation = translation[fallbackKey];
-        } else {
-          return key; // Return key if no translation found
+      if (language === 'ar') {
+        const englishTranslation = translations.en;
+        
+        // Try direct key lookup in English
+        if (englishTranslation && englishTranslation[key]) {
+          return englishTranslation[key];
         }
+        
+        // Try nested navigation in English
+        let fallbackTranslation: any = englishTranslation;
+        for (const fallbackKey of keys) {
+          if (fallbackTranslation && typeof fallbackTranslation === 'object' && fallbackKey in fallbackTranslation) {
+            fallbackTranslation = fallbackTranslation[fallbackKey];
+          } else {
+            return key; // Return key if no translation found
+          }
+        }
+        return typeof fallbackTranslation === 'string' ? fallbackTranslation : key;
       }
-      break;
+      return key; // Return key if no translation found
     }
   }
   
