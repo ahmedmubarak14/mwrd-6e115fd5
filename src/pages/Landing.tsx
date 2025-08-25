@@ -24,7 +24,9 @@ import {
   Award,
   MessageSquare,
   BarChart3,
-  Handshake
+  Handshake,
+  FileText,
+  CreditCard
 } from 'lucide-react';
 import { useOptionalAuth } from '@/contexts/useOptionalAuth';
 
@@ -560,7 +562,7 @@ export const Landing = () => {
       </footer>
 
       {/* Interactive Demo Modal */}
-      <InteractiveDemo open={demoOpen} onOpenChange={setDemoOpen} />
+      <InteractiveDemo isOpen={demoOpen} onClose={handleDemoClose} />
     </div>
   );
 };
