@@ -71,6 +71,8 @@ const translations = {
     'common.deselect': 'Deselect',
     'common.selectAll': 'Select All',
     'common.deselectAll': 'Deselect All',
+    'common.profile': 'Profile',
+    'common.signOut': 'Sign Out',
     
     // App
     'app.name': 'MWRD',
@@ -135,6 +137,38 @@ const translations = {
     'profile.personalInfo': 'Personal Information',
     'profile.companyInfo': 'Company Information',
     'profile.contactInfo': 'Contact Information',
+    
+    // Admin Panel
+    'admin.panel': 'Admin Panel',
+    'admin.managementDashboard': 'Management Dashboard',
+    'admin.adminVersion': 'Admin Version',
+    'admin.adminUser': 'Admin User',
+    'admin.searchPlaceholder': 'Search admin panel...',
+    'admin.notificationsDemo': 'Demo notifications',
+    'searching': 'Searching',
+    
+    // Admin Menu Items
+    'admin.menu.dashboard': 'Dashboard',
+    'admin.menu.userManagement': 'User Management',
+    'admin.menu.allUsers': 'All Users',
+    'admin.menu.advancedManagement': 'Advanced Management',
+    'admin.menu.userProfiles': 'User Profiles',
+    'admin.menu.financial': 'Financial',
+    'admin.menu.financialDashboard': 'Financial Dashboard',
+    'admin.menu.transactions': 'Transactions',
+    'admin.menu.subscriptions': 'Subscriptions',
+    'admin.menu.analytics': 'Analytics',
+    'admin.menu.platformAnalytics': 'Platform Analytics',
+    'admin.menu.userActivity': 'User Activity',
+    'admin.menu.reports': 'Reports',
+    'admin.menu.contentManagement': 'Content Management',
+    'admin.menu.requestsApproval': 'Requests Approval',
+    'admin.menu.offersManagement': 'Offers Management',
+    'admin.menu.expertConsultations': 'Expert Consultations',
+    'admin.menu.system': 'System',
+    'admin.menu.settings': 'Settings',
+    'admin.menu.themeDesign': 'Theme Design',
+    'admin.menu.database': 'Database',
     
     // Footer
     'footer.aboutUs': 'About Us',
@@ -206,6 +240,8 @@ const translations = {
     'common.deselect': 'إلغاء الاختيار',
     'common.selectAll': 'اختيار الكل',
     'common.deselectAll': 'إلغاء اختيار الكل',
+    'common.profile': 'الملف الشخصي',
+    'common.signOut': 'تسجيل الخروج',
     
     // App
     'app.name': 'مورد',
@@ -270,6 +306,38 @@ const translations = {
     'profile.personalInfo': 'المعلومات الشخصية',
     'profile.companyInfo': 'معلومات الشركة',
     'profile.contactInfo': 'معلومات الاتصال',
+    
+    // Admin Panel
+    'admin.panel': 'لوحة الإدارة',
+    'admin.managementDashboard': 'لوحة إدارة النظام',
+    'admin.adminVersion': 'نسخة الإدارة',
+    'admin.adminUser': 'مستخدم إداري',
+    'admin.searchPlaceholder': 'البحث في لوحة الإدارة...',
+    'admin.notificationsDemo': 'إشعارات تجريبية',
+    'searching': 'جاري البحث',
+    
+    // Admin Menu Items
+    'admin.menu.dashboard': 'لوحة التحكم',
+    'admin.menu.userManagement': 'إدارة المستخدمين',
+    'admin.menu.allUsers': 'جميع المستخدمين',
+    'admin.menu.advancedManagement': 'الإدارة المتقدمة',
+    'admin.menu.userProfiles': 'ملفات المستخدمين',
+    'admin.menu.financial': 'المالية',
+    'admin.menu.financialDashboard': 'لوحة المالية',
+    'admin.menu.transactions': 'المعاملات',
+    'admin.menu.subscriptions': 'الاشتراكات',
+    'admin.menu.analytics': 'التحليلات',
+    'admin.menu.platformAnalytics': 'تحليلات المنصة',
+    'admin.menu.userActivity': 'نشاط المستخدمين',
+    'admin.menu.reports': 'التقارير',
+    'admin.menu.contentManagement': 'إدارة المحتوى',
+    'admin.menu.requestsApproval': 'اعتماد الطلبات',
+    'admin.menu.offersManagement': 'إدارة العروض',
+    'admin.menu.expertConsultations': 'الاستشارات الخبيرة',
+    'admin.menu.system': 'النظام',
+    'admin.menu.settings': 'الإعدادات',
+    'admin.menu.themeDesign': 'تصميم النسق',
+    'admin.menu.database': 'قاعدة البيانات',
     
     // Footer
     'footer.aboutUs': 'من نحن',
