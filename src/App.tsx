@@ -1,8 +1,8 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { RouteAwareThemeProvider } from './contexts/RouteAwareThemeContext';
 import { SecurityProvider } from './contexts/SecurityContext';
 import Login from './pages/Login';
@@ -147,15 +147,15 @@ const AppRoutes: React.FC = () => {
 const App: React.FC = () => {
   return (
     <LanguageProvider>
-      <AuthProvider>
-        <SecurityProvider>
-          <Router>
+      <Router>
+        <AuthProvider>
+          <SecurityProvider>
             <RouteAwareThemeProvider>
               <AppRoutes />
             </RouteAwareThemeProvider>
-          </Router>
-        </SecurityProvider>
-      </AuthProvider>
+          </SecurityProvider>
+        </AuthProvider>
+      </Router>
     </LanguageProvider>
   );
 };
