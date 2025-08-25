@@ -58,7 +58,8 @@ export const CRDocumentUpload = ({
       }
 
       const fileExt = file.name.split('.').pop();
-      const fileName = `cr-documents/${user.id}/${Date.now()}.${fileExt}`;
+      // Fix: Put user ID first to match RLS policy expectations
+      const fileName = `${user.id}/cr-documents/${Date.now()}.${fileExt}`;
 
       const { data, error } = await supabase.storage
         .from('chat-files')
