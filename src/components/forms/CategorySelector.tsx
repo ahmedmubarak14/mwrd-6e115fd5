@@ -59,13 +59,16 @@ export const CategorySelector = ({
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
-        {getAllCategories().map((category) => (
-          <SelectItem key={category.id} value={category.slug || `category-${category.id}`}>
-            {category.isChild && "  ↳ "}
-            {language === 'ar' ? category.name_ar : category name_en}
-            {category.isChild && ` (${category.parentName})`}
-          </SelectItem>
-        ))}
+        {getAllCategories().map((category) => {
+          const itemValue = category.slug && category.slug.trim() !== '' ? category.slug : `category-${category.id}`;
+          return (
+            <SelectItem key={category.id} value={itemValue}>
+              {category.isChild && "  ↳ "}
+              {language === 'ar' ? category.name_ar : category.name_en}
+              {category.isChild && ` (${category.parentName})`}
+            </SelectItem>
+          );
+        })}
       </SelectContent>
     </Select>
   );
