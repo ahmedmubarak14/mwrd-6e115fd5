@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
@@ -35,14 +36,21 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
   const [registeredUserId, setRegisteredUserId] = useState<string | null>(null);
   const [crUploaded, setCrUploaded] = useState(false);
   const { showSuccess, showError, showInfo } = useToastFeedback();
-  const { userProfile } = useAuth();
+  const { user, userProfile } = useAuth();
 
-  // Handle successful authentication
+  // Handle successful authentication - redirect to dashboard
   useEffect(() => {
-    if (userProfile) {
-      onAuthSuccess?.(userProfile);
+    if (user && userProfile) {
+      console.log('User authenticated, redirecting to dashboard');
+      // Call onAuthSuccess if provided
+      if (onAuthSuccess) {
+        onAuthSuccess(userProfile);
+      } else {
+        // Default redirect behavior
+        navigate('/dashboard');
+      }
     }
-  }, [userProfile, onAuthSuccess]);
+  }, [user, userProfile, onAuthSuccess, navigate]);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,6 +65,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
         email: formData.email,
         password: formData.password,
         options: {
+          emailRedirectTo: `${window.location.origin}/dashboard`,
           data: {
             full_name: formData.full_name,
             company_name: formData.company_name,
@@ -74,31 +83,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
           setRegistrationStep('verification');
         } else {
           showSuccess('Account created successfully! Please check your email for verification.');
-          onAuthSuccess?.({
-            id: data.user.id,
-            user_id: data.user.id,
-            email: formData.email,
-            full_name: formData.full_name,
-            company_name: formData.company_name,
-            role: formData.role,
-            status: 'approved',
-            verification_status: 'approved',
-            avatar_url: null,
-            phone: null,
-            address: null,
-            bio: null,
-            portfolio_url: null,
-            verification_documents: [],
-            categories: [],
-            subscription_plan: 'free',
-            subscription_status: 'active',
-            subscription_expires_at: null,
-            verified_at: null,
-            verified_by: null,
-            verification_notes: null,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          });
+          // Don't redirect immediately for non-client users, let the useEffect handle it
         }
       }
     } catch (error: any) {
@@ -274,6 +259,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
                       }
                     }
                   }}
+                  redirectTo={`${window.location.origin}/dashboard`}
                 />
               </TabsContent>
 

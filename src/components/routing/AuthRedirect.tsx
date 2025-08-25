@@ -15,13 +15,16 @@ export const AuthRedirect = () => {
     // Don't redirect while still loading auth state
     if (loading) return;
 
-    // Only redirect from root path
-    if (location.pathname !== '/') return;
-
-    // If user is authenticated, redirect to dashboard
+    // If user is authenticated and we have their profile, redirect to dashboard
     if (user && userProfile) {
-      // All users go to the same dashboard route - role-based rendering is handled in the Dashboard component
+      console.log('AuthRedirect: User authenticated, redirecting to dashboard');
       navigate('/dashboard', { replace: true });
+      return;
+    }
+
+    // Only redirect to landing from root path if not authenticated
+    if (location.pathname === '/' && !user) {
+      navigate('/landing', { replace: true });
     }
   }, [user, userProfile, loading, navigate, location.pathname]);
 
