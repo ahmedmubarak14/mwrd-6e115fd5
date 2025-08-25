@@ -16,7 +16,6 @@ import {
   Search,
   Filter,
   Eye,
-  Download,
   Building2,
   User
 } from "lucide-react";
@@ -79,6 +78,7 @@ export const AdminVerificationQueue = () => {
 
           return {
             ...request,
+            status: request.status as 'pending' | 'approved' | 'rejected',
             user_profiles: userProfile
           };
         })

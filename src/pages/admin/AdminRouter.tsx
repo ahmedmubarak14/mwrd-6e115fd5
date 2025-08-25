@@ -1,13 +1,13 @@
 
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AdminDashboardOverview } from "./AdminDashboardOverview";
-import { AdminUsers } from "./AdminUsers";
-import { AdminRequests } from "./AdminRequests";
-import { AdminOffers } from "./AdminOffers";
-import { AdminProjects } from "./AdminProjects";
+import AdminUsers from "./AdminUsers";
+import AdminRequests from "./AdminRequests";
+import AdminOffers from "./AdminOffers";
+import AdminProjects from "./AdminProjects";
 import { AdminOrders } from "./AdminOrders";
-import { FinancialTransactions } from "./FinancialTransactions";
-import { AdminSupport } from "./AdminSupport";
+import FinancialTransactions from "./FinancialTransactions";
+import AdminSupport from "./AdminSupport";
 import { ExpertConsultations } from "./ExpertConsultations";
 import AdminCategoryManagement from "./CategoryManagement";
 import { AdminVerificationQueue } from "./AdminVerificationQueue";
