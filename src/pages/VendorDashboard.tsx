@@ -1,3 +1,4 @@
+
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -14,6 +15,7 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { CreateOfferModal } from "@/components/modals/CreateOfferModal";
 import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
 import { UnifiedVerificationStatus } from "@/components/verification/UnifiedVerificationStatus";
+import { CATEGORIES } from "@/constants/categories";
 
 export const VendorDashboard = () => {
   const { userProfile } = useAuth();
@@ -53,11 +55,11 @@ export const VendorDashboard = () => {
   });
 
   const formatBudget = (request: any) => {
-    if (!request.budget_min && !request.budget_max) return 'Budget not specified';
+    if (!request.budget_min && !request.budget_max) return t('vendor.budget') + ' ' + t('vendor.negotiable');
     if (request.budget_min && request.budget_max) {
       return `${request.budget_min.toLocaleString()} - ${request.budget_max.toLocaleString()}`;
     }
-    return 'Budget negotiable';
+    return t('vendor.negotiable');
   };
 
   const getUrgencyColor = (urgency: string) => {
@@ -120,7 +122,7 @@ export const VendorDashboard = () => {
               <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 {stats.totalOffers}
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Submitted this month</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('vendor.submittedThisMonth')}</p>
             </CardContent>
           </Card>
           
@@ -135,7 +137,7 @@ export const VendorDashboard = () => {
               <div className="text-3xl font-bold bg-gradient-to-r from-lime to-primary bg-clip-text text-transparent">
                 {stats.approvedOffers}
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Success rate: {Math.round((stats.approvedOffers / Math.max(stats.totalOffers, 1)) * 100)}%</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('vendor.successRate')}: {Math.round((stats.approvedOffers / Math.max(stats.totalOffers, 1)) * 100)}%</p>
             </CardContent>
           </Card>
           
@@ -150,7 +152,7 @@ export const VendorDashboard = () => {
               <div className="text-3xl font-bold bg-gradient-to-r from-accent to-lime bg-clip-text text-transparent">
                 {stats.pendingOffers}
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Awaiting client response</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('vendor.awaitingClientResponse')}</p>
             </CardContent>
           </Card>
 
@@ -165,7 +167,7 @@ export const VendorDashboard = () => {
               <div className="text-3xl font-bold bg-gradient-to-r from-green-500 to-lime bg-clip-text text-transparent">
                 {offers.filter(o => o.status === 'accepted').length}
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Successfully won</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('vendor.successfullyWon')}</p>
             </CardContent>
           </Card>
         </div>
@@ -198,12 +200,12 @@ export const VendorDashboard = () => {
                   <SelectValue placeholder={t('vendor.filterByCategory')} />
                 </SelectTrigger>
                 <SelectContent className="z-50 bg-popover">
-                  <SelectItem value="all">All Categories</SelectItem>
-                  <SelectItem value="AVL">AVL Equipment</SelectItem>
-                  <SelectItem value="Hospitality">Hospitality</SelectItem>
-                  <SelectItem value="Booth Stands">Booth Stands</SelectItem>
-                  <SelectItem value="Photography">Photography</SelectItem>
-                  <SelectItem value="Security">Security</SelectItem>
+                  <SelectItem value="all">{t('common.all')} {t('browseRequests.filterByCategory')}</SelectItem>
+                  {CATEGORIES.map((category) => (
+                    <SelectItem key={category.value} value={category.value}>
+                      {language === 'ar' ? category.labelAr : category.labelEn}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

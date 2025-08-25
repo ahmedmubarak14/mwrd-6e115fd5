@@ -115,8 +115,8 @@ const translations = {
     'dashboard.search': 'Search...',
     'dashboard.findOpportunities': 'Find Business Opportunities',
     'dashboard.completedProjects': 'Completed Projects',
-    
-    // Vendor
+
+    // Vendor Dashboard specific keys
     'vendor.welcome': 'Welcome to your Vendor Dashboard',
     'vendor.subtitle': 'Manage your offers, browse requests, and grow your business',
     'vendor.totalOffers': 'Total Offers',
@@ -127,7 +127,33 @@ const translations = {
     'vendor.availableRequests': 'Available Requests',
     'vendor.submitOffer': 'Submit Offer',
     'vendor.viewDetails': 'View Details',
+    'vendor.submittedThisMonth': 'Submitted this month',
+    'vendor.successRate': 'Success rate',
+    'vendor.awaitingClientResponse': 'Awaiting client response',
+    'vendor.successfullyWon': 'Successfully won',
+    'vendor.inProgressCompleted': 'In progress & completed',
+    'vendor.winRate': 'Win Rate',
+    'vendor.offersWon': 'offers won',
+    'vendor.pendingReviews': 'Pending Reviews',
+    'vendor.activeProjects': 'Active Projects',
+    'vendor.findOpportunities': 'Find Opportunities',
+    'vendor.filterDescription': 'Filter and search for RFQs that match your expertise',
+    'vendor.opportunitiesFound': 'opportunities found',
+    'vendor.availableOpportunities': 'Available Opportunities',
+    'vendor.completeVerificationToSubmit': 'Complete verification to submit offers',
+    'vendor.submitOffersToWin': 'Submit offers to win projects',
+    'vendor.verificationRequired': 'Verification Required',
+    'vendor.budget': 'Budget',
+    'vendor.negotiable': 'Negotiable',
+    'vendor.due': 'Due',
+    'vendor.open': 'Open',
     
+    // Enhanced vendor dashboard keys
+    'vendor.totalOffersDesc': 'Submitted this month',
+    'vendor.winRateDesc': 'of {total} offers won',
+    'vendor.pendingReviewsDesc': 'Awaiting client response',
+    'vendor.activeProjectsDesc': 'In progress & completed',
+
     // Browse Requests
     'browseRequests.title': 'Browse Requests',
     'browseRequests.subtitle': 'Find and submit offers for procurement requests',
@@ -335,8 +361,8 @@ const translations = {
     'dashboard.search': 'بحث...',
     'dashboard.findOpportunities': 'ابحث عن الفرص التجارية',
     'dashboard.completedProjects': 'المشاريع المكتملة',
-    
-    // Vendor
+
+    // Vendor Dashboard specific keys
     'vendor.welcome': 'مرحباً بك في لوحة المورد',
     'vendor.subtitle': 'إدارة عروضك وتصفح الطلبات وتنمية أعمالك',
     'vendor.totalOffers': 'إجمالي العروض',
@@ -347,7 +373,33 @@ const translations = {
     'vendor.availableRequests': 'الطلبات المتاحة',
     'vendor.submitOffer': 'تقديم عرض',
     'vendor.viewDetails': 'عرض التفاصيل',
+    'vendor.submittedThisMonth': 'تم تقديمها هذا الشهر',
+    'vendor.successRate': 'معدل النجاح',
+    'vendor.awaitingClientResponse': 'في انتظار رد العميل',
+    'vendor.successfullyWon': 'تم الفوز بها بنجاح',
+    'vendor.inProgressCompleted': 'قيد التنفيذ والمكتملة',
+    'vendor.winRate': 'معدل الفوز',
+    'vendor.offersWon': 'عروض فائزة',
+    'vendor.pendingReviews': 'مراجعات معلقة',
+    'vendor.activeProjects': 'مشاريع نشطة',
+    'vendor.findOpportunities': 'البحث عن الفرص',
+    'vendor.filterDescription': 'تصفية والبحث عن طلبات الأسعار التي تناسب خبرتك',
+    'vendor.opportunitiesFound': 'فرص متاحة',
+    'vendor.availableOpportunities': 'الفرص المتاحة',
+    'vendor.completeVerificationToSubmit': 'أكمل التحقق لتقديم العروض',
+    'vendor.submitOffersToWin': 'قدم عروض للفوز بالمشاريع',
+    'vendor.verificationRequired': 'التحقق مطلوب',
+    'vendor.budget': 'الميزانية',
+    'vendor.negotiable': 'قابل للتفاوض',
+    'vendor.due': 'مستحق',
+    'vendor.open': 'مفتوح',
     
+    // Enhanced vendor dashboard keys
+    'vendor.totalOffersDesc': 'تم تقديمها هذا الشهر',
+    'vendor.winRateDesc': 'من {total} عرض تم الفوز بها',
+    'vendor.pendingReviewsDesc': 'في انتظار رد العميل',
+    'vendor.activeProjectsDesc': 'قيد التنفيذ والمكتملة',
+
     // Browse Requests
     'browseRequests.title': 'تصفح الطلبات',
     'browseRequests.subtitle': 'البحث عن طلبات المشتريات وتقديم العروض',

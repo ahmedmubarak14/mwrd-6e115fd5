@@ -222,14 +222,14 @@ export const useMatchingSystem = () => {
     try {
       setLoading(true);
       
-      // Fetch open requests that don't have offers from this supplier yet
+      // Fetch open requests that don't have offers from this vendor yet
       const { data: requests, error } = await supabase
         .from('requests')
         .select(`
           *,
           offers!left (
             id,
-            supplier_id
+            vendor_id
           )
         `)
         .eq('status', 'new')
@@ -237,9 +237,9 @@ export const useMatchingSystem = () => {
 
       if (error) throw error;
 
-      // Filter out requests where this supplier has already submitted an offer
+      // Filter out requests where this vendor has already submitted an offer
       const availableRequests = (requests || []).filter(request => 
-        !request.offers?.some((offer: any) => offer.supplier_id === user.id)
+        !request.offers?.some((offer: any) => offer.vendor_id === user.id)
       );
 
       // Calculate match scores for each request
