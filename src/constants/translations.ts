@@ -497,6 +497,27 @@ export const translations = {
     'time.last30days': 'Last 30 days',
     'time.last3months': 'Last 3 months',
     'time.lastYear': 'Last year',
+
+    // Landing page footer translations
+    'landing.footer.taglineText': 'Smart procurement platform connecting businesses with top suppliers in Saudi Arabia',
+    'landing.footer.company': 'Company',
+    'landing.footer.contactUsBtn': 'Contact Us',
+    'landing.footer.blog': 'Blog',
+    'landing.footer.whyStart': 'Why Start with MWRD',
+    'landing.footer.whyMove': 'Why Move to MWRD',
+    'landing.footer.pricingSection': 'Pricing',
+    'landing.footer.supportSection': 'Support',
+    'landing.footer.support': 'Support',
+    'landing.footer.helpCenterLink': 'Help Center',
+    'landing.footer.documentation': 'Documentation',
+    'landing.footer.systemStatus': 'System Status',
+    'landing.footer.privacyPolicy': 'Privacy Policy',
+    'landing.footer.termsOfService': 'Terms of Service',
+    'landing.footer.rights': 'All rights reserved',
+    'landing.footer.followUs': 'Follow us',
+
+    // Navigation translations
+    'nav.navigation': 'Navigation',
   },
 
   ar: {
@@ -997,6 +1018,27 @@ export const translations = {
     'time.last30days': 'آخر 30 يوماً',
     'time.last3months': 'آخر 3 أشهر',
     'time.lastYear': 'العام الماضي',
+
+    // Landing page footer translations
+    'landing.footer.taglineText': 'منصة مشتريات ذكية تربط الشركات بكبار الموردين في المملكة العربية السعودية',
+    'landing.footer.company': 'الشركة',
+    'landing.footer.contactUsBtn': 'اتصل بنا',
+    'landing.footer.blog': 'المدونة',
+    'landing.footer.whyStart': 'لماذا تبدأ مع MWRD',
+    'landing.footer.whyMove': 'لماذا تنتقل إلى MWRD',
+    'landing.footer.pricingSection': 'التسعير',
+    'landing.footer.supportSection': 'الدعم',
+    'landing.footer.support': 'الدعم',
+    'landing.footer.helpCenterLink': 'مركز المساعدة',
+    'landing.footer.documentation': 'التوثيق',
+    'landing.footer.systemStatus': 'حالة النظام',
+    'landing.footer.privacyPolicy': 'سياسة الخصوصية',
+    'landing.footer.termsOfService': 'شروط الخدمة',
+    'landing.footer.rights': 'جميع الحقوق محفوظة',
+    'landing.footer.followUs': 'تابعنا',
+
+    // Navigation translations
+    'nav.navigation': 'التصفح',
   }
 };
 
