@@ -83,22 +83,8 @@ export const MobileNavigation = () => {
             </SheetDescription>
             
             {/* Language Switcher below logo with proper spacing */}
-            <div className={`flex pt-4 ${isRTL ? 'justify-end' : 'justify-center'}`}>
+            <div className={`flex pt-6 ${isRTL ? 'justify-end' : 'justify-center'}`}>
               <LanguageSwitcher />
-            </div>
-
-            {/* Login and Register buttons at the top */}
-            <div className={`flex gap-3 pt-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <Link to="/login" onClick={handleLinkClick} className="flex-1">
-                <Button variant="outline" size="lg" className="w-full h-12 hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation font-semibold">
-                  {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
-                </Button>
-              </Link>
-              <Link to="/register" onClick={handleLinkClick} className="flex-1">
-                <Button size="lg" className="w-full h-12 bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation font-semibold">
-                  {language === 'ar' ? 'إنشاء حساب' : 'Register'}
-                </Button>
-              </Link>
             </div>
           </SheetHeader>
           
@@ -120,6 +106,20 @@ export const MobileNavigation = () => {
                   </li>
                 ))}
               </ul>
+              
+              {/* Enhanced Login and Register buttons with better spacing */}
+              <div className={`flex gap-4 mt-10 pt-8 border-t border-border/50 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <Link to="/login" onClick={handleLinkClick} className="flex-1">
+                  <Button variant="outline" size="lg" className="w-full h-12 hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation font-semibold">
+                    {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
+                  </Button>
+                </Link>
+                <Link to="/register" onClick={handleLinkClick} className="flex-1">
+                  <Button size="lg" className="w-full h-12 bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation font-semibold">
+                    {language === 'ar' ? 'إنشاء حساب' : 'Register'}
+                  </Button>
+                </Link>
+              </div>
             </nav>
           </div>
         </SheetContent>

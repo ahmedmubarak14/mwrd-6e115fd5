@@ -1,3 +1,4 @@
+
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { ProcurementClientDashboard } from "@/components/Dashboard/ProcurementClientDashboard";
 import { useAuth } from "@/contexts/AuthContext";
@@ -17,7 +18,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (!loading && userProfile) {
       if (userProfile.role === 'vendor') {
-        navigate('/vendor/dashboard');
+        navigate('/vendor-dashboard');
       } else if (userProfile.role === 'admin') {
         navigate('/admin/dashboard');
       }
