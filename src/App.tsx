@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { LanguageProvider } from './contexts/LanguageContext';
@@ -11,6 +10,10 @@ import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import { Landing } from './pages/Landing';
+import { WhyStartWithMWRD } from './pages/WhyStartWithMWRD';
+import { WhatMakesUsUnique } from './pages/WhatMakesUsUnique';
+import { WhyMoveToMWRD } from './pages/WhyMoveToMWRD';
+import Pricing from './pages/Pricing';
 import { AdminDashboardOverview } from './pages/admin/AdminDashboardOverview';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminRequests from './pages/admin/AdminRequests';
@@ -76,6 +79,10 @@ const AppRoutes: React.FC = () => {
     <Routes>
       {/* Public Routes */}
       <Route path="/landing" element={<Landing />} />
+      <Route path="/why-start-with-mwrd" element={<WhyStartWithMWRD />} />
+      <Route path="/what-makes-us-unique" element={<WhatMakesUsUnique />} />
+      <Route path="/why-move-to-mwrd" element={<WhyMoveToMWRD />} />
+      <Route path="/pricing" element={<Pricing />} />
       <Route path="/auth" element={<Auth />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
