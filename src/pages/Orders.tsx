@@ -36,6 +36,10 @@ const Orders = () => {
     }
   };
 
+  const getStatusText = (status: string) => {
+    return t(`orderStatus.${status}`) || status;
+  };
+
   return (
     <DashboardLayout>
       <div className="container mx-auto space-y-6">
@@ -67,7 +71,7 @@ const Orders = () => {
                       {t('orders.orderNumber')} #{order.id.slice(0, 8)}
                     </CardTitle>
                     <Badge variant={getStatusColor(order.status) as any}>
-                      {order.status}
+                      {getStatusText(order.status)}
                     </Badge>
                   </div>
                   <CardDescription>

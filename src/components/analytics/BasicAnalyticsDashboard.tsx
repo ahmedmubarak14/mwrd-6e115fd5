@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -29,11 +30,11 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { useRealTimeAnalytics } from "@/hooks/useRealTimeAnalytics";
-
-// Real analytics data using useAnalytics hook
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const BasicAnalyticsDashboard = () => {
   const { userProfile } = useAuth();
+  const { t } = useLanguage();
   const [timeRange, setTimeRange] = useState("7d");
   const { data: analyticsData, loading: analyticsLoading } = useRealTimeAnalytics();
   const { analytics, loading: basicLoading } = useAnalytics();
@@ -49,26 +50,26 @@ export const BasicAnalyticsDashboard = () => {
       avgResponseTime: "2.1 hours"
     },
     weeklyActivity: [
-      { day: "Mon", requests: Math.round((analyticsData?.totalRequests || 0) * 0.14), messages: Math.round((analyticsData?.total_users || 0) * 0.12), offers: Math.round((analyticsData?.totalOffers || 0) * 0.1) },
-      { day: "Tue", requests: Math.round((analyticsData?.totalRequests || 0) * 0.18), messages: Math.round((analyticsData?.total_users || 0) * 0.16), offers: Math.round((analyticsData?.totalOffers || 0) * 0.15) },
-      { day: "Wed", requests: Math.round((analyticsData?.totalRequests || 0) * 0.12), messages: Math.round((analyticsData?.total_users || 0) * 0.10), offers: Math.round((analyticsData?.totalOffers || 0) * 0.08) },
-      { day: "Thu", requests: Math.round((analyticsData?.totalRequests || 0) * 0.20), messages: Math.round((analyticsData?.total_users || 0) * 0.22), offers: Math.round((analyticsData?.totalOffers || 0) * 0.20) },
-      { day: "Fri", requests: Math.round((analyticsData?.totalRequests || 0) * 0.16), messages: Math.round((analyticsData?.total_users || 0) * 0.18), offers: Math.round((analyticsData?.totalOffers || 0) * 0.12) },
-      { day: "Sat", requests: Math.round((analyticsData?.totalRequests || 0) * 0.10), messages: Math.round((analyticsData?.total_users || 0) * 0.12), offers: Math.round((analyticsData?.totalOffers || 0) * 0.15) },
-      { day: "Sun", requests: Math.round((analyticsData?.totalRequests || 0) * 0.10), messages: Math.round((analyticsData?.total_users || 0) * 0.10), offers: Math.round((analyticsData?.totalOffers || 0) * 0.20) }
+      { day: t('analytics.monday'), requests: Math.round((analyticsData?.totalRequests || 0) * 0.14), messages: Math.round((analyticsData?.total_users || 0) * 0.12), offers: Math.round((analyticsData?.totalOffers || 0) * 0.1) },
+      { day: t('analytics.tuesday'), requests: Math.round((analyticsData?.totalRequests || 0) * 0.18), messages: Math.round((analyticsData?.total_users || 0) * 0.16), offers: Math.round((analyticsData?.totalOffers || 0) * 0.15) },
+      { day: t('analytics.wednesday'), requests: Math.round((analyticsData?.totalRequests || 0) * 0.12), messages: Math.round((analyticsData?.total_users || 0) * 0.10), offers: Math.round((analyticsData?.totalOffers || 0) * 0.08) },
+      { day: t('analytics.thursday'), requests: Math.round((analyticsData?.totalRequests || 0) * 0.20), messages: Math.round((analyticsData?.total_users || 0) * 0.22), offers: Math.round((analyticsData?.totalOffers || 0) * 0.20) },
+      { day: t('analytics.friday'), requests: Math.round((analyticsData?.totalRequests || 0) * 0.16), messages: Math.round((analyticsData?.total_users || 0) * 0.18), offers: Math.round((analyticsData?.totalOffers || 0) * 0.12) },
+      { day: t('analytics.saturday'), requests: Math.round((analyticsData?.totalRequests || 0) * 0.10), messages: Math.round((analyticsData?.total_users || 0) * 0.12), offers: Math.round((analyticsData?.totalOffers || 0) * 0.15) },
+      { day: t('analytics.sunday'), requests: Math.round((analyticsData?.totalRequests || 0) * 0.10), messages: Math.round((analyticsData?.total_users || 0) * 0.10), offers: Math.round((analyticsData?.totalOffers || 0) * 0.20) }
     ],
     requestCategories: [
-      { name: "Manufacturing", value: 35, color: "hsl(var(--primary))" },
-      { name: "Technology", value: 25, color: "hsl(var(--accent))" },
-      { name: "Logistics", value: 20, color: "hsl(var(--secondary))" },
-      { name: "Marketing", value: 12, color: "hsl(var(--lime))" },
-      { name: "Other", value: 8, color: "hsl(var(--muted-foreground))" }
+      { name: t('analytics.manufacturing'), value: 35, color: "hsl(var(--primary))" },
+      { name: t('analytics.technology'), value: 25, color: "hsl(var(--accent))" },
+      { name: t('analytics.logistics'), value: 20, color: "hsl(var(--secondary))" },
+      { name: t('analytics.marketing'), value: 12, color: "hsl(var(--lime))" },
+      { name: t('analytics.other'), value: 8, color: "hsl(var(--muted-foreground))" }
     ],
     performance: [
-      { metric: "Profile Completion", value: 85, target: 100 },
-      { metric: "Response Rate", value: Math.round(analyticsData?.successRate || 0), target: 90 },
-      { metric: "Active Requests", value: analyticsData?.totalRequests || 0, target: Math.max(15, (analyticsData?.totalRequests || 0) + 3) },
-      { metric: "Vendor Connections", value: analyticsData?.active_users || 0, target: Math.max(10, (analyticsData?.active_users || 0) + 2) }
+      { metric: t('analytics.profileCompletion'), value: 85, target: 100 },
+      { metric: t('analytics.responseRate'), value: Math.round(analyticsData?.successRate || 0), target: 90 },
+      { metric: t('analytics.activeRequests'), value: analyticsData?.totalRequests || 0, target: Math.max(15, (analyticsData?.totalRequests || 0) + 3) },
+      { metric: t('analytics.vendorConnections'), value: analyticsData?.active_users || 0, target: Math.max(10, (analyticsData?.active_users || 0) + 2) }
     ]
   };
 
@@ -92,9 +93,9 @@ export const BasicAnalyticsDashboard = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold">Analytics Dashboard</h2>
+          <h2 className="text-2xl font-bold">{t('analytics.title')}</h2>
           <p className="text-muted-foreground">
-            Track your activity and performance insights
+            {t('analytics.trackActivity')}
           </p>
         </div>
         <div className="flex gap-2">
@@ -105,9 +106,9 @@ export const BasicAnalyticsDashboard = () => {
               className="cursor-pointer"
               onClick={() => setTimeRange(range)}
             >
-              {range === "7d" && "Last 7 days"}
-              {range === "30d" && "Last 30 days"}
-              {range === "90d" && "Last 90 days"}
+              {range === "7d" && t('analytics.last7Days')}
+              {range === "30d" && t('analytics.last30Days')}
+              {range === "90d" && t('analytics.last90Days')}
             </Badge>
           ))}
         </div>
@@ -117,52 +118,52 @@ export const BasicAnalyticsDashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Requests</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('analytics.totalRequests')}</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{realAnalyticsData.overview.totalRequests}</div>
             <p className="text-xs text-muted-foreground">
-              <span className="text-primary">+4</span> from last week
+              <span className="text-primary">+4</span> {t('analytics.fromLastWeek')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Chats</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('analytics.activeChats')}</CardTitle>
             <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{realAnalyticsData.overview.activeChats}</div>
             <p className="text-xs text-muted-foreground">
-              <span className="text-primary">+2</span> from last week
+              <span className="text-primary">+2</span> {t('analytics.fromLastWeek')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Response Rate</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('analytics.responseRate')}</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{realAnalyticsData.overview.responseRate}%</div>
             <p className="text-xs text-muted-foreground">
-              <span className="text-primary">+5%</span> from last week
+              <span className="text-primary">+5%</span> {t('analytics.fromLastWeek')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg Response Time</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('analytics.avgResponseTime')}</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{realAnalyticsData.overview.avgResponseTime}</div>
             <p className="text-xs text-muted-foreground">
-              <span className="text-destructive">+0.2h</span> from last week
+              <span className="text-destructive">+0.2h</span> {t('analytics.fromLastWeek')}
             </p>
           </CardContent>
         </Card>
@@ -172,9 +173,9 @@ export const BasicAnalyticsDashboard = () => {
         {/* Weekly Activity Chart */}
         <Card>
           <CardHeader>
-            <CardTitle>Weekly Activity</CardTitle>
+            <CardTitle>{t('analytics.weeklyActivity')}</CardTitle>
             <CardDescription>
-              Your requests, messages, and offers over the last 7 days
+              {t('analytics.weeklyActivityDesc')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -195,9 +196,9 @@ export const BasicAnalyticsDashboard = () => {
         {/* Request Categories */}
         <Card>
           <CardHeader>
-            <CardTitle>Request Categories</CardTitle>
+            <CardTitle>{t('analytics.requestCategories')}</CardTitle>
             <CardDescription>
-              Distribution of your requests by category
+              {t('analytics.requestCategoriesDesc')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -225,9 +226,9 @@ export const BasicAnalyticsDashboard = () => {
       {/* Performance Metrics */}
       <Card>
         <CardHeader>
-          <CardTitle>Performance Metrics</CardTitle>
+          <CardTitle>{t('analytics.performanceMetrics')}</CardTitle>
           <CardDescription>
-            Track your progress towards key goals
+            {t('analytics.performanceMetricsDesc')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -255,10 +256,10 @@ export const BasicAnalyticsDashboard = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Activity className="h-5 w-5" />
-            Quick Actions
+            {t('analytics.quickActions')}
           </CardTitle>
           <CardDescription>
-            Common actions to improve your performance
+            {t('analytics.quickActionsDesc')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -267,8 +268,8 @@ export const BasicAnalyticsDashboard = () => {
               <div className="flex items-center gap-3">
                 <Target className="h-5 w-5 text-primary" />
                 <div>
-                  <p className="font-medium">Complete Profile</p>
-                  <p className="text-sm text-muted-foreground">Add missing information</p>
+                  <p className="font-medium">{t('analytics.completeProfile')}</p>
+                  <p className="text-sm text-muted-foreground">{t('analytics.addMissingInfo')}</p>
                 </div>
               </div>
             </div>
@@ -277,8 +278,8 @@ export const BasicAnalyticsDashboard = () => {
               <div className="flex items-center gap-3">
                 <MessageSquare className="h-5 w-5 text-accent" />
                 <div>
-                  <p className="font-medium">Respond to Messages</p>
-                  <p className="text-sm text-muted-foreground">3 pending responses</p>
+                  <p className="font-medium">{t('analytics.respondToMessages')}</p>
+                  <p className="text-sm text-muted-foreground">3 {t('analytics.pendingResponses')}</p>
                 </div>
               </div>
             </div>
@@ -287,8 +288,8 @@ export const BasicAnalyticsDashboard = () => {
               <div className="flex items-center gap-3">
                 <FileText className="h-5 w-5 text-secondary" />
                 <div>
-                  <p className="font-medium">Create New Request</p>
-                  <p className="text-sm text-muted-foreground">Find more suppliers</p>
+                  <p className="font-medium">{t('analytics.createNewRequest')}</p>
+                  <p className="text-sm text-muted-foreground">{t('analytics.findMoreSuppliers')}</p>
                 </div>
               </div>
             </div>

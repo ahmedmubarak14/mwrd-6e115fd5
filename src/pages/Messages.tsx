@@ -35,7 +35,7 @@ interface Conversation {
 
 export const Messages = () => {
   const { userProfile } = useAuth();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const { toast } = useToast();
   const isRTL = language === 'ar';
   const isMobile = useIsMobile();
@@ -105,8 +105,8 @@ export const Messages = () => {
     } catch (error: any) {
       console.error('Error loading conversations:', error);
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل في تحميل المحادثات' : 'Failed to load conversations',
+        title: t('common.error'),
+        description: t('messages.failedToLoadConversations'),
         variant: 'destructive'
       });
     } finally {
@@ -153,14 +153,14 @@ export const Messages = () => {
     const now = new Date();
     const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
     
-    if (diffInMinutes < 1) return isRTL ? 'الآن' : 'Now';
-    if (diffInMinutes < 60) return isRTL ? `منذ ${diffInMinutes} دقيقة` : `${diffInMinutes}m ago`;
+    if (diffInMinutes < 1) return t('time.now');
+    if (diffInMinutes < 60) return t('time.minutesAgo').replace('{minutes}', diffInMinutes.toString());
     
     const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) return isRTL ? `منذ ${diffInHours} ساعة` : `${diffInHours}h ago`;
+    if (diffInHours < 24) return t('time.hoursAgo').replace('{hours}', diffInHours.toString());
     
     const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays < 7) return isRTL ? `منذ ${diffInDays} أيام` : `${diffInDays}d ago`;
+    if (diffInDays < 7) return t('time.daysAgo').replace('{days}', diffInDays.toString());
     
     return date.toLocaleDateString();
   };
@@ -190,7 +190,7 @@ export const Messages = () => {
               <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
                 <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
                   <MessageCircle className="h-8 w-8" />
-                  {isRTL ? 'الرسائل' : 'Messages'}
+                  {t('messages.title')}
                   {getTotalUnreadCount() > 0 && (
                     <Badge variant="destructive" className="ml-2">
                       {getTotalUnreadCount()}
@@ -198,7 +198,7 @@ export const Messages = () => {
                   )}
                 </h1>
                 <p className="text-muted-foreground">
-                  {isRTL ? 'تواصل مع الموردين والعملاء' : 'Communicate with suppliers and clients'}
+                  {t('messages.communicateWithSuppliers')}
                 </p>
               </div>
             </div>
@@ -209,7 +209,7 @@ export const Messages = () => {
                 <div className="relative">
                   <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-3 h-4 w-4 text-muted-foreground`} />
                   <Input
-                    placeholder={isRTL ? "البحث في المحادثات..." : "Search conversations..."}
+                    placeholder={t('messages.searchConversations')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className={`${isRTL ? 'pr-10 text-right' : 'pl-10'}`}
@@ -230,14 +230,14 @@ export const Messages = () => {
                       <MessageCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                       <h3 className="text-lg font-medium mb-2">
                         {searchTerm 
-                          ? (isRTL ? 'لا توجد محادثات مطابقة' : 'No matching conversations')
-                          : (isRTL ? 'لا توجد محادثات' : 'No conversations')
+                          ? t('messages.noMatchingConversations')
+                          : t('messages.noConversations')
                         }
                       </h3>
                       <p className="text-muted-foreground">
                         {searchTerm 
-                          ? (isRTL ? 'جرب مصطلح بحث مختلف' : 'Try a different search term')
-                          : (isRTL ? 'ابدأ محادثة من خلال الرد على عرض أو طلب' : 'Start a conversation by responding to an offer or request')
+                          ? t('messages.tryDifferentSearch')
+                          : t('messages.startConversation')
                         }
                       </p>
                     </CardContent>
