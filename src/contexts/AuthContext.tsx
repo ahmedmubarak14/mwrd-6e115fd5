@@ -135,10 +135,9 @@ useEffect(() => {
       await supabase.auth.signOut();
       showInfo('You have been signed out successfully.');
       
-      // Redirect to home page after logout
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 500);
+      // Let the routing system handle the redirect naturally
+      // The onAuthStateChange will trigger and clear the state
+      // The app routing will handle redirecting to appropriate page
     } catch (error) {
       console.error('Error signing out:', error);
     }
