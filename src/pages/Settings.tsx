@@ -8,7 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Settings as SettingsIcon, User, Bell, Shield, Globe, Palette } from "lucide-react";
+import { Settings as SettingsIcon, Bell, Shield, Globe, Palette } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -43,12 +43,8 @@ const Settings = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="profile">
-              <User className="h-4 w-4 mr-2" />
-              {t('settings.tabs.profile')}
-            </TabsTrigger>
+        <Tabs defaultValue="notifications" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="notifications">
               <Bell className="h-4 w-4 mr-2" />
               {t('settings.tabs.notifications')}
@@ -66,36 +62,6 @@ const Settings = () => {
               {t('settings.tabs.appearance')}
             </TabsTrigger>
           </TabsList>
-
-          <TabsContent value="profile" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t('settings.profileInfo')}</CardTitle>
-                <CardDescription>{t('settings.profileInfoDesc')}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="fullName">{t('settings.fullName')}</Label>
-                    <Input id="fullName" defaultValue={userProfile?.full_name || ''} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">{t('settings.email')}</Label>
-                    <Input id="email" type="email" defaultValue={userProfile?.email || ''} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">{t('settings.phone')}</Label>
-                    <Input id="phone" defaultValue={userProfile?.phone || ''} />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="company">{t('settings.company')}</Label>
-                    <Input id="company" defaultValue={userProfile?.company_name || ''} />
-                  </div>
-                </div>
-                <Button onClick={handleSaveSettings}>{t('settings.saveChanges')}</Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
 
           <TabsContent value="notifications" className="space-y-6">
             <Card>

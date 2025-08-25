@@ -35,15 +35,30 @@ export const MyOffers = () => {
     }
   };
 
+  const getStatusText = (status: string) => {
+    return t(`myOffers.status.${status}`) || status;
+  };
+
+  const getClientResponseStatusText = (status: string) => {
+    switch (status) {
+      case 'approved':
+        return t('myOffers.status.approved');
+      case 'rejected':
+        return t('myOffers.status.rejected');
+      default:
+        return t('myOffers.status.pending');
+    }
+  };
+
   return (
     <DashboardLayout>
       <div className="container mx-auto space-y-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            {t('myOffers.title') || 'My Offers'}
+            {t('myOffers.title')}
           </h1>
           <p className="text-muted-foreground">
-            {t('myOffers.subtitle') || 'Track and manage your submitted offers'}
+            {t('myOffers.subtitle')}
           </p>
         </div>
 
@@ -51,8 +66,8 @@ export const MyOffers = () => {
           <Card>
             <CardContent className="py-12 text-center">
               <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No offers submitted</h3>
-              <p className="text-muted-foreground">You haven't submitted any offers yet. Browse requests to get started.</p>
+              <h3 className="text-lg font-semibold mb-2">{t('myOffers.noOffers')}</h3>
+              <p className="text-muted-foreground">{t('myOffers.noOffersDesc')}</p>
             </CardContent>
           </Card>
         ) : (
@@ -63,45 +78,47 @@ export const MyOffers = () => {
                   <div className="flex justify-between items-start">
                     <CardTitle className="text-lg flex items-center gap-2">
                       <Package className="h-5 w-5" />
-                      Offer #{offer.id.slice(0, 8)}
+                      {t('myOffers.offerNumber')} #{offer.id.slice(0, 8)}
                     </CardTitle>
                     <Badge variant={getStatusColor(offer.status) as any}>
-                      {offer.status}
+                      {getStatusText(offer.status)}
                     </Badge>
                   </div>
                   <CardDescription className="line-clamp-2">
-                    {offer.description || 'No description provided'}
+                    {offer.description || t('myOffers.noDescription')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     <div className="flex items-center gap-2 text-sm">
                       <DollarSign className="h-4 w-4 text-green-500" />
-                      <span className="font-medium">${offer.price?.toLocaleString() || 'Price not set'}</span>
+                      <span className="font-medium">
+                        ${offer.price?.toLocaleString() || t('myOffers.priceNotSet')}
+                      </span>
                     </div>
                     
                     {offer.delivery_time && (
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Clock className="h-4 w-4" />
-                        <span>{offer.delivery_time} days delivery</span>
+                        <span>{offer.delivery_time} {t('myOffers.daysDelivery')}</span>
                       </div>
                     )}
                     
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Calendar className="h-4 w-4" />
-                      <span>Submitted {format(new Date(offer.created_at), 'MMM dd, yyyy')}</span>
+                      <span>{t('myOffers.submitted')} {format(new Date(offer.created_at), 'MMM dd, yyyy')}</span>
                     </div>
                     
                     {offer.client_approval_status && (
                       <div className="pt-2 border-t">
                         <div className="flex justify-between items-center">
-                          <span className="text-xs text-muted-foreground">Client Response:</span>
+                          <span className="text-xs text-muted-foreground">{t('myOffers.clientResponse')}:</span>
                           <Badge 
                             variant={offer.client_approval_status === 'approved' ? 'outline' : 
                                    offer.client_approval_status === 'rejected' ? 'destructive' : 'default'}
                             className="text-xs"
                           >
-                            {offer.client_approval_status}
+                            {getClientResponseStatusText(offer.client_approval_status)}
                           </Badge>
                         </div>
                       </div>
