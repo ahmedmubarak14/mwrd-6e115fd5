@@ -30,6 +30,7 @@ const translations = {
     'nav.suppliers': 'Suppliers',
     'nav.orders': 'Orders',
     'nav.manageSubscription': 'Manage Subscription',
+    'nav.navigation': 'Navigation',
     
     // Common
     'common.loading': 'Loading...',
@@ -111,6 +112,24 @@ const translations = {
     'app.name': 'MWRD',
     'app.tagline': 'Smart B2B Procurement Platform',
     'app.description': 'Connect with vetted service providers for your procurement needs',
+
+    // Landing Footer - NEW TRANSLATIONS
+    'landing.footer.taglineText': 'Transform your procurement processes with our intelligent B2B platform. Connect with verified suppliers and streamline your business operations.',
+    'landing.footer.company': 'Company',
+    'landing.footer.contactUsBtn': 'Contact Us',
+    'landing.footer.blog': 'Blog',
+    'landing.footer.whyStart': 'Why Start with MWRD',
+    'landing.footer.whyMove': 'Why Move to MWRD',
+    'landing.footer.pricingSection': 'Pricing',
+    'landing.footer.supportSection': 'Support',
+    'landing.footer.support': 'Help & Support',
+    'landing.footer.helpCenterLink': 'Help Center',
+    'landing.footer.documentation': 'Documentation',
+    'landing.footer.systemStatus': 'System Status',
+    'landing.footer.privacyPolicy': 'Privacy Policy',
+    'landing.footer.termsOfService': 'Terms & Conditions',
+    'landing.footer.rights': 'All rights reserved.',
+    'landing.footer.followUs': 'Follow us',
     
     // Analytics Dashboard
     'analytics.title': 'Analytics Dashboard',
@@ -264,7 +283,7 @@ const translations = {
     'requests.inProgress': 'In Progress',
     'requests.completed': 'Completed',
     
-    // My Offers
+    // My Offers - NEW TRANSLATIONS
     'myOffers.title': 'My Offers',
     'myOffers.subtitle': 'Track and manage your submitted offers',
     'myOffers.noOffers': 'No offers submitted',
@@ -337,7 +356,7 @@ const translations = {
     'messages.tryDifferentSearch': 'Try a different search term',
     'messages.startConversation': 'Start a conversation by responding to an offer or request',
     
-    // Profile
+    // Profile - NEW TRANSLATIONS
     'profile.title': 'Profile Settings',
     'profile.subtitle': 'Manage your account information and verification status',
     'profile.edit': 'Edit Profile',
@@ -498,6 +517,7 @@ const translations = {
     'nav.suppliers': 'الموردين',
     'nav.orders': 'الطلبيات',
     'nav.manageSubscription': 'إدارة الاشتراك',
+    'nav.navigation': 'التنقل',
     
     // Common
     'common.loading': 'جاري التحميل...',
@@ -579,6 +599,24 @@ const translations = {
     'app.name': 'مورد',
     'app.tagline': 'منصة المشتريات التجارية الذكية',
     'app.description': 'تواصل مع موردي الخدمات المعتمدين لاحتياجات المشتريات الخاصة بك',
+
+    // Landing Footer - NEW ARABIC TRANSLATIONS
+    'landing.footer.taglineText': 'حوّل عمليات المشتريات الخاصة بك من خلال منصتنا التجارية الذكية. تواصل مع الموردين المعتمدين وبسّط عمليات أعمالك.',
+    'landing.footer.company': 'الشركة',
+    'landing.footer.contactUsBtn': 'اتصل بنا',
+    'landing.footer.blog': 'المدونة',
+    'landing.footer.whyStart': 'لماذا تبدأ مع مورد',
+    'landing.footer.whyMove': 'لماذا الانتقال إلى مورد',
+    'landing.footer.pricingSection': 'الأسعار',
+    'landing.footer.supportSection': 'الدعم',
+    'landing.footer.support': 'المساعدة والدعم',
+    'landing.footer.helpCenterLink': 'مركز المساعدة',
+    'landing.footer.documentation': 'الوثائق',
+    'landing.footer.systemStatus': 'حالة النظام',
+    'landing.footer.privacyPolicy': 'سياسة الخصوصية',
+    'landing.footer.termsOfService': 'الشروط والأحكام',
+    'landing.footer.rights': 'جميع الحقوق محفوظة.',
+    'landing.footer.followUs': 'تابعنا',
     
     // Analytics Dashboard
     'analytics.title': 'لوحة التحليلات',
@@ -732,7 +770,7 @@ const translations = {
     'requests.inProgress': 'قيد التنفيذ',
     'requests.completed': 'مكتمل',
     
-    // My Offers
+    // My Offers - NEW ARABIC TRANSLATIONS
     'myOffers.title': 'عروضي',
     'myOffers.subtitle': 'تتبع وإدارة عروضك المقدمة',
     'myOffers.noOffers': 'لا توجد عروض مقدمة',
@@ -805,7 +843,7 @@ const translations = {
     'messages.tryDifferentSearch': 'جرب مصطلح بحث مختلف',
     'messages.startConversation': 'ابدأ محادثة من خلال الرد على عرض أو طلب',
     
-    // Profile
+    // Profile - NEW ARABIC TRANSLATIONS
     'profile.title': 'إعدادات الملف الشخصي',
     'profile.subtitle': 'إدارة معلومات حسابك وحالة التحقق',
     'profile.edit': 'تعديل الملف الشخصي',
