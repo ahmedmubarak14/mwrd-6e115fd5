@@ -40,7 +40,7 @@ import Vendors from './pages/Vendors';
 import Messages from './pages/Messages';
 import Orders from './pages/Orders';
 import Settings from './pages/Settings';
-import Support from './pages/Support';
+import { Support } from './pages/Support';
 import { LoadingSpinner } from './components/ui/LoadingSpinner';
 
 // Component to handle root route redirect logic

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -13,7 +12,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
 
 interface SecureAuthFormProps {
-  mode?: 'signin' | 'signup';
+  mode?: 'signin' | 'signup' | 'reset';
 }
 
 export const SecureAuthForm: React.FC<SecureAuthFormProps> = ({ 
@@ -31,7 +30,7 @@ export const SecureAuthForm: React.FC<SecureAuthFormProps> = ({
   });
   const [error, setError] = useState<string | null>(null);
 
-  const { secureSignUp, secureSignIn, loading } = useSecureAuth();
+  const { secureSignUp, secureSignIn, securePasswordReset, loading } = useSecureAuth();
   const { userProfile } = useAuth();
   const { showSuccess, showError } = useToastFeedback();
   const navigate = useNavigate();
@@ -114,6 +113,32 @@ export const SecureAuthForm: React.FC<SecureAuthFormProps> = ({
         showError(result.error.message);
       } else {
         showSuccess('Account created successfully! Please check your email to verify your account.');
+        setCurrentMode('signin');
+      }
+    } catch (error) {
+      const errorMessage = 'An unexpected error occurred';
+      setError(errorMessage);
+      showError(errorMessage);
+    }
+  };
+
+  const handlePasswordReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!formData.email) {
+      setError('Please enter your email address');
+      return;
+    }
+
+    try {
+      const result = await securePasswordReset(formData.email);
+      
+      if (result.error) {
+        setError(result.error.message);
+        showError(result.error.message);
+      } else {
+        showSuccess('Password reset email sent! Please check your inbox.');
         setCurrentMode('signin');
       }
     } catch (error) {
@@ -278,6 +303,69 @@ export const SecureAuthForm: React.FC<SecureAuthFormProps> = ({
     </form>
   );
 
+  const renderPasswordResetForm = () => (
+    <form onSubmit={handlePasswordReset} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="reset-email">Email</Label>
+        <Input
+          id="reset-email"
+          type="email"
+          placeholder="Enter your email"
+          value={formData.email}
+          onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+          required
+        />
+      </div>
+
+      {error && (
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+
+      <Button type="submit" className="w-full" disabled={loading}>
+        {loading ? (
+          <>
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            Sending Reset Email...
+          </>
+        ) : (
+          <>
+            <Shield className="w-4 h-4 mr-2" />
+            Send Reset Email
+          </>
+        )}
+      </Button>
+
+      <Button 
+        type="button" 
+        variant="outline" 
+        className="w-full" 
+        onClick={() => setCurrentMode('signin')}
+      >
+        Back to Sign In
+      </Button>
+    </form>
+  );
+
+  if (currentMode === 'reset') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background p-4">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <CardTitle>Reset Your Password</CardTitle>
+            <CardDescription>
+              Enter your email address and we'll send you a reset link
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {renderPasswordResetForm()}
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
@@ -296,6 +384,16 @@ export const SecureAuthForm: React.FC<SecureAuthFormProps> = ({
             
             <TabsContent value="signin" className="mt-6">
               {renderSignInForm()}
+              <div className="mt-4 text-center">
+                <Button 
+                  type="button" 
+                  variant="link" 
+                  onClick={() => setCurrentMode('reset')}
+                  className="text-sm"
+                >
+                  Forgot your password?
+                </Button>
+              </div>
             </TabsContent>
             
             <TabsContent value="signup" className="mt-6">
