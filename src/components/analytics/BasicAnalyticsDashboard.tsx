@@ -58,9 +58,9 @@ export const BasicAnalyticsDashboard: React.FC = () => {
         .from('user_profiles')
         .select('*', { count: 'exact', head: true });
 
-      // Fetch requests count
+      // Fetch requests count - using 'requests' table instead of 'procurement_requests'
       const { count: requestsCount } = await supabase
-        .from('procurement_requests')
+        .from('requests')
         .select('*', { count: 'exact', head: true });
 
       // Fetch offers count

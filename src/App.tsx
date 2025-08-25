@@ -18,7 +18,7 @@ import AdminFinancialTransactions from './pages/admin/FinancialTransactions';
 import { AdminSupport } from './pages/admin/AdminSupport';
 import { ExpertConsultations } from './pages/admin/ExpertConsultations';
 import CategoryManagement from './pages/admin/CategoryManagement';
-import { AdminVerificationQueue } from './pages/admin/AdminVerificationQueue';
+import AdminVerificationQueue from './pages/admin/AdminVerificationQueue';
 import { AdminAnalytics } from './pages/admin/AdminAnalytics';
 import { AdminLayout } from './components/admin/AdminLayout';
 import { DashboardLayout } from './components/layout/DashboardLayout';
