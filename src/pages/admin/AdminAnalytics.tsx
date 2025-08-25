@@ -34,6 +34,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useRealTimeAnalytics } from "@/hooks/useRealTimeAnalytics";
+import { cn } from "@/lib/utils";
 
 export const AdminAnalytics = () => {
   const { t, isRTL, formatNumber, formatCurrency } = useLanguage();
@@ -72,32 +73,32 @@ export const AdminAnalytics = () => {
   }
 
   return (
-    <div className={`p-4 sm:p-6 space-y-6 ${isRTL ? 'rtl' : 'ltr'}`}>
+    <div className={cn("p-4 sm:p-6 space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
+      <div className={cn("flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4", isRTL && "flex-row-reverse")}>
+        <div className={cn(isRTL ? "text-right" : "text-left")}>
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
-            {t('admin.analytics')}
+            {t('admin.analytics') || 'Analytics Dashboard'}
           </h1>
           <p className="text-muted-foreground mt-1">
             {t('analytics.comprehensiveInsights') || 'Comprehensive insights into platform performance'}
           </p>
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
           <Button
             variant="outline"
             size="sm"
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="rtl-flex items-center gap-2"
+            className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}
           >
-            <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            <RefreshCw className={cn("h-4 w-4", isRefreshing && "animate-spin")} />
             {t('common.refresh') || 'Refresh'}
           </Button>
           
-          <Button variant="outline" size="sm">
-            <Download className="rtl-mr-2 h-4 w-4" />
+          <Button variant="outline" size="sm" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
+            <Download className="h-4 w-4" />
             {t('analytics.export') || 'Export'}
           </Button>
         </div>
@@ -106,9 +107,9 @@ export const AdminAnalytics = () => {
       {/* Key Metrics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
             <CardTitle className="text-sm font-medium">
-              {t('admin.totalUsers')}
+              {t('admin.totalUsers') || 'Total Users'}
             </CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -116,17 +117,17 @@ export const AdminAnalytics = () => {
             <div className="text-2xl font-bold">
               {formatNumber(metrics?.totalUsers || 0)}
             </div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <TrendingUp className="rtl-mr-1 h-3 w-3 text-green-500" />
+            <div className={cn("flex items-center text-xs text-muted-foreground", isRTL && "flex-row-reverse")}>
+              <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
               +{metrics?.userGrowth || '0'}% {t('analytics.fromLastMonth') || 'from last month'}
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
             <CardTitle className="text-sm font-medium">
-              {t('admin.activeRequests')}
+              {t('admin.activeRequests') || 'Active Requests'}
             </CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -134,17 +135,17 @@ export const AdminAnalytics = () => {
             <div className="text-2xl font-bold">
               {formatNumber(metrics?.activeRequests || 0)}
             </div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <TrendingUp className="rtl-mr-1 h-3 w-3 text-green-500" />
+            <div className={cn("flex items-center text-xs text-muted-foreground", isRTL && "flex-row-reverse")}>
+              <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
               +{metrics?.requestGrowth || '0'}% {t('analytics.fromLastWeek') || 'from last week'}
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
             <CardTitle className="text-sm font-medium">
-              {t('admin.revenue')}
+              {t('admin.revenue') || 'Revenue'}
             </CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -152,17 +153,17 @@ export const AdminAnalytics = () => {
             <div className="text-2xl font-bold">
               {formatCurrency(metrics?.totalRevenue || 0)}
             </div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <TrendingUp className="rtl-mr-1 h-3 w-3 text-green-500" />
+            <div className={cn("flex items-center text-xs text-muted-foreground", isRTL && "flex-row-reverse")}>
+              <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
               +{metrics?.revenueGrowth || '0'}% {t('analytics.fromLastMonth') || 'from last month'}
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
             <CardTitle className="text-sm font-medium">
-              {t('orders.title')}
+              {t('orders.title') || 'Orders'}
             </CardTitle>
             <ShoppingCart className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
@@ -170,8 +171,8 @@ export const AdminAnalytics = () => {
             <div className="text-2xl font-bold">
               {formatNumber(metrics?.totalOrders || 0)}
             </div>
-            <div className="flex items-center text-xs text-muted-foreground">
-              <TrendingDown className="rtl-mr-1 h-3 w-3 text-red-500" />
+            <div className={cn("flex items-center text-xs text-muted-foreground", isRTL && "flex-row-reverse")}>
+              <TrendingDown className="h-3 w-3 text-red-500 mr-1" />
               -{metrics?.orderDecline || '0'}% {t('analytics.fromLastWeek') || 'from last week'}
             </div>
           </CardContent>
@@ -180,12 +181,12 @@ export const AdminAnalytics = () => {
 
       {/* Charts Section */}
       <Tabs defaultValue="overview" className="space-y-4">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className={cn("flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4", isRTL && "flex-row-reverse")}>
           <TabsList className="grid w-full sm:w-auto grid-cols-2 sm:grid-cols-4">
-            <TabsTrigger value="overview">{t('dashboard.overview')}</TabsTrigger>
-            <TabsTrigger value="users">{t('admin.users')}</TabsTrigger>
+            <TabsTrigger value="overview">{t('dashboard.overview') || 'Overview'}</TabsTrigger>
+            <TabsTrigger value="users">{t('admin.users') || 'Users'}</TabsTrigger>
             <TabsTrigger value="financial">{t('analytics.financial') || 'Financial'}</TabsTrigger>
-            <TabsTrigger value="performance">{t('admin.performance')}</TabsTrigger>
+            <TabsTrigger value="performance">{t('admin.performance') || 'Performance'}</TabsTrigger>
           </TabsList>
           
           <div className="flex items-center gap-2">
