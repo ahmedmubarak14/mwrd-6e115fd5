@@ -9,6 +9,7 @@ import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
+import { Landing } from './pages/Landing';
 import { AdminDashboardOverview } from './pages/admin/AdminDashboardOverview';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminRequests from './pages/admin/AdminRequests';
@@ -52,6 +53,23 @@ const RoleProtectedRoute: React.FC<RoleProtectedRouteProps> = ({ children, allow
   return <>{children}</>;
 };
 
+// Component to handle root route redirect logic
+const RootRedirect: React.FC = () => {
+  const { user, userProfile, loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  // If user is authenticated, redirect to dashboard
+  if (user && userProfile) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  // If not authenticated, redirect to landing page
+  return <Navigate to="/landing" replace />;
+};
+
 const App: React.FC = () => {
   return (
     <AuthProvider>
@@ -59,6 +77,8 @@ const App: React.FC = () => {
         <Router>
           <RouteAwareThemeProvider>
             <Routes>
+              {/* Public Routes */}
+              <Route path="/landing" element={<Landing />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
@@ -118,8 +138,8 @@ const App: React.FC = () => {
                 </RoleProtectedRoute>
               } />
 
-              {/* Default route */}
-              <Route path="/" element={<Navigate to="/dashboard" />} />
+              {/* Root route with smart redirect */}
+              <Route path="/" element={<RootRedirect />} />
 
               {/* Catch-all route for 404 Not Found */}
               <Route path="*" element={<NotFound />} />
