@@ -1,17 +1,19 @@
 
 import { useState } from "react";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, FileText, CheckCircle, Clock, DollarSign } from "lucide-react";
 import { Alert } from "@/components/ui/alert";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRealTimeAnalytics } from "@/hooks/useRealTimeAnalytics";
 import { useToast } from "@/hooks/use-toast";
 import { DashboardHeader } from "./DashboardHeader";
-import { MetricsCards } from "./MetricsCards";
 import { DashboardTabs } from "./DashboardTabs";
+import { StatsGrid } from "../dashboard/shared/StatsGrid";
+import { LoadingState } from "../dashboard/shared/LoadingState";
+import { EmptyState } from "../dashboard/shared/EmptyState";
 
 export const ProcurementClientDashboard = () => {
-  const { isRTL } = useLanguage();
+  const { isRTL, t, formatCurrency } = useLanguage();
   const { userProfile } = useAuth();
   const { metrics, isLoading, error } = useRealTimeAnalytics();
   const { toast } = useToast();
@@ -29,13 +31,13 @@ export const ProcurementClientDashboard = () => {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
       toast({
-        title: "Analytics Exported",
-        description: "Analytics data exported successfully",
+        title: t('dashboard.export'),
+        description: t('dashboard.exportSuccess'),
       });
     } catch (error) {
       toast({
-        title: "Export Error",
-        description: "Error exporting analytics data",
+        title: t('common.error'),
+        description: t('dashboard.exportError'),
         variant: "destructive"
       });
     } finally {
@@ -48,13 +50,13 @@ export const ProcurementClientDashboard = () => {
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
       toast({
-        title: "Data Refreshed",
-        description: "Analytics data refreshed successfully",
+        title: t('dashboard.refresh'),
+        description: t('dashboard.refreshSuccess'),
       });
     } catch (error) {
       toast({
-        title: "Refresh Error",
-        description: "Error refreshing data",
+        title: t('common.error'),
+        description: t('dashboard.refreshError'),
         variant: "destructive"
       });
     } finally {
@@ -62,29 +64,57 @@ export const ProcurementClientDashboard = () => {
     }
   };
 
-  const handleDrillDown = (cardTitle: string) => {
+  const handleDrillDown = (cardKey: string) => {
     toast({
-      title: "Drill Down",
-      description: `Viewing details for ${cardTitle}`,
+      title: t('action.viewDetails'),
+      description: t('dashboard.drillDownMessage', { section: cardKey }),
     });
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-[200px]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
+    return <LoadingState />;
   }
 
   if (error) {
     return (
       <Alert variant="destructive" className="m-6">
         <AlertTriangle className="h-4 w-4" />
-        <div>Error loading dashboard: {error}</div>
+        <div>{t('dashboard.error')}: {error}</div>
       </Alert>
     );
   }
+
+  // Prepare stats data with translations
+  const statsData = [
+    {
+      key: 'totalRequests',
+      title: t('dashboard.stats.totalRequests'),
+      value: metrics?.totalRequests || 0,
+      icon: FileText,
+      trend: { value: 12, isPositive: true }
+    },
+    {
+      key: 'activeProjects', 
+      title: t('dashboard.stats.activeProjects'),
+      value: metrics?.activeProjects || 0,
+      icon: Clock,
+      trend: { value: 8, isPositive: true }
+    },
+    {
+      key: 'completedOrders',
+      title: t('dashboard.stats.completedOrders'), 
+      value: metrics?.completedOrders || 0,
+      icon: CheckCircle,
+      trend: { value: 15, isPositive: true }
+    },
+    {
+      key: 'savings',
+      title: t('dashboard.stats.savings'),
+      value: formatCurrency(metrics?.savings || 0),
+      icon: DollarSign,
+      trend: { value: 23, isPositive: true }
+    },
+  ];
 
   return (
     <div className={`p-4 sm:p-6 space-y-6 ${isRTL ? 'rtl' : 'ltr'}`}>
@@ -95,10 +125,21 @@ export const ProcurementClientDashboard = () => {
         isExporting={isExporting}
       />
 
-      <MetricsCards 
-        metrics={metrics || {}} 
-        onCardClick={handleDrillDown} 
-      />
+      {metrics && Object.keys(metrics).length > 0 ? (
+        <StatsGrid 
+          stats={statsData}
+          onCardClick={handleDrillDown}
+          isLoading={isLoading}
+        />
+      ) : (
+        <EmptyState 
+          title={t('dashboard.emptyState.title')}
+          description={t('dashboard.emptyState.description')}
+          actionLabel={t('dashboard.emptyState.action')}
+          onAction={() => {/* Navigate to create request */}}
+          icon={<FileText className="h-12 w-12" />}
+        />
+      )}
 
       <DashboardTabs 
         activeTab={activeTab} 
