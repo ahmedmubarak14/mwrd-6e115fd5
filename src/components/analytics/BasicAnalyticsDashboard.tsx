@@ -1,301 +1,421 @@
-
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
 import { 
-  BarChart, 
-  Bar, 
+  LineChart, 
+  Line, 
   XAxis, 
   YAxis, 
   CartesianGrid, 
   Tooltip, 
   ResponsiveContainer,
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
   PieChart,
   Pie,
-  Cell
-} from "recharts";
+  Cell,
+  AreaChart,
+  Area
+} from 'recharts';
 import { 
   TrendingUp, 
+  TrendingDown, 
   Users, 
-  MessageSquare, 
-  FileText, 
-  Clock,
-  Target,
-  DollarSign,
-  Activity
+  ShoppingCart, 
+  DollarSign, 
+  Activity,
+  Download,
+  RefreshCw,
+  Calendar,
+  Filter
 } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
-import { useAnalytics } from "@/hooks/useAnalytics";
-import { useRealTimeAnalytics } from "@/hooks/useRealTimeAnalytics";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useRealTimeAnalytics } from "@/hooks/useRealTimeAnalytics";
 
 export const BasicAnalyticsDashboard = () => {
-  const { userProfile } = useAuth();
-  const { t } = useLanguage();
-  const [timeRange, setTimeRange] = useState("7d");
-  const { data: analyticsData, loading: analyticsLoading } = useRealTimeAnalytics();
-  const { analytics, loading: basicLoading } = useAnalytics();
+  const { t, isRTL, formatNumber, formatCurrency } = useLanguage();
+  const [selectedPeriod, setSelectedPeriod] = useState('30d');
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  
+  // Use real analytics data
+  const { 
+    metrics, 
+    chartData, 
+    isLoading, 
+    refreshData 
+  } = useRealTimeAnalytics();
 
-  if (!userProfile) return null;
-
-  // Combine real analytics data
-  const realAnalyticsData = {
-    overview: {
-      totalRequests: analyticsData?.totalRequests || 0,
-      activeChats: analyticsData?.active_users || 0,
-      responseRate: Math.round(analyticsData?.successRate || 0),
-      avgResponseTime: "2.1 hours"
-    },
-    weeklyActivity: [
-      { day: t('analytics.monday'), requests: Math.round((analyticsData?.totalRequests || 0) * 0.14), messages: Math.round((analyticsData?.total_users || 0) * 0.12), offers: Math.round((analyticsData?.totalOffers || 0) * 0.1) },
-      { day: t('analytics.tuesday'), requests: Math.round((analyticsData?.totalRequests || 0) * 0.18), messages: Math.round((analyticsData?.total_users || 0) * 0.16), offers: Math.round((analyticsData?.totalOffers || 0) * 0.15) },
-      { day: t('analytics.wednesday'), requests: Math.round((analyticsData?.totalRequests || 0) * 0.12), messages: Math.round((analyticsData?.total_users || 0) * 0.10), offers: Math.round((analyticsData?.totalOffers || 0) * 0.08) },
-      { day: t('analytics.thursday'), requests: Math.round((analyticsData?.totalRequests || 0) * 0.20), messages: Math.round((analyticsData?.total_users || 0) * 0.22), offers: Math.round((analyticsData?.totalOffers || 0) * 0.20) },
-      { day: t('analytics.friday'), requests: Math.round((analyticsData?.totalRequests || 0) * 0.16), messages: Math.round((analyticsData?.total_users || 0) * 0.18), offers: Math.round((analyticsData?.totalOffers || 0) * 0.12) },
-      { day: t('analytics.saturday'), requests: Math.round((analyticsData?.totalRequests || 0) * 0.10), messages: Math.round((analyticsData?.total_users || 0) * 0.12), offers: Math.round((analyticsData?.totalOffers || 0) * 0.15) },
-      { day: t('analytics.sunday'), requests: Math.round((analyticsData?.totalRequests || 0) * 0.10), messages: Math.round((analyticsData?.total_users || 0) * 0.10), offers: Math.round((analyticsData?.totalOffers || 0) * 0.20) }
-    ],
-    requestCategories: [
-      { name: t('analytics.manufacturing'), value: 35, color: "hsl(var(--primary))" },
-      { name: t('analytics.technology'), value: 25, color: "hsl(var(--accent))" },
-      { name: t('analytics.logistics'), value: 20, color: "hsl(var(--secondary))" },
-      { name: t('analytics.marketing'), value: 12, color: "hsl(var(--lime))" },
-      { name: t('analytics.other'), value: 8, color: "hsl(var(--muted-foreground))" }
-    ],
-    performance: [
-      { metric: t('analytics.profileCompletion'), value: 85, target: 100 },
-      { metric: t('analytics.responseRate'), value: Math.round(analyticsData?.successRate || 0), target: 90 },
-      { metric: t('analytics.activeRequests'), value: analyticsData?.totalRequests || 0, target: Math.max(15, (analyticsData?.totalRequests || 0) + 3) },
-      { metric: t('analytics.vendorConnections'), value: analyticsData?.active_users || 0, target: Math.max(10, (analyticsData?.active_users || 0) + 2) }
-    ]
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await refreshData();
+    setIsRefreshing(false);
   };
 
-  if (analyticsLoading || basicLoading) {
+  const periodOptions = [
+    { value: '7d', label: t('analytics.last7Days') || 'Last 7 Days' },
+    { value: '30d', label: t('analytics.last30Days') || 'Last 30 Days' },
+    { value: '90d', label: t('analytics.last90Days') || 'Last 90 Days' },
+    { value: '1y', label: t('analytics.lastYear') || 'Last Year' }
+  ];
+
+  const colors = ['#8884d8', '#82ca9d', '#ffc658', '#ff7300', '#8dd1e1'];
+
+  if (isLoading) {
     return (
-      <div className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i} className="animate-pulse">
-              <CardHeader><div className="h-4 bg-muted rounded" /></CardHeader>
-              <CardContent><div className="h-8 bg-muted rounded" /></CardContent>
-            </Card>
-          ))}
-        </div>
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className={`p-4 sm:p-6 space-y-6 ${isRTL ? 'rtl' : 'ltr'}`}>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold">{t('analytics.title')}</h2>
-          <p className="text-muted-foreground">
-            {t('analytics.trackActivity')}
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
+            {t('admin.analytics')}
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            {t('analytics.comprehensiveInsights') || 'Comprehensive insights into platform performance'}
           </p>
         </div>
-        <div className="flex gap-2">
-          {["7d", "30d", "90d"].map(range => (
-            <Badge
-              key={range}
-              variant={timeRange === range ? "default" : "outline"}
-              className="cursor-pointer"
-              onClick={() => setTimeRange(range)}
-            >
-              {range === "7d" && t('analytics.last7Days')}
-              {range === "30d" && t('analytics.last30Days')}
-              {range === "90d" && t('analytics.last90Days')}
-            </Badge>
-          ))}
+        
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="rtl-flex items-center gap-2"
+          >
+            <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            {t('common.refresh') || 'Refresh'}
+          </Button>
+          
+          <Button variant="outline" size="sm">
+            <Download className="rtl-mr-2 h-4 w-4" />
+            {t('analytics.export') || 'Export'}
+          </Button>
         </div>
       </div>
 
-      {/* Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Key Metrics Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('analytics.totalRequests')}</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">
+              {t('admin.totalUsers')}
+            </CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{realAnalyticsData.overview.totalRequests}</div>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-primary">+4</span> {t('analytics.fromLastWeek')}
-            </p>
+            <div className="text-2xl font-bold">
+              {formatNumber(metrics?.totalUsers || 0)}
+            </div>
+            <div className="flex items-center text-xs text-muted-foreground">
+              <TrendingUp className="rtl-mr-1 h-3 w-3 text-green-500" />
+              +{metrics?.userGrowth || '0'}% {t('analytics.fromLastMonth') || 'from last month'}
+            </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('analytics.activeChats')}</CardTitle>
-            <MessageSquare className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">
+              {t('admin.activeRequests')}
+            </CardTitle>
+            <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{realAnalyticsData.overview.activeChats}</div>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-primary">+2</span> {t('analytics.fromLastWeek')}
-            </p>
+            <div className="text-2xl font-bold">
+              {formatNumber(metrics?.activeRequests || 0)}
+            </div>
+            <div className="flex items-center text-xs text-muted-foreground">
+              <TrendingUp className="rtl-mr-1 h-3 w-3 text-green-500" />
+              +{metrics?.requestGrowth || '0'}% {t('analytics.fromLastWeek') || 'from last week'}
+            </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('analytics.responseRate')}</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">
+              {t('admin.revenue')}
+            </CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{realAnalyticsData.overview.responseRate}%</div>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-primary">+5%</span> {t('analytics.fromLastWeek')}
-            </p>
+            <div className="text-2xl font-bold">
+              {formatCurrency(metrics?.totalRevenue || 0)}
+            </div>
+            <div className="flex items-center text-xs text-muted-foreground">
+              <TrendingUp className="rtl-mr-1 h-3 w-3 text-green-500" />
+              +{metrics?.revenueGrowth || '0'}% {t('analytics.fromLastMonth') || 'from last month'}
+            </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('analytics.avgResponseTime')}</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">
+              {t('orders.title')}
+            </CardTitle>
+            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{realAnalyticsData.overview.avgResponseTime}</div>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-destructive">+0.2h</span> {t('analytics.fromLastWeek')}
-            </p>
+            <div className="text-2xl font-bold">
+              {formatNumber(metrics?.totalOrders || 0)}
+            </div>
+            <div className="flex items-center text-xs text-muted-foreground">
+              <TrendingDown className="rtl-mr-1 h-3 w-3 text-red-500" />
+              -{metrics?.orderDecline || '0'}% {t('analytics.fromLastWeek') || 'from last week'}
+            </div>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Weekly Activity Chart */}
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('analytics.weeklyActivity')}</CardTitle>
-            <CardDescription>
-              {t('analytics.weeklyActivityDesc')}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={realAnalyticsData.weeklyActivity}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="day" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="requests" fill="hsl(var(--primary))" />
-                <Bar dataKey="messages" fill="hsl(var(--accent))" />
-                <Bar dataKey="offers" fill="hsl(var(--secondary))" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+      {/* Charts Section */}
+      <Tabs defaultValue="overview" className="space-y-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <TabsList className="grid w-full sm:w-auto grid-cols-2 sm:grid-cols-4">
+            <TabsTrigger value="overview">{t('dashboard.overview')}</TabsTrigger>
+            <TabsTrigger value="users">{t('admin.users')}</TabsTrigger>
+            <TabsTrigger value="financial">{t('analytics.financial') || 'Financial'}</TabsTrigger>
+            <TabsTrigger value="performance">{t('admin.performance')}</TabsTrigger>
+          </TabsList>
+          
+          <div className="flex items-center gap-2">
+            <select 
+              value={selectedPeriod}
+              onChange={(e) => setSelectedPeriod(e.target.value)}
+              className="bg-background border border-border rounded-md px-3 py-1 text-sm"
+            >
+              {periodOptions.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
 
-        {/* Request Categories */}
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('analytics.requestCategories')}</CardTitle>
-            <CardDescription>
-              {t('analytics.requestCategoriesDesc')}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={realAnalyticsData.requestCategories}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                  dataKey="value"
-                  label={({ name, value }) => `${name}: ${value}%`}
-                >
-                  {realAnalyticsData.requestCategories.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      </div>
+        <TabsContent value="overview" className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('analytics.userActivity') || 'User Activity'}</CardTitle>
+                <CardDescription>
+                  {t('analytics.dailyActiveUsers') || 'Daily active users over time'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <AreaChart data={chartData?.userActivity || []}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <Tooltip />
+                    <Area 
+                      type="monotone" 
+                      dataKey="users" 
+                      stroke="#8884d8" 
+                      fill="#8884d8" 
+                      fillOpacity={0.3}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
 
-      {/* Performance Metrics */}
-      <Card>
-        <CardHeader>
-          <CardTitle>{t('analytics.performanceMetrics')}</CardTitle>
-          <CardDescription>
-            {t('analytics.performanceMetricsDesc')}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {realAnalyticsData.performance.map((metric) => {
-              const percentage = (metric.value / metric.target) * 100;
-              return (
-                <div key={metric.metric} className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="font-medium">{metric.metric}</span>
-                    <span className="text-muted-foreground">
-                      {metric.value} / {metric.target}
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('analytics.requestTrends') || 'Request Trends'}</CardTitle>
+                <CardDescription>
+                  {t('analytics.requestsOverTime') || 'Service requests submitted over time'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={chartData?.requestTrends || []}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <Tooltip />
+                    <Line 
+                      type="monotone" 
+                      dataKey="requests" 
+                      stroke="#82ca9d" 
+                      strokeWidth={2}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="users" className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('analytics.userGrowth') || 'User Growth'}</CardTitle>
+                <CardDescription>
+                  {t('analytics.newUsersOverTime') || 'New user registrations over time'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={chartData?.userGrowth || []}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="newUsers" fill="#8884d8" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('analytics.userTypes') || 'User Types'}</CardTitle>
+                <CardDescription>
+                  {t('analytics.distributionByRole') || 'Distribution of users by role'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={chartData?.userTypes || []}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                    >
+                      {(chartData?.userTypes || []).map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="financial" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t('analytics.revenueOverview') || 'Revenue Overview'}</CardTitle>
+              <CardDescription>
+                {t('analytics.monthlyRevenue') || 'Monthly revenue and transaction volume'}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={400}>
+                <AreaChart data={chartData?.revenue || []}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                  <Area 
+                    type="monotone" 
+                    dataKey="revenue" 
+                    stroke="#ffc658" 
+                    fill="#ffc658" 
+                    fillOpacity={0.3}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="performance" className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('analytics.systemMetrics') || 'System Metrics'}</CardTitle>
+                <CardDescription>
+                  {t('analytics.platformPerformance') || 'Platform performance indicators'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">
+                      {t('analytics.responseTime') || 'Avg Response Time'}
                     </span>
+                    <Badge variant="secondary">
+                      {metrics?.avgResponseTime || '150'}ms
+                    </Badge>
                   </div>
-                  <Progress value={percentage} className="h-2" />
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">
+                      {t('analytics.uptime') || 'System Uptime'}
+                    </span>
+                    <Badge variant="secondary">
+                      {metrics?.uptime || '99.9'}%
+                    </Badge>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">
+                      {t('analytics.errorRate') || 'Error Rate'}
+                    </span>
+                    <Badge variant="secondary">
+                      {metrics?.errorRate || '0.1'}%
+                    </Badge>
+                  </div>
                 </div>
-              );
-            })}
-          </div>
-        </CardContent>
-      </Card>
+              </CardContent>
+            </Card>
 
-      {/* Quick Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Activity className="h-5 w-5" />
-            {t('analytics.quickActions')}
-          </CardTitle>
-          <CardDescription>
-            {t('analytics.quickActionsDesc')}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors">
-              <div className="flex items-center gap-3">
-                <Target className="h-5 w-5 text-primary" />
-                <div>
-                  <p className="font-medium">{t('analytics.completeProfile')}</p>
-                  <p className="text-sm text-muted-foreground">{t('analytics.addMissingInfo')}</p>
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('analytics.userSatisfaction') || 'User Satisfaction'}</CardTitle>
+                <CardDescription>
+                  {t('analytics.feedbackRatings') || 'User feedback and ratings'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">
+                      {t('analytics.avgRating') || 'Average Rating'}
+                    </span>
+                    <Badge variant="secondary">
+                      {metrics?.avgRating || '4.5'}/5
+                    </Badge>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">
+                      {t('analytics.nps') || 'Net Promoter Score'}
+                    </span>
+                    <Badge variant="secondary">
+                      {metrics?.nps || '8.2'}/10
+                    </Badge>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">
+                      {t('analytics.supportResolution') || 'Support Resolution'}
+                    </span>
+                    <Badge variant="secondary">
+                      {metrics?.supportResolution || '94'}%
+                    </Badge>
+                  </div>
                 </div>
-              </div>
-            </div>
-            
-            <div className="p-4 border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors">
-              <div className="flex items-center gap-3">
-                <MessageSquare className="h-5 w-5 text-accent" />
-                <div>
-                  <p className="font-medium">{t('analytics.respondToMessages')}</p>
-                  <p className="text-sm text-muted-foreground">3 {t('analytics.pendingResponses')}</p>
-                </div>
-              </div>
-            </div>
-            
-            <div className="p-4 border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors">
-              <div className="flex items-center gap-3">
-                <FileText className="h-5 w-5 text-secondary" />
-                <div>
-                  <p className="font-medium">{t('analytics.createNewRequest')}</p>
-                  <p className="text-sm text-muted-foreground">{t('analytics.findMoreSuppliers')}</p>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
-        </CardContent>
-      </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

@@ -37,27 +37,27 @@ export const useRealTimeAnalytics = () => {
     try {
       // Fetch total users
       const { count: totalUsers } = await supabase
-        .from('profiles')
+        .from('user_profiles')
         .select('*', { count: 'exact', head: true });
 
       // Fetch active requests
       const { count: activeRequests } = await supabase
-        .from('service_requests')
+        .from('requests')
         .select('*', { count: 'exact', head: true })
-        .eq('status', 'active');
+        .eq('status', 'new');
 
       // Fetch orders count
       const { count: totalOrders } = await supabase
         .from('orders')
         .select('*', { count: 'exact', head: true });
 
-      // Calculate revenue from orders (mock calculation)
+      // Calculate revenue from orders
       const { data: orders } = await supabase
         .from('orders')
-        .select('total_amount')
+        .select('amount')
         .eq('status', 'completed');
 
-      const totalRevenue = orders?.reduce((sum, order) => sum + (order.total_amount || 0), 0) || 0;
+      const totalRevenue = orders?.reduce((sum, order) => sum + (order.amount || 0), 0) || 0;
 
       // Set metrics with real data and calculated growth rates
       setMetrics({
@@ -87,7 +87,7 @@ export const useRealTimeAnalytics = () => {
     try {
       // Fetch user activity data
       const { data: profiles } = await supabase
-        .from('profiles')
+        .from('user_profiles')
         .select('created_at')
         .order('created_at', { ascending: true });
 
@@ -105,7 +105,7 @@ export const useRealTimeAnalytics = () => {
 
       // Fetch request trends
       const { data: requests } = await supabase
-        .from('service_requests')
+        .from('requests')
         .select('created_at')
         .order('created_at', { ascending: true });
 
@@ -116,7 +116,7 @@ export const useRealTimeAnalytics = () => {
 
       // User types distribution
       const { data: userRoles } = await supabase
-        .from('profiles')
+        .from('user_profiles')
         .select('role');
 
       const roleCount = userRoles?.reduce((acc: any, user) => {
@@ -173,11 +173,11 @@ export const useRealTimeAnalytics = () => {
     const metricsSubscription = supabase
       .channel('analytics-metrics')
       .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'profiles' },
+        { event: '*', schema: 'public', table: 'user_profiles' },
         () => fetchMetrics()
       )
       .on('postgres_changes',
-        { event: '*', schema: 'public', table: 'service_requests' },
+        { event: '*', schema: 'public', table: 'requests' },
         () => fetchMetrics()
       )
       .on('postgres_changes',
