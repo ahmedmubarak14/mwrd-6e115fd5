@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -72,15 +71,27 @@ export const VerificationQueue = () => {
 
   const generateSignedUrl = async (filePath: string, expiresIn: number = 3600): Promise<string | null> => {
     try {
-      // If the path is already a full URL, it's from old data - return as is
+      let actualFilePath = filePath;
+
+      // Check if the stored value is a full public URL from old records
       if (filePath.startsWith('http')) {
-        return filePath;
+        // Extract the file path from the public URL format:
+        // https://jpxqywtitjjphkiuokov.supabase.co/storage/v1/object/public/chat-files/path/to/file.ext
+        const urlParts = filePath.split('/storage/v1/object/public/chat-files/');
+        if (urlParts.length === 2) {
+          actualFilePath = urlParts[1];
+          console.log('Extracted file path from public URL:', actualFilePath);
+        } else {
+          console.error('Unable to extract file path from URL:', filePath);
+          showError('Invalid document URL format');
+          return null;
+        }
       }
 
       // Generate signed URL for the file path
       const { data, error } = await supabase.storage
         .from('chat-files')
-        .createSignedUrl(filePath, expiresIn);
+        .createSignedUrl(actualFilePath, expiresIn);
 
       if (error) {
         console.error('Error creating signed URL:', error);
