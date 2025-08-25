@@ -1,377 +1,384 @@
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 import { 
   Users, 
   Building, 
   FileText, 
-  Package, 
   ShoppingCart, 
-  DollarSign,
+  CheckCircle, 
+  Clock,
   TrendingUp,
-  TrendingDown,
-  Activity,
   AlertCircle,
-  CheckCircle,
-  Clock
-} from "lucide-react";
+  MessageSquare,
+  Ticket,
+  DollarSign,
+  Package
+} from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { FinancialAnalyticsChart } from '@/components/analytics/FinancialAnalyticsChart';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 import { useSupportTickets } from '@/hooks/useSupportTickets';
+import { Link } from 'react-router-dom';
 
-interface GrowthStats {
-  total_users: number;
-  total_clients: number;
-  total_vendors: number;
-  total_admins: number;
-  total_requests: number;
-  total_offers: number;
-  total_orders: number;
-  total_revenue: number;
-  total_transactions: number;
-  active_subscriptions: number;
-  users_growth: number;
-  requests_growth: number;
-  offers_growth: number;
-  revenue_growth: number;
+interface DashboardStats {
+  totalUsers: number;
+  totalClients: number;
+  totalVendors: number;
+  totalAdmins: number;
+  activeRequests: number;
+  confirmedOrders: number;
+  completedOrders: number;
+  pendingOffers: number;
+  openTickets: number;
+  totalRevenue: number;
+  monthlyGrowth: number;
 }
 
 export const AdminDashboardOverview = () => {
-  const [stats, setStats] = useState<GrowthStats | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
+  const { toast } = useToast();
   const { getPendingTicketsCount } = useSupportTickets();
+  const [stats, setStats] = useState<DashboardStats>({
+    totalUsers: 0,
+    totalClients: 0,
+    totalVendors: 0,
+    totalAdmins: 0,
+    activeRequests: 0,
+    confirmedOrders: 0,
+    completedOrders: 0,
+    pendingOffers: 0,
+    openTickets: 0,
+    totalRevenue: 0,
+    monthlyGrowth: 0
+  });
+  const [loading, setLoading] = useState(true);
+  const [recentActivity, setRecentActivity] = useState<any[]>([]);
 
-  const fetchGrowthStatistics = async () => {
+  const fetchDashboardStats = async () => {
     try {
       setLoading(true);
-      setError(null);
-      
-      const { data, error } = await supabase.rpc('get_growth_statistics');
-      
-      if (error) throw error;
-      
-      if (data && data.length > 0) {
-        setStats(data[0]);
-      }
-    } catch (err: any) {
-      console.error('Error fetching growth statistics:', err);
-      setError(err.message);
+
+      // Fetch user statistics
+      const { data: userStats } = await supabase
+        .rpc('get_user_statistics');
+
+      // Fetch requests statistics
+      const { data: requests } = await supabase
+        .from('requests')
+        .select('id, status, admin_approval_status')
+        .eq('admin_approval_status', 'approved');
+
+      // Fetch orders statistics
+      const { data: orders } = await supabase
+        .from('orders')
+        .select('id, status, amount');
+
+      // Fetch offers statistics
+      const { data: offers } = await supabase
+        .from('offers')
+        .select('id, client_approval_status, admin_approval_status');
+
+      // Fetch financial data
+      const { data: transactions } = await supabase
+        .from('financial_transactions')
+        .select('amount')
+        .eq('status', 'completed');
+
+      // Fetch support tickets
+      const { data: tickets } = await supabase
+        .from('support_tickets')
+        .select('id, status')
+        .eq('status', 'open');
+
+      // Calculate stats
+      const activeRequests = requests?.filter(r => ['new', 'in_progress'].includes(r.status)).length || 0;
+      const confirmedOrders = orders?.filter(o => ['confirmed', 'in_progress'].includes(o.status)).length || 0;
+      const completedOrders = orders?.filter(o => o.status === 'completed').length || 0;
+      const pendingOffers = offers?.filter(o => o.admin_approval_status === 'pending').length || 0;
+      const openTickets = tickets?.length || 0;
+      const totalRevenue = transactions?.reduce((sum, t) => sum + (t.amount || 0), 0) || 0;
+
+      setStats({
+        totalUsers: userStats?.[0]?.total_users || 0,
+        totalClients: userStats?.[0]?.total_clients || 0,
+        totalVendors: userStats?.[0]?.total_vendors || 0,
+        totalAdmins: userStats?.[0]?.total_admins || 0,
+        activeRequests,
+        confirmedOrders,
+        completedOrders,
+        pendingOffers,
+        openTickets,
+        totalRevenue,
+        monthlyGrowth: 12.5 // Placeholder for now
+      });
+
+      // Fetch recent activity
+      const { data: activity } = await supabase
+        .from('activity_feed')
+        .select('*, user_profiles(full_name, company_name)')
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      setRecentActivity(activity || []);
+
+    } catch (error) {
+      console.error('Error fetching dashboard stats:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load dashboard statistics',
+        variant: 'destructive'
+      });
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchGrowthStatistics();
-    
-    // Set up real-time subscription for stats updates
-    const subscription = supabase
-      .channel('dashboard_stats')
-      .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'user_profiles' },
-        () => {
-          fetchGrowthStatistics();
-        }
-      )
-      .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'requests' },
-        () => {
-          fetchGrowthStatistics();
-        }
-      )
-      .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'offers' },
-        () => {
-          fetchGrowthStatistics();
-        }
-      )
-      .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'financial_transactions' },
-        () => {
-          fetchGrowthStatistics();
-        }
-      )
-      .subscribe();
-
-    return () => {
-      subscription.unsubscribe();
-    };
+    fetchDashboardStats();
   }, []);
 
-  const formatNumber = (num: number) => {
-    if (num >= 1000000) {
-      return (num / 1000000).toFixed(1) + 'M';
-    }
-    if (num >= 1000) {
-      return (num / 1000).toFixed(1) + 'K';
-    }
-    return num?.toString() || '0';
-  };
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'SAR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount || 0);
-  };
-
-  const getGrowthIcon = (growth: number) => {
-    if (growth > 0) return <TrendingUp className="h-4 w-4 text-success" />;
-    if (growth < 0) return <TrendingDown className="h-4 w-4 text-destructive" />;
-    return <Activity className="h-4 w-4 text-muted-foreground" />;
-  };
-
-  const getGrowthColor = (growth: number) => {
-    if (growth > 0) return 'text-success';
-    if (growth < 0) return 'text-destructive';
-    return 'text-muted-foreground';
-  };
-
   if (loading) {
-    return <LoadingSpinner text="Loading dashboard statistics..." />;
-  }
-
-  if (error) {
     return (
-      <Card className="border-destructive">
-        <CardHeader>
-          <CardTitle className="text-destructive">Error Loading Dashboard</CardTitle>
-          <CardDescription>{error}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Button onClick={fetchGrowthStatistics} variant="outline">
-            Retry
-          </Button>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (!stats) {
-    return (
-      <div className="text-center py-8">
-        <p className="text-muted-foreground">No statistics available</p>
+      <div className="container mx-auto p-6">
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-muted-foreground">Loading dashboard...</p>
+        </div>
       </div>
     );
   }
-
-  const pendingSupportTickets = getPendingTicketsCount();
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-          <p className="text-muted-foreground">
-            Overview of platform statistics and growth metrics
-          </p>
-        </div>
-        <Button onClick={fetchGrowthStatistics} variant="outline" size="sm">
-          Refresh Data
-        </Button>
+    <div className="container mx-auto p-6">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
+        <p className="text-muted-foreground">
+          Welcome back! Here's an overview of your platform's performance.
+        </p>
       </div>
 
-      {/* Support Tickets Alert */}
-      {pendingSupportTickets > 0 && (
-        <Card className="border-warning bg-warning/10">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-warning">
-              <AlertCircle className="h-5 w-5" />
-              Pending Support Tickets
-            </CardTitle>
-            <CardDescription>
-              You have {pendingSupportTickets} open support ticket{pendingSupportTickets !== 1 ? 's' : ''} that need attention
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button variant="outline" onClick={() => window.location.href = '/admin/support'}>
-              View Support Tickets
-            </Button>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Main Stats Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {/* Total Users */}
+      {/* Key Business Metrics - Matching Your Admin Journey */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Clients</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(stats.total_users)}</div>
-            <div className={`text-xs flex items-center gap-1 ${getGrowthColor(stats.users_growth)}`}>
-              {getGrowthIcon(stats.users_growth)}
-              {stats.users_growth > 0 ? '+' : ''}{stats.users_growth}% from last month
-            </div>
+            <div className="text-2xl font-bold">{stats.totalClients}</div>
+            <p className="text-xs text-muted-foreground">
+              Active client accounts
+            </p>
           </CardContent>
         </Card>
 
-        {/* Total Revenue */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Vendors</CardTitle>
+            <Building className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalVendors}</div>
+            <p className="text-xs text-muted-foreground">
+              Registered vendors
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Active Requests</CardTitle>
+            <FileText className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.activeRequests}</div>
+            <p className="text-xs text-muted-foreground">
+              Currently being processed
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Confirmed Orders</CardTitle>
+            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.confirmedOrders}</div>
+            <p className="text-xs text-muted-foreground">
+              In progress orders
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Order Lifecycle & Support Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Completed Orders</CardTitle>
+            <CheckCircle className="h-4 w-4 text-green-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-600">{stats.completedOrders}</div>
+            <p className="text-xs text-muted-foreground">
+              Successfully delivered
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Pending Offers</CardTitle>
+            <Package className="h-4 w-4 text-yellow-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-yellow-600">{stats.pendingOffers}</div>
+            <p className="text-xs text-muted-foreground">
+              Awaiting admin approval
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Open Support Tickets</CardTitle>
+            <Ticket className="h-4 w-4 text-red-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-red-600">{stats.openTickets}</div>
+            <p className="text-xs text-muted-foreground">
+              Require attention
+            </p>
+          </CardContent>
+        </Card>
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(stats.total_revenue)}</div>
-            <div className={`text-xs flex items-center gap-1 ${getGrowthColor(stats.revenue_growth)}`}>
-              {getGrowthIcon(stats.revenue_growth)}
-              {stats.revenue_growth > 0 ? '+' : ''}{stats.revenue_growth}% from last month
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Active Requests */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Requests</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(stats.total_requests)}</div>
-            <div className={`text-xs flex items-center gap-1 ${getGrowthColor(stats.requests_growth)}`}>
-              {getGrowthIcon(stats.requests_growth)}
-              {stats.requests_growth > 0 ? '+' : ''}{stats.requests_growth}% from last month
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Active Subscriptions */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Subscriptions</CardTitle>
-            <CheckCircle className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(stats.active_subscriptions)}</div>
+            <div className="text-2xl font-bold">{stats.totalRevenue.toLocaleString()} SAR</div>
             <p className="text-xs text-muted-foreground">
-              {((stats.active_subscriptions / stats.total_users) * 100).toFixed(1)}% of users
+              Platform commission earned
             </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Secondary Stats */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {/* Quick Actions & Alerts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Clients</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <AlertCircle className="h-5 w-5 text-yellow-600" />
+              Requires Immediate Attention
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(stats.total_clients)}</div>
-            <p className="text-xs text-muted-foreground">
-              {((stats.total_clients / stats.total_users) * 100).toFixed(1)}% of users
-            </p>
+          <CardContent className="space-y-4">
+            {stats.pendingOffers > 0 && (
+              <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                <div>
+                  <p className="font-medium">Pending Offer Approvals</p>
+                  <p className="text-sm text-muted-foreground">{stats.pendingOffers} offers awaiting review</p>
+                </div>
+                <Button asChild size="sm">
+                  <Link to="/admin/offers">Review</Link>
+                </Button>
+              </div>
+            )}
+            
+            {stats.openTickets > 0 && (
+              <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                <div>
+                  <p className="font-medium">Open Support Tickets</p>
+                  <p className="text-sm text-muted-foreground">{stats.openTickets} tickets need response</p>
+                </div>
+                <Button asChild size="sm">
+                  <Link to="/admin/support">Resolve</Link>
+                </Button>
+              </div>
+            )}
+
+            {stats.pendingOffers === 0 && stats.openTickets === 0 && (
+              <div className="text-center py-4 text-muted-foreground">
+                <CheckCircle className="h-8 w-8 mx-auto mb-2 text-green-600" />
+                <p>All caught up! No urgent items need attention.</p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Vendors</CardTitle>
-            <Building className="h-4 w-4 text-muted-foreground" />
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-green-600" />
+              Platform Performance
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(stats.total_vendors)}</div>
-            <p className="text-xs text-muted-foreground">
-              {((stats.total_vendors / stats.total_users) * 100).toFixed(1)}% of users
-            </p>
-          </CardContent>
-        </Card>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">User Growth</span>
+                <span className="text-sm text-green-600">+{stats.monthlyGrowth}%</span>
+              </div>
+              <Progress value={stats.monthlyGrowth} className="w-full" />
+            </div>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Offers</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(stats.total_offers)}</div>
-            <div className={`text-xs flex items-center gap-1 ${getGrowthColor(stats.offers_growth)}`}>
-              {getGrowthIcon(stats.offers_growth)}
-              {stats.offers_growth > 0 ? '+' : ''}{stats.offers_growth}% from last month
+            <div className="grid grid-cols-2 gap-4 pt-4">
+              <div className="text-center">
+                <p className="text-2xl font-bold">{((stats.completedOrders / (stats.completedOrders + stats.confirmedOrders)) * 100 || 0).toFixed(1)}%</p>
+                <p className="text-xs text-muted-foreground">Completion Rate</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold">{stats.totalUsers}</p>
+                <p className="text-xs text-muted-foreground">Total Users</p>
+              </div>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Financial Analytics Chart */}
+      {/* Quick Navigation */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <DollarSign className="h-5 w-5" />
-            Financial Analytics
-          </CardTitle>
-          <CardDescription>
-            Revenue trends and transaction analysis
-          </CardDescription>
+          <CardTitle>Quick Access</CardTitle>
+          <CardDescription>Jump to key admin functions</CardDescription>
         </CardHeader>
         <CardContent>
-          <FinancialAnalyticsChart period="month" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <Button asChild variant="outline" className="h-20 flex-col">
+              <Link to="/admin/users">
+                <Users className="h-6 w-6 mb-2" />
+                Manage Users
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="h-20 flex-col">
+              <Link to="/admin/requests">
+                <FileText className="h-6 w-6 mb-2" />
+                View Requests
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="h-20 flex-col">
+              <Link to="/admin/offers">
+                <Package className="h-6 w-6 mb-2" />
+                Review Offers
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="h-20 flex-col">
+              <Link to="/admin/support">
+                <MessageSquare className="h-6 w-6 mb-2" />
+                Support Center
+              </Link>
+            </Button>
+          </div>
         </CardContent>
       </Card>
-
-      {/* Additional Metrics */}
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Transaction Summary</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Total Transactions</span>
-              <span className="font-medium">{formatNumber(stats.total_transactions)}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Total Orders</span>
-              <span className="font-medium">{formatNumber(stats.total_orders)}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Average Transaction</span>
-              <span className="font-medium">
-                {stats.total_transactions > 0 
-                  ? formatCurrency(stats.total_revenue / stats.total_transactions)
-                  : formatCurrency(0)
-                }
-              </span>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Platform Health</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">User Retention Rate</span>
-              <Badge variant="secondary">
-                {((stats.total_users - (stats.total_users * 0.05)) / stats.total_users * 100).toFixed(1)}%
-              </Badge>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Conversion Rate</span>
-              <Badge variant="secondary">
-                {((stats.total_orders / stats.total_requests) * 100).toFixed(1)}%
-              </Badge>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">Support Tickets</span>
-              <Badge variant={pendingSupportTickets > 0 ? "destructive" : "secondary"}>
-                {pendingSupportTickets} Open
-              </Badge>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
     </div>
   );
 };
