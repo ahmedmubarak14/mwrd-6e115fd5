@@ -188,6 +188,8 @@ export const translations = {
     'vendor.negotiable': 'Negotiable',
 
     // Browse Requests translations
+    'browseRequests.title': 'Browse Requests',
+    'browseRequests.subtitle': 'Find and bid on procurement opportunities',
     'browseRequests.searchAndFilter': 'Search & Filter Requests',
     'browseRequests.filterDescription': 'Find the perfect procurement opportunities for your business',
     'browseRequests.filterByCategory': 'Categories',
@@ -196,6 +198,30 @@ export const translations = {
     'browseRequests.budget': 'Budget',
     'browseRequests.deadline': 'Deadline',
     'browseRequests.posted': 'Posted',
+
+    // My Offers translations
+    'myOffers.title': 'My Offers',
+    'myOffers.subtitle': 'Track and manage all your submitted offers',
+    'myOffers.noOffers': 'No offers found',
+    'myOffers.noOffersDesc': 'You haven\'t submitted any offers yet. Browse available requests to get started.',
+    'myOffers.offerNumber': 'Offer #',
+    'myOffers.requestTitle': 'Request Title',
+    'myOffers.offerAmount': 'Offer Amount',
+    'myOffers.submittedDate': 'Submitted',
+    'myOffers.status': 'Status',
+    'myOffers.deliveryTime': 'Delivery Time',
+    'myOffers.clientResponse': 'Client Response',
+    'myOffers.noDescription': 'No description provided',
+    'myOffers.priceNotSet': 'Price not set',
+    'myOffers.daysDelivery': 'days delivery',
+    'myOffers.viewOffer': 'View Offer',
+    'myOffers.editOffer': 'Edit Offer',
+    'myOffers.withdrawOffer': 'Withdraw Offer',
+    'myOffers.status.pending': 'Pending Review',
+    'myOffers.status.approved': 'Approved',
+    'myOffers.status.rejected': 'Rejected',
+    'myOffers.status.accepted': 'Accepted',
+    'myOffers.status.withdrawn': 'Withdrawn',
 
     // Dashboard translations
     'dashboard.completedProjects': 'Completed Projects',
@@ -752,6 +778,8 @@ export const translations = {
     'vendor.negotiable': 'قابل للتفاوض',
 
     // Browse Requests translations
+    'browseRequests.title': 'تصفح الطلبات',
+    'browseRequests.subtitle': 'ابحث عن فرص المشتريات وقدم عروض عليها',
     'browseRequests.searchAndFilter': 'البحث والتصفية في الطلبات',
     'browseRequests.filterDescription': 'اعثر على فرص المشتريات المثالية لعملك',
     'browseRequests.filterByCategory': 'الفئات',
@@ -760,6 +788,30 @@ export const translations = {
     'browseRequests.budget': 'الميزانية',
     'browseRequests.deadline': 'الموعد النهائي',
     'browseRequests.posted': 'تاريخ النشر',
+
+    // My Offers translations
+    'myOffers.title': 'عروضي',
+    'myOffers.subtitle': 'تتبع وإدارة جميع عروضك المقدمة',
+    'myOffers.noOffers': 'لم يتم العثور على عروض',
+    'myOffers.noOffersDesc': 'لم تقدم أي عروض بعد. تصفح الطلبات المتاحة للبدء.',
+    'myOffers.offerNumber': 'عرض رقم',
+    'myOffers.requestTitle': 'عنوان الطلب',
+    'myOffers.offerAmount': 'مبلغ العرض',
+    'myOffers.submittedDate': 'تاريخ التقديم',
+    'myOffers.status': 'الحالة',
+    'myOffers.deliveryTime': 'وقت التسليم',
+    'myOffers.clientResponse': 'رد العميل',
+    'myOffers.noDescription': 'لم يتم تقديم وصف',
+    'myOffers.priceNotSet': 'لم يتم تحديد السعر',
+    'myOffers.daysDelivery': 'يوم للتسليم',
+    'myOffers.viewOffer': 'عرض العرض',
+    'myOffers.editOffer': 'تعديل العرض',
+    'myOffers.withdrawOffer': 'سحب العرض',
+    'myOffers.status.pending': 'قيد المراجعة',
+    'myOffers.status.approved': 'موافق عليه',
+    'myOffers.status.rejected': 'مرفوض',
+    'myOffers.status.accepted': 'مقبول',
+    'myOffers.status.withdrawn': 'مسحوب',
 
     // Dashboard translations
     'dashboard.completedProjects': 'المشاريع المكتملة',
