@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
+import { VendorDashboard } from './pages/VendorDashboard';
 import Profile from './pages/Profile';
 import { Analytics } from './pages/Analytics';
 import { Landing } from './pages/Landing';
@@ -117,6 +118,13 @@ const AppRoutes: React.FC = () => {
               {/* Add more vendor routes here */}
             </Routes>
           </DashboardLayout>
+        </RoleProtectedRoute>
+      } />
+
+      {/* Vendor Dashboard Route */}
+      <Route path="/vendor-dashboard" element={
+        <RoleProtectedRoute allowedRoles={['vendor']}>
+          <VendorDashboard />
         </RoleProtectedRoute>
       } />
 
