@@ -1,4 +1,3 @@
-
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -14,6 +13,7 @@ import { useOffers } from "@/hooks/useOffers";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { CreateOfferModal } from "@/components/modals/CreateOfferModal";
 import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
+import { UnifiedVerificationStatus } from "@/components/verification/UnifiedVerificationStatus";
 
 export const VendorDashboard = () => {
   const { userProfile } = useAuth();
@@ -34,6 +34,12 @@ export const VendorDashboard = () => {
       </DashboardLayout>
     );
   }
+
+  // Check if user needs verification guidance
+  const needsVerificationGuidance = userProfile && (
+    userProfile.verification_status !== 'approved' || 
+    userProfile.status !== 'approved'
+  );
 
   const topMatches = matchedRequests.slice(0, 3);
   const recentOffers = offers.slice(0, 3);
@@ -80,6 +86,15 @@ export const VendorDashboard = () => {
   return (
     <DashboardLayout className={isRTL ? 'font-arabic' : ''}>
       <div className="max-w-6xl mx-auto space-y-6">
+        {/* Verification Status - Only show for non-verified users */}
+        {needsVerificationGuidance && (
+          <UnifiedVerificationStatus 
+            showActions={true}
+            showAccessLevels={true}
+            compact={false}
+          />
+        )}
+
         {/* Header */}
         <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-accent/10 to-lime/10 rounded-xl p-6">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">

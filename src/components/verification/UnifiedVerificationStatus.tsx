@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -161,6 +160,14 @@ export const UnifiedVerificationStatus = ({
 
   const verificationStatus = getVerificationStatus();
   const accessLevel = getAccessLevel();
+
+  // Check if user is fully verified
+  const isFullyVerified = userProfile.verification_status === 'approved' && userProfile.status === 'approved';
+
+  // For fully verified users, only show compact version or hide completely
+  if (isFullyVerified && !compact) {
+    return null; // Hide the full verification status for verified users
+  }
 
   if (compact) {
     return (
