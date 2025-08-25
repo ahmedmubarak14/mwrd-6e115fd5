@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -35,7 +36,12 @@ import {
   DollarSign,
   Clock,
   UserPlus,
-  Menu
+  Menu,
+  Settings,
+  Database,
+  Workflow,
+  PieChart,
+  Users2
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { MobileNavigation } from "@/components/layout/MobileNavigation";
@@ -148,12 +154,12 @@ export const Landing = () => {
               </Link>
             ) : (
               <>
-                <Link to="/login" className="hidden md:block">
+                <Link to="/enhanced-login" className="hidden md:block">
                   <Button variant="ghost" size="lg" className="px-6 bg-white/5 border border-white/20 text-white transition-all duration-300 backdrop-blur-15">
                     {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
                   </Button>
                 </Link>
-                <Link to="/register" className="hidden md:block">
+                <Link to="/enhanced-register" className="hidden md:block">
                   <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
                     {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
                   </Button>
@@ -180,7 +186,7 @@ export const Landing = () => {
               {/* Badge */}
               <div className="inline-block">
                 <div className="px-4 py-2 text-sm text-white rounded-full bg-white/10 border border-white/30 backdrop-blur-20">
-                  {language === 'ar' ? 'سوق إمداد B2B يربط العملاء بالموردين المعتمدين عبر الشرق الأوسط وشمال أفريقيا' : 'B2B supply chain marketplace connecting clients with verified vendors across MENA'}
+                  {language === 'ar' ? '🚀 منصة المشتريات الذكية' : '🚀 Smart Procurement Platform'}
                 </div>
               </div>
 
@@ -191,7 +197,7 @@ export const Landing = () => {
                   <span className="text-white"> | {language === 'ar' ? 'مورد' : 'مورد'}</span>
                 </h1>
                 <p className="text-base text-white font-medium">
-                  {language === 'ar' ? 'سوق سلسلة التوريد B2B' : 'B2B Supply Chain Marketplace'}
+                  {language === 'ar' ? 'منصة ذكية تربط الشركات بأفضل الموردين في المملكة العربية السعودية' : 'Smart platform connecting businesses with top suppliers in Saudi Arabia'}
                 </p>
               </div>
 
@@ -209,7 +215,7 @@ export const Landing = () => {
 
               {/* Action Button */}
               <div className="flex justify-center sm:justify-start">
-                <Link to="/register" className="group">
+                <Link to="/enhanced-register" className="group">
                   <Button size="lg" className="px-8 py-3 text-base font-semibold transition-all duration-300 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
                     {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
                   </Button>
@@ -469,61 +475,124 @@ export const Landing = () => {
         </div>
       </section>
 
-      {/* Enhanced Benefits Section */}
+      {/* Our Smart Platform Section */}
       <section className="py-32 px-6 relative overflow-hidden">
         <div className="container mx-auto relative z-10">
           <div className="text-center mb-20">
             <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
-              {language === 'ar' ? 'لماذا تختار مورد؟' : 'Why Choose MWRD?'}
+              {language === 'ar' ? 'منصتنا الذكية' : 'Our Smart Platform'}
             </h2>
             <p className="text-lg max-w-3xl mx-auto font-light text-white">
               {language === 'ar' 
-                ? 'منصة شاملة تجمع بين التكنولوجيا المتقدمة والخدمة المتميزة لتقديم تجربة استثنائية'
-                : 'A comprehensive platform that combines advanced technology with exceptional service to deliver an outstanding experience'}
+                ? 'كل ما تحتاجه لإدارة المشتريات بكفاءة'
+                : 'Everything you need to manage procurement efficiently.'}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+            {[
+              {
+                icon: Database,
+                title: language === 'ar' ? 'منصة شاملة' : 'All-in-One Platform',
+                desc: language === 'ar' ? 'إدارة الموردين والطلبات والمشاريع والمدفوعات في مكان واحد' : 'Manage suppliers, requests, projects, and payments in one place.',
+                color: '#102C33'
+              },
+              {
+                icon: Workflow,
+                title: language === 'ar' ? 'سير عمل آلي' : 'Automated Workflows',
+                desc: language === 'ar' ? 'تبسيط العمليات وتقليل الجهد اليدوي' : 'Streamline processes and reduce manual effort.',
+                color: '#004F54'
+              },
+              {
+                icon: PieChart,
+                title: language === 'ar' ? 'تحليلات متقدمة' : 'Advanced Analytics',
+                desc: language === 'ar' ? 'احصل على رؤى قيمة لتحسين الأداء واتخاذ قرارات مدروسة' : 'Gain valuable insights to improve performance and make informed decisions.',
+                color: '#765A3F'
+              },
+              {
+                icon: Users2,
+                title: language === 'ar' ? 'تعاون سلس' : 'Seamless Collaboration',
+                desc: language === 'ar' ? 'تواصل وتعاون مع الموردين والعملاء بكفاءة' : 'Communicate and collaborate with suppliers and clients efficiently.',
+                color: '#102C33'
+              }
+            ].map((feature, index) => (
+              <Card key={index} className="p-6 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/5 border border-white/20 backdrop-blur-20">
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${feature.color}30` }}>
+                    <feature.icon className="h-8 w-8" style={{ color: feature.color }} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-2 text-white">{feature.title}</h3>
+                    <p className="text-white font-light leading-relaxed">{feature.desc}</p>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Enhanced Services & Benefits Section */}
+      <section className="py-32 px-6 relative overflow-hidden">
+        <div className="container mx-auto relative z-10">
+          <div className="text-center mb-20">
+            <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
+              {language === 'ar' ? 'خدماتنا ومزايانا' : 'Our Services & Benefits'}
+            </h2>
+            <p className="text-lg max-w-3xl mx-auto font-light text-white">
+              {language === 'ar' 
+                ? 'نقدم مجموعة واسعة من الخدمات لتلبية احتياجات أعمالك'
+                : 'We offer a wide range of services to meet your business needs'}
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 max-w-7xl mx-auto">
-            {/* For Suppliers */}
+            {/* Our Services */}
             <div className="space-y-8">
               <div className="text-center lg:text-left">
                 <h3 className="text-2xl font-black mb-4 text-white">
-                  {language === 'ar' ? 'للموردين' : 'For Vendors'}
+                  {language === 'ar' ? 'خدماتنا' : 'Our Services'}
                 </h3>
                 <p className="text-white font-light">
-                  {language === 'ar' ? 'نوسع شبكة عملائك ونزيد من مبيعاتك' : 'Expand your client network and increase your sales'}
+                  {language === 'ar' ? 'نقدم مجموعة واسعة من الخدمات لتلبية احتياجات أعمالك' : 'We offer a wide range of services to meet your business needs.'}
                 </p>
               </div>
               
               <div className="space-y-6">
                 {[
                   {
-                    icon: Globe,
-                    title: language === 'ar' ? 'وصول عالمي' : 'Global Reach',
-                    desc: language === 'ar' ? 'اوصل لعملاء جدد حول العالم' : 'Reach new clients worldwide',
+                    icon: Users,
+                    title: language === 'ar' ? 'إدارة الموردين' : 'Supplier Management',
+                    desc: language === 'ar' ? 'ابحث وأدر أفضل الموردين بكفاءة' : 'Find and manage top suppliers efficiently.',
                     color: '#102C33'
                   },
                   {
-                    icon: BarChart3,
-                    title: language === 'ar' ? 'تحليلات متقدمة' : 'Advanced Analytics',
-                    desc: language === 'ar' ? 'تتبع أداءك وحسن استراتيجيتك' : 'Track your performance and improve your strategy',
+                    icon: FileText,
+                    title: language === 'ar' ? 'إدارة الطلبات' : 'Request Management',
+                    desc: language === 'ar' ? 'أنشئ وأدر الطلبات بسهولة' : 'Create and manage requests with ease.',
                     color: '#004F54'
                   },
                   {
-                    icon: CreditCard,
-                    title: language === 'ar' ? 'دفع مضمون' : 'Guaranteed Payment',
-                    desc: language === 'ar' ? 'احصل على مدفوعاتك بأمان وسرعة' : 'Get your payments safely and quickly',
+                    icon: Briefcase,
+                    title: language === 'ar' ? 'إدارة المشاريع' : 'Project Management',
+                    desc: language === 'ar' ? 'تتبع المشاريع واضمن التسليم في الوقت المحدد' : 'Track projects and ensure on-time delivery.',
                     color: '#765A3F'
+                  },
+                  {
+                    icon: CreditCard,
+                    title: language === 'ar' ? 'إدارة المدفوعات' : 'Payment Management',
+                    desc: language === 'ar' ? 'أدر المدفوعات بأمان وكفاءة' : 'Manage payments securely and efficiently.',
+                    color: '#102C33'
                   }
-                ].map((benefit, index) => (
+                ].map((service, index) => (
                   <Card key={index} className="p-6 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/5 border border-white/20 backdrop-blur-20">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${benefit.color}30` }}>
-                        <benefit.icon className="h-6 w-6" style={{ color: benefit.color }} />
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${service.color}30` }}>
+                        <service.icon className="h-6 w-6" style={{ color: service.color }} />
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-lg font-bold mb-2 text-white">{benefit.title}</h4>
-                        <p className="text-white font-light">{benefit.desc}</p>
+                        <h4 className="text-lg font-bold mb-2 text-white">{service.title}</h4>
+                        <p className="text-white font-light">{service.desc}</p>
                       </div>
                     </div>
                   </Card>
@@ -531,36 +600,42 @@ export const Landing = () => {
               </div>
             </div>
 
-            {/* For Buyers */}
+            {/* Benefits */}
             <div className="space-y-8">
               <div className="text-center lg:text-left">
                 <h3 className="text-2xl font-black mb-4 text-white">
-                  {language === 'ar' ? 'للعملاء' : 'For Buyers'}
+                  {language === 'ar' ? 'مزايا استخدام منصتنا' : 'Benefits of Using Our Platform'}
                 </h3>
                 <p className="text-white font-light">
-                  {language === 'ar' ? 'احصل على أفضل العروض من موردين موثوقين' : 'Get the best offers from trusted vendors'}
+                  {language === 'ar' ? 'اكتشف كيف يمكن لمنصتنا مساعدتك في تحقيق أهداف عملك' : 'Discover how our platform can help you achieve your business goals.'}
                 </p>
               </div>
               
               <div className="space-y-6">
                 {[
                   {
-                    icon: Search,
-                    title: language === 'ar' ? 'بحث ذكي' : 'Smart Search',
-                    desc: language === 'ar' ? 'اعثر على ما تحتاجه بسرعة ودقة' : 'Find what you need quickly and accurately',
+                    icon: DollarSign,
+                    title: language === 'ar' ? 'توفير التكاليف' : 'Cost Savings',
+                    desc: language === 'ar' ? 'قلل من التكاليف التشغيلية وزد من الكفاءة' : 'Reduce operational costs and increase efficiency.',
                     color: '#102C33'
                   },
                   {
-                    icon: Star,
-                    title: language === 'ar' ? 'موردون معتمدون' : 'Verified Vendors',
-                    desc: language === 'ar' ? 'تعامل مع موردين موثوقين ومعتمدين' : 'Deal with trusted and verified vendors',
+                    icon: Clock,
+                    title: language === 'ar' ? 'توفير الوقت' : 'Time Savings',
+                    desc: language === 'ar' ? 'بسّط العمليات واحفظ وقتاً ثميناً' : 'Streamline processes and save valuable time.',
                     color: '#004F54'
                   },
                   {
                     icon: TrendingUp,
-                    title: language === 'ar' ? 'عروض تنافسية' : 'Competitive Offers',
-                    desc: language === 'ar' ? 'احصل على أفضل الأسعار والعروض' : 'Get the best prices and offers',
+                    title: language === 'ar' ? 'زيادة الإنتاجية' : 'Increased Productivity',
+                    desc: language === 'ar' ? 'زد من إنتاجية فريقك وحسّن الأداء' : 'Increase your team\'s productivity and improve performance.',
                     color: '#765A3F'
+                  },
+                  {
+                    icon: HeartHandshake,
+                    title: language === 'ar' ? 'تحسين العلاقات' : 'Improved Relationships',
+                    desc: language === 'ar' ? 'عزز العلاقات مع الموردين والعملاء' : 'Enhance relationships with suppliers and clients.',
+                    color: '#102C33'
                   }
                 ].map((benefit, index) => (
                   <Card key={index} className="p-6 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/5 border border-white/20 backdrop-blur-20">
@@ -594,7 +669,7 @@ export const Landing = () => {
                 : 'Be part of the future of B2B e-commerce and start your journey with us today'}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/register">
+              <Link to="/enhanced-register">
                 <Button size="lg" className="px-8 py-3 bg-gradient-to-r from-primary to-accent hover:scale-105 transition-transform text-lg text-white">
                   {language === 'ar' ? 'ابدأ رحلتك' : 'Start Your Journey'}
                 </Button>
