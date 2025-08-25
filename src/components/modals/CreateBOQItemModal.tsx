@@ -92,14 +92,14 @@ export const CreateBOQItemModal = ({ projectId, open, onOpenChange }: CreateBOQI
   const getAllCategories = () => {
     const allCats: any[] = [];
     categories.forEach(category => {
-      // Only add categories that have valid slugs (not empty strings)
-      if (category.slug && category.slug.trim() !== '') {
+      // Only add categories that have valid slugs (not empty strings or null/undefined)
+      if (category.slug && typeof category.slug === 'string' && category.slug.trim() !== '') {
         allCats.push(category);
       }
       if (category.children && category.children.length > 0) {
         category.children.forEach(child => {
           // Only add child categories that have valid slugs
-          if (child.slug && child.slug.trim() !== '') {
+          if (child.slug && typeof child.slug === 'string' && child.slug.trim() !== '') {
             allCats.push({ 
               ...child, 
               isChild: true, 
@@ -142,7 +142,7 @@ export const CreateBOQItemModal = ({ projectId, open, onOpenChange }: CreateBOQI
                     <SelectItem value="loading-placeholder" disabled>Loading categories...</SelectItem>
                   ) : (
                     getAllCategories().map((category) => (
-                      <SelectItem key={category.id} value={category.slug}>
+                      <SelectItem key={category.id} value={category.slug || `category-${category.id}`}>
                         {category.isChild && "  ↳ "}
                         {language === 'ar' ? category.name_ar : category.name_en}
                         {category.isChild && ` (${category.parentName})`}

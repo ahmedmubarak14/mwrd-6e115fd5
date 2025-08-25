@@ -100,10 +100,16 @@ export const CreateProjectModal = ({ open, onClose }: CreateProjectModalProps) =
   const getAllCategories = () => {
     const allCategories: any[] = [];
     categories.forEach(category => {
-      allCategories.push(category);
+      // Only add categories that have valid slugs (not empty strings or null/undefined)
+      if (category.slug && typeof category.slug === 'string' && category.slug.trim() !== '') {
+        allCategories.push(category);
+      }
       if (category.children) {
         category.children.forEach((child: any) => {
-          allCategories.push({ ...child, parentName: category.name_en });
+          // Only add child categories that have valid slugs
+          if (child.slug && typeof child.slug === 'string' && child.slug.trim() !== '') {
+            allCategories.push({ ...child, parentName: category.name_en });
+          }
         });
       }
     });
@@ -151,7 +157,7 @@ export const CreateProjectModal = ({ open, onClose }: CreateProjectModalProps) =
                 </SelectTrigger>
                 <SelectContent>
                   {getAllCategories().map((category) => (
-                    <SelectItem key={category.id} value={category.slug}>
+                    <SelectItem key={category.id} value={category.slug || `category-${category.id}`}>
                       {category.parentName ? `${category.parentName} → ` : ''}{category.name_en}
                     </SelectItem>
                   ))}
