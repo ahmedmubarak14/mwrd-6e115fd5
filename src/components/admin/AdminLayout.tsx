@@ -9,11 +9,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
 import { AdminCommandPalette } from "./AdminCommandPalette";
+import { AdminErrorBoundary } from "./AdminErrorBoundary";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const AdminLayout = () => {
   const { user, userProfile, loading } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (!loading && !user) {
@@ -35,10 +38,10 @@ export const AdminLayout = () => {
         <Card className="p-8 max-w-md mx-auto">
           <CardHeader>
             <CardTitle className="text-2xl text-center text-destructive">
-              Access Denied
+              {t('admin.accessDenied')}
             </CardTitle>
             <CardDescription className="text-center">
-              You need admin privileges to access this area.
+              {t('admin.accessDeniedDescription')}
             </CardDescription>
           </CardHeader>
         </Card>
@@ -47,21 +50,25 @@ export const AdminLayout = () => {
   }
 
   return (
-    <SidebarProvider defaultOpen={sidebarOpen} onOpenChange={setSidebarOpen}>
-      <div 
-        className="min-h-screen flex w-full h-screen" 
-        dir={localStorage.getItem('language') === 'ar' ? 'rtl' : 'ltr'} 
-        style={{ background: 'var(--gradient-subtle)' }}
-      >
-        <AdminSidebar />
-        <div className="flex-1 flex flex-col min-w-0 h-full">
-          <AdminHeader />
-          <main className="flex-1 overflow-auto bg-gradient-subtle">
-            <Outlet />
-          </main>
+    <AdminErrorBoundary>
+      <SidebarProvider defaultOpen={sidebarOpen} onOpenChange={setSidebarOpen}>
+        <div 
+          className="min-h-screen flex w-full h-screen" 
+          dir={localStorage.getItem('language') === 'ar' ? 'rtl' : 'ltr'} 
+          style={{ background: 'var(--gradient-subtle)' }}
+        >
+          <AdminSidebar />
+          <div className="flex-1 flex flex-col min-w-0 h-full">
+            <AdminHeader />
+            <main className="flex-1 overflow-auto bg-gradient-subtle">
+              <AdminErrorBoundary>
+                <Outlet />
+              </AdminErrorBoundary>
+            </main>
+          </div>
+          <AdminCommandPalette />
         </div>
-        <AdminCommandPalette />
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </AdminErrorBoundary>
   );
 };

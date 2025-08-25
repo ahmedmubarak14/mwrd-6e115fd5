@@ -117,7 +117,7 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
                 const isActive = location.pathname === item.href;
                 return (
                   <Button
-                    key={item.name}
+                    key={item.href}
                     variant={isActive ? "secondary" : "ghost"}
                     className={cn(
                       "w-full justify-start rtl-transition",
