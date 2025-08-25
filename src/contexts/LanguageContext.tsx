@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 export type Language = 'en' | 'ar';
@@ -27,6 +26,10 @@ const translations = {
     'nav.logout': 'Logout',
     'nav.login': 'Login',
     'nav.register': 'Register',
+    'nav.browseRequests': 'Browse Requests',
+    'nav.suppliers': 'Suppliers',
+    'nav.orders': 'Orders',
+    'nav.manageSubscription': 'Manage Subscription',
     
     // Common
     'common.loading': 'Loading...',
@@ -101,6 +104,36 @@ const translations = {
     'dashboard.recentActivity': 'Recent Activity',
     'dashboard.quickActions': 'Quick Actions',
     'dashboard.statistics': 'Statistics',
+    'dashboard.search': 'Search...',
+    'dashboard.findOpportunities': 'Find Business Opportunities',
+    'dashboard.completedProjects': 'Completed Projects',
+    
+    // Vendor
+    'vendor.welcome': 'Welcome to your Vendor Dashboard',
+    'vendor.subtitle': 'Manage your offers, browse requests, and grow your business',
+    'vendor.totalOffers': 'Total Offers',
+    'vendor.acceptedOffers': 'Accepted Offers',
+    'vendor.pendingOffers': 'Pending Offers',
+    'vendor.searchRequests': 'Search available requests...',
+    'vendor.filterByCategory': 'Filter by category',
+    'vendor.availableRequests': 'Available Requests',
+    'vendor.submitOffer': 'Submit Offer',
+    'vendor.viewDetails': 'View Details',
+    
+    // Browse Requests
+    'browseRequests.title': 'Browse Requests',
+    'browseRequests.subtitle': 'Find and submit offers for procurement requests',
+    'browseRequests.searchAndFilter': 'Search & Filter',
+    'browseRequests.searchPlaceholder': 'Search requests...',
+    'browseRequests.filterByCategory': 'Filter by category',
+    'browseRequests.filterDescription': 'Find the perfect opportunities for your business',
+    'browseRequests.noResults': 'No requests found',
+    'browseRequests.noResultsDesc': 'Try adjusting your search criteria',
+    'browseRequests.budget': 'Budget',
+    'browseRequests.deadline': 'Deadline',
+    'browseRequests.posted': 'Posted',
+    'browseRequests.submitOffer': 'Submit Offer',
+    'browseRequests.viewDetails': 'View Details',
     
     // Requests
     'requests.title': 'Requests',
@@ -137,6 +170,11 @@ const translations = {
     'profile.personalInfo': 'Personal Information',
     'profile.companyInfo': 'Company Information',
     'profile.contactInfo': 'Contact Information',
+    
+    // Theme
+    'theme.light': 'Light',
+    'theme.dark': 'Dark',
+    'theme.system': 'System',
     
     // Admin Panel
     'admin.panel': 'Admin Panel',
@@ -196,6 +234,10 @@ const translations = {
     'nav.logout': 'تسجيل الخروج',
     'nav.login': 'تسجيل الدخول',
     'nav.register': 'التسجيل',
+    'nav.browseRequests': 'تصفح الطلبات',
+    'nav.suppliers': 'الموردين',
+    'nav.orders': 'الطلبيات',
+    'nav.manageSubscription': 'إدارة الاشتراك',
     
     // Common
     'common.loading': 'جاري التحميل...',
@@ -270,6 +312,36 @@ const translations = {
     'dashboard.recentActivity': 'النشاط الأخير',
     'dashboard.quickActions': 'إجراءات سريعة',
     'dashboard.statistics': 'الإحصائيات',
+    'dashboard.search': 'بحث...',
+    'dashboard.findOpportunities': 'ابحث عن الفرص التجارية',
+    'dashboard.completedProjects': 'المشاريع المكتملة',
+    
+    // Vendor
+    'vendor.welcome': 'مرحباً بك في لوحة المورد',
+    'vendor.subtitle': 'إدارة عروضك وتصفح الطلبات وتنمية أعمالك',
+    'vendor.totalOffers': 'إجمالي العروض',
+    'vendor.acceptedOffers': 'العروض المقبولة',
+    'vendor.pendingOffers': 'العروض المعلقة',
+    'vendor.searchRequests': 'البحث في الطلبات المتاحة...',
+    'vendor.filterByCategory': 'تصفية حسب الفئة',
+    'vendor.availableRequests': 'الطلبات المتاحة',
+    'vendor.submitOffer': 'تقديم عرض',
+    'vendor.viewDetails': 'عرض التفاصيل',
+    
+    // Browse Requests
+    'browseRequests.title': 'تصفح الطلبات',
+    'browseRequests.subtitle': 'البحث عن طلبات المشتريات وتقديم العروض',
+    'browseRequests.searchAndFilter': 'البحث والتصفية',
+    'browseRequests.searchPlaceholder': 'البحث في الطلبات...',
+    'browseRequests.filterByCategory': 'تصفية حسب الفئة',
+    'browseRequests.filterDescription': 'ابحث عن الفرص المثالية لعملك',
+    'browseRequests.noResults': 'لم يتم العثور على طلبات',
+    'browseRequests.noResultsDesc': 'حاول تعديل معايير البحث',
+    'browseRequests.budget': 'الميزانية',
+    'browseRequests.deadline': 'الموعد النهائي',
+    'browseRequests.posted': 'تاريخ النشر',
+    'browseRequests.submitOffer': 'تقديم عرض',
+    'browseRequests.viewDetails': 'عرض التفاصيل',
     
     // Requests
     'requests.title': 'الطلبات',
@@ -306,6 +378,11 @@ const translations = {
     'profile.personalInfo': 'المعلومات الشخصية',
     'profile.companyInfo': 'معلومات الشركة',
     'profile.contactInfo': 'معلومات الاتصال',
+    
+    // Theme
+    'theme.light': 'فاتح',
+    'theme.dark': 'داكن',
+    'theme.system': 'النظام',
     
     // Admin Panel
     'admin.panel': 'لوحة الإدارة',
