@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Package, Search, Filter, Eye, MessageSquare, Plus, BarChart3, CheckCircle, XCircle, Clock } from "lucide-react";
+import { Package, Search, Eye, MessageSquare, Plus, BarChart3, CheckCircle, XCircle, Clock } from "lucide-react";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
@@ -24,7 +24,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 export const Offers = () => {
   const { userProfile } = useAuth();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const { toast } = useToast();
   const isRTL = language === 'ar';
   const isMobile = useIsMobile();
@@ -45,20 +45,11 @@ export const Offers = () => {
   };
 
   const getStatusText = (status: string) => {
-    if (isRTL) {
-      switch (status) {
-        case 'approved': return 'مقبول';
-        case 'rejected': return 'مرفوض';
-        case 'pending': return 'قيد المراجعة';
-        default: return status;
-      }
-    } else {
-      switch (status) {
-        case 'approved': return 'Approved';
-        case 'rejected': return 'Rejected';
-        case 'pending': return 'Pending';
-        default: return status;
-      }
+    switch (status) {
+      case 'approved': return t('offers.status.approved');
+      case 'rejected': return t('offers.status.rejected');
+      case 'pending': return t('offers.status.pending');
+      default: return status;
     }
   };
 
@@ -127,12 +118,12 @@ export const Offers = () => {
             <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
               <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
                 <h1 className="text-3xl font-bold mb-2">
-                  {isRTL ? 'إدارة العروض' : 'Offers Management'}
+                  {t('offers.title')}
                 </h1>
                 <p className="text-muted-foreground">
                   {userProfile?.role === 'vendor' 
-                    ? (isRTL ? 'إدارة عروضك المقدمة للعملاء' : 'Manage your submitted offers to clients')
-                    : (isRTL ? 'مراجعة والموافقة على العروض المقدمة' : 'Review and approve submitted offers')
+                    ? t('offers.subtitle.vendor')
+                    : t('offers.subtitle.client')
                   }
                 </p>
               </div>
@@ -144,7 +135,7 @@ export const Offers = () => {
                   >
                     <Button className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}>
                       <BarChart3 className="h-4 w-4" />
-                      {isRTL ? `مقارنة (${selectedOffers.length})` : `Compare (${selectedOffers.length})`}
+                      {t('offers.compare')} ({selectedOffers.length})
                     </Button>
                   </OfferComparisonModal>
                 )}
@@ -152,7 +143,7 @@ export const Offers = () => {
                   <CreateOfferModal>
                     <Button className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}>
                       <Plus className="h-4 w-4" />
-                      {isRTL ? 'عرض جديد' : 'New Offer'}
+                      {t('offers.newOffer')}
                     </Button>
                   </CreateOfferModal>
                 )}
@@ -166,7 +157,7 @@ export const Offers = () => {
                   <div className="text-center">
                     <div className="text-2xl font-bold">{stats.total}</div>
                     <p className="text-xs text-muted-foreground">
-                      {isRTL ? 'إجمالي العروض' : 'Total Offers'}
+                      {t('offers.totalOffers')}
                     </p>
                   </div>
                 </CardContent>
@@ -176,7 +167,7 @@ export const Offers = () => {
                   <div className="text-center">
                     <div className="text-2xl font-bold text-yellow-600">{stats.pending}</div>
                     <p className="text-xs text-muted-foreground">
-                      {isRTL ? 'قيد المراجعة' : 'Pending'}
+                      {t('offers.status.pending')}
                     </p>
                   </div>
                 </CardContent>
@@ -186,7 +177,7 @@ export const Offers = () => {
                   <div className="text-center">
                     <div className="text-2xl font-bold text-green-600">{stats.approved}</div>
                     <p className="text-xs text-muted-foreground">
-                      {isRTL ? 'مقبول' : 'Approved'}
+                      {t('offers.status.approved')}
                     </p>
                   </div>
                 </CardContent>
@@ -196,7 +187,7 @@ export const Offers = () => {
                   <div className="text-center">
                     <div className="text-2xl font-bold text-red-600">{stats.rejected}</div>
                     <p className="text-xs text-muted-foreground">
-                      {isRTL ? 'مرفوض' : 'Rejected'}
+                      {t('offers.status.rejected')}
                     </p>
                   </div>
                 </CardContent>
@@ -211,7 +202,7 @@ export const Offers = () => {
                     <div className="relative">
                       <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-3 h-4 w-4 text-muted-foreground`} />
                       <Input
-                        placeholder={isRTL ? "البحث في العروض..." : "Search offers..."}
+                        placeholder={t('offers.searchPlaceholder')}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className={`${isRTL ? 'pr-10 text-right' : 'pl-10'}`}
@@ -220,13 +211,13 @@ export const Offers = () => {
                   </div>
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
                     <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder={isRTL ? "حالة العرض" : "Offer Status"} />
+                      <SelectValue placeholder={t('offers.offerStatus')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">{isRTL ? 'جميع الحالات' : 'All Status'}</SelectItem>
-                      <SelectItem value="pending">{isRTL ? 'قيد المراجعة' : 'Pending'}</SelectItem>
-                      <SelectItem value="approved">{isRTL ? 'مقبول' : 'Approved'}</SelectItem>
-                      <SelectItem value="rejected">{isRTL ? 'مرفوض' : 'Rejected'}</SelectItem>
+                      <SelectItem value="all">{t('offers.allStatus')}</SelectItem>
+                      <SelectItem value="pending">{t('offers.status.pending')}</SelectItem>
+                      <SelectItem value="approved">{t('offers.status.approved')}</SelectItem>
+                      <SelectItem value="rejected">{t('offers.status.rejected')}</SelectItem>
                     </SelectContent>
                   </Select>
                   {userProfile?.role === 'client' && filteredOffers.length > 1 && (
@@ -241,8 +232,8 @@ export const Offers = () => {
                         onCheckedChange={handleSelectAll}
                       />
                       {selectedOffers.length === filteredOffers.length 
-                        ? (isRTL ? 'إلغاء الكل' : 'Deselect All')
-                        : (isRTL ? 'تحديد الكل' : 'Select All')
+                        ? t('common.deselectAll')
+                        : t('common.selectAll')
                       }
                     </Button>
                   )}
@@ -261,7 +252,7 @@ export const Offers = () => {
                 <CardContent className="py-12 text-center">
                   <Package className="h-12 w-12 text-destructive mx-auto mb-4" />
                   <h3 className="text-lg font-medium mb-2">
-                    {isRTL ? 'حدث خطأ' : 'Error Loading Offers'}
+                    {t('common.error')}
                   </h3>
                   <p className="text-muted-foreground">{offersError}</p>
                 </CardContent>
@@ -275,14 +266,14 @@ export const Offers = () => {
                     <CardContent className="py-12 text-center">
                       <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                       <h3 className="text-lg font-medium mb-2">
-                        {isRTL ? 'لا توجد عروض' : 'No Offers Found'}
+                        {t('offers.noOffers')}
                       </h3>
                       <p className="text-muted-foreground">
                         {searchTerm || statusFilter !== 'all' 
-                          ? (isRTL ? 'لم يتم العثور على عروض تطابق معايير البحث' : 'No offers match your search criteria')
+                          ? t('offers.noOffersDesc.search')
                           : userProfile?.role === 'vendor'
-                            ? (isRTL ? 'لم تقم بتقديم أي عروض بعد. ابدأ بإنشاء عرض جديد.' : 'You haven\'t submitted any offers yet. Start by creating a new offer.')
-                            : (isRTL ? 'لم يتم تقديم عروض لطلباتك بعد.' : 'No offers have been submitted for your requests yet.')
+                            ? t('offers.noOffersDesc.vendor')
+                            : t('offers.noOffersDesc.client')
                         }
                       </p>
                     </CardContent>
@@ -303,11 +294,11 @@ export const Offers = () => {
                             <div className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
                               <CardTitle className="text-lg mb-2">{offer.title}</CardTitle>
                               <CardDescription className="mb-2">
-                                {isRTL ? 'للطلب: ' : 'For Request: '}{offer.request?.title}
+                                {t('offers.forRequest')} {offer.request?.title}
                               </CardDescription>
                               {offer.vendor && (
                                 <p className="text-sm text-muted-foreground mb-2">
-                                  {isRTL ? 'المورد: ' : 'Vendor: '}{offer.vendor.company_name || offer.vendor.full_name}
+                                  {t('offers.vendor')} {offer.vendor.company_name || offer.vendor.full_name}
                                 </p>
                               )}
                             </div>
@@ -321,7 +312,7 @@ export const Offers = () => {
                             </div>
                             <div className="flex items-center gap-1 text-sm text-muted-foreground">
                               <Clock className="h-3 w-3" />
-                              {offer.delivery_time_days} {isRTL ? 'أيام' : 'days'}
+                              {offer.delivery_time_days} {t('offers.days')}
                             </div>
                           </div>
                         </div>
@@ -342,7 +333,7 @@ export const Offers = () => {
                               className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
                             >
                               <Eye className="h-4 w-4" />
-                              {isRTL ? 'عرض التفاصيل' : 'View Details'}
+                              {t('offers.viewDetails')}
                             </Button>
                           </OfferDetailsModal>
                           
@@ -359,7 +350,7 @@ export const Offers = () => {
                                 className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
                               >
                                 <MessageSquare className="h-4 w-4" />
-                                {isRTL ? 'مراسلة المورد' : 'Message Vendor'}
+                                {t('offers.messageVendor')}
                               </Button>
                             </RealTimeChatModal>
                           )}
@@ -372,7 +363,7 @@ export const Offers = () => {
                                 className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
                               >
                                 <CheckCircle className="h-4 w-4" />
-                                {isRTL ? 'قبول' : 'Accept'}
+                                {t('offers.accept')}
                               </Button>
                               <Button 
                                 variant="destructive"
@@ -381,7 +372,7 @@ export const Offers = () => {
                                 className={`${isRTL ? 'flex-row-reverse' : ''} gap-2`}
                               >
                                 <XCircle className="h-4 w-4" />
-                                {isRTL ? 'رفض' : 'Reject'}
+                                {t('offers.reject')}
                               </Button>
                             </>
                           )}

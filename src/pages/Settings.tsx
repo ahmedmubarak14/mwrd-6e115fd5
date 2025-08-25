@@ -25,8 +25,8 @@ const Settings = () => {
 
   const handleSaveSettings = () => {
     toast({
-      title: "Settings Saved",
-      description: "Your settings have been updated successfully.",
+      title: t('settings.saved'),
+      description: t('settings.savedDesc'),
     });
   };
 
@@ -36,10 +36,10 @@ const Settings = () => {
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-2">
             <SettingsIcon className="h-8 w-8" />
-            {t('settings.title') || 'Settings'}
+            {t('settings.title')}
           </h1>
           <p className="text-muted-foreground">
-            {t('settings.subtitle') || 'Manage your account preferences and settings'}
+            {t('settings.subtitle')}
           </p>
         </div>
 
@@ -47,52 +47,52 @@ const Settings = () => {
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="profile">
               <User className="h-4 w-4 mr-2" />
-              Profile
+              {t('settings.tabs.profile')}
             </TabsTrigger>
             <TabsTrigger value="notifications">
               <Bell className="h-4 w-4 mr-2" />
-              Notifications
+              {t('settings.tabs.notifications')}
             </TabsTrigger>
             <TabsTrigger value="security">
               <Shield className="h-4 w-4 mr-2" />
-              Security
+              {t('settings.tabs.security')}
             </TabsTrigger>
             <TabsTrigger value="language">
               <Globe className="h-4 w-4 mr-2" />
-              Language
+              {t('settings.tabs.language')}
             </TabsTrigger>
             <TabsTrigger value="appearance">
               <Palette className="h-4 w-4 mr-2" />
-              Appearance
+              {t('settings.tabs.appearance')}
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="profile" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Profile Information</CardTitle>
-                <CardDescription>Update your personal information and contact details</CardDescription>
+                <CardTitle>{t('settings.profileInfo')}</CardTitle>
+                <CardDescription>{t('settings.profileInfoDesc')}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="fullName">Full Name</Label>
+                    <Label htmlFor="fullName">{t('settings.fullName')}</Label>
                     <Input id="fullName" defaultValue={userProfile?.full_name || ''} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">{t('settings.email')}</Label>
                     <Input id="email" type="email" defaultValue={userProfile?.email || ''} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Phone</Label>
+                    <Label htmlFor="phone">{t('settings.phone')}</Label>
                     <Input id="phone" defaultValue={userProfile?.phone || ''} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="company">Company</Label>
+                    <Label htmlFor="company">{t('settings.company')}</Label>
                     <Input id="company" defaultValue={userProfile?.company_name || ''} />
                   </div>
                 </div>
-                <Button onClick={handleSaveSettings}>Save Changes</Button>
+                <Button onClick={handleSaveSettings}>{t('settings.saveChanges')}</Button>
               </CardContent>
             </Card>
           </TabsContent>
@@ -100,14 +100,14 @@ const Settings = () => {
           <TabsContent value="notifications" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Notification Preferences</CardTitle>
-                <CardDescription>Choose how you want to receive notifications</CardDescription>
+                <CardTitle>{t('settings.notificationPrefs')}</CardTitle>
+                <CardDescription>{t('settings.notificationPrefsDesc')}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label>Email Notifications</Label>
-                    <p className="text-sm text-muted-foreground">Receive notifications via email</p>
+                    <Label>{t('settings.emailNotifications')}</Label>
+                    <p className="text-sm text-muted-foreground">{t('settings.emailNotificationsDesc')}</p>
                   </div>
                   <Switch 
                     checked={notifications.email} 
@@ -116,8 +116,8 @@ const Settings = () => {
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label>Push Notifications</Label>
-                    <p className="text-sm text-muted-foreground">Receive push notifications in your browser</p>
+                    <Label>{t('settings.pushNotifications')}</Label>
+                    <p className="text-sm text-muted-foreground">{t('settings.pushNotificationsDesc')}</p>
                   </div>
                   <Switch 
                     checked={notifications.push} 
@@ -126,8 +126,8 @@ const Settings = () => {
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label>SMS Notifications</Label>
-                    <p className="text-sm text-muted-foreground">Receive important updates via SMS</p>
+                    <Label>{t('settings.smsNotifications')}</Label>
+                    <p className="text-sm text-muted-foreground">{t('settings.smsNotificationsDesc')}</p>
                   </div>
                   <Switch 
                     checked={notifications.sms} 
@@ -136,15 +136,15 @@ const Settings = () => {
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label>Marketing Communications</Label>
-                    <p className="text-sm text-muted-foreground">Receive updates about new features and offers</p>
+                    <Label>{t('settings.marketingComms')}</Label>
+                    <p className="text-sm text-muted-foreground">{t('settings.marketingCommsDesc')}</p>
                   </div>
                   <Switch 
                     checked={notifications.marketing} 
                     onCheckedChange={(checked) => setNotifications({...notifications, marketing: checked})}
                   />
                 </div>
-                <Button onClick={handleSaveSettings}>Save Preferences</Button>
+                <Button onClick={handleSaveSettings}>{t('settings.savePreferences')}</Button>
               </CardContent>
             </Card>
           </TabsContent>
@@ -152,23 +152,23 @@ const Settings = () => {
           <TabsContent value="security" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Security Settings</CardTitle>
-                <CardDescription>Manage your account security and password</CardDescription>
+                <CardTitle>{t('settings.securitySettings')}</CardTitle>
+                <CardDescription>{t('settings.securitySettingsDesc')}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="currentPassword">Current Password</Label>
+                  <Label htmlFor="currentPassword">{t('settings.currentPassword')}</Label>
                   <Input id="currentPassword" type="password" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="newPassword">New Password</Label>
+                  <Label htmlFor="newPassword">{t('settings.newPassword')}</Label>
                   <Input id="newPassword" type="password" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                  <Label htmlFor="confirmPassword">{t('settings.confirmPassword')}</Label>
                   <Input id="confirmPassword" type="password" />
                 </div>
-                <Button onClick={handleSaveSettings}>Update Password</Button>
+                <Button onClick={handleSaveSettings}>{t('settings.updatePassword')}</Button>
               </CardContent>
             </Card>
           </TabsContent>
@@ -176,8 +176,8 @@ const Settings = () => {
           <TabsContent value="language" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Language Preferences</CardTitle>
-                <CardDescription>Choose your preferred language for the interface</CardDescription>
+                <CardTitle>{t('settings.languagePrefs')}</CardTitle>
+                <CardDescription>{t('settings.languagePrefsDesc')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -190,7 +190,7 @@ const Settings = () => {
                       checked={language === 'en'}
                       onChange={() => setLanguage('en')}
                     />
-                    <Label htmlFor="english">English</Label>
+                    <Label htmlFor="english">{t('settings.english')}</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <input 
@@ -201,7 +201,7 @@ const Settings = () => {
                       checked={language === 'ar'}
                       onChange={() => setLanguage('ar')}
                     />
-                    <Label htmlFor="arabic">العربية (Arabic)</Label>
+                    <Label htmlFor="arabic">{t('settings.arabic')}</Label>
                   </div>
                 </div>
               </CardContent>
@@ -211,26 +211,26 @@ const Settings = () => {
           <TabsContent value="appearance" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Appearance Settings</CardTitle>
-                <CardDescription>Customize the look and feel of your dashboard</CardDescription>
+                <CardTitle>{t('settings.appearanceSettings')}</CardTitle>
+                <CardDescription>{t('settings.appearanceSettingsDesc')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <Label>Theme</Label>
-                    <p className="text-sm text-muted-foreground mb-2">Choose your preferred theme</p>
+                    <Label>{t('settings.theme')}</Label>
+                    <p className="text-sm text-muted-foreground mb-2">{t('settings.themeDesc')}</p>
                     <div className="grid grid-cols-3 gap-4">
                       <div className="border rounded-lg p-4 cursor-pointer hover:border-primary">
                         <div className="w-full h-20 bg-gradient-to-br from-background to-muted rounded mb-2"></div>
-                        <p className="text-sm text-center">Light</p>
+                        <p className="text-sm text-center">{t('settings.lightTheme')}</p>
                       </div>
                       <div className="border rounded-lg p-4 cursor-pointer hover:border-primary">
                         <div className="w-full h-20 bg-gradient-to-br from-gray-900 to-gray-700 rounded mb-2"></div>
-                        <p className="text-sm text-center">Dark</p>
+                        <p className="text-sm text-center">{t('settings.darkTheme')}</p>
                       </div>
                       <div className="border rounded-lg p-4 cursor-pointer hover:border-primary">
                         <div className="w-full h-20 bg-gradient-to-br from-background via-muted to-gray-900 rounded mb-2"></div>
-                        <p className="text-sm text-center">Auto</p>
+                        <p className="text-sm text-center">{t('settings.autoTheme')}</p>
                       </div>
                     </div>
                   </div>
