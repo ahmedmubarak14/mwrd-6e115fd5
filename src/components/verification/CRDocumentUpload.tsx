@@ -1,10 +1,10 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Upload, FileText, CheckCircle, AlertCircle } from 'lucide-react';
-import { useFileUpload } from '@/hooks/useFileUpload';
+import { Upload, FileText, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -23,6 +23,7 @@ export const CRDocumentUpload = ({
 }: CRDocumentUploadProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [retrying, setRetrying] = useState(false);
   const { showSuccess, showError } = useToastFeedback();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +46,26 @@ export const CRDocumentUpload = ({
     }
   };
 
+  const verifyFileExists = async (filePath: string): Promise<boolean> => {
+    try {
+      const { data, error } = await supabase.storage
+        .from('chat-files')
+        .list(filePath.substring(0, filePath.lastIndexOf('/')), {
+          search: filePath.substring(filePath.lastIndexOf('/') + 1)
+        });
+      
+      if (error) {
+        console.error('Error verifying file:', error);
+        return false;
+      }
+      
+      return data && data.length > 0;
+    } catch (error) {
+      console.error('Error during file verification:', error);
+      return false;
+    }
+  };
+
   const handleUpload = async () => {
     if (!file) return;
 
@@ -59,35 +80,83 @@ export const CRDocumentUpload = ({
       const fileExt = file.name.split('.').pop();
       const fileName = `${user.id}/cr-documents/${Date.now()}.${fileExt}`;
 
+      console.log('Starting upload to:', fileName);
+
+      // Upload file to storage
       const { data, error } = await supabase.storage
         .from('chat-files')
-        .upload(fileName, file);
+        .upload(fileName, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Upload error:', error);
+        throw new Error(`Upload failed: ${error.message}`);
+      }
 
-      // Store only the file path, not the public URL
-      const filePath = data.path;
+      console.log('Upload successful, file path:', data.path);
 
-      // Create verification request with file path
+      // Verify the file actually exists
+      const fileExists = await verifyFileExists(data.path);
+      if (!fileExists) {
+        throw new Error('File upload completed but file verification failed');
+      }
+
+      console.log('File verification successful');
+
+      // Store the file path (not public URL) in verification_requests
       const { error: insertError } = await supabase
         .from('verification_requests')
         .insert({
           user_id: user.id,
           document_type: 'commercial_registration',
-          document_url: filePath, // Store file path instead of public URL
+          document_url: data.path, // Store file path for private bucket
           status: 'pending'
         });
 
-      if (insertError) throw insertError;
+      if (insertError) {
+        console.error('Database insert error:', insertError);
+        // If database insert fails, try to clean up the uploaded file
+        await supabase.storage.from('chat-files').remove([data.path]);
+        throw new Error(`Failed to save verification request: ${insertError.message}`);
+      }
 
       showSuccess('Commercial Registration uploaded successfully');
-      onUploadSuccess?.(filePath);
+      onUploadSuccess?.(data.path);
       setFile(null);
+
+      // Reset file input
+      const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+      if (fileInput) fileInput.value = '';
+
     } catch (error: any) {
-      console.error('Upload error:', error);
-      showError('Failed to upload document: ' + error.message);
+      console.error('Upload process error:', error);
+      showError(error.message || 'Failed to upload document');
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleRetryUpload = async () => {
+    if (!existingDocument) return;
+    
+    setRetrying(true);
+    try {
+      // Create a file input to allow re-upload
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.pdf,.jpg,.jpeg,.png';
+      input.onchange = (event) => {
+        const target = event.target as HTMLInputElement;
+        const selectedFile = target.files?.[0];
+        if (selectedFile) {
+          setFile(selectedFile);
+        }
+      };
+      input.click();
+    } finally {
+      setRetrying(false);
     }
   };
 
@@ -108,8 +177,18 @@ export const CRDocumentUpload = ({
         {existingDocument && (
           <Alert>
             <CheckCircle className="h-4 w-4" />
-            <AlertDescription>
-              Commercial Registration document has been uploaded and is under review.
+            <AlertDescription className="flex items-center justify-between">
+              <span>Commercial Registration document has been uploaded and is under review.</span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleRetryUpload}
+                disabled={retrying}
+                className="ml-2"
+              >
+                <RefreshCw className="h-4 w-4 mr-1" />
+                Re-upload
+              </Button>
             </AlertDescription>
           </Alert>
         )}
