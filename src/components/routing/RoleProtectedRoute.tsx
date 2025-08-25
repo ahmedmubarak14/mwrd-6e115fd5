@@ -34,7 +34,7 @@ export const RoleProtectedRoute = ({ children, allowed }: RoleProtectedRouteProp
   }
 
   if (!user) {
-    return <Navigate to="/auth" replace state={{ from: location }} />;
+    return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
   // Wait for userProfile to load

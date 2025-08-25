@@ -12,6 +12,7 @@ interface AuthContextType {
   loading: boolean;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<UserProfile>) => Promise<boolean>;
+  retryProfileCreation: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -58,9 +59,11 @@ useEffect(() => {
   return () => subscription.unsubscribe();
 }, []);
 
-  const fetchUserProfile = async (userId: string) => {
+  const fetchUserProfile = async (userId: string, retryCount = 0) => {
+    const maxRetries = 3;
+    
     try {
-      console.log('Fetching profile for user:', userId);
+      console.log(`Fetching profile for user: ${userId} (attempt ${retryCount + 1})`);
       const { data, error } = await supabase
         .from('user_profiles')
         .select('*')
@@ -69,6 +72,16 @@ useEffect(() => {
 
       if (error) {
         console.error('Error fetching user profile:', error);
+        
+        // Retry on transient errors
+        if (retryCount < maxRetries && (error.code === 'PGRST301' || error.message.includes('timeout'))) {
+          console.log(`Retrying profile fetch in ${(retryCount + 1) * 1000}ms...`);
+          setTimeout(() => {
+            fetchUserProfile(userId, retryCount + 1);
+          }, (retryCount + 1) * 1000);
+          return;
+        }
+        
         showError('Failed to load user profile. Please try refreshing the page.');
         setLoading(false);
         return;
@@ -82,7 +95,29 @@ useEffect(() => {
       }
 
       // No profile found: create one from auth metadata
-      console.log('No profile found, creating new profile');
+      await createUserProfile(userId, retryCount);
+    } catch (error) {
+      console.error('Error fetching/creating user profile:', error);
+      
+      // Retry on network errors
+      if (retryCount < maxRetries) {
+        console.log(`Retrying profile fetch due to network error in ${(retryCount + 1) * 1000}ms...`);
+        setTimeout(() => {
+          fetchUserProfile(userId, retryCount + 1);
+        }, (retryCount + 1) * 1000);
+        return;
+      }
+      
+      showError('An unexpected error occurred. Please try again.');
+      setLoading(false);
+    }
+  };
+
+  const createUserProfile = async (userId: string, retryCount = 0) => {
+    const maxRetries = 3;
+    
+    try {
+      console.log(`Creating profile for user: ${userId} (attempt ${retryCount + 1})`);
       const { data: userRes } = await supabase.auth.getUser();
       const authUser = userRes.user;
       
@@ -109,18 +144,49 @@ useEffect(() => {
 
       if (insertError) {
         console.error('Error creating user profile:', insertError);
-        showError('Failed to create user profile. Please contact support.');
-      } else if (created) {
+        
+        // Retry on transient errors
+        if (retryCount < maxRetries && (insertError.code === 'PGRST301' || insertError.message.includes('timeout'))) {
+          console.log(`Retrying profile creation in ${(retryCount + 1) * 1000}ms...`);
+          setTimeout(() => {
+            createUserProfile(userId, retryCount + 1);
+          }, (retryCount + 1) * 1000);
+          return;
+        }
+        
+        showError('Failed to create user profile. Please contact support if this persists.');
+        setLoading(false);
+        return;
+      }
+
+      if (created) {
         console.log('Profile created:', created);
         setUserProfile(created as UserProfile);
         showInfo('Your profile was created successfully.');
       }
     } catch (error) {
-      console.error('Error fetching/creating user profile:', error);
-      showError('An unexpected error occurred. Please try again.');
+      console.error('Error creating user profile:', error);
+      
+      // Retry on network errors
+      if (retryCount < maxRetries) {
+        console.log(`Retrying profile creation due to network error in ${(retryCount + 1) * 1000}ms...`);
+        setTimeout(() => {
+          createUserProfile(userId, retryCount + 1);
+        }, (retryCount + 1) * 1000);
+        return;
+      }
+      
+      showError('An unexpected error occurred during profile creation. Please try again.');
     } finally {
       setLoading(false);
     }
+  };
+
+  const retryProfileCreation = async () => {
+    if (!user) return;
+    
+    setLoading(true);
+    await createUserProfile(user.id);
   };
 
   const updateProfile = async (updates: Partial<UserProfile>): Promise<boolean> => {
@@ -173,6 +239,7 @@ useEffect(() => {
     loading,
     signOut,
     updateProfile,
+    retryProfileCreation,
   };
 
   return (

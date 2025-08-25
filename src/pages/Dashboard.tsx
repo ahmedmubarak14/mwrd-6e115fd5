@@ -1,3 +1,4 @@
+
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { ProcurementClientDashboard } from "@/components/Dashboard/ProcurementClientDashboard";
 import { useAuth } from "@/contexts/AuthContext";
@@ -7,19 +8,24 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const Dashboard = () => {
   const { userProfile, loading } = useAuth();
   const navigate = useNavigate();
+  const hasRedirected = useRef(false);
 
-  // Redirect based on user role
+  // Redirect based on user role with safeguards
   useEffect(() => {
-    if (!loading && userProfile) {
+    if (!loading && userProfile && !hasRedirected.current) {
       if (userProfile.role === 'vendor') {
-        navigate('/vendor/dashboard');
+        hasRedirected.current = true;
+        navigate('/vendor/dashboard', { replace: true });
+        return;
       } else if (userProfile.role === 'admin') {
-        navigate('/admin/dashboard');
+        hasRedirected.current = true;
+        navigate('/admin/dashboard', { replace: true });
+        return;
       }
     }
   }, [loading, userProfile, navigate]);
@@ -28,26 +34,42 @@ const Dashboard = () => {
     return (
       <DashboardLayout>
         <div className="flex justify-center items-center min-h-[400px]">
-          <LoadingSpinner size="lg" />
+          <LoadingSpinner size="lg" text="Loading your dashboard..." />
         </div>
       </DashboardLayout>
     );
   }
 
-  // Only render for client users
-  if (userProfile?.role !== 'client') {
+  // Handle case where user profile doesn't exist yet
+  if (!userProfile) {
     return (
       <DashboardLayout>
         <div className="flex justify-center items-center min-h-[400px]">
-          <LoadingSpinner size="lg" />
+          <div className="text-center">
+            <AlertTriangle className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+            <h2 className="text-xl font-semibold mb-2">Profile Loading</h2>
+            <p className="text-muted-foreground mb-4">
+              We're setting up your profile. This should only take a moment.
+            </p>
+            <LoadingSpinner size="md" />
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  // Only render for client users - others should have been redirected
+  if (userProfile.role !== 'client') {
+    return (
+      <DashboardLayout>
+        <div className="flex justify-center items-center min-h-[400px]">
+          <LoadingSpinner size="lg" text="Redirecting to your dashboard..." />
         </div>
       </DashboardLayout>
     );
   }
 
   const renderVerificationBanner = () => {
-    if (!userProfile || userProfile.role !== 'client') return null;
-
     const isVerified = userProfile.verification_status === 'approved';
     const isRejected = userProfile.verification_status === 'rejected';
     const isPending = userProfile.verification_status === 'pending' || userProfile.verification_status === 'under_review';
