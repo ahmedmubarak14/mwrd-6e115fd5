@@ -14,7 +14,7 @@ import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
-import { CATEGORIES } from "@/constants/categories";
+import { useCategories } from "@/hooks/useCategories";
 
 interface CreateRequestModalProps {
   children: React.ReactNode;
@@ -27,6 +27,7 @@ export const CreateRequestModal = ({ children }: CreateRequestModalProps) => {
   const { toast } = useToast();
   const { t, language } = useLanguage();
   const { user } = useAuth();
+  const { categories, loading: categoriesLoading } = useCategories();
   const isRTL = language === 'ar';
 
   const [formData, setFormData] = useState({
@@ -97,6 +98,19 @@ export const CreateRequestModal = ({ children }: CreateRequestModalProps) => {
     }
   };
 
+  const getAllCategories = () => {
+    const allCats: any[] = [];
+    categories.forEach(category => {
+      allCats.push(category);
+      if (category.children && category.children.length > 0) {
+        category.children.forEach(child => {
+          allCats.push({ ...child, isChild: true, parentName: language === 'ar' ? category.name_ar : category.name_en });
+        });
+      }
+    });
+    return allCats;
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -128,11 +142,19 @@ export const CreateRequestModal = ({ children }: CreateRequestModalProps) => {
                 <SelectValue placeholder={isRTL ? "اختر الفئة" : "Select Category"} />
               </SelectTrigger>
               <SelectContent>
-                {CATEGORIES.map(cat => (
-                  <SelectItem key={cat.value} value={cat.value}>
-                    {isRTL ? cat.labelAr : cat.labelEn}
+                {categoriesLoading ? (
+                  <SelectItem value="loading" disabled>
+                    {isRTL ? "جارٍ تحميل الفئات..." : "Loading categories..."}
                   </SelectItem>
-                ))}
+                ) : (
+                  getAllCategories().map((category) => (
+                    <SelectItem key={category.id} value={category.slug}>
+                      {category.isChild && "  ↳ "}
+                      {isRTL ? category.name_ar : category.name_en}
+                      {category.isChild && ` (${category.parentName})`}
+                    </SelectItem>
+                  ))
+                )}
               </SelectContent>
             </Select>
           </div>

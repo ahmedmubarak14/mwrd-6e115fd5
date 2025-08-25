@@ -12,7 +12,8 @@ import { format } from 'date-fns';
 import { useProjects } from '@/hooks/useProjects';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
-import { CATEGORIES } from '@/constants/categories';
+import { useCategories } from '@/hooks/useCategories';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface CreateProjectModalProps {
   open: boolean;
@@ -22,6 +23,8 @@ interface CreateProjectModalProps {
 export const CreateProjectModal = ({ open, onOpenChange }: CreateProjectModalProps) => {
   const { createProject } = useProjects();
   const { toast } = useToast();
+  const { categories, loading: categoriesLoading } = useCategories();
+  const { language } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
@@ -103,6 +106,19 @@ export const CreateProjectModal = ({ open, onOpenChange }: CreateProjectModalPro
     setTags(tags.filter(tag => tag !== tagToRemove));
   };
 
+  const getAllCategories = () => {
+    const allCats: any[] = [];
+    categories.forEach(category => {
+      allCats.push(category);
+      if (category.children && category.children.length > 0) {
+        category.children.forEach(child => {
+          allCats.push({ ...child, isChild: true, parentName: language === 'ar' ? category.name_ar : category.name_en });
+        });
+      }
+    });
+    return allCats;
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -130,11 +146,17 @@ export const CreateProjectModal = ({ open, onOpenChange }: CreateProjectModalPro
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
-                  {CATEGORIES.map((category) => (
-                    <SelectItem key={category.value} value={category.value}>
-                      {category.labelEn}
-                    </SelectItem>
-                  ))}
+                  {categoriesLoading ? (
+                    <SelectItem value="loading" disabled>Loading categories...</SelectItem>
+                  ) : (
+                    getAllCategories().map((category) => (
+                      <SelectItem key={category.id} value={category.slug}>
+                        {category.isChild && "  ↳ "}
+                        {language === 'ar' ? category.name_ar : category.name_en}
+                        {category.isChild && ` (${category.parentName})`}
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
             </div>

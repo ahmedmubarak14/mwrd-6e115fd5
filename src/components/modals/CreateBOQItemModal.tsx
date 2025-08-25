@@ -8,7 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Loader2 } from 'lucide-react';
 import { useBOQ } from '@/hooks/useBOQ';
 import { useToast } from '@/hooks/use-toast';
-import { CATEGORIES } from '@/constants/categories';
+import { useCategories } from '@/hooks/useCategories';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface CreateBOQItemModalProps {
   projectId: string;
@@ -23,6 +24,8 @@ const COMMON_UNITS = [
 export const CreateBOQItemModal = ({ projectId, open, onOpenChange }: CreateBOQItemModalProps) => {
   const { createBOQItem } = useBOQ(projectId);
   const { toast } = useToast();
+  const { categories, loading: categoriesLoading } = useCategories();
+  const { language } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     description: '',
@@ -86,6 +89,19 @@ export const CreateBOQItemModal = ({ projectId, open, onOpenChange }: CreateBOQI
     }
   };
 
+  const getAllCategories = () => {
+    const allCats: any[] = [];
+    categories.forEach(category => {
+      allCats.push(category);
+      if (category.children && category.children.length > 0) {
+        category.children.forEach(child => {
+          allCats.push({ ...child, isChild: true, parentName: language === 'ar' ? category.name_ar : category.name_en });
+        });
+      }
+    });
+    return allCats;
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
@@ -112,11 +128,17 @@ export const CreateBOQItemModal = ({ projectId, open, onOpenChange }: CreateBOQI
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
-                  {CATEGORIES.map((category) => (
-                    <SelectItem key={category.value} value={category.value}>
-                      {category.labelEn}
-                    </SelectItem>
-                  ))}
+                  {categoriesLoading ? (
+                    <SelectItem value="loading" disabled>Loading categories...</SelectItem>
+                  ) : (
+                    getAllCategories().map((category) => (
+                      <SelectItem key={category.id} value={category.slug}>
+                        {category.isChild && "  ↳ "}
+                        {language === 'ar' ? category.name_ar : category.name_en}
+                        {category.isChild && ` (${category.parentName})`}
+                      </SelectItem>
+                    ))
+                  )}
                 </SelectContent>
               </Select>
             </div>
