@@ -109,12 +109,12 @@ export const MobileNavigation = () => {
               
               {/* Enhanced Login and Start Free buttons */}
               <div className={`flex gap-3 mt-8 pt-6 border-t border-border/50 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <Link to="/auth" onClick={handleLinkClick} className="flex-1">
+                <Link to="/login" onClick={handleLinkClick} className="flex-1">
                   <Button variant="outline" size="lg" className="w-full hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation">
                     {t('Login')}
                   </Button>
                 </Link>
-                <Link to="/auth" onClick={handleLinkClick} className="flex-1">
+                <Link to="/register" onClick={handleLinkClick} className="flex-1">
                   <Button size="lg" className="w-full bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation">
                     {t('Start Free')}
                   </Button>
