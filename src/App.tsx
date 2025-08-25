@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { LanguageProvider } from './contexts/LanguageContext';
@@ -9,6 +8,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
+import { VendorDashboard } from './pages/VendorDashboard';
 import Profile from './pages/Profile';
 import { Analytics } from './pages/Analytics';
 import { Landing } from './pages/Landing';
@@ -131,6 +131,15 @@ const AppRoutes: React.FC = () => {
         </ProtectedRoute>
       } />
       
+      {/* Vendor Routes */}
+      <Route path="/vendor/dashboard" element={
+        <ProtectedRoute>
+          <RoleProtectedRoute allowedRoles={['vendor']}>
+            <VendorDashboard />
+          </RoleProtectedRoute>
+        </ProtectedRoute>
+      } />
+      
       <Route path="/projects" element={
         <ProtectedRoute>
           <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
@@ -216,17 +225,6 @@ const AppRoutes: React.FC = () => {
           <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
             <DashboardLayout>
               <Support />
-            </DashboardLayout>
-          </RoleProtectedRoute>
-        </ProtectedRoute>
-      } />
-
-      {/* Vendor Routes */}
-      <Route path="/vendor/dashboard" element={
-        <ProtectedRoute>
-          <RoleProtectedRoute allowedRoles={['vendor']}>
-            <DashboardLayout>
-              <Dashboard />
             </DashboardLayout>
           </RoleProtectedRoute>
         </ProtectedRoute>
