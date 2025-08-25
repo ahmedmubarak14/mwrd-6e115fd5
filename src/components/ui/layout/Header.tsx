@@ -53,6 +53,9 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
     return 'U';
   };
 
+  // Determine logo navigation based on authentication status
+  const logoNavigationPath = user && userProfile ? "/dashboard" : "/landing";
+
   return (
     <header className="h-20 sm:h-24 lg:h-28 backdrop-blur-sm sticky top-0 z-50 shadow-sm w-full" style={{ background: 'var(--gradient-header)' }}>
       <div className="w-full px-3 sm:px-4 lg:px-6 h-full flex items-center justify-between">
@@ -69,7 +72,7 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
           </Button>
           
           <Link 
-            to="/landing" 
+            to={logoNavigationPath}
             className="flex items-center"
           >
             <img 
