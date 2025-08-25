@@ -1,6 +1,7 @@
 
 import { useState } from "react";
-import { Alert, AlertTriangle } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
+import { Alert } from "@/components/ui/alert";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRealTimeAnalytics } from "@/hooks/useRealTimeAnalytics";
