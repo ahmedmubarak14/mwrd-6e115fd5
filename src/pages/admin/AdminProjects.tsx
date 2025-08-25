@@ -55,7 +55,7 @@ const AdminProjects = () => {
         .from('projects')
         .select(`
           *,
-          client:client_id(full_name, company_name, email),
+          user_profiles!projects_client_id_fkey(full_name, company_name, email),
           boq_items(id, status, total_price),
           requests(id, status, title)
         `)
@@ -65,6 +65,7 @@ const AdminProjects = () => {
 
       const transformedData = (data || []).map(project => ({
         ...project,
+        client: project.user_profiles,
         _count: {
           boq_items: project.boq_items?.length || 0,
           requests: project.requests?.length || 0
