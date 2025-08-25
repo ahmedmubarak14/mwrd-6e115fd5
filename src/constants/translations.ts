@@ -1,4 +1,3 @@
-
 export const translations = {
   en: {
     'common.error': 'Error',
@@ -152,9 +151,23 @@ export const translations = {
     'common.filterByStatus': 'Filter by Status',
     'common.advancedManagement': 'Advanced Management',
     'common.manageDescription': 'Manage and oversee all aspects of the platform',
+    'common.open': 'Open',
+    'common.info': 'Information',
     
     // Admin Dashboard translations
+    'admin.title': 'Admin Panel',
+    'admin.dashboard': 'Dashboard',
     'admin.users': 'Users',
+    'admin.requests': 'Requests',
+    'admin.offers': 'Offers',
+    'admin.projects': 'Projects',
+    'admin.orders': 'Orders',
+    'admin.financialTransactions': 'Financial Transactions',
+    'admin.supportTickets': 'Support Tickets',
+    'admin.expertConsultations': 'Expert Consultations',
+    'admin.categoryManagement': 'Category Management',
+    'admin.verificationQueue': 'Verification Queue',
+    'admin.analytics': 'Analytics',
     'admin.totalUsers': 'Total Users',
     'admin.activeUsers': 'Active Users',
     'admin.newRegistrations': 'New Registrations',
@@ -168,6 +181,21 @@ export const translations = {
     'admin.viewAnalytics': 'View Analytics',
     'admin.reviewVerifications': 'Review Verifications',
     'admin.systemSettings': 'System Settings',
+    'admin.adminUser': 'Admin User',
+    
+    // Status translations
+    'status.active': 'In Progress',
+    'status.completed': 'Today Closed',
+    
+    // Search translations
+    'search.clearFilters': 'Clear All',
+    'search.noResults': 'No tickets found matching your criteria.',
+    
+    // Requests priority translations
+    'requests.priority.urgent': 'Urgent',
+    'requests.priority.high': 'High',
+    'requests.priority.medium': 'Medium',
+    'requests.priority.low': 'Low',
     
     // Advanced User Management translations
     'users.management': 'User Management',
@@ -467,9 +495,23 @@ export const translations = {
     'common.filterByStatus': 'تصفية حسب الحالة',
     'common.advancedManagement': 'إدارة متقدمة',
     'common.manageDescription': 'إدارة والإشراف على جميع جوانب المنصة',
+    'common.open': 'مفتوح',
+    'common.info': 'معلومات',
     
     // Admin Dashboard translations
+    'admin.title': 'لوحة الإدارة',
+    'admin.dashboard': 'لوحة التحكم',
     'admin.users': 'المستخدمون',
+    'admin.requests': 'الطلبات',
+    'admin.offers': 'العروض',
+    'admin.projects': 'المشاريع',
+    'admin.orders': 'الطلبات',
+    'admin.financialTransactions': 'المعاملات المالية',
+    'admin.supportTickets': 'تذاكر الدعم',
+    'admin.expertConsultations': 'استشارات الخبراء',
+    'admin.categoryManagement': 'إدارة الفئات',
+    'admin.verificationQueue': 'قائمة انتظار التحقق',
+    'admin.analytics': 'التحليلات',
     'admin.totalUsers': 'إجمالي المستخدمين',
     'admin.activeUsers': 'المستخدمون النشطون',
     'admin.newRegistrations': 'التسجيلات الجديدة',
@@ -483,6 +525,21 @@ export const translations = {
     'admin.viewAnalytics': 'عرض التحليلات',
     'admin.reviewVerifications': 'مراجعة التحقق',
     'admin.systemSettings': 'إعدادات النظام',
+    'admin.adminUser': 'مستخدم الإدارة',
+    
+    // Status translations
+    'status.active': 'قيد التنفيذ',
+    'status.completed': 'مغلقة اليوم',
+    
+    // Search translations
+    'search.clearFilters': 'مسح الكل',
+    'search.noResults': 'لا توجد تذاكر تطابق معاييرك.',
+    
+    // Requests priority translations
+    'requests.priority.urgent': 'عاجل',
+    'requests.priority.high': 'عالي',
+    'requests.priority.medium': 'متوسط',
+    'requests.priority.low': 'منخفض',
     
     // Advanced User Management translations
     'users.management': 'إدارة المستخدمين',
