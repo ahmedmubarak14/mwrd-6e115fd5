@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { LanguageProvider } from './contexts/LanguageContext';
@@ -9,6 +10,7 @@ import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
+import { Analytics } from './pages/Analytics';
 import { Landing } from './pages/Landing';
 import { WhyStartWithMWRD } from './pages/WhyStartWithMWRD';
 import { WhatMakesUsUnique } from './pages/WhatMakesUsUnique';
@@ -143,6 +145,13 @@ const AppRoutes: React.FC = () => {
       <Route path="/dashboard" element={
         <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
           <Dashboard />
+        </RoleProtectedRoute>
+      } />
+
+      {/* Analytics route for authenticated users */}
+      <Route path="/analytics" element={
+        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+          <Analytics />
         </RoleProtectedRoute>
       } />
 
