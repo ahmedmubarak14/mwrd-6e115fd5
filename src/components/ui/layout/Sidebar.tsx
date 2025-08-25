@@ -1,138 +1,181 @@
 
-import { Link, useLocation } from "react-router-dom";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
-import {
-  LayoutDashboard,
-  FolderOpen,
-  FileText,
-  Users,
-  MessageSquare,
-  BarChart3,
+import React from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { 
+  Home, 
+  FolderOpen, 
+  FileText, 
+  Users, 
+  MessageCircle, 
+  BarChart3, 
   ShoppingCart,
   CreditCard,
   HelpCircle,
-  Settings
-} from "lucide-react";
+  Settings,
+  LogOut,
+  Building2
+} from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { cn } from '@/lib/utils';
 
 interface SidebarProps {
   userRole?: 'client' | 'vendor' | 'admin';
   userProfile?: any;
 }
 
-export const Sidebar = ({ userRole }: SidebarProps) => {
-  const { t, isRTL } = useLanguage();
+export const Sidebar: React.FC<SidebarProps> = ({ userRole = 'client', userProfile }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { signOut } = useAuth();
 
-  // Navigation items with fallback text
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/landing');
+  };
+
   const navigationItems = [
     {
-      label: t('nav.dashboard') || 'Dashboard',
+      title: 'Dashboard',
       href: '/dashboard',
-      icon: LayoutDashboard,
+      icon: Home,
+      roles: ['client', 'vendor', 'admin']
     },
     {
-      label: t('nav.projects') || 'Projects',
+      title: 'Projects',
       href: '/projects',
       icon: FolderOpen,
+      roles: ['client', 'vendor', 'admin']
     },
     {
-      label: t('nav.requests') || 'Requests',
+      title: 'Requests',
       href: '/requests',
       icon: FileText,
+      roles: ['client', 'vendor', 'admin']
     },
     {
-      label: t('nav.suppliers') || 'Suppliers',
-      href: '/vendors',
-      icon: Users,
+      title: 'Suppliers',
+      href: '/suppliers',
+      icon: Building2,
+      roles: ['client', 'admin']
     },
     {
-      label: t('nav.messages') || 'Messages',
+      title: 'Messages',
       href: '/messages',
-      icon: MessageSquare,
+      icon: MessageCircle,
+      roles: ['client', 'vendor', 'admin']
     },
     {
-      label: t('nav.analytics') || 'Analytics',
+      title: 'Analytics',
       href: '/analytics',
       icon: BarChart3,
+      roles: ['client', 'vendor', 'admin']
     },
     {
-      label: t('nav.orders') || 'Orders',
+      title: 'Orders',
       href: '/orders',
       icon: ShoppingCart,
+      roles: ['client', 'vendor', 'admin']
     },
     {
-      label: t('nav.manageSubscription') || 'Subscription',
-      href: '/manage-subscription',
+      title: 'Subscription',
+      href: '/subscription',
       icon: CreditCard,
+      roles: ['client', 'vendor']
     },
     {
-      label: t('nav.support') || 'Support',
+      title: 'Support',
       href: '/support',
       icon: HelpCircle,
+      roles: ['client', 'vendor', 'admin']
+    },
+    {
+      title: 'Settings',
+      href: '/settings',
+      icon: Settings,
+      roles: ['client', 'vendor', 'admin']
     }
   ];
 
-  const isActive = (path: string) => location.pathname === path;
+  const filteredItems = navigationItems.filter(item => 
+    item.roles.includes(userRole)
+  );
 
   return (
-    <div className={cn(
-      "w-64 bg-card border-r border-border h-full flex flex-col",
-      isRTL && "border-l border-r-0"
-    )}>
-      <div className="p-6">
-        <h2 className={cn(
-          "text-lg font-semibold",
-          isRTL && "text-right"
-        )}>
-          {t('nav.menu') || 'Menu'}
-        </h2>
+    <div className="flex h-full w-64 flex-col bg-card border-r">
+      {/* Logo Section */}
+      <div className="flex h-16 items-center justify-center border-b px-6">
+        <Link to="/dashboard" className="flex items-center space-x-2">
+          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+            <Building2 className="h-4 w-4 text-primary-foreground" />
+          </div>
+          <span className="text-xl font-bold">MWRD</span>
+        </Link>
       </div>
-      
-      <ScrollArea className="flex-1 px-3">
-        <div className="space-y-1">
-          {navigationItems.map((item) => {
+
+      {/* User Profile Section */}
+      {userProfile && (
+        <div className="p-4 border-b">
+          <div className="flex items-center space-x-3">
+            <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
+              <span className="text-sm font-medium">
+                {userProfile.full_name?.charAt(0) || userProfile.email?.charAt(0) || 'U'}
+              </span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium truncate">
+                {userProfile.full_name || 'User'}
+              </p>
+              <p className="text-xs text-muted-foreground truncate">
+                {userProfile.email}
+              </p>
+              <Badge variant="outline" className="text-xs mt-1">
+                {userRole}
+              </Badge>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Navigation */}
+      <ScrollArea className="flex-1">
+        <nav className="p-2 space-y-1">
+          {filteredItems.map((item) => {
+            const isActive = location.pathname === item.href;
             const Icon = item.icon;
+
             return (
-              <Button
+              <Link
                 key={item.href}
-                asChild
-                variant={isActive(item.href) ? "secondary" : "ghost"}
+                to={item.href}
                 className={cn(
-                  "w-full justify-start gap-3 h-10",
-                  isRTL && "justify-end flex-row-reverse"
+                  'flex items-center space-x-3 rounded-lg px-3 py-2 text-sm transition-colors',
+                  isActive 
+                    ? 'bg-primary text-primary-foreground' 
+                    : 'hover:bg-accent hover:text-accent-foreground'
                 )}
               >
-                <Link to={item.href}>
-                  <Icon className="h-4 w-4" />
-                  <span>{item.label}</span>
-                </Link>
-              </Button>
+                <Icon className="h-4 w-4" />
+                <span>{item.title}</span>
+              </Link>
             );
           })}
-        </div>
-        
-        <Separator className="my-4" />
-        
-        <div className="space-y-1">
-          <Button
-            asChild
-            variant={isActive('/settings') ? "secondary" : "ghost"}
-            className={cn(
-              "w-full justify-start gap-3 h-10",
-              isRTL && "justify-end flex-row-reverse"
-            )}
-          >
-            <Link to="/settings">
-              <Settings className="h-4 w-4" />
-              <span>{t('nav.settings') || 'Settings'}</span>
-            </Link>
-          </Button>
-        </div>
+        </nav>
       </ScrollArea>
+
+      {/* Sign Out Button */}
+      <div className="p-4 border-t">
+        <Button 
+          variant="ghost" 
+          className="w-full justify-start" 
+          onClick={handleSignOut}
+        >
+          <LogOut className="h-4 w-4 mr-3" />
+          Sign Out
+        </Button>
+      </div>
     </div>
   );
 };

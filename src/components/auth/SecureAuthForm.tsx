@@ -1,160 +1,309 @@
 
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Shield, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useSecureAuth } from '@/hooks/useSecureAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
-import { Eye, EyeOff, Shield } from 'lucide-react';
-import { sanitizeInput } from '@/utils/security';
 
 interface SecureAuthFormProps {
-  mode: 'signin' | 'signup' | 'reset';
+  mode?: 'signin' | 'signup';
 }
 
-export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+export const SecureAuthForm: React.FC<SecureAuthFormProps> = ({ 
+  mode = 'signin' 
+}) => {
+  const [currentMode, setCurrentMode] = useState(mode);
   const [showPassword, setShowPassword] = useState(false);
-  
-  const { secureSignIn, securePasswordReset, loading } = useSecureAuth();
-  const { showError, showSuccess } = useToastFeedback();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    full_name: '',
+    company_name: '',
+    role: 'client' as 'client' | 'vendor'
+  });
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const { secureSignUp, secureSignIn, loading } = useSecureAuth();
+  const { userProfile } = useAuth();
+  const { showSuccess, showError } = useToastFeedback();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Redirect if already authenticated
+  React.useEffect(() => {
+    if (userProfile) {
+      const from = (location.state as any)?.from?.pathname || getDefaultRoute(userProfile.role);
+      navigate(from, { replace: true });
+    }
+  }, [userProfile, navigate, location]);
+
+  const getDefaultRoute = (role: string) => {
+    switch (role) {
+      case 'admin':
+        return '/admin/dashboard';
+      case 'vendor':
+        return '/vendor/dashboard';
+      case 'client':
+      default:
+        return '/dashboard';
+    }
+  };
+
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
 
-    if (!email) {
-      showError('Please enter your email address.');
+    if (!formData.email || !formData.password) {
+      setError('Please fill in all fields');
       return;
     }
 
-    if (mode === 'signin') {
-      if (!password) {
-        showError('Please enter your password.');
-        return;
-      }
-
-      const { error } = await secureSignIn(email, password);
+    try {
+      const result = await secureSignIn(formData.email, formData.password);
       
-      if (error) {
-        showError(error.message);
+      if (result.error) {
+        setError(result.error.message);
+        showError(result.error.message);
       } else {
-        showSuccess('Welcome back!');
+        showSuccess('Sign in successful!');
+        // Navigation will be handled by the useEffect above when userProfile updates
       }
-    } else if (mode === 'reset') {
-      const { error } = await securePasswordReset(email);
-      
-      if (error) {
-        showError(error.message);
-      }
+    } catch (error) {
+      const errorMessage = 'An unexpected error occurred';
+      setError(errorMessage);
+      showError(errorMessage);
     }
   };
 
-  const getDescription = () => {
-    switch (mode) {
-      case 'signin': return 'Sign in to your account';
-      case 'reset': return 'Reset your password';
-      default: return 'Sign in to your account';
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!formData.email || !formData.password || !formData.full_name || !formData.company_name) {
+      setError('Please fill in all fields');
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters long');
+      return;
+    }
+
+    try {
+      const result = await secureSignUp(formData.email, formData.password, {
+        full_name: formData.full_name,
+        company_name: formData.company_name,
+        role: formData.role
+      });
+
+      if (result.error) {
+        setError(result.error.message);
+        showError(result.error.message);
+      } else {
+        showSuccess('Account created successfully! Please check your email to verify your account.');
+        setCurrentMode('signin');
+      }
+    } catch (error) {
+      const errorMessage = 'An unexpected error occurred';
+      setError(errorMessage);
+      showError(errorMessage);
     }
   };
+
+  const renderSignInForm = () => (
+    <form onSubmit={handleSignIn} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="signin-email">Email</Label>
+        <Input
+          id="signin-email"
+          type="email"
+          placeholder="Enter your email"
+          value={formData.email}
+          onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+          required
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="signin-password">Password</Label>
+        <div className="relative">
+          <Input
+            id="signin-password"
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Enter your password"
+            value={formData.password}
+            onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+            required
+          />
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </Button>
+        </div>
+      </div>
+
+      {error && (
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+
+      <Button type="submit" className="w-full" disabled={loading}>
+        {loading ? (
+          <>
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            Signing In...
+          </>
+        ) : (
+          <>
+            <Shield className="w-4 h-4 mr-2" />
+            Sign In
+          </>
+        )}
+      </Button>
+    </form>
+  );
+
+  const renderSignUpForm = () => (
+    <form onSubmit={handleSignUp} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="signup-email">Email</Label>
+        <Input
+          id="signup-email"
+          type="email"
+          placeholder="Enter your email"
+          value={formData.email}
+          onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+          required
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="full-name">Full Name</Label>
+        <Input
+          id="full-name"
+          type="text"
+          placeholder="Enter your full name"
+          value={formData.full_name}
+          onChange={(e) => setFormData(prev => ({ ...prev, full_name: e.target.value }))}
+          required
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="company-name">Company Name</Label>
+        <Input
+          id="company-name"
+          type="text"
+          placeholder="Enter your company name"
+          value={formData.company_name}
+          onChange={(e) => setFormData(prev => ({ ...prev, company_name: e.target.value }))}
+          required
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="signup-password">Password</Label>
+        <div className="relative">
+          <Input
+            id="signup-password"
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Enter your password"
+            value={formData.password}
+            onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+            required
+            minLength={8}
+          />
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+          </Button>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="confirm-password">Confirm Password</Label>
+        <Input
+          id="confirm-password"
+          type="password"
+          placeholder="Confirm your password"
+          value={formData.confirmPassword}
+          onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+          required
+        />
+      </div>
+
+      {error && (
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+
+      <Button type="submit" className="w-full" disabled={loading}>
+        {loading ? (
+          <>
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            Creating Account...
+          </>
+        ) : (
+          <>
+            <Shield className="w-4 h-4 mr-2" />
+            Create Account
+          </>
+        )}
+      </Button>
+    </form>
+  );
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
-      <div className="w-full max-w-md">
-        <Card className="bg-white/5 border border-white/20 backdrop-blur-20">
-          <CardHeader className="space-y-6 text-center">
-            <Link to="/landing" className="inline-block">
-              <img 
-                src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
-                alt="MWRD Logo" 
-                className="h-16 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg cursor-pointer"
-              />
-            </Link>
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <CardTitle>Welcome to MWRD</CardTitle>
+          <CardDescription>
+            Sign in to your account or create a new one
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Tabs value={currentMode} onValueChange={(value) => setCurrentMode(value as any)}>
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="signin">Sign In</TabsTrigger>
+              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+            </TabsList>
             
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold text-white">Welcome to MWRD</h1>
-              <p className="text-white/80">{getDescription()}</p>
-            </div>
-          </CardHeader>
-          
-          <CardContent className="space-y-4">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-white">Email *</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(sanitizeInput(e.target.value))}
-                  required
-                  autoComplete="email"
-                  className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
-                />
-              </div>
-
-              {mode === 'signin' && (
-                <div className="space-y-2">
-                  <Label htmlFor="password" className="text-white">Password *</Label>
-                  <div className="relative">
-                    <Input
-                      id="password"
-                      type={showPassword ? 'text' : 'password'}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      autoComplete="current-password"
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60 pr-10"
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                      onClick={() => setShowPassword(!showPassword)}
-                    >
-                      {showPassword ? <EyeOff className="h-4 w-4 text-white" /> : <Eye className="h-4 w-4 text-white" />}
-                    </Button>
-                  </div>
-                </div>
-              )}
-
-              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white" disabled={loading}>
-                {loading ? 'Processing...' : mode === 'signin' ? 'Sign In' : 'Send Reset Link'}
-              </Button>
-            </form>
-
-            <div className="text-center space-y-2">
-              {mode === 'signin' ? (
-                <>
-                  <p className="text-sm text-white/70">
-                    Don't have an account?{' '}
-                    <Link to="/register" className="text-primary hover:underline">
-                      Sign up
-                    </Link>
-                  </p>
-                  <Link to="/forgot-password" className="text-sm text-primary hover:underline block">
-                    Forgot your password?
-                  </Link>
-                </>
-              ) : (
-                <p className="text-sm text-white/70">
-                  Remember your password?{' '}
-                  <Link to="/login" className="text-primary hover:underline">
-                    Sign in
-                  </Link>
-                </p>
-              )}
-            </div>
-
-            <div className="text-xs text-white/60 text-center flex items-center justify-center gap-1">
-              <Shield className="h-3 w-3" />
-              Your data is protected with enterprise-grade security
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            <TabsContent value="signin" className="mt-6">
+              {renderSignInForm()}
+            </TabsContent>
+            
+            <TabsContent value="signup" className="mt-6">
+              {renderSignUpForm()}
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
     </div>
   );
 };

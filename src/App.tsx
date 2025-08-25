@@ -29,10 +29,48 @@ import AdminVerificationQueue from './pages/admin/AdminVerificationQueue';
 import { AdminAnalytics } from './pages/admin/AdminAnalytics';
 import { AdminLayout } from './components/admin/AdminLayout';
 import { DashboardLayout } from './components/layout/DashboardLayout';
+import { ProtectedRoute } from './components/routing/ProtectedRoute';
 import NotFound from './pages/NotFound';
 import Auth from './pages/Auth';
 import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import AdminOrders from './pages/admin/AdminOrders';
+import Projects from './pages/Projects';
+import Requests from './pages/Requests';
+import Vendors from './pages/Vendors';
+import Messages from './pages/Messages';
+import Orders from './pages/Orders';
+import Settings from './pages/Settings';
+import Support from './pages/Support';
+import { LoadingSpinner } from './components/ui/LoadingSpinner';
+
+// Component to handle root route redirect logic
+const RootRedirect: React.FC = () => {
+  const { user, userProfile, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
+
+  // If user is authenticated, redirect based on role
+  if (user && userProfile) {
+    switch (userProfile.role) {
+      case 'admin':
+        return <Navigate to="/admin/dashboard" replace />;
+      case 'vendor':
+        return <Navigate to="/vendor/dashboard" replace />;
+      case 'client':
+      default:
+        return <Navigate to="/dashboard" replace />;
+    }
+  }
+
+  // If not authenticated, redirect to landing page
+  return <Navigate to="/landing" replace />;
+};
 
 interface RoleProtectedRouteProps {
   children: React.ReactNode;
@@ -43,37 +81,31 @@ const RoleProtectedRoute: React.FC<RoleProtectedRouteProps> = ({ children, allow
   const { userProfile, loading } = useAuth();
 
   if (loading) {
-    return <div>Loading...</div>; // Show a loading indicator while checking authentication
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
   }
 
   if (!userProfile) {
-    // Redirect to login if not authenticated
-    return <Navigate to="/auth" />;
+    return <Navigate to="/login" replace />;
   }
 
   if (!allowedRoles.includes(userProfile.role as 'client' | 'vendor' | 'admin')) {
-    // Redirect to unauthorized page if role is not allowed
-    return <Navigate to="/auth" />;
+    // Redirect to appropriate dashboard based on role
+    switch (userProfile.role) {
+      case 'admin':
+        return <Navigate to="/admin/dashboard" replace />;
+      case 'vendor':
+        return <Navigate to="/vendor/dashboard" replace />;
+      case 'client':
+      default:
+        return <Navigate to="/dashboard" replace />;
+    }
   }
 
   return <>{children}</>;
-};
-
-// Component to handle root route redirect logic
-const RootRedirect: React.FC = () => {
-  const { user, userProfile, loading } = useAuth();
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  // If user is authenticated, redirect to dashboard
-  if (user && userProfile) {
-    return <Navigate to="/dashboard" replace />;
-  }
-
-  // If not authenticated, redirect to landing page
-  return <Navigate to="/landing" replace />;
 };
 
 const AppRoutes: React.FC = () => {
@@ -90,41 +122,123 @@ const AppRoutes: React.FC = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       
-      {/* Enhanced auth redirects - redirect to standard auth pages */}
-      <Route path="/enhanced-login" element={<Navigate to="/login" replace />} />
-      <Route path="/enhanced-register" element={<Navigate to="/register" replace />} />
-      
       {/* Client Routes */}
-      <Route path="/client/*" element={
-        <RoleProtectedRoute allowedRoles={['client']}>
-          <DashboardLayout>
-            <Routes>
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="profile" element={<Profile />} />
-              {/* Add more client routes here */}
-            </Routes>
-          </DashboardLayout>
-        </RoleProtectedRoute>
+      <Route path="/dashboard" element={
+        <ProtectedRoute>
+          <RoleProtectedRoute allowedRoles={['client']}>
+            <Dashboard />
+          </RoleProtectedRoute>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/projects" element={
+        <ProtectedRoute>
+          <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+            <DashboardLayout>
+              <Projects />
+            </DashboardLayout>
+          </RoleProtectedRoute>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/requests" element={
+        <ProtectedRoute>
+          <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+            <DashboardLayout>
+              <Requests />
+            </DashboardLayout>
+          </RoleProtectedRoute>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/suppliers" element={
+        <ProtectedRoute>
+          <RoleProtectedRoute allowedRoles={['client', 'admin']}>
+            <DashboardLayout>
+              <Vendors />
+            </DashboardLayout>
+          </RoleProtectedRoute>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/messages" element={
+        <ProtectedRoute>
+          <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+            <DashboardLayout>
+              <Messages />
+            </DashboardLayout>
+          </RoleProtectedRoute>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/analytics" element={
+        <ProtectedRoute>
+          <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+            <DashboardLayout>
+              <Analytics />
+            </DashboardLayout>
+          </RoleProtectedRoute>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/orders" element={
+        <ProtectedRoute>
+          <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+            <DashboardLayout>
+              <Orders />
+            </DashboardLayout>
+          </RoleProtectedRoute>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/profile" element={
+        <ProtectedRoute>
+          <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+            <DashboardLayout>
+              <Profile />
+            </DashboardLayout>
+          </RoleProtectedRoute>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/settings" element={
+        <ProtectedRoute>
+          <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+            <DashboardLayout>
+              <Settings />
+            </DashboardLayout>
+          </RoleProtectedRoute>
+        </ProtectedRoute>
+      } />
+      
+      <Route path="/support" element={
+        <ProtectedRoute>
+          <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+            <DashboardLayout>
+              <Support />
+            </DashboardLayout>
+          </RoleProtectedRoute>
+        </ProtectedRoute>
       } />
 
       {/* Vendor Routes */}
-      <Route path="/vendor/*" element={
-        <RoleProtectedRoute allowedRoles={['vendor']}>
-          <DashboardLayout>
-            <Routes>
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="profile" element={<Profile />} />
-              {/* Add more vendor routes here */}
-            </Routes>
-          </DashboardLayout>
-        </RoleProtectedRoute>
+      <Route path="/vendor/dashboard" element={
+        <ProtectedRoute>
+          <RoleProtectedRoute allowedRoles={['vendor']}>
+            <DashboardLayout>
+              <Dashboard />
+            </DashboardLayout>
+          </RoleProtectedRoute>
+        </ProtectedRoute>
       } />
 
       {/* Admin Routes */}
       <Route path="/admin/*" element={
-        <RoleProtectedRoute allowedRoles={['admin']}>
-          <AdminLayout />
-        </RoleProtectedRoute>
+        <ProtectedRoute>
+          <RoleProtectedRoute allowedRoles={['admin']}>
+            <AdminLayout />
+          </RoleProtectedRoute>
+        </ProtectedRoute>
       }>
         <Route path="dashboard" element={<AdminDashboardOverview />} />
         <Route path="users" element={<AdminUsers />} />
@@ -140,20 +254,6 @@ const AppRoutes: React.FC = () => {
         <Route path="subscriptions" element={<AdminSubscriptions />} />
         <Route path="orders" element={<AdminOrders />} />
       </Route>
-
-      {/* Public Route for Dashboard (accessible to all authenticated users) */}
-      <Route path="/dashboard" element={
-        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <Dashboard />
-        </RoleProtectedRoute>
-      } />
-
-      {/* Analytics route for authenticated users */}
-      <Route path="/analytics" element={
-        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <Analytics />
-        </RoleProtectedRoute>
-      } />
 
       {/* Root route with smart redirect */}
       <Route path="/" element={<RootRedirect />} />
