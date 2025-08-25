@@ -1,27 +1,13 @@
 
-import { useEffect } from "react";
-import { EnhancedAuthForm } from "@/components/auth/EnhancedAuthForm";
-import { useNavigate } from "react-router-dom";
+import { SecureAuthForm } from '@/components/auth/SecureAuthForm';
+import { AuthRedirect } from '@/components/routing/AuthRedirect';
 
 const Register = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    document.title = "Register | MWRD";
-  }, []);
-
   return (
-    <EnhancedAuthForm
-      onAuthSuccess={(user) => {
-        if (user.role === "admin") {
-          navigate("/admin");
-        } else if (user.role === "vendor") {
-          navigate("/vendor-dashboard");
-        } else {
-          navigate("/dashboard");
-        }
-      }}
-    />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <AuthRedirect />
+      <SecureAuthForm mode="signup" />
+    </div>
   );
 };
 

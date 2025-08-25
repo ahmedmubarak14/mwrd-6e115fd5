@@ -1,23 +1,13 @@
 
-import { useEffect } from "react";
-import { AuthForm } from "@/components/auth/AuthForm";
-import { useNavigate } from "react-router-dom";
+import { SecureAuthForm } from '@/components/auth/SecureAuthForm';
+import { AuthRedirect } from '@/components/routing/AuthRedirect';
 
 const Login = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    document.title = "Sign in | MWRD";
-  }, []);
-
   return (
-    <AuthForm
-      onAuthSuccess={(u) => {
-        if (u.role === "admin") navigate("/admin");
-        else if (u.role === "vendor") navigate("/vendor-dashboard");
-        else navigate("/dashboard");
-      }}
-    />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <AuthRedirect />
+      <SecureAuthForm mode="signin" />
+    </div>
   );
 };
 
