@@ -11,6 +11,7 @@ import { MobileContainer } from "@/components/ui/MobileContainer";
 import { PricingHeader } from "@/components/pricing/PricingHeader";
 import { PricingCard } from "@/components/pricing/PricingCard";
 import { PricingCTA } from "@/components/pricing/PricingCTA";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 const Pricing = () => {
   const [loading, setLoading] = useState(false);
@@ -132,30 +133,39 @@ const Pricing = () => {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--unified-page)' }}>
-      {/* Exact same header as landing page */}
+      {/* Exact same header as landing page with full navigation */}
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md" style={{ background: 'var(--gradient-header)' }}>
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
           <div className="flex items-center">
-            <img 
-              src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
-              alt="MWRD Logo"
-              className="h-12 w-auto"
-            />
+            <a href="/landing" className="flex items-center">
+              <img 
+                src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
+                alt="MWRD Logo"
+                className="h-12 w-auto hover:scale-105 transition-transform cursor-pointer"
+              />
+            </a>
           </div>
           
-          <nav className="hidden md:flex items-center space-x-8">
-            <a href="/landing" className="text-white/90 hover:text-white transition-colors">
-              {isRTL ? 'الرئيسية' : 'Home'}
+          <nav className="hidden lg:flex items-center space-x-8">
+            <a href="/why-start-with-mwrd" className="text-white/90 hover:text-white transition-colors">
+              {isRTL ? 'لماذا نبدأ معنا' : 'Why Start with Us'}
+            </a>
+            <a href="/what-makes-us-unique" className="text-white/90 hover:text-white transition-colors">
+              {isRTL ? 'ما يميزنا' : 'What Makes Us Unique'}
+            </a>
+            <a href="/why-move-to-mwrd" className="text-white/90 hover:text-white transition-colors">
+              {isRTL ? 'لماذا الانتقال إلينا' : 'Why Move to Us'}
             </a>
             <a href="/pricing" className="text-white font-medium">
               {isRTL ? 'الأسعار' : 'Pricing'}
             </a>
-            <a href="/support" className="text-white/90 hover:text-white transition-colors">
-              {isRTL ? 'الدعم' : 'Support'}
-            </a>
           </nav>
 
           <div className="flex items-center space-x-4">
+            <div className="hidden md:block">
+              <LanguageSwitcher />
+            </div>
+            
             {user ? (
               <a 
                 href="/dashboard" 
@@ -169,13 +179,13 @@ const Pricing = () => {
                   href="/login" 
                   className="text-white/90 hover:text-white transition-colors"
                 >
-                  {isRTL ? 'تسجيل الدخول' : 'Sign In'}
+                  {isRTL ? 'تسجيل الدخول' : 'Login'}
                 </a>
                 <a 
                   href="/register" 
                   className="bg-white/20 backdrop-blur-sm text-white px-6 py-2 rounded-full hover:bg-white/30 transition-all duration-300"
                 >
-                  {isRTL ? 'إنشاء حساب' : 'Sign Up'}
+                  {isRTL ? 'ابدأ الآن' : 'Get Started'}
                 </a>
               </>
             )}
