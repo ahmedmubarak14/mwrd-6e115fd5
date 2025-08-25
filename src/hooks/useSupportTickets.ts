@@ -51,8 +51,27 @@ export const useSupportTickets = () => {
 
       const { data, error } = await query.order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setTickets(data || []);
+      if (error) {
+        console.error('Supabase error:', error);
+        // If foreign key error, fetch without joins
+        if (error.message?.includes('could not find the relation')) {
+          const { data: simpleData, error: simpleError } = await supabase
+            .from('support_tickets')
+            .select('*')
+            .order('created_at', { ascending: false });
+          
+          if (simpleError) throw simpleError;
+          setTickets((simpleData || []).map(ticket => ({
+            ...ticket,
+            user_profiles: undefined,
+            assigned_admin: undefined
+          })));
+        } else {
+          throw error;
+        }
+      } else {
+        setTickets(data || []);
+      }
     } catch (error: any) {
       console.error('Error fetching support tickets:', error);
       showError('Failed to load support tickets');
