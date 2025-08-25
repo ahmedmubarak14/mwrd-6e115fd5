@@ -88,6 +88,10 @@ const AppRoutes: React.FC = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       
+      {/* Enhanced auth redirects - redirect to standard auth pages */}
+      <Route path="/enhanced-login" element={<Navigate to="/login" replace />} />
+      <Route path="/enhanced-register" element={<Navigate to="/register" replace />} />
+      
       {/* Client Routes */}
       <Route path="/client/*" element={
         <RoleProtectedRoute allowedRoles={['client']}>
