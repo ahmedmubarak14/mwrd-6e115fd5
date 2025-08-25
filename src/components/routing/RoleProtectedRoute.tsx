@@ -34,43 +34,32 @@ export const RoleProtectedRoute = ({ children, allowed }: RoleProtectedRouteProp
   }
 
   if (!user) {
-    return <Navigate to="/login" replace state={{ from: location }} />;
+    return <Navigate to="/auth" replace state={{ from: location }} />;
   }
 
-  // Wait for userProfile to load
-  if (!userProfile) {
-    return (
-      <div className="flex items-center justify-center min-h-[50vh]">
-        <LoadingSpinner text="Loading profile..." />
-      </div>
-    );
-  }
-
-  const role = userProfile.role;
+  const role = userProfile?.role;
 
   if (!role || !allowed.includes(role)) {
     const homeByRole: Record<string, string> = {
       client: '/dashboard',
-      vendor: '/vendor/dashboard',
-      admin: '/admin/dashboard',
+      vendor: '/vendor-dashboard',
+      admin: '/admin',
     };
 
-    const suggested = role ? homeByRole[role] : '/';
+    const suggested = role ? homeByRole[role] : '/landing';
     return (
       <div className="min-h-[60vh] flex items-center justify-center p-6">
         <Card className="max-w-lg w-full">
           <CardHeader>
             <CardTitle>Access denied</CardTitle>
-            <CardDescription>
-              You don't have permission to view this page. You are logged in as a {role}.
-            </CardDescription>
+            <CardDescription>You don't have permission to view this page.</CardDescription>
           </CardHeader>
           <CardContent className="flex gap-3">
             <Button asChild>
               <Link to={suggested}>Go to your dashboard</Link>
             </Button>
             <Button asChild variant="outline">
-              <Link to="/">Return home</Link>
+              <Link to="/landing">Return home</Link>
             </Button>
           </CardContent>
         </Card>

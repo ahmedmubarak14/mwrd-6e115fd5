@@ -17,19 +17,10 @@ export const AuthRedirect = () => {
 
     // Only redirect from login/register paths when user is already authenticated
     const authPaths = ['/login', '/register', '/auth'];
-    const isOnAuthPath = authPaths.includes(location.pathname);
-    
-    // If user is authenticated and on an auth path, redirect to appropriate dashboard
-    if (user && userProfile && isOnAuthPath) {
-      const targetPath = location.state?.from?.pathname;
-      
-      // If there's a specific path they were trying to access, go there
-      if (targetPath && !authPaths.includes(targetPath)) {
-        navigate(targetPath, { replace: true });
-        return;
-      }
+    if (!authPaths.includes(location.pathname)) return;
 
-      // Otherwise redirect to role-appropriate dashboard
+    // If user is authenticated, redirect to appropriate dashboard
+    if (user && userProfile) {
       switch (userProfile.role) {
         case 'admin':
           navigate('/admin/dashboard', { replace: true });
@@ -43,7 +34,7 @@ export const AuthRedirect = () => {
           break;
       }
     }
-  }, [user, userProfile, loading, navigate, location.pathname, location.state]);
+  }, [user, userProfile, loading, navigate, location.pathname]);
 
   return null;
 };

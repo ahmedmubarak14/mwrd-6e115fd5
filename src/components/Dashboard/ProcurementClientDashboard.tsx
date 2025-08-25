@@ -7,15 +7,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRealTimeAnalytics } from "@/hooks/useRealTimeAnalytics";
 import { useToast } from "@/hooks/use-toast";
 import { DashboardHeader } from "./DashboardHeader";
+import { MetricsCards } from "./MetricsCards";
 import { DashboardTabs } from "./DashboardTabs";
-import { ClientStatsCards } from "../dashboard/client/ClientStatsCards";
-import { ClientQuickActions } from "../dashboard/client/ClientQuickActions";
-import { ClientOverviewMetrics } from "../dashboard/client/ClientOverviewMetrics";
-import { LoadingState } from "../dashboard/shared/LoadingState";
-import { EmptyState } from "../dashboard/shared/EmptyState";
 
 export const ProcurementClientDashboard = () => {
-  const { isRTL, t } = useLanguage();
+  const { isRTL } = useLanguage();
   const { userProfile } = useAuth();
   const { metrics, isLoading, error } = useRealTimeAnalytics();
   const { toast } = useToast();
@@ -33,13 +29,13 @@ export const ProcurementClientDashboard = () => {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
       toast({
-        title: t('dashboard.export'),
-        description: t('dashboard.exportSuccess'),
+        title: "Analytics Exported",
+        description: "Analytics data exported successfully",
       });
     } catch (error) {
       toast({
-        title: t('common.error'),
-        description: t('dashboard.exportError'),
+        title: "Export Error",
+        description: "Error exporting analytics data",
         variant: "destructive"
       });
     } finally {
@@ -52,13 +48,13 @@ export const ProcurementClientDashboard = () => {
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
       toast({
-        title: t('dashboard.refresh'),
-        description: t('dashboard.refreshSuccess'),
+        title: "Data Refreshed",
+        description: "Analytics data refreshed successfully",
       });
     } catch (error) {
       toast({
-        title: t('common.error'),
-        description: t('dashboard.refreshError'),
+        title: "Refresh Error",
+        description: "Error refreshing data",
         variant: "destructive"
       });
     } finally {
@@ -66,22 +62,26 @@ export const ProcurementClientDashboard = () => {
     }
   };
 
-  const handleCardClick = (cardKey: string) => {
+  const handleDrillDown = (cardTitle: string) => {
     toast({
-      title: t('action.viewDetails'),
-      description: t('dashboard.drillDownMessage').replace('{section}', cardKey),
+      title: "Drill Down",
+      description: `Viewing details for ${cardTitle}`,
     });
   };
 
   if (isLoading) {
-    return <LoadingState />;
+    return (
+      <div className="flex justify-center items-center min-h-[200px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
   }
 
   if (error) {
     return (
       <Alert variant="destructive" className="m-6">
         <AlertTriangle className="h-4 w-4" />
-        <div>{t('dashboard.error')}: {error}</div>
+        <div>Error loading dashboard: {error}</div>
       </Alert>
     );
   }
@@ -95,45 +95,10 @@ export const ProcurementClientDashboard = () => {
         isExporting={isExporting}
       />
 
-      {metrics && Object.keys(metrics).length > 0 ? (
-        <>
-          <ClientStatsCards 
-            metrics={metrics}
-            isLoading={isLoading}
-            onCardClick={handleCardClick}
-          />
-
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-            <div className="xl:col-span-2">
-              <ClientQuickActions 
-                recentActivity={{
-                  newMessages: 3,
-                  pendingRequests: metrics?.activeRequests || 0,
-                  activeOffers: 8
-                }}
-              />
-            </div>
-            <div>
-              <ClientOverviewMetrics 
-                metrics={{
-                  completionRate: 78,
-                  avgResponseTime: '4.2h',
-                  successRate: 94,
-                  activeProjects: metrics?.totalUsers || 0
-                }}
-                isLoading={isLoading}
-              />
-            </div>
-          </div>
-        </>
-      ) : (
-        <EmptyState 
-          title={t('dashboard.emptyState.title')}
-          description={t('dashboard.emptyState.description')}
-          actionLabel={t('dashboard.emptyState.action')}
-          onAction={() => {/* Navigate to create request */}}
-        />
-      )}
+      <MetricsCards 
+        metrics={metrics || {}} 
+        onCardClick={handleDrillDown} 
+      />
 
       <DashboardTabs 
         activeTab={activeTab} 
