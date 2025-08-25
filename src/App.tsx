@@ -17,6 +17,14 @@ import { WhyStartWithMWRD } from './pages/WhyStartWithMWRD';
 import { WhatMakesUsUnique } from './pages/WhatMakesUsUnique';
 import { WhyMoveToMWRD } from './pages/WhyMoveToMWRD';
 import Pricing from './pages/Pricing';
+import Projects from './pages/Projects';
+import Requests from './pages/Requests';
+import Vendors from './pages/Vendors';
+import Messages from './pages/Messages';
+import Orders from './pages/Orders';
+import Settings from './pages/Settings';
+import ManageSubscription from './pages/ManageSubscription';
+import Support from './pages/Support';
 import { AdminDashboardOverview } from './pages/admin/AdminDashboardOverview';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminRequests from './pages/admin/AdminRequests';
@@ -148,10 +156,58 @@ const AppRoutes: React.FC = () => {
         <Route path="orders" element={<AdminOrders />} />
       </Route>
 
-      {/* Public Route for Dashboard (accessible to all authenticated users) */}
+      {/* Main Navigation Routes - Accessible to all authenticated users */}
       <Route path="/dashboard" element={
         <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
           <Dashboard />
+        </RoleProtectedRoute>
+      } />
+
+      <Route path="/projects" element={
+        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+          <Projects />
+        </RoleProtectedRoute>
+      } />
+
+      <Route path="/requests" element={
+        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+          <Requests />
+        </RoleProtectedRoute>
+      } />
+
+      <Route path="/vendors" element={
+        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+          <Vendors />
+        </RoleProtectedRoute>
+      } />
+
+      <Route path="/messages" element={
+        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+          <Messages />
+        </RoleProtectedRoute>
+      } />
+
+      <Route path="/orders" element={
+        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+          <Orders />
+        </RoleProtectedRoute>
+      } />
+
+      <Route path="/settings" element={
+        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+          <Settings />
+        </RoleProtectedRoute>
+      } />
+
+      <Route path="/manage-subscription" element={
+        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+          <ManageSubscription />
+        </RoleProtectedRoute>
+      } />
+
+      <Route path="/support" element={
+        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+          <Support />
         </RoleProtectedRoute>
       } />
 
