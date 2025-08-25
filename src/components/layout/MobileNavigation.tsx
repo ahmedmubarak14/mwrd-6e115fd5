@@ -107,7 +107,7 @@ export const MobileNavigation = () => {
                 ))}
               </ul>
               
-              {/* Enhanced Login and Start Free buttons - now using /auth route */}
+              {/* Enhanced Login and Start Free buttons */}
               <div className={`flex gap-3 mt-8 pt-6 border-t border-border/50 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Link to="/auth" onClick={handleLinkClick} className="flex-1">
                   <Button variant="outline" size="lg" className="w-full hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation">
