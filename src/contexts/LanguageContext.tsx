@@ -355,8 +355,9 @@ const translations = {
     'messages.noConversations': 'No conversations',
     'messages.tryDifferentSearch': 'Try a different search term',
     'messages.startConversation': 'Start a conversation by responding to an offer or request',
+    'messages.failedToLoadConversations': 'Failed to load conversations',
     
-    // Profile - NEW TRANSLATIONS
+    // Profile
     'profile.title': 'Profile Settings',
     'profile.subtitle': 'Manage your account information and verification status',
     'profile.edit': 'Edit Profile',
@@ -842,8 +843,9 @@ const translations = {
     'messages.noConversations': 'لا توجد محادثات',
     'messages.tryDifferentSearch': 'جرب مصطلح بحث مختلف',
     'messages.startConversation': 'ابدأ محادثة من خلال الرد على عرض أو طلب',
+    'messages.failedToLoadConversations': 'فشل في تحميل المحادثات',
     
-    // Profile - NEW ARABIC TRANSLATIONS
+    // Profile
     'profile.title': 'إعدادات الملف الشخصي',
     'profile.subtitle': 'إدارة معلومات حسابك وحالة التحقق',
     'profile.edit': 'تعديل الملف الشخصي',
