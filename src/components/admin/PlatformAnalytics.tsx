@@ -5,6 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { cn } from '@/lib/utils';
 import { 
   Users, 
   FileText, 
@@ -43,6 +45,7 @@ interface ActivityLog {
 
 export const PlatformAnalytics = () => {
   const { toast } = useToast();
+  const { t, isRTL, formatNumber, formatCurrency } = useLanguage();
   const [stats, setStats] = useState<PlatformStats | null>(null);
   const [activityLogs, setActivityLogs] = useState<ActivityLog[]>([]);
   const [loading, setLoading] = useState(true);
@@ -84,7 +87,7 @@ export const PlatformAnalytics = () => {
       });
     } catch (error: any) {
       toast({
-        title: "Error",
+        title: t('common.error'),
         description: error.message,
         variant: "destructive",
       });
@@ -132,27 +135,12 @@ export const PlatformAnalytics = () => {
       setActivityLogs(combinedData);
     } catch (error: any) {
       toast({
-        title: "Error",
+        title: t('common.error'),
         description: error.message,
         variant: "destructive",
       });
     } finally {
       setLoading(false);
-    }
-  };
-
-  const logActivity = async (action: string, resourceType: string, resourceId?: string) => {
-    try {
-      await supabase
-        .from('audit_log')
-        .insert({
-          action,
-          entity_type: resourceType,
-          entity_id: resourceId || '',
-          new_values: { timestamp: new Date().toISOString() }
-        });
-    } catch (error) {
-      console.error('Failed to log activity:', error);
     }
   };
 
@@ -198,21 +186,21 @@ export const PlatformAnalytics = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h3 className="text-lg font-semibold">Platform Analytics</h3>
-          <p className="text-sm text-muted-foreground">Monitor platform usage, activity, and performance metrics</p>
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
+        <div className={cn(isRTL ? "text-right" : "text-left")}>
+          <h3 className="text-lg font-semibold">{t('analytics.platformAnalytics')}</h3>
+          <p className="text-sm text-muted-foreground">{t('analytics.monitorDescription')}</p>
         </div>
         <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
           <SelectTrigger className="w-32">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="1">Last 24 hours</SelectItem>
-            <SelectItem value="7">Last 7 days</SelectItem>
-            <SelectItem value="30">Last 30 days</SelectItem>
-            <SelectItem value="90">Last 3 months</SelectItem>
+            <SelectItem value="1">{t('time.last24hours')}</SelectItem>
+            <SelectItem value="7">{t('time.last7days')}</SelectItem>
+            <SelectItem value="30">{t('time.last30days')}</SelectItem>
+            <SelectItem value="90">{t('time.last3months')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -220,108 +208,108 @@ export const PlatformAnalytics = () => {
       {/* Platform Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('analytics.totalUsers')}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.total_users?.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">Registered platform users</p>
+            <div className="text-2xl font-bold">{formatNumber(stats?.total_users || 0)}</div>
+            <p className="text-xs text-muted-foreground">{t('analytics.registeredUsers')}</p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Subscriptions</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('analytics.activeSubscriptions')}</CardTitle>
             <CheckCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.active_subscriptions?.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">Currently active subscriptions</p>
+            <div className="text-2xl font-bold">{formatNumber(stats?.active_subscriptions || 0)}</div>
+            <p className="text-xs text-muted-foreground">{t('analytics.currentlyActive')}</p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Monthly Revenue</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('analytics.monthlyRevenue')}</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.monthly_revenue?.toLocaleString()} SAR</div>
-            <p className="text-xs text-muted-foreground">This month's revenue</p>
+            <div className="text-2xl font-bold">{formatCurrency(stats?.monthly_revenue || 0)}</div>
+            <p className="text-xs text-muted-foreground">{t('analytics.thisMonth')}</p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Requests</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('analytics.totalRequests')}</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.total_requests?.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">Service requests created</p>
+            <div className="text-2xl font-bold">{formatNumber(stats?.total_requests || 0)}</div>
+            <p className="text-xs text-muted-foreground">{t('analytics.serviceRequests')}</p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Offers</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('analytics.totalOffers')}</CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.total_offers?.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">Offers submitted by suppliers</p>
+            <div className="text-2xl font-bold">{formatNumber(stats?.total_offers || 0)}</div>
+            <p className="text-xs text-muted-foreground">{t('analytics.offersSubmitted')}</p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Transactions</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('analytics.totalTransactions')}</CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.total_transactions?.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">Financial transactions processed</p>
+            <div className="text-2xl font-bold">{formatNumber(stats?.total_transactions || 0)}</div>
+            <p className="text-xs text-muted-foreground">{t('analytics.transactionsProcessed')}</p>
           </CardContent>
         </Card>
       </div>
 
       <Tabs defaultValue="activity">
         <TabsList>
-          <TabsTrigger value="activity">Activity Logs</TabsTrigger>
-          <TabsTrigger value="metrics">Performance Metrics</TabsTrigger>
-          <TabsTrigger value="trends">Usage Trends</TabsTrigger>
+          <TabsTrigger value="activity">{t('analytics.activityLogs')}</TabsTrigger>
+          <TabsTrigger value="metrics">{t('analytics.performanceMetrics')}</TabsTrigger>
+          <TabsTrigger value="trends">{t('analytics.usageTrends')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="activity" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
-              <CardDescription>System-wide user activity and actions</CardDescription>
+              <CardTitle>{t('analytics.recentActivity')}</CardTitle>
+              <CardDescription>{t('analytics.systemActivity')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 {activityLogs.map((log) => (
-                  <div key={log.id} className="flex items-center justify-between p-3 border rounded-lg">
-                    <div className="flex items-center gap-3">
+                  <div key={log.id} className={cn("flex items-center justify-between p-3 border rounded-lg", isRTL && "flex-row-reverse")}>
+                    <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
                       {getActionIcon(log.action)}
-                      <div>
+                      <div className={cn(isRTL ? "text-right" : "text-left")}>
                         <div className="font-medium">
-                          {log.user_profiles?.full_name || 'System'} 
-                          <span className="font-normal text-muted-foreground ml-1">
+                          {log.user_profiles?.full_name || t('analytics.system')} 
+                          <span className={cn("font-normal text-muted-foreground", isRTL ? "mr-1" : "ml-1")}>
                             {log.action}
                           </span>
                         </div>
                         <div className="text-sm text-muted-foreground">
-                          {log.user_profiles?.email || 'No email'}
+                          {log.user_profiles?.email || t('analytics.noEmail')}
                         </div>
                       </div>
                     </div>
-                    <div className="text-right">
+                    <div className={cn("text-right", isRTL && "text-left")}>
                       <Badge variant={getResourceBadgeVariant(log.resource_type || '')}>
                         {log.resource_type}
                       </Badge>
-                      <div className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                      <div className={cn("text-xs text-muted-foreground mt-1 flex items-center gap-1", isRTL && "flex-row-reverse")}>
                         <Clock className="h-3 w-3" />
                         {new Date(log.created_at).toLocaleString()}
                       </div>
@@ -329,8 +317,8 @@ export const PlatformAnalytics = () => {
                   </div>
                 ))}
                 {activityLogs.length === 0 && (
-                  <div className="text-center text-muted-foreground py-8">
-                    No activity logs found for the selected period.
+                  <div className={cn("text-center text-muted-foreground py-8", isRTL ? "text-right" : "text-left")}>
+                    {t('analytics.noActivityLogs')}
                   </div>
                 )}
               </div>
@@ -341,14 +329,12 @@ export const PlatformAnalytics = () => {
         <TabsContent value="metrics" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Performance Metrics</CardTitle>
-              <CardDescription>Platform performance and health indicators</CardDescription>
+              <CardTitle>{t('analytics.performanceMetrics')}</CardTitle>
+              <CardDescription>{t('analytics.performanceDescription')}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-center text-muted-foreground py-8">
-                Performance metrics dashboard will be implemented here.
-                <br />
-                This will include response times, error rates, and system health indicators.
+              <div className={cn("text-center text-muted-foreground py-8", isRTL ? "text-right" : "text-left")}>
+                {t('analytics.performanceContent')}
               </div>
             </CardContent>
           </Card>
@@ -357,14 +343,12 @@ export const PlatformAnalytics = () => {
         <TabsContent value="trends" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Usage Trends</CardTitle>
-              <CardDescription>Platform usage patterns and growth trends</CardDescription>
+              <CardTitle>{t('analytics.usageTrends')}</CardTitle>
+              <CardDescription>{t('analytics.trendsDescription')}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-center text-muted-foreground py-8">
-                Usage trends visualization will be implemented here.
-                <br />
-                This will include user growth, feature adoption, and engagement metrics.
+              <div className={cn("text-center text-muted-foreground py-8", isRTL ? "text-right" : "text-left")}>
+                {t('analytics.trendsContent')}
               </div>
             </CardContent>
           </Card>

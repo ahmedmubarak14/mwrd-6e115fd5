@@ -11,6 +11,8 @@ import { Input } from "@/components/ui/input";
 import { Search, Filter, UserCheck, UserX, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { cn } from "@/lib/utils";
 
 export const AdvancedUserManagement = () => {
   const [users, setUsers] = useState<UserProfile[]>([]);
@@ -20,6 +22,7 @@ export const AdvancedUserManagement = () => {
   const [roleFilter, setRoleFilter] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const { toast } = useToast();
+  const { t, isRTL } = useLanguage();
 
   useEffect(() => {
     fetchUsers();
@@ -40,8 +43,8 @@ export const AdvancedUserManagement = () => {
       if (error) {
         console.error('Error fetching users:', error);
         toast({
-          title: "Error",
-          description: "Failed to fetch users",
+          title: t('common.error'),
+          description: t('common.fetchError'),
           variant: "destructive",
         });
         return;
@@ -58,8 +61,8 @@ export const AdvancedUserManagement = () => {
     } catch (error) {
       console.error('Error fetching users:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch users",
+        title: t('common.error'),
+        description: t('common.fetchError'),
         variant: "destructive",
       });
     } finally {
@@ -102,16 +105,16 @@ export const AdvancedUserManagement = () => {
       if (error) {
         console.error('Error updating user status:', error);
         toast({
-          title: "Error",
-          description: "Failed to update user status",
+          title: t('common.error'),
+          description: t('common.updateError'),
           variant: "destructive",
         });
         return;
       }
 
       toast({
-        title: "Success",
-        description: "User status updated successfully",
+        title: t('common.success'),
+        description: t('common.updateSuccess'),
       });
 
       // Refresh users list
@@ -119,8 +122,8 @@ export const AdvancedUserManagement = () => {
     } catch (error) {
       console.error('Error updating user status:', error);
       toast({
-        title: "Error",
-        description: "Failed to update user status",
+        title: t('common.error'),
+        description: t('common.updateError'),
         variant: "destructive",
       });
     }
@@ -136,16 +139,16 @@ export const AdvancedUserManagement = () => {
       if (error) {
         console.error('Error updating user role:', error);
         toast({
-          title: "Error",
-          description: "Failed to update user role",
+          title: t('common.error'),
+          description: t('common.updateError'),
           variant: "destructive",
         });
         return;
       }
 
       toast({
-        title: "Success",
-        description: "User role updated successfully",
+        title: t('common.success'),
+        description: t('common.updateSuccess'),
       });
 
       // Refresh users list
@@ -153,8 +156,8 @@ export const AdvancedUserManagement = () => {
     } catch (error) {
       console.error('Error updating user role:', error);
       toast({
-        title: "Error",
-        description: "Failed to update user role",
+        title: t('common.error'),
+        description: t('common.updateError'),
         variant: "destructive",
       });
     }
@@ -170,7 +173,7 @@ export const AdvancedUserManagement = () => {
 
     return (
       <Badge variant={variants[status as keyof typeof variants] || "secondary"}>
-        {status}
+        {t(`users.${status}`)}
       </Badge>
     );
   };
@@ -184,7 +187,7 @@ export const AdvancedUserManagement = () => {
 
     return (
       <Badge variant={variants[role as keyof typeof variants] || "secondary"}>
-        {role}
+        {t(`users.${role}`)}
       </Badge>
     );
   };
@@ -198,52 +201,52 @@ export const AdvancedUserManagement = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <Users className="h-5 w-5" />
-            Advanced User Management
+            {t('users.advancedManagement')}
           </CardTitle>
-          <CardDescription>
-            Manage user accounts, roles, and permissions
+          <CardDescription className={cn(isRTL ? "text-right" : "text-left")}>
+            {t('users.manageDescription')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           {/* Filters */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-6">
+          <div className={cn("flex flex-col sm:flex-row gap-4 mb-6", isRTL && "sm:flex-row-reverse")}>
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Search className={cn("absolute top-2.5 h-4 w-4 text-muted-foreground", isRTL ? "right-2" : "left-2")} />
                 <Input
-                  placeholder="Search users..."
+                  placeholder={t('users.searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-8"
+                  className={cn(isRTL ? "pr-8" : "pl-8")}
                 />
               </div>
             </div>
             <Select value={roleFilter} onValueChange={setRoleFilter}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filter by role" />
+                <SelectValue placeholder={t('users.filterByRole')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Roles</SelectItem>
-                <SelectItem value="client">Clients</SelectItem>
-                <SelectItem value="vendor">Vendors</SelectItem>
-                <SelectItem value="admin">Admins</SelectItem>
+                <SelectItem value="all">{t('users.allRoles')}</SelectItem>
+                <SelectItem value="client">{t('users.clients')}</SelectItem>
+                <SelectItem value="vendor">{t('users.vendors')}</SelectItem>
+                <SelectItem value="admin">{t('users.admins')}</SelectItem>
               </SelectContent>
             </Select>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Filter by status" />
+                <SelectValue placeholder={t('users.filterByStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="blocked">Blocked</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
+                <SelectItem value="all">{t('users.allStatus')}</SelectItem>
+                <SelectItem value="pending">{t('users.pending')}</SelectItem>
+                <SelectItem value="approved">{t('users.approved')}</SelectItem>
+                <SelectItem value="blocked">{t('users.blocked')}</SelectItem>
+                <SelectItem value="rejected">{t('users.rejected')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -253,19 +256,19 @@ export const AdvancedUserManagement = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>User</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Verification</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead className={cn(isRTL ? "text-right" : "text-left")}>{t('users.user')}</TableHead>
+                  <TableHead className={cn(isRTL ? "text-right" : "text-left")}>{t('users.role')}</TableHead>
+                  <TableHead className={cn(isRTL ? "text-right" : "text-left")}>{t('users.status')}</TableHead>
+                  <TableHead className={cn(isRTL ? "text-right" : "text-left")}>{t('users.verification')}</TableHead>
+                  <TableHead className={cn(isRTL ? "text-right" : "text-left")}>{t('users.created')}</TableHead>
+                  <TableHead className={cn(isRTL ? "text-right" : "text-left")}>{t('users.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredUsers.map((user) => (
                   <TableRow key={user.id}>
                     <TableCell>
-                      <div>
+                      <div className={cn(isRTL ? "text-right" : "text-left")}>
                         <div className="font-medium">
                           {user.full_name || user.email}
                         </div>
@@ -288,9 +291,9 @@ export const AdvancedUserManagement = () => {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="client">Client</SelectItem>
-                          <SelectItem value="vendor">Vendor</SelectItem>
-                          <SelectItem value="admin">Admin</SelectItem>
+                          <SelectItem value="client">{t('users.client')}</SelectItem>
+                          <SelectItem value="vendor">{t('users.vendor')}</SelectItem>
+                          <SelectItem value="admin">{t('users.admin')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </TableCell>
@@ -303,10 +306,10 @@ export const AdvancedUserManagement = () => {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="pending">Pending</SelectItem>
-                          <SelectItem value="approved">Approved</SelectItem>
-                          <SelectItem value="blocked">Blocked</SelectItem>
-                          <SelectItem value="rejected">Rejected</SelectItem>
+                          <SelectItem value="pending">{t('users.pending')}</SelectItem>
+                          <SelectItem value="approved">{t('users.approved')}</SelectItem>
+                          <SelectItem value="blocked">{t('users.blocked')}</SelectItem>
+                          <SelectItem value="rejected">{t('users.rejected')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </TableCell>
@@ -317,7 +320,7 @@ export const AdvancedUserManagement = () => {
                       {new Date(user.created_at).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
-                      <div className="flex gap-2">
+                      <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
                         <Button
                           size="sm"
                           variant="outline"
@@ -338,8 +341,8 @@ export const AdvancedUserManagement = () => {
           </div>
 
           {filteredUsers.length === 0 && (
-            <div className="text-center py-8 text-muted-foreground">
-              No users found matching your criteria.
+            <div className={cn("text-center py-8 text-muted-foreground", isRTL ? "text-right" : "text-left")}>
+              {t('users.noUsersFound')}
             </div>
           )}
         </CardContent>

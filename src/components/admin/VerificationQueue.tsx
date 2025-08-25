@@ -18,6 +18,8 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
 import { generateDocumentSignedUrl, verifyFileExists, extractFilePath } from '@/utils/documentStorage';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { cn } from '@/lib/utils';
 
 interface VerificationRequest {
   id: string;
@@ -44,6 +46,7 @@ export const VerificationQueue = () => {
   const [reviewNotes, setReviewNotes] = useState<{ [key: string]: string }>({});
   const [documentStatus, setDocumentStatus] = useState<{ [key: string]: 'checking' | 'available' | 'missing' }>({});
   const { showSuccess, showError } = useToastFeedback();
+  const { t, isRTL, formatDate } = useLanguage();
 
   const fetchVerificationRequests = async () => {
     try {
@@ -141,12 +144,12 @@ export const VerificationQueue = () => {
 
       if (error) throw error;
 
-      showSuccess(`Verification ${newStatus} successfully`);
+      showSuccess(`${t('verification.approved') === newStatus ? t('verification.approved') : t('verification.rejected')} ${t('common.success')}`);
       fetchVerificationRequests();
       setReviewNotes(prev => ({ ...prev, [requestId]: '' }));
     } catch (error: any) {
       console.error('Error updating verification status:', error);
-      showError('Failed to update verification status');
+      showError(t('common.updateError'));
     } finally {
       setProcessing(null);
     }
@@ -155,13 +158,13 @@ export const VerificationQueue = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'approved':
-        return <Badge className="bg-green-500">Approved</Badge>;
+        return <Badge className="bg-green-500">{t('verification.approved')}</Badge>;
       case 'rejected':
-        return <Badge variant="destructive">Rejected</Badge>;
+        return <Badge variant="destructive">{t('verification.rejected')}</Badge>;
       case 'under_review':
-        return <Badge variant="outline">Under Review</Badge>;
+        return <Badge variant="outline">{t('verification.underReview')}</Badge>;
       default:
-        return <Badge variant="secondary">Pending</Badge>;
+        return <Badge variant="secondary">{t('users.pending')}</Badge>;
     }
   };
 
@@ -170,13 +173,13 @@ export const VerificationQueue = () => {
     
     switch (status) {
       case 'checking':
-        return <Badge variant="outline">Checking...</Badge>;
+        return <Badge variant="outline">{t('verification.checking')}</Badge>;
       case 'available':
-        return <Badge variant="default" className="bg-green-500">Available</Badge>;
+        return <Badge variant="default" className="bg-green-500">{t('verification.available')}</Badge>;
       case 'missing':
-        return <Badge variant="destructive">Missing</Badge>;
+        return <Badge variant="destructive">{t('verification.missing')}</Badge>;
       default:
-        return <Badge variant="secondary">Unknown</Badge>;
+        return <Badge variant="secondary">{t('verification.unknown')}</Badge>;
     }
   };
 
@@ -195,40 +198,40 @@ export const VerificationQueue = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <FileText className="h-5 w-5" />
-            Verification Queue
+            {t('verification.queue')}
           </CardTitle>
-          <CardDescription>
-            Review and approve client Commercial Registration documents
+          <CardDescription className={cn(isRTL ? "text-right" : "text-left")}>
+            {t('verification.reviewDescription')}
           </CardDescription>
         </CardHeader>
       </Card>
 
       {requests.length === 0 ? (
         <Alert>
-          <AlertDescription>No verification requests pending review.</AlertDescription>
+          <AlertDescription>{t('verification.noPending')}</AlertDescription>
         </Alert>
       ) : (
         <div className="grid gap-4">
           {requests.map((request) => (
             <Card key={request.id}>
               <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
+                <div className={cn("flex items-start justify-between mb-4", isRTL && "flex-row-reverse")}>
+                  <div className={cn("space-y-2", isRTL ? "text-right" : "text-left")}>
+                    <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                       <User className="h-4 w-4" />
                       <span className="font-medium">
-                        {request.user_profiles?.full_name || 'Unknown User'}
+                        {request.user_profiles?.full_name || t('verification.unknownUser')}
                       </span>
                       {getStatusBadge(request.status)}
                     </div>
                     
                     {request.user_profiles?.company_name && (
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <div className={cn("flex items-center gap-2 text-sm text-muted-foreground", isRTL && "flex-row-reverse")}>
                         <Building className="h-4 w-4" />
                         <span>{request.user_profiles.company_name}</span>
                       </div>
@@ -238,13 +241,13 @@ export const VerificationQueue = () => {
                       Email: {request.user_profiles?.email}
                     </div>
                     
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className={cn("flex items-center gap-2 text-sm text-muted-foreground", isRTL && "flex-row-reverse")}>
                       <Clock className="h-4 w-4" />
-                      <span>Submitted: {new Date(request.submitted_at).toLocaleDateString()}</span>
+                      <span>{t('verification.submitted')}: {formatDate(new Date(request.submitted_at))}</span>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium">Document Status:</span>
+                    <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
+                      <span className="text-sm font-medium">{t('verification.documentStatus')}:</span>
                       {getDocumentStatusIndicator(request.id)}
                     </div>
                   </div>
@@ -254,22 +257,21 @@ export const VerificationQueue = () => {
                   <Alert variant="destructive" className="mb-4">
                     <AlertTriangle className="h-4 w-4" />
                     <AlertDescription>
-                      <strong>Warning:</strong> The uploaded document file is missing from storage. 
-                      This request may need to be rejected and the user asked to re-upload their document.
+                      <strong>{t('common.warning')}:</strong> {t('verification.warningMissing')}
                     </AlertDescription>
                   </Alert>
                 )}
 
                 <div className="space-y-4">
-                  <div className="flex gap-2">
+                  <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => handleViewDocument(request.document_url, request.id)}
                       disabled={documentStatus[request.id] === 'missing'}
                     >
-                      <Eye className="h-4 w-4 mr-1" />
-                      View Document
+                      <Eye className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
+                      {t('verification.viewDocument')}
                     </Button>
                     
                     <Button
@@ -282,29 +284,30 @@ export const VerificationQueue = () => {
                       )}
                       disabled={documentStatus[request.id] === 'missing'}
                     >
-                      <Download className="h-4 w-4 mr-1" />
-                      Download
+                      <Download className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
+                      {t('verification.download')}
                     </Button>
                   </div>
 
                   {request.status === 'pending' && (
                     <>
                       <Textarea
-                        placeholder="Add review notes (optional for approval, required for rejection)..."
+                        placeholder={t('verification.reviewNotes')}
                         value={reviewNotes[request.id] || ''}
                         onChange={(e) => setReviewNotes(prev => ({ ...prev, [request.id]: e.target.value }))}
                         rows={3}
+                        className={cn(isRTL ? "text-right" : "text-left")}
                       />
                       
-                      <div className="flex gap-2">
+                      <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
                         <Button
                           onClick={() => handleStatusUpdate(request.id, 'approved')}
                           disabled={processing === request.id || documentStatus[request.id] === 'missing'}
                           size="sm"
                           className="bg-green-500 hover:bg-green-600"
                         >
-                          <Check className="h-4 w-4 mr-1" />
-                          {processing === request.id ? 'Processing...' : 'Approve'}
+                          <Check className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
+                          {processing === request.id ? t('verification.processing') : t('verification.approve')}
                         </Button>
                         
                         <Button
@@ -313,20 +316,20 @@ export const VerificationQueue = () => {
                           variant="destructive"
                           size="sm"
                         >
-                          <X className="h-4 w-4 mr-1" />
-                          {processing === request.id ? 'Processing...' : 'Reject'}
+                          <X className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
+                          {processing === request.id ? t('verification.processing') : t('verification.reject')}
                         </Button>
                       </div>
                       
                       {documentStatus[request.id] === 'missing' && (
                         <p className="text-sm text-destructive">
-                          Note: Cannot approve request with missing document. Consider rejecting and asking user to re-upload.
+                          {t('verification.cannotApprove')}
                         </p>
                       )}
                       
                       {!reviewNotes[request.id]?.trim() && documentStatus[request.id] !== 'missing' && (
                         <p className="text-sm text-muted-foreground">
-                          Note: Rejection requires review notes to inform the client.
+                          {t('verification.rejectionNotes')}
                         </p>
                       )}
                     </>
@@ -335,7 +338,7 @@ export const VerificationQueue = () => {
                   {request.reviewer_notes && (
                     <Alert>
                       <AlertDescription>
-                        <strong>Review Notes:</strong><br />
+                        <strong>{t('verification.reviewNotesLabel')}</strong><br />
                         {request.reviewer_notes}
                       </AlertDescription>
                     </Alert>

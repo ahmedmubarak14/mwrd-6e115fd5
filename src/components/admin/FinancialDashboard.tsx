@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -6,6 +7,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { FinancialAnalyticsChart } from '@/components/analytics/FinancialAnalyticsChart';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { cn } from '@/lib/utils';
 import { 
   DollarSign, 
   TrendingUp, 
@@ -42,6 +45,7 @@ interface FinancialStats {
 
 export const FinancialDashboard = () => {
   const { toast } = useToast();
+  const { t, isRTL, formatNumber, formatCurrency } = useLanguage();
   const [transactions, setTransactions] = useState<FinancialTransaction[]>([]);
   const [stats, setStats] = useState<FinancialStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -172,21 +176,21 @@ export const FinancialDashboard = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h3 className="text-lg font-semibold">Financial Dashboard</h3>
-          <p className="text-sm text-muted-foreground">Monitor revenue, transactions, and financial health</p>
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
+        <div className={cn(isRTL ? "text-right" : "text-left")}>
+          <h3 className="text-lg font-semibold">{t('financial.dashboard')}</h3>
+          <p className="text-sm text-muted-foreground">{t('financial.monitorRevenue')}</p>
         </div>
         <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
           <SelectTrigger className="w-32">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="7">Last 7 days</SelectItem>
-            <SelectItem value="30">Last 30 days</SelectItem>
-            <SelectItem value="90">Last 3 months</SelectItem>
-            <SelectItem value="365">Last year</SelectItem>
+            <SelectItem value="7">{t('time.last7days')}</SelectItem>
+            <SelectItem value="30">{t('time.last30days')}</SelectItem>
+            <SelectItem value="90">{t('time.last3months')}</SelectItem>
+            <SelectItem value="365">{t('time.lastYear')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -194,53 +198,53 @@ export const FinancialDashboard = () => {
       {/* Financial Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('financial.totalRevenue')}</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.total_revenue?.toLocaleString()} SAR</div>
+            <div className="text-2xl font-bold">{formatCurrency(stats?.total_revenue || 0)}</div>
             <p className="text-xs text-muted-foreground">
-              +{stats?.growth_rate}% from last period
+              +{stats?.growth_rate}% {t('financial.growthFromPeriod')}
             </p>
           </CardContent>
         </Card>
         
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Monthly Revenue</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('financial.monthlyRevenue')}</CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.monthly_revenue?.toLocaleString()} SAR</div>
+            <div className="text-2xl font-bold">{formatCurrency(stats?.monthly_revenue || 0)}</div>
             <p className="text-xs text-muted-foreground">
-              This month's earnings
+              {t('financial.monthlyEarnings')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Amount</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('financial.pendingAmount')}</CardTitle>
             <RefreshCw className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.pending_amount?.toLocaleString()} SAR</div>
+            <div className="text-2xl font-bold">{formatCurrency(stats?.pending_amount || 0)}</div>
             <p className="text-xs text-muted-foreground">
-              Awaiting processing
+              {t('financial.awaitingProcessing')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Failed Transactions</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('financial.failedTransactions')}</CardTitle>
             <AlertCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.failed_transactions}</div>
+            <div className="text-2xl font-bold">{formatNumber(stats?.failed_transactions || 0)}</div>
             <p className="text-xs text-muted-foreground">
-              Out of {stats?.total_transactions} total
+              {t('financial.outOfTotal')} {formatNumber(stats?.total_transactions || 0)} {t('financial.total')}
             </p>
           </CardContent>
         </Card>
@@ -248,42 +252,42 @@ export const FinancialDashboard = () => {
 
       <Tabs defaultValue="transactions">
         <TabsList>
-          <TabsTrigger value="transactions">Recent Transactions</TabsTrigger>
-          <TabsTrigger value="analytics">Financial Analytics</TabsTrigger>
+          <TabsTrigger value="transactions">{t('financial.recentTransactions')}</TabsTrigger>
+          <TabsTrigger value="analytics">{t('financial.financialAnalytics')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="transactions" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Transaction History</CardTitle>
-              <CardDescription>Recent financial transactions and payments</CardDescription>
+              <CardTitle>{t('financial.transactionHistory')}</CardTitle>
+              <CardDescription>{t('financial.transactionDescription')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {transactions.map((transaction) => (
-                  <div key={transaction.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="flex items-center gap-3">
+                  <div key={transaction.id} className={cn("flex items-center justify-between p-4 border rounded-lg", isRTL && "flex-row-reverse")}>
+                    <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
                       {getTransactionTypeIcon(transaction.type)}
-                       <div>
+                       <div className={cn(isRTL ? "text-right" : "text-left")}>
                          <div className="font-medium">
-                           {transaction.user_profiles?.full_name || 'Unknown User'}
+                           {transaction.user_profiles?.full_name || t('financial.unknownUser')}
                          </div>
                          <div className="text-sm text-muted-foreground">
-                           {transaction.user_profiles?.email || 'No email'}
+                           {transaction.user_profiles?.email || t('financial.noEmail')}
                          </div>
                          <div className="text-xs text-muted-foreground">
                            {transaction.description}
                          </div>
                        </div>
                      </div>
-                     <div className="text-right">
+                     <div className={cn("text-right", isRTL && "text-left")}>
                        <div className="font-medium">
                          {transaction.type === 'refund' ? '-' : '+'}
-                         {transaction.amount} SAR
+                         {formatCurrency(transaction.amount)}
                        </div>
-                      <div className="flex items-center gap-2">
+                      <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                         <Badge variant={getStatusBadgeVariant(transaction.status)}>
-                          {transaction.status}
+                          {t(`financial.${transaction.status}`)}
                         </Badge>
                         <span className="text-xs text-muted-foreground">
                           {new Date(transaction.created_at).toLocaleDateString()}
@@ -293,8 +297,8 @@ export const FinancialDashboard = () => {
                   </div>
                 ))}
                 {transactions.length === 0 && (
-                  <div className="text-center text-muted-foreground py-8">
-                    No transactions found for the selected period.
+                  <div className={cn("text-center text-muted-foreground py-8", isRTL ? "text-right" : "text-left")}>
+                    {t('financial.noTransactions')}
                   </div>
                 )}
               </div>
