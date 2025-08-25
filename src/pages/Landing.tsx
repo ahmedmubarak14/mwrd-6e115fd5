@@ -1,12 +1,8 @@
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useOptionalAuth } from "@/contexts/useOptionalAuth";
-import { Sidebar } from "@/components/ui/layout/Sidebar";
-import { Sheet } from "@/components/ui/sheet";
-import { MobileSheet } from "@/components/ui/MobileSheet";
 import { useState } from "react";
 import { 
   ArrowRight, 
@@ -57,7 +53,6 @@ export const Landing = () => {
   const user = auth?.user;
   const userProfile = auth?.userProfile;
   const loading = auth?.loading;
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const isRTL = language === 'ar';
 
@@ -77,44 +72,11 @@ export const Landing = () => {
     <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] overflow-hidden">
       <SmoothScroll />
       
-      {/* Show sidebar for logged-in users */}
-      {user && userProfile && (
-        <>
-          {/* Mobile Sidebar */}
-          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <MobileSheet>
-              <Sidebar userRole={userProfile.role} userProfile={userProfile} />
-            </MobileSheet>
-          </Sheet>
-          
-          {/* Desktop Sidebar - Fixed positioning */}
-          <div className="fixed left-0 top-0 bottom-0 z-40 hidden lg:block">
-            <div className="w-64 h-full">
-              <Sidebar userRole={userProfile.role} userProfile={userProfile} />
-            </div>
-          </div>
-        </>
-      )}
-      
       {/* Ultra-Modern Header */}
-      <header className={cn(
-        "fixed top-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-white/10 bg-white/10",
-        user && userProfile ? "left-0 lg:left-64" : "left-0"
-      )}>
+      <header className="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-white/10 bg-white/10">
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-          {/* Mobile menu button for logged-in users */}
-          {user && userProfile && (
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="lg:hidden p-2 text-white hover:bg-white/10"
-              onClick={() => setMobileMenuOpen(true)}
-            >
-              <Menu className="h-6 w-6" />
-            </Button>
-          )}
           
-          <div className={`${language === 'ar' ? 'order-3' : 'order-1'} ${user && userProfile ? 'lg:hidden' : ''}`}>
+          <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
             <Link to={user && userProfile ? "/dashboard" : "/"} className="flex items-center gap-3 group">
               <img 
                 src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
@@ -124,23 +86,21 @@ export const Landing = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation Menu - Hide for logged-in users since they have sidebar */}
-          {!user && (
-            <nav className={`hidden lg:flex items-center gap-6 ${language === 'ar' ? 'order-1' : 'order-2'}`}>
-              <Link to="/why-start-with-mwrd" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
-                {language === 'ar' ? 'لماذا نبدأ معنا' : 'Why Start with Us'}
-              </Link>
-              <Link to="/what-makes-us-unique" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
-                {language === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
-              </Link>
-              <Link to="/why-move-to-mwrd" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
-                {language === 'ar' ? 'لماذا الانتقال إلينا' : 'Why Move to Us'}
-              </Link>
-              <Link to="/pricing" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
-                {language === 'ar' ? 'الأسعار' : 'Pricing'}
-              </Link>
-            </nav>
-          )}
+          {/* Desktop Navigation Menu */}
+          <nav className={`hidden lg:flex items-center gap-6 ${language === 'ar' ? 'order-1' : 'order-2'}`}>
+            <Link to="/why-start-with-mwrd" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+              {language === 'ar' ? 'لماذا نبدأ معنا' : 'Why Start with Us'}
+            </Link>
+            <Link to="/what-makes-us-unique" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+              {language === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
+            </Link>
+            <Link to="/why-move-to-mwrd" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+              {language === 'ar' ? 'لماذا الانتقال إلينا' : 'Why Move to Us'}
+            </Link>
+            <Link to="/pricing" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+              {language === 'ar' ? 'الأسعار' : 'Pricing'}
+            </Link>
+          </nav>
           
           <div className={`flex items-center gap-4 ${language === 'ar' ? 'flex-row-reverse order-2' : 'order-3'}`}>
             <div className="hidden md:block">
@@ -166,17 +126,13 @@ export const Landing = () => {
                 </Link>
               </>
             )}
-            {/* Mobile Navigation - Only show for non-logged-in users */}
-            {!user && <MobileNavigation />}
+            <MobileNavigation />
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className={cn(
-        "relative min-h-screen flex items-center overflow-hidden",
-        user && userProfile ? "lg:pl-64" : ""
-      )}>
+      <section className="relative min-h-screen flex items-center overflow-hidden">
         <div className="container mx-auto px-6 pt-20 pb-16 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto">
             
