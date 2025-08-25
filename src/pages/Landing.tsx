@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -27,6 +28,8 @@ import { Link } from 'react-router-dom';
 import { InteractiveDemo } from '@/components/demo/InteractiveDemo';
 
 export const Landing = () => {
+  const [isDemoOpen, setIsDemoOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Navigation */}
@@ -98,7 +101,7 @@ export const Landing = () => {
                     Start Free Trial <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" className="text-lg px-8">
+                <Button size="lg" variant="outline" className="text-lg px-8" onClick={() => setIsDemoOpen(true)}>
                   Watch Demo
                 </Button>
               </div>
@@ -116,13 +119,25 @@ export const Landing = () => {
               </div>
             </div>
 
-            {/* Interactive Demo */}
+            {/* Interactive Demo Placeholder */}
             <div className="lg:pl-12">
-              <InteractiveDemo />
+              <div className="bg-gradient-to-br from-primary/10 to-accent/10 rounded-2xl p-8 text-center">
+                <h3 className="text-2xl font-bold mb-4">Interactive Platform Demo</h3>
+                <p className="text-gray-600 mb-6">Experience MWRD's powerful features in action</p>
+                <Button onClick={() => setIsDemoOpen(true)} className="bg-primary hover:bg-primary/90">
+                  Launch Interactive Demo
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Interactive Demo Modal */}
+      <InteractiveDemo 
+        isOpen={isDemoOpen}
+        onClose={() => setIsDemoOpen(false)}
+      />
 
       {/* Features Section */}
       <section className="py-20 bg-gray-50">
