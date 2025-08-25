@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
-import { RouteAwareThemeProvider } from './components/RouteAwareThemeProvider';
+import { RouteAwareThemeProvider } from './contexts/RouteAwareThemeContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
@@ -56,8 +56,8 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <LanguageProvider>
-        <RouteAwareThemeProvider>
-          <Router>
+        <Router>
+          <RouteAwareThemeProvider>
             <Routes>
               <Route path="/auth" element={<Auth />} />
               <Route path="/login" element={<Login />} />
@@ -124,8 +124,8 @@ const App: React.FC = () => {
               {/* Catch-all route for 404 Not Found */}
               <Route path="*" element={<NotFound />} />
             </Routes>
-          </Router>
-        </RouteAwareThemeProvider>
+          </RouteAwareThemeProvider>
+        </Router>
       </LanguageProvider>
     </AuthProvider>
   );
