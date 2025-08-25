@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
@@ -7,15 +8,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToastFeedback } from "@/hooks/useToastFeedback";
 import { useAuth } from "@/contexts/AuthContext";
 import { UserProfile } from "@/types/database";
 import { VendorOnboarding } from "@/components/vendor/VendorOnboarding";
 import { CRDocumentUpload } from "@/components/verification/CRDocumentUpload";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CheckCircle, Info, User, Building } from "lucide-react";
+import { CheckCircle, Info, User, Building, Shield, Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEnhancedSecureAuth } from "@/hooks/useEnhancedSecureAuth";
+import { sanitizeInput } from "@/utils/security";
 
 interface EnhancedAuthFormProps {
   onAuthSuccess?: (user: UserProfile) => void;
@@ -31,11 +33,13 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
     company_name: '',
     role: 'client' as 'client' | 'vendor' | 'admin'
   });
-  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [registeredUserId, setRegisteredUserId] = useState<string | null>(null);
   const [crUploaded, setCrUploaded] = useState(false);
   const { showSuccess, showError, showInfo } = useToastFeedback();
   const { userProfile } = useAuth();
+  const { secureSignUp, loading, validatePassword } = useEnhancedSecureAuth();
 
   // Handle successful authentication
   useEffect(() => {
@@ -51,70 +55,66 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (!formData.email || !formData.password || !formData.full_name) {
       showError('Please fill in all required fields');
       return;
     }
 
-    setLoading(true);
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: {
-          data: {
-            full_name: formData.full_name,
-            company_name: formData.company_name,
-            role: formData.role
-          }
-        }
-      });
+    if (!agreedToTerms) {
+      showError('Please agree to the terms and conditions');
+      return;
+    }
 
-      if (error) throw error;
+    // Use secure signup
+    const { data, error } = await secureSignUp(formData.email, formData.password, {
+      full_name: formData.full_name,
+      company_name: formData.company_name,
+      role: formData.role
+    });
 
-      if (data.user) {
-        setRegisteredUserId(data.user.id);
-        
-        if (formData.role === 'vendor') {
-          showInfo('Account created! Complete the onboarding process to start receiving opportunities.');
-          setRegistrationStep('onboarding');
-        } else if (formData.role === 'client') {
-          showInfo('Account created! Please upload your Commercial Registration to complete verification.');
-          setRegistrationStep('verification');
-        } else {
-          showSuccess('Account created successfully! Please check your email for verification.');
-          onAuthSuccess?.({
-            id: data.user.id,
-            user_id: data.user.id,
-            email: formData.email,
-            full_name: formData.full_name,
-            company_name: formData.company_name,
-            role: formData.role,
-            status: 'approved',
-            verification_status: 'approved',
-            avatar_url: null,
-            phone: null,
-            address: null,
-            bio: null,
-            portfolio_url: null,
-            verification_documents: [],
-            categories: [],
-            subscription_plan: 'free',
-            subscription_status: 'active',
-            subscription_expires_at: null,
-            verified_at: null,
-            verified_by: null,
-            verification_notes: null,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-          });
-        }
+    if (error) {
+      showError(error.message);
+      return;
+    }
+
+    if (data?.user) {
+      setRegisteredUserId(data.user.id);
+      
+      if (formData.role === 'vendor') {
+        showInfo('Account created! Complete the onboarding process to start receiving opportunities.');
+        setRegistrationStep('onboarding');
+      } else if (formData.role === 'client') {
+        showInfo('Account created! Please upload your Commercial Registration to complete verification.');
+        setRegistrationStep('verification');
+      } else {
+        showSuccess('Account created successfully! Please check your email for verification.');
+        onAuthSuccess?.({
+          id: data.user.id,
+          user_id: data.user.id,
+          email: formData.email,
+          full_name: formData.full_name,
+          company_name: formData.company_name,
+          role: formData.role,
+          status: 'approved',
+          verification_status: 'approved',
+          avatar_url: null,
+          phone: null,
+          address: null,
+          bio: null,
+          portfolio_url: null,
+          verification_documents: [],
+          categories: [],
+          subscription_plan: 'free',
+          subscription_status: 'active',
+          subscription_expires_at: null,
+          verified_at: null,
+          verified_by: null,
+          verification_notes: null,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        });
       }
-    } catch (error: any) {
-      console.error('Sign up error:', error);
-      showError(error.message || 'Failed to create account');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -136,6 +136,13 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
     setRegistrationStep('details');
     setCrUploaded(false);
     setRegisteredUserId(null);
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ 
+      ...prev, 
+      [field]: field === 'full_name' || field === 'company_name' ? sanitizeInput(value) : value 
+    }));
   };
 
   // Vendor Onboarding Flow
@@ -240,7 +247,10 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
           <TabsContent value="signin">
             <Card className="bg-white/5 border border-white/20 backdrop-blur-20">
               <CardHeader>
-                <CardTitle className="text-white">Sign In</CardTitle>
+                <div className="flex items-center gap-2">
+                  <Shield className="h-5 w-5 text-primary" />
+                  <CardTitle className="text-white">Sign In</CardTitle>
+                </div>
                 <CardDescription className="text-white/80">Enter your credentials to access your account</CardDescription>
               </CardHeader>
               <CardContent>
@@ -267,7 +277,10 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
           <TabsContent value="signup">
             <Card className="bg-white/5 border border-white/20 backdrop-blur-20">
               <CardHeader>
-                <CardTitle className="text-white">Create Account</CardTitle>
+                <div className="flex items-center gap-2">
+                  <Shield className="h-5 w-5 text-primary" />
+                  <CardTitle className="text-white">Create Account</CardTitle>
+                </div>
                 <CardDescription className="text-white/80">Choose your account type and fill in your details</CardDescription>
               </CardHeader>
               <CardContent>
@@ -306,7 +319,7 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
                       id="email"
                       type="email"
                       value={formData.email}
-                      onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
                       required
                       className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                     />
@@ -314,14 +327,30 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
 
                   <div className="space-y-2">
                     <Label htmlFor="password" className="text-white">Password *</Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      value={formData.password}
-                      onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                      required
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
-                    />
+                    <div className="relative">
+                      <Input
+                        id="password"
+                        type={showPassword ? 'text' : 'password'}
+                        value={formData.password}
+                        onChange={(e) => handleInputChange('password', e.target.value)}
+                        required
+                        className="bg-white/10 border-white/20 text-white placeholder:text-white/60 pr-10"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeOff className="h-4 w-4 text-white" /> : <Eye className="h-4 w-4 text-white" />}
+                      </Button>
+                    </div>
+                    {formData.password && (
+                      <div className="text-xs text-white/60">
+                        Password must contain: uppercase, lowercase, number, special character (8+ chars)
+                      </div>
+                    )}
                   </div>
 
                   <div className="space-y-2">
@@ -329,8 +358,9 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
                     <Input
                       id="full_name"
                       value={formData.full_name}
-                      onChange={(e) => setFormData(prev => ({ ...prev, full_name: e.target.value }))}
+                      onChange={(e) => handleInputChange('full_name', e.target.value)}
                       required
+                      maxLength={100}
                       className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                     />
                   </div>
@@ -340,10 +370,31 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
                     <Input
                       id="company_name"
                       value={formData.company_name}
-                      onChange={(e) => setFormData(prev => ({ ...prev, company_name: e.target.value }))}
+                      onChange={(e) => handleInputChange('company_name', e.target.value)}
                       placeholder={formData.role === 'vendor' ? 'Your business name' : 'Your company name'}
+                      maxLength={100}
                       className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                     />
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="terms"
+                      checked={agreedToTerms}
+                      onChange={(e) => setAgreedToTerms(e.target.checked)}
+                      className="rounded"
+                    />
+                    <Label htmlFor="terms" className="text-sm text-white">
+                      I agree to the{' '}
+                      <Link to="/terms-and-conditions" className="text-primary hover:underline">
+                        Terms & Conditions
+                      </Link>{' '}
+                      and{' '}
+                      <Link to="/privacy-policy" className="text-primary hover:underline">
+                        Privacy Policy
+                      </Link>
+                    </Label>
                   </div>
 
                   {formData.role === 'client' && (
@@ -368,10 +419,28 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
                     {loading ? 'Creating Account...' : 'Create Account'}
                   </Button>
                 </form>
+
+                <div className="text-center mt-4">
+                  <p className="text-sm text-white/70">
+                    Already have an account?{' '}
+                    <button
+                      type="button"
+                      onClick={() => setMode('signin')}
+                      className="text-primary hover:underline"
+                    >
+                      Sign in
+                    </button>
+                  </p>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
+
+        <div className="text-xs text-white/60 text-center flex items-center justify-center gap-1">
+          <Shield className="h-3 w-3" />
+          Your data is protected with enterprise-grade security
+        </div>
       </div>
     </div>
   );
