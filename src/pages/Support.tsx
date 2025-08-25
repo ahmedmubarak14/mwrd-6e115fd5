@@ -9,17 +9,17 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { HelpCircle, MessageCircle, Phone, Mail, Search, Book, Video, FileText } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { HelpCircle, MessageCircle, Phone, Mail, Search, Book, Video, FileText, Ticket } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { useToast } from "@/hooks/use-toast";
 import { ChatModal } from "@/components/modals/ChatModal";
 import { Footer } from "@/components/ui/layout/Footer";
+import { useSupportTickets } from "@/hooks/useSupportTickets";
 
 export const Support = () => {
   const { userProfile } = useAuth();
   const { language } = useLanguage();
-  const { toast } = useToast();
   const isRTL = language === 'ar';
   const isMobile = useIsMobile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -27,41 +27,34 @@ export const Support = () => {
   const [contactForm, setContactForm] = useState({
     subject: "",
     message: "",
-    priority: "medium"
+    priority: "medium",
+    category: "general"
   });
   const [chatModalOpen, setChatModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { createTicket, tickets, loading } = useSupportTickets();
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
-      // For now, just simulate success since support_tickets table might not exist yet
-      // In a real implementation, this would be: await supabase.from('support_tickets').insert(...)
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      const ticket = await createTicket({
+        subject: contactForm.subject,
+        message: contactForm.message,
+        priority: contactForm.priority,
+        category: contactForm.category
+      });
 
-      toast({
-        title: isRTL ? "تم إرسال الطلب بنجاح" : "Ticket Submitted Successfully",
-        description: isRTL ? "تم إنشاء تذكرة دعم جديدة. سيتم التواصل معك خلال 24 ساعة" : "Support ticket created. We'll get back to you within 24 hours",
-      });
-      setContactForm({ subject: "", message: "", priority: "medium" });
-    } catch (error) {
-      toast({
-        title: isRTL ? "خطأ في الإرسال" : "Submission Error",
-        description: isRTL ? "حدث خطأ أثناء إرسال الطلب. حاول مرة أخرى" : "Error submitting ticket. Please try again",
-        variant: "destructive"
-      });
+      if (ticket) {
+        setContactForm({ subject: "", message: "", priority: "medium", category: "general" });
+      }
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleQuickAction = (actionType: string) => {
-    toast({
-      title: isRTL ? "تم فتح الرابط" : "Opening Resource",
-      description: isRTL ? `سيتم توجيهك إلى ${actionType}` : `Redirecting to ${actionType}`,
-    });
     // In a real app, these would navigate to actual resources
     window.open('/resources/' + actionType.toLowerCase().replace(' ', '-'), '_blank');
   };
@@ -153,6 +146,45 @@ export const Support = () => {
                 {isRTL ? 'نحن هنا لمساعدتك في جميع استفساراتك' : 'We are here to help you with all your inquiries'}
               </p>
             </div>
+
+            {/* My Support Tickets - Show if user has tickets */}
+            {tickets.length > 0 && (
+              <Card className="mb-8">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Ticket className="h-5 w-5" />
+                    {isRTL ? 'تذاكر الدعم الخاصة بي' : 'My Support Tickets'}
+                  </CardTitle>
+                  <CardDescription>
+                    {isRTL ? 'تتبع حالة طلبات الدعم الخاصة بك' : 'Track the status of your support requests'}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {tickets.slice(0, 3).map((ticket) => (
+                      <div key={ticket.id} className="flex items-center justify-between p-4 border rounded-lg">
+                        <div className="flex-1">
+                          <h4 className="font-medium">{ticket.subject}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {isRTL ? 'الفئة:' : 'Category:'} {ticket.category} • 
+                            {isRTL ? 'الأولوية:' : 'Priority:'} {ticket.priority}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {new Date(ticket.created_at).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <Badge variant={
+                          ticket.status === 'open' ? 'default' : 
+                          ticket.status === 'closed' ? 'secondary' : 'outline'
+                        }>
+                          {ticket.status}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Quick Actions */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -258,7 +290,7 @@ export const Support = () => {
               <Card>
                 <CardHeader>
                   <CardTitle>
-                    {isRTL ? 'تواصل معنا' : 'Contact Us'}
+                    {isRTL ? 'إنشاء تذكرة دعم' : 'Create Support Ticket'}
                   </CardTitle>
                   <CardDescription>
                     {isRTL ? 'أرسل لنا استفسارك وسنجيب عليك في أقرب وقت' : 'Send us your inquiry and we will respond as soon as possible'}
@@ -268,12 +300,42 @@ export const Support = () => {
                   <form onSubmit={handleContactSubmit} className="space-y-4">
                     <div>
                       <Input
-                        placeholder={isRTL ? "موضوع الرسالة" : "Subject"}
+                        placeholder={isRTL ? "موضوع التذكرة" : "Ticket Subject"}
                         value={contactForm.subject}
                         onChange={(e) => setContactForm({...contactForm, subject: e.target.value})}
                         className={isRTL ? 'text-right' : ''}
                         required
                       />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <Select
+                        value={contactForm.category}
+                        onValueChange={(value) => setContactForm({...contactForm, category: value})}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder={isRTL ? "الفئة" : "Category"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="general">{isRTL ? 'عام' : 'General'}</SelectItem>
+                          <SelectItem value="technical">{isRTL ? 'تقني' : 'Technical'}</SelectItem>
+                          <SelectItem value="billing">{isRTL ? 'الفواتير' : 'Billing'}</SelectItem>
+                          <SelectItem value="account">{isRTL ? 'الحساب' : 'Account'}</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Select
+                        value={contactForm.priority}
+                        onValueChange={(value) => setContactForm({...contactForm, priority: value})}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder={isRTL ? "الأولوية" : "Priority"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="low">{isRTL ? 'منخفضة' : 'Low'}</SelectItem>
+                          <SelectItem value="medium">{isRTL ? 'متوسطة' : 'Medium'}</SelectItem>
+                          <SelectItem value="high">{isRTL ? 'عالية' : 'High'}</SelectItem>
+                          <SelectItem value="urgent">{isRTL ? 'طارئة' : 'Urgent'}</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
                     <div>
                       <Textarea
@@ -284,18 +346,10 @@ export const Support = () => {
                         required
                       />
                     </div>
-                    <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <span className="text-sm text-muted-foreground">
-                        {isRTL ? 'الأولوية:' : 'Priority:'}
-                      </span>
-                      <Badge variant="outline">
-                        {isRTL ? 'متوسطة' : 'Medium'}
-                      </Badge>
-                    </div>
                      <Button type="submit" className="w-full" disabled={isSubmitting}>
                        {isSubmitting 
-                         ? (isRTL ? 'جاري الإرسال...' : 'Sending...') 
-                         : (isRTL ? 'إرسال الرسالة' : 'Send Message')
+                         ? (isRTL ? 'جاري إنشاء التذكرة...' : 'Creating Ticket...') 
+                         : (isRTL ? 'إنشاء تذكرة دعم' : 'Create Support Ticket')
                        }
                      </Button>
                   </form>

@@ -244,6 +244,7 @@ export type Database = {
       conversations: {
         Row: {
           client_id: string
+          conversation_type: string | null
           created_at: string
           id: string
           last_message: string | null
@@ -251,11 +252,13 @@ export type Database = {
           offer_id: string | null
           request_id: string | null
           status: string
+          support_ticket_id: string | null
           updated_at: string
           vendor_id: string
         }
         Insert: {
           client_id: string
+          conversation_type?: string | null
           created_at?: string
           id?: string
           last_message?: string | null
@@ -263,11 +266,13 @@ export type Database = {
           offer_id?: string | null
           request_id?: string | null
           status?: string
+          support_ticket_id?: string | null
           updated_at?: string
           vendor_id: string
         }
         Update: {
           client_id?: string
+          conversation_type?: string | null
           created_at?: string
           id?: string
           last_message?: string | null
@@ -275,6 +280,7 @@ export type Database = {
           offer_id?: string | null
           request_id?: string | null
           status?: string
+          support_ticket_id?: string | null
           updated_at?: string
           vendor_id?: string
         }
@@ -291,6 +297,13 @@ export type Database = {
             columns: ["request_id"]
             isOneToOne: false
             referencedRelation: "requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversations_support_ticket_id_fkey"
+            columns: ["support_ticket_id"]
+            isOneToOne: false
+            referencedRelation: "support_tickets"
             referencedColumns: ["id"]
           },
         ]
@@ -837,6 +850,42 @@ export type Database = {
           },
         ]
       }
+      support_tickets: {
+        Row: {
+          assigned_admin_id: string | null
+          category: string
+          created_at: string
+          id: string
+          priority: string
+          status: string
+          subject: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          assigned_admin_id?: string | null
+          category?: string
+          created_at?: string
+          id?: string
+          priority?: string
+          status?: string
+          subject: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          assigned_admin_id?: string | null
+          category?: string
+          created_at?: string
+          id?: string
+          priority?: string
+          status?: string
+          subject?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       user_profiles: {
         Row: {
           address: string | null
@@ -1134,6 +1183,25 @@ export type Database = {
           total_requests: number
           total_revenue: number
           total_users: number
+        }[]
+      }
+      get_growth_statistics: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          active_subscriptions: number
+          offers_growth: number
+          requests_growth: number
+          revenue_growth: number
+          total_admins: number
+          total_clients: number
+          total_offers: number
+          total_orders: number
+          total_requests: number
+          total_revenue: number
+          total_transactions: number
+          total_users: number
+          total_vendors: number
+          users_growth: number
         }[]
       }
       get_platform_statistics: {

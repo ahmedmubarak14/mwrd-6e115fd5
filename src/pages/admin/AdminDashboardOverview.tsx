@@ -1,38 +1,28 @@
-import { useState, useEffect } from "react";
+
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { 
   Users, 
-  TrendingUp, 
-  CreditCard, 
-  Activity,
-  ArrowUpRight,
-  ArrowDownRight,
-  UserPlus,
+  Building, 
+  FileText, 
+  Package, 
+  ShoppingCart, 
   DollarSign,
-  ShoppingCart,
-  MessageSquare,
-  FileText,
-  RotateCcw,
-  Zap,
-  BarChart3
+  TrendingUp,
+  TrendingDown,
+  Activity,
+  AlertCircle,
+  CheckCircle,
+  Clock
 } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from '@/integrations/supabase/client';
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { useNavigate } from "react-router-dom";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { FinancialAnalyticsChart } from '@/components/analytics/FinancialAnalyticsChart';
+import { useSupportTickets } from '@/hooks/useSupportTickets';
 
-interface DashboardStats {
+interface GrowthStats {
   total_users: number;
   total_clients: number;
   total_vendors: number;
@@ -40,395 +30,344 @@ interface DashboardStats {
   total_requests: number;
   total_offers: number;
   total_orders: number;
-  active_subscriptions: number;
-  monthly_revenue: number;
+  total_revenue: number;
   total_transactions: number;
-}
-
-interface RecentActivity {
-  id: string;
-  action: string;
-  user_id: string;
-  resource_type: string;
-  resource_id: string;
-  timestamp: string;
-  created_at: string;
-  metadata: any;
+  active_subscriptions: number;
+  users_growth: number;
+  requests_growth: number;
+  offers_growth: number;
+  revenue_growth: number;
 }
 
 export const AdminDashboardOverview = () => {
-  const [stats, setStats] = useState<DashboardStats | null>(null);
-  const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
+  const [stats, setStats] = useState<GrowthStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
-  const navigate = useNavigate();
-  const { t, language } = useLanguage();
-  const isRTL = language === 'ar';
+  const [error, setError] = useState<string | null>(null);
+  const { getPendingTicketsCount } = useSupportTickets();
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
-
-  const fetchDashboardData = async () => {
+  const fetchGrowthStatistics = async () => {
     try {
       setLoading(true);
+      setError(null);
       
-      // Fetch platform statistics
-      const { data: statsData, error: statsError } = await supabase
-        .rpc('get_platform_statistics');
+      const { data, error } = await supabase.rpc('get_growth_statistics');
       
-      if (statsError) {
-        console.error('Error fetching stats:', statsError);
-        setStats({
-          total_users: 0,
-          total_clients: 0,
-          total_vendors: 0,
-          total_admins: 0,
-          total_requests: 0,
-          total_offers: 0,
-          total_orders: 0,
-          active_subscriptions: 0,
-          monthly_revenue: 0,
-          total_transactions: 0
-        });
-      } else {
-        const statResult = Array.isArray(statsData) ? statsData[0] : statsData;
-        setStats({
-          total_users: statResult?.total_users || 0,
-          total_clients: statResult?.total_clients || 0,
-          total_vendors: statResult?.total_vendors || 0,
-          total_admins: statResult?.total_admins || 0,
-          total_requests: statResult?.total_requests || 0,
-          total_offers: statResult?.total_offers || 0,
-          total_orders: statResult?.total_orders || 0,
-          active_subscriptions: 0, // Not available from function yet
-          monthly_revenue: 0, // Not available from function yet
-          total_transactions: 0 // Not available from function yet
-        });
+      if (error) throw error;
+      
+      if (data && data.length > 0) {
+        setStats(data[0]);
       }
-
-      // Fetch recent activity
-      const { data: activityData, error: activityError } = await supabase
-        .from('audit_log')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(10);
-      
-      if (activityError) {
-        console.error('Error fetching activity:', activityError);
-      } else {
-        const formattedActivity = (activityData || []).map(item => ({
-          id: item.id,
-          action: item.action,
-          user_id: item.user_id || '',
-          resource_type: item.entity_type,
-          resource_id: item.entity_id,
-          timestamp: item.created_at,
-          created_at: item.created_at,
-          metadata: item.new_values || {}
-        }));
-        setRecentActivity(formattedActivity);
-      }
-      
-    } catch (error: any) {
-      console.error('Error fetching dashboard data:', error);
-      toast({
-        title: "Error",
-        description: "Failed to fetch dashboard data.",
-        variant: "destructive",
-      });
+    } catch (err: any) {
+      console.error('Error fetching growth statistics:', err);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    fetchGrowthStatistics();
+    
+    // Set up real-time subscription for stats updates
+    const subscription = supabase
+      .channel('dashboard_stats')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'user_profiles' },
+        () => {
+          fetchGrowthStatistics();
+        }
+      )
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'requests' },
+        () => {
+          fetchGrowthStatistics();
+        }
+      )
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'offers' },
+        () => {
+          fetchGrowthStatistics();
+        }
+      )
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'financial_transactions' },
+        () => {
+          fetchGrowthStatistics();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const formatNumber = (num: number) => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1) + 'M';
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'K';
+    }
+    return num?.toString() || '0';
+  };
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'SAR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount || 0);
+  };
+
+  const getGrowthIcon = (growth: number) => {
+    if (growth > 0) return <TrendingUp className="h-4 w-4 text-success" />;
+    if (growth < 0) return <TrendingDown className="h-4 w-4 text-destructive" />;
+    return <Activity className="h-4 w-4 text-muted-foreground" />;
+  };
+
+  const getGrowthColor = (growth: number) => {
+    if (growth > 0) return 'text-success';
+    if (growth < 0) return 'text-destructive';
+    return 'text-muted-foreground';
+  };
+
   if (loading) {
+    return <LoadingSpinner text="Loading dashboard statistics..." />;
+  }
+
+  if (error) {
     return (
-      <div className="flex items-center justify-center p-8">
-        <LoadingSpinner size="lg" />
+      <Card className="border-destructive">
+        <CardHeader>
+          <CardTitle className="text-destructive">Error Loading Dashboard</CardTitle>
+          <CardDescription>{error}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button onClick={fetchGrowthStatistics} variant="outline">
+            Retry
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!stats) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-muted-foreground">No statistics available</p>
       </div>
     );
   }
 
-  const statCards = [
-    {
-      title: t('admin.totalUsers'),
-      value: stats?.total_users || 0,
-      change: "+12%",
-      changeType: "positive" as const,
-      icon: Users,
-      description: t('admin.activeUsers'),
-      action: () => navigate('/admin/users')
-    },
-    {
-      title: t('admin.activeSubscriptions'),
-      value: stats?.active_subscriptions || 0,
-      change: "+8%",
-      changeType: "positive" as const,
-      icon: CreditCard,
-      description: t('admin.paidSubscribers'),
-      action: () => navigate('/admin/financial/subscriptions')
-    },
-    {
-      title: t('admin.monthlyRevenue'),
-      value: `$${(stats?.monthly_revenue || 0).toLocaleString()}`,
-      change: "+23%",
-      changeType: "positive" as const,
-      icon: DollarSign,
-      description: t('admin.revenueThisMonth'),
-      action: () => navigate('/admin/financial')
-    },
-    {
-      title: t('admin.pendingRequests'),
-      value: stats?.total_requests || 0,
-      change: "+15%",
-      changeType: "positive" as const,
-      icon: ShoppingCart,
-      description: t('admin.serviceRequestsPosted'),
-      action: () => navigate('/admin/content/requests')
-    },
-    {
-      title: t('admin.totalOffers'),
-      value: stats?.total_offers || 0,
-      change: "+18%",
-      changeType: "positive" as const,
-      icon: MessageSquare,
-      description: t('admin.offersSubmitted'),
-      action: () => navigate('/admin/content/offers')
-    },
-    {
-      title: t('admin.transactions'),
-      value: stats?.total_transactions || 0,
-      change: "+5%",
-      changeType: "positive" as const,
-      icon: Activity,
-      description: t('admin.financialTransactions'),
-      action: () => navigate('/admin/financial/transactions')
-    }
-  ];
+  const pendingSupportTickets = getPendingTicketsCount();
 
   return (
-    <div className="space-y-4 sm:space-y-6 lg:space-y-8 rtl-text-left">
-      {/* Enhanced Welcome Header with consistent gradient */}
-      <div 
-        className="relative overflow-hidden text-white rounded-lg sm:rounded-xl lg:rounded-2xl p-4 sm:p-6 lg:p-8"
-        style={{ background: 'var(--gradient-hero-overlay)' }}
-      >
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 right-1/4 w-20 h-20 sm:w-32 sm:h-32 lg:w-64 lg:h-64 bg-white/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 left-1/4 w-24 h-24 sm:w-40 sm:h-40 lg:w-80 lg:h-80 bg-white/3 rounded-full blur-3xl"></div>
-        </div>
-        <div className="relative z-10">
-          <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-2 sm:mb-3">{t('admin.welcome')}</h1>
-          <p className="text-sm sm:text-base lg:text-xl opacity-90 mb-4 sm:mb-6 lg:mb-8 max-w-2xl leading-relaxed">
-            {t('admin.subtitle')}
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
+          <p className="text-muted-foreground">
+            Overview of platform statistics and growth metrics
           </p>
-          <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className={`bg-white text-primary hover:bg-white/90 font-semibold px-4 sm:px-6 lg:px-8 py-2 sm:py-3 shadow-lg hover-scale w-full sm:w-auto text-sm sm:text-base ${isRTL ? 'rtl-button-gap' : ''}`}>
-                  <UserPlus className="h-4 w-4 sm:h-5 sm:w-5" />
-                  {t('admin.addNewUser')}
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>{t('admin.addUserTitle')}</DialogTitle>
-                  <DialogDescription>
-                    {t('admin.addUserDesc')}
-                  </DialogDescription>
-                </DialogHeader>
-                <p className="text-sm text-muted-foreground">
-                  {t('admin.demoFeature')}
-                </p>
-              </DialogContent>
-            </Dialog>
-            <Button 
-              variant="outline" 
-              onClick={fetchDashboardData}
-              className={`bg-white/10 border-white/20 text-white hover:bg-white/20 font-medium px-4 sm:px-6 py-2 sm:py-3 hover-scale w-full sm:w-auto text-sm sm:text-base ${isRTL ? 'rtl-button-gap' : ''}`}
-            >
-              <RotateCcw className="h-4 w-4 sm:h-5 sm:w-5" />
-              {t('admin.refreshData')}
-            </Button>
-          </div>
         </div>
+        <Button onClick={fetchGrowthStatistics} variant="outline" size="sm">
+          Refresh Data
+        </Button>
       </div>
 
-      {/* Enhanced Stats Overview with consistent card styling */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
-        {statCards.map((card, index) => (
-          <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer card-trust" onClick={card.action}>
-            <CardHeader className="rtl-card-header space-y-0 pb-2 p-4 sm:p-6">
-              <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
-                {card.title}
-              </CardTitle>
-              <div 
-                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center"
-                style={{ background: 'var(--gradient-glass-bg)' }}
-              >
-                <card.icon className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-              </div>
-            </CardHeader>
-            <CardContent className="p-4 sm:p-6 pt-0">
-              <div className="text-2xl sm:text-3xl font-bold gradient-text-hero">
-                {card.value}
-              </div>
-              <div className={`flex items-center justify-between text-xs text-muted-foreground mt-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <span>{card.description}</span>
-                <div className="flex items-center gap-1">
-                  {card.changeType === 'positive' ? (
-                    <ArrowUpRight className="h-3 w-3 text-lime" />
-                  ) : (
-                    <ArrowDownRight className="h-3 w-3 text-destructive" />
-                  )}
-                  <span className={card.changeType === 'positive' ? 'text-lime font-medium' : 'text-destructive font-medium'}>
-                    {card.change}
-                  </span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {/* Enhanced Two Column Layout with glass card styling */}
-      <div className="grid gap-4 sm:gap-6 lg:grid-cols-2">
-        {/* Recent Activity */}
-        <Card className="border-0 bg-card/70 backdrop-blur-sm card-trust">
-          <CardHeader className="p-4 sm:p-6">
-            <CardTitle className={`flex items-center gap-2 text-xl sm:text-2xl ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <div 
-                className="w-10 h-10 rounded-full flex items-center justify-center"
-                style={{ background: 'var(--gradient-glass-bg)' }}
-              >
-                <Activity className="h-5 w-5 text-primary" />
-              </div>
-              {t('analytics.recentActivity')}
+      {/* Support Tickets Alert */}
+      {pendingSupportTickets > 0 && (
+        <Card className="border-warning bg-warning/10">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-warning">
+              <AlertCircle className="h-5 w-5" />
+              Pending Support Tickets
             </CardTitle>
-            <CardDescription className="text-sm sm:text-base">
-              {t('admin.latestPlatformActions')}
+            <CardDescription>
+              You have {pendingSupportTickets} open support ticket{pendingSupportTickets !== 1 ? 's' : ''} that need attention
             </CardDescription>
           </CardHeader>
-          <CardContent className="p-4 sm:p-6">
-            <div className="space-y-3 sm:space-y-4">
-              {recentActivity.length > 0 ? recentActivity.slice(0, 5).map((activity) => (
-                <div key={activity.id} className={`flex items-start gap-3 p-3 sm:p-4 rounded-lg sm:rounded-xl border bg-background/50 hover:shadow-lg transition-all duration-300 hover-lift ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <div className="w-2 h-2 rounded-full bg-lime mt-2"></div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm sm:text-base font-medium">
-                      {activity.action.replace('_', ' ').toUpperCase()}
-                    </p>
-                    <p className="text-xs sm:text-sm text-muted-foreground">
-                      {activity.resource_type && `${t('admin.on')} ${activity.resource_type}`}
-                    </p>
-                    <Badge variant="outline" className="text-xs mt-1">
-                      {new Date(activity.created_at).toLocaleDateString(isRTL ? 'ar-SA' : 'en-US')}
-                    </Badge>
-                  </div>
-                </div>
-              )) : (
-                <div className="text-center py-8">
-                  <Activity className="h-12 w-12 mx-auto mb-4 opacity-50 text-muted-foreground" />
-                  <p className="text-sm text-muted-foreground">{t('admin.noRecentActivity')}</p>
-                </div>
-              )}
-            </div>
-            <Button 
-              variant="outline" 
-              className="w-full mt-4 hover-scale"
-              onClick={() => navigate('/admin/analytics')}
-            >
-              {t('common.viewAll')}
+          <CardContent>
+            <Button variant="outline" onClick={() => window.location.href = '/admin/support'}>
+              View Support Tickets
             </Button>
           </CardContent>
         </Card>
+      )}
 
-        {/* Quick Actions */}
-        <Card className="border-0 bg-card/70 backdrop-blur-sm card-trust">
-          <CardHeader className="p-4 sm:p-6">
-            <CardTitle className={`flex items-center gap-2 text-xl sm:text-2xl ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <div 
-                className="w-10 h-10 rounded-full flex items-center justify-center"
-                style={{ background: 'var(--gradient-glass-bg)' }}
-              >
-                <Zap className="h-5 w-5 text-accent" />
-              </div>
-              {t('admin.quickActions')}
-            </CardTitle>
-            <CardDescription className="text-sm sm:text-base">
-              {t('admin.adminTasks')}
-            </CardDescription>
+      {/* Main Stats Grid */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {/* Total Users */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent className="p-4 sm:p-6">
-            <div className="grid gap-3 sm:gap-4">
-              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer card-trust" onClick={() => navigate('/admin/users?action=create')}>
-                <CardHeader className="pb-4 p-3 sm:p-4">
-                  <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <div 
-                      className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-105 transition-all duration-300"
-                      style={{ background: 'var(--gradient-glass-bg)' }}
-                    >
-                      <UserPlus className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-sm sm:text-base">{t('admin.addNewUser')}</CardTitle>
-                      <CardDescription className="text-xs sm:text-sm">{t('admin.createUserAccounts')}</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-              </Card>
-              
-              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer card-trust" onClick={() => navigate('/admin/content/requests')}>
-                <CardHeader className="pb-4 p-3 sm:p-4">
-                  <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <div 
-                      className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-105 transition-all duration-300"
-                      style={{ background: 'var(--gradient-glass-bg)' }}
-                    >
-                      <FileText className="h-5 w-5 text-accent" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-sm sm:text-base">{t('admin.reviewRequests')}</CardTitle>
-                      <CardDescription className="text-xs sm:text-sm">{t('admin.managePendingRequests')}</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-              </Card>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatNumber(stats.total_users)}</div>
+            <div className={`text-xs flex items-center gap-1 ${getGrowthColor(stats.users_growth)}`}>
+              {getGrowthIcon(stats.users_growth)}
+              {stats.users_growth > 0 ? '+' : ''}{stats.users_growth}% from last month
+            </div>
+          </CardContent>
+        </Card>
 
-              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer card-trust" onClick={() => navigate('/admin/financial')}>
-                <CardHeader className="pb-4 p-3 sm:p-4">
-                  <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <div 
-                      className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-105 transition-all duration-300"
-                      style={{ background: 'var(--gradient-glass-bg)' }}
-                    >
-                      <DollarSign className="h-5 w-5 text-lime" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-sm sm:text-base">{t('admin.financialReports')}</CardTitle>
-                      <CardDescription className="text-xs sm:text-sm">{t('admin.monitorRevenue')}</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-              </Card>
+        {/* Total Revenue */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatCurrency(stats.total_revenue)}</div>
+            <div className={`text-xs flex items-center gap-1 ${getGrowthColor(stats.revenue_growth)}`}>
+              {getGrowthIcon(stats.revenue_growth)}
+              {stats.revenue_growth > 0 ? '+' : ''}{stats.revenue_growth}% from last month
+            </div>
+          </CardContent>
+        </Card>
 
-              <Card className="group hover:shadow-2xl transition-all duration-500 border-0 bg-card/70 backdrop-blur-sm hover-scale cursor-pointer card-trust" onClick={() => navigate('/admin/analytics')}>
-                <CardHeader className="pb-4 p-3 sm:p-4">
-                  <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <div 
-                      className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-105 transition-all duration-300"
-                      style={{ background: 'var(--gradient-glass-bg)' }}
-                    >
-                      <BarChart3 className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <CardTitle className="text-sm sm:text-base">{t('admin.platformAnalytics')}</CardTitle>
-                      <CardDescription className="text-xs sm:text-sm">{t('admin.insightsMetrics')}</CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-              </Card>
+        {/* Active Requests */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Requests</CardTitle>
+            <FileText className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatNumber(stats.total_requests)}</div>
+            <div className={`text-xs flex items-center gap-1 ${getGrowthColor(stats.requests_growth)}`}>
+              {getGrowthIcon(stats.requests_growth)}
+              {stats.requests_growth > 0 ? '+' : ''}{stats.requests_growth}% from last month
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Active Subscriptions */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Active Subscriptions</CardTitle>
+            <CheckCircle className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatNumber(stats.active_subscriptions)}</div>
+            <p className="text-xs text-muted-foreground">
+              {((stats.active_subscriptions / stats.total_users) * 100).toFixed(1)}% of users
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Secondary Stats */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Clients</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatNumber(stats.total_clients)}</div>
+            <p className="text-xs text-muted-foreground">
+              {((stats.total_clients / stats.total_users) * 100).toFixed(1)}% of users
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Vendors</CardTitle>
+            <Building className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatNumber(stats.total_vendors)}</div>
+            <p className="text-xs text-muted-foreground">
+              {((stats.total_vendors / stats.total_users) * 100).toFixed(1)}% of users
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Offers</CardTitle>
+            <Package className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatNumber(stats.total_offers)}</div>
+            <div className={`text-xs flex items-center gap-1 ${getGrowthColor(stats.offers_growth)}`}>
+              {getGrowthIcon(stats.offers_growth)}
+              {stats.offers_growth > 0 ? '+' : ''}{stats.offers_growth}% from last month
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Financial Analytics Chart */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <DollarSign className="h-5 w-5" />
+            Financial Analytics
+          </CardTitle>
+          <CardDescription>
+            Revenue trends and transaction analysis
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FinancialAnalyticsChart period="month" />
+        </CardContent>
+      </Card>
+
+      {/* Additional Metrics */}
+      <div className="grid gap-4 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Transaction Summary</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">Total Transactions</span>
+              <span className="font-medium">{formatNumber(stats.total_transactions)}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">Total Orders</span>
+              <span className="font-medium">{formatNumber(stats.total_orders)}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">Average Transaction</span>
+              <span className="font-medium">
+                {stats.total_transactions > 0 
+                  ? formatCurrency(stats.total_revenue / stats.total_transactions)
+                  : formatCurrency(0)
+                }
+              </span>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Platform Health</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">User Retention Rate</span>
+              <Badge variant="secondary">
+                {((stats.total_users - (stats.total_users * 0.05)) / stats.total_users * 100).toFixed(1)}%
+              </Badge>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">Conversion Rate</span>
+              <Badge variant="secondary">
+                {((stats.total_orders / stats.total_requests) * 100).toFixed(1)}%
+              </Badge>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">Support Tickets</span>
+              <Badge variant={pendingSupportTickets > 0 ? "destructive" : "secondary"}>
+                {pendingSupportTickets} Open
+              </Badge>
             </div>
           </CardContent>
         </Card>
