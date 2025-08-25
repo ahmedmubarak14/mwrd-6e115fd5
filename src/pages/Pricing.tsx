@@ -31,7 +31,7 @@ const Pricing = () => {
         description: isRTL ? "يرجى تسجيل الدخول أولاً" : "Please sign in to subscribe",
         variant: "destructive",
       });
-      navigate('/auth');
+      navigate('/login');
       return;
     }
 
