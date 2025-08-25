@@ -166,6 +166,12 @@ All colors MUST be HSL.
     text-align: right;
   }
 
+  [dir="rtl"] input,
+  [dir="rtl"] textarea,
+  [dir="rtl"] select {
+    text-align: right;
+  }
+
   /* Page-specific backgrounds */
   .bg-unified-page {
     background: var(--unified-page);
@@ -272,16 +278,55 @@ All colors MUST be HSL.
     min-width: 44px;
   }
 
+  /* Additional RTL utilities for complex layouts */
+  .rtl-table-cell {
+    text-align: left;
+  }
+
+  [dir="rtl"] .rtl-table-cell {
+    text-align: right;
+  }
+
+  .rtl-dropdown-align {
+    text-align: left;
+  }
+
+  [dir="rtl"] .rtl-dropdown-align {
+    text-align: right;
+  }
+
+  /* RTL-specific animations */
+  .rtl-slide-in {
+    animation: slide-in-left 0.3s ease-out;
+  }
+
+  [dir="rtl"] .rtl-slide-in {
+    animation: slide-in-right 0.3s ease-out;
+  }
+
+  @keyframes slide-in-left {
+    0% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-in-right {
+    0% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
   /* Layout fixes */
-  .rtl-flex {
-    display: flex;
-    flex-direction: row;
-  }
-
-  [dir="rtl"] .rtl-flex {
-    flex-direction: row-reverse;
-  }
-
   .rtl-order-1 {
     order: 1;
   }
@@ -296,5 +341,12 @@ All colors MUST be HSL.
 
   [dir="rtl"] .rtl-order-3 {
     order: 1;
+  }
+
+  /* Ensure dropdowns and popovers have proper backgrounds and z-index */
+  .dropdown-content,
+  [data-radix-popper-content-wrapper] {
+    background: hsl(var(--popover)) !important;
+    z-index: 50 !important;
   }
 }

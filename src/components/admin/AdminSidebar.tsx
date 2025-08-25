@@ -21,6 +21,7 @@ import {
   Ticket
 } from "lucide-react";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface AdminSidebarProps {
   className?: string;
@@ -29,79 +30,80 @@ interface AdminSidebarProps {
 export const AdminSidebar = ({ className }: AdminSidebarProps) => {
   const location = useLocation();
   const { getPendingTicketsCount } = useSupportTickets();
+  const { t, isRTL } = useLanguage();
   const pendingTickets = getPendingTicketsCount();
 
   const navigation = [
     {
-      name: "Dashboard",
+      name: t('admin.dashboard'),
       href: "/admin/dashboard",
       icon: LayoutDashboard,
     },
     {
-      name: "Users",
+      name: t('admin.users'),
       href: "/admin/users",
       icon: Users,
     },
     {
-      name: "Requests",
+      name: t('admin.requests'),
       href: "/admin/requests",
       icon: FileText,
     },
     {
-      name: "Offers",
+      name: t('admin.offers'),
       href: "/admin/offers",
       icon: Package,
     },
     {
-      name: "Projects",
+      name: t('admin.projects'),
       href: "/admin/projects", 
       icon: Building2,
     },
     {
-      name: "Orders",
+      name: t('admin.orders'),
       href: "/admin/orders",
       icon: ShoppingCart,
     },
     {
-      name: "Financial Transactions",
+      name: t('admin.financialTransactions'),
       href: "/admin/financial-transactions",
       icon: CreditCard,
     },
     {
-      name: "Support Tickets",
+      name: t('admin.supportTickets'),
       href: "/admin/support",
       icon: Ticket,
       badge: pendingTickets > 0 ? pendingTickets : undefined,
       badgeVariant: "destructive" as const,
     },
     {
-      name: "Expert Consultations",
+      name: t('admin.expertConsultations'),
       href: "/admin/content/consultations",
       icon: HelpCircle,
     },
     {
-      name: "Category Management",
+      name: t('admin.categoryManagement'),
       href: "/admin/category-management",
       icon: FolderOpen,
     },
     {
-      name: "Verification Queue",
+      name: t('admin.verificationQueue'),
       href: "/admin/verification",
       icon: UserCheck,
     },
     {
-      name: "Analytics",
+      name: t('admin.analytics'),
       href: "/admin/analytics",
       icon: BarChart3,
     },
   ];
 
   return (
-    <div className={cn("pb-12 w-64", className)}>
+    <div className={cn("pb-12 w-64", className)} dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
-          <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-            Admin Panel
+          <h2 className={cn("mb-2 px-4 text-lg font-semibold tracking-tight", isRTL ? "text-right font-arabic" : "text-left")}>
+            {t('admin.title')}
           </h2>
           <ScrollArea className="h-[calc(100vh-8rem)]">
             <div className="space-y-1">
@@ -112,18 +114,19 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
                     key={item.name}
                     variant={isActive ? "secondary" : "ghost"}
                     className={cn(
-                      "w-full justify-start",
-                      isActive && "bg-secondary"
+                      "w-full justify-start rtl-transition",
+                      isActive && "bg-secondary",
+                      isRTL ? "flex-row-reverse text-right" : "flex-row text-left"
                     )}
                     asChild
                   >
-                    <Link to={item.href} className="flex items-center gap-2">
-                      <item.icon className="h-4 w-4" />
-                      <span className="flex-1 text-left">{item.name}</span>
+                    <Link to={item.href} className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
+                      <item.icon className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
+                      <span className={cn("flex-1", isRTL ? "text-right" : "text-left")}>{item.name}</span>
                       {item.badge && (
                         <Badge 
                           variant={item.badgeVariant || "secondary"} 
-                          className="h-5 w-5 flex items-center justify-center p-0 text-xs"
+                          className={cn("h-5 w-5 flex items-center justify-center p-0 text-xs", isRTL ? "mr-2" : "ml-2")}
                         >
                           {item.badge > 99 ? '99+' : item.badge}
                         </Badge>
