@@ -26,6 +26,10 @@ import { OffersManagement } from "./pages/admin/OffersManagement";
 import { RequestsApproval } from "./pages/admin/RequestsApproval";
 import FinancialTransactions from "./pages/admin/FinancialTransactions";
 import { ExpertConsultations } from "./pages/admin/ExpertConsultations";
+import { AdminOrders } from "./pages/admin/AdminOrders";
+import { AdminSupport } from "./pages/admin/AdminSupport";
+import { AdminVerificationQueue } from "./pages/admin/AdminVerificationQueue";
+import { AdminAnalytics } from "./pages/admin/AdminAnalytics";
 import Settings from "./pages/Settings";
 import Requests from "./pages/Requests";
 import CreateRequest from "./pages/CreateRequest";
@@ -377,7 +381,7 @@ function App() {
                       }
                     />
 
-                    {/* Admin Routes - All using AdminLayout */}
+                    {/* Admin Routes - All using AdminLayout with nested routes */}
                     <Route
                       path="/admin"
                       element={
@@ -392,10 +396,17 @@ function App() {
                       <Route path="requests" element={<AdminRequests />} />
                       <Route path="offers" element={<AdminOffers />} />
                       <Route path="projects" element={<AdminProjects />} />
+                      <Route path="orders" element={<AdminOrders />} />
+                      <Route path="financial-transactions" element={<FinancialTransactions />} />
+                      <Route path="support" element={<AdminSupport />} />
+                      <Route path="content/consultations" element={<ExpertConsultations />} />
+                      <Route path="category-management" element={<CategoryManagement />} />
+                      <Route path="verification" element={<AdminVerificationQueue />} />
+                      <Route path="analytics" element={<AdminAnalytics />} />
+                      {/* Legacy routes for backwards compatibility */}
                       <Route path="categories" element={<CategoryManagement />} />
                       <Route path="offers-management" element={<OffersManagement />} />
                       <Route path="requests-approval" element={<RequestsApproval />} />
-                      <Route path="financial-transactions" element={<FinancialTransactions />} />
                       <Route path="expert-consultations" element={<ExpertConsultations />} />
                     </Route>
 
