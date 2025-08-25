@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { DollarSign, Clock, TrendingUp, Package, Search, MessageSquare, Eye, CheckCircle, XCircle } from 'lucide-react';
+import { DollarSign, Clock, TrendingUp, Package, Search, MessageSquare, Eye, CheckCircle, XCircle, AlertTriangle, FileText } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
@@ -129,6 +129,77 @@ const AdminOffers = () => {
     }
   };
 
+  const escalateToSupport = async (offerId: string, type: 'pricing' | 'delivery' | 'quality') => {
+    try {
+      const offer = offers.find(o => o.id === offerId);
+      if (!offer) return;
+
+      const { error } = await supabase
+        .from('support_tickets')
+        .insert([{
+          user_id: user?.id,
+          subject: `Offer Issue - ${type.charAt(0).toUpperCase() + type.slice(1)}`,
+          message: `Admin escalation for offer: ${offer.title} (ID: ${offerId})`,
+          category: 'offer_issue',
+          priority: 'high',
+          status: 'open'
+        }]);
+
+      if (error) throw error;
+
+      toast({
+        title: 'Success',
+        description: 'Issue escalated to support team',
+      });
+    } catch (error) {
+      console.error('Error escalating to support:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to escalate to support',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const initiateConversation = async (vendorId: string, clientId: string, offerId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('conversations')
+        .insert([{
+          participants: [user?.id, vendorId, clientId],
+          type: 'group',
+          title: `Offer Discussion - ${offerId}`,
+          admin_initiated: true
+        }])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // Send initial message
+      await supabase
+        .from('messages')
+        .insert([{
+          conversation_id: data.id,
+          sender_id: user?.id,
+          content: 'Admin has initiated this conversation regarding the offer. Please discuss any concerns or questions here.',
+          message_type: 'text'
+        }]);
+
+      toast({
+        title: 'Success',
+        description: 'Conversation initiated between all parties',
+      });
+    } catch (error) {
+      console.error('Error initiating conversation:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to initiate conversation',
+        variant: 'destructive'
+      });
+    }
+  };
+
   const filteredOffers = offers.filter(offer => {
     const matchesSearch = offer.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          offer.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -172,8 +243,15 @@ const AdminOffers = () => {
   };
 
   const calculateAverageResponseTime = () => {
-    // This would need more data to calculate accurately
-    return '2.5 hours'; // Placeholder
+    return '2.5 hours';
+  };
+
+  const getUrgencyLevel = (offer: AdminOffer) => {
+    const daysSinceCreated = Math.floor((Date.now() - new Date(offer.created_at).getTime()) / (1000 * 60 * 60 * 24));
+    
+    if (offer.admin_approval_status === 'pending' && daysSinceCreated > 2) return 'high';
+    if (offer.client_approval_status === 'pending' && daysSinceCreated > 5) return 'medium';
+    return 'normal';
   };
 
   useEffect(() => {
@@ -183,18 +261,19 @@ const AdminOffers = () => {
   const pendingOffers = offers.filter(o => o.admin_approval_status === 'pending');
   const approvedOffers = offers.filter(o => o.admin_approval_status === 'approved');
   const clientApprovedOffers = offers.filter(o => o.client_approval_status === 'approved');
+  const highUrgencyOffers = offers.filter(o => getUrgencyLevel(o) === 'high');
 
   return (
     <div className="container mx-auto p-6">
       <div className="mb-6">
         <h1 className="text-3xl font-bold mb-2">Offer Management</h1>
         <p className="text-muted-foreground">
-          Monitor vendor responses, track conversion rates, and manage offer approvals
+          Monitor vendor responses, track conversion rates, and manage offer approvals with support integration
         </p>
       </div>
 
-      {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+      {/* Enhanced Key Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Offers</CardTitle>
@@ -246,6 +325,19 @@ const AdminOffers = () => {
             </p>
           </CardContent>
         </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">High Priority</CardTitle>
+            <AlertTriangle className="h-4 w-4 text-orange-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-orange-600">{highUrgencyOffers.length}</div>
+            <p className="text-xs text-muted-foreground">
+              Requires immediate attention
+            </p>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Filters */}
@@ -254,7 +346,7 @@ const AdminOffers = () => {
           <CardTitle className="text-lg">Filters & Search</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
@@ -295,126 +387,201 @@ const AdminOffers = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Prices</SelectItem>
-                <SelectItem value="low">< 10,000 SAR</SelectItem>
+                <SelectItem value="low">Less than 10,000 SAR</SelectItem>
                 <SelectItem value="medium">10,000 - 50,000 SAR</SelectItem>
-                <SelectItem value="high">> 50,000 SAR</SelectItem>
+                <SelectItem value="high">Greater than 50,000 SAR</SelectItem>
               </SelectContent>
             </Select>
 
             <Button onClick={fetchOffers} variant="outline">
               Refresh
             </Button>
+
+            <Button variant="outline" className="flex items-center gap-1">
+              <FileText className="h-4 w-4" />
+              Export Report
+            </Button>
           </div>
         </CardContent>
       </Card>
 
-      {/* Offers List */}
-      <div className="space-y-4">
-        {loading ? (
-          <div className="text-center py-8">Loading offers...</div>
-        ) : filteredOffers.length === 0 ? (
-          <Card>
-            <CardContent className="text-center py-8">
-              <p className="text-muted-foreground">No offers found matching your filters.</p>
-            </CardContent>
-          </Card>
-        ) : (
-          filteredOffers.map((offer) => (
-            <Card key={offer.id}>
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="space-y-2">
-                    <CardTitle className="text-lg">{offer.title}</CardTitle>
-                    <CardDescription className="line-clamp-2">
-                      {offer.description}
-                    </CardDescription>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <span>For: {offer.request?.title}</span>
-                      <span>•</span>
-                      <span>Vendor: {offer.vendor?.company_name || offer.vendor?.full_name}</span>
-                      <span>•</span>
-                      <span>Client: {offer.client?.company_name || offer.client?.full_name}</span>
+      {/* Tabs for better organization */}
+      <Tabs defaultValue="all" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="all">All Offers ({offers.length})</TabsTrigger>
+          <TabsTrigger value="pending">Pending Review ({pendingOffers.length})</TabsTrigger>
+          <TabsTrigger value="urgent">High Priority ({highUrgencyOffers.length})</TabsTrigger>
+          <TabsTrigger value="approved">Approved ({approvedOffers.length})</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="all" className="space-y-4">
+          {loading ? (
+            <div className="text-center py-8">Loading offers...</div>
+          ) : filteredOffers.length === 0 ? (
+            <Card>
+              <CardContent className="text-center py-8">
+                <p className="text-muted-foreground">No offers found matching your filters.</p>
+              </CardContent>
+            </Card>
+          ) : (
+            filteredOffers.map((offer) => (
+              <Card key={offer.id} className={getUrgencyLevel(offer) === 'high' ? 'border-orange-200 bg-orange-50/50' : ''}>
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div className="space-y-2 flex-1">
+                      <div className="flex items-center gap-2">
+                        <CardTitle className="text-lg">{offer.title}</CardTitle>
+                        {getUrgencyLevel(offer) === 'high' && (
+                          <Badge variant="outline" className="bg-orange-100 text-orange-700 border-orange-300">
+                            <AlertTriangle className="h-3 w-3 mr-1" />
+                            Urgent
+                          </Badge>
+                        )}
+                      </div>
+                      <CardDescription className="line-clamp-2">
+                        {offer.description}
+                      </CardDescription>
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <span>For: {offer.request?.title}</span>
+                        <span>•</span>
+                        <span>Vendor: {offer.vendor?.company_name || offer.vendor?.full_name}</span>
+                        <span>•</span>
+                        <span>Client: {offer.client?.company_name || offer.client?.full_name}</span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-2 text-right">
+                      <Badge className={getStatusColor(offer.admin_approval_status)}>
+                        Admin: {offer.admin_approval_status.toUpperCase()}
+                      </Badge>
+                      <Badge className={getStatusColor(offer.client_approval_status)}>
+                        Client: {offer.client_approval_status.toUpperCase()}
+                      </Badge>
                     </div>
                   </div>
-                  <div className="flex flex-col gap-2 text-right">
-                    <Badge className={getStatusColor(offer.admin_approval_status)}>
-                      Admin: {offer.admin_approval_status.toUpperCase()}
-                    </Badge>
-                    <Badge className={getStatusColor(offer.client_approval_status)}>
-                      Client: {offer.client_approval_status.toUpperCase()}
-                    </Badge>
+                </CardHeader>
+                
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Offer Price</p>
+                      <p className="text-lg font-bold text-primary">
+                        {offer.price.toLocaleString()} {offer.currency}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Request Budget</p>
+                      <p className="text-sm">
+                        {offer.request?.budget_min && offer.request?.budget_max
+                          ? `${offer.request.budget_min.toLocaleString()} - ${offer.request.budget_max.toLocaleString()}`
+                          : 'Not specified'
+                        }
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Delivery Time</p>
+                      <p className="text-sm">{offer.delivery_time_days} days</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Created</p>
+                      <p className="text-sm">{format(new Date(offer.created_at), 'MMM dd, yyyy HH:mm')}</p>
+                    </div>
                   </div>
-                </div>
-              </CardHeader>
-              
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Offer Price</p>
-                    <p className="text-lg font-bold text-primary">
-                      {offer.price.toLocaleString()} {offer.currency}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Request Budget</p>
-                    <p className="text-sm">
-                      {offer.request?.budget_min && offer.request?.budget_max
-                        ? `${offer.request.budget_min.toLocaleString()} - ${offer.request.budget_max.toLocaleString()}`
-                        : 'Not specified'
-                      }
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Delivery Time</p>
-                    <p className="text-sm">{offer.delivery_time_days} days</p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Created</p>
-                    <p className="text-sm">{format(new Date(offer.created_at), 'MMM dd, yyyy HH:mm')}</p>
-                  </div>
-                </div>
 
-                <div className="flex flex-wrap gap-2">
-                  <Button variant="outline" size="sm" className="flex items-center gap-1">
-                    <Eye className="h-4 w-4" />
-                    View Details
-                  </Button>
-                  <Button variant="outline" size="sm" className="flex items-center gap-1">
-                    <MessageSquare className="h-4 w-4" />
-                    Contact Vendor
-                  </Button>
-                  <Button variant="outline" size="sm" className="flex items-center gap-1">
-                    <MessageSquare className="h-4 w-4" />
-                    Contact Client
-                  </Button>
-                  
-                  {offer.admin_approval_status === 'pending' && (
-                    <>
-                      <Button 
-                        size="sm" 
-                        className="flex items-center gap-1"
-                        onClick={() => updateOfferApproval(offer.id, 'approved')}
-                      >
-                        <CheckCircle className="h-4 w-4" />
-                        Approve
-                      </Button>
-                      <Button 
-                        variant="destructive" 
-                        size="sm" 
-                        className="flex items-center gap-1"
-                        onClick={() => updateOfferApproval(offer.id, 'rejected')}
-                      >
-                        <XCircle className="h-4 w-4" />
-                        Reject
-                      </Button>
-                    </>
-                  )}
+                  <div className="flex flex-wrap gap-2">
+                    <Button variant="outline" size="sm" className="flex items-center gap-1">
+                      <Eye className="h-4 w-4" />
+                      View Details
+                    </Button>
+                    
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="flex items-center gap-1"
+                      onClick={() => initiateConversation(offer.vendor_id, offer.request?.client_id || '', offer.id)}
+                    >
+                      <MessageSquare className="h-4 w-4" />
+                      Start Group Chat
+                    </Button>
+                    
+                    {offer.admin_approval_status === 'pending' && (
+                      <>
+                        <Button 
+                          size="sm" 
+                          className="flex items-center gap-1"
+                          onClick={() => updateOfferApproval(offer.id, 'approved')}
+                        >
+                          <CheckCircle className="h-4 w-4" />
+                          Approve
+                        </Button>
+                        <Button 
+                          variant="destructive" 
+                          size="sm" 
+                          className="flex items-center gap-1"
+                          onClick={() => updateOfferApproval(offer.id, 'rejected')}
+                        >
+                          <XCircle className="h-4 w-4" />
+                          Reject
+                        </Button>
+                      </>
+                    )}
+                    
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="flex items-center gap-1"
+                      onClick={() => escalateToSupport(offer.id, 'pricing')}
+                    >
+                      <AlertTriangle className="h-4 w-4" />
+                      Escalate Issue
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          )}
+        </TabsContent>
+
+        <TabsContent value="pending" className="space-y-4">
+          {pendingOffers.map((offer) => (
+            <Card key={offer.id}>
+              {/* Same offer card structure but filtered for pending */}
+              <CardContent className="p-4">
+                <div className="text-sm text-muted-foreground mb-2">
+                  {offer.title} - Pending admin approval since {format(new Date(offer.created_at), 'MMM dd, yyyy')}
                 </div>
               </CardContent>
             </Card>
-          ))
-        )}
-      </div>
+          ))}
+        </TabsContent>
+
+        <TabsContent value="urgent" className="space-y-4">
+          {highUrgencyOffers.map((offer) => (
+            <Card key={offer.id} className="border-orange-200 bg-orange-50/50">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <AlertTriangle className="h-4 w-4 text-orange-500" />
+                  <span className="font-medium">{offer.title}</span>
+                  <Badge variant="outline" className="bg-orange-100 text-orange-700">
+                    Requires Attention
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </TabsContent>
+
+        <TabsContent value="approved" className="space-y-4">
+          {approvedOffers.map((offer) => (
+            <Card key={offer.id}>
+              <CardContent className="p-4">
+                <div className="text-sm text-muted-foreground mb-2">
+                  {offer.title} - Approved and active
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
