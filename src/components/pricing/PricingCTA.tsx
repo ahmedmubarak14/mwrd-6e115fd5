@@ -9,13 +9,13 @@ interface PricingCTAProps {
 
 export const PricingCTA = ({ isRTL }: PricingCTAProps) => {
   return (
-    <div className="text-center py-20 animate-fade-in">
-      <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-3xl p-12 backdrop-blur-sm border border-primary/20">
-        <h2 className="text-4xl font-bold mb-6 gradient-text">
+    <div className="text-center py-12 lg:py-20 animate-fade-in">
+      <div className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-2xl lg:rounded-3xl p-8 lg:p-12 backdrop-blur-sm border border-primary/20 mx-4 lg:mx-0">
+        <h2 className="text-2xl lg:text-4xl font-bold mb-4 lg:mb-6 gradient-text">
           {isRTL ? 'لست متأكداً من الخطة المناسبة؟' : 'Not sure which plan is right for you?'}
         </h2>
         
-        <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+        <p className="text-lg lg:text-xl text-muted-foreground mb-6 lg:mb-8 max-w-2xl mx-auto">
           {isRTL 
             ? 'تحدث مع فريقنا المتخصص للحصول على استشارة مجانية ومخصصة لاحتياجاتك'
             : 'Talk to our expert team for a free personalized consultation tailored to your needs'

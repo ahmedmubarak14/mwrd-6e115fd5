@@ -132,30 +132,32 @@ const Pricing = () => {
   ];
 
   return (
-    <MobileContainer pageType="default" className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-accent/10">
       <Header />
       
-      <main className="container mx-auto px-4 py-16">
-        <PricingHeader isRTL={isRTL} />
-        
-        <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-8 mb-20 max-w-7xl mx-auto">
-          {plans.map((plan) => (
-            <div key={plan.id} className="animate-fade-in-up">
-              <PricingCard 
-                plan={plan}
-                onSubscribe={handleSubscribe}
-                loading={loading}
-                isRTL={isRTL}
-              />
-            </div>
-          ))}
-        </div>
+      <MobileContainer pageType="default" className="pt-0">
+        <main className="container mx-auto px-4 py-8 lg:py-16">
+          <PricingHeader isRTL={isRTL} />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mb-12 lg:mb-20 max-w-7xl mx-auto">
+            {plans.map((plan) => (
+              <div key={plan.id} className="animate-fade-in">
+                <PricingCard 
+                  plan={plan}
+                  onSubscribe={handleSubscribe}
+                  loading={loading}
+                  isRTL={isRTL}
+                />
+              </div>
+            ))}
+          </div>
 
-        <PricingCTA isRTL={isRTL} />
-      </main>
+          <PricingCTA isRTL={isRTL} />
+        </main>
+      </MobileContainer>
       
       <Footer />
-    </MobileContainer>
+    </div>
   );
 };
 
