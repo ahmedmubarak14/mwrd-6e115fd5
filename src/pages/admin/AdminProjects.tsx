@@ -55,7 +55,6 @@ const AdminProjects = () => {
         .from('projects')
         .select(`
           *,
-          user_profiles!projects_client_id_fkey(full_name, company_name, email),
           boq_items(id, status, total_price),
           requests(id, status, title)
         `)
@@ -63,16 +62,27 @@ const AdminProjects = () => {
 
       if (error) throw error;
 
-      const transformedData = (data || []).map(project => ({
-        ...project,
-        client: project.user_profiles,
-        _count: {
-          boq_items: project.boq_items?.length || 0,
-          requests: project.requests?.length || 0
-        }
-      }));
+      // Fetch client data separately to avoid the array issue
+      const projectsWithClients = await Promise.all(
+        (data || []).map(async (project) => {
+          const { data: clientData } = await supabase
+            .from('user_profiles')
+            .select('full_name, company_name, email')
+            .eq('user_id', project.client_id)
+            .single();
 
-      setProjects(transformedData as AdminProject[]);
+          return {
+            ...project,
+            client: clientData || undefined,
+            _count: {
+              boq_items: project.boq_items?.length || 0,
+              requests: project.requests?.length || 0
+            }
+          };
+        })
+      );
+
+      setProjects(projectsWithClients as AdminProject[]);
     } catch (error) {
       console.error('Error fetching projects:', error);
       toast({
