@@ -131,26 +131,26 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-landing">
-      {/* Landing Page Header - same as used on landing page */}
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-background/80 border-b border-border/40">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+    <div className="min-h-screen" style={{ background: 'var(--unified-page)' }}>
+      {/* Exact same header as landing page */}
+      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md" style={{ background: 'var(--gradient-header)' }}>
+        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+          <div className="flex items-center">
             <img 
               src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
               alt="MWRD Logo"
-              className="h-8 w-auto"
+              className="h-12 w-auto"
             />
           </div>
           
-          <nav className="hidden md:flex items-center space-x-6">
-            <a href="/landing" className="text-foreground hover:text-primary transition-colors">
+          <nav className="hidden md:flex items-center space-x-8">
+            <a href="/landing" className="text-white/90 hover:text-white transition-colors">
               {isRTL ? 'الرئيسية' : 'Home'}
             </a>
-            <a href="/pricing" className="text-primary font-medium">
+            <a href="/pricing" className="text-white font-medium">
               {isRTL ? 'الأسعار' : 'Pricing'}
             </a>
-            <a href="/support" className="text-foreground hover:text-primary transition-colors">
+            <a href="/support" className="text-white/90 hover:text-white transition-colors">
               {isRTL ? 'الدعم' : 'Support'}
             </a>
           </nav>
@@ -159,7 +159,7 @@ const Pricing = () => {
             {user ? (
               <a 
                 href="/dashboard" 
-                className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
+                className="bg-white/20 backdrop-blur-sm text-white px-6 py-2 rounded-full hover:bg-white/30 transition-all duration-300"
               >
                 {isRTL ? 'لوحة التحكم' : 'Dashboard'}
               </a>
@@ -167,13 +167,13 @@ const Pricing = () => {
               <>
                 <a 
                   href="/login" 
-                  className="text-foreground hover:text-primary transition-colors"
+                  className="text-white/90 hover:text-white transition-colors"
                 >
                   {isRTL ? 'تسجيل الدخول' : 'Sign In'}
                 </a>
                 <a 
                   href="/register" 
-                  className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
+                  className="bg-white/20 backdrop-blur-sm text-white px-6 py-2 rounded-full hover:bg-white/30 transition-all duration-300"
                 >
                   {isRTL ? 'إنشاء حساب' : 'Sign Up'}
                 </a>
@@ -183,10 +183,10 @@ const Pricing = () => {
         </div>
       </header>
       
-      <MobileContainer pageType="landing" className="pt-16">
+      <MobileContainer pageType="landing" className="pt-20">
         <main className="relative min-h-screen">
           {/* Background with same gradient as landing page */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background/95 to-accent/5" />
+          <div className="absolute inset-0" style={{ background: 'var(--unified-page)' }} />
           
           <div className="relative z-10 container mx-auto px-4 py-16 lg:py-24">
             <PricingHeader isRTL={isRTL} />
