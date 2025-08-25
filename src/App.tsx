@@ -1,4 +1,5 @@
 
+
 import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -18,7 +19,6 @@ import { LoadingFallback } from "./components/LoadingFallback";
 
 // Lazy load components
 const Index = lazy(() => import("./pages/Index"));
-const Landing = lazy(() => import("./pages/Landing"));
 const Auth = lazy(() => import("./pages/Auth"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const VendorDashboard = lazy(() => import("./pages/VendorDashboard"));
@@ -55,7 +55,6 @@ function App() {
                         <Routes>
                           {/* Public Routes */}
                           <Route path="/" element={<Index />} />
-                          <Route path="/landing" element={<Landing />} />
                           
                           {/* Auth Routes */}
                           <Route path="/auth" element={
