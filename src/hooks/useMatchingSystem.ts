@@ -1,6 +1,8 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useCategories } from '@/hooks/useCategories';
 
 export interface MatchedRequest {
   id: string;
@@ -23,6 +25,7 @@ export const useMatchingSystem = () => {
   const [matchedRequests, setMatchedRequests] = useState<MatchedRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const { user, userProfile } = useAuth();
+  const { categories, getAllCategories } = useCategories();
 
   const calculateMatchScore = (request: any, supplierProfile: any): { score: number; reasons: string[] } => {
     let score = 0;
@@ -32,30 +35,39 @@ export const useMatchingSystem = () => {
     score += 5;
 
     // Enhanced Category matching with subcategories
-    const categoryMatches = supplierProfile?.categories?.includes(request.category) || false;
+    const allCategories = getAllCategories();
+    const requestCategory = allCategories.find(cat => cat.slug === request.category);
+    const supplierCategories = supplierProfile?.categories || [];
+    
+    const categoryMatches = supplierCategories.includes(request.category);
     if (categoryMatches) {
       score += 30;
-      reasons.push(`Expertise in ${request.category}`);
+      const categoryName = requestCategory ? requestCategory.name_en : request.category;
+      reasons.push(`Expertise in ${categoryName}`);
     } else {
-      // Partial matching for related categories
-      const categoryMapping = {
-        'avl': ['audio', 'visual', 'lighting', 'sound', 'technical'],
-        'catering': ['food', 'beverage', 'hospitality', 'service'],
-        'decoration': ['design', 'decor', 'floral', 'theme', 'creative'],
-        'furniture': ['rental', 'equipment', 'seating', 'staging'],
-        'security': ['safety', 'protection', 'surveillance', 'guard'],
-        'transportation': ['logistics', 'delivery', 'transport', 'vehicle']
-      };
+      // Partial matching for related categories - check if request category is a parent/child of supplier categories
+      let partialMatch = false;
       
-      const requestKeywords = categoryMapping[request.category] || [];
-      const profileKeywords = (supplierProfile?.bio || '').toLowerCase();
-      const matchingKeywords = requestKeywords.filter(keyword => 
-        profileKeywords.includes(keyword)
-      );
-      
-      if (matchingKeywords.length > 0) {
-        score += 15;
-        reasons.push(`Related experience: ${matchingKeywords.join(', ')}`);
+      if (requestCategory) {
+        // Check if supplier has the parent category when request is for subcategory
+        if (requestCategory.parent_id) {
+          const parentCategory = allCategories.find(cat => cat.id === requestCategory.parent_id);
+          if (parentCategory && supplierCategories.includes(parentCategory.slug)) {
+            score += 15;
+            reasons.push(`Related experience: ${parentCategory.name_en}`);
+            partialMatch = true;
+          }
+        }
+        
+        // Check if supplier has any subcategories when request is for parent category
+        if (!partialMatch) {
+          const subcategories = allCategories.filter(cat => cat.parent_id === requestCategory.id);
+          const hasSubcategoryMatch = subcategories.some(sub => supplierCategories.includes(sub.slug));
+          if (hasSubcategoryMatch) {
+            score += 10;
+            reasons.push(`Related subcategory experience`);
+          }
+        }
       }
     }
 
@@ -195,19 +207,14 @@ export const useMatchingSystem = () => {
       reasons.push('Good portfolio showcase');
     }
 
-    // Seasonal and trending factors
+    // Industry-specific seasonal factors
     const currentMonth = new Date().getMonth();
-    const seasonalCategories = {
-      wedding: [4, 5, 9, 10], // May, June, October, November
-      corporate: [0, 1, 8, 9], // January, February, September, October
-      outdoor: [2, 3, 4, 10, 11] // March, April, May, November, December
-    };
     
-    // Add seasonal bonus for relevant categories
-    if (request.category.toLowerCase().includes('decoration') && 
-        seasonalCategories.wedding.includes(currentMonth)) {
+    // Add seasonal bonus for construction/infrastructure during good weather
+    if (requestCategory?.slug === 'construction-infrastructure' && 
+        [10, 11, 0, 1, 2].includes(currentMonth)) { // Nov-Mar (cooler months)
       score += 5;
-      reasons.push('Peak wedding season');
+      reasons.push('Optimal construction season');
     }
 
     return { score: Math.min(score, 100), reasons };
