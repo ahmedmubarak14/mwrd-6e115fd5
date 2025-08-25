@@ -132,27 +132,36 @@ const Pricing = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-accent/10">
+    <div className="min-h-screen bg-unified-page">
       <Header />
       
-      <MobileContainer pageType="default" className="pt-0">
-        <main className="container mx-auto px-4 py-8 lg:py-16">
-          <PricingHeader isRTL={isRTL} />
+      <MobileContainer pageType="landing" className="pt-0">
+        <main className="relative min-h-screen">
+          {/* Background with same gradient as landing page */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background/95 to-accent/5" />
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mb-12 lg:mb-20 max-w-7xl mx-auto">
-            {plans.map((plan) => (
-              <div key={plan.id} className="animate-fade-in">
-                <PricingCard 
-                  plan={plan}
-                  onSubscribe={handleSubscribe}
-                  loading={loading}
-                  isRTL={isRTL}
-                />
-              </div>
-            ))}
-          </div>
+          <div className="relative z-10 container mx-auto px-4 py-16 lg:py-24">
+            <PricingHeader isRTL={isRTL} />
+            
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20 max-w-7xl mx-auto">
+              {plans.map((plan, index) => (
+                <div 
+                  key={plan.id} 
+                  className="animate-fade-in"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <PricingCard 
+                    plan={plan}
+                    onSubscribe={handleSubscribe}
+                    loading={loading}
+                    isRTL={isRTL}
+                  />
+                </div>
+              ))}
+            </div>
 
-          <PricingCTA isRTL={isRTL} />
+            <PricingCTA isRTL={isRTL} />
+          </div>
         </main>
       </MobileContainer>
       
