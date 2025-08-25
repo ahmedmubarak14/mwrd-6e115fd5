@@ -216,6 +216,10 @@ const translations = {
     'admin.menu.themeDesign': 'Theme Design',
     'admin.menu.database': 'Database',
     
+    // Orders
+    'orders.title': 'Orders',
+    'orders.subtitle': 'Track and manage your orders',
+    
     // Footer
     'footer.aboutUs': 'About Us',
     'footer.contactUs': 'Contact Us',
@@ -431,6 +435,10 @@ const translations = {
     'admin.menu.settings': 'الإعدادات',
     'admin.menu.themeDesign': 'تصميم النسق',
     'admin.menu.database': 'قاعدة البيانات',
+    
+    // Orders
+    'orders.title': 'الطلبيات',
+    'orders.subtitle': 'تتبع وإدارة طلبياتك',
     
     // Footer
     'footer.aboutUs': 'من نحن',
