@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Menu, X, Zap, TrendingUp, Building2, Sparkles, Star } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -22,32 +23,32 @@ export const MobileNavigation = () => {
     {
       href: "/landing#platform",
       icon: Zap,
-      label: t('platform') || 'Platform'
+      label: t('nav.platform') || 'Platform'
     },
     {
       href: "/why-start-with-mwrd",
       icon: TrendingUp,
-      label: t('whyStartWithUs') || 'Why Start With Us'
+      label: t('nav.whyStartWithUs') || 'Why Start With Us'
     },
     {
       href: "/what-makes-us-unique",
       icon: Star,
-      label: t('whatMakesUsUnique') || 'What Makes Us Unique'
+      label: t('nav.whatMakesUsUnique') || 'What Makes Us Unique'
     },
     {
       href: "/why-move-to-mwrd",
       icon: Building2,
-      label: t('whyMoveToUs') || 'Why Move To Us'
+      label: t('nav.whyMoveToUs') || 'Why Move To Us'
     },
     {
       href: "/landing#services",
       icon: Sparkles,
-      label: t('services') || 'Services'
+      label: t('nav.services') || 'Services'
     },
     {
       href: "/pricing",
       icon: Star,
-      label: t('pricing') || 'Pricing'
+      label: t('nav.pricing') || 'Pricing'
     }
   ];
 
@@ -81,41 +82,41 @@ export const MobileNavigation = () => {
               Navigation menu
             </SheetDescription>
             
-            {/* Language Switcher below logo */}
-            <div className={`flex pt-4 ${isRTL ? 'justify-end' : 'justify-center'}`}>
+            {/* Language Switcher below logo with proper spacing */}
+            <div className={`flex pt-6 ${isRTL ? 'justify-end' : 'justify-center'}`}>
               <LanguageSwitcher />
             </div>
           </SheetHeader>
           
           <div className="flex flex-col h-full bg-gradient-to-b from-background to-primary/5">
-            <nav className="flex-1 px-6 py-4">
-              <ul className="space-y-4">
+            <nav className="flex-1 px-6 py-6">
+              <ul className="space-y-3">
                 {navigationItems.map((item, index) => (
                   <li key={index} className="animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
                     <Link
                       to={item.href}
                       onClick={handleLinkClick}
-                      className={`flex items-center gap-3 p-4 rounded-xl hover:bg-primary/10 transition-all duration-300 hover:shadow-md hover:scale-[1.02] active:scale-95 touch-manipulation ${isRTL ? 'flex-row-reverse text-right' : ''} group`}
+                      className={`flex items-center gap-4 p-4 rounded-xl hover:bg-primary/10 transition-all duration-300 hover:shadow-md hover:scale-[1.02] active:scale-95 touch-manipulation ${isRTL ? 'flex-row-reverse text-right' : ''} group`}
                     >
                       <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                         <item.icon className="h-5 w-5 text-primary group-hover:scale-110 transition-transform" />
                       </div>
-                      <span className="font-semibold text-sm group-hover:text-primary transition-colors">{item.label}</span>
+                      <span className="font-semibold text-base group-hover:text-primary transition-colors">{item.label}</span>
                     </Link>
                   </li>
                 ))}
               </ul>
               
-              {/* Enhanced Login and Start Free buttons */}
-              <div className={`flex gap-3 mt-8 pt-6 border-t border-border/50 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              {/* Enhanced Login and Register buttons with better spacing */}
+              <div className={`flex gap-4 mt-10 pt-8 border-t border-border/50 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Link to="/login" onClick={handleLinkClick} className="flex-1">
-                  <Button variant="outline" size="lg" className="w-full hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation">
-                    {t('login') || 'Login'}
+                  <Button variant="outline" size="lg" className="w-full h-12 hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation font-semibold">
+                    {t('auth.login') || 'Login'}
                   </Button>
                 </Link>
                 <Link to="/register" onClick={handleLinkClick} className="flex-1">
-                  <Button size="lg" className="w-full bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation">
-                    {t('register') || 'Register'}
+                  <Button size="lg" className="w-full h-12 bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation font-semibold">
+                    {t('auth.register') || 'Register'}
                   </Button>
                 </Link>
               </div>
