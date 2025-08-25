@@ -36,42 +36,59 @@ export const useSupportTickets = () => {
     
     setLoading(true);
     try {
-      let query = supabase
-        .from('support_tickets')
-        .select(`
-          *,
-          user_profiles!support_tickets_user_id_fkey(full_name, email, company_name),
-          assigned_admin:user_profiles!support_tickets_assigned_admin_id_fkey(full_name, email)
-        `);
-
+      // First, get the basic ticket data
+      let ticketsQuery = supabase.from('support_tickets').select('*');
+      
       // If user is admin, get all tickets. Otherwise, get only user's tickets
       if (userProfile?.role !== 'admin') {
-        query = query.eq('user_id', user.id);
+        ticketsQuery = ticketsQuery.eq('user_id', user.id);
       }
 
-      const { data, error } = await query.order('created_at', { ascending: false });
+      const { data: ticketsData, error: ticketsError } = await ticketsQuery.order('created_at', { ascending: false });
 
-      if (error) {
-        console.error('Supabase error:', error);
-        // If foreign key error, fetch without joins
-        if (error.message?.includes('could not find the relation')) {
-          const { data: simpleData, error: simpleError } = await supabase
-            .from('support_tickets')
-            .select('*')
-            .order('created_at', { ascending: false });
-          
-          if (simpleError) throw simpleError;
-          setTickets((simpleData || []).map(ticket => ({
+      if (ticketsError) throw ticketsError;
+
+      // Now enrich with user profile data
+      const enrichedTickets = await Promise.all(
+        (ticketsData || []).map(async (ticket) => {
+          let userProfile = undefined;
+          let assignedAdmin = undefined;
+
+          // Fetch user profile data
+          if (ticket.user_id) {
+            const { data: userProfileData } = await supabase
+              .from('user_profiles')
+              .select('full_name, email, company_name')
+              .eq('user_id', ticket.user_id)
+              .single();
+            
+            if (userProfileData) {
+              userProfile = userProfileData;
+            }
+          }
+
+          // Fetch assigned admin data
+          if (ticket.assigned_admin_id) {
+            const { data: adminData } = await supabase
+              .from('user_profiles')
+              .select('full_name, email')
+              .eq('user_id', ticket.assigned_admin_id)
+              .single();
+            
+            if (adminData) {
+              assignedAdmin = adminData;
+            }
+          }
+
+          return {
             ...ticket,
-            user_profiles: undefined,
-            assigned_admin: undefined
-          })));
-        } else {
-          throw error;
-        }
-      } else {
-        setTickets(data || []);
-      }
+            user_profiles: userProfile,
+            assigned_admin: assignedAdmin
+          };
+        })
+      );
+
+      setTickets(enrichedTickets);
     } catch (error: any) {
       console.error('Error fetching support tickets:', error);
       showError('Failed to load support tickets');
