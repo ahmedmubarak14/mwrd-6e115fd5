@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Star, TrendingUp, Clock, Eye, DollarSign, FileText, Users, Award, Search, Package, MapPin, Calendar, Plus } from "lucide-react";
+import { Star, TrendingUp, Clock, Eye, DollarSign, Package, MapPin, Calendar, Plus, Search, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
@@ -103,6 +103,14 @@ export const VendorDashboard = () => {
   return (
     <DashboardLayout className={isRTL ? 'font-arabic' : ''}>
       <div className="max-w-6xl mx-auto space-y-6">
+        {/* Header */}
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            {t('vendor.welcome')}
+          </h1>
+          <p className="text-muted-foreground">{t('vendor.subtitle')}</p>
+        </div>
+
         {/* Verification Status - Only show for non-verified users */}
         {needsVerificationGuidance && (
           <UnifiedVerificationStatus 
@@ -112,139 +120,109 @@ export const VendorDashboard = () => {
           />
         )}
 
-        {/* Header */}
-        <div className="relative overflow-hidden bg-gradient-to-r from-primary/10 via-accent/10 to-lime/10 rounded-xl p-6">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-            <div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2">
-                {t('vendor.welcome')}
-              </h1>
-              <p className="text-muted-foreground text-sm sm:text-base">{t('vendor.subtitle')}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-          <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-              <CardTitle className="text-sm font-medium text-muted-foreground">{t('vendor.totalOffers')}</CardTitle>
-              <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                <Package className="h-5 w-5 text-primary" />
-              </div>
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">{t('vendor.totalOffers')}</CardTitle>
+              <Package className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent className="p-4 sm:p-6 pt-0">
-              <div className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                {stats.totalOffers}
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">{t('vendor.submittedThisMonth')}</p>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.totalOffers}</div>
+              <p className="text-xs text-muted-foreground">{t('vendor.submittedThisMonth')}</p>
             </CardContent>
           </Card>
           
-          <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-              <CardTitle className="text-sm font-medium text-muted-foreground">{t('vendor.acceptedOffers')}</CardTitle>
-              <div className="w-10 h-10 bg-lime/10 rounded-full flex items-center justify-center">
-                <TrendingUp className="h-5 w-5 text-lime" />
-              </div>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">{t('vendor.acceptedOffers')}</CardTitle>
+              <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent className="p-4 sm:p-6 pt-0">
-              <div className="text-3xl font-bold bg-gradient-to-r from-lime to-primary bg-clip-text text-transparent">
-                {stats.approvedOffers}
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">{t('vendor.successRate')}: {Math.round((stats.approvedOffers / Math.max(stats.totalOffers, 1)) * 100)}%</p>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.approvedOffers}</div>
+              <p className="text-xs text-muted-foreground">{t('vendor.successRate')}: {Math.round((stats.approvedOffers / Math.max(stats.totalOffers, 1)) * 100)}%</p>
             </CardContent>
           </Card>
           
-          <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-              <CardTitle className="text-sm font-medium text-muted-foreground">{t('vendor.pendingOffers')}</CardTitle>
-              <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
-                <Clock className="h-5 w-5 text-accent" />
-              </div>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">{t('vendor.pendingOffers')}</CardTitle>
+              <Clock className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent className="p-4 sm:p-6 pt-0">
-              <div className="text-3xl font-bold bg-gradient-to-r from-accent to-lime bg-clip-text text-transparent">
-                {stats.pendingOffers}
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">{t('vendor.awaitingClientResponse')}</p>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.pendingOffers}</div>
+              <p className="text-xs text-muted-foreground">{t('vendor.awaitingClientResponse')}</p>
             </CardContent>
           </Card>
 
-          <Card className="hover:shadow-xl transition-all duration-300 border-0 bg-card/70 backdrop-blur-sm hover-scale">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 p-4 sm:p-6">
-              <CardTitle className="text-sm font-medium text-muted-foreground">{t('dashboard.completedProjects')}</CardTitle>
-              <div className="w-10 h-10 bg-green-500/10 rounded-full flex items-center justify-center">
-                <Eye className="h-5 w-5 text-green-500" />
-              </div>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">{t('dashboard.completedProjects')}</CardTitle>
+              <Eye className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
-            <CardContent className="p-4 sm:p-6 pt-0">
-              <div className="text-3xl font-bold bg-gradient-to-r from-green-500 to-lime bg-clip-text text-transparent">
-                {offers.filter(o => o.status === 'accepted').length}
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">{t('vendor.successfullyWon')}</p>
+            <CardContent>
+              <div className="text-2xl font-bold">{offers.filter(o => o.status === 'accepted').length}</div>
+              <p className="text-xs text-muted-foreground">{t('vendor.successfullyWon')}</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Search and Filters */}
-        <Card className="border-0 bg-card/70 backdrop-blur-sm overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5 p-4 sm:p-6">
-            <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-              <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                <Search className="h-5 w-5 text-primary" />
-              </div>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Filter className="h-5 w-5" />
               {t('browseRequests.searchAndFilter')}
             </CardTitle>
-            <CardDescription className="text-sm sm:text-base">{t('browseRequests.filterDescription')}</CardDescription>
+            <CardDescription>{t('browseRequests.filterDescription')}</CardDescription>
           </CardHeader>
-          <CardContent className="p-4 sm:p-6">
-            <div className="space-y-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  placeholder={t('vendor.searchRequests')}
-                  className="pl-10 h-12 text-sm sm:text-base bg-background/50 border-primary/20 focus:border-primary/50"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-              
-              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-                <SelectTrigger className="h-12 bg-background/50 border-primary/20">
-                  <SelectValue placeholder={t('vendor.filterByCategory')} />
-                </SelectTrigger>
-                <SelectContent className="z-50 bg-popover">
-                  <SelectItem value="all">{t('common.all')} {t('browseRequests.filterByCategory')}</SelectItem>
-                  {categoriesLoading ? (
-                    <SelectItem value="" disabled>
-                      <LoadingSpinner size="sm" />
-                    </SelectItem>
-                  ) : (
-                    getAllCategoriesForFilter().map((category) => (
-                      <SelectItem key={category.id} value={category.slug}>
-                        {category.isChild && "  ↳ "}
-                        {language === 'ar' ? category.name_ar : category.name_en}
-                        {category.isChild && ` (${category.parentName})`}
-                      </SelectItem>
-                    ))
-                  )}
-                </SelectContent>
-              </Select>
+          <CardContent className="space-y-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input 
+                placeholder={t('vendor.searchRequests')}
+                className="pl-10"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
+            
+            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+              <SelectTrigger>
+                <SelectValue placeholder={t('vendor.filterByCategory')} />
+              </SelectTrigger>
+              <SelectContent className="z-50 bg-popover">
+                <SelectItem value="all">{t('common.all')} {t('browseRequests.filterByCategory')}</SelectItem>
+                {categoriesLoading ? (
+                  <SelectItem value="" disabled>
+                    <LoadingSpinner size="sm" />
+                  </SelectItem>
+                ) : (
+                  getAllCategoriesForFilter().map((category) => (
+                    <SelectItem key={category.id} value={category.slug}>
+                      {category.isChild && "  ↳ "}
+                      {language === 'ar' ? category.name_ar : category.name_en}
+                      {category.isChild && ` (${category.parentName})`}
+                    </SelectItem>
+                  ))
+                )}
+              </SelectContent>
+            </Select>
+            
+            <p className="text-sm text-muted-foreground">
+              {filteredRequests.length} {t('vendor.opportunitiesFound')}
+            </p>
           </CardContent>
         </Card>
 
-        {/* Requests List */}
-        <Card className="border-0 bg-card/70 backdrop-blur-sm overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5 p-4 sm:p-6">
-            <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-              <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                <Package className="h-5 w-5 text-primary" />
-              </div>
+        {/* Available Requests */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Package className="h-5 w-5" />
               {t('vendor.availableRequests')}
             </CardTitle>
-            <CardDescription className="text-sm sm:text-base">{t('dashboard.findOpportunities')}</CardDescription>
+            <CardDescription>{t('dashboard.findOpportunities')}</CardDescription>
           </CardHeader>
           <CardContent className="p-0">
             {filteredRequests.length === 0 ? (
@@ -258,37 +236,32 @@ export const VendorDashboard = () => {
             ) : (
               <div className="divide-y">
                 {filteredRequests.map((request) => (
-                  <div key={request.id} className="p-4 sm:p-6 hover:bg-muted/50 transition-all duration-200">
+                  <div key={request.id} className="p-6 hover:bg-muted/50 transition-colors">
                     <div className="space-y-4">
                       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-start gap-3">
-                            <div className="w-2 h-12 rounded-full bg-lime"></div>
-                            <div className="flex-1">
-                              <div className="flex items-start justify-between mb-2">
-                                <h3 className="text-base sm:text-lg font-semibold line-clamp-1">{request.title}</h3>
-                                <Badge variant={getUrgencyColor(request.urgency) as any} className="ml-2 text-xs">
-                                  {request.urgency}
-                                </Badge>
+                          <div className="flex items-start justify-between mb-2">
+                            <h3 className="text-lg font-semibold">{request.title}</h3>
+                            <Badge variant={getUrgencyColor(request.urgency) as any} className="ml-2">
+                              {request.urgency}
+                            </Badge>
+                          </div>
+                          <p className="text-muted-foreground mb-2">{request.description}</p>
+                          <div className="flex items-center gap-4 mb-2">
+                            <span className="text-sm font-medium">{request.category}</span>
+                            {request.location && (
+                              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                                <MapPin className="h-3 w-3" />
+                                <span>{request.location}</span>
                               </div>
-                              <p className="text-sm text-muted-foreground mb-2">{request.description}</p>
-                              <div className="flex items-center gap-4 mb-2">
-                                <span className="text-sm text-primary font-medium">{request.category}</span>
-                                {request.location && (
-                                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                                    <MapPin className="h-3 w-3" />
-                                    <span>{request.location}</span>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
+                            )}
                           </div>
                         </div>
                       </div>
                       
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pl-5">
-                        <div className="flex items-center gap-2 p-3 bg-lime/5 rounded-lg">
-                          <DollarSign className="h-4 w-4 text-lime" />
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+                          <DollarSign className="h-4 w-4 text-muted-foreground" />
                           <div>
                             <p className="text-xs text-muted-foreground">{t('browseRequests.budget')}</p>
                             <p className="font-semibold text-sm">{formatBudget(request)} {request.currency || 'USD'}</p>
@@ -296,8 +269,8 @@ export const VendorDashboard = () => {
                         </div>
                         
                         {request.deadline && (
-                          <div className="flex items-center gap-2 p-3 bg-accent/5 rounded-lg">
-                            <Calendar className="h-4 w-4 text-accent" />
+                          <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+                            <Calendar className="h-4 w-4 text-muted-foreground" />
                             <div>
                               <p className="text-xs text-muted-foreground">{t('browseRequests.deadline')}</p>
                               <p className="font-semibold text-sm">{new Date(request.deadline).toLocaleDateString()}</p>
@@ -305,8 +278,8 @@ export const VendorDashboard = () => {
                           </div>
                         )}
                         
-                        <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-lg">
-                          <Clock className="h-4 w-4 text-primary" />
+                        <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+                          <Clock className="h-4 w-4 text-muted-foreground" />
                           <div>
                             <p className="text-xs text-muted-foreground">{t('browseRequests.posted')}</p>
                             <p className="font-semibold text-sm">{new Date(request.created_at).toLocaleDateString()}</p>
@@ -314,18 +287,17 @@ export const VendorDashboard = () => {
                         </div>
                       </div>
                       
-                      <div className="flex flex-col sm:flex-row gap-2 pl-5">
-                         <Button 
-                          className="flex-1 sm:flex-initial bg-gradient-to-r from-primary to-accent hover-scale rtl-button-gap"
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <Button 
+                          className="flex-1 sm:flex-initial"
                           onClick={() => handleSubmitOffer(request.id)}
                         >
                           <Plus className="h-4 w-4 mr-2" />
                           {t('vendor.submitOffer')}
                         </Button>
                         <Button 
-                          size="sm" 
                           variant="outline" 
-                          className="flex-1 sm:flex-initial hover-scale rtl-button-gap"
+                          className="flex-1 sm:flex-initial"
                         >
                           <Eye className="h-4 w-4 mr-2" />
                           {t('vendor.viewDetails')}
