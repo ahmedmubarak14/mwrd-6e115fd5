@@ -15,9 +15,6 @@ import {
 import {
   Sidebar,
   SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -80,81 +77,74 @@ export const ModernVendorSidebar = () => {
       )}
       side={isRTL ? "right" : "left"}
     >
-      <SidebarContent className="bg-sidebar">
-        <SidebarGroup>
-          <SidebarGroupLabel className={cn(
-            "px-2 py-2 text-xs font-medium text-sidebar-foreground/70 uppercase tracking-wide",
-            isRTL && "text-right font-arabic"
-          )}>
-            {t('nav.menu') || 'Navigation'}
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navigationItems.map((item) => {
-                const Icon = item.icon;
-                const active = isActive(item.href);
-                
-                return (
-                  <SidebarMenuItem key={item.href}>
-                    <SidebarMenuButton 
-                      asChild
-                      isActive={active}
-                      tooltip={state === "collapsed" ? item.label : undefined}
-                      className={cn(
-                        "w-full transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                        active && "bg-sidebar-accent text-sidebar-accent-foreground font-medium",
-                        isRTL && "flex-row-reverse text-right"
-                      )}
-                    >
-                      <Link 
-                        to={item.href} 
-                        className={cn(
-                          "flex items-center gap-3 px-3 py-2 rounded-md",
-                          isRTL && "flex-row-reverse"
-                        )}
-                      >
-                        <Icon className="h-4 w-4 shrink-0" />
-                        <span className="truncate">{item.label}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        
-        <SidebarSeparator className="bg-sidebar-border" />
-        
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
+      <SidebarContent className="bg-sidebar px-2 py-2">
+        {/* Main Navigation */}
+        <SidebarMenu className="space-y-0.5">
+          {navigationItems.map((item) => {
+            const Icon = item.icon;
+            const active = isActive(item.href);
+            
+            return (
+              <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton 
                   asChild
-                  isActive={isActive('/settings')}
-                  tooltip={state === "collapsed" ? (t('nav.settings') || 'Settings') : undefined}
+                  isActive={active}
+                  tooltip={state === "collapsed" ? item.label : undefined}
                   className={cn(
-                    "w-full transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                    isActive('/settings') && "bg-sidebar-accent text-sidebar-accent-foreground font-medium",
+                    "h-8 px-2 py-1.5 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                    active && "bg-sidebar-accent text-sidebar-accent-foreground font-medium",
                     isRTL && "flex-row-reverse text-right"
                   )}
                 >
                   <Link 
-                    to="/settings" 
+                    to={item.href} 
                     className={cn(
-                      "flex items-center gap-3 px-3 py-2 rounded-md",
+                      "flex items-center gap-2 w-full",
                       isRTL && "flex-row-reverse"
                     )}
                   >
-                    <Settings className="h-4 w-4 shrink-0" />
-                    <span className="truncate">{t('nav.settings') || 'Settings'}</span>
+                    <Icon className="h-4 w-4 shrink-0" />
+                    <span className="truncate text-sm">{item.label}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+            );
+          })}
+        </SidebarMenu>
+        
+        {/* Spacer to push settings to bottom */}
+        <div className="flex-1" />
+        
+        {/* Settings at bottom */}
+        <div className="mt-auto">
+          <SidebarSeparator className="bg-sidebar-border mb-2" />
+          
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton 
+                asChild
+                isActive={isActive('/settings')}
+                tooltip={state === "collapsed" ? (t('nav.settings') || 'Settings') : undefined}
+                className={cn(
+                  "h-8 px-2 py-1.5 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                  isActive('/settings') && "bg-sidebar-accent text-sidebar-accent-foreground font-medium",
+                  isRTL && "flex-row-reverse text-right"
+                )}
+              >
+                <Link 
+                  to="/settings" 
+                  className={cn(
+                    "flex items-center gap-2 w-full",
+                    isRTL && "flex-row-reverse"
+                  )}
+                >
+                  <Settings className="h-4 w-4 shrink-0" />
+                  <span className="truncate text-sm">{t('nav.settings') || 'Settings'}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </div>
       </SidebarContent>
     </Sidebar>
   );
