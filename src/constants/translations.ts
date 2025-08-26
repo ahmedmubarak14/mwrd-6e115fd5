@@ -1,3 +1,4 @@
+
 export const translations = {
   en: {
     'common.ok': 'OK',
@@ -63,6 +64,8 @@ export const translations = {
     'common.version': 'Version',
     'common.developer': 'Developer',
     'common.copyright': '© 2024 Your Company. All rights reserved.',
+    'common.refresh': 'Refresh',
+    'common.exporting': 'Exporting...',
 
     'users.role': 'Role',
     'users.status': 'Status',
@@ -76,6 +79,73 @@ export const translations = {
     'users.approved': 'Approved',
     'users.blocked': 'Blocked',
     'users.rejected': 'Rejected',
+
+    // Dashboard translations
+    'dashboard.title': 'Dashboard',
+    'dashboard.welcomeMessage': 'Welcome to your procurement dashboard',
+    'dashboard.overview': 'Overview',
+    'dashboard.rfqPerformance': 'RFQ Performance',
+    'dashboard.recentActivity': 'Recent RFQ activity and status',
+    'dashboard.noDataAvailable': 'No data available for RFQ performance.',
+
+    // Admin translations
+    'admin.totalUsers': 'Total Users',
+    'admin.activeRequests': 'Active Requests',
+    'admin.revenue': 'Revenue',
+    'admin.accessDenied': 'Access Denied',
+    'admin.accessDeniedDescription': 'You do not have permission to access this area.',
+
+    // Analytics translations
+    'analytics.export': 'Export',
+    'analytics.fromLastMonth': 'from last month',
+    'analytics.fromLastWeek': 'from last week',
+
+    // Requests translations
+    'requests.title': 'Requests',
+    'requests.manageRequests': 'Manage and track your service requests',
+    'requests.createRequest': 'Create Request',
+    'requests.noRequests': 'No requests found.',
+
+    // Orders translations
+    'orders.title': 'Orders',
+    'orders.subtitle': 'Track and manage your orders',
+    'orders.trackManage': 'Track and manage your orders',
+    'orders.noOrders': 'No orders found.',
+    'orders.noOrdersDesc': 'You haven\'t placed any orders yet.',
+    'orders.orderNumber': 'Order',
+    'orders.noDescription': 'No description available',
+    'orders.amountNotSet': 'Amount not set',
+    'orders.created': 'Created',
+    'orders.delivery': 'Delivery',
+    'orders.viewDetails': 'View Details',
+
+    // Suppliers translations
+    'suppliers.title': 'Suppliers',
+    'suppliers.findManage': 'Find and manage your preferred suppliers',
+    'suppliers.noSuppliers': 'No suppliers found.',
+
+    // Order Status translations
+    'orderStatus.pending': 'Pending',
+    'orderStatus.confirmed': 'Confirmed',
+    'orderStatus.in_progress': 'In Progress',
+    'orderStatus.completed': 'Completed',
+    'orderStatus.cancelled': 'Cancelled',
+
+    // My Offers translations
+    'myOffers.title': 'My Offers',
+    'myOffers.subtitle': 'Track and manage your submitted offers',
+    'myOffers.noOffers': 'No offers found',
+    'myOffers.noOffersDesc': 'You haven\'t submitted any offers yet.',
+    'myOffers.offerNumber': 'Offer',
+    'myOffers.noDescription': 'No description available',
+    'myOffers.priceNotSet': 'Price not set',
+    'myOffers.daysDelivery': 'days delivery',
+    'myOffers.submitted': 'Submitted',
+    'myOffers.clientResponse': 'Client Response',
+    'myOffers.status.pending': 'Pending',
+    'myOffers.status.approved': 'Approved',
+    'myOffers.status.rejected': 'Rejected',
+    'myOffers.status.accepted': 'Accepted',
 
     // Profile page translations
     'profile.title': 'Profile',
@@ -195,6 +265,8 @@ export const translations = {
     'common.version': 'الإصدار',
     'common.developer': 'المطور',
     'common.copyright': '© 2024 شركتك. جميع الحقوق محفوظة.',
+    'common.refresh': 'تحديث',
+    'common.exporting': 'جاري التصدير...',
 
     'users.role': 'الدور',
     'users.status': 'الحالة',
@@ -208,6 +280,73 @@ export const translations = {
     'users.approved': 'موافق عليه',
     'users.blocked': 'محظور',
     'users.rejected': 'مرفوض',
+
+    // Dashboard translations
+    'dashboard.title': 'لوحة التحكم',
+    'dashboard.welcomeMessage': 'مرحباً بك في لوحة تحكم المشتريات',
+    'dashboard.overview': 'نظرة عامة',
+    'dashboard.rfqPerformance': 'أداء طلبات العروض',
+    'dashboard.recentActivity': 'النشاط الأخير لطلبات العروض والحالة',
+    'dashboard.noDataAvailable': 'لا توجد بيانات متاحة لأداء طلبات العروض.',
+
+    // Admin translations
+    'admin.totalUsers': 'إجمالي المستخدمين',
+    'admin.activeRequests': 'الطلبات النشطة',
+    'admin.revenue': 'الإيرادات',
+    'admin.accessDenied': 'تم رفض الوصول',
+    'admin.accessDeniedDescription': 'ليس لديك صلاحية للوصول إلى هذه المنطقة.',
+
+    // Analytics translations
+    'analytics.export': 'تصدير',
+    'analytics.fromLastMonth': 'من الشهر الماضي',
+    'analytics.fromLastWeek': 'من الأسبوع الماضي',
+
+    // Requests translations
+    'requests.title': 'الطلبات',
+    'requests.manageRequests': 'إدارة وتتبع طلبات الخدمة الخاصة بك',
+    'requests.createRequest': 'إنشاء طلب',
+    'requests.noRequests': 'لم يتم العثور على طلبات.',
+
+    // Orders translations
+    'orders.title': 'الطلبات',
+    'orders.subtitle': 'تتبع وإدارة طلباتك',
+    'orders.trackManage': 'تتبع وإدارة طلباتك',
+    'orders.noOrders': 'لم يتم العثور على طلبات.',
+    'orders.noOrdersDesc': 'لم تقم بتقديم أي طلبات بعد.',
+    'orders.orderNumber': 'الطلب',
+    'orders.noDescription': 'لا يوجد وصف متاح',
+    'orders.amountNotSet': 'لم يتم تحديد المبلغ',
+    'orders.created': 'تم الإنشاء',
+    'orders.delivery': 'التسليم',
+    'orders.viewDetails': 'عرض التفاصيل',
+
+    // Suppliers translations
+    'suppliers.title': 'الموردون',
+    'suppliers.findManage': 'العثور على وإدارة الموردين المفضلين لديك',
+    'suppliers.noSuppliers': 'لم يتم العثور على موردين.',
+
+    // Order Status translations
+    'orderStatus.pending': 'قيد الانتظار',
+    'orderStatus.confirmed': 'مؤكد',
+    'orderStatus.in_progress': 'قيد التنفيذ',
+    'orderStatus.completed': 'مكتمل',
+    'orderStatus.cancelled': 'ملغي',
+
+    // My Offers translations
+    'myOffers.title': 'عروضي',
+    'myOffers.subtitle': 'تتبع وإدارة العروض المقدمة',
+    'myOffers.noOffers': 'لا توجد عروض',
+    'myOffers.noOffersDesc': 'لم تقم بتقديم أي عروض بعد.',
+    'myOffers.offerNumber': 'العرض',
+    'myOffers.noDescription': 'لا يوجد وصف متاح',
+    'myOffers.priceNotSet': 'لم يتم تحديد السعر',
+    'myOffers.daysDelivery': 'أيام التسليم',
+    'myOffers.submitted': 'تم التقديم',
+    'myOffers.clientResponse': 'رد العميل',
+    'myOffers.status.pending': 'قيد الانتظار',
+    'myOffers.status.approved': 'موافق عليه',
+    'myOffers.status.rejected': 'مرفوض',
+    'myOffers.status.accepted': 'مقبول',
 
     // Profile page translations
     'profile.title': 'الملف الشخصي',
