@@ -1,3 +1,4 @@
+
 export const translations = {
   en: {
     // Navigation
@@ -48,6 +49,50 @@ export const translations = {
     dashboard: {
       completedProjects: "Completed Projects",
       findOpportunities: "Find opportunities that match your expertise"
+    },
+
+    // Profile
+    profile: {
+      title: "Profile",
+      subtitle: "Manage your profile information and settings",
+      verified: "Verified",
+      rejected: "Rejected",
+      underReview: "Under Review",
+      pendingVerification: "Pending Verification",
+      saving: "Saving...",
+      saveChanges: "Save Changes",
+      saveCategories: "Save Categories",
+      tabs: {
+        profile: "Profile",
+        categories: "Categories",
+        verification: "Verification",
+        settings: "Settings"
+      },
+      personalInfo: "Personal Information",
+      personalInfoDesc: "Update your personal details",
+      fullName: "Full Name",
+      email: "Email",
+      phone: "Phone",
+      role: "Role",
+      address: "Address",
+      companyInfo: "Company Information",
+      companyInfoDesc: "Update your company details",
+      companyName: "Company Name",
+      bio: "Bio",
+      bioClient: "About",
+      bioPlaceholder: "Tell clients about your expertise and what makes your services unique...",
+      bioPlaceholderClient: "Tell us about yourself and your business needs...",
+      portfolioUrl: "Portfolio URL",
+      serviceCategories: "Service Categories",
+      serviceCategoriesDesc: "Select the categories that best describe your services",
+      selectedCategories: "Selected Categories",
+      verificationRequirements: "Verification Requirements",
+      verificationDesc: "To access all platform features, please complete the verification process",
+      accountSettings: "Account Settings",
+      accountSettingsDesc: "View your account status and subscription details",
+      accountStatus: "Account Status",
+      subscriptionPlan: "Subscription Plan",
+      memberSince: "Member Since"
     },
 
     // Vendor specific
@@ -252,6 +297,50 @@ export const translations = {
     dashboard: {
       completedProjects: "المشاريع المكتملة",
       findOpportunities: "اعثر على فرص تتناسب مع خبرتك"
+    },
+
+    // Profile - Arabic
+    profile: {
+      title: "الملف الشخصي",
+      subtitle: "إدارة معلومات ملفك الشخصي والإعدادات",
+      verified: "موثق",
+      rejected: "مرفوض",
+      underReview: "قيد المراجعة",
+      pendingVerification: "في انتظار التوثيق",
+      saving: "جاري الحفظ...",
+      saveChanges: "حفظ التغييرات",
+      saveCategories: "حفظ الفئات",
+      tabs: {
+        profile: "الملف الشخصي",
+        categories: "الفئات",
+        verification: "التوثيق",
+        settings: "الإعدادات"
+      },
+      personalInfo: "المعلومات الشخصية",
+      personalInfoDesc: "تحديث تفاصيلك الشخصية",
+      fullName: "الاسم الكامل",
+      email: "البريد الإلكتروني",
+      phone: "الهاتف",
+      role: "الدور",
+      address: "العنوان",
+      companyInfo: "معلومات الشركة",
+      companyInfoDesc: "تحديث تفاصيل شركتك",
+      companyName: "اسم الشركة",
+      bio: "النبذة التعريفية",
+      bioClient: "نبذة عني",
+      bioPlaceholder: "أخبر العملاء عن خبرتك وما يميز خدماتك...",
+      bioPlaceholderClient: "أخبرنا عن نفسك واحتياجات عملك...",
+      portfolioUrl: "رابط المعرض",
+      serviceCategories: "فئات الخدمات",
+      serviceCategoriesDesc: "اختر الفئات التي تصف خدماتك بشكل أفضل",
+      selectedCategories: "الفئات المختارة",
+      verificationRequirements: "متطلبات التوثيق",
+      verificationDesc: "للوصول إلى جميع ميزات المنصة، يرجى إكمال عملية التوثيق",
+      accountSettings: "إعدادات الحساب",
+      accountSettingsDesc: "اعرض حالة حسابك وتفاصيل الاشتراك",
+      accountStatus: "حالة الحساب",
+      subscriptionPlan: "خطة الاشتراك",
+      memberSince: "عضو منذ"
     },
 
     // Vendor specific - Arabic
