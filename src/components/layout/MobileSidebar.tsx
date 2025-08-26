@@ -1,9 +1,6 @@
 
-import { useState } from "react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Sidebar } from "@/components/ui/layout/Sidebar";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { VendorSidebar } from "@/components/vendor/VendorSidebar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
@@ -27,7 +24,7 @@ export const MobileSidebar = ({ isOpen, onOpenChange }: MobileSidebarProps) => {
             "animate-slide-in-right"
           )}
         >
-          <Sidebar 
+          <VendorSidebar 
             userRole={userProfile?.role as 'client' | 'vendor' | 'admin'}
             userProfile={userProfile}
           />

@@ -1,159 +1,233 @@
 
-import { Button } from "@/components/ui/button";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { useAuth } from "@/contexts/AuthContext";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { User, LogOut, Settings, Bell, Search, Menu } from "lucide-react";
-import { MobileNavigation } from "@/components/layout/MobileNavigation";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
+import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Menu, Search, Bell, MessageSquare, User, Settings, LogOut, Home } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { SearchModal } from "@/components/modals/SearchModal";
 import { NotificationsModal } from "@/components/modals/NotificationsModal";
-import { useNotifications } from "@/hooks/useNotifications";
-import { useToast } from "@/hooks/use-toast";
-import StatusIndicator from "@/components/StatusIndicator";
-import { DashboardThemeToggle } from "@/components/ui/DashboardThemeToggle";
+import { ConversationsDropdown } from "@/components/conversations/ConversationsDropdown";
+import { UnifiedVerificationStatus } from "@/components/verification/UnifiedVerificationStatus";
+import { cn } from "@/lib/utils";
 
 interface HeaderProps {
   onMobileMenuOpen?: () => void;
 }
 
 export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
-  const { t, language } = useLanguage();
-  const { user, userProfile, signOut } = useAuth();
-  const { unreadCount } = useNotifications();
-  const { toast } = useToast();
-  const isRTL = language === 'ar';
+  const { signOut, userProfile } = useAuth();
+  const { t, isRTL } = useLanguage();
+  const isMobile = useIsMobile();
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+
+  // Check if we're in a sidebar context
+  let sidebarContext;
+  try {
+    sidebarContext = useSidebar();
+  } catch {
+    // Not in sidebar context
+    sidebarContext = null;
+  }
 
   const handleSignOut = async () => {
     await signOut();
   };
 
-  const handleSettingsClick = () => {
-    toast({
-      title: isRTL ? "الإعدادات" : "Settings",
-      description: isRTL ? "صفحة الإعدادات ستكون متاحة قريباً" : "Settings page will be available soon",
-    });
-  };
-
-  const getUserInitials = (name?: string, email?: string) => {
-    if (name) {
-      return name
-        .split(' ')
-        .map(n => n[0])
-        .join('')
-        .toUpperCase()
-        .slice(0, 2);
-    }
-    if (email) {
-      return email[0].toUpperCase();
-    }
-    return 'U';
-  };
+  const userInitials = userProfile?.full_name
+    ?.split(' ')
+    .map(name => name[0])
+    .join('')
+    .toUpperCase() || 'U';
 
   return (
-    <header className="h-20 sm:h-24 lg:h-28 backdrop-blur-sm sticky top-0 z-50 shadow-sm w-full" style={{ background: 'var(--gradient-header)' }}>
-      <div className="w-full px-3 sm:px-4 lg:px-6 h-full flex items-center justify-between">
-        
-        {/* Logo - positioned based on language */}
-        <div className="rtl-order-1 flex items-center gap-2 sm:gap-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="lg:hidden h-8 w-8 sm:h-10 sm:w-10 text-white hover:bg-white/10"
-            onClick={onMobileMenuOpen}
-          >
-            <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
-          </Button>
-          
-          <Link 
-            to="/landing"
-            className="flex items-center"
-          >
-            <img 
-              src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
-              alt="MWRD Logo"
-              className="h-12 sm:h-20 lg:h-24 w-auto hover:scale-105 transition-transform"
-            />
+    <header className={cn(
+      "sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+      "safe-area-pt"
+    )}>
+      <div className="container flex h-14 max-w-screen-2xl items-center px-4">
+        {/* Left Section */}
+        <div className="flex items-center gap-4">
+          {/* Desktop Sidebar Trigger or Mobile Menu */}
+          {isMobile ? (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+              onClick={onMobileMenuOpen}
+            >
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">{t('common.menu')}</span>
+            </Button>
+          ) : sidebarContext ? (
+            <SidebarTrigger />
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden"
+              onClick={onMobileMenuOpen}
+            >
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">{t('common.menu')}</span>
+            </Button>
+          )}
+
+          {/* Logo/Brand */}
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+              <span className="text-sm font-bold text-primary-foreground">S</span>
+            </div>
+            <span className="hidden font-bold sm:inline-block">
+              Supplify
+            </span>
           </Link>
         </div>
-        
-        {/* Actions - positioned based on language */}
-        <div className="rtl-order-3 rtl-flex items-center gap-1 sm:gap-2 lg:gap-4">
-          <SearchModal>
-            <div className="relative hidden xl:block cursor-pointer">
-              <Search className="absolute rtl-left-3 top-1/2 transform -translate-y-1/2 text-white/60 h-4 w-4" />
-              <input
-                type="text"
-                placeholder={t('dashboard.search')}
-                className="rtl-pl-4 rtl-pr-4 py-2 rounded-lg w-80 bg-white/10 text-white placeholder:text-white/60 focus:bg-white/20 transition-colors rtl-text-left cursor-pointer shadow-sm"
-                readOnly
-              />
-            </div>
-          </SearchModal>
-          
-          <SearchModal>
-            <Button variant="ghost" size="icon" className="hidden sm:flex xl:hidden h-8 w-8 sm:h-10 sm:w-10 text-white hover:bg-white/10">
-              <Search className="h-4 w-4 sm:h-5 sm:w-5" />
-            </Button>
-          </SearchModal>
-          
-          <div className="hidden sm:block">
-            <LanguageSwitcher />
-          </div>
-          
-          <DashboardThemeToggle />
-          
-          <div className="hidden lg:block">
-            <StatusIndicator />
-          </div>
-          
-          <NotificationsModal>
-            <Button variant="ghost" size="icon" className="relative hidden sm:flex h-8 w-8 sm:h-10 sm:w-10 text-white hover:bg-white/10">
-              <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
-              {unreadCount > 0 && (
-                <span className="absolute -top-1 rtl--right-1 bg-destructive text-destructive-foreground text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center text-[10px] sm:text-xs">
-                  {unreadCount > 99 ? '99+' : unreadCount}
-                </span>
+
+        {/* Center Section - Search */}
+        <div className="flex flex-1 items-center justify-center px-4">
+          <div className="w-full max-w-md">
+            <Button
+              variant="outline"
+              className={cn(
+                "relative w-full justify-start text-sm text-muted-foreground",
+                isRTL && "flex-row-reverse"
               )}
+              onClick={() => setSearchOpen(true)}
+            >
+              <Search className="h-4 w-4" />
+              <span className="ml-2">{t('common.search')}</span>
             </Button>
-          </NotificationsModal>
-          
+          </div>
+        </div>
+
+        {/* Right Section */}
+        <div className="flex items-center gap-2">
+          {/* Verification Status - Mobile Compact */}
+          {isMobile && (
+            <UnifiedVerificationStatus compact={true} />
+          )}
+
+          {/* Desktop Action Buttons */}
+          {!isMobile && (
+            <>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setNotificationsOpen(true)}
+                className="relative"
+              >
+                <Bell className="h-5 w-5" />
+                <Badge
+                  variant="destructive"
+                  className="absolute -right-1 -top-1 h-5 w-5 rounded-full p-0 text-xs"
+                >
+                  3
+                </Badge>
+              </Button>
+
+              <ConversationsDropdown />
+            </>
+          )}
+
+          {/* Language Switcher */}
+          <LanguageSwitcher />
+
+          {/* Theme Toggle */}
+          <ThemeToggle />
+
+          {/* User Menu Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="rtl-flex items-center gap-1 sm:gap-2 px-1 sm:px-2 lg:px-3 rounded-lg h-8 sm:h-10 text-white hover:bg-white/10">
-                <Avatar className="h-6 w-6 sm:h-8 sm:w-8">
-                  <AvatarFallback className="text-xs sm:text-sm bg-white/20 text-white">
-                    {getUserInitials(userProfile?.full_name, userProfile?.email)}
-                  </AvatarFallback>
+              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage 
+                    src={userProfile?.avatar_url} 
+                    alt={userProfile?.full_name || 'User'} 
+                  />
+                  <AvatarFallback>{userInitials}</AvatarFallback>
                 </Avatar>
-                <div className="rtl-text-left hidden lg:block">
-                  <p className="text-sm font-medium text-white">{userProfile?.full_name || userProfile?.email?.split('@')[0] || t('dashboard.welcome').replace('Welcome to MWRD', 'Welcome').replace('مرحباً بك في مورد', 'مرحباً')}</p>
-                  <p className="text-xs text-white/70 capitalize">{userProfile?.role}</p>
-                </div>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align={isRTL ? "start" : "end"} className="z-50 bg-popover w-56">
+            <DropdownMenuContent 
+              className="w-56" 
+              align={isRTL ? "start" : "end"} 
+              forceMount
+            >
+              <div className="flex items-center justify-start gap-2 p-2">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage 
+                    src={userProfile?.avatar_url} 
+                    alt={userProfile?.full_name || 'User'} 
+                  />
+                  <AvatarFallback>{userInitials}</AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col space-y-1 leading-none">
+                  <p className="font-medium">{userProfile?.full_name}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {userProfile?.email}
+                  </p>
+                </div>
+              </div>
+              <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link to="/profile" className="rtl-flex items-center">
-                  <User className="rtl-mr-2 h-4 w-4" />
-                  <span>{t('common.profile')}</span>
+                <Link to="/" className="flex items-center">
+                  <Home className="mr-2 h-4 w-4" />
+                  <span>{t('nav.home')}</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem className="rtl-flex" onClick={handleSettingsClick}>
-                <Settings className="rtl-mr-2 h-4 w-4" />
-                <span>{t('common.settings')}</span>
+              <DropdownMenuItem asChild>
+                <Link to="/profile" className="flex items-center">
+                  <User className="mr-2 h-4 w-4" />
+                  <span>{t('nav.profile')}</span>
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleSignOut} className="rtl-flex">
-                <LogOut className="rtl-mr-2 h-4 w-4" />
-                <span>{t('common.signOut')}</span>
+              <DropdownMenuItem asChild>
+                <Link to="/settings" className="flex items-center">
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>{t('nav.settings')}</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={handleSignOut}>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>{t('auth.signOut')}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       </div>
+
+      {/* Desktop Verification Status Banner */}
+      {!isMobile && (
+        <UnifiedVerificationStatus 
+          showActions={true}
+          showAccessLevels={false}
+          compact={false}
+        />
+      )}
+
+      {/* Modals */}
+      <SearchModal open={searchOpen} onOpenChange={setSearchOpen} />
+      <NotificationsModal 
+        open={notificationsOpen} 
+        onOpenChange={setNotificationsOpen} 
+      />
     </header>
   );
 };
