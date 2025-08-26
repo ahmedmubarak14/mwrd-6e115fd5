@@ -106,7 +106,7 @@ export const useRealTimeChat = () => {
     });
 
     try {
-      // Build query for existing conversation
+      // Check if conversation already exists
       let query = supabase
         .from('conversations')
         .select('*')
@@ -121,17 +121,9 @@ export const useRealTimeChat = () => {
         query = query.eq('offer_id', offerId);
       }
 
-      console.log('Checking for existing conversation...');
-      const { data: existingConversations, error: searchError } = await query;
+      const { data: existingConversation } = await query.single();
 
-      if (searchError) {
-        console.error('Error searching for existing conversation:', searchError);
-        throw searchError;
-      }
-
-      // Check if we found an existing conversation
-      if (existingConversations && existingConversations.length > 0) {
-        const existingConversation = existingConversations[0];
+      if (existingConversation) {
         console.log('Found existing conversation:', existingConversation.id);
         return existingConversation;
       }
@@ -148,22 +140,19 @@ export const useRealTimeChat = () => {
       if (requestId) conversationData.request_id = requestId;
       if (offerId) conversationData.offer_id = offerId;
 
-      const { data: newConversation, error: createError } = await supabase
+      const { data: newConversation, error } = await supabase
         .from('conversations')
         .insert(conversationData)
         .select()
         .single();
 
-      if (createError) {
-        console.error('Error creating conversation:', createError);
-        throw createError;
+      if (error) {
+        console.error('Error creating conversation:', error);
+        throw error;
       }
 
       console.log('Created new conversation:', newConversation);
-      
-      // Refresh conversations list
       await fetchConversations();
-      
       return newConversation;
     } catch (error: any) {
       console.error('Error starting conversation:', error);
