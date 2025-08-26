@@ -41,7 +41,13 @@ export const CleanHeader = ({ onMobileMenuOpen }: CleanHeaderProps) => {
       </div>
 
       <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-        <ConversationsDropdown />
+        <ConversationsDropdown>
+          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-card-foreground">
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+          </Button>
+        </ConversationsDropdown>
         
         <Button variant="ghost" size="sm" className="relative text-muted-foreground hover:text-card-foreground">
           <Bell className="h-5 w-5" />
