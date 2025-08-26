@@ -1,3 +1,4 @@
+
 import { CleanDashboardLayout } from "@/components/layout/CleanDashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -47,7 +48,7 @@ export const Settings = () => {
         <div className="bg-white min-h-screen">
           <div className="max-w-7xl mx-auto p-6">
             <div className="flex items-center justify-center min-h-[400px]">
-              <Card className="p-8 max-w-md mx-auto border border-gray-200 bg-white">
+              <Card className="p-8 max-w-md mx-auto border border-gray-300 bg-white">
                 <CardHeader>
                   <CardTitle className="text-2xl text-center text-red-600">
                     Language Context Error
@@ -77,19 +78,19 @@ export const Settings = () => {
       <div className="bg-white min-h-screen">
         <div className="max-w-7xl mx-auto p-6 space-y-8">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+            <h1 className="text-3xl font-semibold text-gray-900 mb-2">
               {t('settings.title')}
             </h1>
-            <p className="text-gray-600 mt-1">
+            <p className="text-gray-600 text-lg">
               {t('settings.subtitle')}
             </p>
           </div>
 
           <div className="grid gap-6">
             {/* Profile Settings */}
-            <Card className="border border-gray-200 bg-white hover:shadow-sm transition-shadow">
-              <CardHeader className="border-b border-gray-100">
-                <CardTitle className="flex items-center gap-2 text-gray-900">
+            <Card className="border border-gray-300 bg-white hover:shadow-sm transition-shadow">
+              <CardHeader className="border-b border-gray-100 p-6">
+                <CardTitle className="flex items-center gap-2 text-xl font-semibold text-gray-900 mb-2">
                   <User className="h-5 w-5" />
                   {t('settings.profile')}
                 </CardTitle>
@@ -100,45 +101,45 @@ export const Settings = () => {
               <CardContent className="space-y-4 p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="fullName" className="text-gray-900">{t('settings.fullName')}</Label>
+                    <Label htmlFor="fullName" className="text-gray-900 mb-1 block">{t('settings.fullName')}</Label>
                     <Input
                       id="fullName"
                       value={userProfile?.full_name || ''}
                       onChange={(e) => handleUpdateProfile('full_name', e.target.value)}
                       placeholder={t('settings.fullNamePlaceholder')}
-                      className="border-gray-200 focus:border-blue-500 mt-1"
+                      className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 bg-white"
                     />
                   </div>
                   
                   <div>
-                    <Label htmlFor="companyName" className="text-gray-900">{t('settings.companyName')}</Label>
+                    <Label htmlFor="companyName" className="text-gray-900 mb-1 block">{t('settings.companyName')}</Label>
                     <Input
                       id="companyName"
                       value={userProfile?.company_name || ''}
                       onChange={(e) => handleUpdateProfile('company_name', e.target.value)}
                       placeholder={t('settings.companyNamePlaceholder')}
-                      className="border-gray-200 focus:border-blue-500 mt-1"
+                      className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 bg-white"
                     />
                   </div>
                 </div>
                 
                 <div>
-                  <Label htmlFor="phone" className="text-gray-900">{t('settings.phone')}</Label>
+                  <Label htmlFor="phone" className="text-gray-900 mb-1 block">{t('settings.phone')}</Label>
                   <Input
                     id="phone"
                     value={userProfile?.phone || ''}
                     onChange={(e) => handleUpdateProfile('phone', e.target.value)}
                     placeholder={t('settings.phonePlaceholder')}
-                    className="border-gray-200 focus:border-blue-500 mt-1"
+                    className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 bg-white"
                   />
                 </div>
               </CardContent>
             </Card>
 
             {/* Language & Region */}
-            <Card className="border border-gray-200 bg-white hover:shadow-sm transition-shadow">
-              <CardHeader className="border-b border-gray-100">
-                <CardTitle className="flex items-center gap-2 text-gray-900">
+            <Card className="border border-gray-300 bg-white hover:shadow-sm transition-shadow">
+              <CardHeader className="border-b border-gray-100 p-6">
+                <CardTitle className="flex items-center gap-2 text-xl font-semibold text-gray-900 mb-2">
                   <Globe className="h-5 w-5" />
                   {t('settings.languageAndRegion')}
                 </CardTitle>
@@ -149,12 +150,12 @@ export const Settings = () => {
               <CardContent className="p-6">
                 <div className="space-y-4">
                   <div>
-                    <Label className="text-gray-900">{t('settings.language')}</Label>
+                    <Label className="text-gray-900 mb-1 block">{t('settings.language')}</Label>
                     <Select value={language} onValueChange={setLanguage}>
-                      <SelectTrigger className="w-full border-gray-200 mt-1">
+                      <SelectTrigger className="w-full border-gray-300 focus:border-blue-500 focus:ring-blue-500 bg-white">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white border border-gray-200">
                         <SelectItem value="en">English</SelectItem>
                         <SelectItem value="ar">العربية</SelectItem>
                       </SelectContent>
@@ -165,9 +166,9 @@ export const Settings = () => {
             </Card>
 
             {/* Notification Settings */}
-            <Card className="border border-gray-200 bg-white hover:shadow-sm transition-shadow">
-              <CardHeader className="border-b border-gray-100">
-                <CardTitle className="flex items-center gap-2 text-gray-900">
+            <Card className="border border-gray-300 bg-white hover:shadow-sm transition-shadow">
+              <CardHeader className="border-b border-gray-100 p-6">
+                <CardTitle className="flex items-center gap-2 text-xl font-semibold text-gray-900 mb-2">
                   <Bell className="h-5 w-5" />
                   {t('settings.notifications')}
                 </CardTitle>
@@ -212,9 +213,9 @@ export const Settings = () => {
             </Card>
 
             {/* Security Settings */}
-            <Card className="border border-gray-200 bg-white hover:shadow-sm transition-shadow">
-              <CardHeader className="border-b border-gray-100">
-                <CardTitle className="flex items-center gap-2 text-gray-900">
+            <Card className="border border-gray-300 bg-white hover:shadow-sm transition-shadow">
+              <CardHeader className="border-b border-gray-100 p-6">
+                <CardTitle className="flex items-center gap-2 text-xl font-semibold text-gray-900 mb-2">
                   <Shield className="h-5 w-5" />
                   {t('settings.security')}
                 </CardTitle>
@@ -225,14 +226,14 @@ export const Settings = () => {
               <CardContent className="space-y-4 p-6">
                 <Button 
                   variant="outline" 
-                  className="w-full border-gray-200 text-gray-700 hover:bg-gray-50"
+                  className="w-full border-gray-300 text-gray-700 hover:bg-gray-50 bg-white"
                 >
                   {t('settings.changePassword')}
                 </Button>
                 
                 <Button 
                   variant="outline" 
-                  className="w-full border-gray-200 text-gray-700 hover:bg-gray-50"
+                  className="w-full border-gray-300 text-gray-700 hover:bg-gray-50 bg-white"
                 >
                   {t('settings.enableTwoFactor')}
                 </Button>
