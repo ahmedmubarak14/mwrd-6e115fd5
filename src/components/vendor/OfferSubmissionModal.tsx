@@ -86,6 +86,11 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
       return;
     }
 
+    if (!request?.id) {
+      showError('Invalid request data');
+      return;
+    }
+
     setLoading(true);
     try {
       const { data: offer, error } = await supabase
@@ -152,12 +157,39 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
   };
 
   const formatBudget = (request: any) => {
+    // Add null safety check
+    if (!request) return 'Budget: Not available';
+    
     if (!request.budget_min && !request.budget_max) return 'Budget: Negotiable';
     if (request.budget_min && request.budget_max) {
       return `Budget: ${formatNumber(request.budget_min)} - ${formatNumber(request.budget_max)} ${request.currency || 'SAR'}`;
     }
     return 'Budget: Negotiable';
   };
+
+  // Add early return if request is null
+  if (!request) {
+    return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <AlertCircle className="h-5 w-5 text-destructive" />
+              Invalid Request
+            </DialogTitle>
+          </DialogHeader>
+          <div className="text-center py-4">
+            <p className="text-muted-foreground mb-4">
+              Unable to load request details. Please try again.
+            </p>
+            <Button onClick={onClose} variant="outline">
+              Close
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
