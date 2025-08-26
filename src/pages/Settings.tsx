@@ -10,17 +10,36 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Settings as SettingsIcon, User, Bell, Shield, Globe, Palette } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Settings = () => {
   const { userProfile, updateProfile } = useAuth();
-  const { t, language, setLanguage } = useLanguage();
   const [isUpdating, setIsUpdating] = useState(false);
   const [notifications, setNotifications] = useState({
     email: true,
     push: true,
     sms: false
   });
+
+  // Add error boundary for language context
+  const [languageContextError, setLanguageContextError] = useState(false);
+  let t: (key: string) => string;
+  let language: 'en' | 'ar';
+  let setLanguage: (lang: 'en' | 'ar') => void;
+
+  try {
+    const languageContext = useLanguage();
+    t = languageContext.t;
+    language = languageContext.language;
+    setLanguage = languageContext.setLanguage;
+  } catch (error) {
+    console.error('Language context error:', error);
+    setLanguageContextError(true);
+    // Fallback values
+    t = (key: string) => key;
+    language = 'en';
+    setLanguage = () => {};
+  }
 
   const handleUpdateProfile = async (field: string, value: any) => {
     setIsUpdating(true);
@@ -36,6 +55,32 @@ export const Settings = () => {
   const handleNotificationChange = (type: string, value: boolean) => {
     setNotifications(prev => ({ ...prev, [type]: value }));
   };
+
+  if (languageContextError) {
+    return (
+      <CleanDashboardLayout>
+        <div className="container mx-auto space-y-6">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <Card className="p-8 max-w-md mx-auto">
+              <CardHeader>
+                <CardTitle className="text-2xl text-center text-destructive">
+                  Language Context Error
+                </CardTitle>
+                <CardDescription className="text-center">
+                  There was an error initializing the language system. Please refresh the page.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button onClick={() => window.location.reload()} className="w-full">
+                  Refresh Page
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </CleanDashboardLayout>
+    );
+  }
 
   return (
     <CleanDashboardLayout>
