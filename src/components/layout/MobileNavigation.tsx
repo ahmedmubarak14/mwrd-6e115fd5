@@ -112,7 +112,7 @@ export const MobileNavigation = () => {
           </SheetHeader>
           
           <div className="flex flex-col h-full bg-gradient-to-b from-background to-primary/5">
-            <nav className="flex-1 px-6 py-6">
+            <nav className="flex-1 px-6 py-6 overflow-y-auto">
               <ul className="space-y-3">
                 {navigationItems.map((item, index) => (
                   <li key={index} className="animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
