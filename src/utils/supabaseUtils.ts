@@ -29,8 +29,8 @@ export const supabaseWithRetry = async <T>(
 
 export const optimizedQueries = {
   getUsersWithStats: async () => {
-    return supabaseWithRetry(() =>
-      supabase
+    return supabaseWithRetry(async () => {
+      const { data, error } = await supabase
         .from('user_profiles')
         .select(`
           *,
@@ -38,13 +38,15 @@ export const optimizedQueries = {
           offers:offers(count)
         `)
         .order('created_at', { ascending: false })
-        .limit(100)
-    );
+        .limit(100);
+      
+      return { data, error };
+    });
   },
   
   getRequestsWithOffers: async () => {
-    return supabaseWithRetry(() =>
-      supabase
+    return supabaseWithRetry(async () => {
+      const { data, error } = await supabase
         .from('requests')
         .select(`
           *,
@@ -52,17 +54,21 @@ export const optimizedQueries = {
           offers(count)
         `)
         .order('created_at', { ascending: false })
-        .limit(100)
-    );
+        .limit(100);
+      
+      return { data, error };
+    });
   },
   
   getFinancialSummary: async () => {
-    return supabaseWithRetry(() =>
-      supabase
+    return supabaseWithRetry(async () => {
+      const { data, error } = await supabase
         .from('financial_transactions')
         .select('amount, status, created_at, type')
         .eq('status', 'completed')
-        .order('created_at', { ascending: false })
-    );
+        .order('created_at', { ascending: false });
+      
+      return { data, error };
+    });
   }
 };

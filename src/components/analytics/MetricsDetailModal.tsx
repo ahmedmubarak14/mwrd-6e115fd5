@@ -100,8 +100,8 @@ export const MetricsDetailModal = ({ isOpen, onClose, metricType, metricTitle }:
     setDetailData(data || []);
     setSummary({
       total: data?.length || 0,
-      pending: data?.filter(r => r.status === 'pending').length || 0,
-      approved: data?.filter(r => r.status === 'approved').length || 0,
+      new: data?.filter(r => r.status === 'new').length || 0,
+      in_progress: data?.filter(r => r.status === 'in_progress').length || 0,
       completed: data?.filter(r => r.status === 'completed').length || 0
     });
   };
@@ -145,7 +145,7 @@ export const MetricsDetailModal = ({ isOpen, onClose, metricType, metricTitle }:
     setSummary({
       total: data?.length || 0,
       pending: data?.filter(o => o.status === 'pending').length || 0,
-      processing: data?.filter(o => o.status === 'processing').length || 0,
+      confirmed: data?.filter(o => o.status === 'confirmed').length || 0,
       completed: data?.filter(o => o.status === 'completed').length || 0
     });
   };
