@@ -1,3 +1,4 @@
+
 import { enUS } from "./locales/en-US";
 import { arSA } from "./locales/ar-SA";
 
@@ -24,10 +25,10 @@ export const getTranslation = (key: string, locale: 'en' | 'ar' = 'en'): string 
     if (value && typeof value === 'object' && k in value) {
       value = value[k];
     } else {
-      // Return the key itself if translation not found
-      return key;
+      // Return undefined if translation not found to enable fallbacks
+      return undefined as any;
     }
   }
   
-  return typeof value === 'string' ? value : key;
+  return typeof value === 'string' ? value : undefined as any;
 };
