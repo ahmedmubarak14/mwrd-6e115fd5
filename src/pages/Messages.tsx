@@ -7,10 +7,11 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { MessageSquare, Search, Plus, User, Circle, Phone, Users } from "lucide-react";
+import { MessageSquare, Search, Plus, User, Circle, Users, HeadphonesIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRealTimeChat } from "@/hooks/useRealTimeChat";
 import { QuickChatModal } from "@/components/conversations/QuickChatModal";
+import { StartChatModal } from "@/components/chat/StartChatModal";
 
 export const Messages = () => {
   const { userProfile } = useAuth();
@@ -18,6 +19,7 @@ export const Messages = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedConversation, setSelectedConversation] = useState<any>(null);
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
+  const [isStartChatModalOpen, setIsStartChatModalOpen] = useState(false);
 
   // Safe fallback for translation
   const t = languageContext?.t || ((key: string) => key.split('.').pop() || key);
@@ -25,7 +27,8 @@ export const Messages = () => {
   const {
     conversations,
     loading,
-    getOtherParticipant
+    getOtherParticipant,
+    refetch
   } = useRealTimeChat();
 
   const [conversationParticipants, setConversationParticipants] = useState<Record<string, any>>({});
@@ -54,6 +57,15 @@ export const Messages = () => {
 
     fetchParticipants();
   }, [conversations, getOtherParticipant]);
+
+  // Auto-refresh conversations periodically
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 30000); // Refresh every 30 seconds
+
+    return () => clearInterval(interval);
+  }, [refetch]);
 
   // Filter conversations based on search term
   const filteredConversations = conversations.filter((conversation) => {
@@ -101,6 +113,18 @@ export const Messages = () => {
     return conversation.conversation_type || 'business';
   };
 
+  const getConversationIcon = (conversationType: string) => {
+    return conversationType === 'support' ? (
+      <HeadphonesIcon className="h-6 w-6 text-muted-foreground" />
+    ) : (
+      <User className="h-6 w-6 text-muted-foreground" />
+    );
+  };
+
+  const getConversationTypeLabel = (conversationType: string) => {
+    return conversationType === 'support' ? 'Support' : 'Business';
+  };
+
   if (loading) {
     return (
       <CleanDashboardLayout>
@@ -136,7 +160,7 @@ export const Messages = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
-              <Button disabled>
+              <Button onClick={() => setIsStartChatModalOpen(true)}>
                 <Plus className="h-4 w-4 mr-2" />
                 {t('messages.startNewChat') || 'New Chat'}
               </Button>
@@ -155,12 +179,18 @@ export const Messages = () => {
                   : (t('messages.noResults') || 'No conversations found')
                 }
               </h3>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground mb-4">
                 {conversations.length === 0 
-                  ? (t('messages.noConversationsDesc') || 'Start a conversation from the support page or when responding to requests')
+                  ? (t('messages.noConversationsDesc') || 'Start a conversation with other users or contact support')
                   : 'Try adjusting your search terms'
                 }
               </p>
+              {conversations.length === 0 && (
+                <Button onClick={() => setIsStartChatModalOpen(true)}>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Start Your First Conversation
+                </Button>
+              )}
             </CardContent>
           </Card>
         ) : (
@@ -180,11 +210,7 @@ export const Messages = () => {
                     <div className="flex items-center gap-4">
                       <div className="relative">
                         <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
-                          {isSupport ? (
-                            <Users className="h-6 w-6 text-muted-foreground" />
-                          ) : (
-                            <User className="h-6 w-6 text-muted-foreground" />
-                          )}
+                          {getConversationIcon(conversationType)}
                         </div>
                         <Circle className="absolute -bottom-1 -right-1 h-4 w-4 text-green-500 fill-current" />
                       </div>
@@ -195,11 +221,12 @@ export const Messages = () => {
                             <h3 className="font-semibold truncate">
                               {participant?.full_name || participant?.company_name || 'Unknown User'}
                             </h3>
-                            {isSupport && (
-                              <Badge variant="secondary" className="text-xs">
-                                Support
-                              </Badge>
-                            )}
+                            <Badge 
+                              variant={isSupport ? "default" : "secondary"} 
+                              className="text-xs"
+                            >
+                              {getConversationTypeLabel(conversationType)}
+                            </Badge>
                           </div>
                           <div className="flex items-center gap-2">
                             <Badge variant="secondary" className="text-xs">
@@ -225,6 +252,12 @@ export const Messages = () => {
           </div>
         )}
 
+        {/* Start Chat Modal */}
+        <StartChatModal 
+          open={isStartChatModalOpen}
+          onOpenChange={setIsStartChatModalOpen}
+        />
+
         {/* Chat Modal */}
         {selectedConversation && (
           <QuickChatModal
@@ -234,6 +267,7 @@ export const Messages = () => {
             recipientName={selectedConversation.participant.full_name || selectedConversation.participant.company_name}
             requestId={selectedConversation.request_id}
             offerId={selectedConversation.offer_id}
+            conversationType={selectedConversation.conversation_type || 'business'}
           />
         )}
       </div>
