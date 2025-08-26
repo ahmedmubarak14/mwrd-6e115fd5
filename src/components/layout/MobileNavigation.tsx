@@ -57,7 +57,7 @@ export const MobileNavigation = () => {
   };
 
   return (
-    <div className="md:hidden">
+    <div className={`md:hidden ${isRTL ? 'order-first' : 'order-last'}`}>
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <Button variant="ghost" size="sm" className="p-2 touch-manipulation">
