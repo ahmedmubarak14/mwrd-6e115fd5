@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -12,8 +13,9 @@ import {
   DropdownMenuSeparator, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu";
-import { Menu, Search, Bell, User, Settings, LogOut } from "lucide-react";
+import { Menu, Search, Bell, User, Settings, LogOut, Globe } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 interface CleanHeaderProps {
   onMobileMenuOpen?: () => void;
@@ -21,7 +23,7 @@ interface CleanHeaderProps {
 
 export const CleanHeader = ({ onMobileMenuOpen }: CleanHeaderProps) => {
   const { user, userProfile, signOut } = useAuth();
-  const { t, isRTL } = useLanguage();
+  const { t, isRTL, language, setLanguage } = useLanguage();
   const [searchTerm, setSearchTerm] = useState("");
   const isMobile = useIsMobile();
 
@@ -74,6 +76,11 @@ export const CleanHeader = ({ onMobileMenuOpen }: CleanHeaderProps) => {
           <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>
         </Button>
 
+        {/* Language Switcher - Hidden on mobile, shown on desktop/tablet */}
+        <div className="hidden sm:block">
+          <LanguageSwitcher />
+        </div>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
@@ -93,6 +100,21 @@ export const CleanHeader = ({ onMobileMenuOpen }: CleanHeaderProps) => {
               </div>
             </div>
             <DropdownMenuSeparator className="bg-gray-200" />
+            
+            {/* Mobile Language Switcher */}
+            {isMobile && (
+              <>
+                <DropdownMenuItem 
+                  onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
+                  className="flex items-center text-gray-700 hover:text-gray-900"
+                >
+                  <Globe className="mr-2 h-4 w-4" />
+                  <span>{language === 'en' ? 'العربية' : 'English'}</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-gray-200" />
+              </>
+            )}
+            
             <DropdownMenuItem asChild>
               <Link to="/profile" className="flex items-center text-gray-700 hover:text-gray-900">
                 <User className="mr-2 h-4 w-4" />
