@@ -81,6 +81,7 @@ export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 h-full flex items-center justify-between">
         {/* Logo and Menu Trigger - RTL responsive */}
         <div className={cn("flex items-center gap-2 sm:gap-4", isRTL ? "order-3" : "order-1")}>
+          {/* Mobile Menu Trigger */}
           {isMobile ? (
             <Button
               variant="ghost"
@@ -91,6 +92,7 @@ export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
               <Menu className="h-5 w-5" />
             </Button>
           ) : (
+            /* Desktop Sidebar Trigger - only show on desktop when sidebar is available */
             <SidebarTrigger className="lg:hidden h-8 w-8 sm:h-10 sm:w-10 text-white hover:bg-white/10" />
           )}
           
