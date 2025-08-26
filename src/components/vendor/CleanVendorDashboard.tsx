@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,10 +15,24 @@ import { UnifiedVerificationStatus } from "@/components/verification/UnifiedVeri
 
 export const CleanVendorDashboard = () => {
   const { userProfile } = useAuth();
-  const { language, t } = useLanguage();
+  
+  // Add error handling for language context
+  let language, t, isRTL;
+  try {
+    const languageContext = useLanguage();
+    language = languageContext.language;
+    t = languageContext.t;
+    isRTL = languageContext.isRTL;
+  } catch (error) {
+    // Fallback if language context is not available
+    console.error("Language context not available, using fallback:", error);
+    language = 'en';
+    t = (key: string) => key; // Return the key itself as fallback
+    isRTL = false;
+  }
+  
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
-  const isRTL = language === 'ar';
   
   const { matchedRequests, loading: matchingLoading, getMatchLevel } = useMatchingSystem();
   const { offers, loading: offersLoading, formatPrice, getStatusColor } = useOffers();
