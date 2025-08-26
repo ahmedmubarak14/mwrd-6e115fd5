@@ -1,3 +1,4 @@
+
 export const enUS = {
   common: {
     loading: 'Loading...',
@@ -107,48 +108,6 @@ export const enUS = {
     securityDescription: 'Manage your account security settings',
     changePassword: 'Change Password',
     enableTwoFactor: 'Enable Two-Factor Authentication',
-  },
-  profile: {
-    title: 'Profile',
-    subtitle: 'Manage your profile information and verification status',
-    personalInfo: 'Personal Information',
-    personalInfoDesc: 'Update your personal details and contact information',
-    companyInfo: 'Company Information',
-    companyInfoDesc: 'Update your business details and company profile',
-    fullName: 'Full Name',
-    email: 'Email Address',
-    phone: 'Phone Number',
-    address: 'Address',
-    role: 'Role',
-    companyName: 'Company Name',
-    bio: 'Company Description',
-    bioClient: 'About You',
-    bioPlaceholder: 'Tell us about your company, services, and expertise...',
-    bioPlaceholderClient: 'Tell us about yourself and your requirements...',
-    portfolioUrl: 'Portfolio URL',
-    serviceCategories: 'Service Categories',
-    serviceCategoriesDesc: 'Select the categories that best describe your services',
-    selectedCategories: 'Selected Categories',
-    verificationRequirements: 'Verification Requirements',
-    verificationDesc: 'Complete these requirements to get verified and access all features',
-    accountSettings: 'Account Settings',
-    accountSettingsDesc: 'View your account status and subscription details',
-    accountStatus: 'Account Status',
-    subscriptionPlan: 'Subscription Plan',
-    memberSince: 'Member Since',
-    saveChanges: 'Save Changes',
-    saveCategories: 'Save Categories',
-    saving: 'Saving...',
-    verified: 'Verified',
-    rejected: 'Rejected',
-    underReview: 'Under Review',
-    pendingVerification: 'Pending Verification',
-    tabs: {
-      profile: 'Profile',
-      categories: 'Categories',
-      verification: 'Verification',
-      settings: 'Settings'
-    }
   },
   vendor: {
     welcome: 'Welcome',

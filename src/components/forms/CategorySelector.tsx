@@ -60,13 +60,9 @@ export const CategorySelector = ({
       </SelectTrigger>
       <SelectContent>
         {getAllCategories().map((category) => {
-          // Double-check that we have a valid slug before rendering
-          if (!category.slug || category.slug.trim() === '') {
-            return null;
-          }
-          
+          const itemValue = category.slug && category.slug.trim() !== '' ? category.slug : `category-${category.id}`;
           return (
-            <SelectItem key={category.id} value={category.slug}>
+            <SelectItem key={category.id} value={itemValue}>
               {category.isChild && "  ↳ "}
               {language === 'ar' ? category.name_ar : category.name_en}
               {category.isChild && ` (${category.parentName})`}
