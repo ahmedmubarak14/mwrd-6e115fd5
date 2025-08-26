@@ -1,3 +1,4 @@
+
 import { Moon, Sun, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -6,11 +7,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useTheme } from "@/contexts/ThemeContext";
+import { useRouteAwareTheme } from "@/contexts/RouteAwareThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export function ThemeToggle() {
-  const { setTheme, theme } = useTheme();
+  const { setTheme, theme } = useRouteAwareTheme();
   const { t, language } = useLanguage();
   const isRTL = language === 'ar';
 
