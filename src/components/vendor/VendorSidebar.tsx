@@ -141,14 +141,20 @@ export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {
     <Sidebar 
       collapsible="icon" 
       className={cn(
-        "w-64 data-[state=collapsed]:w-16",
+        "w-64 data-[state=collapsed]:w-16 transition-all duration-300",
         isRTL ? "border-l border-r-0" : "border-r border-l-0"
       )}
       side={isRTL ? "right" : "left"}
     >
-      <SidebarContent className={cn(isRTL && "text-right")}>
+      <SidebarContent className={cn(
+        "h-full",
+        isRTL && "text-right"
+      )}>
         <SidebarGroup>
-          <SidebarGroupLabel className={cn(isRTL && "text-right")}>
+          <SidebarGroupLabel className={cn(
+            "px-2 py-2 text-sm font-medium",
+            isRTL && "text-right"
+          )}>
             {t('nav.menu') || 'Menu'}
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -161,11 +167,17 @@ export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {
                       asChild
                       isActive={isActive(item.href)}
                       tooltip={state === "collapsed" ? item.label : undefined}
-                      className={cn(isRTL && "flex-row-reverse text-right")}
+                      className={cn(
+                        "w-full transition-colors",
+                        isRTL && "flex-row-reverse text-right"
+                      )}
                     >
-                      <Link to={item.href} className={cn(isRTL && "flex-row-reverse")}>
-                        <Icon />
-                        <span>{item.label}</span>
+                      <Link to={item.href} className={cn(
+                        "flex items-center gap-2 px-2 py-2 rounded-md hover:bg-accent",
+                        isRTL && "flex-row-reverse"
+                      )}>
+                        <Icon className="h-4 w-4 shrink-0" />
+                        <span className="truncate">{item.label}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -185,11 +197,17 @@ export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {
                   asChild
                   isActive={isActive('/settings')}
                   tooltip={state === "collapsed" ? (t('nav.settings') || 'Settings') : undefined}
-                  className={cn(isRTL && "flex-row-reverse text-right")}
+                  className={cn(
+                    "w-full transition-colors",
+                    isRTL && "flex-row-reverse text-right"
+                  )}
                 >
-                  <Link to="/settings" className={cn(isRTL && "flex-row-reverse")}>
-                    <Settings />
-                    <span>{t('nav.settings') || 'Settings'}</span>
+                  <Link to="/settings" className={cn(
+                    "flex items-center gap-2 px-2 py-2 rounded-md hover:bg-accent",
+                    isRTL && "flex-row-reverse"
+                  )}>
+                    <Settings className="h-4 w-4 shrink-0" />
+                    <span className="truncate">{t('nav.settings') || 'Settings'}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

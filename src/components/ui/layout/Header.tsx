@@ -58,9 +58,15 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
       "sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
       "safe-area-pt"
     )}>
-      <div className="container flex h-14 max-w-screen-2xl items-center px-4">
-        {/* Left Section */}
-        <div className="flex items-center gap-4">
+      <div className={cn(
+        "container flex h-14 max-w-screen-2xl items-center px-4",
+        isRTL ? "flex-row-reverse" : "flex-row"
+      )}>
+        {/* Left Section - RTL aware */}
+        <div className={cn(
+          "flex items-center gap-4",
+          isRTL ? "flex-row-reverse" : "flex-row"
+        )}>
           {/* Desktop Sidebar Trigger or Mobile Menu */}
           {isMobile ? (
             <Button
@@ -104,18 +110,21 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
                 variant="outline"
                 className={cn(
                   "relative w-full justify-start text-sm text-muted-foreground",
-                  isRTL && "flex-row-reverse"
+                  isRTL ? "flex-row-reverse" : "flex-row"
                 )}
               >
                 <Search className="h-4 w-4" />
-                <span className="ml-2">{t('common.search')}</span>
+                <span className={cn("ml-2", isRTL && "mr-2 ml-0")}>{t('common.search')}</span>
               </Button>
             </SearchModal>
           </div>
         </div>
 
-        {/* Right Section */}
-        <div className="flex items-center gap-2">
+        {/* Right Section - RTL aware */}
+        <div className={cn(
+          "flex items-center gap-2",
+          isRTL ? "flex-row-reverse" : "flex-row"
+        )}>
           {/* Verification Status - Mobile Compact */}
           {isMobile && (
             <UnifiedVerificationStatus compact={true} />
@@ -133,7 +142,10 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
                   <Bell className="h-5 w-5" />
                   <Badge
                     variant="destructive"
-                    className="absolute -right-1 -top-1 h-5 w-5 rounded-full p-0 text-xs"
+                    className={cn(
+                      "absolute h-5 w-5 rounded-full p-0 text-xs",
+                      isRTL ? "-left-1 -top-1" : "-right-1 -top-1"
+                    )}
                   >
                     3
                   </Badge>
@@ -176,7 +188,10 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
               align={isRTL ? "start" : "end"} 
               forceMount
             >
-              <div className="flex items-center justify-start gap-2 p-2">
+              <div className={cn(
+                "flex items-center justify-start gap-2 p-2",
+                isRTL && "flex-row-reverse text-right"
+              )}>
                 <Avatar className="h-8 w-8">
                   <AvatarImage 
                     src={userProfile?.avatar_url} 
@@ -184,7 +199,10 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
                   />
                   <AvatarFallback>{userInitials}</AvatarFallback>
                 </Avatar>
-                <div className="flex flex-col space-y-1 leading-none">
+                <div className={cn(
+                  "flex flex-col space-y-1 leading-none",
+                  isRTL && "text-right"
+                )}>
                   <p className="font-medium">{userProfile?.full_name}</p>
                   <p className="text-xs text-muted-foreground">
                     {userProfile?.email}
@@ -193,26 +211,38 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
               </div>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link to="/" className="flex items-center">
-                  <Home className="mr-2 h-4 w-4" />
+                <Link to="/" className={cn(
+                  "flex items-center",
+                  isRTL && "flex-row-reverse text-right"
+                )}>
+                  <Home className={cn("h-4 w-4", isRTL ? "ml-2 mr-0" : "mr-2")} />
                   <span>{t('nav.home')}</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/profile" className="flex items-center">
-                  <User className="mr-2 h-4 w-4" />
+                <Link to="/profile" className={cn(
+                  "flex items-center",
+                  isRTL && "flex-row-reverse text-right"
+                )}>
+                  <User className={cn("h-4 w-4", isRTL ? "ml-2 mr-0" : "mr-2")} />
                   <span>{t('nav.profile')}</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/settings" className="flex items-center">
-                  <Settings className="mr-2 h-4 w-4" />
+                <Link to="/settings" className={cn(
+                  "flex items-center",
+                  isRTL && "flex-row-reverse text-right"
+                )}>
+                  <Settings className={cn("h-4 w-4", isRTL ? "ml-2 mr-0" : "mr-2")} />
                   <span>{t('nav.settings')}</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleSignOut}>
-                <LogOut className="mr-2 h-4 w-4" />
+              <DropdownMenuItem onClick={handleSignOut} className={cn(
+                "flex items-center",
+                isRTL && "flex-row-reverse text-right"
+              )}>
+                <LogOut className={cn("h-4 w-4", isRTL ? "ml-2 mr-0" : "mr-2")} />
                 <span>{t('auth.signOut')}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
