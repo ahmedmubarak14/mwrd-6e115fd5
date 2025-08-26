@@ -86,13 +86,13 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
             </Button>
           )}
 
-          {/* Logo/Brand */}
+          {/* Logo/Brand - Updated to use MWRD */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <span className="text-sm font-bold text-primary-foreground">S</span>
+              <span className="text-sm font-bold text-primary-foreground">M</span>
             </div>
             <span className="hidden font-bold sm:inline-block">
-              Supplify
+              MWRD
             </span>
           </Link>
         </div>

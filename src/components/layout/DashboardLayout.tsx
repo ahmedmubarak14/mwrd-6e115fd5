@@ -5,7 +5,7 @@ import { MobileSidebar } from "./MobileSidebar";
 import { MobileContainer } from "@/components/ui/MobileContainer";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { VendorSidebar } from "@/components/vendor/VendorSidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -29,27 +29,25 @@ export const DashboardLayout = ({ children, className }: DashboardLayoutProps) =
         className={className}
         dir={isRTL ? 'rtl' : 'ltr'}
       >
-        <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
-        
-        <div className="flex flex-1 min-h-0">
-          {/* Mobile Sidebar */}
+        <div className="min-h-screen flex flex-col">
+          <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
+          
           <MobileSidebar 
             isOpen={mobileMenuOpen} 
             onOpenChange={setMobileMenuOpen} 
           />
 
-          {/* Main Content */}
-          <main className="flex-1 overflow-auto min-w-0">
+          <main className="flex-1 overflow-auto bg-background p-4">
             {children}
           </main>
-        </div>
 
-        <Footer />
+          <Footer />
+        </div>
       </MobileContainer>
     );
   }
 
-  // Desktop Layout - Use SidebarProvider pattern
+  // Desktop Layout - Restructured to match AdminLayout pattern
   return (
     <MobileContainer 
       pageType="dashboard"
@@ -63,15 +61,15 @@ export const DashboardLayout = ({ children, className }: DashboardLayoutProps) =
             userProfile={userProfile}
           />
           
-          <SidebarInset className="flex flex-col">
+          <div className="flex-1 flex flex-col min-w-0">
             <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
             
-            <main className="flex-1 overflow-auto bg-background">
+            <main className="flex-1 overflow-auto bg-background p-6">
               {children}
             </main>
             
             <Footer />
-          </SidebarInset>
+          </div>
         </div>
       </SidebarProvider>
     </MobileContainer>

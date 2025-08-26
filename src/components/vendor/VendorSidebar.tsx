@@ -138,7 +138,13 @@ export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {
   };
 
   return (
-    <Sidebar collapsible="icon" className={cn(isRTL && "border-l border-r-0")}>
+    <Sidebar 
+      collapsible="icon" 
+      className={cn(
+        "w-64 data-[state=collapsed]:w-16",
+        isRTL && "border-l border-r-0"
+      )}
+    >
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>
