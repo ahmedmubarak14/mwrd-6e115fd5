@@ -1,17 +1,12 @@
 
 import { useState } from "react";
 import { CleanHeader } from "@/components/ui/layout/CleanHeader";
-import { ModernVendorSidebar } from "@/components/vendor/ModernVendorSidebar";
+import { CleanSidebar } from "@/components/vendor/CleanSidebar";
 import { MobileContainer } from "@/components/ui/MobileContainer";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import {
-  SidebarProvider,
-  SidebarInset,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
 
 interface CleanDashboardLayoutProps {
   children: React.ReactNode;
@@ -28,24 +23,26 @@ export const CleanDashboardLayout = ({ children, className }: CleanDashboardLayo
     return (
       <MobileContainer 
         pageType="dashboard"
-        className="bg-background"
+        className="bg-white"
         dir={isRTL ? 'rtl' : 'ltr'}
       >
-        <div className="min-h-screen flex flex-col bg-background">
+        <div className="min-h-screen flex flex-col bg-white">
           <CleanHeader onMobileMenuOpen={() => setSidebarOpen(true)} />
           
           <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
             <SheetContent 
               side={isRTL ? "right" : "left"} 
-              className="p-0 bg-sidebar border-r border-sidebar-border w-64"
+              className="p-0 bg-white border-r border-gray-200 w-64"
             >
-              <SidebarProvider>
-                <ModernVendorSidebar />
-              </SidebarProvider>
+              <CleanSidebar 
+                userRole={userProfile?.role as 'client' | 'vendor' | 'admin'}
+                userProfile={userProfile}
+                onItemClick={() => setSidebarOpen(false)}
+              />
             </SheetContent>
           </Sheet>
 
-          <main className="flex-1 bg-background">
+          <main className="flex-1 bg-white">
             {children}
           </main>
         </div>
@@ -54,30 +51,26 @@ export const CleanDashboardLayout = ({ children, className }: CleanDashboardLayo
   }
 
   return (
-    <div className={`min-h-screen w-full bg-background ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className={`min-h-screen w-full bg-white ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       <MobileContainer 
         pageType="dashboard"
-        className="bg-background"
+        className="bg-white"
         dir={isRTL ? 'rtl' : 'ltr'}
       >
-        <SidebarProvider>
-          <div className={`min-h-screen flex w-full bg-background ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-            <ModernVendorSidebar />
+        <div className={`min-h-screen flex w-full bg-white ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+          <CleanSidebar 
+            userRole={userProfile?.role as 'client' | 'vendor' | 'admin'}
+            userProfile={userProfile}
+          />
+          
+          <div className="flex-1 flex flex-col min-w-0 bg-white">
+            <CleanHeader onMobileMenuOpen={() => setSidebarOpen(true)} />
             
-            <SidebarInset className="flex-1 flex flex-col min-w-0 bg-background">
-              <header className="flex h-16 shrink-0 items-center gap-2 px-4 border-b border-border">
-                <SidebarTrigger className="-ml-1" />
-                <div className="flex-1">
-                  <CleanHeader onMobileMenuOpen={() => setSidebarOpen(true)} />
-                </div>
-              </header>
-              
-              <main className="flex-1 bg-background p-4">
-                {children}
-              </main>
-            </SidebarInset>
+            <main className="flex-1 bg-white">
+              {children}
+            </main>
           </div>
-        </SidebarProvider>
+        </div>
       </MobileContainer>
     </div>
   );
