@@ -264,3 +264,19 @@ export const translations = {
     'profile.saveChanges': 'حفظ التغييرات',
   }
 };
+
+export const getTranslation = (key: string, language: 'en' | 'ar'): string => {
+  const keys = key.split('.');
+  let translation: any = translations[language];
+  
+  for (const k of keys) {
+    if (translation && typeof translation === 'object' && k in translation) {
+      translation = translation[k];
+    } else {
+      // Return the key itself if translation is not found
+      return key;
+    }
+  }
+  
+  return typeof translation === 'string' ? translation : key;
+};
