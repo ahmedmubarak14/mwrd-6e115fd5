@@ -31,6 +31,18 @@ export interface RequestCategory {
   categories?: Category;
 }
 
+// Helper function to sanitize data for database operations
+const sanitizeDataForDB = (data: any) => {
+  const sanitized = { ...data };
+  
+  // Convert empty strings to null for UUID fields
+  if (sanitized.parent_id === '') {
+    sanitized.parent_id = null;
+  }
+  
+  return sanitized;
+};
+
 export const useCategories = (includeInactive: boolean = false) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(false);
@@ -103,9 +115,13 @@ export const useCategories = (includeInactive: boolean = false) => {
     try {
       console.log('Creating category with data:', categoryData);
       
+      // Sanitize data before sending to database
+      const sanitizedData = sanitizeDataForDB(categoryData);
+      console.log('Sanitized data:', sanitizedData);
+      
       const { data, error } = await supabase
         .from('categories')
-        .insert([categoryData])
+        .insert([sanitizedData])
         .select()
         .single();
 
@@ -131,6 +147,18 @@ export const useCategories = (includeInactive: boolean = false) => {
         toast({
           title: "Permission Error",
           description: "You don't have permission to create categories. Please ensure you have admin privileges.",
+          variant: "destructive"
+        });
+      } else if (errorMessage.includes('violates row-level security')) {
+        toast({
+          title: "Access Denied",
+          description: "Row-level security policy prevents this action. Please check your admin role assignment.",
+          variant: "destructive"
+        });
+      } else if (errorMessage.includes('invalid input syntax for type uuid')) {
+        toast({
+          title: "Data Error",
+          description: "Invalid data format. Please check the category information and try again.",
           variant: "destructive"
         });
       } else {
@@ -165,9 +193,13 @@ export const useCategories = (includeInactive: boolean = false) => {
         console.log('User profile:', profile);
       }
 
+      // Sanitize data before sending to database
+      const sanitizedUpdates = sanitizeDataForDB(updates);
+      console.log('Sanitized updates:', sanitizedUpdates);
+
       const { error } = await supabase
         .from('categories')
-        .update(updates)
+        .update(sanitizedUpdates)
         .eq('id', id);
 
       if (error) {
@@ -196,6 +228,12 @@ export const useCategories = (includeInactive: boolean = false) => {
         toast({
           title: "Access Denied",
           description: "Row-level security policy prevents this update. Please check your admin role assignment.",
+          variant: "destructive"
+        });
+      } else if (errorMessage.includes('invalid input syntax for type uuid')) {
+        toast({
+          title: "Data Error",
+          description: "Invalid data format. Please check the category information and try again.",
           variant: "destructive"
         });
       } else {
@@ -238,6 +276,12 @@ export const useCategories = (includeInactive: boolean = false) => {
         toast({
           title: "Permission Error",
           description: "You don't have permission to delete categories. Please ensure you have admin privileges.",
+          variant: "destructive"
+        });
+      } else if (errorMessage.includes('violates row-level security')) {
+        toast({
+          title: "Access Denied",
+          description: "Row-level security policy prevents this action. Please check your admin role assignment.",
           variant: "destructive"
         });
       } else {
