@@ -34,6 +34,7 @@ export const LiveChatButton = () => {
     try {
       console.log('LiveChat: Getting available admins...');
       const admins = await getAvailableAdmins();
+      console.log('LiveChat: Received admins data:', admins);
       
       if (admins.length === 0) {
         console.log('LiveChat: No admins available');
@@ -50,7 +51,15 @@ export const LiveChatButton = () => {
         return;
       }
 
-      console.log('LiveChat: Selected admin:', admin.full_name);
+      console.log('LiveChat: Selected admin:', admin);
+      
+      // Validate admin has required fields
+      if (!admin.user_id) {
+        console.error('LiveChat: Admin missing user_id:', admin);
+        showError('Invalid admin data. Please try again.');
+        return;
+      }
+
       setSelectedAdmin(admin);
       setIsModalOpen(true);
       showSuccess('Connecting you to a support agent...');
@@ -84,12 +93,15 @@ export const LiveChatButton = () => {
         {isLoading ? 'Connecting...' : t('support.startLiveChat') || 'Start Live Chat'}
       </Button>
 
-      <QuickChatModal
-        open={isModalOpen}
-        onOpenChange={handleModalClose}
-        recipientId={selectedAdmin?.user_id || ''}
-        recipientName={selectedAdmin?.full_name || 'Support Agent'}
-      />
+      {selectedAdmin && (
+        <QuickChatModal
+          open={isModalOpen}
+          onOpenChange={handleModalClose}
+          recipientId={selectedAdmin.user_id}
+          recipientName={selectedAdmin.full_name || 'Support Agent'}
+          conversationType="support"
+        />
+      )}
     </>
   );
 };

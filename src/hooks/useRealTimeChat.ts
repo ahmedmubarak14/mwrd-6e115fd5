@@ -1,4 +1,3 @@
-
 import { useState, useCallback, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -40,7 +39,6 @@ export const useRealTimeChat = () => {
   const { user } = useAuth();
   const [realtimeChannel, setRealtimeChannel] = useState<RealtimeChannel | null>(null);
 
-  // Set up real-time subscriptions
   useEffect(() => {
     if (!user) return;
 
@@ -48,7 +46,6 @@ export const useRealTimeChat = () => {
 
     const channel = supabase.channel('chat-updates');
 
-    // Listen for new messages
     channel
       .on('postgres_changes', {
         event: 'INSERT',
@@ -100,14 +97,21 @@ export const useRealTimeChat = () => {
   ) => {
     if (!user) throw new Error('User not authenticated');
 
-    console.log('Starting conversation with:', recipientId, 'type:', conversationType);
+    console.log('Starting conversation with:', {
+      recipientId,
+      conversationType,
+      requestId,
+      offerId,
+      userId: user.id
+    });
 
     try {
       // Check if conversation already exists
       let query = supabase
         .from('conversations')
         .select('*')
-        .or(`and(client_id.eq.${user.id},vendor_id.eq.${recipientId}),and(client_id.eq.${recipientId},vendor_id.eq.${user.id})`);
+        .or(`and(client_id.eq.${user.id},vendor_id.eq.${recipientId}),and(client_id.eq.${recipientId},vendor_id.eq.${user.id})`)
+        .eq('conversation_type', conversationType);
 
       // Add filters for request/offer if provided
       if (requestId) {
@@ -142,9 +146,12 @@ export const useRealTimeChat = () => {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error creating conversation:', error);
+        throw error;
+      }
 
-      console.log('Created new conversation:', newConversation.id);
+      console.log('Created new conversation:', newConversation);
       await fetchConversations();
       return newConversation;
     } catch (error: any) {

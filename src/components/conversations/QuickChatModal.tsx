@@ -21,6 +21,7 @@ interface QuickChatModalProps {
   offerId?: string;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  conversationType?: 'business' | 'support';
 }
 
 interface MessageWithStatus extends Message {
@@ -35,7 +36,8 @@ export const QuickChatModal = ({
   requestId,
   offerId,
   open = false,
-  onOpenChange
+  onOpenChange,
+  conversationType = 'business'
 }: QuickChatModalProps) => {
   const [isOpen, setIsOpen] = useState(open);
   const [message, setMessage] = useState("");
@@ -121,12 +123,21 @@ export const QuickChatModal = ({
 
   const initializeConversation = async () => {
     try {
-      const conversation = await startConversation(recipientId, requestId, offerId);
+      console.log('QuickChatModal: Initializing conversation with:', {
+        recipientId,
+        conversationType,
+        requestId,
+        offerId
+      });
+      
+      const conversation = await startConversation(recipientId, requestId, offerId, conversationType);
+      console.log('QuickChatModal: Conversation initialized:', conversation);
+      
       setCurrentConversation(conversation);
       setActiveConversation(conversation.id);
       await fetchMessages(conversation.id);
     } catch (error) {
-      console.error('Error initializing conversation:', error);
+      console.error('QuickChatModal: Error initializing conversation:', error);
       toast({
         title: "Error",
         description: "Failed to start conversation",
@@ -279,7 +290,7 @@ export const QuickChatModal = ({
               <div>
                 <h3 className="font-semibold">{otherParticipant?.full_name || recipientName}</h3>
                 <Badge variant="secondary" className="text-xs">
-                  {otherParticipant?.role || 'User'}
+                  {conversationType === 'support' ? 'Support Agent' : (otherParticipant?.role || 'User')}
                 </Badge>
               </div>
             </div>
