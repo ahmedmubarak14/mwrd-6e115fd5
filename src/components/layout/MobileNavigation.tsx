@@ -66,9 +66,9 @@ export const MobileNavigation = () => {
         </SheetTrigger>
         <SheetContent 
           side={isRTL ? "right" : "left"} 
-          className="w-[90vw] max-w-sm p-0 safe-area-pt safe-area-pb animate-slide-in-right bg-background/95 backdrop-blur-md"
+          className="w-[90vw] max-w-sm p-0 safe-area-pt safe-area-pb animate-slide-in-right bg-background/95 backdrop-blur-md flex flex-col"
         >
-          <SheetHeader className={`p-6 border-b ${isRTL ? 'text-right' : 'text-left'} bg-gradient-to-br from-primary/5 to-accent/5`}>
+          <SheetHeader className={`flex-shrink-0 p-6 border-b ${isRTL ? 'text-right' : 'text-left'} bg-gradient-to-br from-primary/5 to-accent/5`}>
             <SheetTitle className={`flex items-center gap-3 ${isRTL ? 'justify-end' : 'justify-start'}`}>
               <Link to="/landing" onClick={handleLinkClick}>
                 <img 
@@ -111,8 +111,8 @@ export const MobileNavigation = () => {
             </div>
           </SheetHeader>
           
-          <div className="flex flex-col h-full bg-gradient-to-b from-background to-primary/5">
-            <nav className="flex-1 px-6 py-6 overflow-y-auto">
+          <div className="flex-1 min-h-0 bg-gradient-to-b from-background to-primary/5">
+            <nav className="h-full px-6 py-6 overflow-y-auto scrollbar-thin scrollbar-thumb-primary/20 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-primary/20 [&::-webkit-scrollbar-thumb]:rounded-full" style={{ WebkitOverflowScrolling: 'touch' }}>
               <ul className="space-y-3">
                 {navigationItems.map((item, index) => (
                   <li key={index} className="animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
