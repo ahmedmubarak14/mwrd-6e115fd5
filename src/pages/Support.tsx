@@ -8,6 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { LiveChatButton } from "@/components/support/LiveChatButton";
 import { HelpCircle, MessageSquare, Phone, Mail, Send } from "lucide-react";
 import { useState } from "react";
 
@@ -77,10 +78,14 @@ export const Support = () => {
             <CardContent className="space-y-4">
               <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
                 <MessageSquare className="h-5 w-5 text-blue-500" />
-                <div>
+                <div className="flex-1">
                   <p className="font-medium">{t('support.liveChat')}</p>
                   <p className="text-sm text-muted-foreground">{t('support.liveChatHours')}</p>
                 </div>
+              </div>
+              
+              <div className="mt-2">
+                <LiveChatButton />
               </div>
               
               <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
