@@ -4,16 +4,20 @@ import { Button } from "@/components/ui/button";
 import { MessageSquare, Users } from "lucide-react";
 import { QuickChatModal } from "@/components/conversations/QuickChatModal";
 import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useToastFeedback } from "@/hooks/useToastFeedback";
 import { getAvailableAdmins, selectRandomAdmin } from "@/utils/adminUtils";
 
 export const LiveChatButton = () => {
   const { userProfile } = useAuth();
-  const { t } = useLanguage();
+  const languageContext = useOptionalLanguage();
   const { showError, showInfo } = useToastFeedback();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedAdmin, setSelectedAdmin] = useState<any>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Safe fallback for translation
+  const t = languageContext?.t || ((key: string) => key.split('.').pop() || key);
 
   const handleStartChat = async () => {
     if (!userProfile) {
@@ -32,6 +36,7 @@ export const LiveChatButton = () => {
 
       const admin = selectRandomAdmin(admins);
       setSelectedAdmin(admin);
+      setIsModalOpen(true);
       showInfo('Connecting you to a support agent...');
     } catch (error) {
       console.error('Error starting chat:', error);
@@ -53,11 +58,13 @@ export const LiveChatButton = () => {
         ) : (
           <MessageSquare className="h-4 w-4" />
         )}
-        {isLoading ? 'Connecting...' : t('support.startLiveChat')}
+        {isLoading ? 'Connecting...' : t('support.startLiveChat') || 'Start Live Chat'}
       </Button>
 
       {selectedAdmin && (
         <QuickChatModal
+          open={isModalOpen}
+          onOpenChange={setIsModalOpen}
           recipientId={selectedAdmin.user_id}
           recipientName={selectedAdmin.full_name || 'Support Agent'}
         >

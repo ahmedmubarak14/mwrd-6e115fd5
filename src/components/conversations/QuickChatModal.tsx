@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -14,11 +14,13 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface QuickChatModalProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   recipientId: string;
   recipientName?: string;
   requestId?: string;
   offerId?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 interface MessageWithStatus extends Message {
@@ -31,9 +33,11 @@ export const QuickChatModal = ({
   recipientId, 
   recipientName = "Unknown User",
   requestId,
-  offerId 
+  offerId,
+  open = false,
+  onOpenChange
 }: QuickChatModalProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(open);
   const [message, setMessage] = useState("");
   const [replyToMessage, setReplyToMessage] = useState<MessageWithStatus | null>(null);
   const [isTyping, setIsTyping] = useState(false);
@@ -60,6 +64,26 @@ export const QuickChatModal = ({
   const [currentConversation, setCurrentConversation] = useState<any>(null);
   const [conversationMessages, setConversationMessages] = useState<MessageWithStatus[]>([]);
   const [otherParticipant, setOtherParticipant] = useState<any>(null);
+
+  // Sync internal state with external props
+  useEffect(() => {
+    setIsOpen(open);
+  }, [open]);
+
+  // Handle modal state changes
+  const handleOpenChange = (newOpen: boolean) => {
+    setIsOpen(newOpen);
+    onOpenChange?.(newOpen);
+    
+    if (!newOpen) {
+      // Reset state when modal closes
+      setCurrentConversation(null);
+      setConversationMessages([]);
+      setOtherParticipant(null);
+      setMessage("");
+      setReplyToMessage(null);
+    }
+  };
 
   // Initialize conversation when modal opens
   useEffect(() => {
@@ -240,10 +264,8 @@ export const QuickChatModal = ({
   );
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        {children}
-      </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      {children && <DialogTrigger asChild>{children}</DialogTrigger>}
       <DialogContent className="sm:max-w-[600px] h-[600px] flex flex-col p-0">
         <DialogHeader className="px-6 py-4 border-b">
           <DialogTitle className="flex items-center justify-between">
