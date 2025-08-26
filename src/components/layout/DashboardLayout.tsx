@@ -1,4 +1,5 @@
 
+
 import { useState } from "react";
 import { Header } from "@/components/ui/layout/Header";
 import { Footer } from "@/components/ui/layout/Footer";
@@ -47,53 +48,33 @@ export const DashboardLayout = ({ children, className }: DashboardLayoutProps) =
     );
   }
 
-  // Desktop Layout - Custom RTL-aware layout structure
+  // Desktop Layout - Enhanced RTL support with proper sidebar positioning
   return (
-    <div 
-      className={`min-h-screen w-full ${isRTL ? 'rtl' : 'ltr'}`} 
-      dir={isRTL ? 'rtl' : 'ltr'}
-      style={{
-        display: 'grid',
-        gridTemplateColumns: isRTL ? '1fr auto' : 'auto 1fr',
-        gridTemplateRows: 'auto 1fr auto',
-        gridTemplateAreas: isRTL 
-          ? '"content sidebar" "content sidebar" "footer footer"'
-          : '"sidebar content" "sidebar content" "footer footer"'
-      }}
-    >
+    <div className={`min-h-screen w-full ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       <MobileContainer 
         pageType="dashboard"
         className={className}
         dir={isRTL ? 'rtl' : 'ltr'}
-        style={{ gridArea: 'content', display: 'flex', flexDirection: 'column' }}
-      >
-        <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
-        
-        <main className="flex-1 overflow-auto bg-background p-6">
-          {children}
-        </main>
-        
-        <div style={{ gridArea: 'footer' }}>
-          <Footer />
-        </div>
-      </MobileContainer>
-
-      {/* Custom RTL-aware sidebar positioning */}
-      <div 
-        style={{ 
-          gridArea: 'sidebar',
-          position: 'relative',
-          zIndex: 10
-        }}
-        className={`border-l border-r-0 ${isRTL ? 'border-r border-l-0' : ''}`}
       >
         <SidebarProvider defaultOpen={true}>
-          <VendorSidebar 
-            userRole={userProfile?.role as 'client' | 'vendor' | 'admin'}
-            userProfile={userProfile}
-          />
+          <div className={`min-h-screen flex w-full ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+            <VendorSidebar 
+              userRole={userProfile?.role as 'client' | 'vendor' | 'admin'}
+              userProfile={userProfile}
+            />
+            
+            <div className="flex-1 flex flex-col min-w-0">
+              <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
+              
+              <main className="flex-1 overflow-auto bg-background p-6">
+                {children}
+              </main>
+              
+              <Footer />
+            </div>
+          </div>
         </SidebarProvider>
-      </div>
+      </MobileContainer>
     </div>
   );
 };
