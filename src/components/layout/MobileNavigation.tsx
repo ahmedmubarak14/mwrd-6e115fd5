@@ -87,15 +87,22 @@ export const MobileNavigation = () => {
               <LanguageSwitcher />
             </div>
 
-            {/* Authentication buttons moved to header - directly below language switcher */}
+            {/* Authentication buttons with glassmorphism styling */}
             <div className={`flex gap-3 pt-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Link to="/login" onClick={handleLinkClick} className="flex-1">
-                <Button variant="outline" size="default" className="w-full h-10 hover:bg-primary/10 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation font-semibold text-sm">
+                <Button 
+                  variant="ghost" 
+                  size="default" 
+                  className="w-full h-10 bg-white/10 border border-white/30 backdrop-blur-20 hover:shadow-2xl transition-all duration-500 hover:scale-105 active:scale-95 touch-manipulation font-semibold text-sm"
+                >
                   {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
                 </Button>
               </Link>
               <Link to="/register" onClick={handleLinkClick} className="flex-1">
-                <Button size="default" className="w-full h-10 bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation font-semibold text-sm">
+                <Button 
+                  size="default" 
+                  className="w-full h-10 bg-white/10 border border-white/30 backdrop-blur-20 hover:shadow-2xl transition-all duration-500 hover:scale-105 active:scale-95 touch-manipulation font-semibold text-sm"
+                >
                   {language === 'ar' ? 'إنشاء حساب' : 'Register'}
                 </Button>
               </Link>
