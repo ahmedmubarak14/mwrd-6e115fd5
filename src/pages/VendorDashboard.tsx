@@ -1,6 +1,11 @@
 
 import { CleanVendorDashboard } from "@/components/vendor/CleanVendorDashboard";
+import { CleanDashboardLayout } from "@/components/layout/CleanDashboardLayout";
 
 export const VendorDashboard = () => {
-  return <CleanVendorDashboard />;
+  return (
+    <CleanDashboardLayout>
+      <CleanVendorDashboard />
+    </CleanDashboardLayout>
+  );
 };
