@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Menu, Bell } from "lucide-react";
+import { Menu, Bell, MessageSquare } from "lucide-react";
 import { DashboardThemeToggle } from "@/components/ui/DashboardThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -41,7 +41,11 @@ export const CleanHeader = ({ onMobileMenuOpen }: CleanHeaderProps) => {
       </div>
 
       <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-        <ConversationsDropdown />
+        <ConversationsDropdown>
+          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-card-foreground">
+            <MessageSquare className="h-5 w-5" />
+          </Button>
+        </ConversationsDropdown>
         
         <Button variant="ghost" size="sm" className="relative text-muted-foreground hover:text-card-foreground">
           <Bell className="h-5 w-5" />
