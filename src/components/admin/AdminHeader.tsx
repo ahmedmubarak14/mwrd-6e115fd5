@@ -11,6 +11,7 @@ import {
   LogOut, 
   Globe,
   RefreshCw,
+  Menu,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -28,8 +29,13 @@ import { DashboardThemeToggle } from "@/components/ui/DashboardThemeToggle";
 import { AdminBreadcrumbs } from "./AdminBreadcrumbs";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
-export const AdminHeader = () => {
+interface AdminHeaderProps {
+  onMobileMenuOpen?: () => void;
+}
+
+export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { userProfile, signOut } = useAuth();
@@ -37,6 +43,7 @@ export const AdminHeader = () => {
   const { theme, setTheme } = useRouteAwareTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,13 +75,24 @@ export const AdminHeader = () => {
 
   return (
     <header 
-      className="h-20 sm:h-24 lg:h-28 border-b backdrop-blur-sm sticky top-0 z-50" 
+      className="h-16 sm:h-20 lg:h-24 border-b backdrop-blur-sm sticky top-0 z-50" 
       style={{ background: 'var(--gradient-header)' }}
     >
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 h-full flex items-center justify-between">
-        {/* Logo and Sidebar Trigger - RTL responsive */}
+        {/* Logo and Menu Trigger - RTL responsive */}
         <div className={cn("flex items-center gap-2 sm:gap-4", isRTL ? "order-3" : "order-1")}>
-          <SidebarTrigger className="lg:hidden h-8 w-8 sm:h-10 sm:w-10 text-white hover:bg-white/10" />
+          {isMobile ? (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onMobileMenuOpen}
+              className="h-8 w-8 sm:h-10 sm:w-10 text-white hover:bg-white/10"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+          ) : (
+            <SidebarTrigger className="lg:hidden h-8 w-8 sm:h-10 sm:w-10 text-white hover:bg-white/10" />
+          )}
           
           <button
             onClick={() => navigate('/landing')}
@@ -83,37 +101,39 @@ export const AdminHeader = () => {
             <img 
               src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
               alt="MWRD Logo"
-              className="h-12 sm:h-20 lg:h-24 w-auto"
+              className="h-8 sm:h-12 lg:h-16 w-auto"
             />
           </button>
         </div>
 
         {/* Actions - RTL responsive */}
         <div className={cn("flex items-center gap-1 sm:gap-2 lg:gap-4", isRTL ? "order-1" : "order-3")}>
-          <form onSubmit={handleSearch}>
-            <div className="relative hidden xl:block">
-              <Search className={cn("absolute top-1/2 transform -translate-y-1/2 text-white/60 h-4 w-4", isRTL ? "right-3" : "left-3")} />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={t('admin.searchPlaceholder')}
-                className={cn(
-                  "py-2 border border-white/20 rounded-lg w-80 bg-white/10 text-white placeholder:text-white/60 focus:bg-white/20 transition-colors",
-                  isRTL ? "pr-10 pl-4 text-right" : "pl-10 pr-4 text-left"
-                )}
-                dir={isRTL ? 'rtl' : 'ltr'}
-              />
-            </div>
-          </form>
+          {!isMobile && (
+            <form onSubmit={handleSearch}>
+              <div className="relative hidden xl:block">
+                <Search className={cn("absolute top-1/2 transform -translate-y-1/2 text-white/60 h-4 w-4", isRTL ? "right-3" : "left-3")} />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={t('admin.searchPlaceholder')}
+                  className={cn(
+                    "py-2 border border-white/20 rounded-lg w-60 lg:w-80 bg-white/10 text-white placeholder:text-white/60 focus:bg-white/20 transition-colors text-sm",
+                    isRTL ? "pr-10 pl-4 text-right" : "pl-10 pr-4 text-left"
+                  )}
+                  dir={isRTL ? 'rtl' : 'ltr'}
+                />
+              </div>
+            </form>
+          )}
           
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={() => setSearchQuery('')}
-            className="hidden sm:flex xl:hidden h-8 w-8 sm:h-10 sm:w-10 text-white hover:bg-white/10"
+            className="flex sm:hidden xl:hidden h-8 w-8 text-white hover:bg-white/10"
           >
-            <Search className="h-4 w-4 sm:h-5 sm:w-5" />
+            <Search className="h-4 w-4" />
           </Button>
 
           <DashboardThemeToggle />
@@ -130,15 +150,17 @@ export const AdminHeader = () => {
             </span>
           </Button>
           
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
-            className="hidden sm:flex bg-white/10 border-white/20 text-white hover:bg-white/20 rtl-flex items-center gap-2"
-          >
-            <Globe className="h-4 w-4" />
-            {language === 'en' ? 'العربية' : 'English'}
-          </Button>
+          {!isMobile && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
+              className="hidden sm:flex bg-white/10 border-white/20 text-white hover:bg-white/20 rtl-flex items-center gap-2"
+            >
+              <Globe className="h-4 w-4" />
+              {language === 'en' ? 'العربية' : 'English'}
+            </Button>
+          )}
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -161,6 +183,15 @@ export const AdminHeader = () => {
                 <Settings className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
                 <span>{t('common.settings')}</span>
               </DropdownMenuItem>
+              {isMobile && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')} className={cn("flex items-center", isRTL && "flex-row-reverse")}>
+                    <Globe className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
+                    <span>{language === 'en' ? 'العربية' : 'English'}</span>
+                  </DropdownMenuItem>
+                </>
+              )}
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={signOut} className={cn("flex items-center text-red-600", isRTL && "flex-row-reverse")}>
                 <LogOut className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />

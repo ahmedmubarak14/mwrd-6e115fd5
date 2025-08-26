@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AdminSidebarProps {
   className?: string;
@@ -32,6 +33,7 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
   const location = useLocation();
   const { getPendingTicketsCount } = useSupportTickets();
   const { t, isRTL } = useLanguage();
+  const isMobile = useIsMobile();
   const pendingTickets = getPendingTicketsCount();
 
   const navigation = [
@@ -105,13 +107,13 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
   ];
 
   return (
-    <div className={cn("pb-12 w-64", className)} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className={cn("pb-12", isMobile ? "w-full" : "w-64", className)} dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <h2 className={cn("mb-2 px-4 text-lg font-semibold tracking-tight", isRTL ? "text-right font-arabic" : "text-left")}>
             {t('admin.title')}
           </h2>
-          <ScrollArea className="h-[calc(100vh-8rem)]">
+          <ScrollArea className={cn("h-[calc(100vh-8rem)]", isMobile && "h-[calc(100vh-12rem)]")}>
             <div className="space-y-1">
               {navigation.map((item) => {
                 const isActive = location.pathname === item.href;
@@ -122,12 +124,13 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
                     className={cn(
                       "w-full justify-start rtl-transition",
                       isActive && "bg-secondary",
-                      isRTL ? "flex-row-reverse text-right" : "flex-row text-left"
+                      isRTL ? "flex-row-reverse text-right" : "flex-row text-left",
+                      isMobile && "py-3 px-4 text-base"
                     )}
                     asChild
                   >
                     <Link to={item.href} className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
-                      <item.icon className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
+                      <item.icon className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2", isMobile && "h-5 w-5")} />
                       <span className={cn("flex-1", isRTL ? "text-right" : "text-left")}>{item.name}</span>
                       {item.badge && (
                         <Badge 
