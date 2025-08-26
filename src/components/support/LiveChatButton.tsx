@@ -14,7 +14,6 @@ export const LiveChatButton = () => {
   const { showError, showInfo } = useToastFeedback();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedAdmin, setSelectedAdmin] = useState<any>(null);
-  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const handleStartChat = async () => {
     if (!userProfile) {
@@ -33,7 +32,6 @@ export const LiveChatButton = () => {
 
       const admin = selectRandomAdmin(admins);
       setSelectedAdmin(admin);
-      setIsChatOpen(true);
       showInfo('Connecting you to a support agent...');
     } catch (error) {
       console.error('Error starting chat:', error);
@@ -41,11 +39,6 @@ export const LiveChatButton = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleChatClose = () => {
-    setIsChatOpen(false);
-    setSelectedAdmin(null);
   };
 
   return (
@@ -65,8 +58,6 @@ export const LiveChatButton = () => {
 
       {selectedAdmin && (
         <QuickChatModal
-          isOpen={isChatOpen}
-          onClose={handleChatClose}
           recipientId={selectedAdmin.user_id}
           recipientName={selectedAdmin.full_name || 'Support Agent'}
         >
