@@ -33,8 +33,6 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
   const { signOut, userProfile } = useAuth();
   const { t, isRTL } = useLanguage();
   const isMobile = useIsMobile();
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [notificationsOpen, setNotificationsOpen] = useState(false);
 
   // Check if we're in a sidebar context
   let sidebarContext;
@@ -102,17 +100,18 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
         {/* Center Section - Search */}
         <div className="flex flex-1 items-center justify-center px-4">
           <div className="w-full max-w-md">
-            <Button
-              variant="outline"
-              className={cn(
-                "relative w-full justify-start text-sm text-muted-foreground",
-                isRTL && "flex-row-reverse"
-              )}
-              onClick={() => setSearchOpen(true)}
-            >
-              <Search className="h-4 w-4" />
-              <span className="ml-2">{t('common.search')}</span>
-            </Button>
+            <SearchModal>
+              <Button
+                variant="outline"
+                className={cn(
+                  "relative w-full justify-start text-sm text-muted-foreground",
+                  isRTL && "flex-row-reverse"
+                )}
+              >
+                <Search className="h-4 w-4" />
+                <span className="ml-2">{t('common.search')}</span>
+              </Button>
+            </SearchModal>
           </div>
         </div>
 
@@ -126,22 +125,31 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
           {/* Desktop Action Buttons */}
           {!isMobile && (
             <>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setNotificationsOpen(true)}
-                className="relative"
-              >
-                <Bell className="h-5 w-5" />
-                <Badge
-                  variant="destructive"
-                  className="absolute -right-1 -top-1 h-5 w-5 rounded-full p-0 text-xs"
+              <NotificationsModal>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="relative"
                 >
-                  3
-                </Badge>
-              </Button>
+                  <Bell className="h-5 w-5" />
+                  <Badge
+                    variant="destructive"
+                    className="absolute -right-1 -top-1 h-5 w-5 rounded-full p-0 text-xs"
+                  >
+                    3
+                  </Badge>
+                </Button>
+              </NotificationsModal>
 
-              <ConversationsDropdown />
+              <ConversationsDropdown>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="relative"
+                >
+                  <MessageSquare className="h-5 w-5" />
+                </Button>
+              </ConversationsDropdown>
             </>
           )}
 
@@ -221,13 +229,6 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
           compact={false}
         />
       )}
-
-      {/* Modals */}
-      <SearchModal open={searchOpen} onOpenChange={setSearchOpen} />
-      <NotificationsModal 
-        open={notificationsOpen} 
-        onOpenChange={setNotificationsOpen} 
-      />
     </header>
   );
 };
