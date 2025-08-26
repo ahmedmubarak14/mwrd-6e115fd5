@@ -51,7 +51,46 @@ All colors MUST be HSL.
     --bronze: 40 28% 35%;         /* #765A3F - Bronze/Brown */
     --orange: 29 78% 68%;         /* #FBA765 - Cozy Nook */
 
-    /* Main Design System Colors */
+    /* Light Theme Design System Colors (DEFAULT) */
+    --background: 0 0% 100%;             /* White background */
+    --foreground: 0 0% 9%;               /* Dark text */
+    --card: 0 0% 100%;                   /* White cards */
+    --card-foreground: 0 0% 9%;          /* Dark card text */
+    --popover: 0 0% 100%;                /* White popover background */
+    --popover-foreground: 0 0% 9%;       /* Dark popover text */
+    --primary: 324 96% 20%;              /* Tyrian Purple */
+    --primary-foreground: 0 0% 100%;     /* White text on primary */
+    --secondary: 0 0% 96%;               /* Light gray secondary */
+    --secondary-foreground: 0 0% 9%;     /* Dark text on secondary */
+    --muted: 0 0% 96%;                   /* Light muted background */
+    --muted-foreground: 0 0% 45%;        /* Muted text */
+    --accent: 195 100% 17%;              /* Transporter Green */
+    --accent-foreground: 0 0% 100%;      /* White text on accent */
+    --lime: 29 78% 68%;                  /* Cozy Nook orange */
+    --lime-foreground: 0 0% 9%;          /* Dark text on lime */
+    --destructive: 0 62.8% 30.6%;        /* Red for destructive */
+    --destructive-foreground: 0 0% 100%; /* White text on destructive */
+    --border: 0 0% 90%;                  /* Light gray borders */
+    --input: 0 0% 100%;                  /* White input background */
+    --ring: 324 96% 20%;                 /* Focus ring color */
+    --radius: 0.75rem;
+
+    /* Light Page Background */
+    --unified-page: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(40 20% 96%) 50%, hsl(0 0% 98%) 100%);
+
+    /* Sidebar colors for light theme */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 0 0% 9%;
+    --sidebar-primary: 324 96% 20%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 195 100% 17%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 324 96% 20%;
+  }
+
+  .dark {
+    /* Dark Theme Colors */
     --background: 195 49% 10%;           /* Dark background for all pages */
     --foreground: 40 15% 91%;            /* Light text */
     --card: 195 35% 15%;                 /* Dark cards */
@@ -60,11 +99,11 @@ All colors MUST be HSL.
     --popover-foreground: 40 15% 91%;    /* Light popover text */
     --primary: 324 96% 20%;              /* Tyrian Purple */
     --primary-foreground: 40 15% 91%;    /* Light text on primary */
-    --secondary: 195 100% 17%;           /* Transporter Green */
+    --secondary: 195 80% 22%;            /* Transporter Green variation */
     --secondary-foreground: 40 15% 91%;  /* Light text on secondary */
     --muted: 195 35% 15%;                /* Dark muted background */
     --muted-foreground: 195 10% 65%;     /* Light muted text */
-    --accent: 195 100% 17%;              /* Transporter Green */
+    --accent: 195 80% 22%;               /* Transporter Green variation */
     --accent-foreground: 40 15% 91%;     /* Light text on accent */
     --lime: 29 78% 68%;                  /* Cozy Nook orange */
     --lime-foreground: 195 49% 10%;      /* Dark text on lime */
@@ -73,46 +112,11 @@ All colors MUST be HSL.
     --border: 0 0% 0% / 0;               /* Completely transparent borders */
     --input: 195 35% 15%;                /* Dark input background */
     --ring: 324 96% 20%;                 /* Focus ring color */
-    --radius: 0.75rem;
 
-    /* Unified Page Background */
+    /* Dark Page Background */
     --unified-page: linear-gradient(135deg, hsl(195 49% 10%) 0%, hsl(324 96% 20%) 50%, hsl(195 100% 17%) 100%);
 
-    /* Sidebar colors */
-    --sidebar-background: 195 49% 10%;
-    --sidebar-foreground: 40 15% 91%;
-    --sidebar-primary: 324 96% 20%;
-    --sidebar-primary-foreground: 40 15% 91%;
-    --sidebar-accent: 195 100% 17%;
-    --sidebar-accent-foreground: 40 15% 91%;
-    --sidebar-border: 0 0% 0% / 0;       /* Completely transparent borders */
-    --sidebar-ring: 324 96% 20%;
-  }
-
-  .dark {
-    /* Keep dark theme variables the same as default since we're using dark theme as primary */
-    --background: 195 49% 10%;
-    --foreground: 40 15% 91%;
-    --card: 195 35% 15%;
-    --card-foreground: 40 15% 91%;
-    --popover: 195 35% 15%;
-    --popover-foreground: 40 15% 91%;
-    --primary: 324 96% 20%;
-    --primary-foreground: 40 15% 91%;
-    --secondary: 195 80% 22%;
-    --secondary-foreground: 40 15% 91%;
-    --muted: 195 35% 15%;
-    --muted-foreground: 195 10% 65%;
-    --accent: 195 80% 22%;
-    --accent-foreground: 40 15% 91%;
-    --lime: 29 78% 68%;
-    --lime-foreground: 195 49% 10%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 40 15% 91%;
-    --border: 0 0% 0% / 0;               /* Completely transparent borders */
-    --input: 195 35% 15%;
-    --ring: 324 96% 20%;
-
+    /* Sidebar colors for dark theme */
     --sidebar-background: 195 49% 10%;
     --sidebar-foreground: 40 15% 91%;
     --sidebar-primary: 324 70% 35%;
