@@ -1,3 +1,4 @@
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
@@ -8,8 +9,8 @@ import { RouteAwareThemeProvider } from "@/components/RouteAwareThemeProvider";
 // Pages
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
-import VendorDashboard from "./pages/VendorDashboard";
-import ProcurementVendorDashboard from "./pages/ProcurementVendorDashboard";
+import { VendorDashboard } from "./pages/VendorDashboard";
+import { ProcurementVendorDashboard } from "./pages/ProcurementVendorDashboard";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
@@ -17,7 +18,7 @@ import { AdminLayout } from "./components/admin/AdminLayout";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminVerificationQueue from "./pages/admin/AdminVerificationQueue";
 import AdminSubscriptions from "./pages/admin/AdminSubscriptions";
-import { NotFound } from "./pages/NotFound";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient({
   defaultOptions: {
