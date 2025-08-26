@@ -7,13 +7,14 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Settings as SettingsIcon, User, Bell, Shield, Globe, Palette } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export const Settings = () => {
   const { userProfile, updateProfile } = useAuth();
+  const languageContext = useOptionalLanguage();
   const [isUpdating, setIsUpdating] = useState(false);
   const [notifications, setNotifications] = useState({
     email: true,
@@ -21,25 +22,10 @@ export const Settings = () => {
     sms: false
   });
 
-  // Add error boundary for language context
-  const [languageContextError, setLanguageContextError] = useState(false);
-  let t: (key: string) => string;
-  let language: 'en' | 'ar';
-  let setLanguage: (lang: 'en' | 'ar') => void;
-
-  try {
-    const languageContext = useLanguage();
-    t = languageContext.t;
-    language = languageContext.language;
-    setLanguage = languageContext.setLanguage;
-  } catch (error) {
-    console.error('Language context error:', error);
-    setLanguageContextError(true);
-    // Fallback values
-    t = (key: string) => key;
-    language = 'en';
-    setLanguage = () => {};
-  }
+  // Safe fallback values if language context is not available
+  const t = languageContext?.t || ((key: string) => key);
+  const language = languageContext?.language || 'en';
+  const setLanguage = languageContext?.setLanguage || (() => {});
 
   const handleUpdateProfile = async (field: string, value: any) => {
     setIsUpdating(true);
@@ -56,7 +42,8 @@ export const Settings = () => {
     setNotifications(prev => ({ ...prev, [type]: value }));
   };
 
-  if (languageContextError) {
+  // If language context is not available, show error state
+  if (!languageContext) {
     return (
       <CleanDashboardLayout>
         <div className="container mx-auto space-y-6">
