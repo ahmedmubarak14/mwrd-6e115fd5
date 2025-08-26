@@ -34,7 +34,35 @@ export const translations = {
       back: "Back",
       next: "Next",
       previous: "Previous",
-      close: "Close"
+      close: "Close",
+      all: "All"
+    },
+
+    // Dashboard
+    dashboard: {
+      completedProjects: "Completed Projects",
+      findOpportunities: "Find opportunities that match your expertise"
+    },
+
+    // Vendor specific
+    vendor: {
+      welcome: "Welcome back!",
+      subtitle: "Manage your offers and find new opportunities",
+      budget: "Budget",
+      negotiable: "Negotiable",
+      totalOffers: "Total Offers",
+      submittedThisMonth: "Submitted this month",
+      acceptedOffers: "Accepted Offers", 
+      successRate: "Success Rate",
+      pendingOffers: "Pending Offers",
+      awaitingClientResponse: "Awaiting client response",
+      successfullyWon: "Successfully won",
+      searchRequests: "Search requests...",
+      filterByCategory: "Filter by category",
+      opportunitiesFound: "opportunities found",
+      availableRequests: "Available Requests",
+      submitOffer: "Submit Offer",
+      viewDetails: "View Details"
     },
 
     // Time related
@@ -136,6 +164,7 @@ export const translations = {
       title: "Browse Requests",
       subtitle: "Find and submit offers for procurement requests",
       searchAndFilter: "Search & Filter",
+      filterDescription: "Find the perfect opportunities for your business",
       searchPlaceholder: "Search requests...",
       filterByCategory: "Filter by category",
       noResults: "No requests found",
@@ -202,7 +231,35 @@ export const translations = {
       back: "رجوع",
       next: "التالي",
       previous: "السابق",
-      close: "إغلاق"
+      close: "إغلاق",
+      all: "الكل"
+    },
+
+    // Dashboard - Arabic
+    dashboard: {
+      completedProjects: "المشاريع المكتملة",
+      findOpportunities: "اعثر على فرص تتناسب مع خبرتك"
+    },
+
+    // Vendor specific - Arabic
+    vendor: {
+      welcome: "أهلاً بعودتك!",
+      subtitle: "إدارة عروضك والعثور على فرص جديدة",
+      budget: "الميزانية",
+      negotiable: "قابل للتفاوض",
+      totalOffers: "إجمالي العروض",
+      submittedThisMonth: "مقدم هذا الشهر",
+      acceptedOffers: "العروض المقبولة",
+      successRate: "معدل النجاح",
+      pendingOffers: "العروض قيد الانتظار",
+      awaitingClientResponse: "في انتظار رد العميل",
+      successfullyWon: "تم الفوز بنجاح",
+      searchRequests: "البحث في الطلبات...",
+      filterByCategory: "تصفية حسب الفئة",
+      opportunitiesFound: "فرصة متاحة",
+      availableRequests: "الطلبات المتاحة",
+      submitOffer: "تقديم عرض",
+      viewDetails: "عرض التفاصيل"
     },
 
     // Time related - Arabic
@@ -304,6 +361,7 @@ export const translations = {
       title: "تصفح الطلبات",
       subtitle: "ابحث وقدم عروضاً لطلبات المشتريات",
       searchAndFilter: "البحث والتصفية",
+      filterDescription: "اعثر على الفرص المثالية لعملك",
       searchPlaceholder: "البحث في الطلبات...",
       filterByCategory: "تصفية حسب الفئة",
       noResults: "لم يتم العثور على طلبات",
