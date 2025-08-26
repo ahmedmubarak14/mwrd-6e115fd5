@@ -65,7 +65,7 @@ export const MobileNavigation = () => {
           </Button>
         </SheetTrigger>
         <SheetContent 
-          side={isRTL ? "left" : "right"} 
+          side={isRTL ? "right" : "left"} 
           className="w-[90vw] max-w-sm p-0 safe-area-pt safe-area-pb animate-slide-in-right bg-background/95 backdrop-blur-md"
         >
           <SheetHeader className={`p-6 border-b ${isRTL ? 'text-right' : 'text-left'} bg-gradient-to-br from-primary/5 to-accent/5`}>
