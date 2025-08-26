@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Eye, 
   Check, 
@@ -39,14 +41,43 @@ interface VerificationRequest {
   };
 }
 
+type StatusFilter = 'all' | 'pending' | 'approved' | 'rejected' | 'under_review';
+
 export const VerificationQueue = () => {
   const [requests, setRequests] = useState<VerificationRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState<string | null>(null);
   const [reviewNotes, setReviewNotes] = useState<{ [key: string]: string }>({});
   const [documentStatus, setDocumentStatus] = useState<{ [key: string]: 'checking' | 'available' | 'missing' }>({});
+  const [activeFilter, setActiveFilter] = useState<StatusFilter>('pending');
   const { showSuccess, showError } = useToastFeedback();
   const { t, isRTL, formatDate } = useLanguage();
+
+  // Memoized filtered requests based on active filter
+  const filteredRequests = useMemo(() => {
+    if (activeFilter === 'all') return requests;
+    return requests.filter(request => request.status === activeFilter);
+  }, [requests, activeFilter]);
+
+  // Memoized status counts for tab labels
+  const statusCounts = useMemo(() => {
+    const counts = {
+      all: requests.length,
+      pending: 0,
+      approved: 0,
+      rejected: 0,
+      under_review: 0
+    };
+
+    requests.forEach(request => {
+      if (request.status === 'pending') counts.pending++;
+      else if (request.status === 'approved') counts.approved++;
+      else if (request.status === 'rejected') counts.rejected++;
+      else if (request.status === 'under_review') counts.under_review++;
+    });
+
+    return counts;
+  }, [requests]);
 
   const fetchVerificationRequests = async () => {
     try {
@@ -183,6 +214,137 @@ export const VerificationQueue = () => {
     }
   };
 
+  const renderRequestCard = (request: VerificationRequest) => (
+    <Card key={request.id}>
+      <CardContent className="p-6">
+        <div className={cn("flex items-start justify-between mb-4", isRTL && "flex-row-reverse")}>
+          <div className={cn("space-y-2", isRTL ? "text-right" : "text-left")}>
+            <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
+              <User className="h-4 w-4" />
+              <span className="font-medium">
+                {request.user_profiles?.full_name || t('verification.unknownUser')}
+              </span>
+              {getStatusBadge(request.status)}
+            </div>
+            
+            {request.user_profiles?.company_name && (
+              <div className={cn("flex items-center gap-2 text-sm text-muted-foreground", isRTL && "flex-row-reverse")}>
+                <Building className="h-4 w-4" />
+                <span>{request.user_profiles.company_name}</span>
+              </div>
+            )}
+            
+            <div className="text-sm text-muted-foreground">
+              Email: {request.user_profiles?.email}
+            </div>
+            
+            <div className={cn("flex items-center gap-2 text-sm text-muted-foreground", isRTL && "flex-row-reverse")}>
+              <Clock className="h-4 w-4" />
+              <span>{t('verification.submitted')}: {formatDate(new Date(request.submitted_at))}</span>
+            </div>
+
+            <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
+              <span className="text-sm font-medium">{t('verification.documentStatus')}:</span>
+              {getDocumentStatusIndicator(request.id)}
+            </div>
+          </div>
+        </div>
+
+        {documentStatus[request.id] === 'missing' && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription>
+              <strong>{t('common.warning')}:</strong> {t('verification.warningMissing')}
+            </AlertDescription>
+          </Alert>
+        )}
+
+        <div className="space-y-4">
+          <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleViewDocument(request.document_url, request.id)}
+              disabled={documentStatus[request.id] === 'missing'}
+            >
+              <Eye className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
+              {t('verification.viewDocument')}
+            </Button>
+            
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleDownloadDocument(
+                request.document_url, 
+                request.user_profiles?.company_name,
+                request.id
+              )}
+              disabled={documentStatus[request.id] === 'missing'}
+            >
+              <Download className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
+              {t('verification.download')}
+            </Button>
+          </div>
+
+          {request.status === 'pending' && (
+            <>
+              <Textarea
+                placeholder={t('verification.reviewNotes')}
+                value={reviewNotes[request.id] || ''}
+                onChange={(e) => setReviewNotes(prev => ({ ...prev, [request.id]: e.target.value }))}
+                rows={3}
+                className={cn(isRTL ? "text-right" : "text-left")}
+              />
+              
+              <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
+                <Button
+                  onClick={() => handleStatusUpdate(request.id, 'approved')}
+                  disabled={processing === request.id || documentStatus[request.id] === 'missing'}
+                  size="sm"
+                  className="bg-green-500 hover:bg-green-600"
+                >
+                  <Check className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
+                  {processing === request.id ? t('verification.processing') : t('verification.approve')}
+                </Button>
+                
+                <Button
+                  onClick={() => handleStatusUpdate(request.id, 'rejected')}
+                  disabled={processing === request.id || !reviewNotes[request.id]?.trim()}
+                  variant="destructive"
+                  size="sm"
+                >
+                  <X className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
+                  {processing === request.id ? t('verification.processing') : t('verification.reject')}
+                </Button>
+              </div>
+              
+              {documentStatus[request.id] === 'missing' && (
+                <p className="text-sm text-destructive">
+                  {t('verification.cannotApprove')}
+                </p>
+              )}
+              
+              {!reviewNotes[request.id]?.trim() && documentStatus[request.id] !== 'missing' && (
+                <p className="text-sm text-muted-foreground">
+                  {t('verification.rejectionNotes')}
+                </p>
+              )}
+            </>
+          )}
+
+          {request.reviewer_notes && (
+            <Alert>
+              <AlertDescription>
+                <strong>{t('verification.reviewNotesLabel')}</strong><br />
+                {request.reviewer_notes}
+              </AlertDescription>
+            </Alert>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+
   useEffect(() => {
     fetchVerificationRequests();
   }, []);
@@ -211,144 +373,44 @@ export const VerificationQueue = () => {
         </CardHeader>
       </Card>
 
-      {requests.length === 0 ? (
-        <Alert>
-          <AlertDescription>{t('verification.noPending')}</AlertDescription>
-        </Alert>
-      ) : (
-        <div className="grid gap-4">
-          {requests.map((request) => (
-            <Card key={request.id}>
-              <CardContent className="p-6">
-                <div className={cn("flex items-start justify-between mb-4", isRTL && "flex-row-reverse")}>
-                  <div className={cn("space-y-2", isRTL ? "text-right" : "text-left")}>
-                    <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
-                      <User className="h-4 w-4" />
-                      <span className="font-medium">
-                        {request.user_profiles?.full_name || t('verification.unknownUser')}
-                      </span>
-                      {getStatusBadge(request.status)}
-                    </div>
-                    
-                    {request.user_profiles?.company_name && (
-                      <div className={cn("flex items-center gap-2 text-sm text-muted-foreground", isRTL && "flex-row-reverse")}>
-                        <Building className="h-4 w-4" />
-                        <span>{request.user_profiles.company_name}</span>
-                      </div>
-                    )}
-                    
-                    <div className="text-sm text-muted-foreground">
-                      Email: {request.user_profiles?.email}
-                    </div>
-                    
-                    <div className={cn("flex items-center gap-2 text-sm text-muted-foreground", isRTL && "flex-row-reverse")}>
-                      <Clock className="h-4 w-4" />
-                      <span>{t('verification.submitted')}: {formatDate(new Date(request.submitted_at))}</span>
-                    </div>
+      <Tabs value={activeFilter} onValueChange={(value) => setActiveFilter(value as StatusFilter)} className="w-full">
+        <TabsList className={cn("grid w-full grid-cols-5", isRTL && "flex-row-reverse")}>
+          <TabsTrigger value="all" className={cn(isRTL ? "text-right" : "text-left")}>
+            {t('common.all')} ({statusCounts.all})
+          </TabsTrigger>
+          <TabsTrigger value="pending" className={cn(isRTL ? "text-right" : "text-left")}>
+            {t('users.pending')} ({statusCounts.pending})
+          </TabsTrigger>
+          <TabsTrigger value="approved" className={cn(isRTL ? "text-right" : "text-left")}>
+            {t('verification.approved')} ({statusCounts.approved})
+          </TabsTrigger>
+          <TabsTrigger value="rejected" className={cn(isRTL ? "text-right" : "text-left")}>
+            {t('verification.rejected')} ({statusCounts.rejected})
+          </TabsTrigger>
+          <TabsTrigger value="under_review" className={cn(isRTL ? "text-right" : "text-left")}>
+            {t('verification.underReview')} ({statusCounts.under_review})
+          </TabsTrigger>
+        </TabsList>
 
-                    <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
-                      <span className="text-sm font-medium">{t('verification.documentStatus')}:</span>
-                      {getDocumentStatusIndicator(request.id)}
-                    </div>
-                  </div>
-                </div>
-
-                {documentStatus[request.id] === 'missing' && (
-                  <Alert variant="destructive" className="mb-4">
-                    <AlertTriangle className="h-4 w-4" />
-                    <AlertDescription>
-                      <strong>{t('common.warning')}:</strong> {t('verification.warningMissing')}
-                    </AlertDescription>
-                  </Alert>
-                )}
-
-                <div className="space-y-4">
-                  <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleViewDocument(request.document_url, request.id)}
-                      disabled={documentStatus[request.id] === 'missing'}
-                    >
-                      <Eye className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
-                      {t('verification.viewDocument')}
-                    </Button>
-                    
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleDownloadDocument(
-                        request.document_url, 
-                        request.user_profiles?.company_name,
-                        request.id
-                      )}
-                      disabled={documentStatus[request.id] === 'missing'}
-                    >
-                      <Download className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
-                      {t('verification.download')}
-                    </Button>
-                  </div>
-
-                  {request.status === 'pending' && (
-                    <>
-                      <Textarea
-                        placeholder={t('verification.reviewNotes')}
-                        value={reviewNotes[request.id] || ''}
-                        onChange={(e) => setReviewNotes(prev => ({ ...prev, [request.id]: e.target.value }))}
-                        rows={3}
-                        className={cn(isRTL ? "text-right" : "text-left")}
-                      />
-                      
-                      <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
-                        <Button
-                          onClick={() => handleStatusUpdate(request.id, 'approved')}
-                          disabled={processing === request.id || documentStatus[request.id] === 'missing'}
-                          size="sm"
-                          className="bg-green-500 hover:bg-green-600"
-                        >
-                          <Check className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
-                          {processing === request.id ? t('verification.processing') : t('verification.approve')}
-                        </Button>
-                        
-                        <Button
-                          onClick={() => handleStatusUpdate(request.id, 'rejected')}
-                          disabled={processing === request.id || !reviewNotes[request.id]?.trim()}
-                          variant="destructive"
-                          size="sm"
-                        >
-                          <X className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
-                          {processing === request.id ? t('verification.processing') : t('verification.reject')}
-                        </Button>
-                      </div>
-                      
-                      {documentStatus[request.id] === 'missing' && (
-                        <p className="text-sm text-destructive">
-                          {t('verification.cannotApprove')}
-                        </p>
-                      )}
-                      
-                      {!reviewNotes[request.id]?.trim() && documentStatus[request.id] !== 'missing' && (
-                        <p className="text-sm text-muted-foreground">
-                          {t('verification.rejectionNotes')}
-                        </p>
-                      )}
-                    </>
-                  )}
-
-                  {request.reviewer_notes && (
-                    <Alert>
-                      <AlertDescription>
-                        <strong>{t('verification.reviewNotesLabel')}</strong><br />
-                        {request.reviewer_notes}
-                      </AlertDescription>
-                    </Alert>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
+        {(['all', 'pending', 'approved', 'rejected', 'under_review'] as StatusFilter[]).map((status) => (
+          <TabsContent key={status} value={status} className="space-y-4">
+            {filteredRequests.length === 0 ? (
+              <Alert>
+                <AlertDescription>
+                  {status === 'all' 
+                    ? t('verification.noPending')
+                    : `No ${status} verification requests found.`
+                  }
+                </AlertDescription>
+              </Alert>
+            ) : (
+              <div className="grid gap-4">
+                {filteredRequests.map(renderRequestCard)}
+              </div>
+            )}
+          </TabsContent>
+        ))}
+      </Tabs>
     </div>
   );
 };
