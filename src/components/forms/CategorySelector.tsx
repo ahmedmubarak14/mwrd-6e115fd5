@@ -33,18 +33,31 @@ export const CategorySelector = ({
   const getAllCategories = () => {
     const allCats: any[] = [];
     categories.forEach(category => {
-      // Only add categories that have valid slugs (not empty strings or null/undefined)
-      if (category.slug && typeof category.slug === 'string' && category.slug.trim() !== '') {
-        allCats.push(category);
+      // Only add categories that have valid IDs and create a proper value
+      if (category.id) {
+        const categoryValue = category.slug && category.slug.trim() !== '' 
+          ? category.slug 
+          : `category-${category.id}`;
+        
+        allCats.push({
+          ...category,
+          value: categoryValue
+        });
       }
+      
       if (includeSubcategories && category.children && category.children.length > 0) {
         category.children.forEach(child => {
-          // Only add child categories that have valid slugs
-          if (child.slug && typeof child.slug === 'string' && child.slug.trim() !== '') {
+          // Only add child categories that have valid IDs
+          if (child.id) {
+            const childValue = child.slug && child.slug.trim() !== '' 
+              ? child.slug 
+              : `category-${child.id}`;
+            
             allCats.push({ 
               ...child, 
               isChild: true, 
-              parentName: language === 'ar' ? category.name_ar : category.name_en 
+              parentName: language === 'ar' ? category.name_ar : category.name_en,
+              value: childValue
             });
           }
         });
@@ -59,16 +72,13 @@ export const CategorySelector = ({
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
-        {getAllCategories().map((category) => {
-          const itemValue = category.slug && category.slug.trim() !== '' ? category.slug : `category-${category.id}`;
-          return (
-            <SelectItem key={category.id} value={itemValue}>
-              {category.isChild && "  ↳ "}
-              {language === 'ar' ? category.name_ar : category.name_en}
-              {category.isChild && ` (${category.parentName})`}
-            </SelectItem>
-          );
-        })}
+        {getAllCategories().map((category) => (
+          <SelectItem key={category.id} value={category.value}>
+            {category.isChild && "  ↳ "}
+            {language === 'ar' ? category.name_ar : category.name_en}
+            {category.isChild && ` (${category.parentName})`}
+          </SelectItem>
+        ))}
       </SelectContent>
     </Select>
   );
