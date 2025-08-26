@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -25,7 +24,8 @@ interface Category {
 }
 
 export const CategoryManagement: React.FC = () => {
-  const { categories, loading, createCategory, updateCategory, deleteCategory, refetch } = useCategories();
+  // Include inactive categories for admin management
+  const { categories, loading, createCategory, updateCategory, deleteCategory, refetch } = useCategories(true);
   const { toast } = useToast();
   const { t, isRTL } = useLanguage();
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);

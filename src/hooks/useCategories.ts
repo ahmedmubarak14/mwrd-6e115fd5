@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -32,7 +31,7 @@ export interface RequestCategory {
   categories?: Category;
 }
 
-export const useCategories = () => {
+export const useCategories = (includeInactive: boolean = false) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -40,11 +39,19 @@ export const useCategories = () => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
+      
+      // Build the query based on whether to include inactive categories
+      let query = supabase
         .from('categories')
         .select('*')
-        .eq('is_active', true)
         .order('sort_order', { ascending: true });
+
+      // Only filter by is_active if we don't want to include inactive categories
+      if (!includeInactive) {
+        query = query.eq('is_active', true);
+      }
+
+      const { data, error } = await query;
 
       if (error) throw error;
 
@@ -211,7 +218,7 @@ export const useCategories = () => {
 
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [includeInactive]);
 
   return {
     categories,
