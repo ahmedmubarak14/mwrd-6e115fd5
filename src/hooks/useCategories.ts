@@ -101,14 +101,20 @@ export const useCategories = (includeInactive: boolean = false) => {
     sort_order?: number;
   }) => {
     try {
+      console.log('Creating category with data:', categoryData);
+      
       const { data, error } = await supabase
         .from('categories')
         .insert([categoryData])
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Create category error:', error);
+        throw error;
+      }
 
+      console.log('Category created successfully:', data);
       await fetchCategories();
       toast({
         title: "Success",
@@ -118,24 +124,58 @@ export const useCategories = (includeInactive: boolean = false) => {
       return data;
     } catch (error) {
       console.error('Error creating category:', error);
-      toast({
-        title: "Error",
-        description: "Failed to create category",
-        variant: "destructive"
-      });
+      
+      // Enhanced error handling
+      const errorMessage = error?.message || 'Failed to create category';
+      if (errorMessage.includes('permission denied') || errorMessage.includes('policy')) {
+        toast({
+          title: "Permission Error",
+          description: "You don't have permission to create categories. Please ensure you have admin privileges.",
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: errorMessage,
+          variant: "destructive"
+        });
+      }
       throw error;
     }
   };
 
   const updateCategory = async (id: string, updates: Partial<Category>) => {
     try {
+      console.log('Updating category ID:', id, 'with updates:', updates);
+      
+      // Get current user info for debugging
+      const { data: user } = await supabase.auth.getUser();
+      console.log('Current user:', user?.user?.id);
+      
+      // Get user profile for role verification
+      const { data: profile, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('role, id')
+        .eq('user_id', user?.user?.id)
+        .single();
+      
+      if (profileError) {
+        console.error('Error fetching user profile:', profileError);
+      } else {
+        console.log('User profile:', profile);
+      }
+
       const { error } = await supabase
         .from('categories')
         .update(updates)
         .eq('id', id);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Update category error:', error);
+        throw error;
+      }
 
+      console.log('Category updated successfully');
       await fetchCategories();
       toast({
         title: "Success",
@@ -143,24 +183,47 @@ export const useCategories = (includeInactive: boolean = false) => {
       });
     } catch (error) {
       console.error('Error updating category:', error);
-      toast({
-        title: "Error",
-        description: "Failed to update category",
-        variant: "destructive"
-      });
+      
+      // Enhanced error handling with specific messages
+      const errorMessage = error?.message || 'Failed to update category';
+      if (errorMessage.includes('permission denied') || errorMessage.includes('policy')) {
+        toast({
+          title: "Permission Error",
+          description: "You don't have permission to update categories. Please ensure you have admin privileges.",
+          variant: "destructive"
+        });
+      } else if (errorMessage.includes('violates row-level security')) {
+        toast({
+          title: "Access Denied",
+          description: "Row-level security policy prevents this update. Please check your admin role assignment.",
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: errorMessage,
+          variant: "destructive"
+        });
+      }
       throw error;
     }
   };
 
   const deleteCategory = async (id: string) => {
     try {
+      console.log('Deleting category ID:', id);
+      
       const { error } = await supabase
         .from('categories')
         .delete()
         .eq('id', id);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Delete category error:', error);
+        throw error;
+      }
 
+      console.log('Category deleted successfully');
       await fetchCategories();
       toast({
         title: "Success",
@@ -168,11 +231,22 @@ export const useCategories = (includeInactive: boolean = false) => {
       });
     } catch (error) {
       console.error('Error deleting category:', error);
-      toast({
-        title: "Error",
-        description: "Failed to delete category",
-        variant: "destructive"
-      });
+      
+      // Enhanced error handling
+      const errorMessage = error?.message || 'Failed to delete category';
+      if (errorMessage.includes('permission denied') || errorMessage.includes('policy')) {
+        toast({
+          title: "Permission Error",
+          description: "You don't have permission to delete categories. Please ensure you have admin privileges.",
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: errorMessage,
+          variant: "destructive"
+        });
+      }
       throw error;
     }
   };

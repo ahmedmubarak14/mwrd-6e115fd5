@@ -8,7 +8,8 @@ import { Switch } from '@/components/ui/switch';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useCategories } from '@/hooks/useCategories';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Edit, Trash2, ChevronRight } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Plus, Edit, Trash2, ChevronRight, AlertTriangle } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
@@ -28,6 +29,7 @@ export const CategoryManagement: React.FC = () => {
   const { categories, loading, createCategory, updateCategory, deleteCategory, refetch } = useCategories(true);
   const { toast } = useToast();
   const { t, isRTL } = useLanguage();
+  const { userProfile } = useAuth();
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -41,12 +43,34 @@ export const CategoryManagement: React.FC = () => {
 
   useEffect(() => {
     refetch();
+    
+    // Debug user role
+    console.log('Current user profile:', userProfile);
+    if (userProfile) {
+      console.log('User role:', userProfile.role);
+      console.log('User status:', userProfile.status);
+    }
   }, []);
+
+  // Check if user has admin role
+  const isAdmin = userProfile?.role === 'admin';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!isAdmin) {
+      toast({
+        title: "Access Denied",
+        description: "You need admin privileges to manage categories.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     try {
+      console.log('Submitting form data:', formData);
+      console.log('Editing category:', editingCategory);
+      
       if (editingCategory) {
         await updateCategory(editingCategory.id, formData);
         toast({
@@ -65,15 +89,21 @@ export const CategoryManagement: React.FC = () => {
       resetForm();
       refetch();
     } catch (error) {
-      toast({
-        title: t('common.error'),
-        description: t('common.createError'),
-        variant: "destructive"
-      });
+      console.error('Form submission error:', error);
+      // Error handling is now done in the hook
     }
   };
 
   const handleDelete = async (id: string) => {
+    if (!isAdmin) {
+      toast({
+        title: "Access Denied",
+        description: "You need admin privileges to delete categories.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     if (window.confirm(t('category.deleteCategoryConfirm'))) {
       try {
         await deleteCategory(id);
@@ -83,11 +113,8 @@ export const CategoryManagement: React.FC = () => {
         });
         refetch();
       } catch (error) {
-        toast({
-          title: t('common.error'),
-          description: t('common.deleteError'),
-          variant: "destructive"
-        });
+        console.error('Delete error:', error);
+        // Error handling is now done in the hook
       }
     }
   };
@@ -105,6 +132,15 @@ export const CategoryManagement: React.FC = () => {
   };
 
   const openEditDialog = (category: Category) => {
+    if (!isAdmin) {
+      toast({
+        title: "Access Denied",
+        description: "You need admin privileges to edit categories.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setEditingCategory(category);
     setFormData({
       name_en: category.name_en,
@@ -138,6 +174,7 @@ export const CategoryManagement: React.FC = () => {
                   variant="outline"
                   size="sm"
                   onClick={() => openEditDialog(category)}
+                  disabled={!isAdmin}
                 >
                   <Edit className="h-4 w-4" />
                 </Button>
@@ -145,6 +182,7 @@ export const CategoryManagement: React.FC = () => {
                   variant="destructive"
                   size="sm"
                   onClick={() => handleDelete(category.id)}
+                  disabled={!isAdmin}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
@@ -163,6 +201,24 @@ export const CategoryManagement: React.FC = () => {
     return (
       <div className="flex items-center justify-center p-8">
         {t('category.loadingCategories')}
+      </div>
+    );
+  }
+
+  // Show warning if user is not admin
+  if (!isAdmin) {
+    return (
+      <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
+        <Card>
+          <CardContent className="p-8 text-center">
+            <AlertTriangle className="h-12 w-12 text-amber-500 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold mb-2">Access Restricted</h3>
+            <p className="text-muted-foreground">
+              You need admin privileges to access category management. 
+              {userProfile ? ` Your current role is: ${userProfile.role}` : ' Please ensure you are logged in with an admin account.'}
+            </p>
+          </CardContent>
+        </Card>
       </div>
     );
   }
