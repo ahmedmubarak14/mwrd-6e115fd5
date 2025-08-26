@@ -62,13 +62,13 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
         "container flex h-14 max-w-screen-2xl items-center px-4",
         isRTL ? "flex-row-reverse" : "flex-row"
       )}>
-        {/* Left Section - RTL aware */}
+        {/* Left Section (RTL: Right Section) */}
         <div className={cn(
           "flex items-center gap-4",
-          isRTL ? "flex-row-reverse" : "flex-row"
+          isRTL ? "flex-row-reverse order-last" : "flex-row order-first"
         )}>
-          {/* Desktop Sidebar Trigger or Mobile Menu */}
-          {isMobile ? (
+          {/* Mobile Menu Button */}
+          {isMobile && (
             <Button
               variant="ghost"
               size="icon"
@@ -78,21 +78,9 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
               <Menu className="h-5 w-5" />
               <span className="sr-only">{t('common.menu')}</span>
             </Button>
-          ) : sidebarContext ? (
-            <SidebarTrigger />
-          ) : (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="lg:hidden"
-              onClick={onMobileMenuOpen}
-            >
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">{t('common.menu')}</span>
-            </Button>
           )}
 
-          {/* Logo/Brand - Updated to link to landing page */}
+          {/* Logo/Brand */}
           <Link to="/landing" className="flex items-center">
             <img 
               src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
@@ -120,10 +108,10 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
           </div>
         </div>
 
-        {/* Right Section - RTL aware */}
+        {/* Right Section (RTL: Left Section) */}
         <div className={cn(
           "flex items-center gap-2",
-          isRTL ? "flex-row-reverse" : "flex-row"
+          isRTL ? "flex-row-reverse order-first" : "flex-row order-last"
         )}>
           {/* Verification Status - Mobile Compact */}
           {isMobile && (
