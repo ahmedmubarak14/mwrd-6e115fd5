@@ -1,371 +1,281 @@
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Header } from "@/components/ui/layout/Header";
-import { Sidebar } from "@/components/ui/layout/Sidebar";
-import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { HelpCircle, MessageCircle, Phone, Mail, Search, Book, Video, FileText, Ticket } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { ChatModal } from "@/components/modals/ChatModal";
-import { Footer } from "@/components/ui/layout/Footer";
-import { useSupportTickets } from "@/hooks/useSupportTickets";
+import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { HelpCircle, MessageCircle, Phone, Mail, Clock, CheckCircle, AlertTriangle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
+
+interface SupportTicket {
+  id: string;
+  title: string;
+  description: string;
+  status: 'open' | 'in-progress' | 'resolved';
+  priority: 'low' | 'medium' | 'high';
+  created_at: string;
+  updated_at: string;
+}
 
 export const Support = () => {
   const { userProfile } = useAuth();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
+  const { toast } = useToast();
   const isRTL = language === 'ar';
-  const isMobile = useIsMobile();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [contactForm, setContactForm] = useState({
-    subject: "",
-    message: "",
-    priority: "medium",
-    category: "general"
+  
+  const [tickets] = useState<SupportTicket[]>([
+    {
+      id: '1',
+      title: 'Unable to submit procurement request',
+      description: 'Getting error when trying to submit new request',
+      status: 'open',
+      priority: 'high',
+      created_at: '2024-01-15T10:30:00Z',
+      updated_at: '2024-01-15T10:30:00Z'
+    },
+    {
+      id: '2',
+      title: 'Payment processing issue',
+      description: 'Payment failed during checkout process',
+      status: 'in-progress',
+      priority: 'medium',
+      created_at: '2024-01-14T14:20:00Z',
+      updated_at: '2024-01-15T09:15:00Z'
+    }
+  ]);
+
+  const [newTicket, setNewTicket] = useState({
+    title: '',
+    description: '',
+    priority: 'medium' as 'low' | 'medium' | 'high'
   });
-  const [chatModalOpen, setChatModalOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { createTicket, tickets, loading } = useSupportTickets();
 
-  const handleContactSubmit = async (e: React.FormEvent) => {
+  const handleSubmitTicket = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     
-    try {
-      const ticket = await createTicket({
-        subject: contactForm.subject,
-        message: contactForm.message,
-        priority: contactForm.priority,
-        category: contactForm.category
+    if (!newTicket.title.trim() || !newTicket.description.trim()) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields",
+        variant: "destructive"
       });
+      return;
+    }
 
-      if (ticket) {
-        setContactForm({ subject: "", message: "", priority: "medium", category: "general" });
-      }
-    } finally {
-      setIsSubmitting(false);
+    try {
+      // Simulate ticket submission
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      toast({
+        title: "Ticket Submitted",
+        description: "Your support ticket has been submitted successfully. We'll get back to you soon.",
+      });
+      
+      setNewTicket({ title: '', description: '', priority: 'medium' });
+    } catch (error) {
+      toast({
+        title: "Submission Error",
+        description: "Failed to submit support ticket. Please try again.",
+        variant: "destructive"
+      });
     }
   };
 
-  const handleQuickAction = (actionType: string) => {
-    // In a real app, these would navigate to actual resources
-    window.open('/resources/' + actionType.toLowerCase().replace(' ', '-'), '_blank');
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'open':
+        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
+      case 'in-progress':
+        return <Clock className="h-4 w-4 text-blue-500" />;
+      case 'resolved':
+        return <CheckCircle className="h-4 w-4 text-green-500" />;
+      default:
+        return <HelpCircle className="h-4 w-4" />;
+    }
   };
 
-  const faqData = [
-    {
-      question: isRTL ? "كيف يمكنني إنشاء طلب جديد؟" : "How can I create a new request?",
-      answer: isRTL ? 
-        "يمكنك إنشاء طلب جديد من خلال الذهاب إلى لوحة التحكم والنقر على زر 'إنشاء طلب'. قم بملء جميع التفاصيل المطلوبة وانقر على 'إرسال'." :
-        "You can create a new request by going to your dashboard and clicking the 'Create Request' button. Fill in all required details and click 'Submit'."
-    },
-    {
-      question: isRTL ? "كيف يتم دفع المبالغ المالية؟" : "How are payments processed?",
-      answer: isRTL ?
-        "نحن نستخدم طرق دفع آمنة متعددة تشمل الفيزا، ماستركارد، والتحويل البنكي. جميع المدفوعات محمية بتشفير عالي الأمان." :
-        "We use multiple secure payment methods including Visa, Mastercard, and bank transfers. All payments are protected with high-level encryption."
-    },
-    {
-      question: isRTL ? "ما هي أوقات الدعم الفني؟" : "What are the technical support hours?",
-      answer: isRTL ?
-        "فريق الدعم الفني متاح من الأحد إلى الخميس من 9 صباحاً حتى 6 مساءً. للطوارئ، يمكنك التواصل معنا عبر البريد الإلكتروني." :
-        "Technical support team is available Sunday to Thursday from 9 AM to 6 PM. For emergencies, you can contact us via email."
-    },
-    {
-      question: isRTL ? "كيف يمكنني تتبع حالة طلبي؟" : "How can I track my request status?",
-      answer: isRTL ?
-        "يمكنك تتبع حالة طلبك من خلال قسم 'طلباتي' في لوحة التحكم. ستتلقى أيضاً إشعارات عبر البريد الإلكتروني عند تحديث الحالة." :
-        "You can track your request status through the 'My Requests' section in your dashboard. You'll also receive email notifications when the status is updated."
-    },
-    {
-      question: isRTL ? "ما هي سياسة الإلغاء والاسترداد؟" : "What is the cancellation and refund policy?",
-      answer: isRTL ?
-        "يمكن إلغاء الطلبات قبل 48 ساعة من الموعد المحدد مع استرداد كامل. الإلغاءات بعد هذا الموعد قد تخضع لرسوم إضافية." :
-        "Requests can be cancelled 48 hours before the scheduled date with full refund. Cancellations after this period may be subject to additional fees."
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'high':
+        return 'bg-red-100 text-red-800 border-red-200';
+      case 'medium':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'low':
+        return 'bg-green-100 text-green-800 border-green-200';
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200';
     }
-  ];
+  };
 
-  const quickActions = [
-    {
-      title: isRTL ? "دليل المستخدم" : "User Guide",
-      description: isRTL ? "تعلم كيفية استخدام المنصة" : "Learn how to use the platform",
-      icon: Book,
-      action: () => handleQuickAction("User Guide")
-    },
-    {
-      title: isRTL ? "فيديوهات تعليمية" : "Tutorial Videos",
-      description: isRTL ? "شاهد فيديوهات تعليمية" : "Watch tutorial videos",
-      icon: Video,
-      action: () => handleQuickAction("Tutorial Videos")
-    },
-    {
-      title: isRTL ? "مركز التحميل" : "Download Center",
-      description: isRTL ? "حمل الملفات والموارد" : "Download files and resources",
-      icon: FileText,
-      action: () => handleQuickAction("Download Center")
-    }
-  ];
-
-  const filteredFAQ = faqData.filter(item => 
-    item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.answer.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString();
+  };
 
   return (
-    <div className={`min-h-screen bg-background ${isRTL ? 'font-arabic' : ''}`}>
-      <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
-      
-      {/* Mobile Sidebar */}
-      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
-          <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
-        </SheetContent>
-      </Sheet>
-
-      <div className="rtl-flex">
-        {/* Desktop Sidebar - position based on language */}
-        <div className="hidden lg:block rtl-order-1">
-          <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
-        </div>
-        
-        <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
-          <div className="max-w-7xl mx-auto space-y-6">
-            {/* Header */}
-            <div className={`text-center mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
-              <h1 className="text-3xl font-bold mb-2">
-                {isRTL ? 'مركز الدعم' : 'Support Center'}
-              </h1>
-              <p className="text-muted-foreground">
-                {isRTL ? 'نحن هنا لمساعدتك في جميع استفساراتك' : 'We are here to help you with all your inquiries'}
-              </p>
-            </div>
-
-            {/* My Support Tickets - Show if user has tickets */}
-            {tickets.length > 0 && (
-              <Card className="mb-8">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Ticket className="h-5 w-5" />
-                    {isRTL ? 'تذاكر الدعم الخاصة بي' : 'My Support Tickets'}
-                  </CardTitle>
-                  <CardDescription>
-                    {isRTL ? 'تتبع حالة طلبات الدعم الخاصة بك' : 'Track the status of your support requests'}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {tickets.slice(0, 3).map((ticket) => (
-                      <div key={ticket.id} className="flex items-center justify-between p-4 border rounded-lg">
-                        <div className="flex-1">
-                          <h4 className="font-medium">{ticket.subject}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {isRTL ? 'الفئة:' : 'Category:'} {ticket.category} • 
-                            {isRTL ? 'الأولوية:' : 'Priority:'} {ticket.priority}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {new Date(ticket.created_at).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <Badge variant={
-                          ticket.status === 'open' ? 'default' : 
-                          ticket.status === 'closed' ? 'secondary' : 'outline'
-                        }>
-                          {ticket.status}
-                        </Badge>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Quick Actions */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              {quickActions.map((action, index) => (
-                <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={action.action}>
-                  <CardHeader className="text-center">
-                    <action.icon className="h-12 w-12 text-primary mx-auto mb-2" />
-                    <CardTitle className="text-lg">{action.title}</CardTitle>
-                    <CardDescription>{action.description}</CardDescription>
-                  </CardHeader>
-                </Card>
-              ))}
-            </div>
-
-            {/* Contact Options */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-              <Card>
-                <CardHeader className="text-center">
-                  <MessageCircle className="h-8 w-8 text-primary mx-auto mb-2" />
-                  <CardTitle>{isRTL ? 'الدردشة المباشرة' : 'Live Chat'}</CardTitle>
-                  <CardDescription>
-                    {isRTL ? 'تحدث مع فريق الدعم مباشرة' : 'Chat with our support team directly'}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button 
-                    className="w-full"
-                    onClick={() => setChatModalOpen(true)}
-                  >
-                    {isRTL ? 'بدء محادثة' : 'Start Chat'}
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="text-center">
-                  <Phone className="h-8 w-8 text-primary mx-auto mb-2" />
-                  <CardTitle>{isRTL ? 'الهاتف' : 'Phone'}</CardTitle>
-                  <CardDescription>
-                    {isRTL ? 'اتصل بنا مباشرة' : 'Call us directly'}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-center font-medium">+966 11 123 4567</p>
-                  <p className="text-center text-sm text-muted-foreground mt-2">
-                    {isRTL ? 'الأحد - الخميس: 9ص - 6م' : 'Sun - Thu: 9AM - 6PM'}
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="text-center">
-                  <Mail className="h-8 w-8 text-primary mx-auto mb-2" />
-                  <CardTitle>{isRTL ? 'البريد الإلكتروني' : 'Email'}</CardTitle>
-                  <CardDescription>
-                    {isRTL ? 'أرسل لنا رسالة' : 'Send us a message'}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-center font-medium">support@mwrd.com</p>
-                  <p className="text-center text-sm text-muted-foreground mt-2">
-                    {isRTL ? 'رد خلال 24 ساعة' : 'Response within 24 hours'}
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* FAQ Section */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <HelpCircle className="h-5 w-5" />
-                    {isRTL ? 'الأسئلة الشائعة' : 'Frequently Asked Questions'}
-                  </CardTitle>
-                  <div className="relative">
-                    <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-3 h-4 w-4 text-muted-foreground`} />
-                    <Input
-                      placeholder={isRTL ? "البحث في الأسئلة..." : "Search questions..."}
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className={`${isRTL ? 'pr-10 text-right' : 'pl-10'}`}
-                    />
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <Accordion type="single" collapsible className="space-y-2">
-                    {filteredFAQ.map((faq, index) => (
-                      <AccordionItem key={index} value={`item-${index}`}>
-                        <AccordionTrigger className={`${isRTL ? 'text-right' : 'text-left'} hover:no-underline`}>
-                          {faq.question}
-                        </AccordionTrigger>
-                        <AccordionContent className={`${isRTL ? 'text-right' : 'text-left'} text-muted-foreground`}>
-                          {faq.answer}
-                        </AccordionContent>
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
-                </CardContent>
-              </Card>
-
-              {/* Contact Form */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>
-                    {isRTL ? 'إنشاء تذكرة دعم' : 'Create Support Ticket'}
-                  </CardTitle>
-                  <CardDescription>
-                    {isRTL ? 'أرسل لنا استفسارك وسنجيب عليك في أقرب وقت' : 'Send us your inquiry and we will respond as soon as possible'}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <form onSubmit={handleContactSubmit} className="space-y-4">
-                    <div>
-                      <Input
-                        placeholder={isRTL ? "موضوع التذكرة" : "Ticket Subject"}
-                        value={contactForm.subject}
-                        onChange={(e) => setContactForm({...contactForm, subject: e.target.value})}
-                        className={isRTL ? 'text-right' : ''}
-                        required
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <Select
-                        value={contactForm.category}
-                        onValueChange={(value) => setContactForm({...contactForm, category: value})}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder={isRTL ? "الفئة" : "Category"} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="general">{isRTL ? 'عام' : 'General'}</SelectItem>
-                          <SelectItem value="technical">{isRTL ? 'تقني' : 'Technical'}</SelectItem>
-                          <SelectItem value="billing">{isRTL ? 'الفواتير' : 'Billing'}</SelectItem>
-                          <SelectItem value="account">{isRTL ? 'الحساب' : 'Account'}</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <Select
-                        value={contactForm.priority}
-                        onValueChange={(value) => setContactForm({...contactForm, priority: value})}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder={isRTL ? "الأولوية" : "Priority"} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="low">{isRTL ? 'منخفضة' : 'Low'}</SelectItem>
-                          <SelectItem value="medium">{isRTL ? 'متوسطة' : 'Medium'}</SelectItem>
-                          <SelectItem value="high">{isRTL ? 'عالية' : 'High'}</SelectItem>
-                          <SelectItem value="urgent">{isRTL ? 'طارئة' : 'Urgent'}</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Textarea
-                        placeholder={isRTL ? "اكتب رسالتك هنا..." : "Write your message here..."}
-                        value={contactForm.message}
-                        onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
-                        className={`min-h-[120px] ${isRTL ? 'text-right' : ''}`}
-                        required
-                      />
-                    </div>
-                     <Button type="submit" className="w-full" disabled={isSubmitting}>
-                       {isSubmitting 
-                         ? (isRTL ? 'جاري إنشاء التذكرة...' : 'Creating Ticket...') 
-                         : (isRTL ? 'إنشاء تذكرة دعم' : 'Create Support Ticket')
-                       }
-                     </Button>
-                  </form>
-                </CardContent>
-              </Card>
-            </div>
+    <DashboardLayout className={`${isRTL ? 'font-arabic' : ''}`}>
+      <div className="max-w-4xl mx-auto space-y-6">
+        <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
+            <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
+              <HelpCircle className="h-8 w-8" />
+              {t('nav.support') || 'Support Center'}
+            </h1>
+            <p className="text-muted-foreground">
+              Get help with your account, orders, and technical issues
+            </p>
           </div>
-        </main>
+        </div>
+
+        {/* Quick Contact Options */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-3">
+                <MessageCircle className="h-8 w-8 text-primary" />
+                <div>
+                  <h3 className="font-semibold">Live Chat</h3>
+                  <p className="text-sm text-muted-foreground">Chat with our support team</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-3">
+                <Mail className="h-8 w-8 text-primary" />
+                <div>
+                  <h3 className="font-semibold">Email Support</h3>
+                  <p className="text-sm text-muted-foreground">support@mwrd.com</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center gap-3">
+                <Phone className="h-8 w-8 text-primary" />
+                <div>
+                  <h3 className="font-semibold">Phone Support</h3>
+                  <p className="text-sm text-muted-foreground">+1 (555) 123-4567</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Submit New Ticket */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Submit Support Ticket</CardTitle>
+            <CardDescription>
+              Describe your issue and we'll get back to you as soon as possible
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmitTicket} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Subject *
+                </label>
+                <Input
+                  value={newTicket.title}
+                  onChange={(e) => setNewTicket({ ...newTicket, title: e.target.value })}
+                  placeholder="Brief description of your issue"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Priority
+                </label>
+                <select
+                  value={newTicket.priority}
+                  onChange={(e) => setNewTicket({ ...newTicket, priority: e.target.value as 'low' | 'medium' | 'high' })}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Description *
+                </label>
+                <Textarea
+                  value={newTicket.description}
+                  onChange={(e) => setNewTicket({ ...newTicket, description: e.target.value })}
+                  placeholder="Please provide detailed information about your issue..."
+                  rows={4}
+                  required
+                />
+              </div>
+
+              <Button type="submit" className="w-full">
+                Submit Ticket
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+
+        {/* Existing Tickets */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Your Support Tickets</CardTitle>
+            <CardDescription>
+              Track the status of your submitted tickets
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {tickets.length === 0 ? (
+              <div className="text-center py-8">
+                <HelpCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-medium mb-2">No Support Tickets</h3>
+                <p className="text-muted-foreground">
+                  You haven't submitted any support tickets yet.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {tickets.map((ticket) => (
+                  <div key={ticket.id} className="border rounded-lg p-4">
+                    <div className={`flex justify-between items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <div className="flex-1">
+                        <div className={`flex items-center gap-2 mb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          {getStatusIcon(ticket.status)}
+                          <h3 className="font-semibold">{ticket.title}</h3>
+                          <Badge className={`text-xs ${getPriorityColor(ticket.priority)}`}>
+                            {ticket.priority}
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {ticket.description}
+                        </p>
+                        <div className="flex gap-4 text-xs text-muted-foreground">
+                          <span>Created: {formatDate(ticket.created_at)}</span>
+                          <span>Updated: {formatDate(ticket.updated_at)}</span>
+                        </div>
+                      </div>
+                      <Badge variant={ticket.status === 'resolved' ? 'default' : 'secondary'}>
+                        {ticket.status.replace('-', ' ')}
+                      </Badge>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
-
-      <ChatModal supplierName="Support Team">
-        <div style={{ display: chatModalOpen ? 'block' : 'none' }} />
-      </ChatModal>
-
-      {/* Footer */}
-      <Footer />
-    </div>
+    </DashboardLayout>
   );
 };
+
+export default Support;

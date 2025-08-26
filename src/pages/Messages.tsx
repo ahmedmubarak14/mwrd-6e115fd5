@@ -1,21 +1,18 @@
+
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Header } from "@/components/ui/layout/Header";
-import { Sidebar } from "@/components/ui/layout/Sidebar";
+import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { MessageCircle, Search, Plus, Phone, Video, Archive, Trash2, Star } from "lucide-react";
+import { MessageCircle, Search } from "lucide-react";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { RealTimeChatModal } from "@/components/modals/RealTimeChatModal";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Footer } from "@/components/ui/layout/Footer";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
 interface Conversation {
   id: string;
@@ -38,8 +35,6 @@ export const Messages = () => {
   const { language, t } = useLanguage();
   const { toast } = useToast();
   const isRTL = language === 'ar';
-  const isMobile = useIsMobile();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -170,143 +165,126 @@ export const Messages = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-background ${isRTL ? 'font-arabic' : ''}`}>
-      <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
-      
-      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <SheetContent side={isRTL ? "right" : "left"} className="w-80 p-0 flex flex-col">
-          <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
-        </SheetContent>
-      </Sheet>
-
-      <div className="rtl-flex">
-        <div className="hidden lg:block rtl-order-1">
-          <Sidebar userRole={userProfile?.role} userProfile={userProfile} />
+    <DashboardLayout className={`${isRTL ? 'font-arabic' : ''}`}>
+      <div className="max-w-4xl mx-auto space-y-6">
+        <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
+            <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
+              <MessageCircle className="h-8 w-8" />
+              {t('messages.title')}
+              {getTotalUnreadCount() > 0 && (
+                <Badge variant="destructive" className="ml-2">
+                  {getTotalUnreadCount()}
+                </Badge>
+              )}
+            </h1>
+            <p className="text-muted-foreground">
+              {t('messages.communicateWithSuppliers')}
+            </p>
+          </div>
         </div>
-        
-        <main className="flex-1 p-3 sm:p-4 lg:p-8 max-w-full overflow-hidden rtl-order-3">
-          <div className="max-w-4xl mx-auto space-y-6">
-            <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
-                <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
-                  <MessageCircle className="h-8 w-8" />
-                  {t('messages.title')}
-                  {getTotalUnreadCount() > 0 && (
-                    <Badge variant="destructive" className="ml-2">
-                      {getTotalUnreadCount()}
-                    </Badge>
-                  )}
-                </h1>
-                <p className="text-muted-foreground">
-                  {t('messages.communicateWithSuppliers')}
-                </p>
-              </div>
+
+        {/* Search */}
+        <Card>
+          <CardContent className="pt-6">
+            <div className="relative">
+              <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-3 h-4 w-4 text-muted-foreground`} />
+              <Input
+                placeholder={t('messages.searchConversations')}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className={`${isRTL ? 'pr-10 text-right' : 'pl-10'}`}
+              />
             </div>
+          </CardContent>
+        </Card>
 
-            {/* Search */}
-            <Card>
-              <CardContent className="pt-6">
-                <div className="relative">
-                  <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-3 h-4 w-4 text-muted-foreground`} />
-                  <Input
-                    placeholder={t('messages.searchConversations')}
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className={`${isRTL ? 'pr-10 text-right' : 'pl-10'}`}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-
-            {loading ? (
-              <div className="flex justify-center items-center py-12">
-                <LoadingSpinner />
-              </div>
+        {loading ? (
+          <div className="flex justify-center items-center py-12">
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {filteredConversations.length === 0 ? (
+              <Card>
+                <CardContent className="py-12 text-center">
+                  <MessageCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-medium mb-2">
+                    {searchTerm 
+                      ? t('messages.noMatchingConversations')
+                      : t('messages.noConversations')
+                    }
+                  </h3>
+                  <p className="text-muted-foreground">
+                    {searchTerm 
+                      ? t('messages.tryDifferentSearch')
+                      : t('messages.startConversation')
+                    }
+                  </p>
+                </CardContent>
+              </Card>
             ) : (
-              <div className="space-y-2">
-                {filteredConversations.length === 0 ? (
-                  <Card>
-                    <CardContent className="py-12 text-center">
-                      <MessageCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                      <h3 className="text-lg font-medium mb-2">
-                        {searchTerm 
-                          ? t('messages.noMatchingConversations')
-                          : t('messages.noConversations')
-                        }
-                      </h3>
-                      <p className="text-muted-foreground">
-                        {searchTerm 
-                          ? t('messages.tryDifferentSearch')
-                          : t('messages.startConversation')
-                        }
-                      </p>
-                    </CardContent>
-                  </Card>
-                ) : (
-                  filteredConversations.map((conversation) => (
-                    <Card key={conversation.id} className="hover:shadow-md transition-shadow">
-                      <CardContent className="p-4">
-                        <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                          <Avatar className="h-12 w-12">
-                            <AvatarImage 
-                              src={conversation.other_participant?.avatar_url} 
-                              alt={conversation.other_participant?.full_name}
-                            />
-                            <AvatarFallback>
-                              {conversation.other_participant?.full_name?.charAt(0) || 
-                               conversation.other_participant?.email?.charAt(0) || '?'}
-                            </AvatarFallback>
-                          </Avatar>
+              filteredConversations.map((conversation) => (
+                <Card key={conversation.id} className="hover:shadow-md transition-shadow">
+                  <CardContent className="p-4">
+                    <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <Avatar className="h-12 w-12">
+                        <AvatarImage 
+                          src={conversation.other_participant?.avatar_url} 
+                          alt={conversation.other_participant?.full_name}
+                        />
+                        <AvatarFallback>
+                          {conversation.other_participant?.full_name?.charAt(0) || 
+                           conversation.other_participant?.email?.charAt(0) || '?'}
+                        </AvatarFallback>
+                      </Avatar>
 
-                          <div className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
-                            <div className={`flex justify-between items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
-                              <div>
-                                <h3 className="font-semibold">
-                                  {conversation.other_participant?.company_name || 
-                                   conversation.other_participant?.full_name ||
-                                   conversation.other_participant?.email}
-                                </h3>
-                              </div>
-                              <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                                {conversation.unread_count > 0 && (
-                                  <Badge variant="destructive" className="text-xs">
-                                    {conversation.unread_count}
-                                  </Badge>
-                                )}
-                                <span className="text-xs text-muted-foreground">
-                                  {formatTimeAgo(conversation.last_message_at)}
-                                </span>
-                              </div>
-                            </div>
-                            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
-                              {conversation.last_message}
-                            </p>
+                      <div className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+                        <div className={`flex justify-between items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          <div>
+                            <h3 className="font-semibold">
+                              {conversation.other_participant?.company_name || 
+                               conversation.other_participant?.full_name ||
+                               conversation.other_participant?.email}
+                            </h3>
                           </div>
-
-                          <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                            <RealTimeChatModal 
-                              recipientId={conversation.other_participant.id}
-                              recipientName={conversation.other_participant?.company_name || 
-                                           conversation.other_participant?.full_name ||
-                                           conversation.other_participant?.email}
-                            >
-                              <Button variant="outline" size="sm">
-                                <MessageCircle className="h-4 w-4" />
-                              </Button>
-                            </RealTimeChatModal>
+                          <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                            {conversation.unread_count > 0 && (
+                              <Badge variant="destructive" className="text-xs">
+                                {conversation.unread_count}
+                              </Badge>
+                            )}
+                            <span className="text-xs text-muted-foreground">
+                              {formatTimeAgo(conversation.last_message_at)}
+                            </span>
                           </div>
                         </div>
-                      </CardContent>
-                    </Card>
-                  ))
-                )}
-              </div>
+                        <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                          {conversation.last_message}
+                        </p>
+                      </div>
+
+                      <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <RealTimeChatModal 
+                          recipientId={conversation.other_participant.id}
+                          recipientName={conversation.other_participant?.company_name || 
+                                       conversation.other_participant?.full_name ||
+                                       conversation.other_participant?.email}
+                        >
+                          <Button variant="outline" size="sm">
+                            <MessageCircle className="h-4 w-4" />
+                          </Button>
+                        </RealTimeChatModal>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
             )}
           </div>
-        </main>
+        )}
       </div>
-      <Footer />
-    </div>
+    </DashboardLayout>
   );
 };
 
