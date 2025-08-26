@@ -1,5 +1,5 @@
 
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { CleanDashboardLayout } from "@/components/layout/CleanDashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,41 +7,40 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useOrders } from "@/hooks/useOrders";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { ShoppingCart, Package, Calendar, DollarSign, Eye } from "lucide-react";
+import { ShoppingCart, DollarSign, Clock, Eye, MapPin, Calendar } from "lucide-react";
 import { format } from "date-fns";
 
-const Orders = () => {
+export const Orders = () => {
   const { userProfile } = useAuth();
   const { t } = useLanguage();
   const { orders, loading } = useOrders();
 
   if (loading) {
     return (
-      <DashboardLayout>
+      <CleanDashboardLayout>
         <div className="flex justify-center items-center min-h-[400px]">
           <LoadingSpinner size="lg" />
         </div>
-      </DashboardLayout>
+      </CleanDashboardLayout>
     );
   }
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending': return 'default';
-      case 'confirmed': return 'secondary';
-      case 'in_progress': return 'outline';
-      case 'completed': return 'outline';
+      case 'confirmed': return 'outline';
+      case 'delivered': return 'outline';
       case 'cancelled': return 'destructive';
       default: return 'secondary';
     }
   };
 
   const getStatusText = (status: string) => {
-    return t(`orderStatus.${status}`) || status;
+    return t(`orders.status.${status}`) || status;
   };
 
   return (
-    <DashboardLayout>
+    <CleanDashboardLayout>
       <div className="container mx-auto space-y-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">
@@ -67,14 +66,14 @@ const Orders = () => {
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <CardTitle className="text-lg flex items-center gap-2">
-                      <Package className="h-5 w-5" />
+                      <ShoppingCart className="h-5 w-5" />
                       {t('orders.orderNumber')} #{order.id.slice(0, 8)}
                     </CardTitle>
                     <Badge variant={getStatusColor(order.status) as any}>
                       {getStatusText(order.status)}
                     </Badge>
                   </div>
-                  <CardDescription>
+                  <CardDescription className="line-clamp-2">
                     {order.description || t('orders.noDescription')}
                   </CardDescription>
                 </CardHeader>
@@ -82,26 +81,21 @@ const Orders = () => {
                   <div className="space-y-3">
                     <div className="flex items-center gap-2 text-sm">
                       <DollarSign className="h-4 w-4 text-green-500" />
-                      <span className="font-medium">{order.amount?.toLocaleString() || t('orders.amountNotSet')} {order.currency}</span>
+                      <span className="font-medium">
+                        ${order.total_amount?.toLocaleString() || t('orders.amountNotSet')}
+                      </span>
                     </div>
                     
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Calendar className="h-4 w-4" />
-                      <span>{t('orders.created')} {format(new Date(order.date), 'MMM dd, yyyy')}</span>
-                    </div>
-
                     {order.delivery_date && (
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Calendar className="h-4 w-4" />
-                        <span>{t('orders.delivery')} {format(new Date(order.delivery_date), 'MMM dd, yyyy')}</span>
+                        <Clock className="h-4 w-4" />
+                        <span>{t('orders.deliveryDate')} {format(new Date(order.delivery_date), 'MMM dd, yyyy')}</span>
                       </div>
                     )}
                     
-                    <div className="pt-2 border-t">
-                      <Button variant="outline" size="sm" className="w-full">
-                        <Eye className="h-4 w-4 mr-2" />
-                        {t('orders.viewDetails')}
-                      </Button>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Calendar className="h-4 w-4" />
+                      <span>{t('orders.ordered')} {format(new Date(order.created_at), 'MMM dd, yyyy')}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -110,7 +104,7 @@ const Orders = () => {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </CleanDashboardLayout>
   );
 };
 

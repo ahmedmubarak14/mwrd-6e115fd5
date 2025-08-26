@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -49,7 +48,7 @@ export const CleanHeader = ({ onMobileMenuOpen }: CleanHeaderProps) => {
         )}
         
         <Link to="/vendor-dashboard" className="flex items-center">
-          <span className="text-xl font-semibold text-gray-900">Supplify</span>
+          <span className="text-xl font-semibold text-gray-900">MWRD</span>
         </Link>
       </div>
 

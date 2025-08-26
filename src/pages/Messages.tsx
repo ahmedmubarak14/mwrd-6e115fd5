@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
@@ -12,7 +11,7 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { RealTimeChatModal } from "@/components/modals/RealTimeChatModal";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { CleanDashboardLayout } from "@/components/layout/CleanDashboardLayout";
 
 interface Conversation {
   id: string;
@@ -165,7 +164,7 @@ export const Messages = () => {
   };
 
   return (
-    <DashboardLayout className={`${isRTL ? 'font-arabic' : ''}`}>
+    <CleanDashboardLayout className={`${isRTL ? 'font-arabic' : ''}`}>
       <div className="max-w-4xl mx-auto space-y-6">
         <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
           <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
@@ -284,7 +283,7 @@ export const Messages = () => {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </CleanDashboardLayout>
   );
 };
 

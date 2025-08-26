@@ -1,41 +1,47 @@
 
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { CleanDashboardLayout } from "@/components/layout/CleanDashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Settings as SettingsIcon, Bell, Shield, Globe, Palette } from "lucide-react";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { Settings as SettingsIcon, User, Bell, Shield, Globe, Palette } from "lucide-react";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
 
-const Settings = () => {
-  const { userProfile } = useAuth();
-  const { language, setLanguage, t } = useLanguage();
-  const { toast } = useToast();
+export const Settings = () => {
+  const { userProfile, updateProfile } = useAuth();
+  const { t, language, setLanguage } = useLanguage();
+  const [isUpdating, setIsUpdating] = useState(false);
   const [notifications, setNotifications] = useState({
     email: true,
     push: true,
-    sms: false,
-    marketing: false
+    sms: false
   });
 
-  const handleSaveSettings = () => {
-    toast({
-      title: t('settings.saved'),
-      description: t('settings.savedDesc'),
-    });
+  const handleUpdateProfile = async (field: string, value: any) => {
+    setIsUpdating(true);
+    try {
+      await updateProfile({ [field]: value });
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const handleNotificationChange = (type: string, value: boolean) => {
+    setNotifications(prev => ({ ...prev, [type]: value }));
   };
 
   return (
-    <DashboardLayout>
+    <CleanDashboardLayout>
       <div className="container mx-auto space-y-6">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-2">
-            <SettingsIcon className="h-8 w-8" />
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">
             {t('settings.title')}
           </h1>
           <p className="text-muted-foreground">
@@ -43,170 +49,153 @@ const Settings = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="notifications" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="notifications">
-              <Bell className="h-4 w-4 mr-2" />
-              {t('settings.tabs.notifications')}
-            </TabsTrigger>
-            <TabsTrigger value="security">
-              <Shield className="h-4 w-4 mr-2" />
-              {t('settings.tabs.security')}
-            </TabsTrigger>
-            <TabsTrigger value="language">
-              <Globe className="h-4 w-4 mr-2" />
-              {t('settings.tabs.language')}
-            </TabsTrigger>
-            <TabsTrigger value="appearance">
-              <Palette className="h-4 w-4 mr-2" />
-              {t('settings.tabs.appearance')}
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="notifications" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t('settings.notificationPrefs')}</CardTitle>
-                <CardDescription>{t('settings.notificationPrefsDesc')}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label>{t('settings.emailNotifications')}</Label>
-                    <p className="text-sm text-muted-foreground">{t('settings.emailNotificationsDesc')}</p>
-                  </div>
-                  <Switch 
-                    checked={notifications.email} 
-                    onCheckedChange={(checked) => setNotifications({...notifications, email: checked})}
+        <div className="grid gap-6">
+          {/* Profile Settings */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <User className="h-5 w-5" />
+                {t('settings.profile')}
+              </CardTitle>
+              <CardDescription>
+                {t('settings.profileDescription')}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="fullName">{t('settings.fullName')}</Label>
+                  <Input
+                    id="fullName"
+                    value={userProfile?.full_name || ''}
+                    onChange={(e) => handleUpdateProfile('full_name', e.target.value)}
+                    placeholder={t('settings.fullNamePlaceholder')}
                   />
                 </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label>{t('settings.pushNotifications')}</Label>
-                    <p className="text-sm text-muted-foreground">{t('settings.pushNotificationsDesc')}</p>
-                  </div>
-                  <Switch 
-                    checked={notifications.push} 
-                    onCheckedChange={(checked) => setNotifications({...notifications, push: checked})}
+                
+                <div>
+                  <Label htmlFor="companyName">{t('settings.companyName')}</Label>
+                  <Input
+                    id="companyName"
+                    value={userProfile?.company_name || ''}
+                    onChange={(e) => handleUpdateProfile('company_name', e.target.value)}
+                    placeholder={t('settings.companyNamePlaceholder')}
                   />
                 </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label>{t('settings.smsNotifications')}</Label>
-                    <p className="text-sm text-muted-foreground">{t('settings.smsNotificationsDesc')}</p>
-                  </div>
-                  <Switch 
-                    checked={notifications.sms} 
-                    onCheckedChange={(checked) => setNotifications({...notifications, sms: checked})}
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label>{t('settings.marketingComms')}</Label>
-                    <p className="text-sm text-muted-foreground">{t('settings.marketingCommsDesc')}</p>
-                  </div>
-                  <Switch 
-                    checked={notifications.marketing} 
-                    onCheckedChange={(checked) => setNotifications({...notifications, marketing: checked})}
-                  />
-                </div>
-                <Button onClick={handleSaveSettings}>{t('settings.savePreferences')}</Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
+              </div>
+              
+              <div>
+                <Label htmlFor="phone">{t('settings.phone')}</Label>
+                <Input
+                  id="phone"
+                  value={userProfile?.phone || ''}
+                  onChange={(e) => handleUpdateProfile('phone', e.target.value)}
+                  placeholder={t('settings.phonePlaceholder')}
+                />
+              </div>
+            </CardContent>
+          </Card>
 
-          <TabsContent value="security" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t('settings.securitySettings')}</CardTitle>
-                <CardDescription>{t('settings.securitySettingsDesc')}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="currentPassword">{t('settings.currentPassword')}</Label>
-                  <Input id="currentPassword" type="password" />
+          {/* Language & Region */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Globe className="h-5 w-5" />
+                {t('settings.languageAndRegion')}
+              </CardTitle>
+              <CardDescription>
+                {t('settings.languageDescription')}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <Label>{t('settings.language')}</Label>
+                  <Select value={language} onValueChange={setLanguage}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="en">English</SelectItem>
+                      <SelectItem value="ar">العربية</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="newPassword">{t('settings.newPassword')}</Label>
-                  <Input id="newPassword" type="password" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">{t('settings.confirmPassword')}</Label>
-                  <Input id="confirmPassword" type="password" />
-                </div>
-                <Button onClick={handleSaveSettings}>{t('settings.updatePassword')}</Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
+              </div>
+            </CardContent>
+          </Card>
 
-          <TabsContent value="language" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t('settings.languagePrefs')}</CardTitle>
-                <CardDescription>{t('settings.languagePrefsDesc')}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-2">
-                    <input 
-                      type="radio" 
-                      id="english" 
-                      name="language" 
-                      value="en"
-                      checked={language === 'en'}
-                      onChange={() => setLanguage('en')}
-                    />
-                    <Label htmlFor="english">{t('settings.english')}</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <input 
-                      type="radio" 
-                      id="arabic" 
-                      name="language" 
-                      value="ar"
-                      checked={language === 'ar'}
-                      onChange={() => setLanguage('ar')}
-                    />
-                    <Label htmlFor="arabic">{t('settings.arabic')}</Label>
-                  </div>
+          {/* Notification Settings */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Bell className="h-5 w-5" />
+                {t('settings.notifications')}
+              </CardTitle>
+              <CardDescription>
+                {t('settings.notificationsDescription')}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>{t('settings.emailNotifications')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('settings.emailNotificationsDesc')}</p>
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                <Switch
+                  checked={notifications.email}
+                  onCheckedChange={(value) => handleNotificationChange('email', value)}
+                />
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>{t('settings.pushNotifications')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('settings.pushNotificationsDesc')}</p>
+                </div>
+                <Switch
+                  checked={notifications.push}
+                  onCheckedChange={(value) => handleNotificationChange('push', value)}
+                />
+              </div>
+              
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>{t('settings.smsNotifications')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('settings.smsNotificationsDesc')}</p>
+                </div>
+                <Switch
+                  checked={notifications.sms}
+                  onCheckedChange={(value) => handleNotificationChange('sms', value)}
+                />
+              </div>
+            </CardContent>
+          </Card>
 
-          <TabsContent value="appearance" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t('settings.appearanceSettings')}</CardTitle>
-                <CardDescription>{t('settings.appearanceSettingsDesc')}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <Label>{t('settings.theme')}</Label>
-                    <p className="text-sm text-muted-foreground mb-2">{t('settings.themeDesc')}</p>
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="border rounded-lg p-4 cursor-pointer hover:border-primary">
-                        <div className="w-full h-20 bg-gradient-to-br from-background to-muted rounded mb-2"></div>
-                        <p className="text-sm text-center">{t('settings.lightTheme')}</p>
-                      </div>
-                      <div className="border rounded-lg p-4 cursor-pointer hover:border-primary">
-                        <div className="w-full h-20 bg-gradient-to-br from-gray-900 to-gray-700 rounded mb-2"></div>
-                        <p className="text-sm text-center">{t('settings.darkTheme')}</p>
-                      </div>
-                      <div className="border rounded-lg p-4 cursor-pointer hover:border-primary">
-                        <div className="w-full h-20 bg-gradient-to-br from-background via-muted to-gray-900 rounded mb-2"></div>
-                        <p className="text-sm text-center">{t('settings.autoTheme')}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+          {/* Security Settings */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Shield className="h-5 w-5" />
+                {t('settings.security')}
+              </CardTitle>
+              <CardDescription>
+                {t('settings.securityDescription')}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Button variant="outline" className="w-full">
+                {t('settings.changePassword')}
+              </Button>
+              
+              <Button variant="outline" className="w-full">
+                {t('settings.enableTwoFactor')}
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-    </DashboardLayout>
+    </CleanDashboardLayout>
   );
 };
 

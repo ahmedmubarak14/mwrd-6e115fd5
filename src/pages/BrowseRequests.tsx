@@ -1,5 +1,4 @@
-
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { CleanDashboardLayout } from "@/components/layout/CleanDashboardLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useMatchingSystem } from "@/hooks/useMatchingSystem";
 import { useCategories } from "@/hooks/useCategories";
@@ -21,11 +20,11 @@ const BrowseRequests = () => {
 
   if (loading || categoriesLoading) {
     return (
-      <DashboardLayout>
+      <CleanDashboardLayout>
         <div className="flex justify-center items-center min-h-[400px]">
           <LoadingSpinner size="lg" />
         </div>
-      </DashboardLayout>
+      </CleanDashboardLayout>
     );
   }
 
@@ -69,7 +68,7 @@ const BrowseRequests = () => {
   };
 
   return (
-    <DashboardLayout>
+    <CleanDashboardLayout>
       <div className="container mx-auto space-y-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">
@@ -196,7 +195,7 @@ const BrowseRequests = () => {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </CleanDashboardLayout>
   );
 };
 

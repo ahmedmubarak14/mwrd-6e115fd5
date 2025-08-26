@@ -1,5 +1,4 @@
-
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { CleanDashboardLayout } from "@/components/layout/CleanDashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,11 +16,11 @@ export const MyOffers = () => {
 
   if (loading) {
     return (
-      <DashboardLayout>
+      <CleanDashboardLayout>
         <div className="flex justify-center items-center min-h-[400px]">
           <LoadingSpinner size="lg" />
         </div>
-      </DashboardLayout>
+      </CleanDashboardLayout>
     );
   }
 
@@ -51,7 +50,7 @@ export const MyOffers = () => {
   };
 
   return (
-    <DashboardLayout>
+    <CleanDashboardLayout>
       <div className="container mx-auto space-y-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">
@@ -130,7 +129,7 @@ export const MyOffers = () => {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </CleanDashboardLayout>
   );
 };
 
