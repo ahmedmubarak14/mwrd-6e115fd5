@@ -1,4 +1,3 @@
-
 export const translations = {
   en: {
     // Navigation
@@ -15,7 +14,14 @@ export const translations = {
       browseRequests: "Browse Requests",
       myOffers: "My Offers",
       analytics: "Analytics",
-      logout: "Logout"
+      logout: "Logout",
+      menu: "Menu",
+      navigation: "Navigation",
+      home: "Home",
+      createRequest: "Create Request",
+      suppliers: "Browse Vendors",
+      manageSubscription: "Subscription",
+      procurementRequests: "Procurement Requests"
     },
     
     // Common
@@ -212,7 +218,14 @@ export const translations = {
       browseRequests: "تصفح الطلبات",
       myOffers: "عروضي",
       analytics: "التحليلات",
-      logout: "تسجيل الخروج"
+      logout: "تسجيل الخروج",
+      menu: "القائمة",
+      navigation: "التنقل",
+      home: "الرئيسية",
+      createRequest: "إنشاء طلب",
+      suppliers: "تصفح الموردين",
+      manageSubscription: "الاشتراك",
+      procurementRequests: "طلبات المشتريات"
     },
 
     // Common - Arabic
