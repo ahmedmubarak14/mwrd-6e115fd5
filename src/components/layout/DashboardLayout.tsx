@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Header } from "@/components/ui/layout/Header";
 import { Footer } from "@/components/ui/layout/Footer";
@@ -17,9 +18,8 @@ interface DashboardLayoutProps {
 export const DashboardLayout = ({ children, className }: DashboardLayoutProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { userProfile } = useAuth();
-  const { language } = useLanguage();
+  const { language, isRTL } = useLanguage();
   const isMobile = useIsMobile();
-  const isRTL = language === 'ar';
 
   if (isMobile) {
     // Mobile Layout - Keep existing mobile functionality
@@ -47,7 +47,7 @@ export const DashboardLayout = ({ children, className }: DashboardLayoutProps) =
     );
   }
 
-  // Desktop Layout - Restructured to match AdminLayout pattern
+  // Desktop Layout - Updated with proper RTL support
   return (
     <MobileContainer 
       pageType="dashboard"
@@ -55,7 +55,7 @@ export const DashboardLayout = ({ children, className }: DashboardLayoutProps) =
       dir={isRTL ? 'rtl' : 'ltr'}
     >
       <SidebarProvider defaultOpen={true}>
-        <div className="min-h-screen flex w-full">
+        <div className={`min-h-screen flex w-full ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
           <VendorSidebar 
             userRole={userProfile?.role as 'client' | 'vendor' | 'admin'}
             userProfile={userProfile}

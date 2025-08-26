@@ -142,12 +142,13 @@ export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {
       collapsible="icon" 
       className={cn(
         "w-64 data-[state=collapsed]:w-16",
-        isRTL && "border-l border-r-0"
+        isRTL ? "border-l border-r-0" : "border-r border-l-0"
       )}
+      side={isRTL ? "right" : "left"}
     >
-      <SidebarContent>
+      <SidebarContent className={cn(isRTL && "text-right")}>
         <SidebarGroup>
-          <SidebarGroupLabel>
+          <SidebarGroupLabel className={cn(isRTL && "text-right")}>
             {t('nav.menu') || 'Menu'}
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -160,6 +161,7 @@ export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {
                       asChild
                       isActive={isActive(item.href)}
                       tooltip={state === "collapsed" ? item.label : undefined}
+                      className={cn(isRTL && "flex-row-reverse text-right")}
                     >
                       <Link to={item.href} className={cn(isRTL && "flex-row-reverse")}>
                         <Icon />
@@ -183,6 +185,7 @@ export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {
                   asChild
                   isActive={isActive('/settings')}
                   tooltip={state === "collapsed" ? (t('nav.settings') || 'Settings') : undefined}
+                  className={cn(isRTL && "flex-row-reverse text-right")}
                 >
                   <Link to="/settings" className={cn(isRTL && "flex-row-reverse")}>
                     <Settings />

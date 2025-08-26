@@ -86,16 +86,13 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
             </Button>
           )}
 
-          {/* Logo/Brand - Updated to use actual MWRD logo image */}
-          <Link to="/" className="flex items-center space-x-2">
+          {/* Logo/Brand - Updated to link to landing page */}
+          <Link to="/landing" className="flex items-center">
             <img 
               src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
               alt="MWRD Logo" 
               className="h-8 w-auto"
             />
-            <span className="hidden font-bold sm:inline-block">
-              MWRD
-            </span>
           </Link>
         </div>
 
