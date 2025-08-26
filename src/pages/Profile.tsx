@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { CleanDashboardLayout } from "@/components/layout/CleanDashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,7 +18,7 @@ import { VerificationStatus } from "@/components/verification/VerificationStatus
 // Service categories for vendors
 const SERVICE_CATEGORIES = [
   "Construction & Building",
-  "Electrical Services",
+  "Electrical Services", 
   "Plumbing & HVAC",
   "Interior Design",
   "Landscaping",
@@ -92,8 +91,8 @@ const Profile = () => {
         <div className="max-w-7xl mx-auto p-6 space-y-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">{t('profile.title')}</h1>
-              <p className="text-gray-600 mt-1">
+              <h1 className="text-3xl font-semibold text-gray-900 mb-2">{t('profile.title')}</h1>
+              <p className="text-gray-600 text-lg">
                 {t('profile.subtitle')}
               </p>
             </div>

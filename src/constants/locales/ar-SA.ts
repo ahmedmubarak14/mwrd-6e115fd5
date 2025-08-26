@@ -1,4 +1,3 @@
-
 export const arSA = {
   common: {
     loading: 'جار التحميل...',
@@ -108,6 +107,48 @@ export const arSA = {
     securityDescription: 'إدارة إعدادات أمان حسابك',
     changePassword: 'تغيير كلمة المرور',
     enableTwoFactor: 'تفعيل المصادقة الثنائية',
+  },
+  profile: {
+    title: 'الملف الشخصي',
+    subtitle: 'إدارة معلومات ملفك الشخصي وحالة التحقق',
+    personalInfo: 'المعلومات الشخصية',
+    personalInfoDesc: 'تحديث تفاصيلك الشخصية ومعلومات الاتصال',
+    companyInfo: 'معلومات الشركة',
+    companyInfoDesc: 'تحديث تفاصيل عملك وملف الشركة',
+    fullName: 'الاسم الكامل',
+    email: 'عنوان البريد الإلكتروني',
+    phone: 'رقم الهاتف',
+    address: 'العنوان',
+    role: 'الدور',
+    companyName: 'اسم الشركة',
+    bio: 'وصف الشركة',
+    bioClient: 'نبذة عنك',
+    bioPlaceholder: 'أخبرنا عن شركتك وخدماتك وخبراتك...',
+    bioPlaceholderClient: 'أخبرنا عن نفسك ومتطلباتك...',
+    portfolioUrl: 'رابط الأعمال',
+    serviceCategories: 'فئات الخدمة',
+    serviceCategoriesDesc: 'اختر الفئات التي تصف خدماتك بشكل أفضل',
+    selectedCategories: 'الفئات المختارة',
+    verificationRequirements: 'متطلبات التحقق',
+    verificationDesc: 'أكمل هذه المتطلبات للحصول على التحقق والوصول إلى جميع الميزات',
+    accountSettings: 'إعدادات الحساب',
+    accountSettingsDesc: 'عرض حالة حسابك وتفاصيل الاشتراك',
+    accountStatus: 'حالة الحساب',
+    subscriptionPlan: 'خطة الاشتراك',
+    memberSince: 'عضو منذ',
+    saveChanges: 'حفظ التغييرات',
+    saveCategories: 'حفظ الفئات',
+    saving: 'جار الحفظ...',
+    verified: 'موثق',
+    rejected: 'مرفوض',
+    underReview: 'قيد المراجعة',
+    pendingVerification: 'في انتظار التحقق',
+    tabs: {
+      profile: 'الملف الشخصي',
+      categories: 'الفئات',
+      verification: 'التحقق',
+      settings: 'الإعدادات'
+    }
   },
   vendor: {
     welcome: 'مرحباً',
