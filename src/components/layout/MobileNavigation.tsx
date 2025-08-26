@@ -110,7 +110,7 @@ export const MobileNavigation = () => {
                     <Link
                       to={item.href}
                       onClick={handleLinkClick}
-                      className={`flex items-center gap-4 p-4 rounded-xl bg-glass hover:bg-primary/20 transition-all duration-300 hover:shadow-md hover:scale-[1.02] active:scale-95 touch-manipulation ${isRTL ? 'flex-row-reverse text-right' : ''} group`}
+                      className={`flex items-center gap-4 p-4 rounded-xl bg-white/10 border border-white/30 backdrop-blur-20 hover:shadow-2xl transition-all duration-500 hover:scale-105 active:scale-95 touch-manipulation ${isRTL ? 'flex-row-reverse text-right' : ''} group`}
                     >
                       <div className="w-10 h-10 bg-primary/20 backdrop-blur-sm rounded-lg flex items-center justify-center group-hover:bg-primary/30 transition-colors">
                         <item.icon className="h-5 w-5 text-primary group-hover:scale-110 transition-transform" />
