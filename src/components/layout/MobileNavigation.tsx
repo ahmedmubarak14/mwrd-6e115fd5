@@ -82,12 +82,14 @@ export const MobileNavigation = () => {
               Navigation menu
             </SheetDescription>
             
-            {/* Language Switcher */}
+            {/* Language Switcher with glassmorphism styling */}
             <div className={`flex pt-4 ${isRTL ? 'justify-end' : 'justify-center'}`}>
-              <LanguageSwitcher />
+              <div className="bg-white/10 border border-white/30 backdrop-blur-20 rounded-lg p-1 hover:shadow-2xl transition-all duration-500 hover:scale-105">
+                <LanguageSwitcher />
+              </div>
             </div>
 
-            {/* Authentication buttons with glassmorphism styling */}
+            {/* Authentication buttons - login with glassmorphism, register with gradient */}
             <div className={`flex gap-3 pt-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Link to="/login" onClick={handleLinkClick} className="flex-1">
                 <Button 
@@ -101,7 +103,7 @@ export const MobileNavigation = () => {
               <Link to="/register" onClick={handleLinkClick} className="flex-1">
                 <Button 
                   size="default" 
-                  className="w-full h-10 bg-white/10 border border-white/30 backdrop-blur-20 hover:shadow-2xl transition-all duration-500 hover:scale-105 active:scale-95 touch-manipulation font-semibold text-sm"
+                  className="w-full h-10 bg-gradient-to-r from-primary to-accent hover:shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-95 touch-manipulation font-semibold text-sm"
                 >
                   {language === 'ar' ? 'إنشاء حساب' : 'Register'}
                 </Button>
