@@ -1,4 +1,5 @@
 
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
@@ -34,8 +35,8 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <AuthProvider>
-          <RouteAwareThemeProvider>
-            <Router>
+          <Router>
+            <RouteAwareThemeProvider>
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/dashboard" element={<Dashboard />} />
@@ -52,8 +53,8 @@ function App() {
                 <Route path="*" element={<NotFound />} />
               </Routes>
               <Toaster />
-            </Router>
-          </RouteAwareThemeProvider>
+            </RouteAwareThemeProvider>
+          </Router>
         </AuthProvider>
       </LanguageProvider>
     </QueryClientProvider>
