@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Users } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import { QuickChatModal } from "@/components/conversations/QuickChatModal";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
@@ -11,7 +11,7 @@ import { getAvailableAdmins, selectRandomAdmin } from "@/utils/adminUtils";
 export const LiveChatButton = () => {
   const { userProfile } = useAuth();
   const languageContext = useOptionalLanguage();
-  const { showError, showInfo } = useToastFeedback();
+  const { showError, showSuccess } = useToastFeedback();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedAdmin, setSelectedAdmin] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,30 +20,53 @@ export const LiveChatButton = () => {
   const t = languageContext?.t || ((key: string) => key.split('.').pop() || key);
 
   const handleStartChat = async () => {
+    console.log('LiveChat: Button clicked');
+    
     if (!userProfile) {
+      console.log('LiveChat: No user profile found');
       showError('Please log in to start a chat');
       return;
     }
 
+    console.log('LiveChat: Starting chat for user:', userProfile.user_id);
     setIsLoading(true);
+
     try {
+      console.log('LiveChat: Getting available admins...');
       const admins = await getAvailableAdmins();
       
       if (admins.length === 0) {
+        console.log('LiveChat: No admins available');
         showError('No support agents are currently available. Please create a support ticket instead.');
         return;
       }
 
+      console.log('LiveChat: Found', admins.length, 'admins');
       const admin = selectRandomAdmin(admins);
+      
+      if (!admin) {
+        console.log('LiveChat: Failed to select admin');
+        showError('Failed to connect to support agent. Please try again.');
+        return;
+      }
+
+      console.log('LiveChat: Selected admin:', admin.full_name);
       setSelectedAdmin(admin);
       setIsModalOpen(true);
-      showInfo('Connecting you to a support agent...');
+      showSuccess('Connecting you to a support agent...');
+      
     } catch (error) {
-      console.error('Error starting chat:', error);
+      console.error('LiveChat: Error starting chat:', error);
       showError('Failed to start chat. Please try again.');
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleModalClose = () => {
+    console.log('LiveChat: Modal closing');
+    setIsModalOpen(false);
+    setSelectedAdmin(null);
   };
 
   return (
@@ -61,24 +84,12 @@ export const LiveChatButton = () => {
         {isLoading ? 'Connecting...' : t('support.startLiveChat') || 'Start Live Chat'}
       </Button>
 
-      {selectedAdmin && (
-        <QuickChatModal
-          open={isModalOpen}
-          onOpenChange={setIsModalOpen}
-          recipientId={selectedAdmin.user_id}
-          recipientName={selectedAdmin.full_name || 'Support Agent'}
-        >
-          <div className="flex items-center gap-2 p-4 border-b">
-            <Users className="h-5 w-5 text-primary" />
-            <div>
-              <h3 className="font-semibold">Support Chat</h3>
-              <p className="text-sm text-muted-foreground">
-                Connected to: {selectedAdmin.full_name || 'Support Agent'}
-              </p>
-            </div>
-          </div>
-        </QuickChatModal>
-      )}
+      <QuickChatModal
+        open={isModalOpen}
+        onOpenChange={handleModalClose}
+        recipientId={selectedAdmin?.user_id || ''}
+        recipientName={selectedAdmin?.full_name || 'Support Agent'}
+      />
     </>
   );
 };

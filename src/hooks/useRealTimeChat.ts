@@ -1,3 +1,4 @@
+
 import { useState, useCallback, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -10,6 +11,7 @@ export interface Conversation {
   request_id?: string;
   offer_id?: string;
   status: string;
+  conversation_type?: string;
   last_message?: string;
   last_message_at: string;
   created_at: string;
@@ -42,6 +44,8 @@ export const useRealTimeChat = () => {
   useEffect(() => {
     if (!user) return;
 
+    console.log('Setting up real-time subscriptions for user:', user.id);
+
     const channel = supabase.channel('chat-updates');
 
     // Listen for new messages
@@ -52,6 +56,7 @@ export const useRealTimeChat = () => {
         table: 'messages',
         filter: `recipient_id=eq.${user.id}`
       }, (payload) => {
+        console.log('New message received:', payload);
         const newMessage = payload.new as Message;
         setMessages(prev => ({
           ...prev,
@@ -65,7 +70,16 @@ export const useRealTimeChat = () => {
         event: 'UPDATE',
         schema: 'public',
         table: 'conversations'
-      }, () => {
+      }, (payload) => {
+        console.log('Conversation updated:', payload);
+        fetchConversations();
+      })
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'conversations'
+      }, (payload) => {
+        console.log('New conversation created:', payload);
         fetchConversations();
       })
       .subscribe();
@@ -73,6 +87,7 @@ export const useRealTimeChat = () => {
     setRealtimeChannel(channel);
 
     return () => {
+      console.log('Cleaning up real-time subscriptions');
       supabase.removeChannel(channel);
     };
   }, [user]);
@@ -80,39 +95,56 @@ export const useRealTimeChat = () => {
   const startConversation = useCallback(async (
     recipientId: string,
     requestId?: string,
-    offerId?: string
+    offerId?: string,
+    conversationType: string = 'business'
   ) => {
     if (!user) throw new Error('User not authenticated');
 
+    console.log('Starting conversation with:', recipientId, 'type:', conversationType);
+
     try {
       // Check if conversation already exists
-      const { data: existingConversation } = await supabase
+      let query = supabase
         .from('conversations')
         .select('*')
-        .or(`and(client_id.eq.${user.id},vendor_id.eq.${recipientId}),and(client_id.eq.${recipientId},vendor_id.eq.${user.id})`)
-        .eq('request_id', requestId || '')
-        .eq('offer_id', offerId || '')
-        .single();
+        .or(`and(client_id.eq.${user.id},vendor_id.eq.${recipientId}),and(client_id.eq.${recipientId},vendor_id.eq.${user.id})`);
+
+      // Add filters for request/offer if provided
+      if (requestId) {
+        query = query.eq('request_id', requestId);
+      }
+      if (offerId) {
+        query = query.eq('offer_id', offerId);
+      }
+
+      const { data: existingConversation } = await query.single();
 
       if (existingConversation) {
+        console.log('Found existing conversation:', existingConversation.id);
         return existingConversation;
       }
 
       // Create new conversation
+      console.log('Creating new conversation...');
+      const conversationData: any = {
+        client_id: user.id,
+        vendor_id: recipientId,
+        status: 'active',
+        conversation_type: conversationType
+      };
+
+      if (requestId) conversationData.request_id = requestId;
+      if (offerId) conversationData.offer_id = offerId;
+
       const { data: newConversation, error } = await supabase
         .from('conversations')
-        .insert({
-          client_id: user.id,
-          vendor_id: recipientId,
-          request_id: requestId,
-          offer_id: offerId,
-          status: 'active'
-        })
+        .insert(conversationData)
         .select()
         .single();
 
       if (error) throw error;
 
+      console.log('Created new conversation:', newConversation.id);
       await fetchConversations();
       return newConversation;
     } catch (error: any) {
@@ -129,6 +161,8 @@ export const useRealTimeChat = () => {
     attachmentUrl?: string
   ) => {
     if (!user) throw new Error('User not authenticated');
+
+    console.log('Sending message to conversation:', conversationId);
 
     try {
       const { data: message, error } = await supabase
@@ -161,6 +195,7 @@ export const useRealTimeChat = () => {
         [conversationId]: [...(prev[conversationId] || []), message]
       }));
 
+      console.log('Message sent successfully');
       return message;
     } catch (error: any) {
       console.error('Error sending message:', error);
@@ -183,6 +218,8 @@ export const useRealTimeChat = () => {
   }, [user]);
 
   const fetchMessages = useCallback(async (conversationId: string) => {
+    console.log('Fetching messages for conversation:', conversationId);
+    
     try {
       const { data, error } = await supabase
         .from('messages')
@@ -197,6 +234,7 @@ export const useRealTimeChat = () => {
         [conversationId]: data || []
       }));
 
+      console.log('Fetched', data?.length || 0, 'messages');
       return data;
     } catch (error: any) {
       console.error('Error fetching messages:', error);
@@ -237,6 +275,7 @@ export const useRealTimeChat = () => {
   const fetchConversations = useCallback(async () => {
     if (!user) return;
 
+    console.log('Fetching conversations for user:', user.id);
     setLoading(true);
     setError(null);
 
@@ -245,10 +284,11 @@ export const useRealTimeChat = () => {
         .from('conversations')
         .select('*')
         .or(`client_id.eq.${user.id},vendor_id.eq.${user.id}`)
-        .order('last_message_at', { ascending: false });
+        .order('last_message_at', { ascending: false, nullsFirst: false });
 
       if (error) throw error;
 
+      console.log('Fetched', data?.length || 0, 'conversations');
       setConversations(data || []);
     } catch (error: any) {
       console.error('Error fetching conversations:', error);

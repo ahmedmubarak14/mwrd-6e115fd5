@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { LiveChatButton } from "@/components/support/LiveChatButton";
@@ -14,11 +14,14 @@ import { useState } from "react";
 
 export const Support = () => {
   const { userProfile } = useAuth();
-  const { t } = useLanguage();
+  const languageContext = useOptionalLanguage();
   const { tickets, loading, createTicket } = useSupportTickets();
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Safe fallback for translation
+  const t = languageContext?.t || ((key: string) => key.split('.').pop() || key);
 
   const handleSubmitTicket = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,10 +59,10 @@ export const Support = () => {
       <div className="container mx-auto space-y-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            {t('support.title')}
+            {t('support.title') || 'Support'}
           </h1>
           <p className="text-muted-foreground">
-            {t('support.subtitle')}
+            {t('support.subtitle') || 'Get help from our support team'}
           </p>
         </div>
 
@@ -69,18 +72,18 @@ export const Support = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <HelpCircle className="h-5 w-5" />
-                {t('support.contactUs')}
+                {t('support.contactUs') || 'Contact Us'}
               </CardTitle>
               <CardDescription>
-                {t('support.contactDescription')}
+                {t('support.contactDescription') || 'Choose how you\'d like to get in touch'}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
                 <MessageSquare className="h-5 w-5 text-blue-500" />
                 <div className="flex-1">
-                  <p className="font-medium">{t('support.liveChat')}</p>
-                  <p className="text-sm text-muted-foreground">{t('support.liveChatHours')}</p>
+                  <p className="font-medium">{t('support.liveChat') || 'Live Chat'}</p>
+                  <p className="text-sm text-muted-foreground">{t('support.liveChatHours') || 'Available 24/7'}</p>
                 </div>
               </div>
               
@@ -91,7 +94,7 @@ export const Support = () => {
               <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
                 <Phone className="h-5 w-5 text-green-500" />
                 <div>
-                  <p className="font-medium">{t('support.phone')}</p>
+                  <p className="font-medium">{t('support.phone') || 'Phone'}</p>
                   <p className="text-sm text-muted-foreground">+1 (555) 123-4567</p>
                 </div>
               </div>
@@ -99,7 +102,7 @@ export const Support = () => {
               <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
                 <Mail className="h-5 w-5 text-orange-500" />
                 <div>
-                  <p className="font-medium">{t('support.email')}</p>
+                  <p className="font-medium">{t('support.email') || 'Email'}</p>
                   <p className="text-sm text-muted-foreground">support@mwrd.com</p>
                 </div>
               </div>
@@ -109,16 +112,16 @@ export const Support = () => {
           {/* Create Ticket */}
           <Card>
             <CardHeader>
-              <CardTitle>{t('support.createTicket')}</CardTitle>
+              <CardTitle>{t('support.createTicket') || 'Create Support Ticket'}</CardTitle>
               <CardDescription>
-                {t('support.createTicketDescription')}
+                {t('support.createTicketDescription') || 'Submit a detailed support request'}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmitTicket} className="space-y-4">
                 <div>
                   <Input
-                    placeholder={t('support.subjectPlaceholder')}
+                    placeholder={t('support.subjectPlaceholder') || 'Subject'}
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
                     required
@@ -127,7 +130,7 @@ export const Support = () => {
                 
                 <div>
                   <Textarea
-                    placeholder={t('support.messagePlaceholder')}
+                    placeholder={t('support.messagePlaceholder') || 'Describe your issue...'}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     rows={4}
@@ -141,7 +144,7 @@ export const Support = () => {
                   ) : (
                     <>
                       <Send className="h-4 w-4 mr-2" />
-                      {t('support.submitTicket')}
+                      {t('support.submitTicket') || 'Submit Ticket'}
                     </>
                   )}
                 </Button>
@@ -154,7 +157,7 @@ export const Support = () => {
         {tickets && tickets.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle>{t('support.recentTickets')}</CardTitle>
+              <CardTitle>{t('support.recentTickets') || 'Recent Support Tickets'}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
