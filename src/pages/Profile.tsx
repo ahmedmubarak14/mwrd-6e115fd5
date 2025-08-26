@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { CleanDashboardLayout } from "@/components/layout/CleanDashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -87,7 +87,7 @@ const Profile = () => {
   if (!userProfile) return null;
 
   return (
-    <DashboardLayout>
+    <CleanDashboardLayout>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
@@ -394,7 +394,7 @@ const Profile = () => {
           </TabsContent>
         </Tabs>
       </div>
-    </DashboardLayout>
+    </CleanDashboardLayout>
   );
 };
 
