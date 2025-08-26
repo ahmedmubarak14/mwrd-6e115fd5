@@ -10,6 +10,7 @@ import { NotificationsModal } from "@/components/modals/NotificationsModal";
 import { SearchModal } from "@/components/modals/SearchModal";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useNotifications } from "@/hooks/useNotifications";
 
 interface CleanHeaderProps {
   onMobileMenuOpen?: () => void;
@@ -18,12 +19,8 @@ interface CleanHeaderProps {
 export const CleanHeader = ({ onMobileMenuOpen }: CleanHeaderProps) => {
   const { userProfile, signOut } = useAuth();
   const { t, isRTL } = useLanguage();
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [showSearch, setShowSearch] = useState(false);
   const isMobile = useIsMobile();
-
-  // Mock notification count - replace with real data
-  const notificationCount = 3;
+  const { unreadCount } = useNotifications();
 
   return (
     <>
@@ -33,17 +30,18 @@ export const CleanHeader = ({ onMobileMenuOpen }: CleanHeaderProps) => {
       )}>
         {/* Search */}
         <div className="flex-1 max-w-md">
-          <Button
-            variant="outline"
-            onClick={() => setShowSearch(true)}
-            className={cn(
-              "w-full justify-start text-muted-foreground",
-              isRTL && "flex-row-reverse"
-            )}
-          >
-            <Search className="h-4 w-4 mr-2" />
-            <span>{t('header.search') || 'Search...'}</span>
-          </Button>
+          <SearchModal>
+            <Button
+              variant="outline"
+              className={cn(
+                "w-full justify-start text-muted-foreground",
+                isRTL && "flex-row-reverse"
+              )}
+            >
+              <Search className="h-4 w-4 mr-2" />
+              <span>{t('header.search') || 'Search...'}</span>
+            </Button>
+          </SearchModal>
         </div>
 
         {/* Right side actions */}
@@ -52,22 +50,23 @@ export const CleanHeader = ({ onMobileMenuOpen }: CleanHeaderProps) => {
           isRTL && "flex-row-reverse"
         )}>
           {/* Notifications */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setShowNotifications(true)}
-            className="relative"
-          >
-            <Bell className="h-5 w-5" />
-            {notificationCount > 0 && (
-              <Badge 
-                variant="destructive" 
-                className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
-              >
-                {notificationCount > 9 ? '9+' : notificationCount}
-              </Badge>
-            )}
-          </Button>
+          <NotificationsModal>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="relative"
+            >
+              <Bell className="h-5 w-5" />
+              {unreadCount > 0 && (
+                <Badge 
+                  variant="destructive" 
+                  className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
+                >
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </Badge>
+              )}
+            </Button>
+          </NotificationsModal>
 
           {/* Messages/Conversations */}
           <ConversationsDropdown>
@@ -87,17 +86,6 @@ export const CleanHeader = ({ onMobileMenuOpen }: CleanHeaderProps) => {
           </div>
         </div>
       </div>
-
-      {/* Modals */}
-      <SearchModal 
-        open={showSearch} 
-        onOpenChange={setShowSearch} 
-      />
-      
-      <NotificationsModal 
-        open={showNotifications} 
-        onOpenChange={setShowNotifications} 
-      />
     </>
   );
 };
