@@ -92,10 +92,10 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
             </Button>
           )}
 
-          {/* Logo/Brand - Updated to link to landing page */}
-          <Link to="/landing" className="flex items-center">
+          {/* Logo/Brand - Updated to use new logo */}
+          <Link to="/landing" className="flex items-center hover:opacity-80 transition-opacity">
             <img 
-              src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
+              src="/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png" 
               alt="MWRD Logo" 
               className="h-8 w-auto"
             />

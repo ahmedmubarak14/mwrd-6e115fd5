@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -49,8 +48,12 @@ export const CleanHeader = ({ onMobileMenuOpen }: CleanHeaderProps) => {
           </Button>
         )}
         
-        <Link to="/vendor-dashboard" className="flex items-center">
-          <span className="text-xl font-semibold text-gray-900">MWRD</span>
+        <Link to="/landing" className="flex items-center hover:opacity-80 transition-opacity">
+          <img 
+            src="/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png" 
+            alt="MWRD Logo" 
+            className="h-8 w-auto"
+          />
         </Link>
       </div>
 

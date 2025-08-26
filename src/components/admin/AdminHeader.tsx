@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -96,9 +97,9 @@ export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
             className="flex items-center gap-2 hover:scale-105 transition-transform"
           >
             <img 
-              src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
+              src="/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png" 
               alt="MWRD Logo"
-              className="h-8 sm:h-12 lg:h-16 w-auto"
+              className="h-8 sm:h-12 lg:h-16 w-auto filter invert brightness-0"
             />
           </button>
         </div>
