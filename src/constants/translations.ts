@@ -1,4 +1,3 @@
-
 export const translations = {
   en: {
     // Navigation
@@ -149,20 +148,22 @@ export const translations = {
 
     // Support page
     support: {
-      title: "Support Center",
-      subtitle: "Get help and support for your account",
+      title: "Support & Help",
+      subtitle: "Get help when you need it",
       contactUs: "Contact Us",
-      contactDescription: "Choose how you'd like to get in touch with our support team",
+      contactDescription: "Choose the best way to reach our support team",
       liveChat: "Live Chat",
-      liveChatHours: "Available 9 AM - 6 PM EST",
+      liveChatHours: "Available 9 AM - 6 PM",
       phone: "Phone Support",
       email: "Email Support",
       createTicket: "Create Support Ticket",
-      createTicketDescription: "Submit a detailed support request and we'll get back to you",
+      createTicketDescription: "Submit a detailed support request",
       subjectPlaceholder: "Brief description of your issue",
-      messagePlaceholder: "Please provide detailed information about your issue...",
+      messagePlaceholder: "Please describe your issue in detail...",
       submitTicket: "Submit Ticket",
-      recentTickets: "Recent Support Tickets"
+      recentTickets: "Your Recent Tickets",
+      ticketCreated: "Support ticket created successfully",
+      ticketCreateError: "Failed to create support ticket"
     },
 
     // Settings page
@@ -397,20 +398,22 @@ export const translations = {
 
     // Support page - Arabic
     support: {
-      title: "مركز الدعم",
-      subtitle: "احصل على المساعدة والدعم لحسابك",
+      title: "الدعم والمساعدة",
+      subtitle: "احصل على المساعدة عندما تحتاجها",
       contactUs: "اتصل بنا",
-      contactDescription: "اختر كيف تريد التواصل مع فريق الدعم",
-      liveChat: "المحادثة المباشرة",
-      liveChatHours: "متاح من 9 صباحاً - 6 مساءً بتوقيت شرق أمريكا",
+      contactDescription: "اختر أفضل طريقة للوصول إلى فريق الدعم",
+      liveChat: "الدردشة المباشرة",
+      liveChatHours: "متاح من 9 صباحاً - 6 مساءً",
       phone: "الدعم الهاتفي",
       email: "الدعم عبر البريد الإلكتروني",
       createTicket: "إنشاء تذكرة دعم",
-      createTicketDescription: "أرسل طلب دعم مفصل وسنعود إليك",
-      subjectPlaceholder: "وصف مختصر لمشكلتك",
-      messagePlaceholder: "يرجى تقديم معلومات مفصلة حول مشكلتك...",
+      createTicketDescription: "قدم طلب دعم مفصل",
+      subjectPlaceholder: "وصف موجز لمشكلتك",
+      messagePlaceholder: "يرجى وصف مشكلتك بالتفصيل...",
       submitTicket: "إرسال التذكرة",
-      recentTickets: "تذاكر الدعم الأخيرة"
+      recentTickets: "تذاكر الدعم الأخيرة",
+      ticketCreated: "تم إنشاء تذكرة الدعم بنجاح",
+      ticketCreateError: "فشل في إنشاء تذكرة الدعم"
     },
 
     // Settings page - Arabic

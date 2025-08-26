@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -14,7 +13,8 @@ import {
   AlertCircle, 
   User,
   Search,
-  Filter
+  Filter,
+  Download
 } from "lucide-react";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { useAuth } from "@/contexts/AuthContext";
@@ -22,6 +22,7 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
+import { DataExporter } from "@/utils/exportUtils";
 
 export const AdminSupport = () => {
   const { tickets, loading, updateTicketStatus, assignTicket } = useSupportTickets();
@@ -93,6 +94,15 @@ export const AdminSupport = () => {
   const handleViewConversation = (ticket: any) => {
     // Navigate to messages with the conversation for this ticket
     navigate('/messages');
+  };
+
+  const handleExportTickets = () => {
+    try {
+      DataExporter.exportTicketsData(filteredTickets);
+      // Remove the old toast, it's now handled in the export function
+    } catch (error) {
+      console.error('Export failed:', error);
+    }
   };
 
   const TicketCard = ({ ticket }: { ticket: any }) => (
@@ -276,6 +286,14 @@ export const AdminSupport = () => {
               }}
             >
               {t('search.clearFilters')}
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={handleExportTickets}
+              className="flex items-center gap-2"
+            >
+              <Download className="h-4 w-4" />
+              Export Tickets
             </Button>
           </div>
         </CardContent>

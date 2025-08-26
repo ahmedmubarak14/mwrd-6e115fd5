@@ -12,6 +12,7 @@ import { useOffers } from "@/hooks/useOffers";
 import { useCategories } from "@/hooks/useCategories";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { UnifiedVerificationStatus } from "@/components/verification/UnifiedVerificationStatus";
+import { OfferSubmissionModal } from "@/components/vendor/OfferSubmissionModal";
 
 export const CleanVendorDashboard = () => {
   const { userProfile } = useAuth();
@@ -33,7 +34,9 @@ export const CleanVendorDashboard = () => {
   
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
-  
+  const [selectedRequest, setSelectedRequest] = useState<any>(null);
+  const [isOfferModalOpen, setIsOfferModalOpen] = useState(false);
+
   const { matchedRequests, loading: matchingLoading, getMatchLevel } = useMatchingSystem();
   const { offers, loading: offersLoading, formatPrice, getStatusColor } = useOffers();
   const { categories, loading: categoriesLoading } = useCategories();
@@ -79,8 +82,14 @@ export const CleanVendorDashboard = () => {
     }
   };
 
-  const handleSubmitOffer = (requestId: string) => {
-    console.log('Submit offer for request:', requestId);
+  const handleSubmitOffer = (request: any) => {
+    setSelectedRequest(request);
+    setIsOfferModalOpen(true);
+  };
+
+  const handleOfferSuccess = () => {
+    // Refresh data or show success feedback
+    console.log('Offer submitted successfully');
   };
 
   const stats = {
@@ -312,7 +321,7 @@ export const CleanVendorDashboard = () => {
                     <div className="flex gap-3 pt-2">
                       <Button 
                         className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium"
-                        onClick={() => handleSubmitOffer(request.id)}
+                        onClick={() => handleSubmitOffer(request)}
                       >
                         <Plus className="h-4 w-4 mr-2" />
                         {t('vendor.submitOffer')}
@@ -332,6 +341,14 @@ export const CleanVendorDashboard = () => {
           )}
         </div>
       </div>
+
+      {/* Offer Submission Modal */}
+      <OfferSubmissionModal
+        isOpen={isOfferModalOpen}
+        onClose={() => setIsOfferModalOpen(false)}
+        request={selectedRequest}
+        onSuccess={handleOfferSuccess}
+      />
     </div>
   );
 };
