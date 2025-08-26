@@ -23,16 +23,16 @@ export const CleanDashboardLayout = ({ children, className }: CleanDashboardLayo
     return (
       <MobileContainer 
         pageType="dashboard"
-        className="bg-background text-foreground"
+        className="bg-white"
         dir={isRTL ? 'rtl' : 'ltr'}
       >
-        <div className="min-h-screen flex flex-col bg-background text-foreground">
+        <div className="min-h-screen flex flex-col bg-white">
           <CleanHeader onMobileMenuOpen={() => setSidebarOpen(true)} />
           
           <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
             <SheetContent 
               side={isRTL ? "right" : "left"} 
-              className="p-0 bg-card border-r border-border w-64"
+              className="p-0 bg-white border-r border-gray-200 w-64"
             >
               <CleanSidebar 
                 userRole={userProfile?.role as 'client' | 'vendor' | 'admin'}
@@ -42,7 +42,7 @@ export const CleanDashboardLayout = ({ children, className }: CleanDashboardLayo
             </SheetContent>
           </Sheet>
 
-          <main className="flex-1 bg-background text-foreground">
+          <main className="flex-1 bg-white">
             {children}
           </main>
         </div>
@@ -51,22 +51,22 @@ export const CleanDashboardLayout = ({ children, className }: CleanDashboardLayo
   }
 
   return (
-    <div className={`min-h-screen w-full bg-background text-foreground ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className={`min-h-screen w-full bg-white ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       <MobileContainer 
         pageType="dashboard"
-        className="bg-background text-foreground"
+        className="bg-white"
         dir={isRTL ? 'rtl' : 'ltr'}
       >
-        <div className={`min-h-screen flex w-full bg-background text-foreground ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+        <div className={`min-h-screen flex w-full bg-white ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
           <CleanSidebar 
             userRole={userProfile?.role as 'client' | 'vendor' | 'admin'}
             userProfile={userProfile}
           />
           
-          <div className="flex-1 flex flex-col min-w-0 bg-background text-foreground">
+          <div className="flex-1 flex flex-col min-w-0 bg-white">
             <CleanHeader onMobileMenuOpen={() => setSidebarOpen(true)} />
             
-            <main className="flex-1 bg-background text-foreground">
+            <main className="flex-1 bg-white">
               {children}
             </main>
           </div>
