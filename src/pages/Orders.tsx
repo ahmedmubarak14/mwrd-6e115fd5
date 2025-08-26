@@ -82,7 +82,7 @@ export const Orders = () => {
                     <div className="flex items-center gap-2 text-sm">
                       <DollarSign className="h-4 w-4 text-green-500" />
                       <span className="font-medium">
-                        ${order.total_amount?.toLocaleString() || t('orders.amountNotSet')}
+                        ${order.amount?.toLocaleString() || t('orders.amountNotSet')}
                       </span>
                     </div>
                     
@@ -95,7 +95,7 @@ export const Orders = () => {
                     
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Calendar className="h-4 w-4" />
-                      <span>{t('orders.ordered')} {format(new Date(order.created_at), 'MMM dd, yyyy')}</span>
+                      <span>{t('orders.ordered')} {format(new Date(order.date), 'MMM dd, yyyy')}</span>
                     </div>
                   </div>
                 </CardContent>

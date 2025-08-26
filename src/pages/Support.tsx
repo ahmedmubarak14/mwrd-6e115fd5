@@ -27,8 +27,9 @@ export const Support = () => {
     try {
       await createTicket({
         subject: subject.trim(),
-        message: message.trim(),
-        priority: 'medium'
+        category: 'general',
+        priority: 'medium',
+        message: message.trim()
       });
       setSubject("");
       setMessage("");
