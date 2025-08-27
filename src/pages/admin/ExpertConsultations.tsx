@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { supabase } from "@/integrations/supabase/client";
 import { Search, Filter, MessageSquare, Calendar, User, Phone } from "lucide-react";
 import { useToastFeedback } from "@/hooks/useToastFeedback";
@@ -29,7 +29,12 @@ interface Consultation {
 }
 
 export const ExpertConsultations = () => {
-  const { t, isRTL, formatDate } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL, formatDate } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false,
+    formatDate: (date: Date) => date.toLocaleDateString()
+  };
   const { showSuccess, showError } = useToastFeedback();
   const [consultations, setConsultations] = useState<Consultation[]>([]);
   const [loading, setLoading] = useState(true);

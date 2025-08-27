@@ -21,7 +21,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { useSupportTickets } from '@/hooks/useSupportTickets';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
@@ -43,7 +43,13 @@ export const AdminDashboardOverview = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const { getPendingTicketsCount } = useSupportTickets();
-  const { t, isRTL, formatNumber, formatCurrency } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL, formatNumber, formatCurrency } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false,
+    formatNumber: (num: number) => num.toString(),
+    formatCurrency: (amount: number) => `$${amount}`
+  };
   const [stats, setStats] = useState<DashboardStats>({
     totalUsers: 0,
     totalClients: 0,

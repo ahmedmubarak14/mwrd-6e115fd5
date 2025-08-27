@@ -10,7 +10,7 @@ import { useCategories } from '@/hooks/useCategories';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Plus, Edit, Trash2, ChevronRight, AlertTriangle } from 'lucide-react';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 import { cn } from '@/lib/utils';
 
 interface Category {
@@ -28,7 +28,11 @@ export const CategoryManagement: React.FC = () => {
   // Include inactive categories for admin management
   const { categories, loading, createCategory, updateCategory, deleteCategory, refetch } = useCategories(true);
   const { toast } = useToast();
-  const { t, isRTL } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false 
+  };
   const { userProfile } = useAuth();
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);

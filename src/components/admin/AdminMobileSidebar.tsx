@@ -1,7 +1,7 @@
 
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { AdminSidebar } from "./AdminSidebar";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { cn } from "@/lib/utils";
 
 interface AdminMobileSidebarProps {
@@ -10,7 +10,10 @@ interface AdminMobileSidebarProps {
 }
 
 export const AdminMobileSidebar = ({ isOpen, onOpenChange }: AdminMobileSidebarProps) => {
-  const { isRTL } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { isRTL } = languageContext || { 
+    isRTL: false 
+  };
 
   return (
     <div className="lg:hidden">

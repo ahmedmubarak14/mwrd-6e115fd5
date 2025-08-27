@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { supabase } from "@/integrations/supabase/client";
 import { Search, Filter, Package, DollarSign, Clock, Users } from "lucide-react";
 import { useToastFeedback } from "@/hooks/useToastFeedback";
@@ -28,7 +28,11 @@ interface Offer {
 }
 
 export const OffersManagement = () => {
-  const { t, language } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, language } = languageContext || { 
+    t: (key: string) => key, 
+    language: 'en' as const
+  };
   const { showSuccess, showError } = useToastFeedback();
   const [offers, setOffers] = useState<Offer[]>([]);
   const [loading, setLoading] = useState(true);

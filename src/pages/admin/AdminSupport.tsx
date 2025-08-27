@@ -20,14 +20,19 @@ import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { useAuth } from "@/contexts/AuthContext";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { cn } from "@/lib/utils";
 import { DataExporter } from "@/utils/exportUtils";
 
 export const AdminSupport = () => {
   const { tickets, loading, updateTicketStatus, assignTicket } = useSupportTickets();
   const { userProfile } = useAuth();
-  const { t, isRTL, formatDate } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL, formatDate } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false,
+    formatDate: (date: Date) => date.toLocaleDateString()
+  };
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');

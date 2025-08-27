@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useState } from "react";
 import { CheckCircle, XCircle, Clock, DollarSign, Truck, User } from "lucide-react";
 import { format } from "date-fns";
@@ -35,7 +35,10 @@ interface OfferApprovalCardProps {
 }
 
 export const OfferApprovalCard = ({ offer, onApprove, onReject, userRole }: OfferApprovalCardProps) => {
-  const { language } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { language } = languageContext || { 
+    language: 'en' as const
+  };
   const [notes, setNotes] = useState(offer.client_approval_notes || '');
   const [isProcessing, setIsProcessing] = useState(false);
   const isRTL = language === 'ar';

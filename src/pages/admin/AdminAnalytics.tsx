@@ -32,12 +32,18 @@ import {
   Calendar,
   Filter
 } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useRealTimeAnalytics } from "@/hooks/useRealTimeAnalytics";
 import { cn } from "@/lib/utils";
 
 export const AdminAnalytics = () => {
-  const { t, isRTL, formatNumber, formatCurrency } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL, formatNumber, formatCurrency } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false,
+    formatNumber: (num: number) => num.toString(),
+    formatCurrency: (amount: number) => `$${amount}`
+  };
   const [selectedPeriod, setSelectedPeriod] = useState('30d');
   const [isRefreshing, setIsRefreshing] = useState(false);
   

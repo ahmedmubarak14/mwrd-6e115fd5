@@ -20,7 +20,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
 import { generateDocumentSignedUrl, verifyFileExists, extractFilePath } from '@/utils/documentStorage';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 import { cn } from '@/lib/utils';
 
 interface VerificationRequest {
@@ -51,7 +51,12 @@ export const VerificationQueue = () => {
   const [documentStatus, setDocumentStatus] = useState<{ [key: string]: 'checking' | 'available' | 'missing' }>({});
   const [activeFilter, setActiveFilter] = useState<StatusFilter>('pending');
   const { showSuccess, showError } = useToastFeedback();
-  const { t, isRTL, formatDate } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL, formatDate } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false,
+    formatDate: (date: Date) => date.toLocaleDateString()
+  };
 
   // Memoized filtered requests based on active filter
   const filteredRequests = useMemo(() => {
