@@ -263,4 +263,33 @@ export const arSA = {
     accessDenied: 'تم رفض الوصول',
     accessDeniedDescription: 'تحتاج إلى صلاحيات مدير للوصول إلى هذه المنطقة.',
   },
+  signOut: 'تسجيل الخروج',
+   // واجهة المدير الأساسية
+    title: 'لوحة المدير',
+    // عناصر قائمة التنقل
+    projects: 'المشاريع',
+    financialTransactions: 'المعاملات المالية',
+    subscriptions: 'الاشتراكات',
+    expertConsultations: 'الاستشارات الخبيرة',
+    categoryManagement: 'إدارة الفئات',
+    verificationQueue: 'قائمة انتظار التحقق',
+    // واجهة الرأس
+    searchPlaceholder: 'البحث في لوحة المدير...',
+    notificationsDemo: 'إشعار تجريبي للوحة المدير',
+    adminUser: 'المستخدم المدير',
+    // دورة حياة الطلبات
+    successfullyDelivered: 'تم تسليمها بنجاح',
+    // الدعم والإيرادات
+    revenue: 'الإيرادات',
+    platformCommissionEarned: 'عمولة المنصة المكتسبة',
+    // مقاييس الأداء
+    performance: 'الأداء',
+    // أوصاف الصفحات
+    subscriptionsDescription: 'إدارة اشتراكات المستخدمين والفواتير',
+    userSubscriptions: 'اشتراكات المستخدمين',
+    subscriptionsOverview: 'نظرة عامة على الاشتراكات',
+    offersManagement: 'إدارة العروض',
+    offersManagementDesc: 'مراجعة وإدارة جميع عروض المنصة',
+    requestsApproval: 'الموافقة على الطلبات',
+    requestsApprovalDesc: 'مراجعة والموافقة على طلبات المستخدمين',
 };
