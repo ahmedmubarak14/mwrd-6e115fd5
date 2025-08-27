@@ -1,5 +1,5 @@
 
-import { FinancialDashboard } from "@/components/admin/FinancialDashboard";
+import { EnhancedFinancialDashboard } from "@/components/admin/EnhancedFinancialDashboard";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { cn } from "@/lib/utils";
 
@@ -18,7 +18,7 @@ const FinancialTransactions = () => {
           {t('financial.monitorRevenue')}
         </p>
       </div>
-      <FinancialDashboard />
+      <EnhancedFinancialDashboard />
     </div>
   );
 };
