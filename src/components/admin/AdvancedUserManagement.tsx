@@ -276,11 +276,11 @@ export const AdvancedUserManagement = () => {
                         <div className="font-medium">
                           {user.full_name || user.email}
                         </div>
-                        <div className="text-sm text-muted-foreground">
+                        <div className="text-sm text-foreground/70">
                           {user.email}
                         </div>
                         {user.company_name && (
-                          <div className="text-sm text-muted-foreground">
+                          <div className="text-sm text-foreground/70">
                             {user.company_name}
                           </div>
                         )}
@@ -345,7 +345,7 @@ export const AdvancedUserManagement = () => {
           </div>
 
           {filteredUsers.length === 0 && (
-            <div className={cn("text-center py-8 text-muted-foreground", isRTL ? "text-right" : "text-left")}>
+            <div className={cn("text-center py-8 text-foreground/60", isRTL ? "text-right" : "text-left")}>
               {t('users.noUsersFound')}
             </div>
           )}

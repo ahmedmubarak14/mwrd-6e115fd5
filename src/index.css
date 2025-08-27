@@ -63,14 +63,14 @@ All colors MUST be HSL.
     --secondary: 0 0% 96%;               /* Light gray secondary */
     --secondary-foreground: 0 0% 9%;     /* Dark text on secondary */
     --muted: 0 0% 96%;                   /* Light muted background */
-    --muted-foreground: 0 0% 35%;        /* Muted text */
+    --muted-foreground: 0 0% 25%;        /* Darker muted text for better contrast */
     --accent: 195 100% 17%;              /* Transporter Green */
     --accent-foreground: 0 0% 100%;      /* White text on accent */
     --lime: 29 78% 68%;                  /* Cozy Nook orange */
     --lime-foreground: 0 0% 9%;          /* Dark text on lime */
     --destructive: 0 62.8% 30.6%;        /* Red for destructive */
     --destructive-foreground: 0 0% 100%; /* White text on destructive */
-    --border: 0 0% 90%;                  /* Light gray borders */
+    --border: 0 0% 85%;                  /* Darker borders for better visibility */
     --input: 0 0% 100%;                  /* White input background */
     --ring: 324 96% 20%;                 /* Focus ring color */
     --radius: 0.75rem;
