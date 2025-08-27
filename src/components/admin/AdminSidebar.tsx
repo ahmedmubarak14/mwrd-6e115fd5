@@ -124,34 +124,34 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
             {navigation.map((item) => {
               const isActive = location.pathname === item.href;
               return (
-                <Button
-                  key={item.href}
-                  variant={isActive ? "default" : "ghost"}
-                  className={cn(
-                    "w-full justify-start h-10 transition-all duration-200 hover:scale-[1.01] active:scale-[0.99]",
-                    isActive 
-                      ? "bg-primary text-primary-foreground shadow-sm font-medium" 
-                      : "hover:bg-accent/50 hover:text-accent-foreground font-normal",
-                    isRTL && "flex-row-reverse"
-                  )}
-                  asChild
-                >
-                  <Link to={item.href} className="flex items-center gap-3 px-3">
-                    <item.icon className={cn(
-                      "h-4 w-4 shrink-0 transition-colors duration-200",
-                      isActive ? "text-primary-foreground" : "text-muted-foreground"
-                    )} />
-                    <span className="flex-1 truncate text-sm">{item.name}</span>
-                    {item.badge && (
-                      <Badge 
-                        variant={item.badgeVariant || "secondary"} 
-                        className="h-5 w-5 p-0 text-xs animate-pulse flex-shrink-0"
-                      >
-                        {item.badge > 99 ? '99+' : item.badge}
-                      </Badge>
+                <Link key={item.href} to={item.href}>
+                  <Button
+                    variant={isActive ? "default" : "ghost"}
+                    className={cn(
+                      "w-full justify-start h-10 transition-all duration-200 hover:scale-[1.01] active:scale-[0.99]",
+                      isActive 
+                        ? "bg-primary text-primary-foreground shadow-sm font-medium" 
+                        : "hover:bg-accent/50 hover:text-accent-foreground font-normal",
+                      isRTL && "flex-row-reverse"
                     )}
-                  </Link>
-                </Button>
+                  >
+                    <div className="flex items-center gap-3 px-3 w-full">
+                      <item.icon className={cn(
+                        "h-4 w-4 shrink-0 transition-colors duration-200",
+                        isActive ? "text-primary-foreground" : "text-muted-foreground"
+                      )} />
+                      <span className="flex-1 truncate text-sm">{item.name}</span>
+                      {item.badge && (
+                        <Badge 
+                          variant={item.badgeVariant || "secondary"} 
+                          className="h-5 w-5 p-0 text-xs animate-pulse flex-shrink-0"
+                        >
+                          {item.badge > 99 ? '99+' : item.badge}
+                        </Badge>
+                      )}
+                    </div>
+                  </Button>
+                </Link>
               );
             })}
           </div>
