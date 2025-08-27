@@ -102,14 +102,14 @@ All colors MUST be HSL.
     --secondary: 195 80% 22%;            /* Transporter Green variation */
     --secondary-foreground: 40 15% 91%;  /* Light text on secondary */
     --muted: 195 35% 15%;                /* Dark muted background */
-    --muted-foreground: 195 10% 65%;     /* Light muted text */
+    --muted-foreground: 195 15% 75%;     /* Better contrast light muted text */
     --accent: 195 80% 22%;               /* Transporter Green variation */
     --accent-foreground: 40 15% 91%;     /* Light text on accent */
     --lime: 29 78% 68%;                  /* Cozy Nook orange */
     --lime-foreground: 195 49% 10%;      /* Dark text on lime */
     --destructive: 0 62.8% 30.6%;        /* Darker red */
     --destructive-foreground: 40 15% 91%; /* Light text on destructive */
-    --border: 0 0% 0% / 0;               /* Completely transparent borders */
+    --border: 195 15% 25%;               /* Visible borders in dark mode */
     --input: 195 35% 15%;                /* Dark input background */
     --ring: 324 96% 20%;                 /* Focus ring color */
 
@@ -123,7 +123,7 @@ All colors MUST be HSL.
     --sidebar-primary-foreground: 195 49% 10%;
     --sidebar-accent: 195 70% 25%;
     --sidebar-accent-foreground: 40 15% 91%;
-    --sidebar-border: 0 0% 0% / 0;       /* Completely transparent borders */
+    --sidebar-border: 195 15% 25%;       /* Visible sidebar borders in dark mode */
     --sidebar-ring: 324 70% 35%;
   }
 }
