@@ -10,7 +10,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command";
 import { supabase } from "@/integrations/supabase/client";
-import { Users, FileText, Tag, Rocket, UserPlus, Search } from "lucide-react";
+import { Users, FileText, Tag, Rocket, UserPlus, Search, BarChart3, CreditCard } from "lucide-react";
 
 interface SearchUser {
   id: string;
@@ -121,12 +121,22 @@ export const AdminCommandPalette = () => {
       {
         icon: <FileText className="h-4 w-4" />,
         label: "Review Requests",
-        action: () => navigate("/admin/content/requests"),
+        action: () => navigate("/admin/requests"),
       },
       {
         icon: <Tag className="h-4 w-4" />,
         label: "Manage Offers",
-        action: () => navigate("/admin/content/offers"),
+        action: () => navigate("/admin/offers"),
+      },
+      {
+        icon: <BarChart3 className="h-4 w-4" />,
+        label: "View Analytics",
+        action: () => navigate("/admin/analytics"),
+      },
+      {
+        icon: <CreditCard className="h-4 w-4" />,
+        label: "Financial Transactions",
+        action: () => navigate("/admin/financial-transactions"),
       },
     ], [navigate]
   );
@@ -182,7 +192,7 @@ export const AdminCommandPalette = () => {
               <CommandItem
                 key={r.id}
                 onSelect={() => {
-                  navigate("/admin/content/requests");
+                  navigate("/admin/requests");
                   setOpen(false);
                 }}
               >
@@ -200,7 +210,7 @@ export const AdminCommandPalette = () => {
               <CommandItem
                 key={o.id}
                 onSelect={() => {
-                  navigate("/admin/content/offers");
+                  navigate("/admin/offers");
                   setOpen(false);
                 }}
               >

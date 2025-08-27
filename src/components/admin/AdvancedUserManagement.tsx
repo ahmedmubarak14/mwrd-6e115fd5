@@ -8,9 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Search, Filter, UserCheck, UserX, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { BulkUserActions } from "./BulkUserActions";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { cn } from "@/lib/utils";
 
@@ -21,6 +23,7 @@ export const AdvancedUserManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const { toast } = useToast();
   const languageContext = useOptionalLanguage();
   const { t, isRTL } = languageContext || { 
@@ -210,10 +213,10 @@ export const AdvancedUserManagement = () => {
         <CardHeader>
           <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <Users className="h-5 w-5" />
-            {t('users.advancedManagement')}
+            {t('admin.users.advancedManagement')}
           </CardTitle>
           <CardDescription className={cn(isRTL ? "text-right" : "text-left")}>
-            {t('users.manageDescription')}
+            {t('admin.users.manageDescription')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -223,7 +226,7 @@ export const AdvancedUserManagement = () => {
               <div className="relative">
                 <Search className={cn("absolute top-2.5 h-4 w-4 text-muted-foreground", isRTL ? "right-2" : "left-2")} />
                 <Input
-                  placeholder={t('users.searchPlaceholder')}
+                  placeholder={t('admin.users.searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className={cn(isRTL ? "pr-8" : "pl-8")}
@@ -232,49 +235,80 @@ export const AdvancedUserManagement = () => {
             </div>
             <Select value={roleFilter} onValueChange={setRoleFilter}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder={t('users.filterByRole')}>
-                  {roleFilter === "all" ? t('users.filterByRole') : t(`users.${roleFilter}`)}
+                <SelectValue placeholder={t('admin.users.filterByRole')}>
+                  {roleFilter === "all" ? t('admin.users.filterByRole') : t(`admin.users.${roleFilter}`)}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent className="bg-background border shadow-md z-50">
-                <SelectItem value="all">{t('users.allRoles')}</SelectItem>
-                <SelectItem value="client">{t('users.clients')}</SelectItem>
-                <SelectItem value="vendor">{t('users.vendors')}</SelectItem>
-                <SelectItem value="admin">{t('users.admins')}</SelectItem>
+                <SelectItem value="all">{t('admin.users.allRoles')}</SelectItem>
+                <SelectItem value="client">{t('admin.users.clients')}</SelectItem>
+                <SelectItem value="vendor">{t('admin.users.vendors')}</SelectItem>
+                <SelectItem value="admin">{t('admin.users.admins')}</SelectItem>
               </SelectContent>
             </Select>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder={t('users.filterByStatus')}>
-                  {statusFilter === "all" ? t('users.filterByStatus') : t(`users.${statusFilter}`)}
+                <SelectValue placeholder={t('admin.users.filterByStatus')}>
+                  {statusFilter === "all" ? t('admin.users.filterByStatus') : t(`admin.users.${statusFilter}`)}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent className="bg-background border shadow-md z-50">
-                <SelectItem value="all">{t('users.allStatus')}</SelectItem>
-                <SelectItem value="pending">{t('users.pending')}</SelectItem>
-                <SelectItem value="approved">{t('users.approved')}</SelectItem>
-                <SelectItem value="blocked">{t('users.blocked')}</SelectItem>
-                <SelectItem value="rejected">{t('users.rejected')}</SelectItem>
+                <SelectItem value="all">{t('admin.users.allStatus')}</SelectItem>
+                <SelectItem value="pending">{t('admin.users.pending')}</SelectItem>
+                <SelectItem value="approved">{t('admin.users.approved')}</SelectItem>
+                <SelectItem value="blocked">{t('admin.users.blocked')}</SelectItem>
+                <SelectItem value="rejected">{t('admin.users.rejected')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
+
+          <BulkUserActions
+            users={filteredUsers}
+            selectedUsers={selectedUsers}
+            onSelectionChange={setSelectedUsers}
+            onUsersUpdated={fetchUsers}
+          />
 
           {/* Users Table */}
           <div className="border rounded-lg">
             <Table>
               <TableHeader className="bg-muted/50">
                 <TableRow className="hover:bg-transparent">
-                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('users.user')}</TableHead>
-                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('users.role')}</TableHead>
-                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('users.status')}</TableHead>
-                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('users.verification')}</TableHead>
-                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('users.created')}</TableHead>
-                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('users.actions')}</TableHead>
+                  <TableHead className="w-12">
+                    <Checkbox
+                      checked={selectedUsers.length === filteredUsers.length && filteredUsers.length > 0}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          setSelectedUsers(filteredUsers.map(user => user.id));
+                        } else {
+                          setSelectedUsers([]);
+                        }
+                      }}
+                    />
+                  </TableHead>
+                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('admin.users.user')}</TableHead>
+                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('admin.users.role')}</TableHead>
+                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('admin.users.status')}</TableHead>
+                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('admin.users.verification')}</TableHead>
+                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('admin.users.created')}</TableHead>
+                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('admin.users.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredUsers.map((user) => (
                   <TableRow key={user.id}>
+                    <TableCell>
+                      <Checkbox
+                        checked={selectedUsers.includes(user.id)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedUsers([...selectedUsers, user.id]);
+                          } else {
+                            setSelectedUsers(selectedUsers.filter(id => id !== user.id));
+                          }
+                        }}
+                      />
+                    </TableCell>
                     <TableCell>
                       <div className={cn(isRTL ? "text-right" : "text-left")}>
                         <div className="font-medium">
@@ -350,7 +384,7 @@ export const AdvancedUserManagement = () => {
 
           {filteredUsers.length === 0 && (
             <div className={cn("text-center py-8 text-foreground/60", isRTL ? "text-right" : "text-left")}>
-              {t('users.noUsersFound')}
+              {t('admin.users.noUsersFound')}
             </div>
           )}
         </CardContent>
