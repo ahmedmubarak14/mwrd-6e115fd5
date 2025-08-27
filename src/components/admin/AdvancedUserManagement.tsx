@@ -296,7 +296,9 @@ export const AdvancedUserManagement = () => {
                          onValueChange={(value) => updateUserRole(user.id, value as 'admin' | 'client' | 'vendor')}
                        >
                          <SelectTrigger className="w-[100px]">
-                           <SelectValue />
+                           <SelectValue>
+                             {t(`users.${user.role}`) || user.role}
+                           </SelectValue>
                          </SelectTrigger>
                          <SelectContent className="bg-background border shadow-md z-50">
                            <SelectItem value="client">{t('users.client')}</SelectItem>
@@ -311,7 +313,9 @@ export const AdvancedUserManagement = () => {
                          onValueChange={(value) => updateUserStatus(user.id, value as 'pending' | 'approved' | 'blocked' | 'rejected')}
                        >
                          <SelectTrigger className="w-[120px]">
-                           <SelectValue />
+                           <SelectValue>
+                             {t(`users.${user.status}`) || user.status}
+                           </SelectValue>
                          </SelectTrigger>
                          <SelectContent className="bg-background border shadow-md z-50">
                            <SelectItem value="pending">{t('users.pending')}</SelectItem>
