@@ -272,9 +272,9 @@ export const AdminDashboard = () => {
                     {formatNumber(stats.pendingOffers)} {t('admin.offersAwaitingReview')}
                   </p>
                 </div>
-                <Button asChild size="sm" variant="outline">
-                  <Link to="/admin/offers">{t('common.view')}</Link>
-                </Button>
+                <Link to="/admin/offers">
+                  <Button size="sm" variant="outline">{t('common.view')}</Button>
+                </Link>
               </div>
             )}
             
@@ -286,9 +286,9 @@ export const AdminDashboard = () => {
                     {formatNumber(stats.openTickets)} {t('admin.ticketsNeedResponse')}
                   </p>
                 </div>
-                <Button asChild size="sm" variant="outline">
-                  <Link to="/admin/support">{t('common.view')}</Link>
-                </Button>
+                <Link to="/admin/support">
+                  <Button size="sm" variant="outline">{t('common.view')}</Button>
+                </Link>
               </div>
             )}
 
@@ -343,30 +343,38 @@ export const AdminDashboard = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Button asChild variant="outline" className="h-20 flex-col hover:scale-105 transition-transform">
-              <Link to="/admin/users" className="flex flex-col items-center">
-                <Users className="h-6 w-6 mb-2" />
-                {t('admin.manageUsers')}
-              </Link>
-            </Button>
-            <Button asChild variant="outline" className="h-20 flex-col hover:scale-105 transition-transform">
-              <Link to="/admin/requests" className="flex flex-col items-center">
-                <FileText className="h-6 w-6 mb-2" />
-                {t('admin.viewRequests')}
-              </Link>
-            </Button>
-            <Button asChild variant="outline" className="h-20 flex-col hover:scale-105 transition-transform">
-              <Link to="/admin/offers" className="flex flex-col items-center">
-                <Package className="h-6 w-6 mb-2" />
-                {t('admin.reviewOffers')}
-              </Link>
-            </Button>
-            <Button asChild variant="outline" className="h-20 flex-col hover:scale-105 transition-transform">
-              <Link to="/admin/support" className="flex flex-col items-center">
-                <MessageSquare className="h-6 w-6 mb-2" />
-                {t('admin.supportCenter')}
-              </Link>
-            </Button>
+            <Link to="/admin/users">
+              <Button variant="outline" className="h-20 flex-col hover:scale-105 transition-transform">
+                <div className="flex flex-col items-center">
+                  <Users className="h-6 w-6 mb-2" />
+                  {t('admin.manageUsers')}
+                </div>
+              </Button>
+            </Link>
+            <Link to="/admin/requests">
+              <Button variant="outline" className="h-20 flex-col hover:scale-105 transition-transform">
+                <div className="flex flex-col items-center">
+                  <FileText className="h-6 w-6 mb-2" />
+                  {t('admin.viewRequests')}
+                </div>
+              </Button>
+            </Link>
+            <Link to="/admin/offers">
+              <Button variant="outline" className="h-20 flex-col hover:scale-105 transition-transform">
+                <div className="flex flex-col items-center">
+                  <Package className="h-6 w-6 mb-2" />
+                  {t('admin.reviewOffers')}
+                </div>
+              </Button>
+            </Link>
+            <Link to="/admin/support">
+              <Button variant="outline" className="h-20 flex-col hover:scale-105 transition-transform">
+                <div className="flex flex-col items-center">
+                  <MessageSquare className="h-6 w-6 mb-2" />
+                  {t('admin.supportCenter')}
+                </div>
+              </Button>
+            </Link>
           </div>
         </CardContent>
       </Card>
