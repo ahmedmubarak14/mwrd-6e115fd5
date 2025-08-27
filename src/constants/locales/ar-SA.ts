@@ -288,5 +288,33 @@ export const arSA = {
     // Access Control
     accessDenied: 'تم رفض الوصول',
     accessDeniedDescription: 'تحتاج إلى صلاحيات مدير للوصول إلى هذه المنطقة.',
+    
+    // Search and common
+    search: {
+      noResults: 'لم يتم العثور على نتائج'
+    },
+    
+    // Error messages
+    error: {
+      general: 'حدث خطأ'
+    },
+    
+    // Success messages  
+    success: {
+      updated: 'تم التحديث بنجاح'
+    },
+    
+    // Status options
+    status: {
+      pending: 'قيد الانتظار',
+      active: 'نشط', 
+      completed: 'مكتمل',
+      cancelled: 'ملغي'
+    },
+    
+    // Vendor related
+    vendors: {
+      contact: 'اتصل'
+    },
   },
 };

@@ -288,5 +288,33 @@ export const enUS = {
     offersManagementDesc: 'Review and manage all platform offers',
     requestsApproval: 'Requests Approval', 
     requestsApprovalDesc: 'Review and approve user requests',
+    
+    // Search and common
+    search: {
+      noResults: 'No results found'
+    },
+    
+    // Error messages
+    error: {
+      general: 'An error occurred'
+    },
+    
+    // Success messages
+    success: {
+      updated: 'Updated successfully'
+    },
+    
+    // Status options
+    status: {
+      pending: 'Pending',
+      active: 'Active',
+      completed: 'Completed',
+      cancelled: 'Cancelled'
+    },
+    
+    // Vendor related
+    vendors: {
+      contact: 'Contact'
+    },
   },
 };
