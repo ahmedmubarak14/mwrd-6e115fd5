@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { MetricCard } from '@/components/ui/MetricCard';
 import { 
   Users, 
   Building, 
@@ -151,10 +152,17 @@ export const AdminDashboard = () => {
 
   if (loading) {
     return (
-      <div className={cn("container mx-auto p-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
-        <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-muted-foreground">{t('admin.loadingDashboard')}</p>
+      <div className="container mx-auto p-6" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className="mb-8">
+          <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
+          <div className="h-4 w-32 bg-muted rounded animate-pulse" />
+        </div>
+        
+        {/* Loading skeleton for metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <MetricCard key={i} title="" value="" loading={true} />
+          ))}
         </div>
       </div>
     );
@@ -173,201 +181,153 @@ export const AdminDashboard = () => {
 
       {/* Key Business Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('admin.totalClients')}</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {formatNumber(stats.totalClients)}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {t('admin.activeClientAccounts')}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{t('admin.totalVendors')}</CardTitle>
-            <Building className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className={cn("text-2xl font-bold", isRTL ? "text-right" : "text-left")}>
-              {formatNumber(stats.totalVendors)}
-            </div>
-            <p className={cn("text-xs text-muted-foreground", isRTL ? "text-right" : "text-left")}>
-              {t('admin.registeredVendors')}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{t('admin.activeRequests')}</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className={cn("text-2xl font-bold", isRTL ? "text-right" : "text-left")}>
-              {formatNumber(stats.activeRequests)}
-            </div>
-            <p className={cn("text-xs text-muted-foreground", isRTL ? "text-right" : "text-left")}>
-              {t('admin.currentlyBeingProcessed')}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{t('admin.orders')}</CardTitle>
-            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className={cn("text-2xl font-bold", isRTL ? "text-right" : "text-left")}>
-              {formatNumber(stats.confirmedOrders)}
-            </div>
-            <p className={cn("text-xs text-muted-foreground", isRTL ? "text-right" : "text-left")}>
-              {t('admin.inProgressOrders')}
-            </p>
-          </CardContent>
-        </Card>
+        <MetricCard
+          title={t('admin.totalClients')}
+          value={formatNumber(stats.totalClients)}
+          description={t('admin.activeClientAccounts')}
+          icon={Users}
+          loading={loading}
+        />
+        
+        <MetricCard
+          title={t('admin.totalVendors')}
+          value={formatNumber(stats.totalVendors)}
+          description={t('admin.registeredVendors')}
+          icon={Building}
+          loading={loading}
+        />
+        
+        <MetricCard
+          title={t('admin.activeRequests')}
+          value={formatNumber(stats.activeRequests)}
+          description={t('admin.currentlyBeingProcessed')}
+          icon={FileText}
+          loading={loading}
+        />
+        
+        <MetricCard
+          title={t('admin.orders')}
+          value={formatNumber(stats.confirmedOrders)}
+          description={t('admin.inProgressOrders')}
+          icon={ShoppingCart}
+          loading={loading}
+        />
       </div>
 
       {/* Order Lifecycle & Support Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('admin.completedOrders')}</CardTitle>
-            <CheckCircle className="h-4 w-4 text-success" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-success">
-              {formatNumber(stats.completedOrders)}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {t('admin.successfullyDelivered')}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('admin.pendingOffers')}</CardTitle>
-            <Package className="h-4 w-4 text-warning" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-warning">
-              {formatNumber(stats.pendingOffers)}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {t('admin.awaitingAdminApproval')}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('admin.supportTickets')}</CardTitle>
-            <Ticket className="h-4 w-4 text-destructive" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-destructive">
-              {formatNumber(stats.openTickets)}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {t('admin.requireAttention')}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{t('admin.revenue')}</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className={cn("text-2xl font-bold", isRTL ? "text-right" : "text-left")}>
-              {formatCurrency(stats.totalRevenue)}
-            </div>
-            <p className={cn("text-xs text-muted-foreground", isRTL ? "text-right" : "text-left")}>
-              {t('admin.platformCommissionEarned')}
-            </p>
-          </CardContent>
-        </Card>
+        <MetricCard
+          title={t('admin.completedOrders')}
+          value={formatNumber(stats.completedOrders)}
+          description={t('admin.successfullyDelivered')}
+          icon={CheckCircle}
+          variant="success"
+          loading={loading}
+        />
+        
+        <MetricCard
+          title={t('admin.pendingOffers')}
+          value={formatNumber(stats.pendingOffers)}
+          description={t('admin.awaitingAdminApproval')}
+          icon={Package}
+          variant="warning"
+          loading={loading}
+        />
+        
+        <MetricCard
+          title={t('admin.supportTickets')}
+          value={formatNumber(stats.openTickets)}
+          description={t('admin.requireAttention')}
+          icon={Ticket}
+          variant="destructive"
+          loading={loading}
+        />
+        
+        <MetricCard
+          title={t('admin.revenue')}
+          value={formatCurrency(stats.totalRevenue)}
+          description={t('admin.platformCommissionEarned')}
+          icon={DollarSign}
+          trend={{
+            value: stats.monthlyGrowth,
+            label: "vs last month",
+            isPositive: stats.monthlyGrowth > 0
+          }}
+          loading={loading}
+        />
       </div>
 
       {/* Quick Actions & Alerts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <Card>
+        <Card className="hover:shadow-md transition-shadow">
           <CardHeader>
-            <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
-              <AlertCircle className="h-5 w-5 text-yellow-600" />
+            <CardTitle className="flex items-center gap-2">
+              <AlertCircle className="h-5 w-5 text-warning" />
               {t('admin.requiresImmediateAttention')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {stats.pendingOffers > 0 && (
-              <div className={cn("flex items-center justify-between p-3 bg-yellow-50 rounded-lg", isRTL && "flex-row-reverse")}>
-                <div className={cn(isRTL ? "text-right" : "text-left")}>
+              <div className="flex items-center justify-between p-4 bg-warning/10 border border-warning/20 rounded-lg">
+                <div>
                   <p className="font-medium">{t('admin.pendingOfferApprovals')}</p>
                   <p className="text-sm text-muted-foreground">
                     {formatNumber(stats.pendingOffers)} {t('admin.offersAwaitingReview')}
                   </p>
                 </div>
-                <Button asChild size="sm">
+                <Button asChild size="sm" variant="outline">
                   <Link to="/admin/offers">{t('common.view')}</Link>
                 </Button>
               </div>
             )}
             
             {stats.openTickets > 0 && (
-              <div className={cn("flex items-center justify-between p-3 bg-red-50 rounded-lg", isRTL && "flex-row-reverse")}>
-                <div className={cn(isRTL ? "text-right" : "text-left")}>
+              <div className="flex items-center justify-between p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
+                <div>
                   <p className="font-medium">{t('admin.openSupportTickets')}</p>
                   <p className="text-sm text-muted-foreground">
                     {formatNumber(stats.openTickets)} {t('admin.ticketsNeedResponse')}
                   </p>
                 </div>
-                <Button asChild size="sm">
+                <Button asChild size="sm" variant="outline">
                   <Link to="/admin/support">{t('common.view')}</Link>
                 </Button>
               </div>
             )}
 
             {stats.pendingOffers === 0 && stats.openTickets === 0 && (
-              <div className="text-center py-4 text-muted-foreground">
-                <CheckCircle className="h-8 w-8 mx-auto mb-2 text-green-600" />
+              <div className="text-center py-6 text-muted-foreground">
+                <CheckCircle className="h-8 w-8 mx-auto mb-2 text-success" />
                 <p>{t('admin.allCaughtUp')}</p>
               </div>
             )}
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="hover:shadow-md transition-shadow">
           <CardHeader>
-            <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
-              <TrendingUp className="h-5 w-5 text-green-600" />
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-success" />
               {t('admin.platformPerformance')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
+              <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">{t('admin.userGrowthMetric')}</span>
-                <span className="text-sm text-green-600">+{stats.monthlyGrowth}%</span>
+                <span className="text-sm text-success">+{stats.monthlyGrowth}%</span>
               </div>
               <Progress value={stats.monthlyGrowth} className="w-full" />
             </div>
 
             <div className="grid grid-cols-2 gap-4 pt-4">
-              <div className={cn("text-center", isRTL ? "text-right" : "text-left")}>
+              <div className="text-center">
                 <p className="text-2xl font-bold">
                   {((stats.completedOrders / (stats.completedOrders + stats.confirmedOrders)) * 100 || 0).toFixed(1)}%
                 </p>
                 <p className="text-xs text-muted-foreground">{t('admin.completionRate')}</p>
               </div>
-              <div className={cn("text-center", isRTL ? "text-right" : "text-left")}>
+              <div className="text-center">
                 <p className="text-2xl font-bold">{formatNumber(stats.totalUsers)}</p>
                 <p className="text-xs text-muted-foreground">{t('admin.totalUsers')}</p>
               </div>
@@ -377,35 +337,35 @@ export const AdminDashboard = () => {
       </div>
 
       {/* Quick Navigation */}
-      <Card>
+      <Card className="hover:shadow-md transition-shadow">
         <CardHeader>
-          <CardTitle className={cn(isRTL ? "text-right" : "text-left")}>{t('admin.quickAccess')}</CardTitle>
-          <CardDescription className={cn(isRTL ? "text-right" : "text-left")}>
+          <CardTitle>{t('admin.quickAccess')}</CardTitle>
+          <CardDescription>
             {t('admin.jumpToKeyFunctions')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Button asChild variant="outline" className={cn("h-20 flex-col", isRTL && "text-center")}>
-              <Link to="/admin/users" className={cn("flex flex-col items-center", isRTL && "text-center")}>
+            <Button asChild variant="outline" className="h-20 flex-col hover:scale-105 transition-transform">
+              <Link to="/admin/users" className="flex flex-col items-center">
                 <Users className="h-6 w-6 mb-2" />
                 {t('admin.manageUsers')}
               </Link>
             </Button>
-            <Button asChild variant="outline" className={cn("h-20 flex-col", isRTL && "text-center")}>
-              <Link to="/admin/requests" className={cn("flex flex-col items-center", isRTL && "text-center")}>
+            <Button asChild variant="outline" className="h-20 flex-col hover:scale-105 transition-transform">
+              <Link to="/admin/requests" className="flex flex-col items-center">
                 <FileText className="h-6 w-6 mb-2" />
                 {t('admin.viewRequests')}
               </Link>
             </Button>
-            <Button asChild variant="outline" className={cn("h-20 flex-col", isRTL && "text-center")}>
-              <Link to="/admin/offers" className={cn("flex flex-col items-center", isRTL && "text-center")}>
+            <Button asChild variant="outline" className="h-20 flex-col hover:scale-105 transition-transform">
+              <Link to="/admin/offers" className="flex flex-col items-center">
                 <Package className="h-6 w-6 mb-2" />
                 {t('admin.reviewOffers')}
               </Link>
             </Button>
-            <Button asChild variant="outline" className={cn("h-20 flex-col", isRTL && "text-center")}>
-              <Link to="/admin/support" className={cn("flex flex-col items-center", isRTL && "text-center")}>
+            <Button asChild variant="outline" className="h-20 flex-col hover:scale-105 transition-transform">
+              <Link to="/admin/support" className="flex flex-col items-center">
                 <MessageSquare className="h-6 w-6 mb-2" />
                 {t('admin.supportCenter')}
               </Link>

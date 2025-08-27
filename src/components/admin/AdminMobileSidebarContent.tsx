@@ -1,4 +1,3 @@
-
 import { Link, useLocation } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,11 +23,11 @@ import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { cn } from "@/lib/utils";
 
-interface AdminSidebarProps {
-  className?: string;
+interface AdminMobileSidebarContentProps {
+  onItemClick?: () => void;
 }
 
-export const AdminSidebar = ({ className }: AdminSidebarProps) => {
+export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarContentProps) => {
   const location = useLocation();
   const { getPendingTicketsCount } = useSupportTickets();
   const languageContext = useOptionalLanguage();
@@ -109,48 +108,50 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
   ];
 
   return (
-    <div className={cn("w-64 border-r bg-card h-full", className)} dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="flex h-full flex-col">
-        <div className="flex h-14 items-center border-b px-4">
-          <h2 className="text-lg font-semibold">
-            {t('admin.title')}
-          </h2>
-        </div>
-        <ScrollArea className="flex-1 px-3">
-          <div className="space-y-1 py-2">
-            {navigation.map((item) => {
-              const isActive = location.pathname === item.href;
-              return (
-                <Button
-                  key={item.href}
-                  variant={isActive ? "default" : "ghost"}
-                  className={cn(
-                    "w-full justify-start h-10 transition-all duration-200 hover:scale-[1.02]",
-                    isActive 
-                      ? "bg-primary text-primary-foreground shadow-sm" 
-                      : "hover:bg-accent/50 hover:text-accent-foreground",
-                    isRTL && "flex-row-reverse"
-                  )}
-                  asChild
-                >
-                  <Link to={item.href} className="flex items-center gap-3">
-                    <item.icon className={cn(
-                      "h-4 w-4 shrink-0 transition-colors",
-                      isActive ? "text-primary-foreground" : "text-muted-foreground"
-                    )} />
-                    <span className="flex-1 font-medium">{item.name}</span>
-                    {item.badge && (
-                      <Badge variant={item.badgeVariant || "secondary"} className="h-5 w-5 p-0 text-xs animate-pulse">
-                        {item.badge > 99 ? '99+' : item.badge}
-                      </Badge>
-                    )}
-                  </Link>
-                </Button>
-              );
-            })}
-          </div>
-        </ScrollArea>
+    <div className="h-full flex flex-col" dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className="flex h-16 items-center border-b px-6">
+        <h2 className="text-xl font-bold">
+          {t('admin.title')}
+        </h2>
       </div>
+      <ScrollArea className="flex-1 px-4">
+        <div className="space-y-2 py-4">
+          {navigation.map((item) => {
+            const isActive = location.pathname === item.href;
+            return (
+              <Button
+                key={item.href}
+                variant={isActive ? "default" : "ghost"}
+                className={cn(
+                  "w-full justify-start h-12 text-base transition-all duration-200",
+                  isActive 
+                    ? "bg-primary text-primary-foreground shadow-sm" 
+                    : "hover:bg-accent/50 hover:text-accent-foreground",
+                  isRTL && "flex-row-reverse"
+                )}
+                asChild
+              >
+                <Link 
+                  to={item.href} 
+                  className="flex items-center gap-4"
+                  onClick={onItemClick}
+                >
+                  <item.icon className={cn(
+                    "h-5 w-5 shrink-0 transition-colors",
+                    isActive ? "text-primary-foreground" : "text-muted-foreground"
+                  )} />
+                  <span className="flex-1 font-medium">{item.name}</span>
+                  {item.badge && (
+                    <Badge variant={item.badgeVariant || "secondary"} className="h-6 w-6 p-0 text-xs animate-pulse">
+                      {item.badge > 99 ? '99+' : item.badge}
+                    </Badge>
+                  )}
+                </Link>
+              </Button>
+            );
+          })}
+        </div>
+      </ScrollArea>
     </div>
   );
 };
