@@ -20,39 +20,126 @@ const config: Config = {
     },
     extend: {
       colors: {
+        /* ========== ENHANCED COLOR SYSTEM ========== */
         border: "hsl(var(--border))",
+        "border-strong": "hsl(var(--border-strong))",
         input: "hsl(var(--input))",
+        "input-border": "hsl(var(--input-border))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+
+        /* Primary color system */
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          hover: "hsl(var(--primary-hover))",
+          active: "hsl(var(--primary-active))",
+          50: "hsl(var(--primary-50))",
+          100: "hsl(var(--primary-100))",
+          200: "hsl(var(--primary-200))",
+          300: "hsl(var(--primary-300))",
+          400: "hsl(var(--primary-400))",
+          500: "hsl(var(--primary-500))",
+          600: "hsl(var(--primary-600))",
+          700: "hsl(var(--primary-700))",
+          800: "hsl(var(--primary-800))",
+          900: "hsl(var(--primary-900))",
+          950: "hsl(var(--primary-950))",
         },
+
+        /* Secondary color system */
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+          hover: "hsl(var(--secondary-hover))",
         },
+
+        /* Accent color system */
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+          hover: "hsl(var(--accent-hover))",
+          50: "hsl(var(--accent-50))",
+          100: "hsl(var(--accent-100))",
+          200: "hsl(var(--accent-200))",
+          300: "hsl(var(--accent-300))",
+          400: "hsl(var(--accent-400))",
+          500: "hsl(var(--accent-500))",
+          600: "hsl(var(--accent-600))",
+          700: "hsl(var(--accent-700))",
+          800: "hsl(var(--accent-800))",
+          900: "hsl(var(--accent-900))",
+          950: "hsl(var(--accent-950))",
+        },
+
+        /* Semantic colors */
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
+          50: "hsl(var(--danger-50))",
+          100: "hsl(var(--danger-100))",
+          600: "hsl(var(--danger-600))",
+          900: "hsl(var(--danger-900))",
         },
+
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+          50: "hsl(var(--success-50))",
+          100: "hsl(var(--success-100))",
+          600: "hsl(var(--success-600))",
+          900: "hsl(var(--success-900))",
+        },
+
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+          50: "hsl(var(--warning-50))",
+          100: "hsl(var(--warning-100))",
+          600: "hsl(var(--warning-600))",
+          900: "hsl(var(--warning-900))",
+        },
+
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          foreground: "hsl(var(--info-foreground))",
+          50: "hsl(var(--info-50))",
+          100: "hsl(var(--info-100))",
+          600: "hsl(var(--info-600))",
+          900: "hsl(var(--info-900))",
+        },
+
+        /* Neutral color system */
+        neutral: {
+          50: "hsl(var(--neutral-50))",
+          100: "hsl(var(--neutral-100))",
+          200: "hsl(var(--neutral-200))",
+          300: "hsl(var(--neutral-300))",
+          400: "hsl(var(--neutral-400))",
+          500: "hsl(var(--neutral-500))",
+          600: "hsl(var(--neutral-600))",
+          700: "hsl(var(--neutral-700))",
+          800: "hsl(var(--neutral-800))",
+          900: "hsl(var(--neutral-900))",
+          950: "hsl(var(--neutral-950))",
+        },
+
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
+
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
+
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -63,12 +150,65 @@ const config: Config = {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+
+        /* Brand colors */
+        bronze: "hsl(var(--bronze))",
+        orange: "hsl(var(--orange))",
+        gold: "hsl(var(--gold))",
       },
       backgroundImage: {
         'unified-page': 'var(--unified-page)',
+        'page-overlay': 'var(--page-overlay)',
         'landing': 'var(--unified-page)',
         'dashboard': 'var(--unified-page)',
         'auth': 'var(--unified-page)',
+        'gradient-primary': 'var(--gradient-primary)',
+        'gradient-accent': 'var(--gradient-accent)',
+        'gradient-success': 'var(--gradient-success)',
+        'gradient-warning': 'var(--gradient-warning)',
+        'gradient-danger': 'var(--gradient-danger)',
+        'gradient-subtle': 'var(--gradient-subtle-light)',
+        'gradient-radial': 'var(--gradient-radial)',
+      },
+
+      boxShadow: {
+        'xs': 'var(--shadow-xs)',
+        'sm': 'var(--shadow-sm)',
+        'md': 'var(--shadow-md)',
+        'lg': 'var(--shadow-lg)',
+        'xl': 'var(--shadow-xl)',
+        '2xl': 'var(--shadow-2xl)',
+        'primary': 'var(--shadow-primary)',
+        'accent': 'var(--shadow-accent)',
+        'success': 'var(--shadow-success)',
+        'warning': 'var(--shadow-warning)',
+        'danger': 'var(--shadow-danger)',
+      },
+
+      fontSize: {
+        'xs': ['var(--font-size-xs)', 'var(--line-height-normal)'],
+        'sm': ['var(--font-size-sm)', 'var(--line-height-normal)'],
+        'base': ['var(--font-size-base)', 'var(--line-height-normal)'],
+        'lg': ['var(--font-size-lg)', 'var(--line-height-normal)'],
+        'xl': ['var(--font-size-xl)', 'var(--line-height-tight)'],
+        '2xl': ['var(--font-size-2xl)', 'var(--line-height-tight)'],
+        '3xl': ['var(--font-size-3xl)', 'var(--line-height-tight)'],
+        '4xl': ['var(--font-size-4xl)', 'var(--line-height-tight)'],
+        '5xl': ['var(--font-size-5xl)', 'var(--line-height-tight)'],
+        '6xl': ['var(--font-size-6xl)', 'var(--line-height-tight)'],
+        'display': ['var(--font-size-6xl)', 'var(--line-height-tight)'],
+        'headline': ['var(--font-size-5xl)', 'var(--line-height-tight)'],
+        'title': ['var(--font-size-3xl)', 'var(--line-height-tight)'],
+        'subtitle': ['var(--font-size-xl)', 'var(--line-height-normal)'],
+        'body': ['var(--font-size-base)', 'var(--line-height-normal)'],
+        'caption': ['var(--font-size-sm)', 'var(--line-height-normal)'],
+        'overline': ['var(--font-size-xs)', 'var(--line-height-normal)'],
+      },
+
+      letterSpacing: {
+        'tight': 'var(--letter-spacing-tight)',
+        'normal': 'var(--letter-spacing-normal)',
+        'wide': 'var(--letter-spacing-wide)',
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -76,6 +216,7 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        /* ========== ENHANCED ANIMATIONS ========== */
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -87,7 +228,17 @@ const config: Config = {
         "fade-in": {
           "0%": {
             opacity: "0",
-            transform: "translateY(10px)",
+            transform: "translateY(20px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
+        "fade-in-up": {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(30px)",
           },
           "100%": {
             opacity: "1",
@@ -104,12 +255,72 @@ const config: Config = {
             opacity: "1",
           },
         },
+        "slide-in-right": {
+          "0%": {
+            opacity: "0",
+            transform: "translateX(100%)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateX(0)",
+          },
+        },
+        "slide-in-left": {
+          "0%": {
+            opacity: "0",
+            transform: "translateX(-100%)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateX(0)",
+          },
+        },
+        "bounce-in": {
+          "0%": {
+            opacity: "0",
+            transform: "scale(0.3)",
+          },
+          "50%": {
+            opacity: "1",
+            transform: "scale(1.05)",
+          },
+          "70%": {
+            transform: "scale(0.9)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "scale(1)",
+          },
+        },
+        "pulse-glow": {
+          "0%, 100%": {
+            boxShadow: "0 0 20px hsl(var(--primary) / 0.4)",
+          },
+          "50%": {
+            boxShadow: "0 0 30px hsl(var(--primary) / 0.6), 0 0 40px hsl(var(--primary) / 0.3)",
+          },
+        },
+        "shimmer": {
+          "0%": {
+            backgroundPosition: "-200% 0",
+          },
+          "100%": {
+            backgroundPosition: "200% 0",
+          },
+        },
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.3s ease-out",
-        "scale-in": "scale-in 0.2s ease-out",
+        /* ========== ENHANCED ANIMATIONS ========== */
+        "accordion-down": "accordion-down 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
+        "accordion-up": "accordion-up 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
+        "fade-in": "fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
+        "fade-in-up": "fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
+        "scale-in": "scale-in 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+        "slide-in-right": "slide-in-right 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+        "slide-in-left": "slide-in-left 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+        "bounce-in": "bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        "shimmer": "shimmer 2s linear infinite",
       },
       // RTL-specific utilities
       spacing: {
