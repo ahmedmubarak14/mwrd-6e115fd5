@@ -61,6 +61,7 @@ export const enUS = {
     more: 'More',
     less: 'Less',
     fetchError: 'Failed to fetch data',
+    signOut: 'Sign Out',
   },
   nav: {
     menu: 'Menu',
@@ -262,5 +263,34 @@ export const enUS = {
     // Access Control
     accessDenied: 'Access Denied',
     accessDeniedDescription: 'You need administrator privileges to access this area.',
+    
+    // Core Admin Interface
+    title: 'Admin Panel',
+    
+    // Navigation Menu Items  
+    users: 'Users',
+    requests: 'Requests',
+    offers: 'Offers', 
+    projects: 'Projects',
+    financialTransactions: 'Financial Transactions',
+    subscriptions: 'Subscriptions',
+    expertConsultations: 'Expert Consultations',
+    categoryManagement: 'Category Management',
+    verificationQueue: 'Verification Queue',
+    analytics: 'Analytics',
+    
+    // Header Interface
+    searchPlaceholder: 'Search admin panel...',
+    notificationsDemo: 'Admin panel demo notification',
+    adminUser: 'Admin User',
+    
+    // Page Descriptions
+    subscriptionsDescription: 'Manage user subscriptions and billing',
+    userSubscriptions: 'User Subscriptions',
+    subscriptionsOverview: 'Overview of all subscriptions',
+    offersManagement: 'Offers Management',
+    offersManagementDesc: 'Review and manage all platform offers',
+    requestsApproval: 'Requests Approval', 
+    requestsApprovalDesc: 'Review and approve user requests',
   },
 };

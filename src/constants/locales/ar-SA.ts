@@ -61,6 +61,7 @@ export const arSA = {
     more: 'المزيد',
     less: 'أقل',
     fetchError: 'فشل في جلب البيانات',
+    signOut: 'تسجيل الخروج',
   },
   nav: {
     menu: 'القائمة',
@@ -204,12 +205,33 @@ export const arSA = {
     online: 'متصل'
   },
   admin: {
+    // Core Admin Interface
+    title: 'لوحة المدير',
     dashboard: 'لوحة تحكم المدير',
     welcomeBack: 'مرحباً بعودتك، المدير',
     loadingDashboard: 'جار تحميل لوحة التحكم...',
     errorLoadingStats: 'فشل في تحميل إحصائيات لوحة التحكم',
     
-    // إحصائيات المستخدمين
+    // Navigation Menu Items
+    users: 'المستخدمون',
+    requests: 'الطلبات',
+    offers: 'العروض',
+    projects: 'المشاريع',  
+    orders: 'الطلبيات',
+    financialTransactions: 'المعاملات المالية',
+    subscriptions: 'الاشتراكات',
+    supportTickets: 'تذاكر الدعم',
+    expertConsultations: 'الاستشارات الخبيرة',
+    categoryManagement: 'إدارة الفئات',
+    verificationQueue: 'قائمة انتظار التحقق',
+    analytics: 'التحليلات',
+    
+    // Header Interface
+    searchPlaceholder: 'البحث في لوحة المدير...',
+    notificationsDemo: 'إشعار تجريبي للوحة المدير',
+    adminUser: 'المستخدم المدير',
+    
+    // User Statistics
     totalUsers: 'إجمالي المستخدمين',
     totalClients: 'إجمالي العملاء',
     totalVendors: 'إجمالي الموردين',
@@ -218,27 +240,25 @@ export const arSA = {
     suppliers: 'الموردون',
     admins: 'المديرون',
     
-    // مقاييس النشاط
+    // Activity Metrics
     activeRequests: 'الطلبات النشطة',
     activeClientAccounts: 'حسابات العملاء النشطة',
     registeredVendors: 'الموردون المسجلون',
     currentlyBeingProcessed: 'قيد المعالجة حالياً',
     inProgressOrders: 'الطلبات قيد التنفيذ',
     
-    // دورة حياة الطلبات
-    orders: 'الطلبات',
+    // Order Lifecycle
     completedOrders: 'الطلبات المكتملة',
     successfullyDelivered: 'تم تسليمها بنجاح',
     pendingOffers: 'العروض المعلقة',
     awaitingAdminApproval: 'في انتظار موافقة المدير',
     
-    // الدعم والإيرادات
-    supportTickets: 'تذاكر الدعم',
+    // Support & Revenue
     requireAttention: 'تتطلب اهتماماً',
     revenue: 'الإيرادات',
     platformCommissionEarned: 'عمولة المنصة المكتسبة',
     
-    // التنبيهات والإجراءات
+    // Alerts & Actions
     requiresImmediateAttention: 'يتطلب اهتماماً فورياً',
     pendingOfferApprovals: 'موافقات العروض المعلقة',
     offersAwaitingReview: 'عروض في انتظار المراجعة',
@@ -246,12 +266,13 @@ export const arSA = {
     ticketsNeedResponse: 'تذاكر تحتاج رد',
     allCaughtUp: 'كل شيء محدث! لا توجد عناصر عاجلة تحتاج اهتماماً.',
     
-    // مقاييس الأداء
+    // Performance Metrics
     platformPerformance: 'أداء المنصة',
     userGrowthMetric: 'نمو المستخدمين',
     completionRate: 'معدل الإنجاز',
+    performance: 'الأداء',
     
-    // الوصول السريع
+    // Quick Access
     quickAccess: 'الوصول السريع',
     jumpToKeyFunctions: 'الانتقال إلى وظائف المدير الرئيسية',
     manageUsers: 'إدارة المستخدمين',
@@ -259,32 +280,7 @@ export const arSA = {
     reviewOffers: 'مراجعة العروض',
     supportCenter: 'مركز الدعم',
     
-    // التحكم في الوصول
-    accessDenied: 'تم رفض الوصول',
-    accessDeniedDescription: 'تحتاج إلى صلاحيات مدير للوصول إلى هذه المنطقة.',
-  },
-  signOut: 'تسجيل الخروج',
-   // واجهة المدير الأساسية
-    title: 'لوحة المدير',
-    // عناصر قائمة التنقل
-    projects: 'المشاريع',
-    financialTransactions: 'المعاملات المالية',
-    subscriptions: 'الاشتراكات',
-    expertConsultations: 'الاستشارات الخبيرة',
-    categoryManagement: 'إدارة الفئات',
-    verificationQueue: 'قائمة انتظار التحقق',
-    // واجهة الرأس
-    searchPlaceholder: 'البحث في لوحة المدير...',
-    notificationsDemo: 'إشعار تجريبي للوحة المدير',
-    adminUser: 'المستخدم المدير',
-    // دورة حياة الطلبات
-    successfullyDelivered: 'تم تسليمها بنجاح',
-    // الدعم والإيرادات
-    revenue: 'الإيرادات',
-    platformCommissionEarned: 'عمولة المنصة المكتسبة',
-    // مقاييس الأداء
-    performance: 'الأداء',
-    // أوصاف الصفحات
+    // Page Descriptions
     subscriptionsDescription: 'إدارة اشتراكات المستخدمين والفواتير',
     userSubscriptions: 'اشتراكات المستخدمين',
     subscriptionsOverview: 'نظرة عامة على الاشتراكات',
@@ -292,4 +288,9 @@ export const arSA = {
     offersManagementDesc: 'مراجعة وإدارة جميع عروض المنصة',
     requestsApproval: 'الموافقة على الطلبات',
     requestsApprovalDesc: 'مراجعة والموافقة على طلبات المستخدمين',
+    
+    // Access Control
+    accessDenied: 'تم رفض الوصول',
+    accessDeniedDescription: 'تحتاج إلى صلاحيات مدير للوصول إلى هذه المنطقة.',
+  },
 };
