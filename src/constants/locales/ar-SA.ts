@@ -1,4 +1,3 @@
-
 export const arSA = {
   common: {
     loading: 'جار التحميل...',
@@ -61,6 +60,7 @@ export const arSA = {
     account: 'حساب',
     more: 'المزيد',
     less: 'أقل',
+    fetchError: 'فشل في جلب البيانات',
   },
   nav: {
     menu: 'القائمة',
@@ -202,5 +202,65 @@ export const arSA = {
     noConversations: 'لا توجد محادثات بعد',
     noConversationsDesc: 'ابدأ محادثة للحصول على المساعدة',
     online: 'متصل'
+  },
+  admin: {
+    dashboard: 'لوحة تحكم المدير',
+    welcomeBack: 'مرحباً بعودتك، المدير',
+    loadingDashboard: 'جار تحميل لوحة التحكم...',
+    errorLoadingStats: 'فشل في تحميل إحصائيات لوحة التحكم',
+    
+    // إحصائيات المستخدمين
+    totalUsers: 'إجمالي المستخدمين',
+    totalClients: 'إجمالي العملاء',
+    totalVendors: 'إجمالي الموردين',
+    totalAdmins: 'إجمالي المديرين',
+    clients: 'العملاء',
+    suppliers: 'الموردون',
+    admins: 'المديرون',
+    
+    // مقاييس النشاط
+    activeRequests: 'الطلبات النشطة',
+    activeClientAccounts: 'حسابات العملاء النشطة',
+    registeredVendors: 'الموردون المسجلون',
+    currentlyBeingProcessed: 'قيد المعالجة حالياً',
+    inProgressOrders: 'الطلبات قيد التنفيذ',
+    
+    // دورة حياة الطلبات
+    orders: 'الطلبات',
+    completedOrders: 'الطلبات المكتملة',
+    successfullyDelivered: 'تم تسليمها بنجاح',
+    pendingOffers: 'العروض المعلقة',
+    awaitingAdminApproval: 'في انتظار موافقة المدير',
+    
+    // الدعم والإيرادات
+    supportTickets: 'تذاكر الدعم',
+    requireAttention: 'تتطلب اهتماماً',
+    revenue: 'الإيرادات',
+    platformCommissionEarned: 'عمولة المنصة المكتسبة',
+    
+    // التنبيهات والإجراءات
+    requiresImmediateAttention: 'يتطلب اهتماماً فورياً',
+    pendingOfferApprovals: 'موافقات العروض المعلقة',
+    offersAwaitingReview: 'عروض في انتظار المراجعة',
+    openSupportTickets: 'تذاكر الدعم المفتوحة',
+    ticketsNeedResponse: 'تذاكر تحتاج رد',
+    allCaughtUp: 'كل شيء محدث! لا توجد عناصر عاجلة تحتاج اهتماماً.',
+    
+    // مقاييس الأداء
+    platformPerformance: 'أداء المنصة',
+    userGrowthMetric: 'نمو المستخدمين',
+    completionRate: 'معدل الإنجاز',
+    
+    // الوصول السريع
+    quickAccess: 'الوصول السريع',
+    jumpToKeyFunctions: 'الانتقال إلى وظائف المدير الرئيسية',
+    manageUsers: 'إدارة المستخدمين',
+    viewRequests: 'عرض الطلبات',
+    reviewOffers: 'مراجعة العروض',
+    supportCenter: 'مركز الدعم',
+    
+    // التحكم في الوصول
+    accessDenied: 'تم رفض الوصول',
+    accessDeniedDescription: 'تحتاج إلى صلاحيات مدير للوصول إلى هذه المنطقة.',
   },
 };

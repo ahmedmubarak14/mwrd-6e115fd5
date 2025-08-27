@@ -1,4 +1,3 @@
-
 export const enUS = {
   common: {
     loading: 'Loading...',
@@ -61,6 +60,7 @@ export const enUS = {
     account: 'Account',
     more: 'More',
     less: 'Less',
+    fetchError: 'Failed to fetch data',
   },
   nav: {
     menu: 'Menu',
@@ -202,5 +202,65 @@ export const enUS = {
     noConversations: 'No conversations yet',
     noConversationsDesc: 'Start a conversation to get help',
     online: 'Online'
+  },
+  admin: {
+    dashboard: 'Admin Dashboard',
+    welcomeBack: 'Welcome back, Admin',
+    loadingDashboard: 'Loading dashboard...',
+    errorLoadingStats: 'Failed to load dashboard statistics',
+    
+    // User Statistics
+    totalUsers: 'Total Users',
+    totalClients: 'Total Clients',
+    totalVendors: 'Total Vendors',
+    totalAdmins: 'Total Admins',
+    clients: 'Clients',
+    suppliers: 'Suppliers',
+    admins: 'Admins',
+    
+    // Activity Metrics
+    activeRequests: 'Active Requests',
+    activeClientAccounts: 'Active client accounts',
+    registeredVendors: 'Registered vendors',
+    currentlyBeingProcessed: 'Currently being processed',
+    inProgressOrders: 'In progress orders',
+    
+    // Order Lifecycle
+    orders: 'Orders',
+    completedOrders: 'Completed Orders',
+    successfullyDelivered: 'Successfully delivered',
+    pendingOffers: 'Pending Offers',
+    awaitingAdminApproval: 'Awaiting admin approval',
+    
+    // Support & Revenue
+    supportTickets: 'Support Tickets',
+    requireAttention: 'Require attention',
+    revenue: 'Revenue',
+    platformCommissionEarned: 'Platform commission earned',
+    
+    // Alerts & Actions
+    requiresImmediateAttention: 'Requires Immediate Attention',
+    pendingOfferApprovals: 'Pending Offer Approvals',
+    offersAwaitingReview: 'offers awaiting review',
+    openSupportTickets: 'Open Support Tickets',
+    ticketsNeedResponse: 'tickets need response',
+    allCaughtUp: 'All caught up! No urgent items need attention.',
+    
+    // Performance Metrics
+    platformPerformance: 'Platform Performance',
+    userGrowthMetric: 'User Growth',
+    completionRate: 'Completion Rate',
+    
+    // Quick Access
+    quickAccess: 'Quick Access',
+    jumpToKeyFunctions: 'Jump to key admin functions',
+    manageUsers: 'Manage Users',
+    viewRequests: 'View Requests',
+    reviewOffers: 'Review Offers',
+    supportCenter: 'Support Center',
+    
+    // Access Control
+    accessDenied: 'Access Denied',
+    accessDeniedDescription: 'You need administrator privileges to access this area.',
   },
 };
