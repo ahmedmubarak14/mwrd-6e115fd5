@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useRouteAwareTheme } from "@/contexts/RouteAwareThemeContext";
 import { DashboardThemeToggle } from "@/components/ui/DashboardThemeToggle";
 import { AdminBreadcrumbs } from "./AdminBreadcrumbs";
@@ -38,7 +38,13 @@ export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { userProfile, signOut } = useAuth();
-  const { language, setLanguage, t, isRTL } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { language, setLanguage, t, isRTL } = languageContext || { 
+    language: 'en' as const, 
+    setLanguage: () => {}, 
+    t: (key: string) => key, 
+    isRTL: false 
+  };
   const { theme, setTheme } = useRouteAwareTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);

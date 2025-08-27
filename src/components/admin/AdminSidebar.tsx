@@ -22,7 +22,7 @@ import {
   Crown
 } from "lucide-react";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AdminSidebarProps {
@@ -32,7 +32,11 @@ interface AdminSidebarProps {
 export const AdminSidebar = ({ className }: AdminSidebarProps) => {
   const location = useLocation();
   const { getPendingTicketsCount } = useSupportTickets();
-  const { t, isRTL } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false 
+  };
   const isMobile = useIsMobile();
   const pendingTickets = getPendingTicketsCount();
 

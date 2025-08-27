@@ -150,11 +150,12 @@ const AppRoutes: React.FC = () => {
       } />
 
       {/* Admin Routes */}
-      <Route path="/admin/*" element={
+      <Route path="/admin" element={
         <RoleProtectedRoute allowedRoles={['admin']}>
           <AdminLayout />
         </RoleProtectedRoute>
       }>
+        <Route index element={<Navigate to="/admin/dashboard" replace />} />
         <Route path="dashboard" element={<AdminDashboardOverview />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="requests" element={<AdminRequests />} />
