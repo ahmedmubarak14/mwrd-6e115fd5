@@ -296,15 +296,13 @@ export const AdvancedUserManagement = () => {
                          onValueChange={(value) => updateUserRole(user.id, value as 'admin' | 'client' | 'vendor')}
                        >
                          <SelectTrigger className="w-[100px]">
-                           <SelectValue>
-                             {t(`users.${user.role}`) || user.role}
-                           </SelectValue>
+                        <SelectValue placeholder={t(`admin.users.${user.role}`) || user.role} />
                          </SelectTrigger>
-                         <SelectContent className="bg-background border shadow-md z-50">
-                           <SelectItem value="client">{t('users.client')}</SelectItem>
-                           <SelectItem value="vendor">{t('users.vendor')}</SelectItem>
-                           <SelectItem value="admin">{t('users.admin')}</SelectItem>
-                         </SelectContent>
+                        <SelectContent className="bg-background border shadow-md z-50">
+                          <SelectItem value="client">{t('admin.users.client')}</SelectItem>
+                          <SelectItem value="vendor">{t('admin.users.vendor')}</SelectItem>
+                          <SelectItem value="admin">{t('admin.users.admin')}</SelectItem>
+                        </SelectContent>
                        </Select>
                      </TableCell>
                      <TableCell>
@@ -313,16 +311,14 @@ export const AdvancedUserManagement = () => {
                          onValueChange={(value) => updateUserStatus(user.id, value as 'pending' | 'approved' | 'blocked' | 'rejected')}
                        >
                          <SelectTrigger className="w-[120px]">
-                           <SelectValue>
-                             {t(`users.${user.status}`) || user.status}
-                           </SelectValue>
+                        <SelectValue placeholder={t(`admin.users.${user.status}`) || user.status} />
                          </SelectTrigger>
-                         <SelectContent className="bg-background border shadow-md z-50">
-                           <SelectItem value="pending">{t('users.pending')}</SelectItem>
-                           <SelectItem value="approved">{t('users.approved')}</SelectItem>
-                           <SelectItem value="blocked">{t('users.blocked')}</SelectItem>
-                           <SelectItem value="rejected">{t('users.rejected')}</SelectItem>
-                         </SelectContent>
+                        <SelectContent className="bg-background border shadow-md z-50">
+                          <SelectItem value="pending">{t('admin.users.pending')}</SelectItem>
+                          <SelectItem value="approved">{t('admin.users.approved')}</SelectItem>
+                          <SelectItem value="blocked">{t('admin.users.blocked')}</SelectItem>
+                          <SelectItem value="rejected">{t('admin.users.rejected')}</SelectItem>
+                        </SelectContent>
                        </Select>
                      </TableCell>
                     <TableCell>

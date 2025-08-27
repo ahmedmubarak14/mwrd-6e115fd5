@@ -11,22 +11,19 @@ import { ChevronRight, Home } from "lucide-react";
 
 const breadcrumbMap: Record<string, string> = {
   "/admin": "Dashboard",
+  "/admin/dashboard": "Dashboard Overview", 
   "/admin/users": "User Management",
-  "/admin/users/advanced": "Advanced User Management",
-  "/admin/users/profiles": "User Profiles",
-  "/admin/financial": "Financial Dashboard",
-  "/admin/financial/transactions": "Transactions",
-  "/admin/financial/subscriptions": "Subscriptions",
+  "/admin/requests": "Requests Management",
+  "/admin/offers": "Offers Management", 
+  "/admin/orders": "Orders Management",
+  "/admin/projects": "Projects Management",
   "/admin/analytics": "Platform Analytics",
-  "/admin/analytics/users": "User Activity",
-  "/admin/analytics/reports": "Reports",
-  "/admin/content": "Content Management",
-  "/admin/content/requests": "Request Approval",
-  "/admin/content/offers": "Offer Management",
-  "/admin/content/consultations": "Expert Consultations",
-  "/admin/settings": "System Settings",
-  "/admin/settings/theme": "Theme & Design",
-  "/admin/settings/database": "Database Management",
+  "/admin/subscriptions": "Subscription Management",
+  "/admin/support": "Support Center",
+  "/admin/verification-queue": "Verification Queue",
+  "/admin/category-management": "Category Management",
+  "/admin/expert-consultations": "Expert Consultations",
+  "/admin/financial-transactions": "Financial Transactions",
 };
 
 export const AdminBreadcrumbs = () => {
@@ -54,27 +51,27 @@ export const AdminBreadcrumbs = () => {
       <BreadcrumbList>
         {/* Home/Admin root */}
         <BreadcrumbItem>
-          <BreadcrumbLink href="/admin" className="flex items-center gap-1">
+          <BreadcrumbLink href="/admin" className="flex items-center gap-1 text-white/80 hover:text-white">
             <Home className="h-3 w-3" />
-            Admin
+            <span className="text-sm">Admin</span>
           </BreadcrumbLink>
         </BreadcrumbItem>
         
         {breadcrumbItems.length > 1 && (
           <>
             <BreadcrumbSeparator>
-              <ChevronRight className="h-3 w-3" />
+              <ChevronRight className="h-3 w-3 text-white/60" />
             </BreadcrumbSeparator>
             
             {breadcrumbItems.slice(1).map((item, index) => (
               <div key={item.path} className="flex items-center">
                 <BreadcrumbItem>
                   {item.isLast ? (
-                    <BreadcrumbPage className="font-medium">
+                    <BreadcrumbPage className="font-medium text-white text-sm">
                       {item.title}
                     </BreadcrumbPage>
                   ) : (
-                    <BreadcrumbLink href={item.path}>
+                    <BreadcrumbLink href={item.path} className="text-white/80 hover:text-white text-sm">
                       {item.title}
                     </BreadcrumbLink>
                   )}
@@ -82,7 +79,7 @@ export const AdminBreadcrumbs = () => {
                 
                 {!item.isLast && (
                   <BreadcrumbSeparator>
-                    <ChevronRight className="h-3 w-3" />
+                    <ChevronRight className="h-3 w-3 text-white/60" />
                   </BreadcrumbSeparator>
                 )}
               </div>
