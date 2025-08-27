@@ -18,9 +18,9 @@ const AdminUsers = () => {
   return (
     <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
       <div className={cn(isRTL ? "text-right" : "text-left")}>
-        <h1 className="text-3xl font-bold">{t('users.management')}</h1>
+        <h1 className="text-3xl font-bold">{t('admin.userManagement.management')}</h1>
         <p className="text-muted-foreground">
-          {t('users.manageDescription')}
+          {t('admin.userManagement.manageDescription')} 
         </p>
       </div>
 
@@ -32,7 +32,7 @@ const AdminUsers = () => {
           </TabsTrigger>
           <TabsTrigger value="verification" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <FileCheck className="h-4 w-4" />
-            {t('users.verificationQueue')}
+            {t('admin.verification.queue')}
           </TabsTrigger>
         </TabsList>
 

@@ -338,6 +338,7 @@ export const enUS = {
     // Verification
     verification: {
       queue: 'Verification Queue',
+      reviewAndApprove: 'Review and approve user verification requests',
       pending: 'Pending Verification',
       approved: 'Approved',
       rejected: 'Rejected',
@@ -345,6 +346,18 @@ export const enUS = {
       reviewDocuments: 'Review Documents',
       approveUser: 'Approve User',
       rejectUser: 'Reject User',
+      viewDocument: 'View Document',
+      downloadDocument: 'Download Document',
+      approve: 'Approve',
+      reject: 'Reject',
+      reviewNotes: 'Review Notes',
+      addNotes: 'Add review notes...',
+      userInfo: 'User Information',
+      documentStatus: 'Document Status',
+      available: 'Available',
+      unavailable: 'Unavailable',
+      submittedAt: 'Submitted At',
+      reviewedAt: 'Reviewed At',
     },
   },
 };

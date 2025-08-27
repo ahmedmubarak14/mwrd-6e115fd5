@@ -338,6 +338,7 @@ export const arSA = {
     // Verification
     verification: {
       queue: 'قائمة انتظار التحقق',
+      reviewAndApprove: 'مراجعة والموافقة على طلبات تحقق المستخدمين',
       pending: 'في انتظار التحقق',
       approved: 'موافق عليه',
       rejected: 'مرفوض',
@@ -345,6 +346,18 @@ export const arSA = {
       reviewDocuments: 'مراجعة المستندات',
       approveUser: 'الموافقة على المستخدم',
       rejectUser: 'رفض المستخدم',
+      viewDocument: 'عرض المستند',
+      downloadDocument: 'تحميل المستند',
+      approve: 'موافقة',
+      reject: 'رفض',
+      reviewNotes: 'ملاحظات المراجعة',
+      addNotes: 'إضافة ملاحظات المراجعة...',
+      userInfo: 'معلومات المستخدم',
+      documentStatus: 'حالة المستند',
+      available: 'متاح',
+      unavailable: 'غير متاح',
+      submittedAt: 'تم التقديم في',
+      reviewedAt: 'تم المراجعة في',
     },
   },
 };
