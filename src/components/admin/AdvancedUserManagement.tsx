@@ -232,9 +232,11 @@ export const AdvancedUserManagement = () => {
             </div>
             <Select value={roleFilter} onValueChange={setRoleFilter}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder={t('users.filterByRole')} />
+                <SelectValue placeholder={t('users.filterByRole')}>
+                  {roleFilter === "all" ? t('users.filterByRole') : t(`users.${roleFilter}`)}
+                </SelectValue>
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-background border shadow-md z-50">
                 <SelectItem value="all">{t('users.allRoles')}</SelectItem>
                 <SelectItem value="client">{t('users.clients')}</SelectItem>
                 <SelectItem value="vendor">{t('users.vendors')}</SelectItem>
@@ -243,9 +245,11 @@ export const AdvancedUserManagement = () => {
             </Select>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder={t('users.filterByStatus')} />
+                <SelectValue placeholder={t('users.filterByStatus')}>
+                  {statusFilter === "all" ? t('users.filterByStatus') : t(`users.${statusFilter}`)}
+                </SelectValue>
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-background border shadow-md z-50">
                 <SelectItem value="all">{t('users.allStatus')}</SelectItem>
                 <SelectItem value="pending">{t('users.pending')}</SelectItem>
                 <SelectItem value="approved">{t('users.approved')}</SelectItem>
@@ -258,14 +262,14 @@ export const AdvancedUserManagement = () => {
           {/* Users Table */}
           <div className="border rounded-lg">
             <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className={cn(isRTL ? "text-right" : "text-left")}>{t('users.user')}</TableHead>
-                  <TableHead className={cn(isRTL ? "text-right" : "text-left")}>{t('users.role')}</TableHead>
-                  <TableHead className={cn(isRTL ? "text-right" : "text-left")}>{t('users.status')}</TableHead>
-                  <TableHead className={cn(isRTL ? "text-right" : "text-left")}>{t('users.verification')}</TableHead>
-                  <TableHead className={cn(isRTL ? "text-right" : "text-left")}>{t('users.created')}</TableHead>
-                  <TableHead className={cn(isRTL ? "text-right" : "text-left")}>{t('users.actions')}</TableHead>
+              <TableHeader className="bg-muted/50">
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('users.user')}</TableHead>
+                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('users.role')}</TableHead>
+                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('users.status')}</TableHead>
+                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('users.verification')}</TableHead>
+                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('users.created')}</TableHead>
+                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('users.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -286,37 +290,37 @@ export const AdvancedUserManagement = () => {
                         )}
                       </div>
                     </TableCell>
-                    <TableCell>
-                      <Select
-                        value={user.role}
-                        onValueChange={(value) => updateUserRole(user.id, value as 'admin' | 'client' | 'vendor')}
-                      >
-                        <SelectTrigger className="w-[100px]">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="client">{t('users.client')}</SelectItem>
-                          <SelectItem value="vendor">{t('users.vendor')}</SelectItem>
-                          <SelectItem value="admin">{t('users.admin')}</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </TableCell>
-                    <TableCell>
-                      <Select
-                        value={user.status}
-                        onValueChange={(value) => updateUserStatus(user.id, value as 'pending' | 'approved' | 'blocked' | 'rejected')}
-                      >
-                        <SelectTrigger className="w-[120px]">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="pending">{t('users.pending')}</SelectItem>
-                          <SelectItem value="approved">{t('users.approved')}</SelectItem>
-                          <SelectItem value="blocked">{t('users.blocked')}</SelectItem>
-                          <SelectItem value="rejected">{t('users.rejected')}</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </TableCell>
+                     <TableCell>
+                       <Select
+                         value={user.role}
+                         onValueChange={(value) => updateUserRole(user.id, value as 'admin' | 'client' | 'vendor')}
+                       >
+                         <SelectTrigger className="w-[100px]">
+                           <SelectValue />
+                         </SelectTrigger>
+                         <SelectContent className="bg-background border shadow-md z-50">
+                           <SelectItem value="client">{t('users.client')}</SelectItem>
+                           <SelectItem value="vendor">{t('users.vendor')}</SelectItem>
+                           <SelectItem value="admin">{t('users.admin')}</SelectItem>
+                         </SelectContent>
+                       </Select>
+                     </TableCell>
+                     <TableCell>
+                       <Select
+                         value={user.status}
+                         onValueChange={(value) => updateUserStatus(user.id, value as 'pending' | 'approved' | 'blocked' | 'rejected')}
+                       >
+                         <SelectTrigger className="w-[120px]">
+                           <SelectValue />
+                         </SelectTrigger>
+                         <SelectContent className="bg-background border shadow-md z-50">
+                           <SelectItem value="pending">{t('users.pending')}</SelectItem>
+                           <SelectItem value="approved">{t('users.approved')}</SelectItem>
+                           <SelectItem value="blocked">{t('users.blocked')}</SelectItem>
+                           <SelectItem value="rejected">{t('users.rejected')}</SelectItem>
+                         </SelectContent>
+                       </Select>
+                     </TableCell>
                     <TableCell>
                       {getStatusBadge(user.verification_status || 'pending')}
                     </TableCell>
