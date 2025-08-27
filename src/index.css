@@ -125,6 +125,10 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 40 15% 91%;
     --sidebar-border: 195 15% 25%;       /* Visible sidebar borders in dark mode */
     --sidebar-ring: 324 70% 35%;
+    
+    /* Popover colors for better visibility */
+    --popover: 195 35% 15%;
+    --popover-foreground: 40 15% 91%;
   }
 }
 

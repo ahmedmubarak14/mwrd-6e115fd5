@@ -57,6 +57,10 @@ export const arSA = {
     more: 'المزيد',
     less: 'أقل',
     fetchError: 'فشل في جلب البيانات',
+    updateError: 'فشل في التحديث',
+    updateSuccess: 'تم التحديث بنجاح',
+    deleteError: 'فشل في الحذف',
+    deleteSuccess: 'تم الحذف بنجاح',
     signOut: 'تسجيل الخروج',
   },
   nav: {
@@ -315,6 +319,31 @@ export const arSA = {
     // Vendor related
     vendors: {
       contact: 'اتصل'
+    },
+    
+    // Users Management
+    userManagement: {
+      management: 'إدارة المستخدمين',
+      totalUsers: 'إجمالي المستخدمين',
+      usersList: 'قائمة المستخدمين',
+      userDetails: 'تفاصيل المستخدم',
+      userRole: 'دور المستخدم',
+      lastLogin: 'آخر تسجيل دخول',
+      createdAt: 'تاريخ الإنشاء',
+      verified: 'محقق',
+      unverified: 'غير محقق',
+    },
+    
+    // Verification
+    verification: {
+      queue: 'قائمة انتظار التحقق',
+      pending: 'في انتظار التحقق',
+      approved: 'موافق عليه',
+      rejected: 'مرفوض',
+      documents: 'المستندات',
+      reviewDocuments: 'مراجعة المستندات',
+      approveUser: 'الموافقة على المستخدم',
+      rejectUser: 'رفض المستخدم',
     },
   },
 };

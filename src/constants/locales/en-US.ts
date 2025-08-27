@@ -57,6 +57,10 @@ export const enUS = {
     more: 'More',
     less: 'Less',
     fetchError: 'Failed to fetch data',
+    updateError: 'Failed to update',
+    updateSuccess: 'Updated successfully',
+    deleteError: 'Failed to delete',
+    deleteSuccess: 'Deleted successfully',
     signOut: 'Sign Out',
   },
   nav: {
@@ -315,6 +319,31 @@ export const enUS = {
     // Vendor related
     vendors: {
       contact: 'Contact'
+    },
+    
+    // Users Management
+    userManagement: {
+      management: 'User Management',
+      totalUsers: 'Total Users',
+      usersList: 'Users List',
+      userDetails: 'User Details',
+      userRole: 'User Role',
+      lastLogin: 'Last Login',
+      createdAt: 'Created At',
+      verified: 'Verified',
+      unverified: 'Unverified',
+    },
+    
+    // Verification
+    verification: {
+      queue: 'Verification Queue',
+      pending: 'Pending Verification',
+      approved: 'Approved',
+      rejected: 'Rejected',
+      documents: 'Documents',
+      reviewDocuments: 'Review Documents',
+      approveUser: 'Approve User',
+      rejectUser: 'Reject User',
     },
   },
 };
