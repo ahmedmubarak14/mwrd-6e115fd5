@@ -239,7 +239,7 @@ export const AdvancedUserManagement = () => {
                   {roleFilter === "all" ? t('admin.users.filterByRole') : t(`admin.users.${roleFilter}`)}
                 </SelectValue>
               </SelectTrigger>
-              <SelectContent className="bg-background border shadow-md z-50">
+              <SelectContent className="bg-popover border border-border shadow-lg z-[100] backdrop-blur-sm">
                 <SelectItem value="all">{t('admin.users.allRoles')}</SelectItem>
                 <SelectItem value="client">{t('admin.users.clients')}</SelectItem>
                 <SelectItem value="vendor">{t('admin.users.vendors')}</SelectItem>
@@ -252,7 +252,7 @@ export const AdvancedUserManagement = () => {
                   {statusFilter === "all" ? t('admin.users.filterByStatus') : t(`admin.users.${statusFilter}`)}
                 </SelectValue>
               </SelectTrigger>
-              <SelectContent className="bg-background border shadow-md z-50">
+              <SelectContent className="bg-popover border border-border shadow-lg z-[100] backdrop-blur-sm">
                 <SelectItem value="all">{t('admin.users.allStatus')}</SelectItem>
                 <SelectItem value="pending">{t('admin.users.pending')}</SelectItem>
                 <SelectItem value="approved">{t('admin.users.approved')}</SelectItem>
@@ -332,11 +332,11 @@ export const AdvancedUserManagement = () => {
                          <SelectTrigger className="w-[100px]">
                         <SelectValue placeholder={t(`admin.users.${user.role}`) || user.role} />
                          </SelectTrigger>
-                        <SelectContent className="bg-background border shadow-md z-50">
-                          <SelectItem value="client">{t('admin.users.client')}</SelectItem>
-                          <SelectItem value="vendor">{t('admin.users.vendor')}</SelectItem>
-                          <SelectItem value="admin">{t('admin.users.admin')}</SelectItem>
-                        </SelectContent>
+                         <SelectContent className="bg-popover border border-border shadow-lg z-[100] backdrop-blur-sm">
+                           <SelectItem value="client">{t('admin.users.client')}</SelectItem>
+                           <SelectItem value="vendor">{t('admin.users.vendor')}</SelectItem>
+                           <SelectItem value="admin">{t('admin.users.admin')}</SelectItem>
+                         </SelectContent>
                        </Select>
                      </TableCell>
                      <TableCell>
@@ -347,12 +347,12 @@ export const AdvancedUserManagement = () => {
                          <SelectTrigger className="w-[120px]">
                         <SelectValue placeholder={t(`admin.users.${user.status}`) || user.status} />
                          </SelectTrigger>
-                        <SelectContent className="bg-background border shadow-md z-50">
-                          <SelectItem value="pending">{t('admin.users.pending')}</SelectItem>
-                          <SelectItem value="approved">{t('admin.users.approved')}</SelectItem>
-                          <SelectItem value="blocked">{t('admin.users.blocked')}</SelectItem>
-                          <SelectItem value="rejected">{t('admin.users.rejected')}</SelectItem>
-                        </SelectContent>
+                         <SelectContent className="bg-popover border border-border shadow-lg z-[100] backdrop-blur-sm">
+                           <SelectItem value="pending">{t('admin.users.pending')}</SelectItem>
+                           <SelectItem value="approved">{t('admin.users.approved')}</SelectItem>
+                           <SelectItem value="blocked">{t('admin.users.blocked')}</SelectItem>
+                           <SelectItem value="rejected">{t('admin.users.rejected')}</SelectItem>
+                         </SelectContent>
                        </Select>
                      </TableCell>
                     <TableCell>
