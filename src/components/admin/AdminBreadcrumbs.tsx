@@ -51,27 +51,27 @@ export const AdminBreadcrumbs = () => {
       <BreadcrumbList>
         {/* Home/Admin root */}
         <BreadcrumbItem>
-          <BreadcrumbLink href="/admin" className="flex items-center gap-1 text-white/80 hover:text-white">
+          <BreadcrumbLink href="/admin" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
             <Home className="h-3 w-3" />
-            <span className="text-sm">Admin</span>
+            <span className="admin-caption">Admin</span>
           </BreadcrumbLink>
         </BreadcrumbItem>
         
         {breadcrumbItems.length > 1 && (
           <>
             <BreadcrumbSeparator>
-              <ChevronRight className="h-3 w-3 text-white/60" />
+              <ChevronRight className="h-3 w-3 text-muted-foreground/60" />
             </BreadcrumbSeparator>
             
             {breadcrumbItems.slice(1).map((item, index) => (
               <div key={item.path} className="flex items-center">
                 <BreadcrumbItem>
                   {item.isLast ? (
-                    <BreadcrumbPage className="font-medium text-white text-sm">
+                    <BreadcrumbPage className="font-medium text-foreground admin-caption">
                       {item.title}
                     </BreadcrumbPage>
                   ) : (
-                    <BreadcrumbLink href={item.path} className="text-white/80 hover:text-white text-sm">
+                    <BreadcrumbLink href={item.path} className="text-muted-foreground hover:text-foreground admin-caption transition-colors">
                       {item.title}
                     </BreadcrumbLink>
                   )}
@@ -79,7 +79,7 @@ export const AdminBreadcrumbs = () => {
                 
                 {!item.isLast && (
                   <BreadcrumbSeparator>
-                    <ChevronRight className="h-3 w-3 text-white/60" />
+                    <ChevronRight className="h-3 w-3 text-muted-foreground/60" />
                   </BreadcrumbSeparator>
                 )}
               </div>

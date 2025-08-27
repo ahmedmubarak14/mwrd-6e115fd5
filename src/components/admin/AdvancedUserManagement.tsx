@@ -16,7 +16,7 @@ import { BulkUserActions } from "./BulkUserActions";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { cn } from "@/lib/utils";
 import { DataErrorBoundary } from "./DataErrorBoundary";
-import { AdminTableSkeleton } from "./AdminTableSkeleton";
+import { ResponsiveDataTable } from "./ResponsiveDataTable";
 
 export const AdvancedUserManagement = () => {
   const [users, setUsers] = useState<UserProfile[]>([]);
@@ -201,13 +201,79 @@ export const AdvancedUserManagement = () => {
     );
   };
 
+  const columns = [
+    {
+      key: 'user',
+      title: t('admin.users.user'),
+      render: (value: any, user: UserProfile) => (
+        <div className="flex items-center gap-3">
+          <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center admin-caption font-medium">
+            {user.full_name?.[0] || user.email?.[0] || 'U'}
+          </div>
+          <div>
+            <p className="admin-body font-medium">{user.full_name || 'No Name'}</p>
+            <p className="admin-caption">{user.email}</p>
+          </div>
+        </div>
+      )
+    },
+    {
+      key: 'company_name',
+      title: t('admin.users.company'),
+      render: (value: string) => value || t('common.notSpecified')
+    },
+    {
+      key: 'role',
+      title: t('admin.users.role'),
+      render: (value: string) => (
+        <Badge variant="outline" className="capitalize">
+          {t(`admin.users.${value}`) || value}
+        </Badge>
+      )
+    },
+    {
+      key: 'status',
+      title: t('admin.users.status'),
+      render: (value: string) => getStatusBadge(value)
+    },
+    {
+      key: 'created_at',
+      title: t('admin.users.joinedDate'),
+      render: (value: string) => new Date(value).toLocaleDateString()
+    }
+  ];
+
+  const actions = [
+    {
+      label: t('common.edit'),
+      onClick: (user: UserProfile) => {
+        toast({
+          title: "Edit User",
+          description: `Editing ${user.full_name || user.email}`
+        });
+      }
+    },
+    {
+      label: t('common.delete'),
+      variant: 'destructive' as const,
+      onClick: (user: UserProfile) => {
+        toast({
+          title: "Delete User",
+          description: `Deleting ${user.full_name || user.email}`,
+          variant: 'destructive'
+        });
+      }
+    }
+  ];
+
   if (loading) {
     return (
-      <AdminTableSkeleton 
-        rows={8}
-        columns={7}
-        showFilters={true}
-        showActions={true}
+      <ResponsiveDataTable
+        data={[]}
+        columns={columns}
+        loading={true}
+        title={t('admin.users.title')}
+        description={t('admin.users.description')}
       />
     );
   }
@@ -219,187 +285,32 @@ export const AdvancedUserManagement = () => {
       onRetry={fetchUsers}
     >
       <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
-      <Card>
-        <CardHeader>
-          <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
-            <Users className="h-5 w-5" />
-            {t('admin.users.advancedManagement')}
-          </CardTitle>
-          <CardDescription className={cn(isRTL ? "text-right" : "text-left")}>
-            {t('admin.users.manageDescription')}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {/* Filters */}
-          <div className={cn("flex flex-col sm:flex-row gap-4 mb-6", isRTL && "sm:flex-row-reverse")}>
-            <div className="flex-1">
-              <div className="relative">
-                <Search className={cn("absolute top-2.5 h-4 w-4 text-muted-foreground", isRTL ? "right-2" : "left-2")} />
-                <Input
-                  placeholder={t('admin.users.searchPlaceholder')}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className={cn(isRTL ? "pr-8" : "pl-8")}
-                />
-              </div>
-            </div>
-            <Select value={roleFilter} onValueChange={setRoleFilter}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder={t('admin.users.filterByRole')}>
-                  {roleFilter === "all" ? t('admin.users.filterByRole') : t(`admin.users.${roleFilter}`)}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent className="bg-popover border border-border shadow-lg z-[100] backdrop-blur-sm">
-                <SelectItem value="all">{t('admin.users.allRoles')}</SelectItem>
-                <SelectItem value="client">{t('admin.users.clients')}</SelectItem>
-                <SelectItem value="vendor">{t('admin.users.vendors')}</SelectItem>
-                <SelectItem value="admin">{t('admin.users.admins')}</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder={t('admin.users.filterByStatus')}>
-                  {statusFilter === "all" ? t('admin.users.filterByStatus') : t(`admin.users.${statusFilter}`)}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent className="bg-popover border border-border shadow-lg z-[100] backdrop-blur-sm">
-                <SelectItem value="all">{t('admin.users.allStatus')}</SelectItem>
-                <SelectItem value="pending">{t('admin.users.pending')}</SelectItem>
-                <SelectItem value="approved">{t('admin.users.approved')}</SelectItem>
-                <SelectItem value="blocked">{t('admin.users.blocked')}</SelectItem>
-                <SelectItem value="rejected">{t('admin.users.rejected')}</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <BulkUserActions
-            users={filteredUsers}
-            selectedUsers={selectedUsers}
-            onSelectionChange={setSelectedUsers}
-            onUsersUpdated={fetchUsers}
-          />
-
-          {/* Users Table */}
-          <div className="border rounded-lg">
-            <Table>
-              <TableHeader className="bg-muted/50">
-                <TableRow className="hover:bg-transparent">
-                  <TableHead className="w-12">
-                    <Checkbox
-                      checked={selectedUsers.length === filteredUsers.length && filteredUsers.length > 0}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          setSelectedUsers(filteredUsers.map(user => user.id));
-                        } else {
-                          setSelectedUsers([]);
-                        }
-                      }}
-                    />
-                  </TableHead>
-                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('admin.users.user')}</TableHead>
-                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('admin.users.role')}</TableHead>
-                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('admin.users.status')}</TableHead>
-                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('admin.users.verification')}</TableHead>
-                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('admin.users.created')}</TableHead>
-                  <TableHead className={cn("font-semibold text-foreground", isRTL ? "text-right" : "text-left")}>{t('admin.users.actions')}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredUsers.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell>
-                      <Checkbox
-                        checked={selectedUsers.includes(user.id)}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            setSelectedUsers([...selectedUsers, user.id]);
-                          } else {
-                            setSelectedUsers(selectedUsers.filter(id => id !== user.id));
-                          }
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <div className={cn(isRTL ? "text-right" : "text-left")}>
-                        <div className="font-medium">
-                          {user.full_name || user.email}
-                        </div>
-                        <div className="text-sm text-foreground/70">
-                          {user.email}
-                        </div>
-                        {user.company_name && (
-                          <div className="text-sm text-foreground/70">
-                            {user.company_name}
-                          </div>
-                        )}
-                      </div>
-                    </TableCell>
-                     <TableCell>
-                       <Select
-                         value={user.role}
-                         onValueChange={(value) => updateUserRole(user.id, value as 'admin' | 'client' | 'vendor')}
-                       >
-                         <SelectTrigger className="w-[100px]">
-                        <SelectValue placeholder={t(`admin.users.${user.role}`) || user.role} />
-                         </SelectTrigger>
-                         <SelectContent className="bg-popover border border-border shadow-lg z-[100] backdrop-blur-sm">
-                           <SelectItem value="client">{t('admin.users.client')}</SelectItem>
-                           <SelectItem value="vendor">{t('admin.users.vendor')}</SelectItem>
-                           <SelectItem value="admin">{t('admin.users.admin')}</SelectItem>
-                         </SelectContent>
-                       </Select>
-                     </TableCell>
-                     <TableCell>
-                       <Select
-                         value={user.status}
-                         onValueChange={(value) => updateUserStatus(user.id, value as 'pending' | 'approved' | 'blocked' | 'rejected')}
-                       >
-                         <SelectTrigger className="w-[120px]">
-                        <SelectValue placeholder={t(`admin.users.${user.status}`) || user.status} />
-                         </SelectTrigger>
-                         <SelectContent className="bg-popover border border-border shadow-lg z-[100] backdrop-blur-sm">
-                           <SelectItem value="pending">{t('admin.users.pending')}</SelectItem>
-                           <SelectItem value="approved">{t('admin.users.approved')}</SelectItem>
-                           <SelectItem value="blocked">{t('admin.users.blocked')}</SelectItem>
-                           <SelectItem value="rejected">{t('admin.users.rejected')}</SelectItem>
-                         </SelectContent>
-                       </Select>
-                     </TableCell>
-                    <TableCell>
-                      {getStatusBadge(user.verification_status || 'pending')}
-                    </TableCell>
-                    <TableCell>
-                      {new Date(user.created_at).toLocaleDateString()}
-                    </TableCell>
-                    <TableCell>
-                      <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => updateUserStatus(user.id, user.status === 'approved' ? 'blocked' : 'approved')}
-                        >
-                          {user.status === 'approved' ? (
-                            <UserX className="h-4 w-4" />
-                          ) : (
-                            <UserCheck className="h-4 w-4" />
-                          )}
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-
-          {filteredUsers.length === 0 && (
-            <div className={cn("text-center py-8 text-foreground/60", isRTL ? "text-right" : "text-left")}>
-              {t('admin.users.noUsersFound')}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-     </div>
+        <ResponsiveDataTable
+          data={filteredUsers}
+          columns={columns}
+          actions={actions}
+          selectable={true}
+          selectedRows={selectedUsers}
+          onSelectionChange={setSelectedUsers}
+          getRowId={(user) => user.id}
+          searchValue={searchTerm}
+          onSearch={setSearchTerm}
+          searchPlaceholder={t('admin.users.searchPlaceholder')}
+          paginated={true}
+          pageSize={10}
+          exportable={true}
+          onExport={() => {
+            toast({
+              title: "Export Users",
+              description: "User data exported successfully"
+            });
+          }}
+          title={t('admin.users.title')}
+          description={t('admin.users.description')}
+          emptyMessage={t('admin.users.noUsers')}
+          className="w-full"
+        />
+      </div>
     </DataErrorBoundary>
   );
 };

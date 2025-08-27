@@ -105,25 +105,33 @@ All colors MUST be HSL.
     --shadow-warning: 0 8px 25px hsl(var(--warning-600) / 0.25);
     --shadow-danger: 0 8px 25px hsl(var(--danger-600) / 0.25);
 
-    /* ========== TYPOGRAPHY VARIABLES ========== */
-    --font-size-xs: 0.75rem;      /* 12px */
-    --font-size-sm: 0.875rem;     /* 14px */
-    --font-size-base: 1rem;       /* 16px */
-    --font-size-lg: 1.125rem;     /* 18px */
-    --font-size-xl: 1.25rem;      /* 20px */
-    --font-size-2xl: 1.5rem;      /* 24px */
-    --font-size-3xl: 1.875rem;    /* 30px */
-    --font-size-4xl: 2.25rem;     /* 36px */
-    --font-size-5xl: 3rem;        /* 48px */
-    --font-size-6xl: 3.75rem;     /* 60px */
-    
-    --line-height-tight: 1.25;
-    --line-height-normal: 1.5;
-    --line-height-relaxed: 1.75;
-    
-    --letter-spacing-tight: -0.025em;
-    --letter-spacing-normal: 0;
-    --letter-spacing-wide: 0.025em;
+/* ========== ENHANCED TYPOGRAPHY SYSTEM ========== */
+  --font-size-xs: 0.75rem;      /* 12px */
+  --font-size-sm: 0.875rem;     /* 14px */
+  --font-size-base: 1rem;       /* 16px */
+  --font-size-lg: 1.125rem;     /* 18px */
+  --font-size-xl: 1.25rem;      /* 20px */
+  --font-size-2xl: 1.5rem;      /* 24px */
+  --font-size-3xl: 1.875rem;    /* 30px */
+  --font-size-4xl: 2.25rem;     /* 36px */
+  --font-size-5xl: 3rem;        /* 48px */
+  --font-size-6xl: 3.75rem;     /* 60px */
+  
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+
+  /* Admin-specific typography scale */
+  --admin-title-size: var(--font-size-2xl);
+  --admin-subtitle-size: var(--font-size-lg);
+  --admin-body-size: var(--font-size-sm);
+  --admin-caption-size: var(--font-size-xs);
+  --admin-nav-size: var(--font-size-sm);
+  --admin-button-size: var(--font-size-sm);
 
     /* ========== LIGHT THEME COLORS (DEFAULT) ========== */
     --background: 0 0% 100%;             /* White background */
@@ -374,9 +382,47 @@ All colors MUST be HSL.
     font-family: 'Cairo', 'Noto Sans Arabic', sans-serif;
   }
 
-  /* RTL support */
-  [dir="rtl"] {
-    text-align: right;
+  /* ========== ADMIN COMPONENT CLASSES ========== */
+  .admin-title {
+    font-size: var(--admin-title-size);
+    font-weight: 700;
+    line-height: var(--line-height-tight);
+    letter-spacing: var(--letter-spacing-tight);
+    color: hsl(var(--foreground));
+  }
+
+  .admin-subtitle {
+    font-size: var(--admin-subtitle-size);
+    font-weight: 600;
+    line-height: var(--line-height-normal);
+    color: hsl(var(--foreground));
+  }
+
+  .admin-body {
+    font-size: var(--admin-body-size);
+    font-weight: 500;
+    line-height: var(--line-height-normal);
+    color: hsl(var(--foreground));
+  }
+
+  .admin-caption {
+    font-size: var(--admin-caption-size);
+    font-weight: 500;
+    line-height: var(--line-height-normal);
+    color: hsl(var(--muted-foreground));
+  }
+
+  .admin-nav-item {
+    font-size: var(--admin-nav-size);
+    font-weight: 500;
+    line-height: var(--line-height-normal);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .admin-button {
+    font-size: var(--admin-button-size);
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   [dir="rtl"] input,

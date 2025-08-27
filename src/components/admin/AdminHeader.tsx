@@ -7,7 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { DashboardThemeToggle } from "@/components/ui/DashboardThemeToggle";
 import { AdminBreadcrumbs } from "./AdminBreadcrumbs";
-import { AdminHeaderSearch } from "./AdminHeaderSearch";
+import { EnhancedAdminHeaderSearch } from "./EnhancedAdminHeaderSearch";
 import { AdminHeaderUserMenu } from "./AdminHeaderUserMenu";
 import { AdminHeaderLanguageToggle } from "./AdminHeaderLanguageToggle";
 import { toast } from "sonner";
@@ -56,10 +56,10 @@ export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
                 className="h-9 w-auto shrink-0"
               />
               <div className="hidden sm:flex flex-col items-start min-w-0">
-                <span className="font-bold text-lg leading-tight truncate">
+                <span className="admin-subtitle leading-tight truncate">
                   {t('admin.dashboard')}
                 </span>
-                <span className="text-xs text-muted-foreground leading-tight">
+                <span className="admin-caption leading-tight">
                   {t('admin.managementPortal') || 'Management Portal'}
                 </span>
               </div>
@@ -68,7 +68,7 @@ export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
 
           {/* Actions */}
           <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-            {!isMobile && <AdminHeaderSearch />}
+            <EnhancedAdminHeaderSearch />
             
             <Button 
               variant="ghost" 
@@ -77,7 +77,7 @@ export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
               className="relative h-10 w-10 hover:bg-accent/50 transition-all duration-200 hover:scale-105 active:scale-95"
             >
               <Bell className="h-4 w-4" />
-              <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center text-[10px] animate-pulse shadow-lg">
+              <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground admin-caption rounded-full h-5 w-5 flex items-center justify-center animate-pulse shadow-lg">
                 3
               </span>
             </Button>
