@@ -10,6 +10,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
+import { BulkApprovalActions } from '@/components/admin/BulkApprovalActions';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface AdminRequest {
   id: string;
@@ -47,6 +49,7 @@ const AdminRequests = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [approvalFilter, setApprovalFilter] = useState('all');
   const [urgencyFilter, setUrgencyFilter] = useState('all');
+  const [selectedRequests, setSelectedRequests] = useState<string[]>([]);
 
   const fetchRequests = async () => {
     try {
@@ -122,6 +125,18 @@ const AdminRequests = () => {
 
     return matchesSearch && matchesStatus && matchesApproval && matchesUrgency;
   });
+
+  const toggleRequestSelection = (requestId: string) => {
+    setSelectedRequests(prev => 
+      prev.includes(requestId) 
+        ? prev.filter(id => id !== requestId)
+        : [...prev, requestId]
+    );
+  };
+
+  const clearSelection = () => {
+    setSelectedRequests([]);
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -275,6 +290,16 @@ const AdminRequests = () => {
         </CardContent>
       </Card>
 
+      {/* Bulk Actions */}
+      {selectedRequests.length > 0 && (
+        <BulkApprovalActions
+          selectedItems={selectedRequests}
+          itemType="requests"
+          onRefresh={fetchRequests}
+          onClearSelection={clearSelection}
+        />
+      )}
+
       {/* Requests List */}
       <Tabs value="all" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
@@ -298,22 +323,28 @@ const AdminRequests = () => {
               <Card key={request.id}>
                 <CardHeader>
                   <div className="flex items-start justify-between">
-                    <div className="space-y-2">
-                      <CardTitle className="text-lg">{request.title}</CardTitle>
-                      <CardDescription className="line-clamp-2">
-                        {request.description}
-                      </CardDescription>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <User className="h-4 w-4" />
-                        {request.user_profiles?.company_name || request.user_profiles?.full_name || 'Unknown Client'}
-                        <span>•</span>
-                        <span>{request.category}</span>
-                        {request.location && (
-                          <>
-                            <span>•</span>
-                            <span>{request.location}</span>
-                          </>
-                        )}
+                    <div className="flex items-start gap-3 flex-1">
+                      <Checkbox
+                        checked={selectedRequests.includes(request.id)}
+                        onCheckedChange={() => toggleRequestSelection(request.id)}
+                      />
+                      <div className="space-y-2 flex-1">
+                        <CardTitle className="text-lg">{request.title}</CardTitle>
+                        <CardDescription className="line-clamp-2">
+                          {request.description}
+                        </CardDescription>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <User className="h-4 w-4" />
+                          {request.user_profiles?.company_name || request.user_profiles?.full_name || 'Unknown Client'}
+                          <span>•</span>
+                          <span>{request.category}</span>
+                          {request.location && (
+                            <>
+                              <span>•</span>
+                              <span>{request.location}</span>
+                            </>
+                          )}
+                        </div>
                       </div>
                     </div>
                     <div className="flex flex-col gap-2 text-right">
