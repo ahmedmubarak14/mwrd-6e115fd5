@@ -60,7 +60,7 @@ export const AdminLayout = () => {
 
   return (
     <AdminErrorBoundary>
-      <MobileContainer pageType="dashboard" className="bg-gradient-subtle">
+      <MobileContainer pageType="dashboard" className="min-h-screen">
         {isMobile ? (
           // Mobile Layout
           <div className="min-h-screen flex flex-col">
@@ -69,7 +69,7 @@ export const AdminLayout = () => {
               isOpen={mobileMenuOpen} 
               onOpenChange={setMobileMenuOpen} 
             />
-            <main className="flex-1 overflow-auto">
+            <main className="flex-1 overflow-auto bg-muted/30">
               <AdminErrorBoundary>
                 <Outlet />
               </AdminErrorBoundary>
@@ -79,14 +79,11 @@ export const AdminLayout = () => {
         ) : (
           // Desktop Layout
           <SidebarProvider defaultOpen={sidebarOpen} onOpenChange={setSidebarOpen}>
-            <div 
-              className="min-h-screen flex w-full h-screen" 
-              dir={localStorage.getItem('language') === 'ar' ? 'rtl' : 'ltr'}
-            >
+            <div className="min-h-screen flex w-full" dir={isRTL ? 'rtl' : 'ltr'}>
               <AdminSidebar />
-              <div className="flex-1 flex flex-col min-w-0 h-full">
+              <div className="flex-1 flex flex-col min-w-0">
                 <AdminHeader />
-                <main className="flex-1 overflow-auto bg-gradient-subtle">
+                <main className="flex-1 overflow-auto bg-muted/30">
                   <AdminErrorBoundary>
                     <Outlet />
                   </AdminErrorBoundary>

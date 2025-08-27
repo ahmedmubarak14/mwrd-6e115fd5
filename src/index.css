@@ -70,6 +70,10 @@ All colors MUST be HSL.
     --lime-foreground: 0 0% 9%;          /* Dark text on lime */
     --destructive: 0 62.8% 30.6%;        /* Red for destructive */
     --destructive-foreground: 0 0% 100%; /* White text on destructive */
+    --success: 142 76% 36%;              /* Green for success */
+    --success-foreground: 0 0% 100%;     /* White text on success */
+    --warning: 43 96% 56%;               /* Yellow/orange for warning */
+    --warning-foreground: 0 0% 9%;       /* Dark text on warning */
     --border: 0 0% 85%;                  /* Darker borders for better visibility */
     --input: 0 0% 100%;                  /* White input background */
     --ring: 324 96% 20%;                 /* Focus ring color */
@@ -109,6 +113,10 @@ All colors MUST be HSL.
     --lime-foreground: 195 49% 10%;      /* Dark text on lime */
     --destructive: 0 62.8% 30.6%;        /* Darker red */
     --destructive-foreground: 40 15% 91%; /* Light text on destructive */
+    --success: 142 76% 36%;              /* Green for success */
+    --success-foreground: 0 0% 100%;     /* White text on success */
+    --warning: 43 96% 56%;               /* Yellow/orange for warning */
+    --warning-foreground: 0 0% 9%;       /* Dark text on warning */
     --border: 195 15% 25%;               /* Visible borders in dark mode */
     --input: 195 35% 15%;                /* Dark input background */
     --ring: 324 96% 20%;                 /* Focus ring color */

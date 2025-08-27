@@ -26,7 +26,7 @@ import { ManageSubscription } from './pages/ManageSubscription';
 import { Support } from './pages/Support';
 import BrowseRequests from './pages/BrowseRequests';
 import { MyOffers } from './pages/MyOffers';
-import { AdminDashboardOverview } from './pages/admin/AdminDashboardOverview';
+import { AdminDashboard } from './pages/admin/AdminDashboard';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminRequests from './pages/admin/AdminRequests';
 import AdminOffers from './pages/admin/AdminOffers';
@@ -156,7 +156,7 @@ const AppRoutes: React.FC = () => {
         </RoleProtectedRoute>
       }>
         <Route index element={<Navigate to="/admin/dashboard" replace />} />
-        <Route path="dashboard" element={<AdminDashboardOverview />} />
+        <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="requests" element={<AdminRequests />} />
         <Route path="offers" element={<AdminOffers />} />
