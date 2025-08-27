@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Menu, Search, Bell, MessageSquare, User, Settings, LogOut, Home } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { SearchModal } from "@/components/modals/SearchModal";
@@ -31,7 +31,11 @@ interface HeaderProps {
 
 export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
   const { signOut, userProfile } = useAuth();
-  const { t, isRTL } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false 
+  };
   const isMobile = useIsMobile();
 
   // Check if we're in a sidebar context

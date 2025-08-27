@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { 
   Home, 
   Search, 
@@ -27,7 +27,8 @@ interface Tab {
 export const MobileBottomTabs = () => {
   const location = useLocation();
   const { user, userProfile } = useAuth();
-  const { t } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t } = languageContext || { t: (key: string) => key };
   
   // Don't show on landing pages or auth pages
   const hiddenPaths = ['/landing', '/auth', '/reset-password', '/why-start-with-mwrd', '/what-makes-us-unique', '/why-move-to-mwrd', '/pricing', '/terms-and-conditions', '/privacy-policy'];

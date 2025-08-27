@@ -1,8 +1,15 @@
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 
 export const LanguageSwitcher = () => {
-  const { language, setLanguage } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  
+  // Return null if no context available (component not wrapped in LanguageProvider)
+  if (!languageContext) {
+    return null;
+  }
+  
+  const { language, setLanguage } = languageContext;
 
   const toggleLanguage = () => {
     setLanguage(language === 'en' ? 'ar' : 'en');

@@ -8,11 +8,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouteAwareTheme } from "@/contexts/RouteAwareThemeContext";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 
 export function ThemeToggle() {
   const { setTheme, theme } = useRouteAwareTheme();
-  const { t, language } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, language } = languageContext || { 
+    t: (key: string) => key, 
+    language: 'en' as const 
+  };
   const isRTL = language === 'ar';
 
   return (
