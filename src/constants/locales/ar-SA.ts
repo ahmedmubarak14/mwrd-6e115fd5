@@ -324,6 +324,7 @@ export const arSA = {
     // Users Management
     userManagement: {
       management: 'إدارة المستخدمين',
+      manageDescription: 'إدارة مستخدمي النظام وحالة التحقق الخاصة بهم',
       totalUsers: 'إجمالي المستخدمين',
       usersList: 'قائمة المستخدمين',
       userDetails: 'تفاصيل المستخدم',

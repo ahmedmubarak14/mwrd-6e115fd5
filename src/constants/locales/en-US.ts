@@ -324,6 +324,7 @@ export const enUS = {
     // Users Management
     userManagement: {
       management: 'User Management',
+      manageDescription: 'Manage system users and their verification status',
       totalUsers: 'Total Users',
       usersList: 'Users List',
       userDetails: 'User Details',
