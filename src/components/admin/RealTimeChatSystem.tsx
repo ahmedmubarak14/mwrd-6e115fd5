@@ -49,10 +49,10 @@ export const RealTimeChatSystem = () => {
     if (!messageInput.trim() || !activeConversation) return;
 
     try {
-      await sendMessage(activeConversation.id, {
-        content: messageInput,
-        type: 'text'
-      });
+      const conversation = conversations?.find(c => c.id === activeConversation);
+      if (conversation) {
+        await sendMessage(activeConversation, messageInput, conversation.vendor_id || conversation.client_id);
+      }
       setMessageInput("");
     } catch (error) {
       console.error('Error sending message:', error);
@@ -80,9 +80,8 @@ export const RealTimeChatSystem = () => {
   };
 
   const filteredConversations = conversations?.filter(conv => 
-    conv.client_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    conv.vendor_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    conv.last_message?.toLowerCase().includes(searchTerm.toLowerCase())
+    conv.last_message?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    conv.id.toLowerCase().includes(searchTerm.toLowerCase())
   ) || [];
 
   const getInitials = (name: string) => {
@@ -158,41 +157,37 @@ export const RealTimeChatSystem = () => {
                   <div
                     key={conversation.id}
                     className={`p-4 cursor-pointer hover:bg-muted/50 transition-colors ${
-                      activeConversation?.id === conversation.id ? 'bg-muted' : ''
+                      activeConversation === conversation.id ? 'bg-muted' : ''
                     }`}
-                    onClick={() => setActiveConversation(conversation)}
+                    onClick={() => setActiveConversation(conversation.id)}
                   >
                     <div className="flex items-start space-x-3">
                       <div className="relative">
                         <Avatar className="h-10 w-10">
-                          <AvatarImage src={conversation.avatar_url} />
+                          <AvatarImage src="/placeholder.svg" />
                           <AvatarFallback>
-                            {getInitials(conversation.client_name || conversation.vendor_name || 'Unknown')}
+                            {getInitials(`Chat ${conversation.id.slice(0, 8)}`)}
                           </AvatarFallback>
                         </Avatar>
-                        {conversation.status === 'active' && (
-                          <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-background"></div>
-                        )}
+                        <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-background"></div>
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-1">
                           <h4 className="font-medium text-sm truncate">
-                            {conversation.client_name || conversation.vendor_name || 'Unknown User'}
+                            Chat {conversation.id.slice(0, 8)}
                           </h4>
-                          {conversation.last_message_at && (
+                          {conversation.created_at && (
                             <span className="text-xs text-muted-foreground">
-                              {formatMessageTime(conversation.last_message_at)}
+                              {formatMessageTime(conversation.created_at)}
                             </span>
                           )}
                         </div>
                         <p className="text-sm text-muted-foreground truncate">
                           {conversation.last_message || 'No messages yet'}
                         </p>
-                        {conversation.unread_count > 0 && (
-                          <Badge variant="destructive" className="mt-1 text-xs">
-                            {conversation.unread_count}
-                          </Badge>
-                        )}
+                        <Badge variant="secondary" className="mt-1 text-xs">
+                          {conversation.status}
+                        </Badge>
                       </div>
                     </div>
                   </div>
@@ -211,17 +206,17 @@ export const RealTimeChatSystem = () => {
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 border-b">
               <div className="flex items-center space-x-3">
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src={activeConversation.avatar_url} />
+                  <AvatarImage src="/placeholder.svg" />
                   <AvatarFallback>
-                    {getInitials(activeConversation.client_name || activeConversation.vendor_name || 'Unknown')}
+                    {getInitials(`Chat ${activeConversation?.slice(0, 8) || 'Unknown'}`)}
                   </AvatarFallback>
                 </Avatar>
                 <div>
                   <h3 className="font-semibold">
-                    {activeConversation.client_name || activeConversation.vendor_name || 'Unknown User'}
+                    Chat {activeConversation?.slice(0, 8)}
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    {activeConversation.status === 'active' ? 'Online' : 'Offline'}
+                    Online
                   </p>
                 </div>
               </div>
@@ -242,29 +237,29 @@ export const RealTimeChatSystem = () => {
             <CardContent className="flex-1 p-0">
               <ScrollArea className="h-[450px] p-4">
                 <div className="space-y-4">
-                  {messages.length === 0 ? (
+                  {!activeConversation || !messages[activeConversation] || messages[activeConversation].length === 0 ? (
                     <div className="text-center text-muted-foreground py-8">
                       <MessageSquare className="h-8 w-8 mx-auto mb-2" />
                       <p>No messages in this conversation</p>
                     </div>
                   ) : (
-                    messages.map((message, index) => (
+                    messages[activeConversation]?.map((message, index) => (
                       <div
                         key={message.id}
                         className={`flex ${
-                          message.sender_type === 'admin' ? 'justify-end' : 'justify-start'
+                          message.sender_id === 'admin' ? 'justify-end' : 'justify-start'
                         }`}
                       >
                         <div
                           className={`max-w-[70%] rounded-lg p-3 ${
-                            message.sender_type === 'admin'
+                            message.sender_id === 'admin'
                               ? 'bg-primary text-primary-foreground'
                               : 'bg-muted'
                           }`}
                         >
                           <p className="text-sm">{message.content}</p>
                           <p className={`text-xs mt-1 ${
-                            message.sender_type === 'admin' 
+                            message.sender_id === 'admin' 
                               ? 'text-primary-foreground/70' 
                               : 'text-muted-foreground'
                           }`}>

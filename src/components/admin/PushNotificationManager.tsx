@@ -168,7 +168,7 @@ export const PushNotificationManager = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="text-sm font-medium">Target Platform</label>
-                      <Select value={newNotification.target_platform} onValueChange={(value) => setNewNotification({...newNotification, target_platform: value})}>
+                      <Select value={newNotification.target_platform} onValueChange={(value: "all" | "android" | "ios" | "web") => setNewNotification({...newNotification, target_platform: value})}>
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
