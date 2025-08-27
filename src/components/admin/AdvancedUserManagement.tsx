@@ -15,6 +15,8 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { BulkUserActions } from "./BulkUserActions";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { cn } from "@/lib/utils";
+import { DataErrorBoundary } from "./DataErrorBoundary";
+import { AdminTableSkeleton } from "./AdminTableSkeleton";
 
 export const AdvancedUserManagement = () => {
   const [users, setUsers] = useState<UserProfile[]>([]);
@@ -201,14 +203,22 @@ export const AdvancedUserManagement = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
-      </div>
+      <AdminTableSkeleton 
+        rows={8}
+        columns={7}
+        showFilters={true}
+        showActions={true}
+      />
     );
   }
 
   return (
-    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
+    <DataErrorBoundary 
+      title="User Management Error"
+      description="Failed to load user data. Please try again."
+      onRetry={fetchUsers}
+    >
+      <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
       <Card>
         <CardHeader>
           <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
@@ -389,6 +399,7 @@ export const AdvancedUserManagement = () => {
           )}
         </CardContent>
       </Card>
-    </div>
+     </div>
+    </DataErrorBoundary>
   );
 };
