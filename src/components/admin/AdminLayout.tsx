@@ -69,7 +69,7 @@ export const AdminLayout = () => {
               isOpen={mobileMenuOpen} 
               onOpenChange={setMobileMenuOpen} 
             />
-            <main className="flex-1 overflow-auto bg-muted/30">
+            <main className="flex-1 overflow-auto bg-muted/20">
               <AdminErrorBoundary>
                 <Outlet />
               </AdminErrorBoundary>
@@ -83,7 +83,7 @@ export const AdminLayout = () => {
               <AdminSidebar />
               <div className="flex-1 flex flex-col min-w-0">
                 <AdminHeader />
-                <main className="flex-1 overflow-auto bg-muted/30">
+                <main className="flex-1 overflow-auto bg-muted/20">
                   <AdminErrorBoundary>
                     <Outlet />
                   </AdminErrorBoundary>

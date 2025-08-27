@@ -29,18 +29,18 @@ export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
   const isMobile = useIsMobile();
 
   return (
-    <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+    <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 shadow-sm">
       {/* Main Header Bar */}
       <div className="h-14 sm:h-16">
-        <div className="container mx-auto px-4 h-full flex items-center justify-between">
+        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
           {/* Logo and Menu Trigger */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             {isMobile && (
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={onMobileMenuOpen}
-                className="h-8 w-8"
+                className="h-9 w-9 hover:bg-accent/50 transition-colors"
               >
                 <Menu className="h-4 w-4" />
               </Button>
@@ -48,7 +48,7 @@ export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
             
             <button
               onClick={() => navigate('/admin/dashboard')}
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity duration-200"
             >
               <img 
                 src="/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png" 
@@ -69,10 +69,10 @@ export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
               variant="ghost" 
               size="icon" 
               onClick={() => toast.info(t('admin.notificationsDemo'))}
-              className="relative h-8 w-8"
+              className="relative h-9 w-9 hover:bg-accent/50 transition-colors"
             >
               <Bell className="h-4 w-4" />
-              <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
+              <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs rounded-full h-4 w-4 flex items-center justify-center text-[10px] animate-pulse">
                 3
               </span>
             </Button>
@@ -87,8 +87,10 @@ export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
       </div>
       
       {/* Breadcrumbs Section */}
-      <div className="border-t bg-muted/50 px-4 py-2">
-        <AdminBreadcrumbs />
+      <div className="border-t bg-muted/50 px-4 sm:px-6 lg:px-8 py-3">
+        <div className="max-w-full mx-auto">
+          <AdminBreadcrumbs />
+        </div>
       </div>
     </header>
   );

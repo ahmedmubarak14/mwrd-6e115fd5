@@ -108,14 +108,14 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
   ];
 
   return (
-    <div className="h-full flex flex-col" dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="flex h-16 items-center border-b px-6">
-        <h2 className="text-xl font-bold">
+    <div className="h-full flex flex-col bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className="flex h-16 items-center justify-between border-b px-6 pt-safe">
+        <h2 className="text-xl font-bold truncate">
           {t('admin.title')}
         </h2>
       </div>
       <ScrollArea className="flex-1 px-4">
-        <div className="space-y-2 py-4">
+        <div className="space-y-2 py-4 pb-safe">
           {navigation.map((item) => {
             const isActive = location.pathname === item.href;
             return (
@@ -123,26 +123,29 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
                 key={item.href}
                 variant={isActive ? "default" : "ghost"}
                 className={cn(
-                  "w-full justify-start h-12 text-base transition-all duration-200",
+                  "w-full justify-start h-12 text-base transition-all duration-200 active:scale-[0.98]",
                   isActive 
-                    ? "bg-primary text-primary-foreground shadow-sm" 
-                    : "hover:bg-accent/50 hover:text-accent-foreground",
+                    ? "bg-primary text-primary-foreground shadow-sm font-medium" 
+                    : "hover:bg-accent/50 hover:text-accent-foreground font-normal",
                   isRTL && "flex-row-reverse"
                 )}
                 asChild
               >
                 <Link 
                   to={item.href} 
-                  className="flex items-center gap-4"
+                  className="flex items-center gap-4 px-4"
                   onClick={onItemClick}
                 >
                   <item.icon className={cn(
-                    "h-5 w-5 shrink-0 transition-colors",
+                    "h-5 w-5 shrink-0 transition-colors duration-200",
                     isActive ? "text-primary-foreground" : "text-muted-foreground"
                   )} />
-                  <span className="flex-1 font-medium">{item.name}</span>
+                  <span className="flex-1 truncate">{item.name}</span>
                   {item.badge && (
-                    <Badge variant={item.badgeVariant || "secondary"} className="h-6 w-6 p-0 text-xs animate-pulse">
+                    <Badge 
+                      variant={item.badgeVariant || "secondary"} 
+                      className="h-6 w-6 p-0 text-xs animate-pulse flex-shrink-0"
+                    >
                       {item.badge > 99 ? '99+' : item.badge}
                     </Badge>
                   )}

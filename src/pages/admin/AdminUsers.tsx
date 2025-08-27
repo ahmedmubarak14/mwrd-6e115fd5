@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AdvancedUserManagement } from "@/components/admin/AdvancedUserManagement";
 import { VerificationQueue } from "@/components/admin/VerificationQueue";
+import { AdminPageContainer } from "@/components/admin/AdminPageContainer";
 import { Users, FileCheck } from "lucide-react";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { cn } from "@/lib/utils";
@@ -16,16 +17,12 @@ const AdminUsers = () => {
   };
 
   return (
-    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className={cn(isRTL ? "text-right" : "text-left")}>
-        <h1 className="text-3xl font-bold">{t('admin.userManagement.management')}</h1>
-        <p className="text-muted-foreground">
-          {t('admin.userManagement.manageDescription')} 
-        </p>
-      </div>
-
+    <AdminPageContainer
+      title={t('admin.userManagement.management')}
+      description={t('admin.userManagement.manageDescription')}
+    >
       <Tabs defaultValue="users" className="space-y-6">
-        <TabsList>
+        <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="users" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <Users className="h-4 w-4" />
             {t('admin.users')}
@@ -44,7 +41,7 @@ const AdminUsers = () => {
           <VerificationQueue />
         </TabsContent>
       </Tabs>
-    </div>
+    </AdminPageContainer>
   );
 };
 

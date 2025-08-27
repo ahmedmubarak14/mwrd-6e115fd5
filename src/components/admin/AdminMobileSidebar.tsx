@@ -21,8 +21,8 @@ export const AdminMobileSidebar = ({ isOpen, onOpenChange }: AdminMobileSidebarP
         <SheetContent 
           side={isRTL ? "right" : "left"}
           className={cn(
-            "w-[85vw] max-w-sm p-0 bg-background border-r-2",
-            "safe-area-pt safe-area-pb"
+            "w-[85vw] max-w-sm p-0 bg-background border-r-2 overflow-hidden",
+            "safe-area-inset-y"
           )}
         >
           <AdminMobileSidebarContent onItemClick={() => onOpenChange(false)} />

@@ -109,10 +109,13 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
   ];
 
   return (
-    <div className={cn("w-64 border-r bg-card h-full", className)} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className={cn(
+      "w-64 border-r bg-card h-full flex-shrink-0 transition-all duration-200",
+      className
+    )} dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="flex h-full flex-col">
-        <div className="flex h-14 items-center border-b px-4">
-          <h2 className="text-lg font-semibold">
+        <div className="flex h-14 items-center justify-between border-b px-4">
+          <h2 className="text-lg font-semibold truncate">
             {t('admin.title')}
           </h2>
         </div>
@@ -125,22 +128,25 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
                   key={item.href}
                   variant={isActive ? "default" : "ghost"}
                   className={cn(
-                    "w-full justify-start h-10 transition-all duration-200 hover:scale-[1.02]",
+                    "w-full justify-start h-10 transition-all duration-200 hover:scale-[1.01] active:scale-[0.99]",
                     isActive 
-                      ? "bg-primary text-primary-foreground shadow-sm" 
-                      : "hover:bg-accent/50 hover:text-accent-foreground",
+                      ? "bg-primary text-primary-foreground shadow-sm font-medium" 
+                      : "hover:bg-accent/50 hover:text-accent-foreground font-normal",
                     isRTL && "flex-row-reverse"
                   )}
                   asChild
                 >
-                  <Link to={item.href} className="flex items-center gap-3">
+                  <Link to={item.href} className="flex items-center gap-3 px-3">
                     <item.icon className={cn(
-                      "h-4 w-4 shrink-0 transition-colors",
+                      "h-4 w-4 shrink-0 transition-colors duration-200",
                       isActive ? "text-primary-foreground" : "text-muted-foreground"
                     )} />
-                    <span className="flex-1 font-medium">{item.name}</span>
+                    <span className="flex-1 truncate text-sm">{item.name}</span>
                     {item.badge && (
-                      <Badge variant={item.badgeVariant || "secondary"} className="h-5 w-5 p-0 text-xs animate-pulse">
+                      <Badge 
+                        variant={item.badgeVariant || "secondary"} 
+                        className="h-5 w-5 p-0 text-xs animate-pulse flex-shrink-0"
+                      >
                         {item.badge > 99 ? '99+' : item.badge}
                       </Badge>
                     )}
