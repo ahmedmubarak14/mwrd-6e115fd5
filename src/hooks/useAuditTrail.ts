@@ -100,23 +100,49 @@ export const useAuditTrail = () => {
     fetchAuditLogs();
 
     // Set up real-time subscription for audit logs
-    const channel = supabase
-      .channel('audit_log_changes')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'audit_log'
-        },
-        (payload) => {
-          setAuditLogs(prev => [payload.new as AuditLog, ...prev.slice(0, 99)]);
-        }
-      )
-      .subscribe();
+    const setupRealtimeSubscription = async () => {
+      try {
+        const channel = supabase
+          .channel('audit_log_changes')
+          .on(
+            'postgres_changes',
+            {
+              event: 'INSERT',
+              schema: 'public',
+              table: 'audit_log'
+            },
+            (payload) => {
+              setAuditLogs(prev => [payload.new as AuditLog, ...prev.slice(0, 99)]);
+            }
+          )
+          .subscribe((status, error) => {
+            if (error) {
+              console.error('Audit log realtime subscription error:', error);
+              console.log('Audit log realtime disabled - app will work without live updates');
+            } else {
+              console.log('Audit log realtime subscription status:', status);
+            }
+          });
 
+        return () => {
+          try {
+            supabase.removeChannel(channel);
+          } catch (cleanupError) {
+            console.warn('Error cleaning up audit log realtime channel:', cleanupError);
+          }
+        };
+      } catch (error) {
+        console.error('Failed to setup audit log realtime subscription:', error);
+        return () => {}; // Return empty cleanup function
+      }
+    };
+
+    const cleanup = setupRealtimeSubscription();
+    
     return () => {
-      supabase.removeChannel(channel);
+      if (cleanup && typeof cleanup.then === 'function') {
+        cleanup.then(cleanupFn => cleanupFn && cleanupFn());
+      }
     };
   }, []);
 

@@ -136,10 +136,21 @@ export const useNotifications = () => {
           );
         }
       )
-      .subscribe();
+      .subscribe((status, error) => {
+        if (error) {
+          console.error('Notifications realtime subscription error:', error);
+          console.log('Notifications realtime disabled - app will work without live updates');
+        } else {
+          console.log('Notifications realtime subscription status:', status);
+        }
+      });
 
     return () => {
-      supabase.removeChannel(channel);
+      try {
+        supabase.removeChannel(channel);
+      } catch (cleanupError) {
+        console.warn('Error cleaning up notifications realtime channel:', cleanupError);
+      }
     };
   }, [user]);
 

@@ -44,48 +44,75 @@ export const useRealTimeChat = () => {
 
     console.log('Setting up real-time subscriptions for user:', user.id);
 
-    const channel = supabase.channel('chat-updates');
+    const setupRealtimeSubscriptions = async () => {
+      try {
+        const channel = supabase.channel('chat-updates');
 
-    channel
-      .on('postgres_changes', {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'messages',
-        filter: `recipient_id=eq.${user.id}`
-      }, (payload) => {
-        console.log('New message received:', payload);
-        const newMessage = payload.new as Message;
-        setMessages(prev => ({
-          ...prev,
-          [newMessage.conversation_id]: [
-            ...(prev[newMessage.conversation_id] || []),
-            newMessage
-          ]
-        }));
-      })
-      .on('postgres_changes', {
-        event: 'UPDATE',
-        schema: 'public',
-        table: 'conversations'
-      }, (payload) => {
-        console.log('Conversation updated:', payload);
-        fetchConversations();
-      })
-      .on('postgres_changes', {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'conversations'
-      }, (payload) => {
-        console.log('New conversation created:', payload);
-        fetchConversations();
-      })
-      .subscribe();
+        channel
+          .on('postgres_changes', {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'messages',
+            filter: `recipient_id=eq.${user.id}`
+          }, (payload) => {
+            console.log('New message received:', payload);
+            const newMessage = payload.new as Message;
+            setMessages(prev => ({
+              ...prev,
+              [newMessage.conversation_id]: [
+                ...(prev[newMessage.conversation_id] || []),
+                newMessage
+              ]
+            }));
+          })
+          .on('postgres_changes', {
+            event: 'UPDATE',
+            schema: 'public',
+            table: 'conversations'
+          }, (payload) => {
+            console.log('Conversation updated:', payload);
+            fetchConversations();
+          })
+          .on('postgres_changes', {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'conversations'
+          }, (payload) => {
+            console.log('New conversation created:', payload);
+            fetchConversations();
+          })
+          .subscribe((status, error) => {
+            if (error) {
+              console.error('Realtime subscription error:', error);
+              console.log('Realtime disabled - app will work without live updates');
+            } else {
+              console.log('Realtime subscription status:', status);
+            }
+          });
 
-    setRealtimeChannel(channel);
+        setRealtimeChannel(channel);
 
+        return () => {
+          console.log('Cleaning up real-time subscriptions');
+          try {
+            supabase.removeChannel(channel);
+          } catch (cleanupError) {
+            console.warn('Error cleaning up realtime channel:', cleanupError);
+          }
+        };
+      } catch (error) {
+        console.error('Failed to setup realtime subscriptions:', error);
+        console.log('App will continue to work without realtime features');
+        return () => {}; // Return empty cleanup function
+      }
+    };
+
+    const cleanup = setupRealtimeSubscriptions();
+    
     return () => {
-      console.log('Cleaning up real-time subscriptions');
-      supabase.removeChannel(channel);
+      if (cleanup && typeof cleanup.then === 'function') {
+        cleanup.then(cleanupFn => cleanupFn && cleanupFn());
+      }
     };
   }, [user]);
 

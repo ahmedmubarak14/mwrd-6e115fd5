@@ -123,19 +123,47 @@ export const useOffers = (requestId?: string) => {
   useEffect(() => {
     if (!user) return;
 
-    const channel = supabase
-      .channel('offers_changes')
-      .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'offers' },
-        (payload) => {
-          console.log('Offer updated:', payload);
-          fetchOffers(); // Refresh offers when changes occur
-        }
-      )
-      .subscribe();
+    console.log('Setting up offers realtime subscription');
 
+    const setupRealtimeSubscription = async () => {
+      try {
+        const channel = supabase
+          .channel('offers_changes')
+          .on('postgres_changes', 
+            { event: '*', schema: 'public', table: 'offers' },
+            (payload) => {
+              console.log('Offer updated:', payload);
+              fetchOffers(); // Refresh offers when changes occur
+            }
+          )
+          .subscribe((status, error) => {
+            if (error) {
+              console.error('Offers realtime subscription error:', error);
+              console.log('Offers realtime disabled - app will work without live updates');
+            } else {
+              console.log('Offers realtime subscription status:', status);
+            }
+          });
+
+        return () => {
+          try {
+            supabase.removeChannel(channel);
+          } catch (cleanupError) {
+            console.warn('Error cleaning up offers realtime channel:', cleanupError);
+          }
+        };
+      } catch (error) {
+        console.error('Failed to setup offers realtime subscription:', error);
+        return () => {}; // Return empty cleanup function
+      }
+    };
+
+    const cleanup = setupRealtimeSubscription();
+    
     return () => {
-      supabase.removeChannel(channel);
+      if (cleanup && typeof cleanup.then === 'function') {
+        cleanup.then(cleanupFn => cleanupFn && cleanupFn());
+      }
     };
   }, [user]);
 

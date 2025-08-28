@@ -75,75 +75,101 @@ export const useCallNotifications = () => {
   useEffect(() => {
     if (!user) return;
 
-    const channel = supabase
-      .channel('call-invitations')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'call_invitations',
-          filter: `invitee_id=eq.${user.id}`
-        },
-        async (payload) => {
-          console.log('New call invitation from database:', payload);
-          
-          // Get additional call details
-          const { data: callData } = await supabase
-            .from('video_calls')
-            .select('*')
-            .eq('id', payload.new.call_id)
-            .single();
-            
-          // Get caller profile
-          const { data: callerProfile } = await supabase
-            .from('user_profiles')
-            .select('full_name')
-            .eq('user_id', payload.new.inviter_id)
-            .single();
-            
-          if (callData) {
-            const invitation: CallInvitation = {
-              id: payload.new.id,
-              callId: payload.new.call_id,
-              inviterId: payload.new.inviter_id,
-              inviterName: callerProfile?.full_name || 'Unknown',
-              callType: callData.call_type as 'video' | 'audio',
-              conversationId: callData.conversation_id,
-              expiresAt: payload.new.expires_at
-            };
-            
-            setIncomingCall(invitation);
-          }
-        }
-      )
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'call_invitations',
-          filter: `invitee_id=eq.${user.id}`
-        },
-        (payload) => {
-          // Clear invitation if it was responded to
-          if (payload.new.status !== 'pending') {
-            setIncomingCall(prev => 
-              prev?.id === payload.new.id ? null : prev
-            );
-          }
-        }
-      )
-      .subscribe();
+    const setupRealtimeSubscription = async () => {
+      try {
+        const channel = supabase
+          .channel('call-invitations')
+          .on(
+            'postgres_changes',
+            {
+              event: 'INSERT',
+              schema: 'public',
+              table: 'call_invitations',
+              filter: `invitee_id=eq.${user.id}`
+            },
+            async (payload) => {
+              console.log('New call invitation from database:', payload);
+              
+              // Get additional call details
+              const { data: callData } = await supabase
+                .from('video_calls')
+                .select('*')
+                .eq('id', payload.new.call_id)
+                .single();
+                
+              // Get caller profile
+              const { data: callerProfile } = await supabase
+                .from('user_profiles')
+                .select('full_name')
+                .eq('user_id', payload.new.inviter_id)
+                .single();
+                
+              if (callData) {
+                const invitation: CallInvitation = {
+                  id: payload.new.id,
+                  callId: payload.new.call_id,
+                  inviterId: payload.new.inviter_id,
+                  inviterName: callerProfile?.full_name || 'Unknown',
+                  callType: callData.call_type as 'video' | 'audio',
+                  conversationId: callData.conversation_id,
+                  expiresAt: payload.new.expires_at
+                };
+                
+                setIncomingCall(invitation);
+              }
+            }
+          )
+          .on(
+            'postgres_changes',
+            {
+              event: 'UPDATE',
+              schema: 'public',
+              table: 'call_invitations',
+              filter: `invitee_id=eq.${user.id}`
+            },
+            (payload) => {
+              // Clear invitation if it was responded to
+              if (payload.new.status !== 'pending') {
+                setIncomingCall(prev => 
+                  prev?.id === payload.new.id ? null : prev
+                );
+              }
+            }
+          )
+          .subscribe((status, error) => {
+            if (error) {
+              console.error('Call invitations realtime subscription error:', error);
+              console.log('Call invitations realtime disabled - app will work without live updates');
+            } else {
+              console.log('Call invitations realtime subscription status:', status);
+            }
+          });
 
-    // Connect to signaling server
-    connectToSignaling();
+        // Connect to signaling server
+        connectToSignaling();
 
+        return () => {
+          try {
+            channel.unsubscribe();
+          } catch (cleanupError) {
+            console.warn('Error cleaning up call invitations realtime channel:', cleanupError);
+          }
+          if (signalingSocket) {
+            signalingSocket.close();
+            setSignalingSocket(null);
+          }
+        };
+      } catch (error) {
+        console.error('Failed to setup call invitations realtime subscription:', error);
+        return () => {}; // Return empty cleanup function
+      }
+    };
+
+    const cleanup = setupRealtimeSubscription();
+    
     return () => {
-      channel.unsubscribe();
-      if (signalingSocket) {
-        signalingSocket.close();
-        setSignalingSocket(null);
+      if (cleanup && typeof cleanup.then === 'function') {
+        cleanup.then(cleanupFn => cleanupFn && cleanupFn());
       }
     };
   }, [user, connectToSignaling, signalingSocket]);
