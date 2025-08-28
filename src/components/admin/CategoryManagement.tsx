@@ -290,113 +290,183 @@ export const CategoryManagement: React.FC = () => {
   };
 
   const renderCategoryTree = (cats: Category[], level = 0) => {
-    return cats.map(category => {
+    return cats.map((category, index) => {
       const hasChildren = category.children && category.children.length > 0;
       const isExpanded = expandedCategories.includes(category.id);
       const childrenCount = category.children?.length || 0;
+      const isLastInLevel = index === cats.length - 1;
 
       return (
-        <div key={category.id} className="space-y-2">
-          <Card className={`${level > 0 ? (isRTL ? 'mr-8' : 'ml-8') : ''} hover:shadow-md transition-all duration-200 ${hasChildren ? 'cursor-pointer' : ''}`}>
-            <CardContent className="p-4">
-              <div 
-                className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}
-                onClick={hasChildren ? () => toggleCategoryExpansion(category.id) : undefined}
-              >
-                <div className={cn("flex items-center space-x-3", isRTL && "flex-row-reverse space-x-reverse")}>
-                  <Checkbox
-                    checked={selectedCategories.includes(category.id)}
-                    onCheckedChange={(checked) => {
-                      if (checked) {
-                        setSelectedCategories([...selectedCategories, category.id]);
-                      } else {
-                        setSelectedCategories(selectedCategories.filter(id => id !== category.id));
-                      }
-                    }}
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                  
-                  {/* Expand/Collapse Button */}
-                  {hasChildren && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-6 w-6 p-0 hover:bg-muted"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleCategoryExpansion(category.id);
-                      }}
-                    >
-                      {isExpanded ? (
-                        <ChevronDown className="h-4 w-4" />
+        <div key={category.id} className="relative">
+          {/* Connecting Lines */}
+          {level > 0 && (
+            <>
+              {/* Vertical line from parent */}
+              <div className="absolute left-6 -top-4 w-px h-4 bg-border"></div>
+              {/* Horizontal line to item */}
+              <div className="absolute left-6 top-6 w-4 h-px bg-border"></div>
+              {/* Vertical line continuing down (if not last item) */}
+              {!isLastInLevel && (
+                <div className="absolute left-6 top-6 w-px h-full bg-border"></div>
+              )}
+            </>
+          )}
+
+          <div className={cn(
+            "relative mb-3",
+            level > 0 && "ml-10"
+          )}>
+            {/* Main Category Card */}
+            <Card className={cn(
+              "group transition-all duration-200 border-l-4",
+              hasChildren && "cursor-pointer hover:shadow-md",
+              category.is_active 
+                ? "border-l-green-500 bg-green-50/30 dark:bg-green-950/20" 
+                : "border-l-gray-400 bg-gray-50/30 dark:bg-gray-950/20",
+              isExpanded && hasChildren && "shadow-md"
+            )}>
+              <CardContent className="p-4">
+                <div 
+                  className={cn("flex items-start justify-between gap-4", isRTL && "flex-row-reverse")}
+                  onClick={hasChildren ? () => toggleCategoryExpansion(category.id) : undefined}
+                >
+                  {/* Left Section */}
+                  <div className={cn("flex items-start gap-3 flex-1", isRTL && "flex-row-reverse")}>
+                    {/* Checkbox */}
+                    <div className="pt-1">
+                      <Checkbox
+                        checked={selectedCategories.includes(category.id)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedCategories([...selectedCategories, category.id]);
+                          } else {
+                            setSelectedCategories(selectedCategories.filter(id => id !== category.id));
+                          }
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                        className="transition-colors"
+                      />
+                    </div>
+                    
+                    {/* Expand/Collapse Button */}
+                    <div className="pt-1">
+                      {hasChildren ? (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 w-6 p-0 hover:bg-muted transition-colors"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleCategoryExpansion(category.id);
+                          }}
+                        >
+                          {isExpanded ? (
+                            <ChevronDown className="h-4 w-4 transition-transform duration-200" />
+                          ) : (
+                            <ChevronRight className={cn(
+                              "h-4 w-4 transition-transform duration-200", 
+                              isRTL && "transform rotate-180"
+                            )} />
+                          )}
+                        </Button>
                       ) : (
-                        <ChevronRight className={cn("h-4 w-4", isRTL && "transform rotate-180")} />
-                      )}
-                    </Button>
-                  )}
-                  
-                  {/* Category Icon */}
-                  {level > 0 ? (
-                    <Folder className="h-4 w-4 text-muted-foreground" />
-                  ) : hasChildren ? (
-                    isExpanded ? (
-                      <FolderOpen className="h-4 w-4 text-primary" />
-                    ) : (
-                      <Folder className="h-4 w-4 text-primary" />
-                    )
-                  ) : (
-                    <Folder className="h-4 w-4 text-muted-foreground" />
-                  )}
-                  
-                  <div className={cn(isRTL ? "text-right" : "text-left", "flex-1")}>
-                    <div className="flex items-center space-x-2">
-                      <h4 className="font-medium">{category.name_en}</h4>
-                      <Badge variant={category.is_active ? "default" : "secondary"} className="text-xs">
-                        {category.is_active ? 'Active' : 'Inactive'}
-                      </Badge>
-                      {hasChildren && (
-                        <Badge variant="outline" className="text-xs">
-                          {childrenCount} sub{childrenCount > 1 ? 's' : ''}
-                        </Badge>
+                        <div className="w-6 h-6 flex items-center justify-center">
+                          <div className="w-2 h-2 rounded-full bg-muted"></div>
+                        </div>
                       )}
                     </div>
-                    <p className="text-sm text-muted-foreground">{category.name_ar}</p>
-                    <p className="text-xs text-muted-foreground">Slug: {category.slug}</p>
+                    
+                    {/* Category Icon */}
+                    <div className="pt-1">
+                      {level > 0 ? (
+                        <Folder className="h-5 w-5 text-muted-foreground" />
+                      ) : hasChildren ? (
+                        isExpanded ? (
+                          <FolderOpen className="h-5 w-5 text-primary" />
+                        ) : (
+                          <Folder className="h-5 w-5 text-primary" />
+                        )
+                      ) : (
+                        <Folder className="h-5 w-5 text-muted-foreground" />
+                      )}
+                    </div>
+                    
+                    {/* Category Information */}
+                    <div className={cn("flex-1 min-w-0", isRTL ? "text-right" : "text-left")}>
+                      {/* Primary Info Row */}
+                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                        <h4 className="font-semibold text-foreground truncate">{category.name_en}</h4>
+                        <Badge 
+                          variant={category.is_active ? "default" : "secondary"} 
+                          className="text-xs shrink-0"
+                        >
+                          {category.is_active ? 'Active' : 'Inactive'}
+                        </Badge>
+                        {hasChildren && (
+                          <Badge variant="outline" className="text-xs shrink-0">
+                            {childrenCount} sub{childrenCount !== 1 ? 's' : ''}
+                          </Badge>
+                        )}
+                      </div>
+                      
+                      {/* Secondary Info */}
+                      <div className="space-y-1">
+                        <p className="text-sm text-muted-foreground truncate">{category.name_ar}</p>
+                        <div className="flex items-center gap-2">
+                          <code className="text-xs bg-muted px-2 py-1 rounded font-mono">
+                            {category.slug}
+                          </code>
+                          {level > 0 && (
+                            <span className="text-xs text-muted-foreground">
+                              Subcategory
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className={cn(
+                    "flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shrink-0",
+                    isRTL && "flex-row-reverse"
+                  )}>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openEditDialog(category);
+                      }}
+                      disabled={!isAdmin}
+                      className="h-8 w-8 p-0"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(category.id);
+                      }}
+                      disabled={!isAdmin}
+                      className="h-8 w-8 p-0"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
-                
-                <div className={cn("flex space-x-2", isRTL && "flex-row-reverse space-x-reverse")}>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      openEditDialog(category);
-                    }}
-                    disabled={!isAdmin}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(category.id);
-                    }}
-                    disabled={!isAdmin}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
           
           {/* Subcategories - Only show if expanded */}
           {hasChildren && isExpanded && (
-            <div className="animate-in slide-in-from-top-2 duration-200">
-              {renderCategoryTree(category.children, level + 1)}
+            <div className="animate-accordion-down overflow-hidden">
+              <div className="pt-2">
+                {renderCategoryTree(category.children, level + 1)}
+              </div>
             </div>
           )}
         </div>
@@ -777,7 +847,7 @@ export const CategoryManagement: React.FC = () => {
       ) : filteredCategories.length === 0 ? (
         <Card>
           <CardContent className="p-12 text-center">
-            <Folder className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <Folder className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-medium mb-2">No Categories Found</h3>
             <p className="text-muted-foreground mb-4">
               {searchQuery || statusFilter !== 'all' 
@@ -798,8 +868,14 @@ export const CategoryManagement: React.FC = () => {
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-4">
-          {viewMode === 'tree' ? renderCategoryTree(filteredCategories) : renderTableView()}
+        <div className="space-y-2">
+          {viewMode === 'tree' ? (
+            <div className="space-y-4">
+              {renderCategoryTree(filteredCategories)}
+            </div>
+          ) : (
+            renderTableView()
+          )}
         </div>
       )}
     </AdminPageContainer>
