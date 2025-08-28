@@ -1,5 +1,3 @@
-
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { ProcurementClientDashboard } from "@/components/Dashboard/ProcurementClientDashboard";
 import { useAuth } from "@/contexts/AuthContext";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
@@ -27,22 +25,18 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <DashboardLayout>
-        <div className="flex justify-center items-center min-h-[400px]">
-          <LoadingSpinner size="lg" />
-        </div>
-      </DashboardLayout>
+      <div className="flex justify-center items-center min-h-[400px]">
+        <LoadingSpinner size="lg" />
+      </div>
     );
   }
 
   // Only render for client users
   if (userProfile?.role !== 'client') {
     return (
-      <DashboardLayout>
-        <div className="flex justify-center items-center min-h-[400px]">
-          <LoadingSpinner size="lg" />
-        </div>
-      </DashboardLayout>
+      <div className="flex justify-center items-center min-h-[400px]">
+        <LoadingSpinner size="lg" />
+      </div>
     );
   }
 
@@ -122,10 +116,10 @@ const Dashboard = () => {
   };
 
   return (
-    <DashboardLayout>
+    <div className="space-y-6">
       {renderVerificationBanner()}
       <ProcurementClientDashboard />
-    </DashboardLayout>
+    </div>
   );
 };
 

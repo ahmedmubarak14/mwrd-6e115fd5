@@ -1,10 +1,13 @@
-
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
 import { BasicAnalyticsDashboard } from "@/components/analytics/BasicAnalyticsDashboard";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { Download, RefreshCw, BarChart3, TrendingUp, Users, DollarSign } from "lucide-react";
 
 export const Analytics = () => {
   const { userProfile } = useAuth();
@@ -63,10 +66,61 @@ export const Analytics = () => {
   };
 
   return (
-    <DashboardLayout className={isRTL ? 'font-arabic' : ''}>
-      <div className="max-w-7xl mx-auto space-y-6">
-        <BasicAnalyticsDashboard />
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+            {isRTL ? "التحليلات والإحصائيات" : "Analytics & Insights"}
+          </h1>
+          <p className="text-muted-foreground">
+            {isRTL ? "عرض شامل لأداء حسابك وإحصائيات النشاط" : "Comprehensive view of your account performance and activity statistics"}
+          </p>
+        </div>
+        
+        <div className="flex gap-2">
+          <Select value={dateRange} onValueChange={setDateRange}>
+            <SelectTrigger className="w-32">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="7">7 Days</SelectItem>
+              <SelectItem value="30">30 Days</SelectItem>
+              <SelectItem value="90">90 Days</SelectItem>
+              <SelectItem value="365">1 Year</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          <Button
+            variant="outline"
+            onClick={handleRefreshData}
+            disabled={isRefreshing}
+          >
+            {isRefreshing ? (
+              <LoadingSpinner size="sm" className="mr-2" />
+            ) : (
+              <RefreshCw className="mr-2 h-4 w-4" />
+            )}
+            {isRTL ? "تحديث" : "Refresh"}
+          </Button>
+          
+          <Button
+            variant="outline"
+            onClick={handleExportAnalytics}
+            disabled={isExporting}
+          >
+            {isExporting ? (
+              <LoadingSpinner size="sm" className="mr-2" />
+            ) : (
+              <Download className="mr-2 h-4 w-4" />
+            )}
+            {isRTL ? "تصدير" : "Export"}
+          </Button>
+        </div>
       </div>
-    </DashboardLayout>
+
+      {/* Analytics Dashboard */}
+      <BasicAnalyticsDashboard />
+    </div>
   );
 };

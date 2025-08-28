@@ -1,6 +1,4 @@
-
 import { useState } from "react";
-import { CleanDashboardLayout } from "@/components/layout/CleanDashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,10 +7,26 @@ import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useToastFeedback } from "@/hooks/useToastFeedback";
-import { User, Building, FileText, Settings, Tags } from "lucide-react";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { 
+  User, 
+  Building, 
+  FileText, 
+  Settings, 
+  Tags,
+  Mail, 
+  Phone, 
+  MapPin,
+  Calendar,
+  Shield,
+  Edit,
+  Save,
+  X
+} from "lucide-react";
 import { CRDocumentUpload } from "@/components/verification/CRDocumentUpload";
 import { VerificationStatus } from "@/components/verification/VerificationStatus";
 
@@ -33,10 +47,11 @@ const SERVICE_CATEGORIES = [
 ];
 
 const Profile = () => {
-  const { userProfile, updateProfile } = useAuth();
+  const { userProfile, updateProfile, loading } = useAuth();
   const languageContext = useOptionalLanguage();
   const { t } = languageContext || { t: (key: string) => key };
-  const [loading, setLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const { showSuccess } = useToastFeedback();
 
   const [formData, setFormData] = useState({
@@ -47,18 +62,35 @@ const Profile = () => {
     bio: userProfile?.bio || "",
     portfolio_url: userProfile?.portfolio_url || "",
     categories: userProfile?.categories || [],
+    email: userProfile?.email || "",
   });
 
   const handleSave = async () => {
-    setLoading(true);
+    setIsSaving(true);
     try {
       const success = await updateProfile(formData);
       if (success) {
         showSuccess(t('profile.saveChanges'));
+        setIsEditing(false);
       }
     } finally {
-      setLoading(false);
+      setIsSaving(false);
     }
+  };
+
+  const handleCancel = () => {
+    setFormData({
+      full_name: userProfile?.full_name || "",
+      company_name: userProfile?.company_name || "",
+      phone: userProfile?.phone || "",
+      address: userProfile?.address || "",
+      bio: userProfile?.bio || "",
+      portfolio_url: userProfile?.portfolio_url || "",
+      categories: userProfile?.categories || [],
+      position: userProfile?.position || "",
+      email: userProfile?.email || "",
+    });
+    setIsEditing(false);
   };
 
   const handleCategoryChange = (category: string, checked: boolean) => {
@@ -75,327 +107,281 @@ const Profile = () => {
     
     switch (userProfile.verification_status) {
       case 'approved':
-        return <Badge variant="success">{t('profile.verified')}</Badge>;
+        return <Badge variant="default" className="bg-green-100 text-green-800">Verified</Badge>;
       case 'rejected':
         return <Badge variant="destructive">{t('profile.rejected')}</Badge>;
       case 'under_review':
-        return <Badge variant="warning">{t('profile.underReview')}</Badge>;
+        return <Badge variant="outline">Under Review</Badge>;
       default:
-        return <Badge variant="secondary">{t('profile.pendingVerification')}</Badge>;
+        return <Badge variant="secondary">Not Verified</Badge>;
     }
   };
 
-  if (!userProfile) return null;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
+
+  if (!userProfile) return (
+    <Card>
+      <CardContent className="pt-6">
+        <div className="text-center">
+          <p className="text-muted-foreground">Profile not found</p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  const userInitials = userProfile.full_name
+    ? userProfile.full_name.split(' ').map(n => n[0]).join('').toUpperCase()
+    : userProfile.email?.charAt(0).toUpperCase() || 'U';
 
   return (
-    <CleanDashboardLayout>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">{t('profile.title')}</h1>
-            <p className="text-muted-foreground">
-              {t('profile.subtitle')}
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            {getVerificationBadge()}
-          </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Profile</h1>
+          <p className="text-muted-foreground">Manage your account information and verification status</p>
         </div>
+        
+        <div className="flex items-center gap-2">
+          {getVerificationBadge()}
+          {!isEditing && (
+            <Button 
+              onClick={() => setIsEditing(true)}
+              variant="outline"
+              className="w-full md:w-auto"
+            >
+              <Edit className="mr-2 h-4 w-4" />
+              Edit Profile
+            </Button>
+          )}
+        </div>
+      </div>
 
-        <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="profile" className="flex items-center gap-2">
-              <User className="h-4 w-4" />
-              {t('profile.tabs.profile')}
-            </TabsTrigger>
-            {userProfile.role === 'vendor' && (
-              <TabsTrigger value="categories" className="flex items-center gap-2">
-                <Tags className="h-4 w-4" />
-                {t('profile.tabs.categories')}
-              </TabsTrigger>
-            )}
-            <TabsTrigger value="verification" className="flex items-center gap-2">
-              <FileText className="h-4 w-4" />
-              {t('profile.tabs.verification')}
-            </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
-              <Settings className="h-4 w-4" />
-              {t('profile.tabs.settings')}
-            </TabsTrigger>
-          </TabsList>
+      <Tabs defaultValue="profile" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-2 lg:w-[400px]">
+          <TabsTrigger value="profile" className="flex items-center gap-2">
+            <User className="h-4 w-4" />
+            Profile
+          </TabsTrigger>
+          <TabsTrigger value="verification" className="flex items-center gap-2">
+            <Shield className="h-4 w-4" />
+            Verification
+          </TabsTrigger>
+        </TabsList>
 
-          <TabsContent value="profile">
-            <div className="grid gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <User className="h-5 w-5" />
-                    {t('profile.personalInfo')}
-                  </CardTitle>
-                  <CardDescription>
-                    {t('profile.personalInfoDesc')}
+        <TabsContent value="profile" className="space-y-6">
+          {/* Profile Overview Card */}
+          <Card>
+            <CardHeader>
+              <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
+                <Avatar className="h-20 w-20">
+                  <AvatarImage src={userProfile.avatar_url} alt={userProfile.full_name} />
+                  <AvatarFallback className="text-lg font-semibold bg-primary/10 text-primary">
+                    {userInitials}
+                  </AvatarFallback>
+                </Avatar>
+                
+                <div className="flex-1">
+                  <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-3">
+                    <CardTitle className="text-xl">{userProfile.full_name}</CardTitle>
+                    {getVerificationBadge()}
+                  </div>
+                  <CardDescription className="text-base">
+                    {userProfile.position && userProfile.company_name 
+                      ? `${userProfile.position} at ${userProfile.company_name}`
+                      : userProfile.company_name || userProfile.email
+                    }
                   </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="full_name">{t('profile.fullName')}</Label>
-                      <Input
-                        id="full_name"
-                        value={formData.full_name}
-                        onChange={(e) =>
-                          setFormData((prev) => ({ ...prev, full_name: e.target.value }))
-                        }
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="email">{t('profile.email')}</Label>
-                      <Input
-                        id="email"
-                        value={userProfile.email}
-                        disabled
-                        className="bg-muted"
-                      />
-                    </div>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
+                    <Calendar className="h-4 w-4" />
+                    Member since {new Date(userProfile.created_at || '').toLocaleDateString()}
                   </div>
+                </div>
+              </div>
+            </CardHeader>
+          </Card>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">{t('profile.phone')}</Label>
-                      <Input
-                        id="phone"
-                        value={formData.phone}
-                        onChange={(e) =>
-                          setFormData((prev) => ({ ...prev, phone: e.target.value }))
-                        }
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="role">{t('profile.role')}</Label>
-                      <Input
-                        id="role"
-                        value={userProfile.role}
-                        disabled
-                        className="bg-muted"
-                      />
-                    </div>
+          {/* Profile Details */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Profile Information</CardTitle>
+                  <CardDescription>
+                    Update your personal and company information
+                  </CardDescription>
+                </div>
+                
+                {isEditing && (
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleCancel}
+                    >
+                      <X className="mr-2 h-4 w-4" />
+                      Cancel
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={handleSave}
+                      disabled={isSaving}
+                    >
+                      {isSaving ? (
+                        <LoadingSpinner size="sm" className="mr-2" />
+                      ) : (
+                        <Save className="mr-2 h-4 w-4" />
+                      )}
+                      Save Changes
+                    </Button>
                   </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="address">{t('profile.address')}</Label>
+                )}
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid gap-6 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="full_name">
+                    <User className="inline mr-2 h-4 w-4" />
+                    Full Name
+                  </Label>
+                  {isEditing ? (
                     <Input
-                      id="address"
-                      value={formData.address}
-                      onChange={(e) =>
-                        setFormData((prev) => ({ ...prev, address: e.target.value }))
-                      }
+                      id="full_name"
+                      value={formData.full_name}
+                      onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
                     />
-                  </div>
-                </CardContent>
-              </Card>
+                  ) : (
+                    <p className="text-sm py-2">{userProfile.full_name || 'Not provided'}</p>
+                  )}
+                </div>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Building className="h-5 w-5" />
-                    {t('profile.companyInfo')}
-                  </CardTitle>
-                  <CardDescription>
-                    {t('profile.companyInfoDesc')}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="company_name">{t('profile.companyName')}</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="email">
+                    <Mail className="inline mr-2 h-4 w-4" />
+                    Email
+                  </Label>
+                  <p className="text-sm py-2">{userProfile.email}</p>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="phone">
+                    <Phone className="inline mr-2 h-4 w-4" />
+                    Phone Number
+                  </Label>
+                  {isEditing ? (
+                    <Input
+                      id="phone"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    />
+                  ) : (
+                    <p className="text-sm py-2">{userProfile.phone || 'Not provided'}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="company_name">
+                    <Building className="inline mr-2 h-4 w-4" />
+                    Company Name
+                  </Label>
+                  {isEditing ? (
                     <Input
                       id="company_name"
                       value={formData.company_name}
-                      onChange={(e) =>
-                        setFormData((prev) => ({ ...prev, company_name: e.target.value }))
-                      }
+                      onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
                     />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="bio">
-                      {userProfile.role === 'vendor' ? t('profile.bio') : t('profile.bioClient')}
-                    </Label>
-                    <Textarea
-                      id="bio"
-                      value={formData.bio}
-                      onChange={(e) =>
-                        setFormData((prev) => ({ ...prev, bio: e.target.value }))
-                      }
-                      placeholder={
-                        userProfile.role === 'vendor' 
-                          ? t('profile.bioPlaceholder')
-                          : t('profile.bioPlaceholderClient')
-                      }
-                      rows={4}
-                    />
-                  </div>
-
-                  {userProfile.role === 'vendor' && (
-                    <div className="space-y-2">
-                      <Label htmlFor="portfolio_url">{t('profile.portfolioUrl')}</Label>
-                      <Input
-                        id="portfolio_url"
-                        value={formData.portfolio_url}
-                        onChange={(e) =>
-                          setFormData((prev) => ({ ...prev, portfolio_url: e.target.value }))
-                        }
-                        placeholder="https://your-portfolio.com"
-                      />
-                    </div>
+                  ) : (
+                    <p className="text-sm py-2">{userProfile.company_name || 'Not provided'}</p>
                   )}
-                </CardContent>
-              </Card>
+                </div>
 
-              <div className="flex justify-end">
-                <Button onClick={handleSave} disabled={loading}>
-                  {loading ? t('profile.saving') : t('profile.saveChanges')}
-                </Button>
+                <div className="space-y-2">
+                  <Label htmlFor="position">Position/Title</Label>
+                  {isEditing ? (
+                    <Input
+                      id="position"
+                      value={formData.position}
+                      onChange={(e) => setFormData({ ...formData, position: e.target.value })}
+                    />
+                  ) : (
+                    <p className="text-sm py-2">{userProfile.position || 'Not provided'}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="address">
+                    <MapPin className="inline mr-2 h-4 w-4" />
+                    Address
+                  </Label>
+                  {isEditing ? (
+                    <Input
+                      id="address"
+                      value={formData.address}
+                      onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                    />
+                  ) : (
+                    <p className="text-sm py-2">{userProfile.address || 'Not provided'}</p>
+                  )}
+                </div>
               </div>
-            </div>
-          </TabsContent>
 
-          {userProfile.role === 'vendor' && (
-            <TabsContent value="categories">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Tags className="h-5 w-5" />
-                    {t('profile.serviceCategories')}
-                  </CardTitle>
-                  <CardDescription>
-                    {t('profile.serviceCategoriesDesc')}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {SERVICE_CATEGORIES.map((category) => (
-                      <div key={category} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={category}
-                          checked={formData.categories.includes(category)}
-                          onCheckedChange={(checked) => 
-                            handleCategoryChange(category, checked as boolean)
-                          }
-                        />
-                        <Label 
-                          htmlFor={category} 
-                          className="text-sm font-normal cursor-pointer"
-                        >
-                          {category}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  {formData.categories.length > 0 && (
-                    <div className="mt-4">
-                      <Label className="text-sm font-medium">{t('profile.selectedCategories')}</Label>
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {formData.categories.map((category) => (
-                          <Badge key={category} variant="secondary">
-                            {category}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+              <div className="space-y-2">
+                <Label htmlFor="bio">Bio</Label>
+                {isEditing ? (
+                  <Textarea
+                    id="bio"
+                    value={formData.bio}
+                    onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                    placeholder="Tell us about yourself..."
+                    rows={4}
+                  />
+                ) : (
+                  <p className="text-sm py-2 min-h-[80px] bg-muted/50 rounded-md p-3">
+                    {userProfile.bio || 'No bio provided'}
+                  </p>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-                  <div className="flex justify-end mt-6">
-                    <Button onClick={handleSave} disabled={loading}>
-                      {loading ? t('profile.saving') : t('profile.saveCategories')}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          )}
-
-          <TabsContent value="verification">
-            <div className="space-y-6">
+        <TabsContent value="verification" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Shield className="h-5 w-5" />
+                Account Verification
+              </CardTitle>
+              <CardDescription>
+                Verify your account to access all platform features
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
               <VerificationStatus />
               
               {/* Allow both clients and vendors to upload CR documents */}
               {(userProfile.verification_status === 'pending' || 
                 userProfile.verification_status === 'rejected' || 
                 !userProfile.verification_status) && (
-                <CRDocumentUpload
-                  onUploadSuccess={() => window.location.reload()}
-                  isRequired={true}
-                />
-              )}
-
-              {/* Additional information for vendors */}
-              {userProfile.role === 'vendor' && (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>{t('profile.verificationRequirements')}</CardTitle>
-                    <CardDescription>
-                      {t('profile.verificationDesc')}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2 text-sm">
-                      <p>✓ Commercial Registration (CR) certificate</p>
-                      <p>✓ Valid business license</p>
-                      <p>✓ Company profile and service categories</p>
-                      <p className="text-muted-foreground mt-3">
-                        Once verified, you'll be able to bid on requests, receive orders, and access full messaging capabilities.
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="settings">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t('profile.accountSettings')}</CardTitle>
-                <CardDescription>
-                  {t('profile.accountSettingsDesc')}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label>{t('profile.accountStatus')}</Label>
-                    <div className="flex items-center gap-2 mt-1">
-                      <Badge variant={userProfile.status === 'approved' ? 'default' : 'secondary'}>
-                        {userProfile.status}
-                      </Badge>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <Label>{t('profile.subscriptionPlan')}</Label>
-                    <div className="flex items-center gap-2 mt-1">
-                      <Badge variant="outline">
-                        {userProfile.subscription_plan}
-                      </Badge>
-                    </div>
-                  </div>
+                <div className="mt-6">
+                  <CRDocumentUpload
+                    onUploadSuccess={() => window.location.reload()}
+                    isRequired={true}
+                  />
                 </div>
-
-                <div>
-                  <Label>{t('profile.memberSince')}</Label>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {new Date(userProfile.created_at).toLocaleDateString()}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </CleanDashboardLayout>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };
 
