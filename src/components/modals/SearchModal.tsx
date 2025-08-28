@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { Search, FileText, Package, Users, Calendar, MapPin } from "lucide-react";
 
 interface SearchModalProps {
@@ -13,7 +13,8 @@ interface SearchModalProps {
 export const SearchModal = ({ children }: SearchModalProps) => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const { language } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const language = languageContext?.language || 'en';
   const isRTL = language === 'ar';
 
   // Dummy search results
