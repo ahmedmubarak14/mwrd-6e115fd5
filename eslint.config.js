@@ -24,6 +24,22 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       "@typescript-eslint/no-unused-vars": "off",
+      // Prevent hardcoded colors in admin dashboard components
+      "no-restricted-syntax": [
+        "warn",
+        {
+          "selector": "Literal[value=/text-(red|green|blue|yellow|purple|orange|gray)-(\\d{3}|\\d{2})/]",
+          "message": "Use semantic color tokens (text-success, text-destructive, text-info, text-warning, text-muted-foreground) instead of hardcoded colors."
+        },
+        {
+          "selector": "Literal[value=/bg-(red|green|blue|yellow|purple|orange|gray)-(\\d{3}|\\d{2})/]",
+          "message": "Use semantic background tokens instead of hardcoded colors."
+        },
+        {
+          "selector": "Literal[value=/border-(red|green|blue|yellow|purple|orange|gray)-(\\d{3}|\\d{2})/]",
+          "message": "Use semantic border tokens instead of hardcoded colors."
+        }
+      ]
     },
   }
 );

@@ -281,10 +281,10 @@ export const EnhancedFinancialDashboard = () => {
 
   const getTransactionTypeIcon = (type: string) => {
     switch (type) {
-      case 'payment': return <TrendingUp className="h-4 w-4 text-green-600" />;
-      case 'refund': return <TrendingDown className="h-4 w-4 text-red-600" />;
-      case 'commission': return <AlertCircle className="h-4 w-4 text-orange-600" />;
-      case 'subscription': return <RefreshCw className="h-4 w-4 text-blue-600" />;
+      case 'payment': return <TrendingUp className="h-4 w-4 text-success" />;
+      case 'refund': return <TrendingDown className="h-4 w-4 text-destructive" />;
+      case 'commission': return <AlertCircle className="h-4 w-4 text-warning" />;
+      case 'subscription': return <RefreshCw className="h-4 w-4 text-info" />;
       default: return <CreditCard className="h-4 w-4" />;
     }
   };
@@ -337,7 +337,7 @@ export const EnhancedFinancialDashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(stats?.total_revenue || 0)}</div>
-            <p className={cn("text-xs", stats?.growth_rate && stats.growth_rate >= 0 ? "text-green-600" : "text-red-600")}>
+            <p className={cn("text-xs", stats?.growth_rate && stats.growth_rate >= 0 ? "text-success" : "text-destructive")}>
               {stats?.growth_rate && stats.growth_rate >= 0 ? '+' : ''}{stats?.growth_rate?.toFixed(1)}% {t('financial.growthFromPeriod')}
             </p>
           </CardContent>

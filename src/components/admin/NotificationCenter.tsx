@@ -48,8 +48,8 @@ export const NotificationCenter = () => {
 
   const priorityColors = {
     low: "default",
-    medium: "secondary",
-    high: "destructive",
+    medium: "secondary", 
+    high: "warning",
     critical: "destructive"
   };
 
@@ -131,7 +131,7 @@ export const NotificationCenter = () => {
             <Send className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{notificationStats?.sentToday || 0}</div>
+            <div className="text-2xl font-bold text-success">{notificationStats?.sentToday || 0}</div>
             <p className="text-xs text-muted-foreground">Last 24 hours</p>
           </CardContent>
         </Card>
@@ -142,7 +142,7 @@ export const NotificationCenter = () => {
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{notificationStats?.pending || 0}</div>
+            <div className="text-2xl font-bold text-warning">{notificationStats?.pending || 0}</div>
             <p className="text-xs text-muted-foreground">Scheduled</p>
           </CardContent>
         </Card>
@@ -153,7 +153,7 @@ export const NotificationCenter = () => {
             <CheckCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">{notificationStats?.openRate || 0}%</div>
+            <div className="text-2xl font-bold text-info">{notificationStats?.openRate || 0}%</div>
             <p className="text-xs text-muted-foreground">Average</p>
           </CardContent>
         </Card>

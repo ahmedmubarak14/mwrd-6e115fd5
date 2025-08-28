@@ -28,9 +28,9 @@ export const SecurityDashboard = () => {
   const securityScore = securityMetrics?.overallScore || 85;
 
   const getScoreColor = (score: number) => {
-    if (score >= 90) return "text-green-500";
-    if (score >= 70) return "text-yellow-500";
-    return "text-red-500";
+    if (score >= 90) return "text-success";
+    if (score >= 70) return "text-warning";
+    return "text-destructive";
   };
 
   const getScoreStatus = (score: number) => {
@@ -94,7 +94,7 @@ export const SecurityDashboard = () => {
             <UserX className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-500">
+            <div className="text-2xl font-bold text-destructive">
               {securityMetrics?.failedLogins || 0}
             </div>
             <p className="text-xs text-muted-foreground">Last 24 hours</p>
@@ -118,7 +118,7 @@ export const SecurityDashboard = () => {
             <AlertTriangle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-500">
+            <div className="text-2xl font-bold text-warning">
               {securityMetrics?.incidents || 0}
             </div>
             <p className="text-xs text-muted-foreground">This month</p>
@@ -189,9 +189,9 @@ export const SecurityDashboard = () => {
             {securityMetrics?.recentEvents?.map((event, index) => (
               <div key={index} className="flex items-center space-x-4 p-3 border rounded-lg">
                 <div className={`p-2 rounded-full ${
-                  event.severity === 'high' ? 'bg-red-100 text-red-600' :
-                  event.severity === 'medium' ? 'bg-yellow-100 text-yellow-600' :
-                  'bg-green-100 text-green-600'
+                  event.severity === 'high' ? 'bg-destructive/20 text-destructive' :
+                  event.severity === 'medium' ? 'bg-warning/20 text-warning' :
+                  'bg-success/20 text-success'
                 }`}>
                   {event.type === 'login_attempt' ? <Lock className="h-4 w-4" /> :
                    event.type === 'suspicious_activity' ? <Eye className="h-4 w-4" /> :

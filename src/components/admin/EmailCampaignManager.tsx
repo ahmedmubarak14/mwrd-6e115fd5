@@ -308,7 +308,7 @@ export const EmailCampaignManager = () => {
                 <Send className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">{campaignStats?.sentThisMonth || 0}</div>
+                <div className="text-2xl font-bold text-success">{campaignStats?.sentThisMonth || 0}</div>
                 <p className="text-xs text-muted-foreground">+12% from last month</p>
               </CardContent>
             </Card>
@@ -319,7 +319,7 @@ export const EmailCampaignManager = () => {
                 <Eye className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-blue-600">{campaignStats?.openRate || 0}%</div>
+                <div className="text-2xl font-bold text-info">{campaignStats?.openRate || 0}%</div>
                 <p className="text-xs text-muted-foreground">Average</p>
               </CardContent>
             </Card>
@@ -330,7 +330,7 @@ export const EmailCampaignManager = () => {
                 <TrendingUp className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-purple-600">{campaignStats?.clickRate || 0}%</div>
+                <div className="text-2xl font-bold text-accent">{campaignStats?.clickRate || 0}%</div>
                 <p className="text-xs text-muted-foreground">Average</p>
               </CardContent>
             </Card>
@@ -507,7 +507,7 @@ export const EmailCampaignManager = () => {
                     <div key={index} className="flex justify-between items-center p-3 border rounded">
                       <span className="font-medium">{campaign}</span>
                       <div className="text-right">
-                        <div className="font-semibold text-green-600">{85 - index * 5}% open rate</div>
+                        <div className="text-2xl font-bold text-success">{85 - index * 5}% open rate</div>
                         <div className="text-sm text-muted-foreground">{15 - index * 2}% click rate</div>
                       </div>
                     </div>

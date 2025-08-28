@@ -271,14 +271,14 @@ export const ApprovalDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Pending Items</p>
-                <p className="text-3xl font-bold text-orange-600">
+                <p className="text-3xl font-bold text-warning">
                   {metrics.pendingRequests + metrics.pendingOffers}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
                   {metrics.pendingRequests} requests, {metrics.pendingOffers} offers
                 </p>
               </div>
-              <Clock className="h-8 w-8 text-orange-500/20" />
+              <Clock className="h-8 w-8 text-warning/20" />
             </div>
           </CardContent>
         </Card>
@@ -288,21 +288,21 @@ export const ApprovalDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Approval Rate</p>
-                <p className="text-3xl font-bold text-green-600">
+                <p className="text-3xl font-bold text-success">
                   {metrics.approvalRate.toFixed(1)}%
                 </p>
                 <div className="flex items-center gap-1 mt-1">
                   {metrics.weeklyTrend >= 0 ? (
-                    <TrendingUp className="h-3 w-3 text-green-500" />
+                    <TrendingUp className="h-3 w-3 text-success" />
                   ) : (
-                    <TrendingDown className="h-3 w-3 text-red-500" />
+                    <TrendingDown className="h-3 w-3 text-destructive" />
                   )}
                   <span className="text-xs text-muted-foreground">
                     {Math.abs(metrics.weeklyTrend)}% this week
                   </span>
                 </div>
               </div>
-              <CheckCircle className="h-8 w-8 text-green-500/20" />
+              <CheckCircle className="h-8 w-8 text-success/20" />
             </div>
           </CardContent>
         </Card>
@@ -458,7 +458,7 @@ export const ApprovalDashboard = () => {
                       <Button size="sm" variant="outline">
                         <MessageSquare className="h-4 w-4" />
                       </Button>
-                      <Button size="sm" className="bg-green-600 hover:bg-green-700">
+                      <Button size="sm" variant="success">
                         <CheckCircle className="h-4 w-4" />
                       </Button>
                       <Button size="sm" variant="destructive">

@@ -166,9 +166,9 @@ export const FinancialDashboard = () => {
 
   const getTransactionTypeIcon = (type: string) => {
     switch (type) {
-      case 'payment': return <TrendingUp className="h-4 w-4 text-green-600" />;
-      case 'refund': return <TrendingDown className="h-4 w-4 text-red-600" />;
-      case 'commission': return <AlertCircle className="h-4 w-4 text-orange-600" />;
+      case 'payment': return <TrendingUp className="h-4 w-4 text-success" />;
+      case 'refund': return <TrendingDown className="h-4 w-4 text-destructive" />;
+      case 'commission': return <AlertCircle className="h-4 w-4 text-warning" />;
       default: return <CreditCard className="h-4 w-4" />;
     }
   };

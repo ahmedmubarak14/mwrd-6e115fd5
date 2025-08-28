@@ -155,21 +155,21 @@ export const PlatformAnalytics = () => {
       case 'create':
       case 'register':
       case 'signup':
-        return <CheckCircle className="h-4 w-4 text-green-600" />;
+        return <CheckCircle className="h-4 w-4 text-success" />;
       case 'delete':
       case 'remove':
-        return <XCircle className="h-4 w-4 text-red-600" />;
+        return <XCircle className="h-4 w-4 text-destructive" />;
       case 'update':
       case 'edit':
-        return <Activity className="h-4 w-4 text-blue-600" />;
+        return <Activity className="h-4 w-4 text-info" />;
       case 'view':
       case 'access':
-        return <Eye className="h-4 w-4 text-gray-600" />;
+        return <Eye className="h-4 w-4 text-muted-foreground" />;
       case 'login':
       case 'logout':
-        return <Users className="h-4 w-4 text-purple-600" />;
+        return <Users className="h-4 w-4 text-accent" />;
       default:
-        return <AlertTriangle className="h-4 w-4 text-orange-600" />;
+        return <AlertTriangle className="h-4 w-4 text-warning" />;
     }
   };
 
