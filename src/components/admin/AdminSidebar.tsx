@@ -88,6 +88,11 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
       badgeVariant: "destructive" as const,
     },
     {
+      name: t('admin.communications'),
+      href: "/admin/communications",
+      icon: MessageSquare,
+    },
+    {
       name: t('admin.expertConsultations'),
       href: "/admin/content/consultations",
       icon: HelpCircle,

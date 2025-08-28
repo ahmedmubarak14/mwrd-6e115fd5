@@ -311,7 +311,7 @@ export const AdminSupport = () => {
   };
 
   const handleViewConversation = (ticket: any) => {
-    navigate(`/messages?ticket=${ticket.id}`);
+    navigate(`/admin/communications?ticket=${ticket.id}`);
   };
 
   const handleExportTickets = () => {
