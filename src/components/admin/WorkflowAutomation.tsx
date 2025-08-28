@@ -95,8 +95,8 @@ export const WorkflowAutomation = () => {
 
   const getStatusIcon = (rule: WorkflowRule) => {
     if (!rule.enabled) return <Clock className="h-4 w-4 text-muted-foreground" />;
-    if (rule.runCount > 0) return <CheckCircle className="h-4 w-4 text-green-500" />;
-    return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
+    if (rule.runCount > 0) return <CheckCircle className="h-4 w-4 text-success" />;
+    return <AlertTriangle className="h-4 w-4 text-warning" />;
   };
 
   const getStatusColor = (rule: WorkflowRule) => {

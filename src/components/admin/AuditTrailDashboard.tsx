@@ -34,12 +34,12 @@ export const AuditTrailDashboard = () => {
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
 
   const actionIcons = {
-    INSERT: <User className="h-4 w-4 text-green-500" />,
-    UPDATE: <Edit className="h-4 w-4 text-blue-500" />,
-    DELETE: <Trash className="h-4 w-4 text-red-500" />,
-    SELECT: <Eye className="h-4 w-4 text-gray-500" />,
-    LOGIN: <Shield className="h-4 w-4 text-purple-500" />,
-    LOGOUT: <Shield className="h-4 w-4 text-orange-500" />,
+    INSERT: <User className="h-4 w-4 text-success" />,
+    UPDATE: <Edit className="h-4 w-4 text-info" />,
+    DELETE: <Trash className="h-4 w-4 text-destructive" />,
+    SELECT: <Eye className="h-4 w-4 text-muted-foreground" />,
+    LOGIN: <Shield className="h-4 w-4 text-primary" />,
+    LOGOUT: <Shield className="h-4 w-4 text-warning" />,
   };
 
   const filteredLogs = auditLogs?.filter(log => {
@@ -225,7 +225,7 @@ export const AuditTrailDashboard = () => {
                 <div key={log.id} className="flex items-center space-x-4 p-4 border rounded hover:bg-muted/50 transition-colors">
                   <div className="flex-shrink-0">
                     {actionIcons[log.action as keyof typeof actionIcons] || 
-                     <Activity className="h-4 w-4 text-gray-500" />}
+                     <Activity className="h-4 w-4 text-muted-foreground" />}
                   </div>
                   
                   <div className="flex-1 min-w-0">

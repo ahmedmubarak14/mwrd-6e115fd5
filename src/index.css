@@ -427,9 +427,74 @@ All colors MUST be HSL.
     line-height: var(--line-height-tight);
     letter-spacing: var(--letter-spacing-tight);
     color: hsl(var(--foreground));
+  html {
+    font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: hsl(var(--foreground));
   }
 
-  h1 {
+  body {
+    font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    color: hsl(var(--foreground));
+  }
+
+  /* ========== TYPOGRAPHY & FORM VISIBILITY FIXES ========== */
+  
+  /* Base typography visibility */
+  * {
+    color: inherit;
+  }
+  
+  /* Form elements explicit visibility */
+  input, 
+  textarea, 
+  select, 
+  [contenteditable] {
+    color: hsl(var(--foreground)) !important;
+    caret-color: hsl(var(--input-caret)) !important;
+  }
+  
+  /* Placeholder visibility with proper opacity */
+  input::placeholder,
+  textarea::placeholder {
+    color: hsl(var(--input-placeholder)) !important;
+    opacity: 0.6 !important;
+  }
+  
+  .dark input::placeholder,
+  .dark textarea::placeholder {
+    opacity: 0.7 !important;
+  }
+  
+  /* Selection visibility */
+  ::selection {
+    background: hsl(var(--input-selection)) !important;
+    color: hsl(var(--input-selection-foreground)) !important;
+  }
+  
+  /* WebKit autofill overrides for visibility */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px hsl(var(--autofill-background)) inset !important;
+    -webkit-text-fill-color: hsl(var(--autofill-text)) !important;
+    color: hsl(var(--autofill-text)) !important;
+    caret-color: hsl(var(--input-caret)) !important;
+  }
+  
+  /* Focus visibility with strong ring and outline */
+  input:focus,
+  textarea:focus,
+  select:focus,
+  [contenteditable]:focus {
+    outline: 2px solid hsl(var(--focus-outline)) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 2px hsl(var(--focus-ring)) !important;
+  }
     font-size: var(--font-size-4xl);
     font-weight: 700;
   }

@@ -215,7 +215,7 @@ export const CategoryManagement: React.FC = () => {
       <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
         <Card>
           <CardContent className="p-8 text-center">
-            <AlertTriangle className="h-12 w-12 text-amber-500 mx-auto mb-4" />
+            <AlertTriangle className="h-12 w-12 text-warning mx-auto mb-4" />
             <h3 className="text-lg font-semibold mb-2">Access Restricted</h3>
             <p className="text-muted-foreground">
               You need admin privileges to access category management. 

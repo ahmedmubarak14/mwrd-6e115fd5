@@ -93,14 +93,14 @@ export const SecurityComplianceCenter = () => {
     switch (status) {
       case 'compliant':
       case 'complete':
-        return 'text-green-600';
+        return 'text-success';
       case 'in-progress':
-        return 'text-yellow-600';
+        return 'text-warning';
       case 'pending':
       case 'non-compliant':
-        return 'text-red-600';
+        return 'text-destructive';
       default:
-        return 'text-gray-600';
+        return 'text-muted-foreground';
     }
   };
 
@@ -137,7 +137,7 @@ export const SecurityComplianceCenter = () => {
                 <Shield className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">88%</div>
+                <div className="text-2xl font-bold text-success">88%</div>
                 <Progress value={88} className="mt-2" />
                 <p className="text-xs text-muted-foreground mt-2">
                   Above industry average
@@ -164,7 +164,7 @@ export const SecurityComplianceCenter = () => {
                 <AlertTriangle className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-yellow-600">4</div>
+                <div className="text-2xl font-bold text-warning">4</div>
                 <p className="text-xs text-muted-foreground">
                   Requires attention
                 </p>
@@ -238,9 +238,9 @@ export const SecurityComplianceCenter = () => {
                         <span className="font-medium">{req.name}</span>
                         <div className="flex items-center space-x-2">
                           {req.status === 'complete' ? (
-                            <CheckCircle className="h-4 w-4 text-green-600" />
+                            <CheckCircle className="h-4 w-4 text-success" />
                           ) : (
-                            <AlertTriangle className="h-4 w-4 text-yellow-600" />
+                            <AlertTriangle className="h-4 w-4 text-warning" />
                           )}
                           <Badge variant={getStatusBadge(req.status)}>
                             {req.status}

@@ -219,7 +219,7 @@ export const BulkApprovalActions = ({
             <div className="space-y-4">
               <div className="p-4 bg-muted/50 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <AlertTriangle className="h-4 w-4 text-orange-500" />
+                  <AlertTriangle className="h-4 w-4 text-warning" />
                   <span className="font-medium">Confirmation Required</span>
                 </div>
                 <p className="text-sm text-muted-foreground">

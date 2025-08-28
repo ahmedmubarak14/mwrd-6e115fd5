@@ -23,23 +23,38 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
-      "@typescript-eslint/no-unused-vars": "off",
-      // Prevent hardcoded colors in admin dashboard components
+      // ========== HARDCODED COLOR PREVENTION RULES ========== 
       "no-restricted-syntax": [
-        "warn",
+        "error",
         {
-          "selector": "Literal[value=/text-(red|green|blue|yellow|purple|orange|gray)-(\\d{3}|\\d{2})/]",
-          "message": "Use semantic color tokens (text-success, text-destructive, text-info, text-warning, text-muted-foreground) instead of hardcoded colors."
+          selector: 'Literal[value=/text-(white|black|gray|slate|zinc|stone|red|green|blue|yellow|indigo|purple|pink|rose|orange|amber|lime|emerald|teal|cyan|sky|violet|fuchsia)-\\d+/]',
+          message: 'Hardcoded color classes are not allowed. Use semantic tokens from the design system instead (e.g., text-primary, text-success, text-warning, text-destructive, text-muted-foreground).',
         },
         {
-          "selector": "Literal[value=/bg-(red|green|blue|yellow|purple|orange|gray)-(\\d{3}|\\d{2})/]",
-          "message": "Use semantic background tokens instead of hardcoded colors."
+          selector: 'Literal[value=/bg-(white|black|gray|slate|zinc|stone|red|green|blue|yellow|indigo|purple|pink|rose|orange|amber|lime|emerald|teal|cyan|sky|violet|fuchsia)-\\d+/]',
+          message: 'Hardcoded background color classes are not allowed. Use semantic tokens from the design system instead (e.g., bg-primary, bg-success, bg-warning, bg-destructive, bg-muted).',
         },
         {
-          "selector": "Literal[value=/border-(red|green|blue|yellow|purple|orange|gray)-(\\d{3}|\\d{2})/]",
-          "message": "Use semantic border tokens instead of hardcoded colors."
+          selector: 'Literal[value=/border-(white|black|gray|slate|zinc|stone|red|green|blue|yellow|indigo|purple|pink|rose|orange|amber|lime|emerald|teal|cyan|sky|violet|fuchsia)-\\d+/]',
+          message: 'Hardcoded border color classes are not allowed. Use semantic tokens from the design system instead (e.g., border-primary, border-success, border-warning, border-destructive, border-muted).',
+        },
+        {
+          selector: 'Literal[value="text-white"]',
+          message: 'Use text-primary-foreground or appropriate semantic token instead of text-white.',
+        },
+        {
+          selector: 'Literal[value="text-black"]',
+          message: 'Use text-foreground or appropriate semantic token instead of text-black.',
+        },
+        {
+          selector: 'Literal[value="bg-white"]',
+          message: 'Use bg-background or appropriate semantic token instead of bg-white.',
+        },
+        {
+          selector: 'Literal[value="bg-black"]',
+          message: 'Use bg-foreground or appropriate semantic token instead of bg-black.',
         }
-      ]
+      ],
     },
   }
 );

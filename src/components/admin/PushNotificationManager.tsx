@@ -337,7 +337,7 @@ export const PushNotificationManager = () => {
                 <Send className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-blue-600">{deviceStats?.sentToday || 0}</div>
+                <div className="text-2xl font-bold text-info">{deviceStats?.sentToday || 0}</div>
                 <p className="text-xs text-muted-foreground">Push notifications</p>
               </CardContent>
             </Card>
@@ -348,7 +348,7 @@ export const PushNotificationManager = () => {
                 <Target className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">{deviceStats?.deliveryRate || 0}%</div>
+                <div className="text-2xl font-bold text-success">{deviceStats?.deliveryRate || 0}%</div>
                 <p className="text-xs text-muted-foreground">Successfully delivered</p>
               </CardContent>
             </Card>
@@ -359,7 +359,7 @@ export const PushNotificationManager = () => {
                 <BarChart className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-purple-600">{deviceStats?.clickRate || 0}%</div>
+                <div className="text-2xl font-bold text-accent">{deviceStats?.clickRate || 0}%</div>
                 <p className="text-xs text-muted-foreground">User engagement</p>
               </CardContent>
             </Card>
@@ -514,7 +514,7 @@ export const PushNotificationManager = () => {
                     <div key={index} className="flex justify-between items-center p-3 border rounded">
                       <span className="font-medium">{title}</span>
                       <div className="text-right">
-                        <div className="font-semibold text-green-600">{25 - index * 3}% CTR</div>
+                        <div className="font-semibold text-success">{25 - index * 3}% CTR</div>
                         <div className="text-sm text-muted-foreground">{1200 - index * 200} sent</div>
                       </div>
                     </div>

@@ -31,7 +31,7 @@ const buttonVariants = cva(
         accent:
           "bg-accent text-accent-foreground shadow-sm hover:bg-accent-hover hover:shadow-accent/50 active:bg-accent-active focus-visible:ring-focus-ring/30 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:shadow-none",
         premium:
-          "bg-gradient-primary text-white shadow-primary hover:shadow-primary hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-primary/30 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:shadow-none",
+          "bg-gradient-primary text-primary-foreground shadow-primary hover:shadow-primary hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-primary/30 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:shadow-none",
         glass:
           "bg-glass text-foreground border border-glass-border backdrop-blur-sm hover:bg-glass-strong active:bg-glass/80 focus-visible:ring-focus-ring/30 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:backdrop-blur-none"
       },

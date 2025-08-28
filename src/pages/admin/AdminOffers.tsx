@@ -559,7 +559,7 @@ const AdminOffers = () => {
             <Card key={offer.id} className="border-orange-200 bg-orange-50/50">
               <CardContent className="p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <AlertTriangle className="h-4 w-4 text-orange-500" />
+                  <AlertTriangle className="h-4 w-4 text-warning" />
                   <span className="font-medium">{offer.title}</span>
                   <Badge variant="outline" className="bg-orange-100 text-orange-700">
                     Requires Attention

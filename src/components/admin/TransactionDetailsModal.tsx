@@ -61,10 +61,10 @@ export const TransactionDetailsModal = ({ isOpen, onClose, transaction }: Transa
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'payment': return 'text-green-600';
-      case 'refund': return 'text-red-600';
-      case 'commission': return 'text-orange-600';
-      case 'subscription': return 'text-blue-600';
+      case 'payment': return 'text-success';
+      case 'refund': return 'text-destructive';
+      case 'commission': return 'text-warning';
+      case 'subscription': return 'text-info';
       default: return 'text-muted-foreground';
     }
   };
