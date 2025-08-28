@@ -88,7 +88,7 @@ export const MetricsCards = ({ metrics, onCardClick }: MetricsCardsProps) => {
 
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
         {cards.map((card, index) => (
           <Card 
             key={index}
@@ -101,8 +101,8 @@ export const MetricsCards = ({ metrics, onCardClick }: MetricsCardsProps) => {
               </CardTitle>
               <card.icon className={`h-4 w-4 text-muted-foreground ${card.color} group-hover:scale-110 transition-transform`} />
             </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold mb-1 group-hover:text-primary transition-colors">
+            <CardContent className="pt-3">
+              <div className="text-xl md:text-2xl font-bold mb-1 group-hover:text-primary transition-colors">
                 {card.value}
               </div>
               <div className={`flex items-center text-xs text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
@@ -111,8 +111,9 @@ export const MetricsCards = ({ metrics, onCardClick }: MetricsCardsProps) => {
                 ) : (
                   <TrendingDown className={`h-3 w-3 text-red-500 ${isRTL ? 'ml-1' : 'mr-1'}`} />
                 )}
-                <span className="group-hover:text-primary transition-colors">
-                  {card.change} {card.period}
+                <span className="group-hover:text-primary transition-colors text-xs">
+                  <span className="font-medium">{card.change}</span>
+                  <span className="hidden sm:inline"> {card.period}</span>
                 </span>
               </div>
             </CardContent>

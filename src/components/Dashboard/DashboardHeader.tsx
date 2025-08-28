@@ -26,7 +26,7 @@ export const DashboardHeader = ({ onRefresh, onExport, isRefreshing, isExporting
         </p>
       </div>
       
-      <div className="flex items-center gap-2">
+      <div className="flex flex-col space-y-2 lg:flex-row lg:items-center lg:gap-2 lg:space-y-0">
         <Button
           variant="outline"
           size="sm"
@@ -35,7 +35,9 @@ export const DashboardHeader = ({ onRefresh, onExport, isRefreshing, isExporting
           className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
         >
           <Clock className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-          {t('common.refresh') === 'common.refresh' ? 'Refresh' : t('common.refresh')}
+          <span className="hidden sm:inline">
+            {t('common.refresh') === 'common.refresh' ? 'Refresh' : t('common.refresh')}
+          </span>
         </Button>
         
         <Button 
@@ -50,10 +52,12 @@ export const DashboardHeader = ({ onRefresh, onExport, isRefreshing, isExporting
           ) : (
             <FileText className="h-4 w-4" />
           )}
-          {isExporting 
-            ? (t('common.exporting') === 'common.exporting' ? 'Exporting...' : t('common.exporting'))
-            : (t('analytics.export') === 'analytics.export' ? 'Export' : t('analytics.export'))
-          }
+          <span className="hidden sm:inline">
+            {isExporting 
+              ? (t('common.exporting') === 'common.exporting' ? 'Exporting...' : t('common.exporting'))
+              : (t('analytics.export') === 'analytics.export' ? 'Export' : t('analytics.export'))
+            }
+          </span>
         </Button>
       </div>
     </div>

@@ -91,20 +91,20 @@ const Dashboard = () => {
     const content = getAlertContent();
 
     return (
-      <Alert variant={content.variant} className="mb-6">
+      <Alert variant={content.variant} className="mb-4 md:mb-6">
         {content.icon}
-        <div className="flex items-center justify-between w-full">
+        <div className="flex flex-col space-y-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 w-full">
           <div className="flex-1">
-            <h4 className="font-medium mb-1 flex items-center gap-2">
-              {content.title}
+            <h4 className="font-medium mb-2 lg:mb-1 flex flex-col space-y-1 lg:flex-row lg:items-center lg:space-y-0 lg:gap-2">
+              <span>{content.title}</span>
               {content.badge}
             </h4>
-            <AlertDescription className="mb-3">
+            <AlertDescription className="mb-3 lg:mb-0">
               {content.description}
               {userProfile.verification_notes && isRejected && (
-                <div className="mt-2 p-2 bg-destructive/10 rounded border border-destructive/20">
+                <div className="mt-2 p-3 bg-destructive/10 rounded border border-destructive/20">
                   <strong>Rejection Reason:</strong><br />
-                  {userProfile.verification_notes}
+                  <span className="text-sm">{userProfile.verification_notes}</span>
                 </div>
               )}
             </AlertDescription>
@@ -112,6 +112,7 @@ const Dashboard = () => {
           <Button
             variant={content.variant === 'destructive' ? 'destructive' : 'default'}
             onClick={() => navigate('/profile?tab=verification')}
+            className="w-full lg:w-auto"
           >
             {content.action}
           </Button>

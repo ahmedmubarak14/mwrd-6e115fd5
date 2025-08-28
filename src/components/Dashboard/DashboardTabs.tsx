@@ -47,35 +47,41 @@ export const DashboardTabs = ({ activeTab, onTabChange }: DashboardTabsProps) =>
   ];
 
   return (
-    <Tabs value={activeTab} className="space-y-4" onValueChange={onTabChange}>
-      <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
+    <Tabs value={activeTab} className="space-y-3 md:space-y-4" onValueChange={onTabChange}>
+      <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto p-1">
         {tabs.map((tab) => (
-          <TabsTrigger key={tab.value} value={tab.value}>
-            {tab.label}
+          <TabsTrigger 
+            key={tab.value} 
+            value={tab.value}
+            className="text-xs sm:text-sm px-2 py-2"
+          >
+            <span className="truncate">{tab.label}</span>
           </TabsTrigger>
         ))}
       </TabsList>
       
       {tabs.map((tab) => (
-        <TabsContent key={tab.value} value={tab.value} className="space-y-4">
+        <TabsContent key={tab.value} value={tab.value} className="space-y-3 md:space-y-4">
           <Card>
-            <CardHeader>
-              <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <CardTitle>{tab.title}</CardTitle>
+            <CardHeader className="pb-3 md:pb-6">
+              <div className={`flex flex-col space-y-3 sm:flex-row sm:justify-between sm:items-center sm:space-y-0 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+                <div>
+                  <CardTitle className="text-lg md:text-xl">{tab.title}</CardTitle>
+                  <CardDescription className="text-sm mt-1">
+                    {tab.description}
+                  </CardDescription>
+                </div>
                 {tab.hasAction && (
-                  <Button size="sm" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <Button size="sm" className={`flex items-center gap-2 w-full sm:w-auto ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <Plus className="h-4 w-4" />
-                    {tab.actionLabel}
+                    <span className="text-sm">{tab.actionLabel}</span>
                   </Button>
                 )}
               </div>
-              <CardDescription>
-                {tab.description}
-              </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="text-center py-8 text-muted-foreground">
-                {tab.content}
+            <CardContent className="pt-0">
+              <div className="text-center py-6 md:py-8 text-muted-foreground">
+                <div className="text-sm md:text-base">{tab.content}</div>
               </div>
             </CardContent>
           </Card>
