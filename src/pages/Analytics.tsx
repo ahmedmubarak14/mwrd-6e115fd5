@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Download, RefreshCw, BarChart3, TrendingUp, Users, DollarSign } from "lucide-react";
+import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 
 export const Analytics = () => {
   const { userProfile } = useAuth();
@@ -66,18 +67,10 @@ export const Analytics = () => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            {isRTL ? "التحليلات والإحصائيات" : "Analytics & Insights"}
-          </h1>
-          <p className="text-muted-foreground">
-            {isRTL ? "عرض شامل لأداء حسابك وإحصائيات النشاط" : "Comprehensive view of your account performance and activity statistics"}
-          </p>
-        </div>
-        
+    <ClientPageContainer
+      title={isRTL ? "التحليلات والإحصائيات" : "Analytics & Insights"}
+      description={isRTL ? "عرض شامل لأداء حسابك وإحصائيات النشاط" : "Comprehensive view of your account performance and activity statistics"}
+      headerActions={
         <div className="flex gap-2">
           <Select value={dateRange} onValueChange={setDateRange}>
             <SelectTrigger className="w-32">
@@ -117,10 +110,10 @@ export const Analytics = () => {
             {isRTL ? "تصدير" : "Export"}
           </Button>
         </div>
-      </div>
-
+      }
+    >
       {/* Analytics Dashboard */}
       <BasicAnalyticsDashboard />
-    </div>
+    </ClientPageContainer>
   );
 };

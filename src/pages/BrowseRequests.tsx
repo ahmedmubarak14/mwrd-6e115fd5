@@ -1,4 +1,4 @@
-import { CleanDashboardLayout } from "@/components/layout/CleanDashboardLayout";
+import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useMatchingSystem } from "@/hooks/useMatchingSystem";
 import { useCategories } from "@/hooks/useCategories";
@@ -8,8 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Package, MapPin, Calendar, DollarSign, Clock, Plus, Eye } from "lucide-react";
-import { useState } from "react";
+import { MetricCard } from "@/components/ui/MetricCard";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Search, Package, MapPin, Calendar, DollarSign, Clock, Plus, Eye, FileText, TrendingUp, AlertCircle, Filter } from "lucide-react";
+import { useState, useMemo } from "react";
 
 const BrowseRequests = () => {
   const { t, language } = useLanguage();
@@ -18,13 +20,35 @@ const BrowseRequests = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
 
+  // Request metrics
+  const metrics = useMemo(() => {
+    if (!matchedRequests || matchedRequests.length === 0) return { total: 0, urgent: 0, highBudget: 0, thisWeek: 0 };
+    
+    const now = new Date();
+    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    
+    return {
+      total: matchedRequests.length,
+      urgent: matchedRequests.filter(r => r.urgency === 'urgent' || r.urgency === 'high').length,
+      highBudget: matchedRequests.filter(r => r.budget_max && r.budget_max > 50000).length,
+      thisWeek: matchedRequests.filter(r => new Date(r.created_at) > weekAgo).length,
+    };
+  }, [matchedRequests]);
+
   if (loading || categoriesLoading) {
     return (
-      <CleanDashboardLayout>
-        <div className="flex justify-center items-center min-h-[400px]">
-          <LoadingSpinner size="lg" />
+      <ClientPageContainer>
+        <div className="mb-8">
+          <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
+          <div className="h-4 w-32 bg-muted rounded animate-pulse" />
         </div>
-      </CleanDashboardLayout>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <MetricCard key={i} title="" value="" loading={true} />
+          ))}
+        </div>
+      </ClientPageContainer>
     );
   }
 
@@ -68,25 +92,46 @@ const BrowseRequests = () => {
   };
 
   return (
-    <CleanDashboardLayout>
-      <div className="container mx-auto space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            {t('browseRequests.title') || 'Browse Requests'}
-          </h1>
-          <p className="text-muted-foreground">
-            {t('browseRequests.subtitle') || 'Find and submit offers for procurement requests'}
-          </p>
-        </div>
+    <ClientPageContainer
+      title={t('browseRequests.title') || 'Browse Requests'}
+      description={t('browseRequests.subtitle') || 'Find and submit offers for procurement requests'}
+    >
+      {/* Metrics */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+        <MetricCard
+          title="Total Requests"
+          value={metrics.total}
+          icon={FileText}
+          trend={{ value: 15, label: "vs last month", isPositive: true }}
+        />
+        <MetricCard
+          title="Urgent/High Priority"
+          value={metrics.urgent}
+          icon={AlertCircle}
+          variant="warning"
+        />
+        <MetricCard
+          title="High Budget (50K+)"
+          value={metrics.highBudget}
+          icon={DollarSign}
+          variant="success"
+        />
+        <MetricCard
+          title="New This Week"
+          value={metrics.thisWeek}
+          icon={TrendingUp}
+          trend={{ value: 8, label: "this week", isPositive: true }}
+        />
+      </div>
 
-        {/* Search and Filters */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Search className="h-5 w-5" />
-              {t('browseRequests.searchAndFilter') || 'Search & Filter'}
-            </CardTitle>
-          </CardHeader>
+      {/* Search and Filters */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Filter className="h-5 w-5" />
+            {t('browseRequests.searchAndFilter') || 'Search & Filter'}
+          </CardTitle>
+        </CardHeader>
           <CardContent className="space-y-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -114,16 +159,14 @@ const BrowseRequests = () => {
           </CardContent>
         </Card>
 
-        {/* Requests List */}
-        {filteredRequests.length === 0 ? (
-          <Card>
-            <CardContent className="py-12 text-center">
-              <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">{t('browseRequests.noResults') || 'No requests found'}</h3>
-              <p className="text-muted-foreground">{t('browseRequests.noResultsDesc') || 'Try adjusting your search criteria'}</p>
-            </CardContent>
-          </Card>
-        ) : (
+      {/* Requests List */}
+      {filteredRequests.length === 0 ? (
+        <EmptyState
+          icon={Search}
+          title={t('browseRequests.noResults') || 'No requests found'}
+          description={t('browseRequests.noResultsDesc') || 'Try adjusting your search criteria'}
+        />
+      ) : (
           <div className="space-y-4">
             {filteredRequests.map((request) => (
               <Card key={request.id} className="hover:shadow-lg transition-shadow">
@@ -194,8 +237,7 @@ const BrowseRequests = () => {
             ))}
           </div>
         )}
-      </div>
-    </CleanDashboardLayout>
+    </ClientPageContainer>
   );
 };
 

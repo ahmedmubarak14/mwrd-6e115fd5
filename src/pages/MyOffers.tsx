@@ -1,4 +1,4 @@
-import { CleanDashboardLayout } from "@/components/layout/CleanDashboardLayout";
+import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,21 +6,44 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useOffers } from "@/hooks/useOffers";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { Package, DollarSign, Clock, Eye, MapPin, Calendar } from "lucide-react";
+import { MetricCard } from "@/components/ui/MetricCard";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Package, DollarSign, Clock, Eye, MapPin, Calendar, TrendingUp, CheckCircle, AlertCircle } from "lucide-react";
 import { format } from "date-fns";
+import { useMemo } from "react";
 
 export const MyOffers = () => {
   const { userProfile } = useAuth();
   const { t } = useLanguage();
   const { offers, loading } = useOffers();
 
+  // Offer metrics
+  const metrics = useMemo(() => {
+    if (!offers) return { total: 0, pending: 0, approved: 0, rejected: 0 };
+    
+    return {
+      total: offers.length,
+      pending: offers.filter(o => o.status === 'pending').length,
+      approved: offers.filter(o => o.client_approval_status === 'approved').length,
+      rejected: offers.filter(o => o.client_approval_status === 'rejected').length,
+    };
+  }, [offers]);
+
   if (loading) {
     return (
-      <CleanDashboardLayout>
-        <div className="flex justify-center items-center min-h-[400px]">
-          <LoadingSpinner size="lg" />
+      <ClientPageContainer>
+        <div className="mb-8">
+          <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
+          <div className="h-4 w-32 bg-muted rounded animate-pulse" />
         </div>
-      </CleanDashboardLayout>
+        
+        {/* Loading skeleton for metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <MetricCard key={i} title="" value="" loading={true} />
+          ))}
+        </div>
+      </ClientPageContainer>
     );
   }
 
@@ -50,28 +73,52 @@ export const MyOffers = () => {
   };
 
   return (
-    <CleanDashboardLayout>
-      <div className="container mx-auto space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            {t('myOffers.title')}
-          </h1>
-          <p className="text-muted-foreground">
-            {t('myOffers.subtitle')}
-          </p>
-        </div>
+    <ClientPageContainer
+      title={t('myOffers.title')}
+      description={t('myOffers.subtitle')}
+    >
+      {/* Metrics */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+        <MetricCard
+          title="Total Offers"
+          value={metrics.total}
+          icon={Package}
+          trend={{ value: 12, label: "vs last month", isPositive: true }}
+        />
+        <MetricCard
+          title="Pending"
+          value={metrics.pending}
+          icon={Clock}
+          variant="warning"
+        />
+        <MetricCard
+          title="Approved"
+          value={metrics.approved}
+          icon={CheckCircle}
+          variant="success"
+        />
+        <MetricCard
+          title="Rejected" 
+          value={metrics.rejected}
+          icon={AlertCircle}
+          variant="destructive"
+        />
+      </div>
 
-        {offers && offers.length === 0 ? (
-          <Card>
-            <CardContent className="py-12 text-center">
-              <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">{t('myOffers.noOffers')}</h3>
-              <p className="text-muted-foreground">{t('myOffers.noOffersDesc')}</p>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {offers?.map((offer) => (
+      {offers && offers.length === 0 ? (
+        <EmptyState
+          icon={Package}
+          title={t('myOffers.noOffers')}
+          description={t('myOffers.noOffersDesc')}
+          action={{
+            label: "Browse Requests",
+            onClick: () => window.location.href = '/browse-requests',
+            variant: "default" as const
+          }}
+        />
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {offers?.map((offer) => (
               <Card key={offer.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex justify-between items-start">
@@ -126,10 +173,9 @@ export const MyOffers = () => {
                 </CardContent>
               </Card>
             ))}
-          </div>
-        )}
-      </div>
-    </CleanDashboardLayout>
+        </div>
+      )}
+    </ClientPageContainer>
   );
 };
 

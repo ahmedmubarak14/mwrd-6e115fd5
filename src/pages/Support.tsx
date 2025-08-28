@@ -1,5 +1,5 @@
 
-import { CleanDashboardLayout } from "@/components/layout/CleanDashboardLayout";
+import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,8 +9,9 @@ import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { LiveChatButton } from "@/components/support/LiveChatButton";
-import { HelpCircle, MessageSquare, Phone, Mail, Send } from "lucide-react";
-import { useState } from "react";
+import { MetricCard } from "@/components/ui/MetricCard";
+import { HelpCircle, MessageSquare, Phone, Mail, Send, Ticket, CheckCircle, Clock, AlertCircle } from "lucide-react";
+import { useState, useMemo } from "react";
 
 export const Support = () => {
   const { userProfile } = useAuth();
@@ -22,6 +23,18 @@ export const Support = () => {
 
   // Safe fallback for translation
   const t = languageContext?.t || ((key: string) => key.split('.').pop() || key);
+  
+  // Support metrics
+  const metrics = useMemo(() => {
+    if (!tickets) return { total: 0, open: 0, closed: 0, pending: 0 };
+    
+    return {
+      total: tickets.length,
+      open: tickets.filter(t => t.status === 'open').length,
+      closed: tickets.filter(t => t.status === 'closed').length,
+      pending: tickets.filter(t => t.status === 'pending').length,
+    };
+  }, [tickets]);
 
   const handleSubmitTicket = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,27 +59,56 @@ export const Support = () => {
 
   if (loading) {
     return (
-      <CleanDashboardLayout>
-        <div className="flex justify-center items-center min-h-[400px]">
-          <LoadingSpinner size="lg" />
+      <ClientPageContainer>
+        <div className="mb-8">
+          <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
+          <div className="h-4 w-32 bg-muted rounded animate-pulse" />
         </div>
-      </CleanDashboardLayout>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <MetricCard key={i} title="" value="" loading={true} />
+          ))}
+        </div>
+      </ClientPageContainer>
     );
   }
 
   return (
-    <CleanDashboardLayout>
-      <div className="container mx-auto space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            {t('support.title') || 'Support'}
-          </h1>
-          <p className="text-muted-foreground">
-            {t('support.subtitle') || 'Get help from our support team'}
-          </p>
+    <ClientPageContainer
+      title={t('support.title') || 'Support'}
+      description={t('support.subtitle') || 'Get help from our support team'}
+    >
+      {/* Support Metrics */}
+      {tickets && tickets.length > 0 && (
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+          <MetricCard
+            title="Total Tickets"
+            value={metrics.total}
+            icon={Ticket}
+          />
+          <MetricCard
+            title="Open Tickets"
+            value={metrics.open}
+            icon={AlertCircle}
+            variant="warning"
+          />
+          <MetricCard
+            title="Pending"
+            value={metrics.pending}
+            icon={Clock}
+            variant="warning"
+          />
+          <MetricCard
+            title="Resolved"
+            value={metrics.closed}
+            icon={CheckCircle}
+            variant="success"
+          />
         </div>
+      )}
 
-        <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2">
           {/* Contact Methods */}
           <Card>
             <CardHeader>
@@ -176,11 +218,10 @@ export const Support = () => {
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
-        )}
-      </div>
-    </CleanDashboardLayout>
+          </CardContent>
+        </Card>
+      )}
+    </ClientPageContainer>
   );
 };
 
