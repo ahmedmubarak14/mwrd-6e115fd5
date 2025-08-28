@@ -10,8 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { EmptyState } from "@/components/ui/empty-state";
-import { Search, Package, MapPin, Calendar, DollarSign, Clock, Plus, Eye, FileText, TrendingUp, AlertCircle, Filter } from "lucide-react";
-import { useState, useMemo } from "react";
+import { CreateOfferModal } from "@/components/modals/CreateOfferModal";
+import { RequestDetailsModal } from "@/components/modals/RequestDetailsModal";
 
 const BrowseRequests = () => {
   const { t, language } = useLanguage();
@@ -222,14 +222,18 @@ const BrowseRequests = () => {
                     </div>
                     
                     <div className="flex gap-2">
-                      <Button className="flex-1">
-                        <Plus className="h-4 w-4 mr-2" />
-                        {t('browseRequests.submitOffer') || 'Submit Offer'}
-                      </Button>
-                      <Button variant="outline">
-                        <Eye className="h-4 w-4 mr-2" />
-                        {t('browseRequests.viewDetails') || 'View Details'}
-                      </Button>
+                      <CreateOfferModal requestId={request.id}>
+                        <Button className="flex-1">
+                          <Plus className="h-4 w-4 mr-2" />
+                          {t('browseRequests.submitOffer') || 'Submit Offer'}
+                        </Button>
+                      </CreateOfferModal>
+                      <RequestDetailsModal request={request} userRole="vendor">
+                        <Button variant="outline">
+                          <Eye className="h-4 w-4 mr-2" />
+                          {t('browseRequests.viewDetails') || 'View Details'}
+                        </Button>
+                      </RequestDetailsModal>
                     </div>
                   </div>
                 </CardContent>
