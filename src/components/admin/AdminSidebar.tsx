@@ -203,11 +203,11 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
   const getGroupPriorityStyles = (priority: NavigationGroup['priority']) => {
     switch (priority) {
       case 'primary':
-        return "border-l-2 border-l-primary/30 bg-primary/5";
+        return "border-l-2 border-l-primary/20 bg-primary/5";
       case 'secondary':
-        return "border-l-2 border-l-accent/30 bg-accent/5";
+        return "border-l-2 border-l-accent/20 bg-accent/5";
       case 'utility':
-        return "border-l-2 border-l-neutral-300 bg-neutral-50";
+        return "border-l-2 border-l-muted-foreground/20 bg-muted/50";
       default:
         return "";
     }
@@ -216,20 +216,20 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
   return (
     <div 
       className={cn(
-        "flex flex-col h-full bg-card border-r border-border transition-all duration-300",
-        collapsed ? "w-14" : "w-64",
+        "flex flex-col h-full bg-card border-r border-border transition-all duration-300 shadow-sm",
+        collapsed ? "w-16" : "w-64",
         className
       )} 
       dir={isRTL ? 'rtl' : 'ltr'}
     >
-      {/* Header */}
-      <div className="border-b border-border bg-card p-4">
+      {/* Sidebar Header - matches main header height */}
+      <div className="border-b border-border bg-card h-16 flex items-center px-4">
         <AdminUserProfile variant="sidebar" collapsed={collapsed} />
       </div>
 
       {/* Navigation Content */}
       <ScrollArea className="flex-1">
-        <div className="p-2 space-y-2">
+        <div className="p-3 space-y-3">
           {navigationGroups.map((group) => {
             const isExpanded = collapsed ? false : expandedGroups.has(group.id);
             const hasActiveItem = group.items.some(item => 
@@ -240,7 +240,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
               <div 
                 key={group.id} 
                 className={cn(
-                  "rounded-md transition-all duration-200",
+                  "rounded-lg transition-all duration-200",
                   getGroupPriorityStyles(group.priority)
                 )}
               >
@@ -252,7 +252,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
                     className={cn(
                       "w-full justify-between px-3 py-2 h-auto font-medium",
                       "text-xs uppercase tracking-wider",
-                      "text-neutral-700 hover:text-neutral-900 hover:bg-neutral-100",
+                      "text-muted-foreground hover:text-foreground hover:bg-accent/50",
                       hasActiveItem && "text-primary font-semibold"
                     )}
                   >
@@ -285,12 +285,12 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
                         key={item.href}
                         to={item.href}
                         className={cn(
-                          "flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-200",
-                          "text-sm font-medium hover:bg-accent/10",
+                          "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200",
+                          "text-sm font-medium hover:bg-accent/50",
                           collapsed ? "justify-center px-2" : "justify-start",
                           active 
                             ? "bg-primary/10 text-primary border border-primary/20 shadow-sm" 
-                            : "text-neutral-700 hover:text-neutral-900 hover:bg-neutral-100"
+                            : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
                         )}
                         title={collapsed ? item.name : undefined}
                         aria-label={`Navigate to ${item.name}`}
@@ -300,13 +300,13 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
                           className={cn(
                             "shrink-0 transition-all duration-200",
                             collapsed ? "h-5 w-5" : "h-4 w-4",
-                            active ? "text-primary" : "text-neutral-600"
+                            active ? "text-primary" : "text-muted-foreground"
                           )} 
                         />
                         
                         {!collapsed && (
                           <>
-                            <span className="truncate flex-1 text-neutral-900">
+                            <span className="truncate flex-1 text-foreground">
                               {item.name}
                             </span>
                             
