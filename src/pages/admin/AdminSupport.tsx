@@ -51,6 +51,7 @@ import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { useNavigate } from "react-router-dom";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { cn } from "@/lib/utils";
+import { AdminPageContainer } from "@/components/admin/AdminPageContainer";
 import { DataExporter } from "@/utils/exportUtils";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -361,496 +362,498 @@ export const AdminSupport = () => {
   };
 
   return (
-    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
-      {/* Header */}
-      <div className={cn("flex items-start justify-between", isRTL && "flex-row-reverse")}>
-        <div className={cn(isRTL ? "text-right" : "text-left")}>
-          <h1 className="text-3xl font-bold">Support Center</h1>
-          <p className="text-muted-foreground mt-2">
-            Comprehensive ticket management and customer support analytics
-          </p>
-        </div>
-        <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
-          <Button 
-            variant={viewMode === 'table' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setViewMode('table')}
-          >
-            <FileText className="h-4 w-4 mr-2" />
-            Table
-          </Button>
-          <Button 
-            variant={viewMode === 'cards' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setViewMode('cards')}
-          >
-            <BookOpen className="h-4 w-4 mr-2" />
-            Cards
-          </Button>
-        </div>
-      </div>
-
-      {/* Advanced Analytics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Tickets</CardTitle>
-            <Ticket className="h-4 w-4 text-primary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.totalTickets}</div>
-            <p className="text-xs text-muted-foreground">All time</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg Response</CardTitle>
-            <Timer className="h-4 w-4 text-blue-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.avgResponseTime}h</div>
-            <p className="text-xs text-muted-foreground">Average response time</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Resolution Rate</CardTitle>
-            <Target className="h-4 w-4 text-green-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.resolutionRate}%</div>
-            <p className="text-xs text-muted-foreground">Tickets resolved</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Satisfaction</CardTitle>
-            <Star className="h-4 w-4 text-yellow-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.satisfactionScore}/5</div>
-            <p className="text-xs text-muted-foreground">Customer rating</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Urgent</CardTitle>
-            <Zap className="h-4 w-4 text-red-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-destructive">{analyticsData.urgentTickets}</div>
-            <p className="text-xs text-muted-foreground">Needs attention</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Overdue</CardTitle>
-            <AlertCircle className="h-4 w-4 text-orange-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-warning">{analyticsData.overdueTickets}</div>
-            <p className="text-xs text-muted-foreground">Past SLA</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Control Panel */}
-      <Card>
-        <CardHeader>
-          <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
-            <CardTitle className="flex items-center gap-2">
-              <Activity className="h-5 w-5" />
-              Ticket Management
-            </CardTitle>
-            <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={handleExportTickets}
-                className="flex items-center gap-2"
-              >
-                <Download className="h-4 w-4" />
-                Export
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => window.location.reload()}
-                className="flex items-center gap-2"
-              >
-                <RefreshCw className="h-4 w-4" />
-                Refresh
-              </Button>
-            </div>
+    <AdminPageContainer>
+      <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
+        {/* Header */}
+        <div className={cn("flex items-start justify-between", isRTL && "flex-row-reverse")}>
+          <div className={cn(isRTL ? "text-right" : "text-left")}>
+            <h1 className="text-3xl font-bold">Support Center</h1>
+            <p className="text-muted-foreground mt-2">
+              Comprehensive ticket management and customer support analytics
+            </p>
           </div>
-        </CardHeader>
-        <CardContent>
-          {/* Search and Filters */}
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-4">
-            <div className="relative">
-              <Search className={cn("absolute top-3 h-4 w-4 text-muted-foreground", isRTL ? "right-3" : "left-3")} />
-              <Input
-                placeholder="Search tickets, users, emails..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className={cn(isRTL ? "pr-10" : "pl-10")}
-              />
-            </div>
-            
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="open">Open</SelectItem>
-                <SelectItem value="in_progress">In Progress</SelectItem>
-                <SelectItem value="closed">Closed</SelectItem>
-              </SelectContent>
-            </Select>
-            
-            <Select value={priorityFilter} onValueChange={setPriorityFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder="Priority" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Priority</SelectItem>
-                <SelectItem value="urgent">Urgent</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
-              </SelectContent>
-            </Select>
-            
-            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder="Category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
-                <SelectItem value="general">General</SelectItem>
-                <SelectItem value="technical">Technical</SelectItem>
-                <SelectItem value="billing">Billing</SelectItem>
-                <SelectItem value="account">Account</SelectItem>
-              </SelectContent>
-            </Select>
-            
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger>
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="created_at">Date Created</SelectItem>
-                <SelectItem value="priority">Priority</SelectItem>
-                <SelectItem value="status">Status</SelectItem>
-                <SelectItem value="subject">Subject</SelectItem>
-              </SelectContent>
-            </Select>
-            
+          <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
             <Button 
-              variant="outline"
-              onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-              className="flex items-center gap-2"
+              variant={viewMode === 'table' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setViewMode('table')}
             >
-              <ArrowUpDown className="h-4 w-4" />
-              {sortOrder === 'asc' ? 'Asc' : 'Desc'}
+              <FileText className="h-4 w-4 mr-2" />
+              Table
+            </Button>
+            <Button 
+              variant={viewMode === 'cards' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setViewMode('cards')}
+            >
+              <BookOpen className="h-4 w-4 mr-2" />
+              Cards
             </Button>
           </div>
+        </div>
 
-          {/* Bulk Actions */}
-          {selectedTickets.length > 0 && (
-            <div className="flex items-center gap-2 mb-4 p-3 bg-muted rounded-lg">
-              <span className="text-sm font-medium">
-                {selectedTickets.length} ticket{selectedTickets.length > 1 ? 's' : ''} selected
-              </span>
-              <div className="flex gap-2 ml-auto">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      <CheckCircle className="h-4 w-4 mr-2" />
-                      Change Status
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => handleBulkStatusChange('open')}>
-                      Open
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleBulkStatusChange('in_progress')}>
-                      In Progress
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleBulkStatusChange('closed')}>
-                      Closed
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      <UserPlus className="h-4 w-4 mr-2" />
-                      Assign To
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    {adminUsers.map(admin => (
-                      <DropdownMenuItem 
-                        key={admin.id}
-                        onClick={() => handleBulkAssign(admin.user_id)}
-                      >
-                        <Avatar className="h-4 w-4 mr-2">
-                          <AvatarImage src={admin.avatar_url} />
-                          <AvatarFallback>{admin.full_name?.[0] || admin.email[0]}</AvatarFallback>
-                        </Avatar>
-                        {admin.full_name || admin.email}
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="destructive" size="sm">
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      Delete
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Delete Tickets</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        Are you sure you want to delete {selectedTickets.length} selected ticket{selectedTickets.length > 1 ? 's' : ''}? 
-                        This action cannot be undone.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleBulkDelete}>Delete</AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+        {/* Advanced Analytics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Tickets</CardTitle>
+              <Ticket className="h-4 w-4 text-primary" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{analyticsData.totalTickets}</div>
+              <p className="text-xs text-muted-foreground">All time</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Avg Response</CardTitle>
+              <Timer className="h-4 w-4 text-blue-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{analyticsData.avgResponseTime}h</div>
+              <p className="text-xs text-muted-foreground">Average response time</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Resolution Rate</CardTitle>
+              <Target className="h-4 w-4 text-green-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{analyticsData.resolutionRate}%</div>
+              <p className="text-xs text-muted-foreground">Tickets resolved</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Satisfaction</CardTitle>
+              <Star className="h-4 w-4 text-yellow-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{analyticsData.satisfactionScore}/5</div>
+              <p className="text-xs text-muted-foreground">Customer rating</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Urgent</CardTitle>
+              <Zap className="h-4 w-4 text-red-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-destructive">{analyticsData.urgentTickets}</div>
+              <p className="text-xs text-muted-foreground">Needs attention</p>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Overdue</CardTitle>
+              <AlertCircle className="h-4 w-4 text-orange-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-warning">{analyticsData.overdueTickets}</div>
+              <p className="text-xs text-muted-foreground">Past SLA</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Control Panel */}
+        <Card>
+          <CardHeader>
+            <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
+              <CardTitle className="flex items-center gap-2">
+                <Activity className="h-5 w-5" />
+                Ticket Management
+              </CardTitle>
+              <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleExportTickets}
+                  className="flex items-center gap-2"
+                >
+                  <Download className="h-4 w-4" />
+                  Export
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => window.location.reload()}
+                  className="flex items-center gap-2"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  Refresh
+                </Button>
               </div>
             </div>
-          )}
-        </CardContent>
-      </Card>
+          </CardHeader>
+          <CardContent>
+            {/* Search and Filters */}
+            <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-4">
+              <div className="relative">
+                <Search className={cn("absolute top-3 h-4 w-4 text-muted-foreground", isRTL ? "right-3" : "left-3")} />
+                <Input
+                  placeholder="Search tickets, users, emails..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className={cn(isRTL ? "pr-10" : "pl-10")}
+                />
+              </div>
+              
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="open">Open</SelectItem>
+                  <SelectItem value="in_progress">In Progress</SelectItem>
+                  <SelectItem value="closed">Closed</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <Select value={priorityFilter} onValueChange={setPriorityFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Priority" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Priority</SelectItem>
+                  <SelectItem value="urgent">Urgent</SelectItem>
+                  <SelectItem value="high">High</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="low">Low</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  <SelectItem value="general">General</SelectItem>
+                  <SelectItem value="technical">Technical</SelectItem>
+                  <SelectItem value="billing">Billing</SelectItem>
+                  <SelectItem value="account">Account</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="created_at">Date Created</SelectItem>
+                  <SelectItem value="priority">Priority</SelectItem>
+                  <SelectItem value="status">Status</SelectItem>
+                  <SelectItem value="subject">Subject</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <Button 
+                variant="outline"
+                onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+                className="flex items-center gap-2"
+              >
+                <ArrowUpDown className="h-4 w-4" />
+                {sortOrder === 'asc' ? 'Asc' : 'Desc'}
+              </Button>
+            </div>
 
-      {/* Main Content */}
-      {viewMode === 'table' ? (
-        <Card>
-          <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-12">
-                    <Checkbox
-                      checked={selectedTickets.length === filteredTickets.length && filteredTickets.length > 0}
-                      onCheckedChange={toggleSelectAll}
-                    />
-                  </TableHead>
-                  <TableHead>Ticket</TableHead>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Priority</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Assigned</TableHead>
-                  <TableHead>Response Time</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead className="w-12">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredTickets.map((ticket) => (
-                  <TableRow key={ticket.id} className={isOverdue(ticket) ? 'bg-red-50' : ''}>
-                    <TableCell>
-                      <Checkbox
-                        checked={selectedTickets.includes(ticket.id)}
-                        onCheckedChange={() => toggleSelectTicket(ticket.id)}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <div className="max-w-xs">
-                        <div className="font-medium truncate">{ticket.subject}</div>
-                        <div className="text-sm text-muted-foreground">#{ticket.id.slice(0, 8)}</div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Avatar className="h-6 w-6">
-                          <AvatarImage src={ticket.user_profiles?.avatar_url} />
-                          <AvatarFallback>
-                            {ticket.user_profiles?.full_name?.[0] || ticket.user_profiles?.email[0] || 'U'}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="min-w-0">
-                          <div className="text-sm font-medium truncate">
-                            {ticket.user_profiles?.full_name || ticket.user_profiles?.company_name || 'Unknown'}
-                          </div>
-                          <div className="text-xs text-muted-foreground truncate">
-                            {ticket.user_profiles?.email}
-                          </div>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className={cn("flex items-center gap-1", getStatusColor(ticket.status))}>
-                        {getStatusIcon(ticket.status)}
-                        <span className="capitalize text-sm">{ticket.status.replace('_', ' ')}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={getPriorityColor(ticket.priority)}>
-                        {ticket.priority}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline">{ticket.category}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      {ticket.assigned_admin ? (
-                        <div className="flex items-center gap-2">
-                          <Avatar className="h-6 w-6">
-                            <AvatarImage src={ticket.assigned_admin?.avatar_url} />
-                            <AvatarFallback>
-                              {ticket.assigned_admin?.full_name?.[0] || ticket.assigned_admin?.email[0]}
-                            </AvatarFallback>
+            {/* Bulk Actions */}
+            {selectedTickets.length > 0 && (
+              <div className="flex items-center gap-2 mb-4 p-3 bg-muted rounded-lg">
+                <span className="text-sm font-medium">
+                  {selectedTickets.length} ticket{selectedTickets.length > 1 ? 's' : ''} selected
+                </span>
+                <div className="flex gap-2 ml-auto">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm">
+                        <CheckCircle className="h-4 w-4 mr-2" />
+                        Change Status
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem onClick={() => handleBulkStatusChange('open')}>
+                        Open
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleBulkStatusChange('in_progress')}>
+                        In Progress
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleBulkStatusChange('closed')}>
+                        Closed
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm">
+                        <UserPlus className="h-4 w-4 mr-2" />
+                        Assign To
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      {adminUsers.map(admin => (
+                        <DropdownMenuItem 
+                          key={admin.id}
+                          onClick={() => handleBulkAssign(admin.user_id)}
+                        >
+                          <Avatar className="h-4 w-4 mr-2">
+                            <AvatarImage src={admin.avatar_url} />
+                            <AvatarFallback>{admin.full_name?.[0] || admin.email[0]}</AvatarFallback>
                           </Avatar>
-                          <span className="text-sm truncate max-w-20">
-                            {ticket.assigned_admin?.full_name || ticket.assigned_admin?.email}
-                          </span>
-                        </div>
-                      ) : (
-                        <span className="text-sm text-muted-foreground">Unassigned</span>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <div className="text-sm">
-                        {getResponseTime(ticket)}h
-                        {isOverdue(ticket) && (
-                          <Badge variant="destructive" className="ml-1 text-xs">Overdue</Badge>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="text-sm">
-                        {formatDate(new Date(ticket.created_at))}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem onClick={() => handleViewConversation(ticket)}>
-                            <MessageCircle className="h-4 w-4 mr-2" />
-                            View Conversation
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem onClick={() => handleStatusChange(ticket.id, 'in_progress')}>
-                            <Clock className="h-4 w-4 mr-2" />
-                            Mark In Progress
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleStatusChange(ticket.id, 'closed')}>
-                            <CheckCircle className="h-4 w-4 mr-2" />
-                            Close Ticket
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                <Trash2 className="h-4 w-4 mr-2" />
-                                Delete Ticket
-                              </DropdownMenuItem>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>Delete Ticket</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  Are you sure you want to delete this ticket? This action cannot be undone.
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => handleBulkDelete()}>Delete</AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            
-            {filteredTickets.length === 0 && (
-              <div className="text-center py-12">
-                <Ticket className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-muted-foreground">No tickets found matching your criteria</p>
+                          {admin.full_name || admin.email}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="destructive" size="sm">
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Delete
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Delete Tickets</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Are you sure you want to delete {selectedTickets.length} selected ticket{selectedTickets.length > 1 ? 's' : ''}? 
+                          This action cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleBulkDelete}>Delete</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
               </div>
             )}
           </CardContent>
         </Card>
-      ) : (
-        <Tabs defaultValue="all" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="all">All ({filteredTickets.length})</TabsTrigger>
-            <TabsTrigger value="open">Open ({openTickets.length})</TabsTrigger>
-            <TabsTrigger value="in_progress">In Progress ({inProgressTickets.length})</TabsTrigger>
-            <TabsTrigger value="closed">Closed ({closedTickets.length})</TabsTrigger>
-          </TabsList>
 
-          <TabsContent value="all" className="space-y-4">
-            {filteredTickets.length === 0 ? (
-              <Card>
-                <CardContent className="py-8 text-center">
+        {/* Main Content */}
+        {viewMode === 'table' ? (
+          <Card>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="w-12">
+                      <Checkbox
+                        checked={selectedTickets.length === filteredTickets.length && filteredTickets.length > 0}
+                        onCheckedChange={toggleSelectAll}
+                      />
+                    </TableHead>
+                    <TableHead>Ticket</TableHead>
+                    <TableHead>Customer</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Priority</TableHead>
+                    <TableHead>Category</TableHead>
+                    <TableHead>Assigned</TableHead>
+                    <TableHead>Response Time</TableHead>
+                    <TableHead>Created</TableHead>
+                    <TableHead className="w-12">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredTickets.map((ticket) => (
+                    <TableRow key={ticket.id} className={isOverdue(ticket) ? 'bg-red-50' : ''}>
+                      <TableCell>
+                        <Checkbox
+                          checked={selectedTickets.includes(ticket.id)}
+                          onCheckedChange={() => toggleSelectTicket(ticket.id)}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <div className="max-w-xs">
+                          <div className="font-medium truncate">{ticket.subject}</div>
+                          <div className="text-sm text-muted-foreground">#{ticket.id.slice(0, 8)}</div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Avatar className="h-6 w-6">
+                            <AvatarImage src={ticket.user_profiles?.avatar_url} />
+                            <AvatarFallback>
+                              {ticket.user_profiles?.full_name?.[0] || ticket.user_profiles?.email[0] || 'U'}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="min-w-0">
+                            <div className="text-sm font-medium truncate">
+                              {ticket.user_profiles?.full_name || ticket.user_profiles?.company_name || 'Unknown'}
+                            </div>
+                            <div className="text-xs text-muted-foreground truncate">
+                              {ticket.user_profiles?.email}
+                            </div>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className={cn("flex items-center gap-1", getStatusColor(ticket.status))}>
+                          {getStatusIcon(ticket.status)}
+                          <span className="capitalize text-sm">{ticket.status.replace('_', ' ')}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={getPriorityColor(ticket.priority)}>
+                          {ticket.priority}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{ticket.category}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        {ticket.assigned_admin ? (
+                          <div className="flex items-center gap-2">
+                            <Avatar className="h-6 w-6">
+                              <AvatarImage src={ticket.assigned_admin?.avatar_url} />
+                              <AvatarFallback>
+                                {ticket.assigned_admin?.full_name?.[0] || ticket.assigned_admin?.email[0]}
+                              </AvatarFallback>
+                            </Avatar>
+                            <span className="text-sm truncate max-w-20">
+                              {ticket.assigned_admin?.full_name || ticket.assigned_admin?.email}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="text-sm text-muted-foreground">Unassigned</span>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-sm">
+                          {getResponseTime(ticket)}h
+                          {isOverdue(ticket) && (
+                            <Badge variant="destructive" className="ml-1 text-xs">Overdue</Badge>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-sm">
+                          {formatDate(new Date(ticket.created_at))}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm">
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuItem onClick={() => handleViewConversation(ticket)}>
+                              <MessageCircle className="h-4 w-4 mr-2" />
+                              View Conversation
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={() => handleStatusChange(ticket.id, 'in_progress')}>
+                              <Clock className="h-4 w-4 mr-2" />
+                              Mark In Progress
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleStatusChange(ticket.id, 'closed')}>
+                              <CheckCircle className="h-4 w-4 mr-2" />
+                              Close Ticket
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                  <Trash2 className="h-4 w-4 mr-2" />
+                                  Delete Ticket
+                                </DropdownMenuItem>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Delete Ticket</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Are you sure you want to delete this ticket? This action cannot be undone.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogAction onClick={() => handleBulkDelete()}>Delete</AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              
+              {filteredTickets.length === 0 && (
+                <div className="text-center py-12">
                   <Ticket className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <p className="text-muted-foreground">No tickets found</p>
-                </CardContent>
-              </Card>
-            ) : (
+                  <p className="text-muted-foreground">No tickets found matching your criteria</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        ) : (
+          <Tabs defaultValue="all" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="all">All ({filteredTickets.length})</TabsTrigger>
+              <TabsTrigger value="open">Open ({openTickets.length})</TabsTrigger>
+              <TabsTrigger value="in_progress">In Progress ({inProgressTickets.length})</TabsTrigger>
+              <TabsTrigger value="closed">Closed ({closedTickets.length})</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="all" className="space-y-4">
+              {filteredTickets.length === 0 ? (
+                <Card>
+                  <CardContent className="py-8 text-center">
+                    <Ticket className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                    <p className="text-muted-foreground">No tickets found</p>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid gap-4">
+                  {filteredTickets.map((ticket) => (
+                    <TicketCard key={ticket.id} ticket={ticket} />
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="open" className="space-y-4">
               <div className="grid gap-4">
-                {filteredTickets.map((ticket) => (
+                {openTickets.map((ticket) => (
                   <TicketCard key={ticket.id} ticket={ticket} />
                 ))}
               </div>
-            )}
-          </TabsContent>
+            </TabsContent>
 
-          <TabsContent value="open" className="space-y-4">
-            <div className="grid gap-4">
-              {openTickets.map((ticket) => (
-                <TicketCard key={ticket.id} ticket={ticket} />
-              ))}
-            </div>
-          </TabsContent>
+            <TabsContent value="in_progress" className="space-y-4">
+              <div className="grid gap-4">
+                {inProgressTickets.map((ticket) => (
+                  <TicketCard key={ticket.id} ticket={ticket} />
+                ))}
+              </div>
+            </TabsContent>
 
-          <TabsContent value="in_progress" className="space-y-4">
-            <div className="grid gap-4">
-              {inProgressTickets.map((ticket) => (
-                <TicketCard key={ticket.id} ticket={ticket} />
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="closed" className="space-y-4">
-            <div className="grid gap-4">
-              {closedTickets.map((ticket) => (
-                <TicketCard key={ticket.id} ticket={ticket} />
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
-      )}
-    </div>
+            <TabsContent value="closed" className="space-y-4">
+              <div className="grid gap-4">
+                {closedTickets.map((ticket) => (
+                  <TicketCard key={ticket.id} ticket={ticket} />
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
+        )}
+      </div>
+    </AdminPageContainer>
   );
 
   // TicketCard component for card view
