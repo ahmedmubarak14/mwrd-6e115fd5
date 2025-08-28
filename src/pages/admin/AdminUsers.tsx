@@ -9,8 +9,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
-import { Users, UserCheck, Clock, TrendingUp, Download, RefreshCw, UserPlus, Mail, Shield, FileCheck, UserCog } from "lucide-react";
+import { Users, UserCheck, Clock, TrendingUp, Download, RefreshCw, UserPlus, Mail, Shield, FileCheck, UserCog, Edit, Trash2, BarChart3, Activity } from "lucide-react";
 import { AdminPageContainer } from "@/components/admin/AdminPageContainer";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -40,6 +43,21 @@ export default function AdminUsers() {
   const [bulkRole, setBulkRole] = useState<string>("");
   const [bulkStatus, setBulkStatus] = useState<string>("");
   const [bulkLoading, setBulkLoading] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [isAddUserOpen, setIsAddUserOpen] = useState(false);
+  const [newUser, setNewUser] = useState({
+    full_name: "",
+    email: "",
+    role: "client" as 'admin' | 'client' | 'vendor',
+    company_name: "",
+    phone: ""
+  });
+  const [analytics, setAnalytics] = useState({
+    totalUsers: 0,
+    newThisMonth: 0,
+    activeThisWeek: 0,
+    growthRate: 0
+  });
   const { toast } = useToast();
 
   const fetchUsers = async () => {
@@ -90,8 +108,51 @@ export default function AdminUsers() {
     }
   };
 
+  const fetchAnalytics = async () => {
+    try {
+      const now = new Date();
+      const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+      const weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
+
+      // Get current month users
+      const { data: newThisMonth } = await supabase
+        .from('user_profiles')
+        .select('id')
+        .gte('created_at', monthStart.toISOString());
+
+      // Get active users this week (based on recent updates)
+      const { data: activeThisWeek } = await supabase
+        .from('user_profiles')
+        .select('id')
+        .gte('updated_at', weekStart.toISOString());
+
+      // Get last month users for growth calculation
+      const { data: lastMonthUsers } = await supabase
+        .from('user_profiles')
+        .select('id')
+        .gte('created_at', lastMonthStart.toISOString())
+        .lte('created_at', lastMonthEnd.toISOString());
+
+      const growthRate = lastMonthUsers?.length 
+        ? ((newThisMonth?.length || 0) - lastMonthUsers.length) / lastMonthUsers.length * 100
+        : 0;
+
+      setAnalytics({
+        totalUsers: users.length,
+        newThisMonth: newThisMonth?.length || 0,
+        activeThisWeek: activeThisWeek?.length || 0,
+        growthRate: Math.round(growthRate * 100) / 100
+      });
+    } catch (error) {
+      console.error('Error fetching analytics:', error);
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
+    fetchAnalytics();
   }, []);
 
   const handleExport = () => {
@@ -223,6 +284,130 @@ export default function AdminUsers() {
       title: "Export completed",
       description: `Exported ${selectedUsers.length} selected users`,
     });
+  };
+
+  const handleAddUser = async () => {
+    if (!newUser.email || !newUser.full_name) {
+      toast({
+        title: "Error",
+        description: "Email and full name are required",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      // First check if user already exists
+      const { data: existingUser } = await supabase
+        .from('user_profiles')
+        .select('id')
+        .eq('email', newUser.email)
+        .single();
+
+      if (existingUser) {
+        toast({
+          title: "Error",
+          description: "User with this email already exists",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Create the user profile directly (since we don't have auth user creation in this context)
+      const { error } = await supabase
+        .from('user_profiles')
+        .insert([{
+          email: newUser.email,
+          full_name: newUser.full_name,
+          role: newUser.role,
+          company_name: newUser.company_name,
+          phone: newUser.phone,
+          status: 'pending',
+          verification_status: 'pending',
+          user_id: crypto.randomUUID() // Generate a temporary UUID
+        }]);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "User added successfully",
+      });
+
+      setIsAddUserOpen(false);
+      setNewUser({
+        full_name: "",
+        email: "",
+        role: "client",
+        company_name: "",
+        phone: ""
+      });
+      fetchUsers();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleEditUser = async () => {
+    if (!editingUser) return;
+
+    try {
+      const { error } = await supabase
+        .from('user_profiles')
+        .update({
+          full_name: editingUser.full_name,
+          email: editingUser.email,
+          role: editingUser.role,
+          status: editingUser.status,
+          company_name: editingUser.company_name,
+          phone: editingUser.phone
+        })
+        .eq('id', editingUser.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "User updated successfully",
+      });
+
+      setEditingUser(null);
+      fetchUsers();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDeleteUser = async (userId: string, userName: string) => {
+    try {
+      const { error } = await supabase
+        .from('user_profiles')
+        .delete()
+        .eq('id', userId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: `User ${userName} deleted successfully`,
+      });
+
+      fetchUsers();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   };
 
   const getStatusBadge = (status: string) => {
@@ -383,6 +568,11 @@ export default function AdminUsers() {
                 <Download className="h-4 w-4 mr-2" />
                 Export CSV
               </Button>
+              
+              <Button variant="outline" onClick={() => setIsAddUserOpen(true)}>
+                <UserPlus className="h-4 w-4 mr-2" />
+                Add User
+              </Button>
             </div>
 
             {/* Bulk Actions */}
@@ -495,7 +685,7 @@ export default function AdminUsers() {
           </CardContent>
         </Card>
 
-        {/* Tabs for Users and Verification Queue */}
+        {/* Tabs for Users, Verification Queue, and Analytics */}
         <Tabs defaultValue="users" className="space-y-4">
           <TabsList>
             <TabsTrigger value="users" className="flex items-center gap-2">
@@ -505,6 +695,10 @@ export default function AdminUsers() {
             <TabsTrigger value="verification" className="flex items-center gap-2">
               <FileCheck className="h-4 w-4" />
               Verification Queue
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="flex items-center gap-2">
+              <BarChart3 className="h-4 w-4" />
+              Analytics
             </TabsTrigger>
           </TabsList>
 
@@ -542,6 +736,40 @@ export default function AdminUsers() {
                         <div className="flex items-center gap-2">
                           {getRoleBadge(user.role)}
                           {getStatusBadge(user.status)}
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setEditingUser(user)}
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Delete User</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to delete {user.full_name}? This action cannot be undone.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => handleDeleteUser(user.id, user.full_name)}
+                                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                >
+                                  Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </div>
                       </div>
                     </CardHeader>
@@ -574,7 +802,293 @@ export default function AdminUsers() {
           <TabsContent value="verification">
             <VerificationQueue />
           </TabsContent>
+
+          <TabsContent value="analytics">
+            <div className="space-y-6">
+              {/* Enhanced Analytics Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">New This Month</CardTitle>
+                    <TrendingUp className="h-4 w-4 text-foreground opacity-75" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{analytics.newThisMonth}</div>
+                    <p className="text-xs text-foreground opacity-75">Users registered</p>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Active This Week</CardTitle>
+                    <Activity className="h-4 w-4 text-foreground opacity-75" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{analytics.activeThisWeek}</div>
+                    <p className="text-xs text-foreground opacity-75">Users with activity</p>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Growth Rate</CardTitle>
+                    <BarChart3 className="h-4 w-4 text-foreground opacity-75" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">
+                      {analytics.growthRate > 0 ? '+' : ''}{analytics.growthRate}%
+                    </div>
+                    <p className="text-xs text-foreground opacity-75">vs last month</p>
+                  </CardContent>
+                </Card>
+                
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+                    <Users className="h-4 w-4 text-foreground opacity-75" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{analytics.totalUsers}</div>
+                    <p className="text-xs text-foreground opacity-75">All time</p>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* User Distribution by Role */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>User Distribution by Role</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span>Clients</span>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="secondary">{users.filter(u => u.role === 'client').length}</Badge>
+                        <span className="text-sm text-foreground opacity-75">
+                          {Math.round((users.filter(u => u.role === 'client').length / users.length) * 100)}%
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>Vendors</span>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="default">{users.filter(u => u.role === 'vendor').length}</Badge>
+                        <span className="text-sm text-foreground opacity-75">
+                          {Math.round((users.filter(u => u.role === 'vendor').length / users.length) * 100)}%
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>Admins</span>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="destructive">{users.filter(u => u.role === 'admin').length}</Badge>
+                        <span className="text-sm text-foreground opacity-75">
+                          {Math.round((users.filter(u => u.role === 'admin').length / users.length) * 100)}%
+                        </span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>User Status Overview</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span>Approved</span>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="secondary">{users.filter(u => u.status === 'approved').length}</Badge>
+                        <span className="text-sm text-foreground opacity-75">
+                          {Math.round((users.filter(u => u.status === 'approved').length / users.length) * 100)}%
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>Pending</span>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="secondary">{users.filter(u => u.status === 'pending').length}</Badge>
+                        <span className="text-sm text-foreground opacity-75">
+                          {Math.round((users.filter(u => u.status === 'pending').length / users.length) * 100)}%
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>Blocked</span>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="destructive">{users.filter(u => u.status === 'blocked').length}</Badge>
+                        <span className="text-sm text-foreground opacity-75">
+                          {Math.round((users.filter(u => u.status === 'blocked').length / users.length) * 100)}%
+                        </span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </TabsContent>
         </Tabs>
+
+        {/* Add User Modal */}
+        <Dialog open={isAddUserOpen} onOpenChange={setIsAddUserOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Add New User</DialogTitle>
+              <DialogDescription>
+                Create a new user account. They will receive login credentials via email.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="full_name">Full Name *</Label>
+                <Input
+                  id="full_name"
+                  value={newUser.full_name}
+                  onChange={(e) => setNewUser({ ...newUser, full_name: e.target.value })}
+                  placeholder="Enter full name"
+                />
+              </div>
+              <div>
+                <Label htmlFor="email">Email *</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={newUser.email}
+                  onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                  placeholder="Enter email address"
+                />
+              </div>
+              <div>
+                <Label htmlFor="role">Role</Label>
+                <Select value={newUser.role} onValueChange={(value: 'admin' | 'client' | 'vendor') => setNewUser({ ...newUser, role: value })}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="client">Client</SelectItem>
+                    <SelectItem value="vendor">Vendor</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="company_name">Company Name</Label>
+                <Input
+                  id="company_name"
+                  value={newUser.company_name}
+                  onChange={(e) => setNewUser({ ...newUser, company_name: e.target.value })}
+                  placeholder="Enter company name (optional)"
+                />
+              </div>
+              <div>
+                <Label htmlFor="phone">Phone</Label>
+                <Input
+                  id="phone"
+                  value={newUser.phone}
+                  onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
+                  placeholder="Enter phone number (optional)"
+                />
+              </div>
+              <div className="flex gap-2 pt-4">
+                <Button onClick={handleAddUser} className="flex-1">
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Add User
+                </Button>
+                <Button variant="outline" onClick={() => setIsAddUserOpen(false)}>
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Edit User Modal */}
+        <Dialog open={!!editingUser} onOpenChange={() => setEditingUser(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Edit User</DialogTitle>
+              <DialogDescription>
+                Update user information and settings.
+              </DialogDescription>
+            </DialogHeader>
+            {editingUser && (
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="edit_full_name">Full Name</Label>
+                  <Input
+                    id="edit_full_name"
+                    value={editingUser.full_name}
+                    onChange={(e) => setEditingUser({ ...editingUser, full_name: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="edit_email">Email</Label>
+                  <Input
+                    id="edit_email"
+                    type="email"
+                    value={editingUser.email}
+                    onChange={(e) => setEditingUser({ ...editingUser, email: e.target.value })}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="edit_role">Role</Label>
+                    <Select value={editingUser.role} onValueChange={(value: 'admin' | 'client' | 'vendor') => setEditingUser({ ...editingUser, role: value })}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="client">Client</SelectItem>
+                        <SelectItem value="vendor">Vendor</SelectItem>
+                        <SelectItem value="admin">Admin</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Label htmlFor="edit_status">Status</Label>
+                    <Select value={editingUser.status} onValueChange={(value: 'pending' | 'approved' | 'blocked' | 'rejected') => setEditingUser({ ...editingUser, status: value })}>
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="pending">Pending</SelectItem>
+                        <SelectItem value="approved">Approved</SelectItem>
+                        <SelectItem value="blocked">Blocked</SelectItem>
+                        <SelectItem value="rejected">Rejected</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="edit_company_name">Company Name</Label>
+                  <Input
+                    id="edit_company_name"
+                    value={editingUser.company_name || ""}
+                    onChange={(e) => setEditingUser({ ...editingUser, company_name: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="edit_phone">Phone</Label>
+                  <Input
+                    id="edit_phone"
+                    value={editingUser.phone || ""}
+                    onChange={(e) => setEditingUser({ ...editingUser, phone: e.target.value })}
+                  />
+                </div>
+                <div className="flex gap-2 pt-4">
+                  <Button onClick={handleEditUser} className="flex-1">
+                    <Edit className="h-4 w-4 mr-2" />
+                    Update User
+                  </Button>
+                  <Button variant="outline" onClick={() => setEditingUser(null)}>
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </AdminPageContainer>
   );
