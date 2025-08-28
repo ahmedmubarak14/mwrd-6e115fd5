@@ -207,18 +207,41 @@ export const useSupportTickets = () => {
   useEffect(() => {
     if (!user || userProfile?.role !== 'admin') return;
 
-    const subscription = supabase
-      .channel('support_tickets')
-      .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'support_tickets' },
-        () => {
-          fetchTickets(); // Refresh on any change
-        }
-      )
-      .subscribe();
+    let subscription: any = null;
+
+    const setupSubscription = async () => {
+      try {
+        subscription = supabase
+          .channel('support_tickets')
+          .on('postgres_changes', 
+            { event: '*', schema: 'public', table: 'support_tickets' },
+            () => {
+              console.log('Support tickets updated, refreshing...');
+              fetchTickets(); // Refresh on any change
+            }
+          )
+          .subscribe((status) => {
+            console.log('Support tickets subscription status:', status);
+            if (status !== 'SUBSCRIBED') {
+              console.warn('Real-time subscription failed, continuing without real-time updates. Status:', status);
+            }
+          });
+      } catch (error) {
+        console.error('Failed to set up real-time subscription for support tickets:', error);
+        // Continue without real-time updates - the app should still work
+      }
+    };
+
+    setupSubscription();
 
     return () => {
-      subscription.unsubscribe();
+      if (subscription) {
+        try {
+          subscription.unsubscribe();
+        } catch (error) {
+          console.error('Error unsubscribing from support tickets channel:', error);
+        }
+      }
     };
   }, [user, userProfile]);
 
