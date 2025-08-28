@@ -351,17 +351,17 @@ export default function CreateRequest() {
                     {isRTL ? 'الفئات *' : 'Categories *'}
                   </Label>
                   <CategorySelector
-                    selectedCategory=""
+                    selectedCategory={activeRequest.categories[0] || ""}
                     onCategoryChange={(category: string) => {
                       if (category && !activeRequest.categories.includes(category)) {
                         updateRequest(activeRequestIndex, { 
-                          categories: [...activeRequest.categories, category] 
+                          categories: [category] // Replace with single category for now
                         });
                       }
                     }}
                   />
                   
-                  {/* Display selected categories */}
+                  {/* Display selected category */}
                   {activeRequest.categories.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-2">
                       {activeRequest.categories.map((category) => (
