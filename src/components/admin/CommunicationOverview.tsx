@@ -42,24 +42,9 @@ export const CommunicationOverview = () => {
     notificationsSentToday: 0,
     averageResponseTime: 0
   });
+  const [messageActivityData, setMessageActivityData] = useState<any[]>([]);
+  const [channelUsageData, setChannelUsageData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
-  // Mock data for charts
-  const messageActivityData = [
-    { time: '00:00', messages: 12, notifications: 8 },
-    { time: '04:00', messages: 8, notifications: 4 },
-    { time: '08:00', messages: 45, notifications: 15 },
-    { time: '12:00', messages: 78, notifications: 25 },
-    { time: '16:00', messages: 92, notifications: 18 },
-    { time: '20:00', messages: 56, notifications: 12 }
-  ];
-
-  const channelUsageData = [
-    { channel: 'In-App Chat', count: 156, color: '#8B5CF6' },
-    { channel: 'Email', count: 89, color: '#06B6D4' },
-    { channel: 'Push Notifications', count: 234, color: '#10B981' },
-    { channel: 'SMS', count: 12, color: '#F59E0B' }
-  ];
 
   const fetchMetrics = async () => {
     if (!user) return;
@@ -67,18 +52,61 @@ export const CommunicationOverview = () => {
     try {
       setIsLoading(true);
 
-      // Get message count from conversations
-      const { data: messageCount, error: messageError } = await supabase
+      // Get messages data
+      const { data: messagesData, error: messagesError } = await supabase
         .from('messages')
-        .select('id', { count: 'exact', head: true });
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(1000);
 
       // Get notification count
       const { data: notificationCount, error: notificationError } = await supabase
         .from('notifications')
         .select('id', { count: 'exact', head: true });
 
-      if (messageError) console.error('Message count error:', messageError);
+      if (messagesError) console.error('Messages error:', messagesError);
       if (notificationError) console.error('Notification count error:', notificationError);
+
+      // Calculate real message activity data based on actual messages
+      const messageActivityData = [];
+      for (let hour = 0; hour < 24; hour += 4) {
+        const hourStart = new Date();
+        hourStart.setHours(hour, 0, 0, 0);
+        const hourEnd = new Date();
+        hourEnd.setHours(hour + 4, 0, 0, 0);
+        
+        const hourMessages = messagesData?.filter(m => {
+          const msgTime = new Date(m.created_at);
+          return msgTime >= hourStart && msgTime < hourEnd;
+        }).length || 0;
+        
+        const hourNotifications = notifications?.filter(n => {
+          const notifTime = new Date(n.created_at);
+          return notifTime >= hourStart && notifTime < hourEnd;
+        }).length || 0;
+        
+        messageActivityData.push({
+          time: `${hour.toString().padStart(2, '0')}:00`,
+          messages: hourMessages,
+          notifications: hourNotifications
+        });
+      }
+
+      // Calculate real channel usage data
+      const emailNotifications = notifications?.filter(n => n.type === 'email').length || 0;
+      const pushNotifications = notifications?.filter(n => n.type === 'push_notification').length || 0;
+      const chatMessages = messagesData?.filter(m => m.message_type === 'text').length || 0;
+      const smsNotifications = notifications?.filter(n => n.type === 'sms').length || 0;
+
+      const channelUsageData = [
+        { channel: 'In-App Chat', count: chatMessages, color: '#8B5CF6' },
+        { channel: 'Email', count: emailNotifications, color: '#06B6D4' },
+        { channel: 'Push Notifications', count: pushNotifications, color: '#10B981' },
+        { channel: 'SMS', count: smsNotifications, color: '#F59E0B' }
+      ];
+
+      setMessageActivityData(messageActivityData);
+      setChannelUsageData(channelUsageData);
 
       // Calculate active conversations (those with activity in last 7 days)
       const sevenDaysAgo = new Date();
@@ -88,8 +116,8 @@ export const CommunicationOverview = () => {
         new Date(conv.last_message_at || conv.created_at) >= sevenDaysAgo
       ).length || 0;
 
-      // Calculate unread messages
-      const unreadMessages = notifications?.filter(n => !n.read_at).length || 0;
+      // Calculate unread messages (check read property safely)
+      const unreadMessages = notifications?.filter(n => !(n as any).read).length || 0;
 
       // Get today's notifications
       const today = new Date();
@@ -98,13 +126,25 @@ export const CommunicationOverview = () => {
         new Date(n.created_at) >= today
       ).length || 0;
 
+      // Calculate average response time from message threads
+      const activeConvos = conversations?.filter(conv => 
+        conv.last_message_at && conv.created_at
+      ) || [];
+      
+      const avgResponseTime = activeConvos.length > 0
+        ? Math.round(activeConvos.reduce((sum, conv) => {
+            const timeDiff = new Date(conv.last_message_at).getTime() - new Date(conv.created_at).getTime();
+            return sum + (timeDiff / (1000 * 60)); // Convert to minutes
+          }, 0) / activeConvos.length)
+        : 0;
+
       setMetrics({
-        totalMessages: messageCount?.length || 0,
+        totalMessages: messagesData?.length || 0,
         totalNotifications: notificationCount?.length || 0,
         activeConversations,
         unreadMessages,
         notificationsSentToday,
-        averageResponseTime: Math.floor(Math.random() * 120) + 30 // Mock data
+        averageResponseTime: avgResponseTime
       });
 
     } catch (error) {
@@ -173,7 +213,7 @@ export const CommunicationOverview = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-info">{metrics.notificationsSentToday}</div>
-            <p className="text-xs text-muted-foreground">+{Math.floor(Math.random() * 20)}% from yesterday</p>
+            <p className="text-xs text-muted-foreground">Today's total</p>
           </CardContent>
         </Card>
 
@@ -184,7 +224,7 @@ export const CommunicationOverview = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-warning">{metrics.averageResponseTime}m</div>
-            <p className="text-xs text-muted-foreground">Last 24 hours</p>
+            <p className="text-xs text-muted-foreground">Average response</p>
           </CardContent>
         </Card>
       </div>
@@ -246,54 +286,36 @@ export const CommunicationOverview = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {[
-              {
-                icon: <MessageSquare className="h-4 w-4" />,
-                title: "New message in Support Chat",
-                description: "User reported an issue with file uploads",
-                time: "2 minutes ago",
-                status: "urgent"
-              },
-              {
-                icon: <Bell className="h-4 w-4" />,
-                title: "System notification sent",
-                description: "Maintenance window announcement to all users",
-                time: "15 minutes ago", 
-                status: "info"
-              },
-              {
-                icon: <Mail className="h-4 w-4" />,
-                title: "Email campaign delivered",
-                description: "Monthly newsletter sent to 1,234 subscribers",
-                time: "1 hour ago",
-                status: "success"
-              },
-              {
-                icon: <CheckCircle className="h-4 w-4" />,
-                title: "Chat resolved",
-                description: "Vendor onboarding assistance completed",
-                time: "2 hours ago",
-                status: "success"
-              }
-            ].map((activity, index) => (
-              <div key={index} className="flex items-start space-x-3 p-3 rounded-lg border bg-card/50">
-                <div className={`p-2 rounded-full ${
-                  activity.status === 'urgent' ? 'bg-destructive/10 text-destructive' :
-                  activity.status === 'info' ? 'bg-info/10 text-info' :
-                  'bg-success/10 text-success'
-                }`}>
-                  {activity.icon}
+            {conversations?.slice(0, 4).map((conv, index) => (
+              <div key={conv.id} className="flex items-start space-x-3 p-3 rounded-lg border bg-card/50">
+                <div className="p-2 rounded-full bg-primary/10 text-primary">
+                  <MessageSquare className="h-4 w-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium">{activity.title}</p>
-                  <p className="text-sm text-muted-foreground">{activity.description}</p>
+                  <p className="font-medium">
+                    Conversation {conv.conversation_type === 'support' ? 'Support' : 'Business'}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {conv.last_message ? conv.last_message.slice(0, 60) + '...' : 'No recent message'}
+                  </p>
                 </div>
                 <div className="text-xs text-muted-foreground flex items-center space-x-1">
                   <Calendar className="h-3 w-3" />
-                  <span>{activity.time}</span>
+                  <span>
+                    {conv.last_message_at 
+                      ? new Date(conv.last_message_at).toLocaleString()
+                      : 'No activity'
+                    }
+                  </span>
                 </div>
               </div>
             ))}
+            {(!conversations || conversations.length === 0) && (
+              <div className="text-center py-8 text-muted-foreground">
+                <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                <p>No recent communication activity</p>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>

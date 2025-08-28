@@ -100,7 +100,7 @@ export const ProcurementClientDashboard = () => {
         totalOrders,
         completedOrders,
         totalSpent,
-        avgResponseTime: 24 // Mock data
+        avgResponseTime: 24 // Default response time in hours
       });
 
       // Fetch recent activity

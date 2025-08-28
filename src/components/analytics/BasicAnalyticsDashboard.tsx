@@ -102,27 +102,32 @@ export const BasicAnalyticsDashboard: React.FC = () => {
 
   const fetchActivityLogs = async () => {
     try {
-      // Create mock activity logs since we don't have a dedicated activity log table
-      const mockLogs: ActivityLog[] = [
-        {
-          id: '1',
-          action: t('admin.userRegistered'),
-          user_email: t('analytics.system'),
-          timestamp: new Date().toISOString(),
-          details: t('analytics.registeredUsers')
-        },
-        {
-          id: '2',
-          action: t('admin.documentSubmitted'),
-          user_email: t('analytics.noEmail'),
-          timestamp: new Date(Date.now() - 3600000).toISOString(),
-          details: t('verification.reviewDescription')
-        }
-      ];
+      // Fetch real activity logs from audit_log table
+      const { data: auditLogs, error } = await supabase
+        .from('audit_log')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      if (error) {
+        console.error('Error fetching audit logs:', error);
+        setActivityLogs([]);
+        return;
+      }
       
-      setActivityLogs(mockLogs);
+      // Transform audit logs to activity logs format
+      const transformedLogs: ActivityLog[] = (auditLogs || []).map((log) => ({
+        id: log.id,
+        action: `${log.action} ${log.entity_type}`,
+        user_email: 'System User', // We don't store email in audit log, could join with user_profiles if needed
+        timestamp: log.created_at,
+        details: log.reason || `${log.action} action performed on ${log.entity_type}`
+      }));
+      
+      setActivityLogs(transformedLogs);
     } catch (error: any) {
       console.error('Error fetching activity logs:', error);
+      setActivityLogs([]);
     }
   };
 

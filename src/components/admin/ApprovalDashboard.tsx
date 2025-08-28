@@ -73,17 +73,17 @@ export const ApprovalDashboard = () => {
 
   const fetchMetrics = async () => {
     try {
-      // Fetch requests metrics
+      // Fetch requests with updated_at field
       const { data: requests, error: requestsError } = await supabase
         .from('requests')
-        .select('admin_approval_status, created_at');
+        .select('admin_approval_status, created_at, updated_at');
 
       if (requestsError) throw requestsError;
 
-      // Fetch offers metrics  
+      // Fetch offers with updated_at field
       const { data: offers, error: offersError } = await supabase
         .from('offers')
-        .select('admin_approval_status, client_approval_status, created_at');
+        .select('admin_approval_status, client_approval_status, created_at, updated_at');
 
       if (offersError) throw offersError;
 
@@ -103,12 +103,25 @@ export const ApprovalDashboard = () => {
       const totalApproved = approvedRequests + approvedOffers;
       const approvalRate = totalProcessed > 0 ? (totalApproved / totalProcessed) * 100 : 0;
 
-      // Calculate weekly trend (simplified)
-      const weekAgo = subDays(new Date(), 7);
-      const recentItems = [...(requests || []), ...(offers || [])].filter(
-        item => new Date(item.created_at) >= weekAgo
+      // Calculate weekly trend based on actual data comparison
+      const twoWeeksAgo = subDays(new Date(), 14);
+      const oneWeekAgo = subDays(new Date(), 7);
+      
+      const thisWeekItems = [...(requests || []), ...(offers || [])].filter(
+        item => new Date(item.created_at) >= oneWeekAgo
       );
-      const weeklyTrend = recentItems.length > 0 ? 15.3 : 0; // Mock calculation
+      const lastWeekItems = [...(requests || []), ...(offers || [])].filter(
+        item => new Date(item.created_at) >= twoWeeksAgo && new Date(item.created_at) < oneWeekAgo
+      );
+      
+      const weeklyTrend = lastWeekItems.length > 0 
+        ? ((thisWeekItems.length - lastWeekItems.length) / lastWeekItems.length) * 100
+        : thisWeekItems.length > 0 ? 100 : 0;
+
+      // Calculate average processing time from actual data
+      const processedItems = [...(requests || []), ...(offers || [])].filter(
+        item => item.updated_at && item.created_at
+      );
 
       setMetrics({
         totalRequests,
@@ -119,7 +132,12 @@ export const ApprovalDashboard = () => {
         pendingOffers,
         approvedOffers,
         rejectedOffers,
-        avgProcessingTime: 4.2, // Mock value
+        avgProcessingTime: processedItems.length > 0
+          ? Math.round(processedItems.reduce((sum, item) => {
+              const processingTime = (new Date(item.updated_at).getTime() - new Date(item.created_at).getTime()) / (1000 * 60 * 60 * 24);
+              return sum + processingTime;
+            }, 0) / processedItems.length)
+          : 0,
         approvalRate,
         weeklyTrend
       });
