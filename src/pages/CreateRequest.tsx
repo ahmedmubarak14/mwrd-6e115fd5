@@ -10,8 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useAuth } from "@/contexts/AuthContext";
-import { useToastFeedback } from "@/hooks/useToastFeedback";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import { 
   ArrowLeft, 
   FileText, 
@@ -50,7 +50,7 @@ const URGENCY_LEVELS = [
 export default function CreateRequest() {
   const navigate = useNavigate();
   const { userProfile } = useAuth();
-  const { showSuccess, showError } = useToastFeedback();
+  const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -65,6 +65,21 @@ export default function CreateRequest() {
     deadline: "",
     requirements: {}
   });
+
+  const showSuccess = (message: string) => {
+    toast({
+      title: "Success",
+      description: message,
+    });
+  };
+
+  const showError = (message: string) => {
+    toast({
+      title: "Error",
+      description: message,
+      variant: "destructive",
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
