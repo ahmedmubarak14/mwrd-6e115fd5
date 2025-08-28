@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { Twitter, Linkedin, Facebook, Instagram } from "lucide-react";
 
 export const Footer = () => {
-  const { language, t } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const language = languageContext?.language || 'en';
+  const t = languageContext?.t || ((key: string) => key.split('.').pop() || key);
   const isRTL = language === 'ar';
 
   return (
