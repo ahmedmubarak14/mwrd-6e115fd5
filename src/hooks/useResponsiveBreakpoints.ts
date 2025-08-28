@@ -35,10 +35,10 @@ export const useResponsiveBreakpoints = (): BreakpointState => {
     };
 
     // Debounce resize events
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: number;
     const debouncedHandleResize = () => {
       clearTimeout(timeoutId);
-      timeoutId = setTimeout(handleResize, 150);
+      timeoutId = window.setTimeout(handleResize, 150);
     };
 
     window.addEventListener('resize', debouncedHandleResize);

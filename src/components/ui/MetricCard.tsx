@@ -34,7 +34,7 @@ export const MetricCard = ({
     default: "hover:shadow-md",
     success: "border-success/20 bg-success/5 hover:shadow-success/20",
     warning: "border-warning/20 bg-warning/5 hover:shadow-warning/20", 
-    destructive: "border-destructive/20 bg-destructive/5 hover:shadow-danger/20"
+    destructive: "border-destructive/20 bg-destructive/5 hover:shadow-destructive/20"
   };
 
   const iconStyles = {
@@ -52,14 +52,14 @@ export const MetricCard = ({
       >
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <Skeleton variant="shimmer" className="h-4 w-24" />
-            {Icon && <Skeleton variant="shimmer" className="h-5 w-5 rounded" />}
+            <Skeleton className="h-4 w-24 animate-shimmer" />
+            {Icon && <Skeleton className="h-5 w-5 rounded animate-shimmer" />}
           </div>
         </CardHeader>
         <CardContent>
-          <Skeleton variant="shimmer" className="h-8 w-20 mb-2" />
-          <Skeleton variant="shimmer" className="h-3 w-32" />
-          {trend && <Skeleton variant="shimmer" className="h-4 w-16 mt-2" />}
+          <Skeleton className="h-8 w-20 mb-2 animate-shimmer" />
+          <Skeleton className="h-3 w-32 animate-shimmer" />
+          {trend && <Skeleton className="h-4 w-16 mt-2 animate-shimmer" />}
         </CardContent>
       </Card>
     );

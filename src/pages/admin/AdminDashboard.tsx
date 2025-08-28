@@ -72,40 +72,66 @@ export const AdminDashboard = () => {
   const fetchDashboardStats = async () => {
     try {
       setLoading(true);
+      console.log('Starting dashboard stats fetch...');
 
-      // Fetch user statistics
-      const { data: userStats } = await supabase
+      // Fetch user statistics with error handling
+      const { data: userStats, error: userStatsError } = await supabase
         .rpc('get_user_statistics');
 
-      // Fetch requests statistics
-      const { data: requests } = await supabase
+      if (userStatsError) {
+        console.error('Error fetching user stats:', userStatsError);
+        // Continue with default values instead of throwing
+      }
+
+      // Fetch requests statistics with error handling
+      const { data: requests, error: requestsError } = await supabase
         .from('requests')
         .select('id, status, admin_approval_status')
         .eq('admin_approval_status', 'approved');
 
-      // Fetch orders statistics
-      const { data: orders } = await supabase
+      if (requestsError) {
+        console.error('Error fetching requests:', requestsError);
+      }
+
+      // Fetch orders statistics with error handling
+      const { data: orders, error: ordersError } = await supabase
         .from('orders')
         .select('id, status, amount');
 
-      // Fetch offers statistics
-      const { data: offers } = await supabase
+      if (ordersError) {
+        console.error('Error fetching orders:', ordersError);
+      }
+
+      // Fetch offers statistics with error handling
+      const { data: offers, error: offersError } = await supabase
         .from('offers')
         .select('id, client_approval_status, admin_approval_status');
 
-      // Fetch financial data
-      const { data: transactions } = await supabase
+      if (offersError) {
+        console.error('Error fetching offers:', offersError);
+      }
+
+      // Fetch financial data with error handling
+      const { data: transactions, error: transactionsError } = await supabase
         .from('financial_transactions')
         .select('amount')
         .eq('status', 'completed');
 
-      // Fetch support tickets
-      const { data: tickets } = await supabase
+      if (transactionsError) {
+        console.error('Error fetching transactions:', transactionsError);
+      }
+
+      // Fetch support tickets with error handling
+      const { data: tickets, error: ticketsError } = await supabase
         .from('support_tickets')
         .select('id, status')
         .eq('status', 'open');
 
-      // Calculate stats
+      if (ticketsError) {
+        console.error('Error fetching tickets:', ticketsError);
+      }
+
+      // Calculate stats with safe fallbacks
       const activeRequests = requests?.filter(r => ['new', 'in_progress'].includes(r.status)).length || 0;
       const confirmedOrders = orders?.filter(o => ['confirmed', 'in_progress'].includes(o.status)).length || 0;
       const completedOrders = orders?.filter(o => o.status === 'completed').length || 0;
@@ -113,7 +139,7 @@ export const AdminDashboard = () => {
       const openTickets = tickets?.length || 0;
       const totalRevenue = transactions?.reduce((sum, t) => sum + (t.amount || 0), 0) || 0;
 
-      setStats({
+      const newStats = {
         totalUsers: userStats?.[0]?.total_users || 0,
         totalClients: userStats?.[0]?.total_clients || 0,
         totalVendors: userStats?.[0]?.total_vendors || 0,
@@ -125,23 +151,47 @@ export const AdminDashboard = () => {
         openTickets,
         totalRevenue,
         monthlyGrowth: 12.5 // Placeholder for now
-      });
+      };
 
-      // Fetch recent activity
-      const { data: activity } = await supabase
+      console.log('Dashboard stats calculated:', newStats);
+      setStats(newStats);
+
+      // Fetch recent activity with error handling
+      const { data: activity, error: activityError } = await supabase
         .from('activity_feed')
         .select('*, user_profiles(full_name, company_name)')
         .order('created_at', { ascending: false })
         .limit(10);
 
-      setRecentActivity(activity || []);
+      if (activityError) {
+        console.error('Error fetching activity:', activityError);
+      } else {
+        setRecentActivity(activity || []);
+      }
+
+      console.log('Dashboard stats fetch completed successfully');
 
     } catch (error) {
-      console.error('Error fetching dashboard stats:', error);
+      console.error('Critical error fetching dashboard stats:', error);
       toast({
         title: t('common.error'),
-        description: t('admin.errorLoadingStats'),
+        description: t('admin.errorLoadingStats') || 'Error loading dashboard statistics',
         variant: 'destructive'
+      });
+      
+      // Set minimal fallback stats to prevent UI breaking
+      setStats({
+        totalUsers: 0,
+        totalClients: 0,
+        totalVendors: 0,
+        totalAdmins: 0,
+        activeRequests: 0,
+        confirmedOrders: 0,
+        completedOrders: 0,
+        pendingOffers: 0,
+        openTickets: 0,
+        totalRevenue: 0,
+        monthlyGrowth: 0
       });
     } finally {
       setLoading(false);
