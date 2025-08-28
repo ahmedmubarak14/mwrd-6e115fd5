@@ -28,6 +28,7 @@ import { ManageSubscription } from './pages/ManageSubscription';
 import { Support } from './pages/Support';
 import BrowseRequests from './pages/BrowseRequests';
 import { MyOffers } from './pages/MyOffers';
+import CreateRequest from './pages/CreateRequest';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminRequests from './pages/admin/AdminRequests';
@@ -213,6 +214,14 @@ const AppRoutes: React.FC = () => {
         <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
           <ClientLayout>
             <Requests />
+          </ClientLayout>
+        </RoleProtectedRoute>
+      } />
+
+      <Route path="/requests/create" element={
+        <RoleProtectedRoute allowedRoles={['client', 'admin']}>
+          <ClientLayout>
+            <CreateRequest />
           </ClientLayout>
         </RoleProtectedRoute>
       } />
