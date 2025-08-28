@@ -124,7 +124,7 @@ export const AdminAnalytics = () => {
               {formatNumber(metrics?.totalUsers || 0)}
             </div>
             <div className={cn("flex items-center text-xs text-muted-foreground", isRTL && "flex-row-reverse")}>
-              <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
+              <TrendingUp className="h-3 w-3 text-success mr-1" />
               +{metrics?.userGrowth || '0'}% {t('analytics.fromLastMonth') || 'from last month'}
             </div>
           </CardContent>
@@ -142,7 +142,7 @@ export const AdminAnalytics = () => {
               {formatNumber(metrics?.activeRequests || 0)}
             </div>
             <div className={cn("flex items-center text-xs text-muted-foreground", isRTL && "flex-row-reverse")}>
-              <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
+              <TrendingUp className="h-3 w-3 text-success mr-1" />
               +{metrics?.requestGrowth || '0'}% {t('analytics.fromLastWeek') || 'from last week'}
             </div>
           </CardContent>
@@ -160,7 +160,7 @@ export const AdminAnalytics = () => {
               {formatCurrency(metrics?.totalRevenue || 0)}
             </div>
             <div className={cn("flex items-center text-xs text-muted-foreground", isRTL && "flex-row-reverse")}>
-              <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
+              <TrendingUp className="h-3 w-3 text-success mr-1" />
               +{metrics?.revenueGrowth || '0'}% {t('analytics.fromLastMonth') || 'from last month'}
             </div>
           </CardContent>
@@ -178,7 +178,7 @@ export const AdminAnalytics = () => {
               {formatNumber(metrics?.totalOrders || 0)}
             </div>
             <div className={cn("flex items-center text-xs text-muted-foreground", isRTL && "flex-row-reverse")}>
-              <TrendingDown className="h-3 w-3 text-red-500 mr-1" />
+              <TrendingDown className="h-3 w-3 text-destructive mr-1" />
               -{metrics?.orderDecline || '0'}% {t('analytics.fromLastWeek') || 'from last week'}
             </div>
           </CardContent>

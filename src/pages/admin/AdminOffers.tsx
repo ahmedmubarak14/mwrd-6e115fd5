@@ -223,12 +223,12 @@ const AdminOffers = () => {
     return matchesSearch && matchesStatus && matchesApproval && matchesPrice;
   });
 
-  const getStatusColor = (status: string) => {
+  const getStatusBadgeVariant = (status: string) => {
     switch (status) {
-      case 'approved': return 'bg-green-100 text-green-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'approved': return 'success';
+      case 'rejected': return 'destructive';
+      case 'pending': return 'warning';
+      default: return 'secondary';
     }
   };
 
@@ -330,10 +330,10 @@ const AdminOffers = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">High Priority</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-orange-500" />
+            <AlertTriangle className="h-4 w-4 text-warning" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-600">{highUrgencyOffers.length}</div>
+            <div className="text-2xl font-bold text-warning">{highUrgencyOffers.length}</div>
             <p className="text-xs text-muted-foreground">
               Requires immediate attention
             </p>
@@ -451,10 +451,10 @@ const AdminOffers = () => {
                       </div>
                     </div>
                     <div className="flex flex-col gap-2 text-right">
-                      <Badge className={getStatusColor(offer.admin_approval_status)}>
+                      <Badge variant={getStatusBadgeVariant(offer.admin_approval_status)}>
                         Admin: {offer.admin_approval_status.toUpperCase()}
                       </Badge>
-                      <Badge className={getStatusColor(offer.client_approval_status)}>
+                      <Badge variant={getStatusBadgeVariant(offer.client_approval_status)}>
                         Client: {offer.client_approval_status.toUpperCase()}
                       </Badge>
                     </div>

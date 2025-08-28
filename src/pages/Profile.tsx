@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useToastFeedback } from "@/hooks/useToastFeedback";
 import { User, Building, FileText, Settings, Tags } from "lucide-react";
 import { CRDocumentUpload } from "@/components/verification/CRDocumentUpload";
@@ -34,7 +34,8 @@ const SERVICE_CATEGORIES = [
 
 const Profile = () => {
   const { userProfile, updateProfile } = useAuth();
-  const { t } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t } = languageContext || { t: (key: string) => key };
   const [loading, setLoading] = useState(false);
   const { showSuccess } = useToastFeedback();
 
@@ -74,11 +75,11 @@ const Profile = () => {
     
     switch (userProfile.verification_status) {
       case 'approved':
-        return <Badge className="bg-success">{t('profile.verified')}</Badge>;
+        return <Badge variant="success">{t('profile.verified')}</Badge>;
       case 'rejected':
         return <Badge variant="destructive">{t('profile.rejected')}</Badge>;
       case 'under_review':
-        return <Badge variant="outline">{t('profile.underReview')}</Badge>;
+        return <Badge variant="warning">{t('profile.underReview')}</Badge>;
       default:
         return <Badge variant="secondary">{t('profile.pendingVerification')}</Badge>;
     }

@@ -134,24 +134,24 @@ const AdminProjects = () => {
     return matchesSearch && matchesStatus && matchesPriority;
   });
 
-  const getStatusColor = (status: string) => {
+  const getStatusBadgeVariant = (status: string) => {
     switch (status) {
-      case 'draft': return 'bg-gray-100 text-gray-800';
-      case 'active': return 'bg-blue-100 text-blue-800';
-      case 'completed': return 'bg-green-100 text-green-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
-      case 'on_hold': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'draft': return 'secondary';
+      case 'active': return 'info';
+      case 'completed': return 'success';
+      case 'cancelled': return 'destructive';
+      case 'on_hold': return 'warning';
+      default: return 'secondary';
     }
   };
 
-  const getPriorityColor = (priority: string) => {
+  const getPriorityBadgeVariant = (priority: string) => {
     switch (priority) {
-      case 'urgent': return 'bg-red-100 text-red-800';
-      case 'high': return 'bg-orange-100 text-orange-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'urgent': return 'destructive';
+      case 'high': return 'warning';
+      case 'medium': return 'secondary';
+      case 'low': return 'success';
+      default: return 'secondary';
     }
   };
 
@@ -212,10 +212,10 @@ const AdminProjects = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Completed</CardTitle>
-            <Package className="h-4 w-4 text-green-600" />
+            <Package className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{completedProjects.length}</div>
+            <div className="text-2xl font-bold text-success">{completedProjects.length}</div>
             <p className="text-xs text-muted-foreground">
               Projects delivered
             </p>
@@ -225,10 +225,10 @@ const AdminProjects = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Overdue</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-red-600" />
+            <AlertTriangle className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{overdueProjects.length}</div>
+            <div className="text-2xl font-bold text-destructive">{overdueProjects.length}</div>
             <p className="text-xs text-muted-foreground">
               Require attention
             </p>
@@ -321,7 +321,7 @@ const AdminProjects = () => {
                     <div className="flex items-center gap-2">
                       <CardTitle className="text-lg">{project.title}</CardTitle>
                       {isProjectOverdue(project) && (
-                        <AlertTriangle className="h-5 w-5 text-red-500" />
+                        <AlertTriangle className="h-5 w-5 text-destructive" />
                       )}
                     </div>
                     <CardDescription className="line-clamp-2">
@@ -344,10 +344,10 @@ const AdminProjects = () => {
                     </div>
                   </div>
                   <div className="flex flex-col gap-2 text-right">
-                    <Badge className={getStatusColor(project.status)}>
+                    <Badge variant={getStatusBadgeVariant(project.status)}>
                       {project.status.replace('_', ' ').toUpperCase()}
                     </Badge>
-                    <Badge className={getPriorityColor(project.priority)}>
+                    <Badge variant={getPriorityBadgeVariant(project.priority)}>
                       {project.priority.toUpperCase()}
                     </Badge>
                   </div>

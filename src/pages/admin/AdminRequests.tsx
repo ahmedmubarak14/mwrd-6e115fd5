@@ -138,32 +138,32 @@ const AdminRequests = () => {
     setSelectedRequests([]);
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusBadgeVariant = (status: string) => {
     switch (status) {
-      case 'new': return 'bg-blue-100 text-blue-800';
-      case 'in_progress': return 'bg-yellow-100 text-yellow-800';
-      case 'completed': return 'bg-green-100 text-green-800';
-      case 'cancelled': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'new': return 'info';
+      case 'in_progress': return 'warning';
+      case 'completed': return 'success';
+      case 'cancelled': return 'destructive';
+      default: return 'secondary';
     }
   };
 
-  const getApprovalColor = (status: string) => {
+  const getApprovalBadgeVariant = (status: string) => {
     switch (status) {
-      case 'approved': return 'bg-green-100 text-green-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'approved': return 'success';
+      case 'rejected': return 'destructive';
+      case 'pending': return 'warning';
+      default: return 'secondary';
     }
   };
 
-  const getUrgencyColor = (urgency: string) => {
+  const getUrgencyBadgeVariant = (urgency: string) => {
     switch (urgency) {
-      case 'urgent': return 'bg-red-100 text-red-800';
-      case 'high': return 'bg-orange-100 text-orange-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'urgent': return 'destructive';
+      case 'high': return 'warning';
+      case 'medium': return 'secondary';
+      case 'low': return 'success';
+      default: return 'secondary';
     }
   };
 
@@ -199,30 +199,30 @@ const AdminRequests = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Pending Approval</CardTitle>
-            <AlertCircle className="h-4 w-4 text-yellow-600" />
+            <AlertCircle className="h-4 w-4 text-warning" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{pendingRequests.length}</div>
+            <div className="text-2xl font-bold text-warning">{pendingRequests.length}</div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Approved</CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-600" />
+            <CheckCircle className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{approvedRequests.length}</div>
+            <div className="text-2xl font-bold text-success">{approvedRequests.length}</div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Rejected</CardTitle>
-            <XCircle className="h-4 w-4 text-red-600" />
+            <XCircle className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{rejectedRequests.length}</div>
+            <div className="text-2xl font-bold text-destructive">{rejectedRequests.length}</div>
           </CardContent>
         </Card>
       </div>
@@ -348,13 +348,13 @@ const AdminRequests = () => {
                       </div>
                     </div>
                     <div className="flex flex-col gap-2 text-right">
-                      <Badge className={getApprovalColor(request.admin_approval_status)}>
+                      <Badge variant={getApprovalBadgeVariant(request.admin_approval_status)}>
                         {request.admin_approval_status.replace('_', ' ').toUpperCase()}
                       </Badge>
-                      <Badge className={getStatusColor(request.status)}>
+                      <Badge variant={getStatusBadgeVariant(request.status)}>
                         {request.status.replace('_', ' ').toUpperCase()}
                       </Badge>
-                      <Badge className={getUrgencyColor(request.urgency)}>
+                      <Badge variant={getUrgencyBadgeVariant(request.urgency)}>
                         {request.urgency.toUpperCase()}
                       </Badge>
                     </div>
