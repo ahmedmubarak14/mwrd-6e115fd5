@@ -11,7 +11,7 @@ import { TrendingUp, Eye, Clock, CreditCard, Calendar, DollarSign, CheckCircle, 
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { EnterpriseConsultationModal } from "@/components/modals/EnterpriseConsultationModal";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { Footer } from "@/components/ui/layout/Footer";
 import { usePaymentIntegration } from "@/hooks/usePaymentIntegration";
@@ -205,7 +205,7 @@ export const ManageSubscription = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+        <LoadingSpinner size="lg" label="Loading subscription details..." />
       </div>
     );
   }
@@ -260,7 +260,12 @@ export const ManageSubscription = () => {
                   onClick={() => handleUpgrade('Basic')}
                   disabled={isLoading}
                 >
-                  {isLoading ? "Processing..." : (isRTL ? 'الترقية للأساسي' : 'Upgrade to Basic')}
+                  {isLoading ? (
+                    <>
+                      <LoadingSpinner size="sm" className="mr-2" />
+                      Processing...
+                    </>
+                  ) : (isRTL ? 'الترقية للأساسي' : 'Upgrade to Basic')}
                 </Button>
               </CardContent>
             </Card>

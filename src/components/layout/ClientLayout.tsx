@@ -6,7 +6,7 @@ import { ClientMobileSidebar } from "./ClientMobileSidebar";
 import { MobileContainer } from "@/components/ui/MobileContainer";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { useNavigate } from "react-router-dom";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useIsMobile } from "@/hooks/use-mobile";

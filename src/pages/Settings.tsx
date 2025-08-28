@@ -7,7 +7,7 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { Settings as SettingsIcon, User, Bell, Shield, Globe, Palette, AlertCircle, CheckCircle, Clock } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
