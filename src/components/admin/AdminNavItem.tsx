@@ -80,14 +80,20 @@ export const AdminNavItem: React.FC<AdminNavItemProps> = ({
   );
 
   return (
-    <Button
-      variant={activeState ? "default" : "ghost"}
-      className={cn(baseClasses, sizeClasses[variant])}
-      asChild
+    <Link 
+      to={href} 
+      onClick={onClick}
+      className={cn(
+        "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors",
+        "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+        baseClasses, 
+        sizeClasses[variant],
+        activeState 
+          ? "bg-primary text-primary-foreground shadow hover:bg-primary/90" 
+          : "hover:bg-accent hover:text-accent-foreground"
+      )}
     >
-      <Link to={href} onClick={onClick}>
-        {content}
-      </Link>
-    </Button>
+      {content}
+    </Link>
   );
 };
