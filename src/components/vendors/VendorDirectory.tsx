@@ -15,6 +15,7 @@ import { MetricCard } from "@/components/ui/MetricCard";
 import { EmptyState } from "@/components/ui/empty-state";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { VendorProfileModal } from "@/components/modals/VendorProfileModal";
+import { PrivateRequestModal } from "@/components/modals/PrivateRequestModal";
 import { useNavigate } from "react-router-dom";
 import { useRealTimeChat } from "@/hooks/useRealTimeChat";
 
@@ -31,6 +32,8 @@ export const VendorDirectory: React.FC = () => {
   const [sortBy, setSortBy] = useState('created_at');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [showFilters, setShowFilters] = useState(false);
+  const [selectedVendor, setSelectedVendor] = useState<any | null>(null);
+  const [privateRequestVendor, setPrivateRequestVendor] = useState<any | null>(null);
 
   useEffect(() => {
     fetchVendors(filters, page, 20, sortBy, sortOrder);
@@ -192,7 +195,15 @@ export const VendorDirectory: React.FC = () => {
               }
             }}
           >
-            {isRTL ? 'إرسال رسالة' : 'Send Message'}
+            {isRTL ? 'رسالة' : 'Message'}
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="flex-1" 
+            onClick={() => setPrivateRequestVendor(vendor)}
+          >
+            {isRTL ? 'طلب خاص' : 'Private Request'}
           </Button>
           <Button size="sm" className="flex-1" onClick={() => navigate('/requests/create')}>
             {isRTL ? 'طلب عام' : 'Public Request'}
@@ -403,6 +414,16 @@ export const VendorDirectory: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* Private Request Modal */}
+      {privateRequestVendor && (
+        <PrivateRequestModal
+          open={!!privateRequestVendor}
+          onOpenChange={(open) => !open && setPrivateRequestVendor(null)}
+          vendorId={privateRequestVendor.id}
+          vendorName={privateRequestVendor.name}
+        />
+      )}
     </div>
   );
 };

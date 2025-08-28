@@ -19,11 +19,15 @@ import {
   MessageCircle,
   Video
 } from "lucide-react";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
-import { useState } from "react";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { VideoCallModal } from './VideoCallModal';
+import { PrivateRequestModal } from './PrivateRequestModal';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRealTimeChat } from '@/hooks/useRealTimeChat';
+import { useVideoCall } from '@/hooks/useVideoCall';
+import { useState } from 'react';
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { useToast } from "@/hooks/use-toast";
-import { useRealTimeChat } from "@/hooks/useRealTimeChat";
 import { useNavigate } from "react-router-dom";
 
 interface VendorProfileModalProps {
@@ -52,12 +56,17 @@ interface VendorProfileModalProps {
 
 export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps) => {
   const languageContext = useOptionalLanguage();
-  const t = languageContext?.t || ((key: string) => key);
   const language = languageContext?.language || 'en';
+  const isArabic = language === 'ar';
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const { startConversation, sendMessage } = useRealTimeChat();
-  const navigate = useNavigate();
-  const isArabic = language === 'ar';
+  const { startCall } = useVideoCall();
+  
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [showVideoCallModal, setShowVideoCallModal] = useState(false);
+  const [showPrivateRequestModal, setShowPrivateRequestModal] = useState(false);
   const [isLoadingCall, setIsLoadingCall] = useState(false);
   const [isLoadingMessage, setIsLoadingMessage] = useState(false);
   const [open, setOpen] = useState(false);
@@ -389,22 +398,37 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
                   {isArabic ? 'مكالمة مرئية' : 'Video Call'}
                 </Button>
               </div>
-              <Button 
-                variant="secondary" 
-                className="w-full mt-2"
-                onClick={() => {
-                  setOpen(false);
-                  setTimeout(() => {
-                    navigate('/requests/create');
-                  }, 100);
-                }}
-              >
-                {isArabic ? 'إنشاء طلب عام للجميع' : 'Create Public Request for All Vendors'}
-              </Button>
+              
+              <div className="grid grid-cols-2 gap-2 mt-2">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowPrivateRequestModal(true)}
+                >
+                  {isArabic ? 'طلب خاص' : 'Private Request'}
+                </Button>
+                <Button 
+                  variant="secondary" 
+                  onClick={() => {
+                    setOpen(false);
+                    setTimeout(() => {
+                      navigate('/requests/create');
+                    }, 100);
+                  }}
+                >
+                  {isArabic ? 'طلب عام' : 'Public Request'}
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </div>
       </DialogContent>
+      
+      <PrivateRequestModal
+        open={showPrivateRequestModal}
+        onOpenChange={setShowPrivateRequestModal}
+        vendorId={vendor.id.toString()}
+        vendorName={vendorInfo.name}
+      />
     </Dialog>
   );
 };
