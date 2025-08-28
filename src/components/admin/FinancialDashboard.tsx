@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,8 +18,10 @@ import {
   Search,
   Filter,
   Eye,
-  BarChart3
+  BarChart3,
+  RefreshCw
 } from 'lucide-react';
+import { format } from 'date-fns';
 
 interface FinancialTransaction {
   id: string;
@@ -53,9 +54,19 @@ interface FinancialStats {
 
 interface FinancialDashboardProps {
   period: string;
+  onRefresh?: () => void;
+  onExport?: () => void;
+  isRefreshing?: boolean;
+  isExporting?: boolean;
 }
 
-export const FinancialDashboard = ({ period }: FinancialDashboardProps) => {
+export const FinancialDashboard = ({ 
+  period, 
+  onRefresh, 
+  onExport, 
+  isRefreshing, 
+  isExporting 
+}: FinancialDashboardProps) => {
   const { toast } = useToast();
   const languageContext = useOptionalLanguage();
   const { t, isRTL, formatNumber, formatCurrency } = languageContext || { 
@@ -256,11 +267,11 @@ export const FinancialDashboard = ({ period }: FinancialDashboardProps) => {
 
   const getTransactionTypeIcon = (type: string) => {
     switch (type) {
-      case 'payment': return <TrendingUp className="h-4 w-4 text-foreground/75" />;
-      case 'refund': return <TrendingDown className="h-4 w-4 text-foreground/75" />;
-      case 'commission': return <AlertCircle className="h-4 w-4 text-foreground/75" />;
-      case 'subscription': return <CreditCard className="h-4 w-4 text-foreground/75" />;
-      default: return <CreditCard className="h-4 w-4 text-foreground/75" />;
+      case 'payment': return <TrendingUp className="h-4 w-4 text-foreground opacity-75" />;
+      case 'refund': return <TrendingDown className="h-4 w-4 text-foreground opacity-75" />;
+      case 'commission': return <AlertCircle className="h-4 w-4 text-foreground opacity-75" />;
+      case 'subscription': return <CreditCard className="h-4 w-4 text-foreground opacity-75" />;
+      default: return <CreditCard className="h-4 w-4 text-foreground opacity-75" />;
     }
   };
 
@@ -273,178 +284,194 @@ export const FinancialDashboard = ({ period }: FinancialDashboardProps) => {
   }
 
   return (
-    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
-      {/* Stats Cards - matching Analytics exact pattern */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="space-y-4">
+      {/* Key Metrics - matching Projects exact pattern */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
-          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{t('financial.totalRevenue')}</CardTitle>
-            <DollarSign className="h-4 w-4 text-foreground/75" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <DollarSign className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(stats?.total_revenue || 0)}</div>
-            <p className="text-xs text-foreground/75">
-              {stats?.growth_rate && stats.growth_rate >= 0 ? '+' : ''}{stats?.growth_rate?.toFixed(1)}% {t('financial.growthFromPeriod')}
+            <p className="text-xs text-foreground opacity-75">
+              {stats?.growth_rate && stats.growth_rate >= 0 ? '+' : ''}{stats?.growth_rate?.toFixed(1)}% from previous period
             </p>
           </CardContent>
         </Card>
         
         <Card>
-          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{t('financial.monthlyRevenue')}</CardTitle>
-            <CalendarIcon className="h-4 w-4 text-foreground/75" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Monthly Revenue</CardTitle>
+            <CalendarIcon className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(stats?.monthly_revenue || 0)}</div>
-            <p className="text-xs text-foreground/75">{t('financial.monthlyEarnings')}</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{t('financial.averageTransaction')}</CardTitle>
-            <BarChart3 className="h-4 w-4 text-foreground/75" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(stats?.average_transaction || 0)}</div>
-            <p className="text-xs text-foreground/75">
-              {formatNumber(stats?.completed_transactions || 0)} {t('financial.completedTransactions')}
+            <p className="text-xs text-foreground opacity-75">
+              Current month earnings
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{t('financial.pendingAmount')}</CardTitle>
-            <CreditCard className="h-4 w-4 text-foreground/75" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Average Transaction</CardTitle>
+            <BarChart3 className="h-4 w-4 text-foreground opacity-75" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatCurrency(stats?.average_transaction || 0)}</div>
+            <p className="text-xs text-foreground opacity-75">
+              {formatNumber(stats?.completed_transactions || 0)} completed transactions
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Pending Amount</CardTitle>
+            <CreditCard className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(stats?.pending_amount || 0)}</div>
-            <p className="text-xs text-foreground/75">
-              {formatNumber(stats?.failed_transactions || 0)} {t('financial.failedTransactions')}
+            <p className="text-xs text-foreground opacity-75">
+              {formatNumber(stats?.failed_transactions || 0)} failed transactions
             </p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Tabs - matching Analytics pattern */}
-      <Tabs defaultValue="transactions" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="transactions" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
-            <CreditCard className="h-4 w-4" />
-            {t('financial.recentTransactions')}
-          </TabsTrigger>
-          <TabsTrigger value="analytics" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
-            <BarChart3 className="h-4 w-4" />
-            {t('financial.analytics')}
-          </TabsTrigger>
-        </TabsList>
+      {/* Filters - matching Projects pattern */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Filters & Search</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-foreground opacity-75" />
+              <Input
+                placeholder="Search transactions..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger>
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="failed">Failed</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
+              </SelectContent>
+            </Select>
 
-        <TabsContent value="transactions" className="space-y-4">
+            <Select value={typeFilter} onValueChange={setTypeFilter}>
+              <SelectTrigger>
+                <SelectValue placeholder="Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Types</SelectItem>
+                <SelectItem value="payment">Payment</SelectItem>
+                <SelectItem value="refund">Refund</SelectItem>
+                <SelectItem value="commission">Commission</SelectItem>
+                <SelectItem value="subscription">Subscription</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Button onClick={onRefresh} variant="outline" disabled={isRefreshing}>
+              <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+              Refresh
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Transaction List */}
+      <div className="space-y-4">
+        {loading ? (
+          <div className="text-center py-8">Loading transactions...</div>
+        ) : filteredTransactions.length === 0 ? (
           <Card>
-            <CardHeader>
-              <CardTitle className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
-                <span>{t('financial.transactionHistory')}</span>
-                <Button variant="outline" size="sm" onClick={exportTransactions}>
-                  {t('financial.exportTransactions')}
-                </Button>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Filters */}
-              <div className={cn("flex gap-4 flex-wrap", isRTL && "flex-row-reverse")}>
-                <div className="flex-1 min-w-[200px]">
-                  <div className="relative">
-                    <Search className={cn("absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-foreground/75", isRTL ? "right-3" : "left-3")} />
-                    <Input
-                      placeholder={t('financial.searchTransactions')}
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className={cn(isRTL ? "pr-10" : "pl-10")}
-                    />
+            <CardContent className="text-center py-8">
+              <p className="text-foreground opacity-75">No transactions found matching your filters.</p>
+            </CardContent>
+          </Card>
+        ) : (
+          filteredTransactions.map((transaction) => (
+            <Card key={transaction.id}>
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      {getTransactionTypeIcon(transaction.type)}
+                      <CardTitle className="text-lg">{transaction.description}</CardTitle>
+                    </div>
+                    <div className="flex items-center gap-4 text-sm text-foreground opacity-75">
+                      <span>User: {transaction.user_profiles?.full_name || 'Unknown User'}</span>
+                      <span>•</span>
+                      <span>Email: {transaction.user_profiles?.email || 'N/A'}</span>
+                      {transaction.user_profiles?.company_name && (
+                        <>
+                          <span>•</span>
+                          <span>Company: {transaction.user_profiles.company_name}</span>
+                        </>
+                      )}
+                    </div>
+                    {transaction.transaction_ref && (
+                      <div className="text-xs text-foreground opacity-75">
+                        Reference: {transaction.transaction_ref}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-2 text-right">
+                    <Badge variant={getStatusBadgeVariant(transaction.status)}>
+                      {transaction.status.replace('_', ' ').toUpperCase()}
+                    </Badge>
+                    <div className="text-lg font-bold text-primary">
+                      {formatCurrency(transaction.amount)}
+                    </div>
                   </div>
                 </div>
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-40">
-                    <Filter className="h-4 w-4 mr-2" />
-                    <SelectValue placeholder={t('financial.filterByStatus')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">{t('financial.allStatuses')}</SelectItem>
-                    <SelectItem value="completed">{t('financial.completed')}</SelectItem>
-                    <SelectItem value="pending">{t('financial.pending')}</SelectItem>
-                    <SelectItem value="failed">{t('financial.failed')}</SelectItem>
-                    <SelectItem value="cancelled">{t('financial.cancelled')}</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Select value={typeFilter} onValueChange={setTypeFilter}>
-                  <SelectTrigger className="w-40">
-                    <SelectValue placeholder={t('financial.filterByType')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">{t('financial.allTypes')}</SelectItem>
-                    <SelectItem value="payment">{t('financial.payment')}</SelectItem>
-                    <SelectItem value="refund">{t('financial.refund')}</SelectItem>
-                    <SelectItem value="commission">{t('financial.commission')}</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Transactions List */}
-              <div className="space-y-4">
-                {filteredTransactions.map((transaction) => (
-                  <div key={transaction.id} className={cn("flex items-center justify-between p-3 border rounded-lg", isRTL && "flex-row-reverse")}>
-                    <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
-                      {getTransactionTypeIcon(transaction.type)}
-                      <div className={cn(isRTL ? "text-right" : "text-left")}>
-                        <div className="font-medium text-foreground">{transaction.description}</div>
-                        <div className="text-sm text-foreground/75">
-                          {transaction.user_profiles?.full_name || 'Unknown'} • {new Date(transaction.created_at).toLocaleDateString()}
-                        </div>
-                        {transaction.transaction_ref && (
-                          <div className="text-xs text-foreground/75 mt-1">
-                            Ref: {transaction.transaction_ref}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
-                      <div className={cn("text-right", isRTL && "text-left")}>
-                        <div className="font-medium text-foreground">{formatCurrency(transaction.amount)}</div>
-                        <div className="text-sm text-foreground/75">{transaction.payment_method || 'N/A'}</div>
-                      </div>
-                      <Badge variant={getStatusBadgeVariant(transaction.status)}>
-                        {transaction.status}
-                      </Badge>
-                      <Button variant="outline" size="sm">
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                    </div>
+              </CardHeader>
+              
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                  <div>
+                    <p className="text-sm font-medium text-foreground opacity-75">Payment Method</p>
+                    <p className="text-sm">{transaction.payment_method || 'Not specified'}</p>
                   </div>
-                ))}
-                {filteredTransactions.length === 0 && (
-                  <div className={cn("text-center text-foreground/75 py-8", isRTL ? "text-right" : "text-left")}>
-                    {t('financial.noTransactions')}
+                  <div>
+                    <p className="text-sm font-medium text-foreground opacity-75">Transaction Date</p>
+                    <p className="text-sm">{format(new Date(transaction.created_at), 'MMM dd, yyyy HH:mm')}</p>
                   </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+                  <div>
+                    <p className="text-sm font-medium text-foreground opacity-75">Transaction Type</p>
+                    <p className="text-sm capitalize">{transaction.type}</p>
+                  </div>
+                </div>
 
-        <TabsContent value="analytics" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>{t('financial.analytics')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className={cn("text-center text-foreground/75 py-8", isRTL ? "text-right" : "text-left")}>
-                {t('financial.analyticsContent')}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+                <div className="flex flex-wrap gap-2">
+                  <Button variant="outline" size="sm" className="flex items-center gap-1">
+                    <Eye className="h-4 w-4" />
+                    View Details
+                  </Button>
+                  {onExport && (
+                    <Button variant="outline" size="sm" onClick={onExport} disabled={isExporting}>
+                      <Eye className="h-4 w-4" />
+                      Export Data
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        )}
+      </div>
     </div>
   );
 };
