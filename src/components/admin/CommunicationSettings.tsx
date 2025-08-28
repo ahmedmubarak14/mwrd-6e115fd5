@@ -75,75 +75,52 @@ export const CommunicationSettings = () => {
 
   // Load settings from database
   const loadSettings = async () => {
-    if (!user?.id) return;
+    if (!user) return;
     
     setIsLoading(true);
     try {
-      // Load all communication settings from database
       const { data, error } = await supabase
         .from('communication_settings')
-        .select('*')
+        .select('settings_type, settings_data')
         .eq('user_id', user.id);
-
+      
       if (error) {
         console.error('Error loading settings:', error);
-        toast({
-          title: "Error",
-          description: "Failed to load communication settings",
-          variant: "destructive"
-        });
         return;
       }
-
-      // Process the loaded settings
-      if (data) {
-        data.forEach(setting => {
-          const settingsData = setting.settings_data as Record<string, any> | null;
-          if (settingsData && typeof settingsData === 'object') {
-            switch (setting.settings_type) {
-              case 'email':
-                setEmailSettings(prev => ({ ...prev, ...settingsData }));
-                break;
-              case 'sms':
-                setSmsSettings(prev => ({ ...prev, ...settingsData }));
-                break;
-              case 'notifications':
-                setNotificationSettings(prev => ({ ...prev, ...settingsData }));
-                break;
-              case 'integrations':
-                setIntegrationSettings(prev => ({ ...prev, ...settingsData }));
-                break;
-            }
-          }
-        });
-      }
+      
+      data?.forEach(setting => {
+        const settingsData = setting.settings_data as Record<string, any>;
+        switch (setting.settings_type) {
+          case 'email':
+            setEmailSettings(prev => ({ ...prev, ...settingsData }));
+            break;
+          case 'sms':
+            setSmsSettings(prev => ({ ...prev, ...settingsData }));
+            break;
+          case 'notifications':
+            setNotificationSettings(prev => ({ ...prev, ...settingsData }));
+            break;
+          case 'integrations':
+            setIntegrationSettings(prev => ({ ...prev, ...settingsData }));
+            break;
+        }
+      });
     } catch (error) {
       console.error('Error loading settings:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load communication settings",
-        variant: "destructive"
-      });
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleSaveSettings = async (settingsType: string) => {
-    if (!user?.id) {
-      toast({
-        title: "Error",
-        description: "User not authenticated",
-        variant: "destructive"
-      });
-      return;
-    }
-
+    if (!user) return;
+    
     setIsSaving(true);
     try {
       let settingsData = {};
       let dbSettingsType = '';
-
+      
       switch (settingsType) {
         case 'Email':
           settingsData = emailSettings;
@@ -163,15 +140,12 @@ export const CommunicationSettings = () => {
           break;
       }
 
-      // Upsert settings to database
       const { error } = await supabase
         .from('communication_settings')
         .upsert({
           user_id: user.id,
           settings_type: dbSettingsType,
           settings_data: settingsData
-        }, { 
-          onConflict: 'user_id,settings_type' 
         });
 
       if (error) {
@@ -208,11 +182,6 @@ export const CommunicationSettings = () => {
 
   return (
     <div className="space-y-6">
-      {isLoading ? (
-        <div className="flex items-center justify-center min-h-[400px]">
-          <LoadingSpinner size="lg" />
-        </div>
-      ) : (
       <Tabs defaultValue="email" className="space-y-6">
         <TabsList className="grid grid-cols-4 w-full">
           <TabsTrigger value="email" className="flex items-center gap-2">
@@ -454,7 +423,8 @@ export const CommunicationSettings = () => {
                 </p>
               </div>
 
-              <Button onClick={() => handleSaveSettings("SMS")} className="w-full">
+              <Button onClick={() => handleSaveSettings("SMS")} className="w-full" disabled={isSaving}>
+                {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
                 Save SMS Settings
               </Button>
             </CardContent>
@@ -511,7 +481,7 @@ export const CommunicationSettings = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <label className="text-sm font-medium">Push Notifications</label>
-                      <p className="text-xs text-muted-foreground">Browser and mobile push notifications</p>
+                      <p className="text-xs text-muted-foreground">Browser push notifications</p>
                     </div>
                     <Switch
                       checked={notificationSettings.push_notifications}
@@ -523,15 +493,19 @@ export const CommunicationSettings = () => {
                 <div className="space-y-6">
                   <div>
                     <label className="text-sm font-medium">Digest Frequency</label>
-                    <Select value={notificationSettings.digest_frequency} onValueChange={(value) => setNotificationSettings({...notificationSettings, digest_frequency: value})}>
-                      <SelectTrigger className="mt-1">
+                    <Select 
+                      value={notificationSettings.digest_frequency} 
+                      onValueChange={(value) => setNotificationSettings({...notificationSettings, digest_frequency: value})}
+                    >
+                      <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="immediate">Immediate</SelectItem>
+                        <SelectItem value="real-time">Real-time</SelectItem>
                         <SelectItem value="hourly">Hourly</SelectItem>
                         <SelectItem value="daily">Daily</SelectItem>
                         <SelectItem value="weekly">Weekly</SelectItem>
+                        <SelectItem value="never">Never</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -539,7 +513,7 @@ export const CommunicationSettings = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <label className="text-sm font-medium">Quiet Hours</label>
-                      <p className="text-xs text-muted-foreground">Suppress non-critical notifications</p>
+                      <p className="text-xs text-muted-foreground">Disable notifications during specified hours</p>
                     </div>
                     <Switch
                       checked={notificationSettings.quiet_hours_enabled}
@@ -570,9 +544,10 @@ export const CommunicationSettings = () => {
                 </div>
               </div>
 
-               <Button onClick={() => handleSaveSettings("Notifications")} className="w-full">
-                 Save Notification Settings
-               </Button>
+              <Button onClick={() => handleSaveSettings("Notifications")} className="w-full" disabled={isSaving}>
+                {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
+                Save Notification Settings
+              </Button>
             </CardContent>
           </Card>
         </TabsContent>
@@ -582,52 +557,48 @@ export const CommunicationSettings = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Globe className="h-5 w-5" />
-                External Integrations
+                Third-party Integrations
               </CardTitle>
               <CardDescription>
-                Configure integrations with external services and webhooks
+                Configure webhooks and external service integrations
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium">Slack Webhook URL</label>
-                    <Input
-                      value={integrationSettings.slack_webhook}
-                      onChange={(e) => setIntegrationSettings({...integrationSettings, slack_webhook: e.target.value})}
-                      placeholder="https://hooks.slack.com/..."
-                    />
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Send notifications to Slack channels
-                    </p>
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Discord Webhook URL</label>
-                    <Input
-                      value={integrationSettings.discord_webhook}
-                      onChange={(e) => setIntegrationSettings({...integrationSettings, discord_webhook: e.target.value})}
-                      placeholder="https://discord.com/api/webhooks/..."
-                    />
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Send notifications to Discord channels
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <label className="text-sm font-medium">Webhook Notifications</label>
-                      <p className="text-xs text-muted-foreground">Enable webhook delivery</p>
-                    </div>
-                    <Switch
-                      checked={integrationSettings.webhook_notifications}
-                      onCheckedChange={(checked) => setIntegrationSettings({...integrationSettings, webhook_notifications: checked})}
-                    />
-                  </div>
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium">Slack Webhook URL</label>
+                  <Input
+                    value={integrationSettings.slack_webhook}
+                    onChange={(e) => setIntegrationSettings({...integrationSettings, slack_webhook: e.target.value})}
+                    placeholder="https://hooks.slack.com/services/..."
+                  />
                 </div>
-
-                <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium">Discord Webhook URL</label>
+                  <Input
+                    value={integrationSettings.discord_webhook}
+                    onChange={(e) => setIntegrationSettings({...integrationSettings, discord_webhook: e.target.value})}
+                    placeholder="https://discord.com/api/webhooks/..."
+                  />
+                </div>
+                
+                <div className="flex items-center justify-between">
                   <div>
-                    <label className="text-sm font-medium">API Rate Limit (per hour)</label>
+                    <label className="text-sm font-medium">Enable Webhook Notifications</label>
+                    <p className="text-xs text-muted-foreground">Send notifications to configured webhooks</p>
+                  </div>
+                  <Switch
+                    checked={integrationSettings.webhook_notifications}
+                    onCheckedChange={(checked) => setIntegrationSettings({...integrationSettings, webhook_notifications: checked})}
+                  />
+                </div>
+              </div>
+
+              <div className="border-t pt-6">
+                <h4 className="font-medium mb-4">API Configuration</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="text-sm font-medium">API Rate Limit</label>
                     <Input
                       type="number"
                       value={integrationSettings.api_rate_limit}
@@ -643,7 +614,7 @@ export const CommunicationSettings = () => {
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium">Webhook Timeout (seconds)</label>
+                    <label className="text-sm font-medium">Timeout (seconds)</label>
                     <Input
                       type="number"
                       value={integrationSettings.webhook_timeout}
@@ -653,38 +624,14 @@ export const CommunicationSettings = () => {
                 </div>
               </div>
 
-              <div className="border-t pt-6">
-                <h4 className="font-medium mb-4">Integration Status</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex justify-between items-center p-3 border rounded">
-                    <div className="flex items-center space-x-2">
-                      <MessageSquare className="h-4 w-4" />
-                      <span>Slack Integration</span>
-                    </div>
-                    <Badge variant={integrationSettings.slack_webhook ? "default" : "outline"}>
-                      {integrationSettings.slack_webhook ? "Connected" : "Not Connected"}
-                    </Badge>
-                  </div>
-                  <div className="flex justify-between items-center p-3 border rounded">
-                    <div className="flex items-center space-x-2">
-                      <Users className="h-4 w-4" />
-                      <span>Discord Integration</span>
-                    </div>
-                    <Badge variant={integrationSettings.discord_webhook ? "default" : "outline"}>
-                      {integrationSettings.discord_webhook ? "Connected" : "Not Connected"}
-                    </Badge>
-                  </div>
-                </div>
-              </div>
-
-              <Button onClick={() => handleSaveSettings("Integrations")} className="w-full">
+              <Button onClick={() => handleSaveSettings("Integrations")} className="w-full" disabled={isSaving}>
+                {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
                 Save Integration Settings
               </Button>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
-      )}
     </div>
   );
 };

@@ -1,4 +1,3 @@
-
 import { CleanDashboardLayout } from "@/components/layout/CleanDashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,50 +14,37 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 export const Settings = () => {
-  const { userProfile, updateProfile, user } = useAuth();
+  const { userProfile, updateProfile } = useAuth();
   const languageContext = useOptionalLanguage();
-  const { toast } = useToast();
   const [isUpdating, setIsUpdating] = useState(false);
-  const [isLoadingSettings, setIsLoadingSettings] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [notifications, setNotifications] = useState({
     email: true,
     push: true,
     sms: false
   });
+  const { toast } = useToast();
 
   // Safe fallback values if language context is not available
   const t = languageContext?.t || ((key: string) => key);
   const language = languageContext?.language || 'en';
   const setLanguage = languageContext?.setLanguage || (() => {});
 
-  const handleUpdateProfile = async (field: string, value: any) => {
-    setIsUpdating(true);
-    try {
-      await updateProfile({ [field]: value });
-    } catch (error) {
-      console.error('Error updating profile:', error);
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
-  // Load notification settings from database
   const loadNotificationSettings = async () => {
-    if (!user?.id) return;
+    if (!userProfile) return;
     
-    setIsLoadingSettings(true);
     try {
       const { data, error } = await supabase
         .from('user_notification_settings')
         .select('*')
-        .eq('user_id', user.id)
+        .eq('user_id', userProfile.user_id)
         .maybeSingle();
-
-      if (error) {
+      
+      if (error && error.code !== 'PGRST116') {
         console.error('Error loading notification settings:', error);
         return;
       }
-
+      
       if (data) {
         setNotifications({
           email: data.email_notifications,
@@ -69,57 +55,77 @@ export const Settings = () => {
     } catch (error) {
       console.error('Error loading notification settings:', error);
     } finally {
-      setIsLoadingSettings(false);
+      setIsLoading(false);
+    }
+  };
+
+  const handleUpdateProfile = async (field: string, value: any) => {
+    setIsUpdating(true);
+    try {
+      await updateProfile({ [field]: value });
+      toast({
+        title: "Profile Updated",
+        description: "Your profile has been updated successfully."
+      });
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update profile. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsUpdating(false);
     }
   };
 
   const handleNotificationChange = async (type: string, value: boolean) => {
-    if (!user?.id) return;
+    if (!userProfile) return;
     
-    const newNotifications = { ...notifications, [type]: value };
-    setNotifications(newNotifications);
-
+    const newSettings = { ...notifications, [type]: value };
+    setNotifications(newSettings);
+    
     try {
       const { error } = await supabase
         .from('user_notification_settings')
         .upsert({
-          user_id: user.id,
-          email_notifications: newNotifications.email,
-          push_notifications: newNotifications.push,
-          sms_notifications: newNotifications.sms
-        }, { onConflict: 'user_id' });
-
+          user_id: userProfile.user_id,
+          email_notifications: newSettings.email,
+          push_notifications: newSettings.push,
+          sms_notifications: newSettings.sms
+        });
+      
       if (error) {
-        console.error('Error updating notification settings:', error);
-        // Revert the change
+        console.error('Error saving notification settings:', error);
+        // Revert on error
         setNotifications(notifications);
         toast({
           title: "Error",
-          description: "Failed to update notification settings",
+          description: "Failed to save notification settings.",
           variant: "destructive"
         });
       } else {
         toast({
-          title: "Settings Updated",
-          description: "Notification preferences saved successfully"
+          title: "Settings Saved",
+          description: "Notification preferences updated successfully."
         });
       }
     } catch (error) {
-      console.error('Error updating notification settings:', error);
+      console.error('Error saving notification settings:', error);
       setNotifications(notifications);
       toast({
         title: "Error",
-        description: "Failed to update notification settings",
+        description: "Failed to save notification settings.",
         variant: "destructive"
       });
     }
   };
 
   useEffect(() => {
-    if (user?.id) {
+    if (userProfile) {
       loadNotificationSettings();
     }
-  }, [user?.id]);
+  }, [userProfile]);
 
   // If language context is not available, show error state
   if (!languageContext) {
@@ -181,6 +187,7 @@ export const Settings = () => {
                     value={userProfile?.full_name || ''}
                     onChange={(e) => handleUpdateProfile('full_name', e.target.value)}
                     placeholder={t('settings.fullNamePlaceholder')}
+                    disabled={isUpdating}
                   />
                 </div>
                 
@@ -191,6 +198,7 @@ export const Settings = () => {
                     value={userProfile?.company_name || ''}
                     onChange={(e) => handleUpdateProfile('company_name', e.target.value)}
                     placeholder={t('settings.companyNamePlaceholder')}
+                    disabled={isUpdating}
                   />
                 </div>
               </div>
@@ -202,6 +210,7 @@ export const Settings = () => {
                   value={userProfile?.phone || ''}
                   onChange={(e) => handleUpdateProfile('phone', e.target.value)}
                   placeholder={t('settings.phonePlaceholder')}
+                  disabled={isUpdating}
                 />
               </div>
             </CardContent>
@@ -248,42 +257,49 @@ export const Settings = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Label>{t('settings.emailNotifications')}</Label>
-                  <p className="text-sm text-muted-foreground">{t('settings.emailNotificationsDesc')}</p>
-                </div>
-                {isLoadingSettings ? (
+              {isLoading ? (
+                <div className="flex justify-center py-4">
                   <LoadingSpinner size="sm" />
-                ) : (
-                  <Switch
-                    checked={notifications.email}
-                    onCheckedChange={(value) => handleNotificationChange('email', value)}
-                  />
-                )}
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <div>
-                  <Label>{t('settings.pushNotifications')}</Label>
-                  <p className="text-sm text-muted-foreground">{t('settings.pushNotificationsDesc')}</p>
                 </div>
-                <Switch
-                  checked={notifications.push}
-                  onCheckedChange={(value) => handleNotificationChange('push', value)}
-                />
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <div>
-                  <Label>{t('settings.smsNotifications')}</Label>
-                  <p className="text-sm text-muted-foreground">{t('settings.smsNotificationsDesc')}</p>
-                </div>
-                <Switch
-                  checked={notifications.sms}
-                  onCheckedChange={(value) => handleNotificationChange('sms', value)}
-                />
-              </div>
+              ) : (
+                <>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label>{t('settings.emailNotifications')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('settings.emailNotificationsDesc')}</p>
+                    </div>
+                    <Switch
+                      checked={notifications.email}
+                      onCheckedChange={(value) => handleNotificationChange('email', value)}
+                      disabled={isUpdating}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label>{t('settings.pushNotifications')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('settings.pushNotificationsDesc')}</p>
+                    </div>
+                    <Switch
+                      checked={notifications.push}
+                      onCheckedChange={(value) => handleNotificationChange('push', value)}
+                      disabled={isUpdating}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label>{t('settings.smsNotifications')}</Label>
+                      <p className="text-sm text-muted-foreground">{t('settings.smsNotificationsDesc')}</p>
+                    </div>
+                    <Switch
+                      checked={notifications.sms}
+                      onCheckedChange={(value) => handleNotificationChange('sms', value)}
+                      disabled={isUpdating}
+                    />
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
 
