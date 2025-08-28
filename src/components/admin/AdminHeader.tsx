@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Search, Bell, Menu } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
@@ -10,6 +11,8 @@ import { AdminBreadcrumbs } from "./AdminBreadcrumbs";
 import { EnhancedAdminHeaderSearch } from "./EnhancedAdminHeaderSearch";
 import { AdminHeaderUserMenu } from "./AdminHeaderUserMenu";
 import { AdminHeaderLanguageToggle } from "./AdminHeaderLanguageToggle";
+import { NotificationsModal } from "@/components/modals/NotificationsModal";
+import { useNotifications } from "@/hooks/useNotifications";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -29,6 +32,7 @@ export const AdminHeader = ({ onMobileMenuOpen, onSidebarToggle, sidebarOpen }: 
     isRTL: false 
   };
   const isMobile = useIsMobile();
+  const { unreadCount } = useNotifications();
 
   return (
     <header className="border-b border-border bg-card sticky top-0 z-50 shadow-sm">
@@ -86,18 +90,24 @@ export const AdminHeader = ({ onMobileMenuOpen, onSidebarToggle, sidebarOpen }: 
           <div className="flex items-center gap-1 shrink-0">
             <EnhancedAdminHeaderSearch />
             
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={() => toast.info(t('admin.notificationsDemo'))}
-              className="relative h-9 w-9 hover:bg-accent/50 transition-all duration-200"
-              aria-label="View notifications (3 pending)"
-            >
-              <Bell className="h-4 w-4" />
-              <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs rounded-full h-4 w-4 flex items-center justify-center animate-pulse shadow-lg">
-                3
-              </span>
-            </Button>
+            <NotificationsModal>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="relative h-9 w-9 hover:bg-accent/50 transition-all duration-200"
+                aria-label="View notifications"
+              >
+                <Bell className="h-4 w-4" />
+                {unreadCount > 0 && (
+                  <Badge 
+                    variant="destructive" 
+                    className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-xs animate-pulse"
+                  >
+                    {unreadCount > 99 ? "99+" : unreadCount}
+                  </Badge>
+                )}
+              </Button>
+            </NotificationsModal>
             
             <DashboardThemeToggle />
             

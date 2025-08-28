@@ -23,6 +23,7 @@ import { SearchModal } from "@/components/modals/SearchModal";
 import { NotificationsModal } from "@/components/modals/NotificationsModal";
 import { ConversationsDropdown } from "@/components/conversations/ConversationsDropdown";
 import { UnifiedVerificationStatus } from "@/components/verification/UnifiedVerificationStatus";
+import { useNotifications } from "@/hooks/useNotifications";
 import { cn } from "@/lib/utils";
 
 interface HeaderProps {
@@ -37,6 +38,7 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
     isRTL: false 
   };
   const isMobile = useIsMobile();
+  const { unreadCount } = useNotifications();
 
   // Check if we're in a sidebar context
   let sidebarContext;
@@ -144,15 +146,17 @@ export const Header = ({ onMobileMenuOpen }: HeaderProps) => {
                   className="relative"
                 >
                   <Bell className="h-5 w-5" />
-                  <Badge
-                    variant="destructive"
-                    className={cn(
-                      "absolute h-5 w-5 rounded-full p-0 text-xs",
-                      isRTL ? "-left-1 -top-1" : "-right-1 -top-1"
-                    )}
-                  >
-                    3
-                  </Badge>
+                  {unreadCount > 0 && (
+                    <Badge
+                      variant="destructive"
+                      className={cn(
+                        "absolute h-5 w-5 rounded-full p-0 text-xs",
+                        isRTL ? "-left-1 -top-1" : "-right-1 -top-1"
+                      )}
+                    >
+                      {unreadCount > 99 ? "99+" : unreadCount}
+                    </Badge>
+                  )}
                 </Button>
               </NotificationsModal>
 
