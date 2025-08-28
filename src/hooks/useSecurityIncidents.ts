@@ -20,48 +20,33 @@ export const useSecurityIncidents = () => {
 
   const fetchIncidents = async () => {
     try {
-      // Mock security incidents data
-      const mockIncidents: SecurityIncident[] = [
-        {
-          id: '1',
-          title: 'Unusual Login Pattern Detected',
-          description: 'Multiple failed login attempts from various IP addresses targeting admin accounts',
-          severity: 'high',
-          status: 'investigating',
-          category: 'unauthorized_access',
-          affected_systems: 'Authentication Service',
-          reported_by: 'Security System',
-          created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-          updated_at: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString()
-        },
-        {
-          id: '2',
-          title: 'Suspicious API Activity',
-          description: 'Automated bot behavior detected making rapid API calls',
-          severity: 'medium',
-          status: 'open',
-          category: 'security_breach',
-          affected_systems: 'API Gateway',
-          reported_by: 'Monitor System',
-          created_at: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
-          updated_at: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString()
-        },
-        {
-          id: '3',
-          title: 'Phishing Email Attempt',
-          description: 'Employee reported suspicious email attempting to steal credentials',
-          severity: 'medium',
-          status: 'resolved',
-          category: 'phishing',
-          reported_by: 'John Doe',
-          created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-          updated_at: new Date(Date.now() - 20 * 60 * 60 * 1000).toISOString()
-        }
-      ];
+      // Fetch real security incidents from database
+      const { data: incidents, error } = await supabase
+        .from('security_incidents')
+        .select('*')
+        .order('created_at', { ascending: false });
 
-      setIncidents(mockIncidents);
+      if (error) throw error;
+
+      // Transform to match interface
+      const transformedIncidents: SecurityIncident[] = (incidents || []).map(incident => ({
+        id: incident.id,
+        title: incident.title,
+        description: incident.description,
+        severity: incident.severity as 'low' | 'medium' | 'high' | 'critical',
+        status: incident.status as 'open' | 'investigating' | 'resolved' | 'closed',
+        category: incident.category,
+        affected_systems: incident.affected_systems,
+        reported_by: incident.reported_by,
+        created_at: incident.created_at,
+        updated_at: incident.updated_at
+      }));
+
+      setIncidents(transformedIncidents);
     } catch (error) {
       console.error('Error fetching security incidents:', error);
+      // Set empty array on error instead of mock data
+      setIncidents([]);
     } finally {
       setIsLoading(false);
     }
@@ -69,21 +54,23 @@ export const useSecurityIncidents = () => {
 
   const createIncident = async (incidentData: Partial<SecurityIncident>) => {
     try {
-      const newIncident: SecurityIncident = {
-        id: Math.random().toString(36).substr(2, 9),
-        title: incidentData.title || '',
-        description: incidentData.description || '',
-        severity: incidentData.severity || 'medium',
-        status: 'open',
-        category: incidentData.category || 'security_breach',
-        affected_systems: incidentData.affected_systems,
-        reported_by: incidentData.reported_by,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      };
+      // Create real security incident in database
+      const { data, error } = await supabase
+        .from('security_incidents')
+        .insert({
+          title: incidentData.title || '',
+          description: incidentData.description || '',
+          severity: incidentData.severity || 'medium',
+          category: incidentData.category || 'security_breach',
+          affected_systems: incidentData.affected_systems,
+          reported_by: incidentData.reported_by
+        })
+        .select()
+        .single();
 
-      setIncidents(prev => [newIncident, ...prev]);
-      return newIncident;
+      if (error) throw error;
+      await fetchIncidents();
+      return data;
     } catch (error) {
       console.error('Error creating security incident:', error);
       throw error;
@@ -92,11 +79,17 @@ export const useSecurityIncidents = () => {
 
   const updateIncident = async (incidentId: string, updates: Partial<SecurityIncident>) => {
     try {
-      setIncidents(prev => prev.map(incident => 
-        incident.id === incidentId 
-          ? { ...incident, ...updates, updated_at: new Date().toISOString() }
-          : incident
-      ));
+      // Update real security incident in database
+      const { error } = await supabase
+        .from('security_incidents')
+        .update({
+          ...updates,
+          resolved_at: updates.status === 'resolved' ? new Date().toISOString() : null
+        })
+        .eq('id', incidentId);
+
+      if (error) throw error;
+      await fetchIncidents();
     } catch (error) {
       console.error('Error updating security incident:', error);
       throw error;
