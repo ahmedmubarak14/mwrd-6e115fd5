@@ -4,8 +4,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { 
   Eye, 
   Check, 
@@ -15,7 +20,19 @@ import {
   Building,
   FileText,
   Download,
-  AlertTriangle
+  AlertTriangle,
+  Search,
+  Filter,
+  Grid,
+  List,
+  CheckSquare,
+  XSquare,
+  TrendingUp,
+  Users,
+  FileCheck,
+  FileX,
+  Calendar,
+  MoreVertical
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
@@ -50,6 +67,13 @@ export const VerificationQueue = () => {
   const [reviewNotes, setReviewNotes] = useState<{ [key: string]: string }>({});
   const [documentStatus, setDocumentStatus] = useState<{ [key: string]: 'checking' | 'available' | 'missing' }>({});
   const [activeFilter, setActiveFilter] = useState<StatusFilter>('pending');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedRequests, setSelectedRequests] = useState<string[]>([]);
+  const [viewMode, setViewMode] = useState<'cards' | 'table'>('cards');
+  const [sortBy, setSortBy] = useState<'date' | 'status' | 'name'>('date');
+  const [showBulkDialog, setShowBulkDialog] = useState(false);
+  const [bulkAction, setBulkAction] = useState<'approve' | 'reject' | null>(null);
+  const [bulkNotes, setBulkNotes] = useState('');
   const { showSuccess, showError } = useToastFeedback();
   const languageContext = useOptionalLanguage();
   const { t, isRTL, formatDate } = languageContext || { 
@@ -58,30 +82,84 @@ export const VerificationQueue = () => {
     formatDate: (date: Date) => date.toLocaleDateString()
   };
 
-  // Memoized filtered requests based on active filter
-  const filteredRequests = useMemo(() => {
-    if (activeFilter === 'all') return requests;
-    return requests.filter(request => request.status === activeFilter);
-  }, [requests, activeFilter]);
+  // Memoized filtered and sorted requests
+  const filteredAndSortedRequests = useMemo(() => {
+    let filtered = requests;
+    
+    // Apply status filter
+    if (activeFilter !== 'all') {
+      filtered = filtered.filter(request => request.status === activeFilter);
+    }
+    
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(request => 
+        request.user_profiles?.full_name?.toLowerCase().includes(query) ||
+        request.user_profiles?.company_name?.toLowerCase().includes(query) ||
+        request.user_profiles?.email?.toLowerCase().includes(query) ||
+        request.document_type.toLowerCase().includes(query)
+      );
+    }
+    
+    // Apply sorting
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case 'name':
+          const nameA = a.user_profiles?.full_name || a.user_profiles?.email || '';
+          const nameB = b.user_profiles?.full_name || b.user_profiles?.email || '';
+          return nameA.localeCompare(nameB);
+        case 'status':
+          return a.status.localeCompare(b.status);
+        case 'date':
+        default:
+          return new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime();
+      }
+    });
+    
+    return filtered;
+  }, [requests, activeFilter, searchQuery, sortBy]);
+
+  // Analytics calculations
+  const analytics = useMemo(() => {
+    const total = requests.length;
+    const pending = requests.filter(r => r.status === 'pending').length;
+    const approved = requests.filter(r => r.status === 'approved').length;
+    const rejected = requests.filter(r => r.status === 'rejected').length;
+    const underReview = requests.filter(r => r.status === 'under_review').length;
+    
+    // Calculate average processing time for completed requests
+    const completedRequests = requests.filter(r => r.reviewed_at && r.submitted_at);
+    const avgProcessingTime = completedRequests.length > 0 
+      ? completedRequests.reduce((sum, r) => {
+          const submitted = new Date(r.submitted_at).getTime();
+          const reviewed = new Date(r.reviewed_at!).getTime();
+          return sum + (reviewed - submitted);
+        }, 0) / completedRequests.length / (1000 * 60 * 60 * 24) // Convert to days
+      : 0;
+    
+    const approvalRate = total > 0 ? ((approved / (approved + rejected)) * 100) : 0;
+    
+    return {
+      total,
+      pending,
+      approved,
+      rejected,
+      underReview,
+      avgProcessingTime: Math.round(avgProcessingTime * 10) / 10,
+      approvalRate: Math.round(approvalRate * 10) / 10
+    };
+  }, [requests]);
 
   // Memoized status counts for tab labels
   const statusCounts = useMemo(() => {
-    const counts = {
+    return {
       all: requests.length,
-      pending: 0,
-      approved: 0,
-      rejected: 0,
-      under_review: 0
+      pending: requests.filter(r => r.status === 'pending').length,
+      approved: requests.filter(r => r.status === 'approved').length,
+      rejected: requests.filter(r => r.status === 'rejected').length,
+      under_review: requests.filter(r => r.status === 'under_review').length
     };
-
-    requests.forEach(request => {
-      if (request.status === 'pending') counts.pending++;
-      else if (request.status === 'approved') counts.approved++;
-      else if (request.status === 'rejected') counts.rejected++;
-      else if (request.status === 'under_review') counts.under_review++;
-    });
-
-    return counts;
   }, [requests]);
 
   const fetchVerificationRequests = async () => {
@@ -220,37 +298,51 @@ export const VerificationQueue = () => {
   };
 
   const renderRequestCard = (request: VerificationRequest) => (
-    <Card key={request.id}>
+    <Card key={request.id} className="hover:shadow-md transition-shadow">
       <CardContent className="p-6">
-        <div className={cn("flex items-start justify-between mb-4", isRTL && "flex-row-reverse")}>
-          <div className={cn("space-y-2", isRTL ? "text-right" : "text-left")}>
-            <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
-              <User className="h-4 w-4" />
-              <span className="font-medium">
-                {request.user_profiles?.full_name || t('verification.unknownUser')}
-              </span>
-              {getStatusBadge(request.status)}
+        <div className="flex items-start justify-between mb-4">
+          <div className="space-y-2 flex-1">
+            <div className="flex items-center gap-3">
+              <Checkbox
+                checked={selectedRequests.includes(request.id)}
+                onCheckedChange={(checked) => {
+                  if (checked) {
+                    setSelectedRequests([...selectedRequests, request.id]);
+                  } else {
+                    setSelectedRequests(selectedRequests.filter(id => id !== request.id));
+                  }
+                }}
+              />
+              <User className="h-5 w-5 text-primary" />
+              <div className="flex items-center gap-2">
+                <span className="font-semibold text-foreground">
+                  {request.user_profiles?.full_name || 'Unknown User'}
+                </span>
+                {getStatusBadge(request.status)}
+              </div>
             </div>
             
             {request.user_profiles?.company_name && (
-              <div className={cn("flex items-center gap-2 text-sm text-muted-foreground", isRTL && "flex-row-reverse")}>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground ml-8">
                 <Building className="h-4 w-4" />
-                <span>{request.user_profiles.company_name}</span>
+                <span className="font-medium">{request.user_profiles.company_name}</span>
               </div>
             )}
             
-            <div className="text-sm text-muted-foreground">
-              Email: {request.user_profiles?.email}
-            </div>
-            
-            <div className={cn("flex items-center gap-2 text-sm text-muted-foreground", isRTL && "flex-row-reverse")}>
-              <Clock className="h-4 w-4" />
-              <span>{t('verification.submitted')}: {formatDate(new Date(request.submitted_at))}</span>
-            </div>
+            <div className="ml-8 space-y-1">
+              <div className="text-sm text-muted-foreground">
+                <strong>Email:</strong> {request.user_profiles?.email}
+              </div>
+              
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Clock className="h-4 w-4" />
+                <span>Submitted: {formatDate(new Date(request.submitted_at))}</span>
+              </div>
 
-            <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
-              <span className="text-sm font-medium">{t('verification.documentStatus')}:</span>
-              {getDocumentStatusIndicator(request.id)}
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium">Document Status:</span>
+                {getDocumentStatusIndicator(request.id)}
+              </div>
             </div>
           </div>
         </div>
@@ -259,21 +351,22 @@ export const VerificationQueue = () => {
           <Alert variant="destructive" className="mb-4">
             <AlertTriangle className="h-4 w-4" />
             <AlertDescription>
-              <strong>{t('common.warning')}:</strong> {t('verification.warningMissing')}
+              <strong>Warning:</strong> Document file is missing from storage. Cannot approve without valid document.
             </AlertDescription>
           </Alert>
         )}
 
         <div className="space-y-4">
-          <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
+          <div className="flex gap-2">
             <Button
               variant="outline"
               size="sm"
               onClick={() => handleViewDocument(request.document_url, request.id)}
               disabled={documentStatus[request.id] === 'missing'}
+              className="flex-1"
             >
-              <Eye className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
-              {t('verification.viewDocument')}
+              <Eye className="h-4 w-4 mr-2" />
+              View Document
             </Button>
             
             <Button
@@ -285,31 +378,32 @@ export const VerificationQueue = () => {
                 request.id
               )}
               disabled={documentStatus[request.id] === 'missing'}
+              className="flex-1"
             >
-              <Download className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
-              {t('verification.download')}
+              <Download className="h-4 w-4 mr-2" />
+              Download
             </Button>
           </div>
 
           {request.status === 'pending' && (
             <>
               <Textarea
-                placeholder={t('verification.reviewNotes')}
+                placeholder="Add review notes (required for rejection)..."
                 value={reviewNotes[request.id] || ''}
                 onChange={(e) => setReviewNotes(prev => ({ ...prev, [request.id]: e.target.value }))}
                 rows={3}
-                className={cn(isRTL ? "text-right" : "text-left")}
+                className="resize-none"
               />
               
-              <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
+              <div className="flex gap-2">
                 <Button
                   onClick={() => handleStatusUpdate(request.id, 'approved')}
                   disabled={processing === request.id || documentStatus[request.id] === 'missing'}
                   size="sm"
-                  variant="success"
+                  className="flex-1 bg-green-600 hover:bg-green-700"
                 >
-                  <Check className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
-                  {processing === request.id ? t('verification.processing') : t('verification.approve')}
+                  <Check className="h-4 w-4 mr-2" />
+                  {processing === request.id ? 'Processing...' : 'Approve'}
                 </Button>
                 
                 <Button
@@ -317,21 +411,22 @@ export const VerificationQueue = () => {
                   disabled={processing === request.id || !reviewNotes[request.id]?.trim()}
                   variant="destructive"
                   size="sm"
+                  className="flex-1"
                 >
-                  <X className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
-                  {processing === request.id ? t('verification.processing') : t('verification.reject')}
+                  <X className="h-4 w-4 mr-2" />
+                  {processing === request.id ? 'Processing...' : 'Reject'}
                 </Button>
               </div>
               
               {documentStatus[request.id] === 'missing' && (
                 <p className="text-sm text-destructive">
-                  {t('verification.cannotApprove')}
+                  Cannot approve request with missing documentation.
                 </p>
               )}
               
               {!reviewNotes[request.id]?.trim() && documentStatus[request.id] !== 'missing' && (
                 <p className="text-sm text-muted-foreground">
-                  {t('verification.rejectionNotes')}
+                  Note: Review notes are required for rejection.
                 </p>
               )}
             </>
@@ -340,12 +435,123 @@ export const VerificationQueue = () => {
           {request.reviewer_notes && (
             <Alert>
               <AlertDescription>
-                <strong>{t('verification.reviewNotesLabel')}</strong><br />
+                <strong>Review Notes:</strong><br />
                 {request.reviewer_notes}
               </AlertDescription>
             </Alert>
           )}
         </div>
+      </CardContent>
+    </Card>
+  );
+
+  const renderTableView = () => (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <List className="h-5 w-5" />
+          Verification Requests Table
+        </CardTitle>
+        <CardDescription>
+          Comprehensive view of all verification requests
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="p-0">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-12">
+                <Checkbox
+                  checked={selectedRequests.length === filteredAndSortedRequests.length && filteredAndSortedRequests.length > 0}
+                  onCheckedChange={(checked) => {
+                    if (checked) {
+                      setSelectedRequests(filteredAndSortedRequests.map(r => r.id));
+                    } else {
+                      setSelectedRequests([]);
+                    }
+                  }}
+                />
+              </TableHead>
+              <TableHead>Vendor Information</TableHead>
+              <TableHead>Document</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Submitted</TableHead>
+              <TableHead>Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredAndSortedRequests.map((request) => (
+              <TableRow key={request.id} className="hover:bg-muted/50">
+                <TableCell>
+                  <Checkbox
+                    checked={selectedRequests.includes(request.id)}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setSelectedRequests([...selectedRequests, request.id]);
+                      } else {
+                        setSelectedRequests(selectedRequests.filter(id => id !== request.id));
+                      }
+                    }}
+                  />
+                </TableCell>
+                <TableCell>
+                  <div>
+                    <div className="font-medium">{request.user_profiles?.full_name || 'Unknown'}</div>
+                    <div className="text-sm text-muted-foreground">{request.user_profiles?.company_name}</div>
+                    <div className="text-xs text-muted-foreground">{request.user_profiles?.email}</div>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-4 w-4" />
+                    <div>
+                      <div className="text-sm font-medium">{request.document_type}</div>
+                      {getDocumentStatusIndicator(request.id)}
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell>{getStatusBadge(request.status)}</TableCell>
+                <TableCell>
+                  <div className="text-sm">
+                    {formatDate(new Date(request.submitted_at))}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex gap-1">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleViewDocument(request.document_url, request.id)}
+                      disabled={documentStatus[request.id] === 'missing'}
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                    {request.status === 'pending' && (
+                      <>
+                        <Button
+                          size="sm"
+                          onClick={() => handleStatusUpdate(request.id, 'approved')}
+                          disabled={processing === request.id || documentStatus[request.id] === 'missing'}
+                          className="bg-green-600 hover:bg-green-700"
+                        >
+                          <Check className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleStatusUpdate(request.id, 'rejected')}
+                          disabled={processing === request.id || !reviewNotes[request.id]?.trim()}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </CardContent>
     </Card>
   );
@@ -365,53 +571,241 @@ export const VerificationQueue = () => {
   }
 
   return (
-    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
-      <Card>
-        <CardHeader>
-          <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
-            <FileText className="h-5 w-5" />
-            {t('verification.queue')}
-          </CardTitle>
-          <CardDescription className={cn(isRTL ? "text-right" : "text-left")}>
-            {t('verification.reviewDescription')}
-          </CardDescription>
-        </CardHeader>
-      </Card>
+    <div className="space-y-6">
+      {/* Analytics Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Total Requests
+            </CardDescription>
+            <CardTitle className="text-2xl">{analytics.total}</CardTitle>
+          </CardHeader>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription className="flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              Pending Review
+            </CardDescription>
+            <CardTitle className="text-2xl text-orange-600">{analytics.pending}</CardTitle>
+          </CardHeader>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription className="flex items-center gap-2">
+              <FileCheck className="h-4 w-4" />
+              Approved
+            </CardDescription>
+            <CardTitle className="text-2xl text-green-600">{analytics.approved}</CardTitle>
+          </CardHeader>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription className="flex items-center gap-2">
+              <FileX className="h-4 w-4" />
+              Rejected
+            </CardDescription>
+            <CardTitle className="text-2xl text-red-600">{analytics.rejected}</CardTitle>
+          </CardHeader>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription className="flex items-center gap-2">
+              <Eye className="h-4 w-4" />
+              Under Review
+            </CardDescription>
+            <CardTitle className="text-2xl text-blue-600">{analytics.underReview}</CardTitle>
+          </CardHeader>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription className="flex items-center gap-2">
+              <TrendingUp className="h-4 w-4" />
+              Approval Rate
+            </CardDescription>
+            <CardTitle className="text-2xl">{analytics.approvalRate}%</CardTitle>
+          </CardHeader>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription className="flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              Avg. Processing
+            </CardDescription>
+            <CardTitle className="text-2xl">{analytics.avgProcessingTime}d</CardTitle>
+          </CardHeader>
+        </Card>
+      </div>
 
+      {/* Controls */}
+      <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex-1 relative">
+          <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search by name, company, email, or document type..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+        
+        <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
+          <SelectTrigger className="w-40">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="date">Sort by Date</SelectItem>
+            <SelectItem value="name">Sort by Name</SelectItem>
+            <SelectItem value="status">Sort by Status</SelectItem>
+          </SelectContent>
+        </Select>
+
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setViewMode(viewMode === 'cards' ? 'table' : 'cards')}
+          >
+            {viewMode === 'cards' ? <List className="h-4 w-4" /> : <Grid className="h-4 w-4" />}
+            {viewMode === 'cards' ? 'Table View' : 'Card View'}
+          </Button>
+          
+          <Button variant="outline" size="sm" onClick={fetchVerificationRequests}>
+            Refresh
+          </Button>
+        </div>
+      </div>
+
+      {/* Bulk Actions */}
+      {selectedRequests.length > 0 && (
+        <Card>
+          <CardContent className="py-4">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">
+                {selectedRequests.length} requests selected
+              </span>
+              <div className="flex gap-2">
+                <Dialog open={showBulkDialog} onOpenChange={setShowBulkDialog}>
+                  <DialogTrigger asChild>
+                    <Button 
+                      size="sm" 
+                      variant="outline"
+                      onClick={() => setBulkAction('approve')}
+                    >
+                      <CheckSquare className="h-4 w-4 mr-2" />
+                      Bulk Approve
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Bulk {bulkAction === 'approve' ? 'Approve' : 'Reject'} Requests</DialogTitle>
+                      <DialogDescription>
+                        This will {bulkAction} {selectedRequests.length} selected verification requests.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <Textarea
+                        placeholder={`Notes for ${bulkAction} action...`}
+                        value={bulkNotes}
+                        onChange={(e) => setBulkNotes(e.target.value)}
+                        rows={3}
+                      />
+                      <div className="flex justify-end gap-2">
+                        <Button variant="outline" onClick={() => setShowBulkDialog(false)}>
+                          Cancel
+                        </Button>
+                        <Button 
+                          onClick={() => {
+                            // Handle bulk action here
+                            setShowBulkDialog(false);
+                            setBulkNotes('');
+                            setSelectedRequests([]);
+                          }}
+                        >
+                          Confirm {bulkAction === 'approve' ? 'Approval' : 'Rejection'}
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+                
+                <Button 
+                  size="sm" 
+                  variant="outline"
+                  onClick={() => {
+                    setBulkAction('reject');
+                    setShowBulkDialog(true);
+                  }}
+                >
+                  <XSquare className="h-4 w-4 mr-2" />
+                  Bulk Reject
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Content */}
       <Tabs value={activeFilter} onValueChange={(value) => setActiveFilter(value as StatusFilter)} className="w-full">
-        <TabsList className={cn("grid w-full grid-cols-5", isRTL && "flex-row-reverse")}>
-          <TabsTrigger value="all" className={cn(isRTL ? "text-right" : "text-left")}>
-            {t('common.all')} ({statusCounts.all})
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="all">
+            All ({statusCounts.all})
           </TabsTrigger>
-          <TabsTrigger value="pending" className={cn(isRTL ? "text-right" : "text-left")}>
-            {t('users.pending')} ({statusCounts.pending})
+          <TabsTrigger value="pending">
+            Pending ({statusCounts.pending})
           </TabsTrigger>
-          <TabsTrigger value="approved" className={cn(isRTL ? "text-right" : "text-left")}>
-            {t('verification.approved')} ({statusCounts.approved})
+          <TabsTrigger value="approved">
+            Approved ({statusCounts.approved})
           </TabsTrigger>
-          <TabsTrigger value="rejected" className={cn(isRTL ? "text-right" : "text-left")}>
-            {t('verification.rejected')} ({statusCounts.rejected})
+          <TabsTrigger value="rejected">
+            Rejected ({statusCounts.rejected})
           </TabsTrigger>
-          <TabsTrigger value="under_review" className={cn(isRTL ? "text-right" : "text-left")}>
-            {t('verification.underReview')} ({statusCounts.under_review})
+          <TabsTrigger value="under_review">
+            Under Review ({statusCounts.under_review})
           </TabsTrigger>
         </TabsList>
 
         {(['all', 'pending', 'approved', 'rejected', 'under_review'] as StatusFilter[]).map((status) => (
           <TabsContent key={status} value={status} className="space-y-4">
-            {filteredRequests.length === 0 ? (
-              <Alert>
-                <AlertDescription>
-                  {status === 'all' 
-                    ? t('verification.noPending')
-                    : `No ${status} verification requests found.`
-                  }
-                </AlertDescription>
-              </Alert>
-            ) : (
+            {filteredAndSortedRequests.length === 0 ? (
+              <Card>
+                <CardContent className="p-12 text-center">
+                  <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-medium mb-2">No Verification Requests</h3>
+                  <p className="text-muted-foreground">
+                    {status === 'all' 
+                      ? searchQuery 
+                        ? 'No requests match your search criteria.'
+                        : 'No verification requests found.'
+                      : `No ${status} verification requests found.`
+                    }
+                  </p>
+                  {searchQuery && (
+                    <Button 
+                      variant="outline" 
+                      className="mt-4"
+                      onClick={() => setSearchQuery('')}
+                    >
+                      Clear Search
+                    </Button>
+                  )}
+                </CardContent>
+              </Card>
+            ) : viewMode === 'cards' ? (
               <div className="grid gap-4">
-                {filteredRequests.map(renderRequestCard)}
+                {filteredAndSortedRequests.map(renderRequestCard)}
               </div>
+            ) : (
+              renderTableView()
             )}
           </TabsContent>
         ))}

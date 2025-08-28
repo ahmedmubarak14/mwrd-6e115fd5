@@ -1,26 +1,16 @@
 
 import React from 'react';
 import { VerificationQueue } from '@/components/admin/VerificationQueue';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
-import { cn } from '@/lib/utils';
+import { AdminPageContainer } from '@/components/admin/AdminPageContainer';
 
 const AdminVerificationQueue: React.FC = () => {
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
-
   return (
-    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'} data-admin-dashboard>
-      <div className={cn(isRTL ? "text-right" : "text-left")}>
-        <h1 className="text-3xl font-bold text-foreground">{t('verification.queue')}</h1>
-        <p className="text-foreground opacity-75">
-          {t('verification.reviewAndApprove')}
-        </p>
-      </div>
+    <AdminPageContainer
+      title="Verification Queue"
+      description="Review and manage vendor verification requests"
+    >
       <VerificationQueue />
-    </div>
+    </AdminPageContainer>
   );
 };
 
