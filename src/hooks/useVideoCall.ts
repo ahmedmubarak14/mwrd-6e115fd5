@@ -140,7 +140,7 @@ export const useVideoCall = () => {
   const getUserMedia = useCallback(async (isVideo: boolean = true) => {
     try {
       localStream.current = await navigator.mediaDevices.getUserMedia({
-        video: isVideo,
+        video: isVideo ? true : false,
         audio: true
       });
       return localStream.current;

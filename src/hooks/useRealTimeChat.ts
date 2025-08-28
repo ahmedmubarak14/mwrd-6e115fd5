@@ -127,7 +127,7 @@ export const useRealTimeChat = () => {
     console.log('Starting conversation with recipient:', recipientUserIdOrProfileId);
 
     try {
-      // First, get the current user's profile ID and the recipient's profile ID
+      // First, get the current user's profile ID
       const { data: currentUserProfile } = await supabase
         .from('user_profiles')
         .select('id')
@@ -138,49 +138,53 @@ export const useRealTimeChat = () => {
         throw new Error('Current user profile not found');
       }
 
-      // Check if recipient is a user_id or profile_id by trying both
+      console.log('Current user profile ID:', currentUserProfile.id);
+
+      // Determine if recipientUserIdOrProfileId is a user_id or profile_id
+      let recipientProfileId: string;
+
+      // First try as user_id
       let { data: recipientProfile } = await supabase
         .from('user_profiles')
         .select('id, user_id')
         .eq('user_id', recipientUserIdOrProfileId)
-        .single();
+        .maybeSingle();
 
-      if (!recipientProfile) {
-        // Try as profile ID
+      if (recipientProfile) {
+        recipientProfileId = recipientProfile.id;
+        console.log('Found recipient by user_id:', recipientProfileId);
+      } else {
+        // Try as profile_id
         const { data: profileById } = await supabase
-          .from('user_profiles')
-          .select('id, user_id')
-          .eq('id', recipientUserIdOrProfileId)
-          .single();
-        
-        recipientProfile = profileById;
-      }
+        .from('user_profiles')
+        .select('id, user_id')
+        .eq('id', recipientUserIdOrProfileId)
+        .maybeSingle();
 
-      if (!recipientProfile) {
+      if (profileById) {
+        recipientProfileId = profileById.id;
+        console.log('Found recipient by profile_id:', recipientProfileId);
+      } else {
         throw new Error('Recipient profile not found');
       }
+      }
 
-      const clientProfileId = currentUserProfile.id;
-      const vendorProfileId = recipientProfile.id;
+      console.log('Recipient profile ID:', recipientProfileId);
 
-      console.log('Profile IDs - Client:', clientProfileId, 'Vendor:', vendorProfileId);
+      // Determine which user is the client and which is the vendor
+      const currentUserRole = user.user_metadata?.role;
+      const isCurrentUserClient = currentUserRole === 'client';
+      
+      const clientId = isCurrentUserClient ? currentUserProfile.id : recipientProfileId;
+      const vendorId = isCurrentUserClient ? recipientProfileId : currentUserProfile.id;
 
-      // Check if conversation already exists between these profiles
-      let query = supabase
+      // Check if conversation already exists
+      const { data: existingConversation } = await supabase
         .from('conversations')
         .select('*')
-        .or(`and(client_id.eq.${clientProfileId},vendor_id.eq.${vendorProfileId}),and(client_id.eq.${vendorProfileId},vendor_id.eq.${clientProfileId})`)
-        .eq('conversation_type', conversationType);
-
-      // Add filters for request/offer if provided
-      if (requestId) {
-        query = query.eq('request_id', requestId);
-      }
-      if (offerId) {
-        query = query.eq('offer_id', offerId);
-      }
-
-      const { data: existingConversation } = await query.single();
+        .or(`and(client_id.eq.${clientId},vendor_id.eq.${vendorId}),and(client_id.eq.${vendorId},vendor_id.eq.${clientId})`)
+        .eq('conversation_type', conversationType)
+        .maybeSingle();
 
       if (existingConversation) {
         console.log('Found existing conversation:', existingConversation.id);
@@ -190,8 +194,8 @@ export const useRealTimeChat = () => {
       // Create new conversation using profile IDs
       console.log('Creating new conversation...');
       const conversationData: any = {
-        client_id: clientProfileId,
-        vendor_id: vendorProfileId,
+        client_id: clientId,
+        vendor_id: vendorId,
         status: 'active',
         conversation_type: conversationType
       };
