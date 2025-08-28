@@ -130,6 +130,62 @@ export type Database = {
           },
         ]
       }
+      automated_tasks: {
+        Row: {
+          assigned_to: string | null
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          due_date: string | null
+          id: string
+          priority: string
+          reference_id: string | null
+          reference_type: string | null
+          status: string
+          title: string
+          updated_at: string
+          workflow_execution_id: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          priority?: string
+          reference_id?: string | null
+          reference_type?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          workflow_execution_id?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          priority?: string
+          reference_id?: string | null
+          reference_type?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          workflow_execution_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "automated_tasks_workflow_execution_id_fkey"
+            columns: ["workflow_execution_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_executions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       boq_items: {
         Row: {
           category: string
@@ -1345,6 +1401,45 @@ export type Database = {
           },
         ]
       }
+      vendor_performance_metrics: {
+        Row: {
+          category: string | null
+          completion_rate: number | null
+          created_at: string
+          id: string
+          last_updated: string
+          quality_score: number | null
+          response_time_avg_hours: number | null
+          total_completed_orders: number | null
+          total_earnings: number | null
+          vendor_id: string
+        }
+        Insert: {
+          category?: string | null
+          completion_rate?: number | null
+          created_at?: string
+          id?: string
+          last_updated?: string
+          quality_score?: number | null
+          response_time_avg_hours?: number | null
+          total_completed_orders?: number | null
+          total_earnings?: number | null
+          vendor_id: string
+        }
+        Update: {
+          category?: string | null
+          completion_rate?: number | null
+          created_at?: string
+          id?: string
+          last_updated?: string
+          quality_score?: number | null
+          response_time_avg_hours?: number | null
+          total_completed_orders?: number | null
+          total_earnings?: number | null
+          vendor_id?: string
+        }
+        Relationships: []
+      }
       vendor_profiles_extended: {
         Row: {
           business_size: string | null
@@ -1557,11 +1652,113 @@ export type Database = {
           },
         ]
       }
+      workflow_executions: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          error_message: string | null
+          executed_actions: Json
+          execution_time_ms: number | null
+          id: string
+          status: string
+          trigger_data: Json
+          workflow_rule_id: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          executed_actions?: Json
+          execution_time_ms?: number | null
+          id?: string
+          status?: string
+          trigger_data?: Json
+          workflow_rule_id?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          executed_actions?: Json
+          execution_time_ms?: number | null
+          id?: string
+          status?: string
+          trigger_data?: Json
+          workflow_rule_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflow_executions_workflow_rule_id_fkey"
+            columns: ["workflow_rule_id"]
+            isOneToOne: false
+            referencedRelation: "workflow_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workflow_rules: {
+        Row: {
+          actions: Json
+          created_at: string
+          created_by: string | null
+          delay_minutes: number | null
+          description: string | null
+          execution_count: number | null
+          id: string
+          last_executed_at: string | null
+          name: string
+          priority: number
+          status: Database["public"]["Enums"]["workflow_status"]
+          trigger_conditions: Json
+          trigger_type: Database["public"]["Enums"]["workflow_trigger_type"]
+          updated_at: string
+        }
+        Insert: {
+          actions?: Json
+          created_at?: string
+          created_by?: string | null
+          delay_minutes?: number | null
+          description?: string | null
+          execution_count?: number | null
+          id?: string
+          last_executed_at?: string | null
+          name: string
+          priority?: number
+          status?: Database["public"]["Enums"]["workflow_status"]
+          trigger_conditions?: Json
+          trigger_type: Database["public"]["Enums"]["workflow_trigger_type"]
+          updated_at?: string
+        }
+        Update: {
+          actions?: Json
+          created_at?: string
+          created_by?: string | null
+          delay_minutes?: number | null
+          description?: string | null
+          execution_count?: number | null
+          id?: string
+          last_executed_at?: string | null
+          name?: string
+          priority?: number
+          status?: Database["public"]["Enums"]["workflow_status"]
+          trigger_conditions?: Json
+          trigger_type?: Database["public"]["Enums"]["workflow_trigger_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
+      execute_workflow_rules: {
+        Args: {
+          trigger_data_param?: Json
+          trigger_type_param: Database["public"]["Enums"]["workflow_trigger_type"]
+        }
+        Returns: undefined
+      }
       get_admin_statistics: {
         Args: { admin_user_id: string }
         Returns: Json
@@ -1639,6 +1836,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      update_vendor_performance_metrics: {
+        Args: { p_category?: string; p_vendor_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       order_status:
@@ -1656,6 +1857,24 @@ export type Database = {
         | "cancelled"
       user_role: "admin" | "client" | "vendor"
       user_status: "pending" | "approved" | "blocked" | "rejected"
+      workflow_action_type:
+        | "send_notification"
+        | "auto_assign"
+        | "escalate_approval"
+        | "update_status"
+        | "create_task"
+        | "send_email"
+        | "auto_approve"
+        | "auto_reject"
+      workflow_status: "active" | "inactive" | "draft"
+      workflow_trigger_type:
+        | "request_created"
+        | "offer_submitted"
+        | "approval_pending"
+        | "deadline_approaching"
+        | "status_changed"
+        | "time_elapsed"
+        | "performance_threshold"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1800,6 +2019,26 @@ export const Constants = {
       ],
       user_role: ["admin", "client", "vendor"],
       user_status: ["pending", "approved", "blocked", "rejected"],
+      workflow_action_type: [
+        "send_notification",
+        "auto_assign",
+        "escalate_approval",
+        "update_status",
+        "create_task",
+        "send_email",
+        "auto_approve",
+        "auto_reject",
+      ],
+      workflow_status: ["active", "inactive", "draft"],
+      workflow_trigger_type: [
+        "request_created",
+        "offer_submitted",
+        "approval_pending",
+        "deadline_approaching",
+        "status_changed",
+        "time_elapsed",
+        "performance_threshold",
+      ],
     },
   },
 } as const
