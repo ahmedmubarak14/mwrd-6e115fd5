@@ -27,12 +27,12 @@ export const AdminUserProfile: React.FC<AdminUserProfileProps> = ({
   if (collapsed && variant === 'sidebar') {
     return (
       <div className="flex flex-col items-center py-2">
-        <Avatar className="h-8 w-8">
-          <AvatarImage src={userProfile?.avatar_url} />
-          <AvatarFallback className="bg-primary text-primary-foreground text-xs font-semibold">
-            {initials}
-          </AvatarFallback>
-        </Avatar>
+      <Avatar className="h-8 w-8">
+        <AvatarImage src={userProfile?.avatar_url} />
+        <AvatarFallback className="bg-sidebar-accent text-sidebar-accent-foreground text-xs font-semibold">
+          {initials}
+        </AvatarFallback>
+      </Avatar>
       </div>
     );
   }
@@ -46,7 +46,7 @@ export const AdminUserProfile: React.FC<AdminUserProfileProps> = ({
         variant === 'mobile' ? "h-10 w-10" : "h-8 w-8"
       )}>
         <AvatarImage src={userProfile?.avatar_url} />
-        <AvatarFallback className="bg-primary text-primary-foreground font-semibold">
+        <AvatarFallback className="bg-sidebar-accent text-sidebar-accent-foreground font-semibold">
           {initials}
         </AvatarFallback>
       </Avatar>
@@ -54,14 +54,14 @@ export const AdminUserProfile: React.FC<AdminUserProfileProps> = ({
       <div className="flex flex-col min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <span className={cn(
-            "font-medium text-sidebar-foreground truncate",
-            variant === 'mobile' ? "text-base" : "text-sm"
+            "font-medium truncate",
+            variant === 'mobile' ? "text-base text-sidebar-foreground" : "text-sm text-sidebar-foreground"
           )}>
             {displayName}
           </span>
           <Badge 
             variant="secondary" 
-            className="text-xs px-1.5 py-0.5 bg-primary/10 text-primary border-primary/20"
+            className="text-xs px-1.5 py-0.5 bg-sidebar-accent/10 text-sidebar-accent border-sidebar-accent/20"
           >
             Admin
           </Badge>

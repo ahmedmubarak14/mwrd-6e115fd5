@@ -256,13 +256,13 @@ All colors MUST be HSL.
 
     /* Sidebar colors for light theme */
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: hsl(var(--neutral-900));
-    --sidebar-primary: hsl(var(--primary-600));
+    --sidebar-foreground: 195 49% 10%;
+    --sidebar-primary: 324 96% 20%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: hsl(var(--accent-600));
+    --sidebar-accent: 324 96% 20%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: hsl(var(--neutral-200));
-    --sidebar-ring: hsl(var(--primary-600));
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 324 96% 20%;
   }
 
   .dark {
@@ -375,14 +375,14 @@ All colors MUST be HSL.
     --page-overlay: linear-gradient(135deg, hsl(var(--primary-900) / 0.2) 0%, hsl(var(--accent-900) / 0.1) 100%);
 
     /* Sidebar colors for dark theme */
-    --sidebar-background: hsl(var(--neutral-900));
-    --sidebar-foreground: hsl(var(--neutral-100));
-    --sidebar-primary: hsl(var(--primary-400));
-    --sidebar-primary-foreground: hsl(var(--neutral-900));
-    --sidebar-accent: hsl(var(--accent-400));
-    --sidebar-accent-foreground: hsl(var(--neutral-900));
-    --sidebar-border: hsl(var(--neutral-700)); /* Visible sidebar borders in dark mode */
-    --sidebar-ring: hsl(var(--primary-400));
+    --sidebar-background: 195 49% 10%;
+    --sidebar-foreground: 40 15% 91%;
+    --sidebar-primary: 324 70% 60%;
+    --sidebar-primary-foreground: 195 49% 10%;
+    --sidebar-accent: 324 70% 60%;
+    --sidebar-accent-foreground: 195 49% 10%;
+    --sidebar-border: 195 25% 25%;
+    --sidebar-ring: 324 70% 60%;
   }
 }
 

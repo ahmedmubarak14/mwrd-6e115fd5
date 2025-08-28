@@ -31,7 +31,7 @@ import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { AdminUserProfile } from "./AdminUserProfile";
 import { cn } from "@/lib/utils";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 interface AdminMobileSidebarContentProps {
   onItemClick?: () => void;
@@ -160,9 +160,9 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
                         active && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
                       )}
                     >
-                      <a 
-                        href={item.href} 
-                        className="flex items-center gap-3"
+                      <Link 
+                        to={item.href} 
+                        className="flex items-center gap-3 px-4 py-3 w-full"
                         onClick={onItemClick}
                       >
                         <item.icon className={cn(
@@ -183,7 +183,7 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
                             {item.badge > 99 ? '99+' : item.badge}
                           </Badge>
                         )}
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );

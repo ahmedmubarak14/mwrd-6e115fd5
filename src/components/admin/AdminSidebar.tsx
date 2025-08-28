@@ -1,5 +1,5 @@
 
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { 
   Sidebar,
@@ -173,7 +173,10 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
                         active && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
                       )}
                     >
-                      <a href={item.href} className="flex items-center gap-3 px-3 py-2">
+                       <Link 
+                         to={item.href} 
+                         className="flex items-center gap-3 px-3 py-2 w-full"
+                       >
                         <item.icon className={cn(
                           "h-4 w-4 shrink-0 transition-colors",
                           active ? "text-sidebar-accent-foreground" : "text-muted-foreground"
@@ -192,7 +195,7 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
                             {item.badge > 99 ? '99+' : item.badge}
                           </Badge>
                         )}
-                      </a>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 );

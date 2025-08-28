@@ -286,16 +286,17 @@ export const enUS = {
     
     // Navigation Menu Items  
     requests: 'Requests',
-    offers: 'Offers', 
+    offers: 'Offers',
     projects: 'Projects',
-    financialTransactions: 'Financial Transactions',
-    subscriptions: 'Subscriptions',
-    expertConsultations: 'Expert Consultations',
-    categoryManagement: 'Category Management',
-    verificationQueue: 'Verification Queue',
     analytics: 'Analytics',
     settings: 'Settings',
     profile: 'Profile',
+    subscriptions: 'Subscriptions',
+    financialTransactions: 'Financial Transactions',
+    communications: 'Communications',
+    expertConsultations: 'Expert Consultations',
+    categoryManagement: 'Category Management',
+    verificationQueue: 'Verification Queue',
     
     // Header Interface
     searchPlaceholder: 'Search admin panel...',
@@ -340,7 +341,7 @@ export const enUS = {
     },
     
     // Users Management
-    userManagement: {
+    users: {
       management: 'User Management',
       manageDescription: 'Manage system users and their verification status',
       totalUsers: 'Total Users',
@@ -351,37 +352,7 @@ export const enUS = {
       createdAt: 'Created At',
       verified: 'Verified',
       unverified: 'Unverified',
-    },
-    
-    // Verification
-    verification: {
-      queue: 'Verification Queue',
-      reviewAndApprove: 'Review and approve user verification requests',
-      pending: 'Pending Verification',
-      approved: 'Approved',
-      rejected: 'Rejected',
-      documents: 'Documents',
-      reviewDocuments: 'Review Documents',
-      approveUser: 'Approve User',
-      rejectUser: 'Reject User',
-      viewDocument: 'View Document',
-      downloadDocument: 'Download Document',
-      approve: 'Approve',
-      reject: 'Reject',
-      reviewNotes: 'Review Notes',
-      addNotes: 'Add review notes...',
-      userInfo: 'User Information',
-      documentStatus: 'Document Status',
-      available: 'Available',
-      unavailable: 'Unavailable',
-      submittedAt: 'Submitted At',
-      reviewedAt: 'Reviewed At',
-    },
-
-    // Users Management
-    users: {
       advancedManagement: 'Advanced User Management',
-      manageDescription: 'Manage user roles, statuses, and verification',
       searchPlaceholder: 'Search users...',
       filterByRole: 'Filter by Role',
       allRoles: 'All Roles',
@@ -404,8 +375,6 @@ export const enUS = {
       blocked: 'Blocked',
       rejected: 'Rejected',
       noUsersFound: 'No users found',
-      verified: 'Verified',
-      unverified: 'Unverified',
       approve: 'Approve',
       block: 'Block',
       unblock: 'Unblock',
@@ -430,7 +399,6 @@ export const enUS = {
       weeklyGrowth: 'weekly growth',
       awaitingVerification: 'awaiting verification',
       thisWeek: 'this week',
-      lastLogin: 'Last Login',
       never: 'Never',
       today: 'Today',
       yesterday: 'Yesterday',

@@ -235,16 +235,18 @@ export const arSA = {
     requests: 'الطلبات',
     offers: 'العروض',
     projects: 'المشاريع',  
-    orders: 'الطلبيات',
-    financialTransactions: 'المعاملات المالية',
-    subscriptions: 'الاشتراكات',
-    supportTickets: 'تذاكر الدعم',
-    expertConsultations: 'الاستشارات الخبيرة',
-    categoryManagement: 'إدارة الفئات',
-    verificationQueue: 'قائمة انتظار التحقق',
+    orders: 'الطلبات',
+    users: 'المستخدمين',
     analytics: 'التحليلات',
     settings: 'الإعدادات',
     profile: 'الملف الشخصي',
+    subscriptions: 'الاشتراكات',
+    financialTransactions: 'المعاملات المالية',
+    supportTickets: 'تذاكر الدعم',
+    communications: 'الاتصالات',
+    expertConsultations: 'الاستشارات المتخصصة',
+    categoryManagement: 'إدارة الفئات',
+    verificationQueue: 'قائمة انتظار التحقق',
     
     // Header Interface
     searchPlaceholder: 'البحث في لوحة المدير...',
@@ -381,7 +383,7 @@ export const arSA = {
     },
 
     // Users Management
-    users: {
+    userManagement: {
       advancedManagement: 'إدارة المستخدمين المتقدمة',
       manageDescription: 'إدارة أدوار المستخدمين وحالاتهم والتحقق منهم',
       searchPlaceholder: 'البحث عن المستخدمين...',
