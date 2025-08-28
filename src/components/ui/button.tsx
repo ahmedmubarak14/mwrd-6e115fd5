@@ -6,34 +6,34 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium ring-offset-background transition-all duration-200 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 rtl-transition active:scale-[0.98]",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium ring-offset-ring-offset transition-all duration-200 focus-visible:outline-2 focus-visible:outline-focus-outline focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 rtl-transition active:scale-[0.98]",
   {
     variants: {
       variant: {
         default: 
-          "bg-primary text-primary-foreground shadow-sm hover:bg-primary-hover hover:shadow-md active:bg-primary-active disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:shadow-none",
+          "bg-primary text-primary-foreground shadow-sm hover:bg-primary-hover hover:shadow-md active:bg-primary-active focus-visible:ring-focus-ring/30 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:shadow-none",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 hover:shadow-danger/50 active:bg-destructive/95 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:shadow-none",
+          "bg-destructive text-destructive-foreground shadow-sm hover:bg-error-hover hover:shadow-danger/50 active:bg-error-active focus-visible:ring-error/30 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:shadow-none",
         outline:
-          "border border-border bg-background text-foreground shadow-sm hover:bg-secondary hover:border-border-strong active:bg-secondary/80 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:shadow-none",
+          "border border-border bg-background text-foreground shadow-sm hover:bg-outline-hover hover:border-border-strong active:bg-outline-active focus-visible:ring-focus-ring/30 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:shadow-none",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary-hover active:bg-secondary/90 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:shadow-none",
+          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary-hover active:bg-secondary-active focus-visible:ring-focus-ring/30 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:shadow-none",
         ghost: 
-          "text-foreground hover:bg-secondary hover:text-foreground active:bg-secondary/80 disabled:bg-transparent disabled:text-button-disabled-foreground",
+          "text-foreground hover:bg-secondary hover:text-foreground active:bg-secondary-active focus-visible:ring-focus-ring/30 disabled:bg-transparent disabled:text-button-disabled-foreground",
         link: 
-          "text-primary underline-offset-4 hover:underline hover:text-primary-hover active:text-primary-active disabled:text-button-disabled-foreground disabled:no-underline",
+          "text-primary underline-offset-4 hover:underline hover:text-primary-hover active:text-primary-active focus-visible:ring-focus-ring/30 disabled:text-button-disabled-foreground disabled:no-underline",
         success:
-          "bg-success text-success-foreground shadow-sm hover:bg-success/90 hover:shadow-success/50 active:bg-success/95 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:shadow-none",
+          "bg-success text-success-foreground shadow-sm hover:bg-success-hover hover:shadow-success/50 active:bg-success-active focus-visible:ring-success/30 disabled:bg-success-disabled disabled:text-success-disabled-foreground disabled:shadow-none",
         warning:
-          "bg-warning text-warning-foreground shadow-sm hover:bg-warning/90 hover:shadow-warning/50 active:bg-warning/95 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:shadow-none",
+          "bg-warning text-warning-foreground shadow-sm hover:bg-warning-hover hover:shadow-warning/50 active:bg-warning-active focus-visible:ring-warning/30 disabled:bg-warning-disabled disabled:text-warning-disabled-foreground disabled:shadow-none",
         info:
-          "bg-info text-info-foreground shadow-sm hover:bg-info/90 hover:shadow-info/50 active:bg-info/95 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:shadow-none",
+          "bg-info text-info-foreground shadow-sm hover:bg-info-hover hover:shadow-info/50 active:bg-info-active focus-visible:ring-info/30 disabled:bg-info-disabled disabled:text-info-disabled-foreground disabled:shadow-none",
         accent:
-          "bg-accent text-accent-foreground shadow-sm hover:bg-accent-hover hover:shadow-accent/50 active:bg-accent/90 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:shadow-none",
+          "bg-accent text-accent-foreground shadow-sm hover:bg-accent-hover hover:shadow-accent/50 active:bg-accent-active focus-visible:ring-focus-ring/30 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:shadow-none",
         premium:
-          "bg-gradient-primary text-white shadow-primary hover:shadow-primary hover:scale-[1.02] active:scale-[0.98] disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:shadow-none",
+          "bg-gradient-primary text-white shadow-primary hover:shadow-primary hover:scale-[1.02] active:scale-[0.98] focus-visible:ring-primary/30 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:shadow-none",
         glass:
-          "bg-glass text-foreground border border-glass-border backdrop-blur-sm hover:bg-glass-strong active:bg-glass/80 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:backdrop-blur-none"
+          "bg-glass text-foreground border border-glass-border backdrop-blur-sm hover:bg-glass-strong active:bg-glass/80 focus-visible:ring-focus-ring/30 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:backdrop-blur-none"
       },
       size: {
         xs: "h-7 px-2 text-xs rounded",

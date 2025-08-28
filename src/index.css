@@ -181,17 +181,62 @@ All colors MUST be HSL.
     --input-selection: 324 96% 20%;      /* Primary color selection background */
     --input-selection-foreground: 0 0% 100%; /* White selection text */
     --ring: 324 96% 20%;                 /* Focus ring color */
+    --ring-offset: 0 0% 100%;            /* Explicit ring offset color */
+    
+    /* Enhanced focus states for interactive elements */
+    --focus-ring: 324 96% 20%;           /* Strong focus ring color */
+    --focus-ring-offset: 0 0% 100%;      /* Focus ring offset */
+    --focus-outline: 324 96% 20%;        /* Focus outline color */
     --radius: 0.75rem;
+    
+    /* Status color interaction states - Enhanced for WCAG 2.1 AA+ */
+    --success-hover: 142 71% 26%;        /* Darker success hover */
+    --success-active: 142 71% 22%;       /* Even darker success active */
+    --success-disabled: 142 30% 70%;     /* Muted success disabled */
+    --success-disabled-foreground: 142 15% 45%;
+    
+    --warning-hover: 38 92% 36%;         /* Darker warning hover */
+    --warning-active: 38 92% 32%;        /* Even darker warning active */
+    --warning-disabled: 38 40% 75%;      /* Muted warning disabled */
+    --warning-disabled-foreground: 38 20% 50%;
+    
+    --info-hover: 195 100% 31%;          /* Darker info hover */
+    --info-active: 195 100% 27%;         /* Even darker info active */
+    --info-disabled: 195 40% 75%;        /* Muted info disabled */
+    --info-disabled-foreground: 195 20% 50%;
+    
+    --error: 0 65% 40%;                  /* Enhanced error color */
+    --error-foreground: 0 0% 100%;       /* White text on error */
+    --error-hover: 0 65% 36%;            /* Darker error hover */
+    --error-active: 0 65% 32%;           /* Even darker error active */
+    --error-disabled: 0 40% 80%;         /* Muted error disabled */
+    --error-disabled-foreground: 0 20% 55%;
     
     /* Glass effect colors */
     --glass: 0 0% 100% / 0.8;            /* Semi-transparent white */
     --glass-strong: 0 0% 100% / 0.9;     /* More opaque white */
     --glass-border: 220 13% 91% / 0.5;   /* Semi-transparent border */
     
-    /* Button disabled states - No opacity, use actual colors */
-    --button-disabled: 220 14% 96%;      /* Light gray disabled background */
+    /* Button states - Enhanced for accessibility */
+    --button-disabled: 220 14% 96%;           /* Light gray disabled background */
     --button-disabled-foreground: 220 9% 46%; /* Dark gray disabled text (4.5:1 ratio) */
-    --button-disabled-border: 220 13% 91%; /* Light gray disabled border */
+    --button-disabled-border: 220 13% 91%;    /* Light gray disabled border */
+    
+    /* Primary button interaction states */
+    --primary-hover: 324 98% 16%;             /* Darker primary hover */
+    --primary-active: 324 98% 12%;            /* Even darker primary active */
+    
+    /* Secondary button interaction states */
+    --secondary-hover: 210 40% 90%;           /* Darker secondary hover */
+    --secondary-active: 210 40% 86%;          /* Even darker secondary active */
+    
+    /* Outline button interaction states */
+    --outline-hover: 210 40% 96%;             /* Light outline hover background */
+    --outline-active: 210 40% 92%;            /* Slightly darker outline active */
+    
+    /* Accent button interaction states */
+    --accent-hover: 195 100% 12%;             /* Darker accent hover */
+    --accent-active: 195 100% 8%;             /* Even darker accent active */
 
     /* Light Page Background */
     --unified-page: linear-gradient(135deg, hsl(0 0% 100%) 0%, hsl(var(--neutral-50)) 50%, hsl(0 0% 98%) 100%);
@@ -257,16 +302,61 @@ All colors MUST be HSL.
     --input-selection: 324 70% 60%;      /* Primary color selection background */
     --input-selection-foreground: 222 84% 4.9%; /* Dark selection text */
     --ring: 324 70% 60%;                 /* Focus ring color */
+    --ring-offset: 222 84% 4.9%;         /* Dark mode ring offset */
+    
+    /* Enhanced focus states for dark mode */
+    --focus-ring: 324 70% 65%;           /* Brighter focus ring for dark mode */
+    --focus-ring-offset: 222 84% 4.9%;   /* Dark mode focus ring offset */
+    --focus-outline: 324 70% 65%;        /* Brighter focus outline */
+    
+    /* Status color interaction states - Enhanced for dark mode */
+    --success-hover: 142 71% 55%;        /* Brighter success hover */
+    --success-active: 142 71% 60%;       /* Even brighter success active */
+    --success-disabled: 142 30% 35%;     /* Muted success disabled */
+    --success-disabled-foreground: 142 15% 60%;
+    
+    --warning-hover: 38 92% 60%;         /* Brighter warning hover */
+    --warning-active: 38 92% 65%;        /* Even brighter warning active */
+    --warning-disabled: 38 40% 40%;      /* Muted warning disabled */
+    --warning-disabled-foreground: 38 20% 65%;
+    
+    --info-hover: 195 100% 60%;          /* Brighter info hover */
+    --info-active: 195 100% 65%;         /* Even brighter info active */
+    --info-disabled: 195 40% 40%;        /* Muted info disabled */
+    --info-disabled-foreground: 195 20% 65%;
+    
+    --error: 0 62% 55%;                  /* Enhanced error for dark mode */
+    --error-foreground: 210 40% 98%;     /* Light text on error */
+    --error-hover: 0 62% 60%;            /* Brighter error hover */
+    --error-active: 0 62% 65%;           /* Even brighter error active */
+    --error-disabled: 0 40% 45%;         /* Muted error disabled */
+    --error-disabled-foreground: 0 20% 70%;
     
     /* Glass effect colors - Dark mode */
     --glass: 222 84% 4.9% / 0.8;         /* Semi-transparent dark */
     --glass-strong: 222 84% 4.9% / 0.9;  /* More opaque dark */
     --glass-border: 217 32% 17.5% / 0.5; /* Semi-transparent border */
     
-    /* Button disabled states - No opacity, use actual colors */
-    --button-disabled: 217 32% 12.5%;    /* Dark gray disabled background */
+    /* Button states - Enhanced for dark mode accessibility */
+    --button-disabled: 217 32% 12.5%;         /* Dark gray disabled background */
     --button-disabled-foreground: 215 20% 65%; /* Light gray disabled text (7:1 ratio) */
-    --button-disabled-border: 217 32% 17.5%; /* Dark gray disabled border */
+    --button-disabled-border: 217 32% 17.5%;   /* Dark gray disabled border */
+    
+    /* Primary button interaction states for dark mode */
+    --primary-hover: 324 70% 65%;              /* Brighter primary hover */
+    --primary-active: 324 70% 70%;             /* Even brighter primary active */
+    
+    /* Secondary button interaction states for dark mode */
+    --secondary-hover: 217 32% 20.5%;          /* Lighter secondary hover */
+    --secondary-active: 217 32% 24.5%;         /* Even lighter secondary active */
+    
+    /* Outline button interaction states for dark mode */
+    --outline-hover: 217 32% 15.5%;            /* Dark outline hover background */
+    --outline-active: 217 32% 12.5%;           /* Darker outline active */
+    
+    /* Accent button interaction states for dark mode */
+    --accent-hover: 195 70% 60%;               /* Brighter accent hover */
+    --accent-active: 195 70% 65%;              /* Even brighter accent active */
 
     /* Dark Page Background */
     --unified-page: linear-gradient(135deg, hsl(var(--neutral-950)) 0%, hsl(var(--neutral-900)) 50%, hsl(var(--neutral-800)) 100%);

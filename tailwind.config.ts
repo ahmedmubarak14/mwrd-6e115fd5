@@ -30,13 +30,25 @@ const config: Config = {
         "input-selection": "hsl(var(--input-selection))",
         "input-selection-foreground": "hsl(var(--input-selection-foreground))",
         ring: "hsl(var(--ring))",
+        "ring-offset": "hsl(var(--ring-offset))",
+        "focus-ring": "hsl(var(--focus-ring))",
+        "focus-ring-offset": "hsl(var(--focus-ring-offset))",
+        "focus-outline": "hsl(var(--focus-outline))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
 
-        /* Button disabled states - No opacity colors */
+        /* Button interaction states - Enhanced for accessibility */
         "button-disabled": "hsl(var(--button-disabled))",
         "button-disabled-foreground": "hsl(var(--button-disabled-foreground))",
         "button-disabled-border": "hsl(var(--button-disabled-border))",
+        "primary-hover": "hsl(var(--primary-hover))",
+        "primary-active": "hsl(var(--primary-active))",
+        "secondary-hover": "hsl(var(--secondary-hover))",
+        "secondary-active": "hsl(var(--secondary-active))",
+        "outline-hover": "hsl(var(--outline-hover))",
+        "outline-active": "hsl(var(--outline-active))",
+        "accent-hover": "hsl(var(--accent-hover))",
+        "accent-active": "hsl(var(--accent-active))",
         
         /* Glass effect colors */
         glass: "hsl(var(--glass))",
@@ -100,6 +112,10 @@ const config: Config = {
         success: {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
+          hover: "hsl(var(--success-hover))",
+          active: "hsl(var(--success-active))",
+          disabled: "hsl(var(--success-disabled))",
+          "disabled-foreground": "hsl(var(--success-disabled-foreground))",
           50: "hsl(var(--success-50))",
           100: "hsl(var(--success-100))",
           600: "hsl(var(--success-600))",
@@ -109,6 +125,10 @@ const config: Config = {
         warning: {
           DEFAULT: "hsl(var(--warning))",
           foreground: "hsl(var(--warning-foreground))",
+          hover: "hsl(var(--warning-hover))",
+          active: "hsl(var(--warning-active))",
+          disabled: "hsl(var(--warning-disabled))",
+          "disabled-foreground": "hsl(var(--warning-disabled-foreground))",
           50: "hsl(var(--warning-50))",
           100: "hsl(var(--warning-100))",
           600: "hsl(var(--warning-600))",
@@ -118,10 +138,23 @@ const config: Config = {
         info: {
           DEFAULT: "hsl(var(--info))",
           foreground: "hsl(var(--info-foreground))",
+          hover: "hsl(var(--info-hover))",
+          active: "hsl(var(--info-active))",
+          disabled: "hsl(var(--info-disabled))",
+          "disabled-foreground": "hsl(var(--info-disabled-foreground))",
           50: "hsl(var(--info-50))",
           100: "hsl(var(--info-100))",
           600: "hsl(var(--info-600))",
           900: "hsl(var(--info-900))",
+        },
+
+        error: {
+          DEFAULT: "hsl(var(--error))",
+          foreground: "hsl(var(--error-foreground))",
+          hover: "hsl(var(--error-hover))",
+          active: "hsl(var(--error-active))",
+          disabled: "hsl(var(--error-disabled))",
+          "disabled-foreground": "hsl(var(--error-disabled-foreground))",
         },
 
         /* Neutral color system */
