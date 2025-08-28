@@ -72,7 +72,7 @@ export const AdminLayout = () => {
               isOpen={mobileMenuOpen} 
               onOpenChange={setMobileMenuOpen} 
             />
-            <main className="flex-1 overflow-auto bg-muted/20">
+            <main className="flex-1 overflow-auto bg-muted/20 p-4 sm:p-6 min-h-[calc(100vh-8rem)] safe-area-inset-bottom">
               <AdminErrorBoundary>
                 <Outlet />
               </AdminErrorBoundary>
