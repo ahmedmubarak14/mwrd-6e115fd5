@@ -253,28 +253,28 @@ export const EnhancedAdminSidebar = ({ className }: AdminSidebarProps) => {
               getGroupPriorityStyles(group.priority)
             )}>
               {state !== "collapsed" && (
-                <button
-                  onClick={() => toggleGroup(group.id)}
+                <SidebarGroupLabel 
                   className={cn(
-                    "w-full flex items-center justify-between cursor-pointer group",
+                    "flex items-center justify-between cursor-pointer group",
                     "text-xs uppercase tracking-wider font-medium px-3 py-2 mb-1",
-                    "bg-muted/30 text-foreground hover:bg-accent hover:text-accent-foreground",
-                    "border border-border/50 rounded-md transition-all duration-200",
-                    hasActiveItem && "bg-primary/10 text-primary border-primary/20 font-semibold"
+                    "text-muted-foreground hover:text-foreground",
+                    "hover:bg-accent/10 rounded-md transition-all duration-200",
+                    hasActiveItem && "text-primary font-semibold"
                   )}
+                  onClick={() => toggleGroup(group.id)}
                 >
                   <span className="flex items-center gap-2">
-                    <span className="text-foreground">{group.label}</span>
+                    <span>{group.label}</span>
                     {hasActiveItem && (
                       <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
                     )}
                   </span>
                   {isExpanded ? (
-                    <ChevronDown className="h-3 w-3 transition-transform duration-200 text-foreground" />
+                    <ChevronDown className="h-3 w-3 transition-transform duration-200" />
                   ) : (
-                    <ChevronRight className="h-3 w-3 transition-transform duration-200 text-foreground" />
+                    <ChevronRight className="h-3 w-3 transition-transform duration-200" />
                   )}
-                </button>
+                </SidebarGroupLabel>
               )}
 
               <SidebarGroupContent 
