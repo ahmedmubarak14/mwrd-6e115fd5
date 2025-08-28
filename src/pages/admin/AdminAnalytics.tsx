@@ -105,16 +105,16 @@ export const AdminAnalytics = () => {
     >
 
       {/* Key Metrics Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">
+            <CardTitle className="text-xs sm:text-sm font-medium">
               {t('admin.totalUsers') || 'Total Users'}
             </CardTitle>
             <Users className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-lg sm:text-2xl font-bold">
               {formatNumber(metrics?.totalUsers || 0)}
             </div>
             <div className={cn("flex items-center text-xs text-foreground opacity-75", isRTL && "flex-row-reverse")}>
@@ -126,13 +126,13 @@ export const AdminAnalytics = () => {
 
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">
+            <CardTitle className="text-xs sm:text-sm font-medium">
               {t('admin.activeRequests') || 'Active Requests'}
             </CardTitle>
             <Activity className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-lg sm:text-2xl font-bold">
               {formatNumber(metrics?.activeRequests || 0)}
             </div>
             <div className={cn("flex items-center text-xs text-foreground opacity-75", isRTL && "flex-row-reverse")}>
@@ -144,13 +144,13 @@ export const AdminAnalytics = () => {
 
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">
+            <CardTitle className="text-xs sm:text-sm font-medium">
               {t('admin.revenue') || 'Revenue'}
             </CardTitle>
             <DollarSign className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-lg sm:text-2xl font-bold">
               {formatCurrency(metrics?.totalRevenue || 0)}
             </div>
             <div className={cn("flex items-center text-xs text-foreground opacity-75", isRTL && "flex-row-reverse")}>
@@ -162,13 +162,13 @@ export const AdminAnalytics = () => {
 
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">
+            <CardTitle className="text-xs sm:text-sm font-medium">
               {t('orders.title') || 'Orders'}
             </CardTitle>
             <ShoppingCart className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-lg sm:text-2xl font-bold">
               {formatNumber(metrics?.totalOrders || 0)}
             </div>
             <div className={cn("flex items-center text-xs text-foreground opacity-75", isRTL && "flex-row-reverse")}>
@@ -182,18 +182,18 @@ export const AdminAnalytics = () => {
       {/* Charts Section */}
       <Tabs defaultValue="overview" className="space-y-4">
         <div className={cn("flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4", isRTL && "flex-row-reverse")}>
-          <TabsList className="grid w-full sm:w-auto grid-cols-2 sm:grid-cols-4">
-            <TabsTrigger value="overview">{t('dashboard.overview') || 'Overview'}</TabsTrigger>
-            <TabsTrigger value="users">{t('admin.users') || 'Users'}</TabsTrigger>
-            <TabsTrigger value="financial">{t('analytics.financial') || 'Financial'}</TabsTrigger>
-            <TabsTrigger value="performance">{t('admin.performance') || 'Performance'}</TabsTrigger>
+          <TabsList className="grid w-full sm:w-auto grid-cols-2 lg:grid-cols-4 gap-1">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm px-2 sm:px-4">{t('dashboard.overview') || 'Overview'}</TabsTrigger>
+            <TabsTrigger value="users" className="text-xs sm:text-sm px-2 sm:px-4">{t('admin.users') || 'Users'}</TabsTrigger>
+            <TabsTrigger value="financial" className="text-xs sm:text-sm px-2 sm:px-4">{t('analytics.financial') || 'Financial'}</TabsTrigger>
+            <TabsTrigger value="performance" className="text-xs sm:text-sm px-2 sm:px-4">{t('admin.performance') || 'Performance'}</TabsTrigger>
           </TabsList>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             <select 
               value={selectedPeriod}
               onChange={(e) => setSelectedPeriod(e.target.value)}
-              className="bg-background border border-border rounded-md px-3 py-1 text-sm"
+              className="bg-background border border-border rounded-md px-2 sm:px-3 py-1 text-xs sm:text-sm flex-1 sm:flex-none"
             >
               {periodOptions.map(option => (
                 <option key={option.value} value={option.value}>
@@ -214,12 +214,25 @@ export const AdminAnalytics = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
+                <ResponsiveContainer width="100%" height={250}>
                   <AreaChart data={chartData?.userActivity || []}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
+                    <XAxis 
+                      dataKey="date" 
+                      fontSize={10}
+                      tick={{ fontSize: 10 }}
+                      interval="preserveStartEnd"
+                    />
+                    <YAxis 
+                      fontSize={10}
+                      tick={{ fontSize: 10 }}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        fontSize: '12px',
+                        padding: '8px'
+                      }}
+                    />
                     <Area 
                       type="monotone" 
                       dataKey="users" 
@@ -240,12 +253,25 @@ export const AdminAnalytics = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
+                <ResponsiveContainer width="100%" height={250}>
                   <LineChart data={chartData?.requestTrends || []}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
+                    <XAxis 
+                      dataKey="date" 
+                      fontSize={10}
+                      tick={{ fontSize: 10 }}
+                      interval="preserveStartEnd"
+                    />
+                    <YAxis 
+                      fontSize={10}
+                      tick={{ fontSize: 10 }}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        fontSize: '12px',
+                        padding: '8px'
+                      }}
+                    />
                     <Line 
                       type="monotone" 
                       dataKey="requests" 
@@ -269,12 +295,24 @@ export const AdminAnalytics = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
+                <ResponsiveContainer width="100%" height={250}>
                   <BarChart data={chartData?.userGrowth || []}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
+                    <XAxis 
+                      dataKey="month" 
+                      fontSize={10}
+                      tick={{ fontSize: 10 }}
+                    />
+                    <YAxis 
+                      fontSize={10}
+                      tick={{ fontSize: 10 }}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        fontSize: '12px',
+                        padding: '8px'
+                      }}
+                    />
                     <Bar dataKey="newUsers" fill="#8884d8" />
                   </BarChart>
                 </ResponsiveContainer>
@@ -289,13 +327,13 @@ export const AdminAnalytics = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
+                <ResponsiveContainer width="100%" height={250}>
                   <PieChart>
                     <Pie
                       data={chartData?.userTypes || []}
                       cx="50%"
                       cy="50%"
-                      outerRadius={80}
+                      outerRadius={60}
                       fill="#8884d8"
                       dataKey="value"
                       label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
@@ -304,7 +342,12 @@ export const AdminAnalytics = () => {
                         <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
                       ))}
                     </Pie>
-                    <Tooltip />
+                    <Tooltip 
+                      contentStyle={{ 
+                        fontSize: '12px',
+                        padding: '8px'
+                      }}
+                    />
                   </PieChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -321,12 +364,25 @@ export const AdminAnalytics = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={400}>
+              <ResponsiveContainer width="100%" height={350}>
                 <AreaChart data={chartData?.revenue || []}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                  <XAxis 
+                    dataKey="month" 
+                    fontSize={10}
+                    tick={{ fontSize: 10 }}
+                  />
+                  <YAxis 
+                    fontSize={10}
+                    tick={{ fontSize: 10 }}
+                  />
+                  <Tooltip 
+                    formatter={(value) => formatCurrency(Number(value))} 
+                    contentStyle={{ 
+                      fontSize: '12px',
+                      padding: '8px'
+                    }}
+                  />
                   <Area 
                     type="monotone" 
                     dataKey="revenue" 

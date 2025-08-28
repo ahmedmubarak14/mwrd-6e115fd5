@@ -167,14 +167,14 @@ export const FinancialAnalyticsChart: React.FC<FinancialAnalyticsChartProps> = (
   return (
     <div className="space-y-6">
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Total Revenue</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalRevenue.toLocaleString()} SAR</div>
+            <div className="text-lg sm:text-2xl font-bold">{totalRevenue.toLocaleString()} SAR</div>
             <p className="text-xs text-muted-foreground">
               {avgGrowth > 0 ? '+' : ''}{avgGrowth.toFixed(1)}% average growth
             </p>
@@ -183,11 +183,11 @@ export const FinancialAnalyticsChart: React.FC<FinancialAnalyticsChartProps> = (
         
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Transactions</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Total Transactions</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalTransactions}</div>
+            <div className="text-lg sm:text-2xl font-bold">{totalTransactions}</div>
             <p className="text-xs text-muted-foreground">
               {data.length > 0 ? (totalRevenue / totalTransactions).toLocaleString() : 0} SAR avg per transaction
             </p>
@@ -196,11 +196,11 @@ export const FinancialAnalyticsChart: React.FC<FinancialAnalyticsChartProps> = (
         
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Period</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Period</CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold capitalize">{period}</div>
+            <div className="text-lg sm:text-2xl font-bold capitalize">{period}</div>
             <p className="text-xs text-muted-foreground">
               {data.length} data points
             </p>
@@ -211,12 +211,12 @@ export const FinancialAnalyticsChart: React.FC<FinancialAnalyticsChartProps> = (
       {/* Main Chart */}
       <Card>
         <CardHeader>
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <CardTitle>Financial Performance</CardTitle>
-              <CardDescription>Revenue and transaction trends over time</CardDescription>
+              <CardTitle className="text-base sm:text-lg">Financial Performance</CardTitle>
+              <CardDescription className="text-xs sm:text-sm">Revenue and transaction trends over time</CardDescription>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <Button
                 variant={chartType === 'line' ? 'default' : 'outline'}
                 size="sm"
@@ -239,18 +239,30 @@ export const FinancialAnalyticsChart: React.FC<FinancialAnalyticsChartProps> = (
           </div>
         </CardHeader>
         <CardContent>
-          <div className="h-80">
+          <div className="h-64 sm:h-80">
             <ResponsiveContainer width="100%" height="100%">
               {chartType === 'line' ? (
                 <LineChart data={data}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
+                  <XAxis 
+                    dataKey="date" 
+                    fontSize={10}
+                    tick={{ fontSize: 10 }}
+                    interval="preserveStartEnd"
+                  />
+                  <YAxis 
+                    fontSize={10}
+                    tick={{ fontSize: 10 }}
+                  />
                   <Tooltip 
                     formatter={(value, name) => [
                       name === 'revenue' ? `${value} SAR` : value,
                       name === 'revenue' ? 'Revenue' : 'Transactions'
                     ]}
+                    contentStyle={{ 
+                      fontSize: '12px',
+                      padding: '8px'
+                    }}
                   />
                   <Line 
                     type="monotone" 
@@ -270,13 +282,25 @@ export const FinancialAnalyticsChart: React.FC<FinancialAnalyticsChartProps> = (
               ) : (
                 <BarChart data={data}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
+                  <XAxis 
+                    dataKey="date" 
+                    fontSize={10}
+                    tick={{ fontSize: 10 }}
+                    interval="preserveStartEnd"
+                  />
+                  <YAxis 
+                    fontSize={10}
+                    tick={{ fontSize: 10 }}
+                  />
                   <Tooltip 
                     formatter={(value, name) => [
                       name === 'revenue' ? `${value} SAR` : value,
                       name === 'revenue' ? 'Revenue' : 'Transactions'
                     ]}
+                    contentStyle={{ 
+                      fontSize: '12px',
+                      padding: '8px'
+                    }}
                   />
                   <Bar dataKey="revenue" fill="#3b82f6" name="revenue" />
                   <Bar dataKey="transactions" fill="#10b981" name="transactions" />
