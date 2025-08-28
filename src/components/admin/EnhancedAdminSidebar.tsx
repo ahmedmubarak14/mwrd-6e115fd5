@@ -253,28 +253,28 @@ export const EnhancedAdminSidebar = ({ className }: AdminSidebarProps) => {
               getGroupPriorityStyles(group.priority)
             )}>
               {state !== "collapsed" && (
-                <SidebarGroupLabel 
-                  className={cn(
-                    "flex items-center justify-between cursor-pointer group",
-                    "text-xs uppercase tracking-wider font-medium px-3 py-2 mb-1",
-                    "text-muted-foreground hover:text-foreground",
-                    "hover:bg-accent/10 rounded-md transition-all duration-200",
-                    hasActiveItem && "text-primary font-semibold"
-                  )}
+                <button
                   onClick={() => toggleGroup(group.id)}
+                  className={cn(
+                    "w-full flex items-center justify-between cursor-pointer group",
+                    "text-xs uppercase tracking-wider font-medium px-3 py-2 mb-1",
+                    "bg-muted/30 text-foreground hover:bg-accent hover:text-accent-foreground",
+                    "border border-border/50 rounded-md transition-all duration-200",
+                    hasActiveItem && "bg-primary/10 text-primary border-primary/20 font-semibold"
+                  )}
                 >
                   <span className="flex items-center gap-2">
-                    <span>{group.label}</span>
+                    <span className="text-foreground">{group.label}</span>
                     {hasActiveItem && (
                       <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
                     )}
                   </span>
                   {isExpanded ? (
-                    <ChevronDown className="h-3 w-3 transition-transform duration-200" />
+                    <ChevronDown className="h-3 w-3 transition-transform duration-200 text-foreground" />
                   ) : (
-                    <ChevronRight className="h-3 w-3 transition-transform duration-200" />
+                    <ChevronRight className="h-3 w-3 transition-transform duration-200 text-foreground" />
                   )}
-                </SidebarGroupLabel>
+                </button>
               )}
 
               <SidebarGroupContent 
