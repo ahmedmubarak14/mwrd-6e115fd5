@@ -74,7 +74,7 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
       {mainCategory && (
         <div className="space-y-2">
           <Label>{isRTL ? 'الفئة الفرعية (اختياري)' : 'Subcategory (Optional)'}</Label>
-          <Select value={subCategory} onValueChange={handleSubCategoryChange}>
+          <Select value={subCategory} onValueChange={handleSubCategoryChange} disabled={subCategories.length === 0}>
             <SelectTrigger className="w-full bg-background border-border">
               <SelectValue placeholder={
                 subCategories.length > 0 
@@ -83,19 +83,11 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
               } />
             </SelectTrigger>
             <SelectContent className="z-50 bg-background border-border shadow-lg">
-              {subCategories.length > 0 ? (
-                subCategories.map((subcategory) => (
-                  <SelectItem key={subcategory.id} value={subcategory.slug}>
-                    <span>{isRTL ? subcategory.name_ar : subcategory.name_en}</span>
-                  </SelectItem>
-                ))
-              ) : (
-                <SelectItem value="" disabled>
-                  <span className="text-muted-foreground">
-                    {isRTL ? 'لا توجد فئات فرعية' : 'No subcategories available'}
-                  </span>
+              {subCategories.map((subcategory) => (
+                <SelectItem key={subcategory.id} value={subcategory.slug}>
+                  <span>{isRTL ? subcategory.name_ar : subcategory.name_en}</span>
                 </SelectItem>
-              )}
+              ))}
             </SelectContent>
           </Select>
         </div>
