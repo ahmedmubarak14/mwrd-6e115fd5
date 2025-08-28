@@ -31,6 +31,7 @@ import { CRDocumentUpload } from "@/components/verification/CRDocumentUpload";
 import { VerificationStatus } from "@/components/verification/VerificationStatus";
 import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { MetricCard } from "@/components/ui/MetricCard";
+import { AvatarUpload } from "@/components/profile/AvatarUpload";
 
 // Service categories for vendors
 const SERVICE_CATEGORIES = [
@@ -65,7 +66,14 @@ const Profile = () => {
     portfolio_url: userProfile?.portfolio_url || "",
     categories: userProfile?.categories || [],
     email: userProfile?.email || "",
+    avatar_url: userProfile?.avatar_url || "",
   });
+
+  const handleAvatarUpdate = (avatarUrl: string) => {
+    setFormData(prev => ({ ...prev, avatar_url: avatarUrl }));
+    // Force a refresh of user profile data
+    window.location.reload();
+  };
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -90,6 +98,7 @@ const Profile = () => {
       portfolio_url: userProfile?.portfolio_url || "",
       categories: userProfile?.categories || [],
       email: userProfile?.email || "",
+      avatar_url: userProfile?.avatar_url || "",
     });
     setIsEditing(false);
   };
@@ -174,18 +183,18 @@ const Profile = () => {
         </TabsList>
 
         <TabsContent value="profile" className="space-y-6">
-          {/* Profile Overview Card */}
-          <Card>
-            <CardHeader>
-              <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
-                <Avatar className="h-20 w-20">
-                  <AvatarImage src={userProfile.avatar_url} alt={userProfile.full_name} />
-                  <AvatarFallback className="text-lg font-semibold bg-primary/10 text-primary">
-                    {userInitials}
-                  </AvatarFallback>
-                </Avatar>
-                
-                <div className="flex-1">
+          {/* Avatar Upload Section */}
+          <div className="grid gap-6 md:grid-cols-3">
+            <AvatarUpload
+              currentAvatarUrl={userProfile.avatar_url}
+              userInitials={userInitials}
+              onAvatarUpdate={handleAvatarUpdate}
+            />
+            
+            {/* Profile Overview Card */}
+            <Card className="md:col-span-2">
+              <CardHeader>
+                <div className="flex flex-col space-y-4">
                   <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-3">
                     <CardTitle className="text-xl">{userProfile.full_name}</CardTitle>
                     {getVerificationBadge()}
@@ -193,14 +202,14 @@ const Profile = () => {
                   <CardDescription className="text-base">
                     {userProfile.company_name || userProfile.email}
                   </CardDescription>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Calendar className="h-4 w-4" />
                     Member since {new Date(userProfile.created_at || '').toLocaleDateString()}
                   </div>
                 </div>
-              </div>
-            </CardHeader>
-          </Card>
+              </CardHeader>
+            </Card>
+          </div>
 
           {/* Profile Details */}
           <Card>
