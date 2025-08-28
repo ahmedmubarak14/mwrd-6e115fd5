@@ -1,3 +1,4 @@
+import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -133,9 +134,9 @@ export default function CreateRequest() {
   };
 
   return (
-    <div className="space-y-6">
+    <ClientPageContainer className="max-w-none">
       {/* Header */}
-      <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
+      <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-start md:space-y-0 mb-8">
         <div className="flex items-center space-x-4">
           <Button
             variant="outline"
@@ -148,8 +149,8 @@ export default function CreateRequest() {
           </Button>
           <Separator orientation="vertical" className="h-6" />
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-foreground">Create New Request</h1>
-            <p className="text-muted-foreground">Submit a new procurement request to find vendors</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-1 leading-tight">Create New Request</h1>
+            <p className="text-foreground opacity-75 text-sm sm:text-base">Submit a new procurement request to find vendors</p>
           </div>
         </div>
       </div>
@@ -431,6 +432,6 @@ export default function CreateRequest() {
           </Card>
         </div>
       </div>
-    </div>
+    </ClientPageContainer>
   );
 }

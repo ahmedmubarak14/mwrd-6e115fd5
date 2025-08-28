@@ -1,3 +1,4 @@
+import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { useState, useMemo } from 'react';
 import { Plus, Search, Filter, FolderOpen, Clock, CheckCircle, BarChart3, Building2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -63,31 +64,38 @@ export default function Projects() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
-      </div>
+      <ClientPageContainer>
+        <div className="mb-8">
+          <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
+          <div className="h-4 w-32 bg-muted rounded animate-pulse" />
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <MetricCard key={i} title="" value="" loading={true} />
+          ))}
+        </div>
+      </ClientPageContainer>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">Projects</h1>
-          <p className="text-muted-foreground">Manage your procurement projects</p>
-        </div>
+    <ClientPageContainer
+      title="Projects"
+      description="Manage your procurement projects"
+      headerActions={
         <Button 
           onClick={() => setShowCreateModal(true)} 
-          className="w-full md:w-auto"
+          className="w-full md:w-auto gap-2"
         >
-          <Plus className="mr-2 h-4 w-4" />
+          <Plus className="h-4 w-4" />
           New Project
         </Button>
-      </div>
+      }
+    >
 
       {/* Metrics */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
         <MetricCard
           title="Total Projects"
           value={metrics.total}
@@ -223,6 +231,6 @@ export default function Projects() {
         open={showCreateModal} 
         onClose={() => setShowCreateModal(false)} 
       />
-    </div>
+    </ClientPageContainer>
   );
 }

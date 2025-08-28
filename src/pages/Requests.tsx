@@ -1,4 +1,5 @@
 
+import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { useState, useMemo } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useRequests } from "@/hooks/useRequests";
@@ -61,24 +62,26 @@ const Requests = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
-      </div>
+      <ClientPageContainer>
+        <div className="mb-8">
+          <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
+          <div className="h-4 w-32 bg-muted rounded animate-pulse" />
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <MetricCard key={i} title="" value="" loading={true} />
+          ))}
+        </div>
+      </ClientPageContainer>
     );
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            {t('nav.requests')}
-          </h1>
-          <p className="text-muted-foreground">
-            {t('requests.description')}
-          </p>
-        </div>
+    <ClientPageContainer
+      title={t('nav.requests')}
+      description={t('requests.description')}
+      headerActions={
         <Button 
           size="lg" 
           className="w-full md:w-auto gap-2"
@@ -87,10 +90,11 @@ const Requests = () => {
           <Plus className="h-4 w-4" />
           {t('requests.createNew')}
         </Button>
-      </div>
+      }
+    >
 
       {/* Metrics */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
         <MetricCard
           title="Total Requests"
           value={metrics.total}
@@ -243,7 +247,7 @@ const Requests = () => {
           }
         />
       )}
-    </div>
+    </ClientPageContainer>
   );
 };
 
