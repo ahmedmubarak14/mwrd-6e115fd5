@@ -47,6 +47,45 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_settings: {
+        Row: {
+          admin_dashboard_theme: string
+          audit_log_retention: number
+          created_at: string
+          email_notifications: boolean
+          id: string
+          security_alerts: boolean
+          session_timeout: number
+          two_factor_enabled: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          admin_dashboard_theme?: string
+          audit_log_retention?: number
+          created_at?: string
+          email_notifications?: boolean
+          id?: string
+          security_alerts?: boolean
+          session_timeout?: number
+          two_factor_enabled?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          admin_dashboard_theme?: string
+          audit_log_retention?: number
+          created_at?: string
+          email_notifications?: boolean
+          id?: string
+          security_alerts?: boolean
+          session_timeout?: number
+          two_factor_enabled?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       audit_log: {
         Row: {
           action: string
@@ -1252,6 +1291,10 @@ export type Database = {
       }
     }
     Functions: {
+      get_admin_statistics: {
+        Args: { admin_user_id: string }
+        Returns: Json
+      }
       get_analytics_data: {
         Args: Record<PropertyKey, never>
         Returns: {
