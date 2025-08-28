@@ -25,6 +25,7 @@ import {
   CheckCircle
 } from "lucide-react";
 import { format } from "date-fns";
+import { useCategories } from "@/hooks/useCategories";
 
 const CATEGORIES = [
   "Construction & Building",
@@ -52,6 +53,7 @@ export default function CreateRequest() {
   const navigate = useNavigate();
   const { userProfile } = useAuth();
   const { toast } = useToast();
+  const { categories } = useCategories();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -210,9 +212,9 @@ export default function CreateRequest() {
                         <SelectValue placeholder="Select a category" />
                       </SelectTrigger>
                       <SelectContent>
-                        {CATEGORIES.map((category) => (
-                          <SelectItem key={category} value={category}>
-                            {category}
+                        {categories.map((category) => (
+                          <SelectItem key={category.id} value={category.slug}>
+                            {category.name_en}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -268,7 +270,7 @@ export default function CreateRequest() {
                       type="date"
                       value={formData.deadline}
                       onChange={(e) => handleInputChange("deadline", e.target.value)}
-                      min={format(new Date(), 'yyyy-MM-dd')}
+                      min={new Date().toISOString().split('T')[0]}
                     />
                   </div>
                 </div>

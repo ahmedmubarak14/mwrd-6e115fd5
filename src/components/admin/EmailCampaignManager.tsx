@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -118,29 +118,33 @@ export const EmailCampaignManager = () => {
   };
 
   // Calculate performance data from real campaigns
-  const performanceData = campaigns ? campaigns.reduce((months: any[], campaign) => {
-    const month = new Date(campaign.created_at).toLocaleDateString('en', { month: 'short' });
-    const existingMonth = months.find(m => m.month === month);
+  const performanceData = useMemo(() => {
+    if (!campaigns || campaigns.length === 0) return [];
     
-    // Use available properties from campaign object
-    const sentCount = (campaign as any).recipients_count || 0;
-    const openedCount = Math.floor(sentCount * 0.4); // Estimated 40% open rate
-    const clickedCount = Math.floor(openedCount * 0.2); // Estimated 20% click rate
-    
-    if (existingMonth) {
-      existingMonth.sent += sentCount;
-      existingMonth.opened += openedCount;
-      existingMonth.clicked += clickedCount;
-    } else {
-      months.push({
-        month,
-        sent: sentCount,
-        opened: openedCount,
-        clicked: clickedCount
-      });
-    }
-    return months;
-  }, []) : [];
+    return campaigns.reduce((months: any[], campaign) => {
+      const month = new Date(campaign.created_at).toLocaleDateString('en', { month: 'short' });
+      const existingMonth = months.find(m => m.month === month);
+      
+      // Use available properties from campaign object
+      const sentCount = campaign.stats?.sent || 0;
+      const openedCount = campaign.stats?.opened || 0;
+      const clickedCount = campaign.stats?.clicked || 0;
+      
+      if (existingMonth) {
+        existingMonth.sent += sentCount;
+        existingMonth.opened += openedCount;
+        existingMonth.clicked += clickedCount;
+      } else {
+        months.push({
+          month,
+          sent: sentCount,
+          opened: openedCount,
+          clicked: clickedCount
+        });
+      }
+      return months;
+    }, []);
+  }, [campaigns]);
 
   return (
     <div className="space-y-6">

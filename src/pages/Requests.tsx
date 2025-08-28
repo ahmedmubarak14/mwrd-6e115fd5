@@ -230,22 +230,65 @@ const Requests = () => {
           ))}
         </div>
       ) : (
-        <EmptyState
-          icon={Package}
-          title={searchTerm || statusFilter !== "all" ? "No requests found" : t('requests.noRequests')}
-          description={
-            searchTerm || statusFilter !== "all"
-              ? "Try adjusting your search criteria or filters"
-              : t('requests.createFirst')
-          }
-          action={
-            !searchTerm && statusFilter === "all" ? {
-              label: t('requests.createNew'),
-              onClick: () => navigate('/requests/create'),
-              variant: "default" as const
-            } : undefined
-          }
-        />
+        <Card className="border-dashed">
+          <CardContent className="p-12 text-center">
+            <div className="mx-auto w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+              <FileText className="h-12 w-12 text-primary" />
+            </div>
+            
+            <h3 className="text-xl font-semibold text-foreground mb-2">
+              {searchTerm || statusFilter !== "all" ? "No requests found" : "Start Your First Request"}
+            </h3>
+            
+            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+              {searchTerm || statusFilter !== "all" 
+                ? "Try adjusting your search criteria or filters to find what you're looking for" 
+                : "Create your first procurement request to connect with qualified vendors and get competitive offers"}
+            </p>
+
+            {!searchTerm && statusFilter === "all" && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm max-w-2xl mx-auto mb-6">
+                  <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+                    <CheckCircle className="h-4 w-4 text-success" />
+                    <span>Fast vendor matching</span>
+                  </div>
+                  <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+                    <CheckCircle className="h-4 w-4 text-success" />
+                    <span>Competitive offers</span>
+                  </div>
+                  <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
+                    <CheckCircle className="h-4 w-4 text-success" />
+                    <span>Secure transactions</span>
+                  </div>
+                </div>
+
+                <Button 
+                  size="lg" 
+                  className="w-full md:w-auto gap-2"
+                  onClick={() => navigate('/requests/create')}
+                >
+                  <Plus className="h-4 w-4" />
+                  Create Your First Request
+                </Button>
+              </div>
+            )}
+
+            {(searchTerm || statusFilter !== "all") && (
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setSearchTerm("");
+                  setStatusFilter("all");
+                }}
+                className="gap-2"
+              >
+                <Package className="h-4 w-4" />
+                Clear Filters
+              </Button>
+            )}
+          </CardContent>
+        </Card>
       )}
     </ClientPageContainer>
   );
