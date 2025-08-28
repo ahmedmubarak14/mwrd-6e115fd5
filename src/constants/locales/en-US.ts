@@ -222,6 +222,9 @@ export const enUS = {
     online: 'Online'
   },
   admin: {
+    title: 'Admin Dashboard',
+    titleShort: 'Admin',
+    navigation: 'Navigation',
     dashboard: 'Admin Dashboard',
     welcomeBack: 'Welcome back, Admin',
     loadingDashboard: 'Loading dashboard...',
@@ -280,9 +283,6 @@ export const enUS = {
     // Access Control
     accessDenied: 'Access Denied',
     accessDeniedDescription: 'You need administrator privileges to access this area.',
-    
-    // Core Admin Interface
-    title: 'Admin Panel',
     
     // Navigation Menu Items  
     requests: 'Requests',

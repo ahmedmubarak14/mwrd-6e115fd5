@@ -1,8 +1,18 @@
 
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { 
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  useSidebar
+} from "@/components/ui/sidebar";
 import { 
   LayoutDashboard,
   Users,
@@ -23,7 +33,6 @@ import {
 } from "lucide-react";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
-import { AdminNavItem } from "./AdminNavItem";
 import { cn } from "@/lib/utils";
 
 interface AdminSidebarProps {
@@ -33,6 +42,7 @@ interface AdminSidebarProps {
 export const AdminSidebar = ({ className }: AdminSidebarProps) => {
   const location = useLocation();
   const { getPendingTicketsCount } = useSupportTickets();
+  const { state } = useSidebar();
   const languageContext = useOptionalLanguage();
   const { t, isRTL } = languageContext || { 
     t: (key: string) => key, 
@@ -125,33 +135,73 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
     },
   ];
 
+  const isActive = (path: string) => location.pathname === path;
+  const isParentActive = (path: string) => location.pathname.startsWith(path) && path !== '/admin/dashboard';
+
   return (
-    <div className={cn(
-      "w-64 border-r bg-card h-full flex-shrink-0 transition-all duration-200",
-      className
-    )} dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="flex h-full flex-col">
-        <div className="flex h-14 items-center justify-between border-b px-4">
-          <h2 className="admin-subtitle truncate">
-            {t('admin.title')}
+    <Sidebar 
+      className={cn("border-sidebar-border", className)} 
+      dir={isRTL ? 'rtl' : 'ltr'}
+    >
+      <SidebarHeader className="border-b border-sidebar-border">
+        <div className="flex h-14 items-center justify-between px-4">
+          <h2 className={cn(
+            "font-semibold text-sidebar-foreground truncate",
+            state === "collapsed" ? "text-xs" : "text-lg"
+          )}>
+            {state === "collapsed" ? t('admin.titleShort') || "Admin" : t('admin.title')}
           </h2>
         </div>
-        <ScrollArea className="flex-1 px-3">
-          <div className="space-y-1 py-2">
-            {navigation.map((item) => (
-              <AdminNavItem
-                key={item.href}
-                href={item.href}
-                icon={item.icon}
-                label={item.name}
-                badge={item.badge}
-                badgeVariant={item.badgeVariant}
-                variant="sidebar"
-              />
-            ))}
-          </div>
-        </ScrollArea>
-      </div>
-    </div>
+      </SidebarHeader>
+      
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-xs uppercase tracking-wider text-muted-foreground px-3 py-2">
+            {state === "collapsed" ? "" : t('admin.navigation') || "Navigation"}
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {navigation.map((item) => {
+                const active = isActive(item.href) || isParentActive(item.href);
+                return (
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton 
+                      asChild
+                      isActive={active}
+                      tooltip={item.name}
+                      className={cn(
+                        "group relative transition-all duration-200",
+                        active && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                      )}
+                    >
+                      <a href={item.href} className="flex items-center gap-3 px-3 py-2">
+                        <item.icon className={cn(
+                          "h-4 w-4 shrink-0 transition-colors",
+                          active ? "text-sidebar-accent-foreground" : "text-muted-foreground"
+                        )} />
+                        <span className="truncate flex-1">
+                          {item.name}
+                        </span>
+                        {item.badge && item.badge > 0 && (
+                          <Badge 
+                            variant={item.badgeVariant || "secondary"} 
+                            className={cn(
+                              "h-5 w-5 p-0 text-xs flex items-center justify-center shrink-0",
+                              "animate-pulse"
+                            )}
+                          >
+                            {item.badge > 99 ? '99+' : item.badge}
+                          </Badge>
+                        )}
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
   );
 };

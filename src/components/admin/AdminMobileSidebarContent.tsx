@@ -1,7 +1,14 @@
-import { Link, useLocation } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { 
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton
+} from "@/components/ui/sidebar";
 import { 
   LayoutDashboard,
   Users,
@@ -17,11 +24,13 @@ import {
   FolderOpen,
   Building2,
   Ticket,
-  Crown
+  Crown,
+  User
 } from "lucide-react";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
-import { AdminNavItem } from "./AdminNavItem";
+import { cn } from "@/lib/utils";
+import { useLocation } from "react-router-dom";
 
 interface AdminMobileSidebarContentProps {
   onItemClick?: () => void;
@@ -86,6 +95,11 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
       badgeVariant: "destructive" as const,
     },
     {
+      name: t('admin.communications'),
+      href: "/admin/communications",
+      icon: MessageSquare,
+    },
+    {
       name: t('admin.expertConsultations'),
       href: "/admin/content/consultations",
       icon: HelpCircle,
@@ -110,31 +124,77 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
       href: "/admin/settings",
       icon: Settings,
     },
+    {
+      name: t('admin.profile'),
+      href: "/admin/profile",
+      icon: User,
+    },
   ];
 
+  const isActive = (path: string) => location.pathname === path;
+  const isParentActive = (path: string) => location.pathname.startsWith(path) && path !== '/admin/dashboard';
+
   return (
-      <div className="h-full flex flex-col bg-background" dir={isRTL ? 'rtl' : 'ltr'}>
-        <div className="flex h-16 items-center justify-between border-b px-6 pt-safe">
-          <h2 className="admin-title truncate">
+    <div className="flex h-full flex-col bg-sidebar" dir={isRTL ? 'rtl' : 'ltr'}>
+      <SidebarHeader className="border-b border-sidebar-border">
+        <div className="flex h-14 items-center justify-between px-4">
+          <h2 className="font-semibold text-lg text-sidebar-foreground truncate">
             {t('admin.title')}
           </h2>
         </div>
-        <ScrollArea className="flex-1 px-4">
-          <div className="space-y-2 py-4 pb-safe">
-            {navigation.map((item) => (
-              <AdminNavItem
-                key={item.href}
-                href={item.href}
-                icon={item.icon}
-                label={item.name}
-                badge={item.badge}
-                badgeVariant={item.badgeVariant}
-                variant="mobile"
-                onClick={onItemClick}
-              />
-            ))}
-          </div>
-        </ScrollArea>
-      </div>
+      </SidebarHeader>
+      
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-xs uppercase tracking-wider text-muted-foreground px-3 py-2">
+            {t('admin.navigation') || "Navigation"}
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {navigation.map((item) => {
+                const active = isActive(item.href) || isParentActive(item.href);
+                return (
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton 
+                      asChild
+                      isActive={active}
+                      className={cn(
+                        "group relative transition-all duration-200 h-14 px-4",
+                        active && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                      )}
+                    >
+                      <a 
+                        href={item.href} 
+                        className="flex items-center gap-3"
+                        onClick={onItemClick}
+                      >
+                        <item.icon className={cn(
+                          "h-5 w-5 shrink-0 transition-colors",
+                          active ? "text-sidebar-accent-foreground" : "text-muted-foreground"
+                        )} />
+                        <span className="truncate flex-1">
+                          {item.name}
+                        </span>
+                        {item.badge && item.badge > 0 && (
+                          <Badge 
+                            variant={item.badgeVariant || "secondary"} 
+                            className={cn(
+                              "h-5 w-5 p-0 text-xs flex items-center justify-center shrink-0",
+                              "animate-pulse"
+                            )}
+                          >
+                            {item.badge > 99 ? '99+' : item.badge}
+                          </Badge>
+                        )}
+                      </a>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </div>
   );
 };

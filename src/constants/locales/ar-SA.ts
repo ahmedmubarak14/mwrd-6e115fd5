@@ -223,7 +223,9 @@ export const arSA = {
   },
   admin: {
     // Core Admin Interface
-    title: 'لوحة المدير',
+    title: 'لوحة تحكم الإدارة',
+    titleShort: 'إدارة',
+    navigation: 'التنقل',
     dashboard: 'لوحة تحكم المدير',
     welcomeBack: 'مرحباً بعودتك، المدير',
     loadingDashboard: 'جار تحميل لوحة التحكم...',
