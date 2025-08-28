@@ -7,8 +7,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Checkbox } from "@/components/ui/checkbox";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { format } from "date-fns";
-import { Users, UserCheck, Clock, TrendingUp, Download, RefreshCw, UserPlus, Mail, Shield, FileCheck } from "lucide-react";
+import { Users, UserCheck, Clock, TrendingUp, Download, RefreshCw, UserPlus, Mail, Shield, FileCheck, UserCog } from "lucide-react";
 import { AdminPageContainer } from "@/components/admin/AdminPageContainer";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -34,6 +36,10 @@ export default function AdminUsers() {
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+  const [bulkRole, setBulkRole] = useState<string>("");
+  const [bulkStatus, setBulkStatus] = useState<string>("");
+  const [bulkLoading, setBulkLoading] = useState(false);
   const { toast } = useToast();
 
   const fetchUsers = async () => {
@@ -118,6 +124,107 @@ export default function AdminUsers() {
     });
   };
 
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedUsers(filteredUsers.map(user => user.id));
+    } else {
+      setSelectedUsers([]);
+    }
+  };
+
+  const handleUserSelection = (userId: string, checked: boolean) => {
+    if (checked) {
+      setSelectedUsers([...selectedUsers, userId]);
+    } else {
+      setSelectedUsers(selectedUsers.filter(id => id !== userId));
+    }
+  };
+
+  const handleBulkRoleUpdate = async () => {
+    if (!bulkRole || selectedUsers.length === 0) return;
+
+    setBulkLoading(true);
+    try {
+      const { error } = await supabase
+        .from('user_profiles')
+        .update({ role: bulkRole as 'admin' | 'client' | 'vendor' })
+        .in('id', selectedUsers);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: `Updated role for ${selectedUsers.length} users`,
+      });
+
+      fetchUsers();
+      setSelectedUsers([]);
+      setBulkRole("");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update user roles",
+        variant: "destructive",
+      });
+    } finally {
+      setBulkLoading(false);
+    }
+  };
+
+  const handleBulkStatusUpdate = async () => {
+    if (!bulkStatus || selectedUsers.length === 0) return;
+
+    setBulkLoading(true);
+    try {
+      const { error } = await supabase
+        .from('user_profiles')
+        .update({ status: bulkStatus as 'pending' | 'approved' | 'blocked' | 'rejected' })
+        .in('id', selectedUsers);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: `Updated status for ${selectedUsers.length} users`,
+      });
+
+      fetchUsers();
+      setSelectedUsers([]);
+      setBulkStatus("");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update user status",
+        variant: "destructive",
+      });
+    } finally {
+      setBulkLoading(false);
+    }
+  };
+
+  const handleExportSelected = () => {
+    const exportUsers = filteredUsers.filter(user => selectedUsers.includes(user.id));
+    const csvContent = [
+      'User ID,Name,Email,Role,Status,Verification,Company,Phone,Created Date',
+      ...exportUsers.map(user => 
+        `${user.id},${user.full_name},${user.email},${user.role},${user.status},${user.verification_status},${user.company_name || ''},${user.phone || ''},${format(new Date(user.created_at), 'yyyy-MM-dd')}`
+      )
+    ].join('\n');
+    
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `selected-users-${format(new Date(), 'yyyy-MM-dd')}.csv`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    
+    toast({
+      title: "Export completed",
+      description: `Exported ${selectedUsers.length} selected users`,
+    });
+  };
+
   const getStatusBadge = (status: string) => {
     const variants = {
       pending: "secondary",
@@ -164,6 +271,9 @@ export default function AdminUsers() {
     
     return searchMatch && roleMatch && statusMatch;
   });
+
+  const selectedCount = selectedUsers.length;
+  const allSelected = selectedCount === filteredUsers.length && filteredUsers.length > 0;
 
   if (loading) {
     return (
@@ -226,13 +336,13 @@ export default function AdminUsers() {
           </Card>
         </div>
 
-        {/* Filters */}
+        {/* Filters & Bulk Actions */}
         <Card>
           <CardHeader>
             <CardTitle>Filters & Actions</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
               <Input
                 placeholder="Search users..."
                 value={searchTerm}
@@ -274,6 +384,114 @@ export default function AdminUsers() {
                 Export CSV
               </Button>
             </div>
+
+            {/* Bulk Actions */}
+            {filteredUsers.length > 0 && (
+              <div className="border-t pt-4">
+                <div className="flex items-center space-x-2 mb-4">
+                  <Checkbox
+                    id="select-all"
+                    checked={allSelected}
+                    onCheckedChange={handleSelectAll}
+                  />
+                  <label htmlFor="select-all" className="text-sm font-medium">
+                    Select All ({selectedCount} selected)
+                  </label>
+                </div>
+
+                {selectedCount > 0 && (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="flex gap-2">
+                      <Select value={bulkRole} onValueChange={setBulkRole}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="client">Client</SelectItem>
+                          <SelectItem value="vendor">Vendor</SelectItem>
+                          <SelectItem value="admin">Admin</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            disabled={!bulkRole || bulkLoading}
+                          >
+                            <UserCog className="h-4 w-4 mr-2" />
+                            Update Role
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Confirm Bulk Action</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Update role to "{bulkRole}" for {selectedCount} selected users?
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={handleBulkRoleUpdate}>
+                              Confirm
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <Select value={bulkStatus} onValueChange={setBulkStatus}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="pending">Pending</SelectItem>
+                          <SelectItem value="approved">Approved</SelectItem>
+                          <SelectItem value="blocked">Blocked</SelectItem>
+                          <SelectItem value="rejected">Rejected</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            disabled={!bulkStatus || bulkLoading}
+                          >
+                            <Shield className="h-4 w-4 mr-2" />
+                            Update Status
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Confirm Bulk Action</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Update status to "{bulkStatus}" for {selectedCount} selected users?
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={handleBulkStatusUpdate}>
+                              Confirm
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={handleExportSelected}
+                    >
+                      <Download className="h-4 w-4 mr-2" />
+                      Export Selected
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -307,6 +525,10 @@ export default function AdminUsers() {
                     <CardHeader className="pb-3">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
+                          <Checkbox
+                            checked={selectedUsers.includes(user.id)}
+                            onCheckedChange={(checked) => handleUserSelection(user.id, checked as boolean)}
+                          />
                           <Users className="h-5 w-5 text-foreground" />
                           <div>
                             <CardTitle className="text-lg">
