@@ -308,7 +308,7 @@ export const UserManagementDashboard: React.FC = () => {
               <CardContent className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-foreground/75">{t('admin.users.approved')}</span>
-                  <Badge variant="default">{stats?.activeUsers || 0}</Badge>
+                  <Badge variant="secondary">{stats?.activeUsers || 0}</Badge>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-foreground/75">{t('admin.users.pending')}</span>
