@@ -139,7 +139,7 @@ export const BasicAnalyticsDashboard: React.FC = () => {
       <div className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
         <div className={cn(isRTL ? "text-right" : "text-left")}>
           <h3 className="text-lg font-semibold">{t('analytics.platformAnalytics')}</h3>
-          <p className="text-sm text-muted-foreground">{t('analytics.comprehensiveInsights')}</p>
+          <p className="text-sm text-foreground/75">{t('analytics.comprehensiveInsights')}</p>
         </div>
         <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
           <SelectTrigger className="w-32">
@@ -158,11 +158,11 @@ export const BasicAnalyticsDashboard: React.FC = () => {
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
             <CardTitle className="text-sm font-medium">{t('analytics.totalUsers')}</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <Users className="h-4 w-4 text-foreground/75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(stats?.totalUsers || 0)}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground/75">
               {t('analytics.registeredUsers')}
             </p>
           </CardContent>
@@ -171,11 +171,11 @@ export const BasicAnalyticsDashboard: React.FC = () => {
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
             <CardTitle className="text-sm font-medium">{t('analytics.totalRequests')}</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
+            <FileText className="h-4 w-4 text-foreground/75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(stats?.totalRequests || 0)}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground/75">
               {t('analytics.serviceRequests')}
             </p>
           </CardContent>
@@ -184,11 +184,11 @@ export const BasicAnalyticsDashboard: React.FC = () => {
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
             <CardTitle className="text-sm font-medium">{t('analytics.totalOffers')}</CardTitle>
-            <Handshake className="h-4 w-4 text-muted-foreground" />
+            <Handshake className="h-4 w-4 text-foreground/75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(stats?.totalOffers || 0)}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground/75">
               {t('analytics.offersSubmitted')}
             </p>
           </CardContent>
@@ -197,11 +197,11 @@ export const BasicAnalyticsDashboard: React.FC = () => {
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
             <CardTitle className="text-sm font-medium">{t('analytics.monthlyRevenue')}</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <DollarSign className="h-4 w-4 text-foreground/75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(stats?.monthlyRevenue || 0)}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground/75">
               {t('analytics.thisMonth')}
             </p>
           </CardContent>
@@ -210,11 +210,11 @@ export const BasicAnalyticsDashboard: React.FC = () => {
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
             <CardTitle className="text-sm font-medium">{t('analytics.totalTransactions')}</CardTitle>
-            <CreditCard className="h-4 w-4 text-muted-foreground" />
+            <CreditCard className="h-4 w-4 text-foreground/75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(stats?.totalTransactions || 0)}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground/75">
               {t('analytics.transactionsProcessed')}
             </p>
           </CardContent>
@@ -223,11 +223,11 @@ export const BasicAnalyticsDashboard: React.FC = () => {
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
             <CardTitle className="text-sm font-medium">{t('analytics.activeSubscriptions')}</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+            <Activity className="h-4 w-4 text-foreground/75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(stats?.activeSubscriptions || 0)}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground/75">
               {t('analytics.currentlyActive')}
             </p>
           </CardContent>
@@ -263,11 +263,11 @@ export const BasicAnalyticsDashboard: React.FC = () => {
                   <div key={log.id} className={cn("flex items-center justify-between p-3 border rounded-lg", isRTL && "flex-row-reverse")}>
                     <div className={cn(isRTL ? "text-right" : "text-left")}>
                       <div className="font-medium">{log.action}</div>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-sm text-foreground/75">
                         {log.user_email} • {new Date(log.timestamp).toLocaleString()}
                       </div>
                       {log.details && (
-                        <div className="text-xs text-muted-foreground mt-1">
+                        <div className="text-xs text-foreground/75 mt-1">
                           {log.details}
                         </div>
                       )}
@@ -278,7 +278,7 @@ export const BasicAnalyticsDashboard: React.FC = () => {
                   </div>
                 ))}
                 {activityLogs.length === 0 && (
-                  <div className={cn("text-center text-muted-foreground py-8", isRTL ? "text-right" : "text-left")}>
+                  <div className={cn("text-center text-foreground/75 py-8", isRTL ? "text-right" : "text-left")}>
                     {t('analytics.noActivityLogs')}
                   </div>
                 )}
@@ -294,7 +294,7 @@ export const BasicAnalyticsDashboard: React.FC = () => {
               <CardDescription>{t('analytics.performanceDescription')}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className={cn("text-center text-muted-foreground py-8", isRTL ? "text-right" : "text-left")}>
+              <div className={cn("text-center text-foreground/75 py-8", isRTL ? "text-right" : "text-left")}>
                 {t('analytics.performanceContent')}
               </div>
             </CardContent>
@@ -308,7 +308,7 @@ export const BasicAnalyticsDashboard: React.FC = () => {
               <CardDescription>{t('analytics.trendsDescription')}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className={cn("text-center text-muted-foreground py-8", isRTL ? "text-right" : "text-left")}>
+              <div className={cn("text-center text-foreground/75 py-8", isRTL ? "text-right" : "text-left")}>
                 {t('analytics.trendsContent')}
               </div>
             </CardContent>

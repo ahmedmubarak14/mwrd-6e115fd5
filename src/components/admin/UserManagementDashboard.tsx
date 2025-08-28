@@ -7,19 +7,19 @@ import { Badge } from '@/components/ui/badge';
 import { 
   Users, 
   UserCheck, 
-  UserX, 
   Clock,
   TrendingUp,
-  FileCheck,
-  UserPlus,
-  Shield,
   Download,
-  RefreshCw
+  RefreshCw,
+  UserPlus,
+  FileCheck
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { useToastFeedback } from '@/hooks/useToastFeedback';
 import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 import { cn } from '@/lib/utils';
+import { DataExporter } from '@/utils/exportUtils';
+import { AddUserModal } from './AddUserModal';
 import { AdvancedUserManagement } from './AdvancedUserManagement';
 import { VerificationQueue } from './VerificationQueue';
 
@@ -35,7 +35,7 @@ interface UserStats {
 }
 
 export const UserManagementDashboard: React.FC = () => {
-  const { toast } = useToast();
+  const { showSuccess, showError } = useToastFeedback();
   const languageContext = useOptionalLanguage();
   const { t, isRTL } = languageContext || { 
     t: (key: string) => key, 
@@ -47,6 +47,7 @@ export const UserManagementDashboard: React.FC = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('30');
   const [isExporting, setIsExporting] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [showAddUserModal, setShowAddUserModal] = useState(false);
 
   useEffect(() => {
     fetchUserStats();
@@ -64,11 +65,7 @@ export const UserManagementDashboard: React.FC = () => {
 
       if (error) {
         console.error('Error fetching users:', error);
-        toast({
-          title: t('common.error'),
-          description: t('common.fetchError'),
-          variant: "destructive",
-        });
+        showError(t('common.fetchError') || error.message);
         return;
       }
 
@@ -93,11 +90,8 @@ export const UserManagementDashboard: React.FC = () => {
         });
       }
     } catch (error: any) {
-      toast({
-        title: t('common.error'),
-        description: error.message,
-        variant: "destructive",
-      });
+      console.error('Error fetching user stats:', error);
+      showError(error.message);
     } finally {
       setLoading(false);
     }
@@ -106,18 +100,23 @@ export const UserManagementDashboard: React.FC = () => {
   const handleExportUsers = async () => {
     setIsExporting(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast({
-        title: t('common.success'),
-        description: t('admin.users.exportSuccess'),
-      });
-    } catch (error) {
-      toast({
-        title: t('common.error'),
-        description: t('admin.users.exportError'),
-        variant: "destructive"
-      });
+      // Fetch all users for export
+      const { data: users, error } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      if (!users || users.length === 0) {
+        showError(t('admin.users.noUsersFound'));
+        return;
+      }
+
+      DataExporter.exportUserData(users);
+      showSuccess(t('admin.users.exportSuccess'));
+    } catch (error: any) {
+      showError(t('admin.users.exportError') || error.message);
     } finally {
       setIsExporting(false);
     }
@@ -127,27 +126,16 @@ export const UserManagementDashboard: React.FC = () => {
     setIsRefreshing(true);
     try {
       await fetchUserStats();
-      
-      toast({
-        title: t('common.success'),
-        description: t('admin.users.refreshSuccess'),
-      });
-    } catch (error) {
-      toast({
-        title: t('common.error'),
-        description: t('admin.users.refreshError'),
-        variant: "destructive"
-      });
+      showSuccess(t('admin.users.refreshSuccess'));
+    } catch (error: any) {
+      showError(t('admin.users.refreshError') || error.message);
     } finally {
       setIsRefreshing(false);
     }
   };
 
-  const handleAddUser = () => {
-    toast({
-      title: t('admin.users.addUser'),
-      description: t('admin.users.addUserDescription'),
-    });
+  const handleUserAdded = () => {
+    fetchUserStats(); // Refresh stats after adding user
   };
 
   if (loading) {
@@ -164,7 +152,7 @@ export const UserManagementDashboard: React.FC = () => {
       <div className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
         <div className={cn(isRTL ? "text-right" : "text-left")}>
           <h3 className="text-lg font-semibold">{t('admin.userManagement.management')}</h3>
-          <p className="text-sm text-foreground opacity-75">{t('admin.userManagement.manageDescription')}</p>
+          <p className="text-sm text-foreground/75">{t('admin.userManagement.manageDescription')}</p>
         </div>
         <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
           <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
@@ -172,9 +160,9 @@ export const UserManagementDashboard: React.FC = () => {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="7">{t('analytics.last7Days')}</SelectItem>
-              <SelectItem value="30">{t('analytics.last30Days')}</SelectItem>
-              <SelectItem value="90">{t('analytics.last90Days')}</SelectItem>
+              <SelectItem value="7">{t('time.last7days')}</SelectItem>
+              <SelectItem value="30">{t('time.last30days')}</SelectItem>
+              <SelectItem value="90">{t('time.last3months')}</SelectItem>
             </SelectContent>
           </Select>
           <Button
@@ -182,7 +170,7 @@ export const UserManagementDashboard: React.FC = () => {
             size="sm"
             onClick={handleRefreshData}
             disabled={isRefreshing}
-            className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}
+            className={cn("gap-2", isRTL && "flex-row-reverse")}
           >
             <RefreshCw className={cn("h-4 w-4", isRefreshing && "animate-spin")} />
             {t('common.refresh')}
@@ -192,15 +180,16 @@ export const UserManagementDashboard: React.FC = () => {
             size="sm"
             onClick={handleExportUsers}
             disabled={isExporting}
-            className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}
+            className={cn("gap-2", isRTL && "flex-row-reverse")}
           >
             <Download className="h-4 w-4" />
-            {isExporting ? t('common.exporting') : t('common.export')}
+            {isExporting ? t('common.loading') : t('common.export')}
           </Button>
           <Button
+            variant="default"
             size="sm"
-            onClick={handleAddUser}
-            className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}
+            onClick={() => setShowAddUserModal(true)}
+            className={cn("gap-2", isRTL && "flex-row-reverse")}
           >
             <UserPlus className="h-4 w-4" />
             {t('admin.users.addUser')}
@@ -212,13 +201,13 @@ export const UserManagementDashboard: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{t('admin.users.totalUsers')}</CardTitle>
-            <Users className="h-4 w-4 text-foreground opacity-75" />
+            <CardTitle className="text-sm font-medium">{t('admin.totalUsers')}</CardTitle>
+            <Users className="h-4 w-4 text-foreground/75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats?.totalUsers || 0}</div>
-            <p className="text-xs text-foreground opacity-75">
-              {t('admin.users.registeredUsers')}
+            <p className="text-xs text-foreground/75">
+              {t('admin.users.totalUsers')}
             </p>
           </CardContent>
         </Card>
@@ -226,12 +215,12 @@ export const UserManagementDashboard: React.FC = () => {
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
             <CardTitle className="text-sm font-medium">{t('admin.users.activeUsers')}</CardTitle>
-            <UserCheck className="h-4 w-4 text-foreground opacity-75" />
+            <UserCheck className="h-4 w-4 text-foreground/75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats?.activeUsers || 0}</div>
-            <p className="text-xs text-foreground opacity-75">
-              {t('admin.users.approvedUsers')}
+            <p className="text-xs text-foreground/75">
+              {t('admin.users.weeklyGrowth')}
             </p>
           </CardContent>
         </Card>
@@ -239,12 +228,12 @@ export const UserManagementDashboard: React.FC = () => {
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
             <CardTitle className="text-sm font-medium">{t('admin.users.pendingVerifications')}</CardTitle>
-            <Clock className="h-4 w-4 text-foreground opacity-75" />
+            <Clock className="h-4 w-4 text-foreground/75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats?.pendingVerifications || 0}</div>
-            <p className="text-xs text-foreground opacity-75">
-              {t('admin.users.awaitingReview')}
+            <p className="text-xs text-foreground/75">
+              {t('admin.users.awaitingVerification')}
             </p>
           </CardContent>
         </Card>
@@ -252,12 +241,12 @@ export const UserManagementDashboard: React.FC = () => {
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
             <CardTitle className="text-sm font-medium">{t('admin.users.newRegistrations')}</CardTitle>
-            <TrendingUp className="h-4 w-4 text-foreground opacity-75" />
+            <TrendingUp className="h-4 w-4 text-foreground/75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats?.newRegistrations || 0}</div>
-            <p className="text-xs text-foreground opacity-75">
-              {t('admin.users.lastPeriod')} {selectedPeriod} {t('admin.users.days')}
+            <p className="text-xs text-foreground/75">
+              {t('admin.users.thisWeek')}
             </p>
           </CardContent>
         </Card>
@@ -267,17 +256,17 @@ export const UserManagementDashboard: React.FC = () => {
       <Tabs defaultValue="users" className="space-y-4">
         <div className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
           <TabsList>
-            <TabsTrigger value="users" className={cn("flex items-center gap-2 text-foreground", isRTL && "flex-row-reverse")}>
+            <TabsTrigger value="users" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
               <Users className="h-4 w-4" />
-              {t('admin.users')}
+              {t('admin.users.user')}
             </TabsTrigger>
-            <TabsTrigger value="verification" className={cn("flex items-center gap-2 text-foreground", isRTL && "flex-row-reverse")}>
+            <TabsTrigger value="verification" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
               <FileCheck className="h-4 w-4" />
               {t('admin.verification.queue')}
             </TabsTrigger>
-            <TabsTrigger value="analytics" className={cn("flex items-center gap-2 text-foreground", isRTL && "flex-row-reverse")}>
+            <TabsTrigger value="analytics" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
               <TrendingUp className="h-4 w-4" />
-              {t('admin.users.analytics')}
+              {t('admin.analytics')}
             </TabsTrigger>
           </TabsList>
         </div>
@@ -294,19 +283,19 @@ export const UserManagementDashboard: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <Card>
               <CardHeader>
-                <CardTitle className="text-sm font-medium">{t('admin.users.usersByRole')}</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.users.role')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="flex justify-between">
-                  <span className="text-foreground opacity-75">{t('admin.users.admin')}</span>
+                  <span className="text-foreground/75">{t('admin.users.admin')}</span>
                   <Badge variant="destructive">{stats?.adminUsers || 0}</Badge>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-foreground opacity-75">{t('admin.users.vendor')}</span>
+                  <span className="text-foreground/75">{t('admin.users.vendor')}</span>
                   <Badge variant="secondary">{stats?.vendorUsers || 0}</Badge>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-foreground opacity-75">{t('admin.users.client')}</span>
+                  <span className="text-foreground/75">{t('admin.users.client')}</span>
                   <Badge variant="outline">{stats?.clientUsers || 0}</Badge>
                 </div>
               </CardContent>
@@ -314,19 +303,19 @@ export const UserManagementDashboard: React.FC = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-sm font-medium">{t('admin.users.usersByStatus')}</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.users.status')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 <div className="flex justify-between">
-                  <span className="text-foreground opacity-75">{t('admin.users.approved')}</span>
+                  <span className="text-foreground/75">{t('admin.users.approved')}</span>
                   <Badge variant="default">{stats?.activeUsers || 0}</Badge>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-foreground opacity-75">{t('admin.users.pending')}</span>
+                  <span className="text-foreground/75">{t('admin.users.pending')}</span>
                   <Badge variant="secondary">{stats?.pendingVerifications || 0}</Badge>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-foreground opacity-75">{t('admin.users.blocked')}</span>
+                  <span className="text-foreground/75">{t('admin.users.blocked')}</span>
                   <Badge variant="destructive">{stats?.blockedUsers || 0}</Badge>
                 </div>
               </CardContent>
@@ -334,17 +323,23 @@ export const UserManagementDashboard: React.FC = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle className="text-sm font-medium">{t('admin.users.growthMetrics')}</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.analytics')}</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-center text-foreground opacity-75 py-4">
-                  {t('admin.users.analyticsContent')}
+                <div className="text-center text-foreground/75 py-4">
+                  {t('common.noResults')}
                 </div>
               </CardContent>
             </Card>
           </div>
         </TabsContent>
       </Tabs>
+
+      <AddUserModal
+        isOpen={showAddUserModal}
+        onClose={() => setShowAddUserModal(false)}
+        onUserAdded={handleUserAdded}
+      />
     </div>
   );
 };
