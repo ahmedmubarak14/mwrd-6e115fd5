@@ -105,6 +105,11 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
       href: "/admin/analytics",
       icon: BarChart3,
     },
+    {
+      name: t('admin.settings'),
+      href: "/admin/settings",
+      icon: Settings,
+    },
   ];
 
   return (

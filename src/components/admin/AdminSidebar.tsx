@@ -114,6 +114,11 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
       icon: BarChart3,
     },
     {
+      name: t('admin.settings'),
+      href: "/admin/settings",
+      icon: Settings,
+    },
+    {
       name: t('admin.profile'),
       href: "/admin/profile",
       icon: User,

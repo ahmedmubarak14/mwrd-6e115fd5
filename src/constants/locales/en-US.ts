@@ -294,6 +294,7 @@ export const enUS = {
     categoryManagement: 'Category Management',
     verificationQueue: 'Verification Queue',
     analytics: 'Analytics',
+    settings: 'Settings',
     profile: 'Profile',
     
     // Header Interface
