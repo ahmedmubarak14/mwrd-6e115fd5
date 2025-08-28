@@ -321,11 +321,17 @@ export const EnhancedVendorProfileModal: React.FC<EnhancedVendorProfileModalProp
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
-                      {vendorProfile.categories?.map((category) => (
-                        <Badge key={category.id} variant="secondary">
-                          {isArabic ? category.name_ar : category.name_en}
-                        </Badge>
-                      ))}
+                      {vendorProfile.categories && vendorProfile.categories.length > 0 ? (
+                        vendorProfile.categories.map((category, index) => (
+                          <Badge key={category.id || index} variant="secondary">
+                            {isArabic ? category.name_ar : category.name_en}
+                          </Badge>
+                        ))
+                      ) : (
+                        <p className="text-muted-foreground text-sm">
+                          {isArabic ? "لم يتم تحديد تخصصات" : "No specializations specified"}
+                        </p>
+                      )}
                     </div>
                   </CardContent>
                 </Card>

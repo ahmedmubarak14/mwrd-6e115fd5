@@ -56,6 +56,8 @@ export const useVendorProfile = (vendorId: string) => {
       setLoading(true);
       setError(null);
 
+      console.log('Fetching vendor profile for ID:', vendorId);
+
       // Fetch basic profile data
       const { data: profileData, error: profileError } = await supabase
         .from('user_profiles')
@@ -65,6 +67,7 @@ export const useVendorProfile = (vendorId: string) => {
         .single();
 
       if (profileError) throw profileError;
+      console.log('Profile data:', profileData);
 
       // Fetch extended profile data
       const { data: extendedData } = await supabase
@@ -73,8 +76,10 @@ export const useVendorProfile = (vendorId: string) => {
         .eq('vendor_id', vendorId)
         .single();
 
-      // Fetch vendor categories
-      const { data: categoriesData } = await supabase
+      console.log('Extended data:', extendedData);
+
+      // Fetch vendor categories - try both new and legacy approaches
+      const { data: categoriesData, error: categoriesError } = await supabase
         .from('vendor_categories')
         .select(`
           categories (
@@ -85,6 +90,13 @@ export const useVendorProfile = (vendorId: string) => {
           )
         `)
         .eq('vendor_id', vendorId);
+
+      console.log('Categories data from vendor_categories table:', categoriesData);
+      console.log('Categories error:', categoriesError);
+
+      // Also check legacy categories from user_profiles
+      const legacyCategories = profileData?.categories || [];
+      console.log('Legacy categories from user_profiles:', legacyCategories);
 
       // Fetch statistics
       const [offersResult, ordersResult] = await Promise.all([
@@ -105,11 +117,32 @@ export const useVendorProfile = (vendorId: string) => {
       // Calculate response rate (simplified - you might want to implement this differently)
       const responseRate = totalOffers > 0 ? Math.min(95, 70 + (completedOrders / totalOffers) * 25) : 0;
 
+      // Process categories - use both new and legacy data
+      let processedCategories = [];
+      
+      // First, try to use the new vendor_categories data
+      if (categoriesData && categoriesData.length > 0) {
+        processedCategories = categoriesData.map(item => item.categories).filter(Boolean);
+      }
+      
+      // If no data from vendor_categories, use legacy categories from user_profiles
+      if (processedCategories.length === 0 && legacyCategories.length > 0) {
+        // Convert legacy category strings to category objects
+        processedCategories = legacyCategories.map(categoryName => ({
+          id: `legacy-${categoryName}`,
+          name_en: categoryName,
+          name_ar: categoryName, // You might want to add proper Arabic translations
+          slug: categoryName.toLowerCase().replace(/\s+/g, '-')
+        }));
+      }
+
+      console.log('Final processed categories:', processedCategories);
+
       // Combine all data
       const combinedProfile: VendorProfileData = {
         ...profileData,
         ...extendedData,
-        categories: categoriesData?.map(item => item.categories).filter(Boolean) || [],
+        categories: processedCategories,
         total_offers: totalOffers,
         total_completed_orders: completedOrders,
         avg_rating: 4.2 + Math.random() * 0.6, // Placeholder - implement real rating system
@@ -118,6 +151,7 @@ export const useVendorProfile = (vendorId: string) => {
         avg_response_time_hours: Math.floor(Math.random() * 12) + 1
       };
 
+      console.log('Final combined profile:', combinedProfile);
       setVendorProfile(combinedProfile);
     } catch (err: any) {
       console.error('Error fetching vendor profile:', err);
