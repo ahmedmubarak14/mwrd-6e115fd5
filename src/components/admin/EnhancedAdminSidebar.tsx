@@ -295,8 +295,8 @@ export const EnhancedAdminSidebar = ({ className }: AdminSidebarProps) => {
                           tooltip={state === "collapsed" ? item.name : undefined}
                           className={cn(
                             "group relative transition-all duration-200 hover-scale",
-                            "hover:bg-sidebar-accent/10 hover:text-sidebar-accent-foreground",
-                            active && "bg-sidebar-accent text-sidebar-accent-foreground font-medium shadow-sm",
+                            "hover:bg-accent/10 hover:text-foreground",
+                            active && "bg-accent text-accent-foreground font-medium shadow-sm",
                             state === "collapsed" ? "justify-center px-2" : "px-3 py-2"
                           )}
                         >
@@ -310,7 +310,7 @@ export const EnhancedAdminSidebar = ({ className }: AdminSidebarProps) => {
                             <item.icon className={cn(
                               "shrink-0 transition-all duration-200",
                               state === "collapsed" ? "h-5 w-5" : "h-4 w-4",
-                              active ? "text-sidebar-accent-foreground scale-110" : "text-muted-foreground group-hover:text-sidebar-accent group-hover:scale-105"
+                              active ? "text-primary scale-110" : "text-muted-foreground group-hover:text-primary group-hover:scale-105"
                             )} />
                             
                             {state !== "collapsed" && (
@@ -337,9 +337,9 @@ export const EnhancedAdminSidebar = ({ className }: AdminSidebarProps) => {
                             {/* Active indicator */}
                             {active && (
                               <div className={cn(
-                                "absolute inset-0 bg-gradient-to-r from-sidebar-accent/5 to-transparent",
+                                "absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent",
                                 "opacity-50 rounded-md pointer-events-none",
-                                isRTL && "from-transparent to-sidebar-accent/5"
+                                isRTL && "from-transparent to-accent/5"
                               )} />
                             )}
                           </Link>
