@@ -374,6 +374,90 @@ export type Database = {
           },
         ]
       }
+      email_campaigns: {
+        Row: {
+          clicked_count: number | null
+          created_at: string
+          created_by: string
+          id: string
+          name: string
+          opened_count: number | null
+          recipients_count: number | null
+          scheduled_for: string | null
+          sent_at: string | null
+          status: string
+          subject: string
+          target_audience: string
+          template_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          clicked_count?: number | null
+          created_at?: string
+          created_by: string
+          id?: string
+          name: string
+          opened_count?: number | null
+          recipients_count?: number | null
+          scheduled_for?: string | null
+          sent_at?: string | null
+          status?: string
+          subject: string
+          target_audience?: string
+          template_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          clicked_count?: number | null
+          created_at?: string
+          created_by?: string
+          id?: string
+          name?: string
+          opened_count?: number | null
+          recipients_count?: number | null
+          scheduled_for?: string | null
+          sent_at?: string | null
+          status?: string
+          subject?: string
+          target_audience?: string
+          template_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      email_templates: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string
+          html_content: string
+          id: string
+          name: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          created_by: string
+          html_content: string
+          id?: string
+          name: string
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string
+          html_content?: string
+          id?: string
+          name?: string
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       expert_consultations: {
         Row: {
           company: string | null
@@ -976,6 +1060,75 @@ export type Database = {
           },
         ]
       }
+      security_incidents: {
+        Row: {
+          affected_systems: string | null
+          assigned_to: string | null
+          category: string
+          created_at: string
+          description: string
+          id: string
+          reported_by: string | null
+          resolved_at: string | null
+          severity: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          affected_systems?: string | null
+          assigned_to?: string | null
+          category?: string
+          created_at?: string
+          description: string
+          id?: string
+          reported_by?: string | null
+          resolved_at?: string | null
+          severity?: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          affected_systems?: string | null
+          assigned_to?: string | null
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          reported_by?: string | null
+          resolved_at?: string | null
+          severity?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      security_metrics: {
+        Row: {
+          created_at: string
+          id: string
+          metric_type: string
+          metric_value: Json
+          recorded_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          metric_type: string
+          metric_value?: Json
+          recorded_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          metric_type?: string
+          metric_value?: Json
+          recorded_at?: string
+        }
+        Relationships: []
+      }
       support_tickets: {
         Row: {
           assigned_admin_id: string | null
@@ -1009,6 +1162,39 @@ export type Database = {
           subject?: string
           updated_at?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      system_health_metrics: {
+        Row: {
+          created_at: string
+          id: string
+          metadata: Json | null
+          metric_name: string
+          metric_value: number
+          recorded_at: string
+          status: string | null
+          unit: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          metric_name: string
+          metric_value: number
+          recorded_at?: string
+          status?: string | null
+          unit?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          metric_name?: string
+          metric_value?: number
+          recorded_at?: string
+          status?: string | null
+          unit?: string | null
         }
         Relationships: []
       }
