@@ -4,7 +4,7 @@ import { CleanHeader } from "@/components/ui/layout/CleanHeader";
 import { CleanSidebar } from "@/components/vendor/CleanSidebar";
 import { MobileContainer } from "@/components/ui/MobileContainer";
 import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 
@@ -16,7 +16,8 @@ interface CleanDashboardLayoutProps {
 export const CleanDashboardLayout = ({ children, className }: CleanDashboardLayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { userProfile } = useAuth();
-  const { isRTL } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const isRTL = languageContext?.isRTL || false;
   const isMobile = useIsMobile();
 
   if (isMobile) {
