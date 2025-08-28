@@ -383,15 +383,6 @@ export default function CreateRequest() {
                     <div className="h-2 w-2 rounded-full bg-muted-foreground" />
                   </div>
                   <div>
-                    <p className="font-medium text-sm">Admin Review</p>
-                    <p className="text-xs text-muted-foreground">Request gets reviewed and approved</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="rounded-full bg-muted p-1.5">
-                    <div className="h-2 w-2 rounded-full bg-muted-foreground" />
-                  </div>
-                  <div>
                     <p className="font-medium text-sm">Vendor Matching</p>
                     <p className="text-xs text-muted-foreground">Qualified vendors submit offers</p>
                   </div>
