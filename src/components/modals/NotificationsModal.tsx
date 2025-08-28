@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useToast } from "@/hooks/use-toast";
 import { useNotifications } from "@/hooks/useNotifications";
 import { Bell, CheckCircle, AlertCircle, Info, Star, Package, FileText, Users } from "lucide-react";
@@ -14,7 +14,8 @@ interface NotificationsModalProps {
 
 export const NotificationsModal = ({ children }: NotificationsModalProps) => {
   const [open, setOpen] = useState(false);
-  const { language } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const language = languageContext?.language || 'en';
   const { toast } = useToast();
   const { notifications, loading, unreadCount, markAsRead, markAllAsRead } = useNotifications();
   const isRTL = language === 'ar';
