@@ -23,6 +23,7 @@ import {
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
+import { ClientUserProfile } from "./ClientUserProfile";
 
 interface ClientSidebarProps {
   className?: string;
@@ -201,28 +202,12 @@ export const ClientSidebar = ({ className, collapsed = false, onToggle }: Client
       )} 
       dir={isRTL ? 'rtl' : 'ltr'}
     >
-      {/* Sidebar Header - matches main header height */}
-      <div className="border-b border-border bg-card h-16 flex items-center px-4">
-        <Link 
-          to="/dashboard"
-          className="flex items-center gap-3 hover:opacity-80 transition-all duration-200 min-w-0"
-        >
-          <img 
-            src="/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png" 
-            alt="MWRD Logo"
-            className="h-8 w-auto shrink-0"
-          />
-          {!collapsed && (
-            <div className="flex flex-col items-start min-w-0">
-              <span className="text-sm font-semibold leading-tight truncate text-foreground">
-                MWRD Dashboard
-              </span>
-              <span className="text-xs leading-tight text-muted-foreground capitalize">
-                {userProfile?.role || 'User'}
-              </span>
-            </div>
-          )}
-        </Link>
+      {/* Sidebar Header - User Profile */}
+      <div className="border-b border-border bg-card min-h-16 flex items-center">
+        <ClientUserProfile 
+          variant="sidebar" 
+          collapsed={collapsed}
+        />
       </div>
 
       {/* Navigation Content */}
