@@ -16,7 +16,10 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 export const AdminLayout = () => {
   const { user, userProfile, loading } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    const saved = localStorage.getItem('adminSidebarOpen');
+    return saved ? JSON.parse(saved) : true;
+  });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const languageContext = useOptionalLanguage();
@@ -80,10 +83,16 @@ export const AdminLayout = () => {
           <div className="min-h-screen flex w-full" dir={isRTL ? 'rtl' : 'ltr'}>
             <AdminSidebar 
               collapsed={!sidebarOpen} 
-              onToggle={() => setSidebarOpen(!sidebarOpen)} 
             />
             <div className="flex-1 flex flex-col min-w-0">
-              <AdminHeader />
+              <AdminHeader 
+                onSidebarToggle={() => {
+                  const newState = !sidebarOpen;
+                  setSidebarOpen(newState);
+                  localStorage.setItem('adminSidebarOpen', JSON.stringify(newState));
+                }}
+                sidebarOpen={sidebarOpen}
+              />
               <main className="flex-1 overflow-auto bg-muted/20 p-6">
                 <AdminErrorBoundary>
                   <Outlet />

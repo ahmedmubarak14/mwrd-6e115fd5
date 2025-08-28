@@ -16,9 +16,11 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AdminHeaderProps {
   onMobileMenuOpen?: () => void;
+  onSidebarToggle?: () => void;
+  sidebarOpen?: boolean;
 }
 
-export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
+export const AdminHeader = ({ onMobileMenuOpen, onSidebarToggle, sidebarOpen }: AdminHeaderProps) => {
   const navigate = useNavigate();
   const { userProfile } = useAuth();
   const languageContext = useOptionalLanguage();
@@ -33,7 +35,7 @@ export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
       {/* Main Header Bar */}
       <div className="h-16 sm:h-18">
         <div className="max-w-full mx-auto px-3 sm:px-6 lg:px-8 h-full flex items-center justify-between">
-          {/* Logo and Menu Trigger */}
+          {/* Logo, Menu Trigger, and Sidebar Toggle */}
           <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1 mr-4">
             {isMobile && (
               <Button
@@ -41,6 +43,19 @@ export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
                 size="icon"
                 onClick={onMobileMenuOpen}
                 className="h-10 w-10 hover:bg-accent/50 transition-all duration-200 hover:scale-105 active:scale-95 shrink-0"
+                aria-label="Open mobile menu"
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+            )}
+
+            {!isMobile && onSidebarToggle && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onSidebarToggle}
+                className="h-10 w-10 hover:bg-accent/50 transition-all duration-200 hover:scale-105 active:scale-95 shrink-0"
+                aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
               >
                 <Menu className="h-5 w-5" />
               </Button>
@@ -49,6 +64,7 @@ export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
             <button
               onClick={() => navigate('/admin/dashboard')}
               className="flex items-center gap-3 hover:opacity-80 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] min-w-0"
+              aria-label="Go to admin dashboard"
             >
               <img 
                 src="/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png" 
@@ -56,10 +72,10 @@ export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
                 className="h-9 w-auto shrink-0"
               />
               <div className="hidden sm:flex flex-col items-start min-w-0">
-                <span className="admin-subtitle leading-tight truncate">
-                  {t('admin.dashboard')}
+                <span className="text-lg font-semibold leading-tight truncate text-foreground">
+                  Admin Dashboard
                 </span>
-                <span className="admin-caption leading-tight">
+                <span className="text-sm leading-tight text-muted-foreground">
                   {t('admin.managementPortal') || 'Management Portal'}
                 </span>
               </div>
@@ -75,9 +91,10 @@ export const AdminHeader = ({ onMobileMenuOpen }: AdminHeaderProps) => {
               size="icon" 
               onClick={() => toast.info(t('admin.notificationsDemo'))}
               className="relative h-10 w-10 hover:bg-accent/50 transition-all duration-200 hover:scale-105 active:scale-95"
+              aria-label="View notifications"
             >
               <Bell className="h-4 w-4" />
-              <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground admin-caption rounded-full h-5 w-5 flex items-center justify-center animate-pulse shadow-lg">
+              <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center animate-pulse shadow-lg">
                 3
               </span>
             </Button>

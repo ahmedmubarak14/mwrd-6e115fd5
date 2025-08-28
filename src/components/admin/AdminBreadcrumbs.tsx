@@ -67,13 +67,13 @@ export const AdminBreadcrumbs = () => {
               <div key={item.path} className="flex items-center">
                 <BreadcrumbItem>
                   {item.isLast ? (
-                    <BreadcrumbPage className="font-medium text-foreground admin-caption">
-                      {item.title}
-                    </BreadcrumbPage>
+                  <BreadcrumbPage className="font-medium text-foreground text-xs">
+                    {item.title}
+                  </BreadcrumbPage>
                   ) : (
-                    <BreadcrumbLink href={item.path} className="text-foreground opacity-80 hover:text-foreground hover:opacity-100 admin-caption transition-colors">
-                      {item.title}
-                    </BreadcrumbLink>
+                  <BreadcrumbLink href={item.path} className="text-foreground opacity-80 hover:text-foreground hover:opacity-100 text-xs transition-colors">
+                    {item.title}
+                  </BreadcrumbLink>
                   )}
                 </BreadcrumbItem>
                 

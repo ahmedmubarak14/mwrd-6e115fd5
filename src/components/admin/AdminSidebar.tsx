@@ -58,10 +58,18 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
   };
   const pendingTickets = getPendingTicketsCount();
 
-  // Track which groups are expanded
-  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
-    new Set(['core', 'management']) // Core and Management open by default
-  );
+  // Track which groups are expanded with localStorage persistence
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(() => {
+    const saved = localStorage.getItem('adminSidebarExpanded');
+    if (saved) {
+      try {
+        return new Set(JSON.parse(saved));
+      } catch {
+        return new Set(['overview', 'management']); // Default groups
+      }
+    }
+    return new Set(['overview', 'management']); // Default groups
+  });
 
   const toggleGroup = (groupId: string) => {
     if (collapsed) return; // Don't allow toggling when collapsed
@@ -72,12 +80,14 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
       newExpanded.add(groupId);
     }
     setExpandedGroups(newExpanded);
+    // Persist to localStorage
+    localStorage.setItem('adminSidebarExpanded', JSON.stringify(Array.from(newExpanded)));
   };
 
   const navigationGroups: NavigationGroup[] = [
     {
-      id: 'core',
-      label: t('admin.groups.core') || 'Core',
+      id: 'overview',
+      label: t('admin.groups.overview') || 'Overview',
       priority: 'primary',
       items: [
         {
@@ -94,7 +104,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
     },
     {
       id: 'management',
-      label: t('admin.groups.management') || 'User Management',
+      label: t('admin.groups.management') || 'Management',
       priority: 'primary',
       items: [
         {
@@ -102,23 +112,6 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           href: "/admin/users",
           icon: Users,
         },
-        {
-          name: t('admin.verificationQueue') || 'Verification',
-          href: "/admin/verification",
-          icon: UserCheck,
-        },
-        {
-          name: t('admin.communications') || 'Communications',
-          href: "/admin/communications",
-          icon: MessageSquare,
-        },
-      ]
-    },
-    {
-      id: 'content',
-      label: t('admin.groups.content') || 'Request Management',
-      priority: 'secondary',
-      items: [
         {
           name: t('admin.requests') || 'Requests',
           href: "/admin/requests",
@@ -139,11 +132,16 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           href: "/admin/orders",
           icon: ShoppingCart,
         },
+        {
+          name: t('admin.verificationQueue') || 'Verification',
+          href: "/admin/verification",
+          icon: UserCheck,
+        },
       ]
     },
     {
       id: 'business',
-      label: t('admin.groups.business') || 'Business',
+      label: t('admin.groups.business') || 'Business & Support',
       priority: 'secondary',
       items: [
         {
@@ -163,15 +161,20 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           badge: pendingTickets > 0 ? pendingTickets : undefined,
           badgeVariant: "destructive" as const,
         },
+        {
+          name: t('admin.communications') || 'Communications',
+          href: "/admin/communications",
+          icon: MessageSquare,
+        },
       ]
     },
     {
       id: 'system',
-      label: t('admin.groups.system') || 'System',
+      label: t('admin.groups.system') || 'System & Settings',
       priority: 'utility',
       items: [
         {
-          name: t('admin.categoryManagement') || 'Category Management',
+          name: t('admin.categoryManagement') || 'Categories',
           href: "/admin/category-management",
           icon: FolderOpen,
         },
@@ -185,13 +188,6 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           href: "/admin/settings",
           icon: Settings,
         },
-      ]
-    },
-    {
-      id: 'personal',
-      label: t('admin.groups.personal') || 'Personal',
-      priority: 'utility',
-      items: [
         {
           name: t('admin.profile') || 'Profile',
           href: "/admin/profile",
@@ -228,21 +224,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
     >
       {/* Header */}
       <div className="border-b border-border bg-card p-4">
-        <div className="flex items-center justify-between">
-          {!collapsed && (
-            <AdminUserProfile variant="sidebar" collapsed={collapsed} />
-          )}
-          {onToggle && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onToggle}
-              className="h-8 w-8 p-0 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100"
-            >
-              <Menu className="h-4 w-4" />
-            </Button>
-          )}
-        </div>
+        <AdminUserProfile variant="sidebar" collapsed={collapsed} />
       </div>
 
       {/* Navigation Content */}
