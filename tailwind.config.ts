@@ -25,9 +25,23 @@ const config: Config = {
         "border-strong": "hsl(var(--border-strong))",
         input: "hsl(var(--input))",
         "input-border": "hsl(var(--input-border))",
+        "input-placeholder": "hsl(var(--input-placeholder))",
+        "input-caret": "hsl(var(--input-caret))",
+        "input-selection": "hsl(var(--input-selection))",
+        "input-selection-foreground": "hsl(var(--input-selection-foreground))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+
+        /* Button disabled states - No opacity colors */
+        "button-disabled": "hsl(var(--button-disabled))",
+        "button-disabled-foreground": "hsl(var(--button-disabled-foreground))",
+        "button-disabled-border": "hsl(var(--button-disabled-border))",
+        
+        /* Glass effect colors */
+        glass: "hsl(var(--glass))",
+        "glass-strong": "hsl(var(--glass-strong))",
+        "glass-border": "hsl(var(--glass-border))",
 
         /* Primary color system */
         primary: {
