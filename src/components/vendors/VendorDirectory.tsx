@@ -15,6 +15,7 @@ import { MetricCard } from "@/components/ui/MetricCard";
 import { EmptyState } from "@/components/ui/empty-state";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { VendorProfileModal } from "@/components/modals/VendorProfileModal";
+import { EnhancedVendorProfileModal } from "@/components/modals/EnhancedVendorProfileModal";
 import { PrivateRequestModal } from "@/components/modals/PrivateRequestModal";
 import { useNavigate } from "react-router-dom";
 import { useRealTimeChat } from "@/hooks/useRealTimeChat";
@@ -174,11 +175,11 @@ export const VendorDirectory: React.FC = () => {
         </div>
 
         <div className="flex gap-2 pt-2">
-          <VendorProfileModal vendor={mapVendorForModal(vendor)}>
+          <EnhancedVendorProfileModal vendorId={vendor.id.toString()}>
             <Button variant="outline" size="sm" className="flex-1">
               {isRTL ? 'عرض الملف' : 'View Profile'}
             </Button>
-          </VendorProfileModal>
+          </EnhancedVendorProfileModal>
           <Button 
             variant="secondary" 
             size="sm" 
