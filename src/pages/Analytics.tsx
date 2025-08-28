@@ -2,16 +2,16 @@ import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
-import { useRealTimeAnalytics } from "@/hooks/useRealTimeAnalytics";
+import { useClientAnalytics } from "@/hooks/useClientAnalytics";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { Download, RefreshCw, BarChart3, TrendingUp, Users, DollarSign, FileText, Handshake, Activity, PieChart } from "lucide-react";
+import { Download, RefreshCw, BarChart3, TrendingUp, Users, DollarSign, FileText, ShoppingCart, Activity, PieChart, Clock } from "lucide-react";
 import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, LineChart, Line, BarChart, Bar, PieChart as RechartsPieChart, Cell } from 'recharts';
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, LineChart, Line, BarChart, Bar, PieChart as RechartsPieChart, Cell, Pie } from 'recharts';
 import { cn } from "@/lib/utils";
 
 const COLORS = ['hsl(var(--primary))', 'hsl(var(--secondary))', 'hsl(var(--accent))', 'hsl(var(--muted))'];
@@ -24,12 +24,11 @@ export const Analytics = () => {
   const [isExporting, setIsExporting] = useState(false);
   
   const {
-    metrics,
-    chartData,
-    isLoading,
+    analytics,
+    loading,
     error,
-    refreshData
-  } = useRealTimeAnalytics();
+    fetchAnalytics
+  } = useClientAnalytics();
 
   const handleExportAnalytics = async () => {
     setIsExporting(true);
@@ -53,7 +52,7 @@ export const Analytics = () => {
 
   const handleRefreshData = async () => {
     try {
-      await refreshData();
+      await fetchAnalytics();
       
       toast({
         title: isRTL ? "تم تحديث البيانات" : "Data Refreshed",
@@ -68,11 +67,11 @@ export const Analytics = () => {
     }
   };
 
-  if (isLoading) {
+  if (loading) {
     return (
       <ClientPageContainer
-        title={t('analytics.platformAnalytics') || 'Analytics & Insights'}
-        description={t('analytics.comprehensiveInsights') || 'Comprehensive view of your account performance and activity statistics'}
+        title={isRTL ? "التحليلات والإحصائيات" : "My Analytics & Insights"}
+        description={isRTL ? "عرض شامل لأداء حسابك وإحصائيات النشاط" : "Comprehensive view of your account performance and activity statistics"}
       >
         <div className="flex items-center justify-center h-48">
           <LoadingSpinner />
@@ -84,8 +83,8 @@ export const Analytics = () => {
   if (error) {
     return (
       <ClientPageContainer
-        title={t('analytics.platformAnalytics') || 'Analytics & Insights'}
-        description={t('analytics.comprehensiveInsights') || 'Comprehensive view of your account performance and activity statistics'}
+        title={isRTL ? "التحليلات والإحصائيات" : "My Analytics & Insights"}
+        description={isRTL ? "عرض شامل لأداء حسابك وإحصائيات النشاط" : "Comprehensive view of your account performance and activity statistics"}
       >
         <div className="text-center text-destructive py-8">
           <p>{error}</p>
@@ -96,8 +95,8 @@ export const Analytics = () => {
 
   return (
     <ClientPageContainer
-      title={t('analytics.platformAnalytics') || 'Analytics & Insights'}
-      description={t('analytics.comprehensiveInsights') || 'Comprehensive view of your account performance and activity statistics'}
+      title={isRTL ? "التحليلات والإحصائيات" : "My Analytics & Insights"}
+      description={isRTL ? "عرض شامل لأداء حسابك وإحصائيات النشاط" : "Comprehensive view of your account performance and activity statistics"}
       headerActions={
         <div className="flex gap-2">
           <Select value={dateRange} onValueChange={setDateRange}>
@@ -115,7 +114,7 @@ export const Analytics = () => {
           <Button
             variant="outline"
             onClick={handleRefreshData}
-            disabled={isLoading}
+            disabled={loading}
           >
             <RefreshCw className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
             {t('common.update') || 'Refresh'}
@@ -140,52 +139,94 @@ export const Analytics = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{t('analytics.totalUsers') || 'Total Users'}</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(metrics?.totalUsers || 0)}</div>
-            <p className="text-xs text-muted-foreground">
-              +{metrics?.userGrowth || 0}% {t('analytics.fromLastMonth') || 'from last month'}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{t('analytics.totalRequests') || 'Active Requests'}</CardTitle>
+            <CardTitle className="text-sm font-medium">{isRTL ? 'طلباتي' : 'My Requests'}</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(metrics?.activeRequests || 0)}</div>
+            <div className="text-2xl font-bold">{formatNumber(analytics?.totalRequests || 0)}</div>
             <p className="text-xs text-muted-foreground">
-              +{metrics?.requestGrowth || 0}% {t('analytics.fromLastWeek') || 'from last week'}
+              {analytics?.requestGrowth && analytics.requestGrowth > 0 ? '+' : ''}{analytics?.requestGrowth || 0}% {t('analytics.fromLastMonth') || 'from last month'}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{t('analytics.monthlyRevenue') || 'Revenue'}</CardTitle>
+            <CardTitle className="text-sm font-medium">{isRTL ? 'طلبات نشطة' : 'Active Orders'}</CardTitle>
+            <Activity className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatNumber(analytics?.activeOrders || 0)}</div>
+            <p className="text-xs text-muted-foreground">
+              {isRTL ? 'طلبات قيد التنفيذ' : 'Currently in progress'}
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{isRTL ? 'إجمالي الإنفاق' : 'Total Spending'}</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(metrics?.totalRevenue || 0)}</div>
+            <div className="text-2xl font-bold">{formatCurrency(analytics?.totalSpent || 0)}</div>
             <p className="text-xs text-muted-foreground">
-              +{metrics?.revenueGrowth || 0}% {t('analytics.fromLastMonth') || 'from last month'}
+              {analytics?.spendingGrowth && analytics.spendingGrowth > 0 ? '+' : ''}{analytics?.spendingGrowth || 0}% {t('analytics.fromLastMonth') || 'from last month'}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{t('common.orders') || 'Orders'}</CardTitle>
-            <Handshake className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">{isRTL ? 'معدل الإنجاز' : 'Completion Rate'}</CardTitle>
+            <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatNumber(metrics?.totalOrders || 0)}</div>
+            <div className="text-2xl font-bold">{analytics?.completionRate || 0}%</div>
             <p className="text-xs text-muted-foreground">
-              -{metrics?.orderDecline || 0}% {t('analytics.fromLastWeek') || 'from last week'}
+              {isRTL ? 'من إجمالي الطلبات' : 'of total requests'}
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Secondary Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <Card>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{isRTL ? 'عروض معلقة' : 'Pending Offers'}</CardTitle>
+            <Clock className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatNumber(analytics?.pendingOffers || 0)}</div>
+            <p className="text-xs text-muted-foreground">
+              {isRTL ? 'في انتظار المراجعة' : 'Awaiting your review'}
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{isRTL ? 'متوسط قيمة الطلب' : 'Avg Order Value'}</CardTitle>
+            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatCurrency(analytics?.averageOrderValue || 0)}</div>
+            <p className="text-xs text-muted-foreground">
+              {isRTL ? 'لكل طلب مكتمل' : 'per completed order'}
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{isRTL ? 'موردين تم التعامل معهم' : 'Vendors Worked With'}</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{formatNumber(analytics?.totalVendorsWorkedWith || 0)}</div>
+            <p className="text-xs text-muted-foreground">
+              {isRTL ? 'موردين مختلفين' : 'unique vendors'}
             </p>
           </CardContent>
         </Card>
@@ -196,19 +237,19 @@ export const Analytics = () => {
         <TabsList>
           <TabsTrigger value="overview" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <BarChart3 className="h-4 w-4" />
-            {t('common.dashboard') || 'Overview'}
+            {isRTL ? 'نظرة عامة' : 'Overview'}
           </TabsTrigger>
-          <TabsTrigger value="users" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
-            <Users className="h-4 w-4" />
-            {t('nav.users') || 'Users'}
-          </TabsTrigger>
-          <TabsTrigger value="financial" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
+          <TabsTrigger value="spending" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <DollarSign className="h-4 w-4" />
-            {t('nav.finance') || 'Financial'}
+            {isRTL ? 'الإنفاق' : 'Spending'}
+          </TabsTrigger>
+          <TabsTrigger value="requests" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
+            <FileText className="h-4 w-4" />
+            {isRTL ? 'الطلبات' : 'Requests'}
           </TabsTrigger>
           <TabsTrigger value="performance" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <TrendingUp className="h-4 w-4" />
-            {t('analytics.performanceMetrics') || 'Performance'}
+            {isRTL ? 'الأداء' : 'Performance'}
           </TabsTrigger>
         </TabsList>
 
@@ -216,21 +257,21 @@ export const Analytics = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <Card>
               <CardHeader>
-                <CardTitle>{t('analytics.userActivity') || 'User Activity'}</CardTitle>
+                <CardTitle>{isRTL ? 'الإنفاق الشهري' : 'Monthly Spending'}</CardTitle>
                 <CardDescription>
-                  {t('analytics.dailyActiveUsers') || 'Daily active users over time'}
+                  {isRTL ? 'مسار الإنفاق خلال الأشهر الستة الماضية' : 'Your spending trend over the last 6 months'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
-                  <AreaChart data={chartData?.userActivity || []}>
+                  <AreaChart data={analytics?.monthlySpending || []}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
+                    <XAxis dataKey="month" />
                     <YAxis />
-                    <Tooltip />
+                    <Tooltip formatter={(value) => [formatCurrency(Number(value)), isRTL ? 'الإنفاق' : 'Spending']} />
                     <Area 
                       type="monotone" 
-                      dataKey="users" 
+                      dataKey="amount" 
                       stroke="hsl(var(--primary))" 
                       fill="hsl(var(--primary))" 
                       fillOpacity={0.3}
@@ -242,69 +283,27 @@ export const Analytics = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>{t('analytics.requestTrends') || 'Request Trends'}</CardTitle>
+                <CardTitle>{isRTL ? 'الطلبات حسب الفئة' : 'Requests by Category'}</CardTitle>
                 <CardDescription>
-                  {t('analytics.requestsOverTime') || 'Service requests submitted over time'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={chartData?.requestTrends || []}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Line 
-                      type="monotone" 
-                      dataKey="requests" 
-                      stroke="hsl(var(--primary))" 
-                      strokeWidth={2}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="users" className="space-y-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t('analytics.userGrowth') || 'User Growth'}</CardTitle>
-                <CardDescription>
-                  {t('analytics.newUsersOverTime') || 'New user registrations over time'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={chartData?.userGrowth || []}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="newUsers" fill="hsl(var(--primary))" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>{t('analytics.userTypes') || 'User Types'}</CardTitle>
-                <CardDescription>
-                  {t('analytics.distributionByRole') || 'Distribution of users by role'}
+                  {isRTL ? 'توزيع طلباتك حسب فئات الخدمة' : 'Distribution of your requests by service category'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
                   <RechartsPieChart>
                     <Tooltip />
-                    <RechartsPieChart data={chartData?.userTypes || []}>
-                      {(chartData?.userTypes || []).map((entry, index) => (
+                    <Pie
+                      data={analytics?.requestsByCategory || []} 
+                      cx="50%" 
+                      cy="50%" 
+                      innerRadius={60} 
+                      outerRadius={120} 
+                      dataKey="count"
+                    >
+                      {(analytics?.requestsByCategory || []).map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
-                    </RechartsPieChart>
+                    </Pie>
                   </RechartsPieChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -312,90 +311,121 @@ export const Analytics = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="financial" className="space-y-4">
+        <TabsContent value="spending" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>{t('analytics.revenueOverview') || 'Revenue Overview'}</CardTitle>
+              <CardTitle>{isRTL ? 'نشاط الطلبات والإنفاق' : 'Orders & Spending Activity'}</CardTitle>
               <CardDescription>
-                {t('analytics.monthlyRevenue') || 'Monthly revenue and transaction volume'}
+                {isRTL ? 'نشاط طلباتك وإنفاقك اليومي خلال الـ30 يوماً الماضية' : 'Daily orders and spending activity over the last 30 days'}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={400}>
-                <AreaChart data={chartData?.revenue || []}>
+                <LineChart data={analytics?.orderTimeline || []}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Area 
-                    type="monotone" 
-                    dataKey="revenue" 
-                    stroke="hsl(var(--primary))" 
-                    fill="hsl(var(--primary))" 
-                    fillOpacity={0.3}
+                  <XAxis dataKey="date" />
+                  <YAxis yAxisId="left" />
+                  <YAxis yAxisId="right" orientation="right" />
+                  <Tooltip 
+                    formatter={(value, name) => [
+                      name === 'spending' ? formatCurrency(Number(value)) : formatNumber(Number(value)),
+                      name === 'spending' ? (isRTL ? 'الإنفاق' : 'Spending') : (isRTL ? 'الطلبات' : 'Orders')
+                    ]}
                   />
-                </AreaChart>
+                  <Line 
+                    yAxisId="left"
+                    type="monotone" 
+                    dataKey="orders" 
+                    stroke="hsl(var(--primary))" 
+                    strokeWidth={2}
+                  />
+                  <Line 
+                    yAxisId="right"
+                    type="monotone" 
+                    dataKey="spending" 
+                    stroke="hsl(var(--secondary))" 
+                    strokeWidth={2}
+                  />
+                </LineChart>
               </ResponsiveContainer>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="performance" className="space-y-4">
+        <TabsContent value="requests" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <Card>
               <CardHeader>
-                <CardTitle>{t('analytics.systemMetrics') || 'System Metrics'}</CardTitle>
-                <CardDescription>
-                  {t('analytics.platformPerformance') || 'Platform performance indicators'}
-                </CardDescription>
+                <CardTitle>{isRTL ? 'ملخص الطلبات' : 'Requests Summary'}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">
-                    {t('analytics.responseTime') || 'Avg Response Time'}
+                    {isRTL ? 'إجمالي الطلبات' : 'Total Requests'}
                   </span>
-                  <Badge variant="secondary">{metrics?.avgResponseTime || '120ms'}</Badge>
+                  <Badge variant="secondary">{analytics?.totalRequests || 0}</Badge>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">
-                    {t('analytics.uptime') || 'System Uptime'}
+                    {isRTL ? 'طلبات نشطة' : 'Active Requests'}
                   </span>
-                  <Badge variant="secondary">{metrics?.uptime || '99.9%'}</Badge>
+                  <Badge variant="secondary">{analytics?.activeRequests || 0}</Badge>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">
-                    {t('analytics.errorRate') || 'Error Rate'}
+                    {isRTL ? 'طلبات مكتملة' : 'Completed Requests'}
                   </span>
-                  <Badge variant="secondary">{metrics?.errorRate || '0.1%'}</Badge>
+                  <Badge variant="secondary">{analytics?.completedRequests || 0}</Badge>
                 </div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>{t('analytics.userSatisfaction') || 'User Satisfaction'}</CardTitle>
-                <CardDescription>
-                  {t('analytics.feedbackRatings') || 'User feedback and ratings'}
-                </CardDescription>
+                <CardTitle>{isRTL ? 'ملخص العروض' : 'Offers Summary'}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">
-                    {t('analytics.avgRating') || 'Average Rating'}
+                    {isRTL ? 'عروض معلقة' : 'Pending Offers'}
                   </span>
-                  <Badge variant="secondary">{metrics?.avgRating || '4.8/5'}</Badge>
+                  <Badge variant="secondary">{analytics?.pendingOffers || 0}</Badge>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">
-                    {t('analytics.nps') || 'Net Promoter Score'}
+                    {isRTL ? 'عروض مقبولة' : 'Accepted Offers'}
                   </span>
-                  <Badge variant="secondary">{metrics?.nps || '72'}</Badge>
+                  <Badge variant="secondary">{analytics?.acceptedOffers || 0}</Badge>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="performance" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>{isRTL ? 'مؤشرات الأداء' : 'Performance Metrics'}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between">
+                  <span className="text-sm text-muted-foreground">
+                    {isRTL ? 'معدل الإنجاز' : 'Completion Rate'}
+                  </span>
+                  <Badge variant="secondary">{analytics?.completionRate || 0}%</Badge>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">
-                    {t('support.title') || 'Support Resolution'}
+                    {isRTL ? 'متوسط وقت الاستجابة' : 'Avg Response Time'}
                   </span>
-                  <Badge variant="secondary">{metrics?.supportResolution || '2.3h'}</Badge>
+                  <Badge variant="secondary">{analytics?.averageResponseTime || 0}h</Badge>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-muted-foreground">
+                    {isRTL ? 'متوسط قيمة الطلب' : 'Avg Order Value'}
+                  </span>
+                  <Badge variant="secondary">{formatCurrency(analytics?.averageOrderValue || 0)}</Badge>
                 </div>
               </CardContent>
             </Card>
