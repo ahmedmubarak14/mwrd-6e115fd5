@@ -12,6 +12,8 @@ import { MetricCard } from "@/components/ui/MetricCard";
 import { EmptyState } from "@/components/ui/empty-state";
 import { CreateOfferModal } from "@/components/modals/CreateOfferModal";
 import { RequestDetailsModal } from "@/components/modals/RequestDetailsModal";
+import { Search, Package, MapPin, Calendar, DollarSign, Clock, Plus, Eye, FileText, TrendingUp, AlertCircle, Filter } from "lucide-react";
+import { useState, useMemo } from "react";
 
 const BrowseRequests = () => {
   const { t, language } = useLanguage();
@@ -228,7 +230,14 @@ const BrowseRequests = () => {
                           {t('browseRequests.submitOffer') || 'Submit Offer'}
                         </Button>
                       </CreateOfferModal>
-                      <RequestDetailsModal request={request} userRole="vendor">
+                      <RequestDetailsModal 
+                        request={{
+                          ...request,
+                          status: request.admin_approval_status || 'new',
+                          user_id: request.client_id
+                        }} 
+                        userRole="vendor"
+                      >
                         <Button variant="outline">
                           <Eye className="h-4 w-4 mr-2" />
                           {t('browseRequests.viewDetails') || 'View Details'}
