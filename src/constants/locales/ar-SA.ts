@@ -231,8 +231,15 @@ export const arSA = {
     loadingDashboard: 'جار تحميل لوحة التحكم...',
     errorLoadingStats: 'فشل في تحميل إحصائيات لوحة التحكم',
     
-    // Navigation Menu Items
-    requests: 'الطلبات',
+    // Navigation Groups
+    groups: {
+      core: 'الأساسية',
+      management: 'الإدارة', 
+      content: 'المحتوى',
+      business: 'الأعمال',
+      system: 'النظام',
+      personal: 'الشخصي',
+    },
     offers: 'العروض',
     projects: 'المشاريع',  
     orders: 'الطلبات',

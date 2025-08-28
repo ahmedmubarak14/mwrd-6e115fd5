@@ -284,8 +284,15 @@ export const enUS = {
     accessDenied: 'Access Denied',
     accessDeniedDescription: 'You need administrator privileges to access this area.',
     
-    // Navigation Menu Items  
-    requests: 'Requests',
+    // Navigation Groups
+    groups: {
+      core: 'Core',
+      management: 'Management', 
+      content: 'Content',
+      business: 'Business',
+      system: 'System',
+      personal: 'Personal',
+    },
     offers: 'Offers',
     projects: 'Projects',
     analytics: 'Analytics',
