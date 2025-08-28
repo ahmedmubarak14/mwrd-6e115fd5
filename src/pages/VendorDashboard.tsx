@@ -2,12 +2,13 @@
 import { CleanVendorDashboard } from "@/components/vendor/CleanVendorDashboard";
 import { CleanDashboardLayout } from "@/components/layout/CleanDashboardLayout";
 import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export const VendorDashboard = () => {
   const { userProfile, loading } = useAuth();
-  const { t } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const t = languageContext?.t || ((key: string) => key);
 
   if (loading) {
     return (

@@ -212,7 +212,7 @@ export const CleanVendorDashboard = () => {
               <SelectContent className="bg-white border border-gray-200">
                 <SelectItem value="all">{t('common.all')} {t('browseRequests.filterByCategory')}</SelectItem>
                 {categoriesLoading ? (
-                  <SelectItem value="" disabled>
+                  <SelectItem value="loading" disabled>
                     <LoadingSpinner size="sm" />
                   </SelectItem>
                 ) : (

@@ -208,7 +208,7 @@ export const EnhancedVendorDashboard = () => {
                     <SelectContent>
                       <SelectItem value="all">{t('common.all')} {t('browseRequests.filterByCategory')}</SelectItem>
                       {categoriesLoading ? (
-                        <SelectItem value="" disabled>
+                        <SelectItem value="loading" disabled>
                           <LoadingSpinner size="sm" />
                         </SelectItem>
                       ) : (

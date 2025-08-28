@@ -300,7 +300,7 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent className="bg-popover border border-border shadow-lg z-[100] backdrop-blur-sm">
-                                <SelectItem value="">{t('common.all')}</SelectItem>
+                                <SelectItem value="all">{t('common.all')}</SelectItem>
                                 {/* Add dynamic filter options based on data */}
                               </SelectContent>
                             </Select>
