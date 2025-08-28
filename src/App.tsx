@@ -42,6 +42,7 @@ import { DashboardLayout } from './components/layout/DashboardLayout';
 import NotFound from './pages/NotFound';
 import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import AdminOrders from './pages/admin/AdminOrders';
+import AdminCommunications from './pages/admin/AdminCommunications';
 
 interface RoleProtectedRouteProps {
   children: React.ReactNode;
@@ -169,6 +170,7 @@ const AppRoutes: React.FC = () => {
         <Route path="analytics" element={<AdminAnalytics />} />
         <Route path="subscriptions" element={<AdminSubscriptions />} />
         <Route path="orders" element={<AdminOrders />} />
+        <Route path="communications" element={<AdminCommunications />} />
       </Route>
 
       {/* Main Navigation Routes - Accessible to all authenticated users */}
