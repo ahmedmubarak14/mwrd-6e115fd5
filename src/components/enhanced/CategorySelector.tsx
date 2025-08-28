@@ -70,20 +70,32 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
         </Select>
       </div>
 
-      {/* Subcategory Dropdown - Only show if main category is selected and has subcategories */}
-      {mainCategory && subCategories.length > 0 && (
+      {/* Subcategory Dropdown - Show when main category is selected */}
+      {mainCategory && (
         <div className="space-y-2">
           <Label>{isRTL ? 'الفئة الفرعية (اختياري)' : 'Subcategory (Optional)'}</Label>
           <Select value={subCategory} onValueChange={handleSubCategoryChange}>
             <SelectTrigger className="w-full bg-background border-border">
-              <SelectValue placeholder={isRTL ? 'اختر الفئة الفرعية' : 'Select subcategory'} />
+              <SelectValue placeholder={
+                subCategories.length > 0 
+                  ? (isRTL ? 'اختر الفئة الفرعية' : 'Select subcategory')
+                  : (isRTL ? 'لا توجد فئات فرعية متاحة' : 'No subcategories available')
+              } />
             </SelectTrigger>
             <SelectContent className="z-50 bg-background border-border shadow-lg">
-              {subCategories.map((subcategory) => (
-                <SelectItem key={subcategory.id} value={subcategory.slug}>
-                  <span>{isRTL ? subcategory.name_ar : subcategory.name_en}</span>
+              {subCategories.length > 0 ? (
+                subCategories.map((subcategory) => (
+                  <SelectItem key={subcategory.id} value={subcategory.slug}>
+                    <span>{isRTL ? subcategory.name_ar : subcategory.name_en}</span>
+                  </SelectItem>
+                ))
+              ) : (
+                <SelectItem value="" disabled>
+                  <span className="text-muted-foreground">
+                    {isRTL ? 'لا توجد فئات فرعية' : 'No subcategories available'}
+                  </span>
                 </SelectItem>
-              ))}
+              )}
             </SelectContent>
           </Select>
         </div>
