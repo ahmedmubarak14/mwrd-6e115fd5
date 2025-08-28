@@ -115,7 +115,7 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
     },
     {
       name: t('admin.profile'),
-      href: "/profile",
+      href: "/admin/profile",
       icon: User,
     },
   ];
