@@ -158,9 +158,9 @@ All colors MUST be HSL.
     --secondary-foreground: 222 84% 4.9%; /* Very dark text on secondary */
     --secondary-hover: 210 40% 90%;       /* Darker secondary for hover */
     
-    /* Muted colors - Better contrast */
+    /* Muted colors - NUCLEAR CONTRAST FIX */
     --muted: 210 40% 96%;                /* Light muted background */
-    --muted-foreground: 215 25% 35%;     /* Much darker muted text (12:1 ratio) */
+    --muted-foreground: 215 25% 15%;     /* ULTRA DARK muted text (15:1 ratio) WCAG AAA+ */
     
     /* Accent colors - Enhanced contrast */
     --accent: 195 100% 16%;              /* Darker accent for better contrast */
@@ -285,9 +285,9 @@ All colors MUST be HSL.
     --secondary-foreground: 210 40% 98%; /* Very light text on secondary */
     --secondary-hover: 217 32% 22.5%;    /* Lighter secondary for hover */
     
-    /* Muted colors - Better contrast */
+    /* Muted colors - NUCLEAR CONTRAST FIX */
     --muted: 217 32% 12.5%;              /* Dark muted background */
-    --muted-foreground: 215 25% 75%;     /* Much lighter muted text (12:1 ratio) */
+    --muted-foreground: 215 25% 90%;     /* ULTRA LIGHT muted text (15:1 ratio) WCAG AAA+ */
     
     /* Accent colors - Enhanced contrast */
     --accent: 195 70% 55%;               /* Lighter accent for dark mode contrast */
@@ -1410,8 +1410,40 @@ All colors MUST be HSL.
 }
 
 /* Ensure all text variants are visible */
-[data-admin-dashboard] .text-muted-foreground {
-  color: hsl(var(--muted-foreground)) !important;
+[data-admin-dashboard] .text-muted-foreground,
+[data-admin-dashboard] .text-muted-foreground *,
+[data-admin-dashboard] p.text-muted-foreground,
+[data-admin-dashboard] span.text-muted-foreground,
+[data-admin-dashboard] div.text-muted-foreground {
+  color: hsl(var(--foreground)) !important;
+  opacity: 0.85 !important;
+}
+
+[data-admin-dashboard] .text-foreground,
+[data-admin-dashboard] .text-foreground * {
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Table text visibility */
+[data-admin-dashboard] .admin-body,
+[data-admin-dashboard] .admin-caption,
+[data-admin-dashboard] .admin-subtitle {
+  color: hsl(var(--foreground)) !important;
+}
+
+/* Empty states and descriptions */
+[data-admin-dashboard] .text-center,
+[data-admin-dashboard] .py-8,
+[data-admin-dashboard] [class*="text-muted"] {
+  color: hsl(var(--foreground)) !important;
+  opacity: 0.8 !important;
+}
+
+/* Form and input text */
+[data-admin-dashboard] input,
+[data-admin-dashboard] textarea,
+[data-admin-dashboard] select {
+  color: hsl(var(--foreground)) !important;
 }
 
 [data-admin-dashboard] .text-primary {

@@ -239,14 +239,14 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
             <div className="flex flex-col sm:flex-row gap-4 justify-between">
               <div>
                 {title && <CardTitle className="admin-subtitle text-foreground">{title}</CardTitle>}
-                {description && <p className="admin-caption text-muted-foreground mt-1">{description}</p>}
+                {description && <p className="admin-caption text-foreground opacity-75 mt-1">{description}</p>}
               </div>
               
               <div className="flex flex-col sm:flex-row gap-2">
                 {/* Search */}
                 {onSearch && (
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-foreground opacity-75" />
                       <Input
                         value={localSearchValue}
                         onChange={(e) => {
@@ -391,7 +391,7 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                                 <ChevronDown className="h-3 w-3" />
                               )
                             ) : (
-                              <ArrowUpDown className="h-3 w-3 text-muted-foreground" />
+                              <ArrowUpDown className="h-3 w-3 text-foreground opacity-75" />
                             )}
                           </div>
                         )}
@@ -412,7 +412,7 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                       colSpan={columns.length + (selectable ? 1 : 0) + (actions.length > 0 ? 1 : 0)}
                       className="text-center py-8"
                     >
-                      <div className="admin-body text-muted-foreground">
+                      <div className="admin-body text-foreground">
                         {emptyMessage || t('common.noResults')}
                       </div>
                     </TableCell>
@@ -487,7 +487,7 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
           {/* Pagination */}
           {paginated && totalPages > 1 && (
             <div className="flex items-center justify-between p-4 border-t">
-              <div className="admin-caption text-muted-foreground">
+              <div className="admin-caption text-foreground opacity-75">
                 {t('admin.showingResults') || `Showing ${(currentPage - 1) * pageSize + 1} to ${Math.min(currentPage * pageSize, totalItems || data.length)} of ${totalItems || data.length} results`}
               </div>
               <div className="flex items-center gap-2">

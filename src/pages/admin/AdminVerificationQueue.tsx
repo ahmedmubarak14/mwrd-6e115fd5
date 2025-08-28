@@ -15,7 +15,7 @@ const AdminVerificationQueue: React.FC = () => {
     <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'} data-admin-dashboard>
       <div className={cn(isRTL ? "text-right" : "text-left")}>
         <h1 className="text-3xl font-bold text-foreground">{t('verification.queue')}</h1>
-        <p className="text-muted-foreground">
+        <p className="text-foreground opacity-75">
           {t('verification.reviewAndApprove')}
         </p>
       </div>

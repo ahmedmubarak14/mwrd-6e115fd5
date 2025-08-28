@@ -107,7 +107,7 @@ export default function AdminOrders() {
     <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'} data-admin-dashboard>
       <div className={cn(isRTL ? "text-right" : "text-left")}>
         <h1 className="text-2xl font-bold text-foreground">{t('admin.orders')}</h1>
-        <p className="text-muted-foreground">{t('common.manageDescription')}</p>
+        <p className="text-foreground opacity-75">{t('common.manageDescription')}</p>
       </div>
 
       {/* Orders List */}
@@ -115,7 +115,7 @@ export default function AdminOrders() {
         {filteredOrders.length === 0 ? (
           <Card>
             <CardContent className="p-6 text-center">
-              <p className="text-muted-foreground">{t('common.noData')}</p>
+              <p className="text-foreground opacity-75">{t('common.noData')}</p>
             </CardContent>
           </Card>
         ) : (
@@ -129,7 +129,7 @@ export default function AdminOrders() {
                       <CardTitle className="text-lg text-foreground">
                         Order #{order.id.slice(0, 8)}
                       </CardTitle>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-sm text-foreground opacity-75">
                         {order.user_profiles?.full_name || order.user_profiles?.email || 'Unknown User'}
                       </p>
                     </div>
@@ -141,7 +141,7 @@ export default function AdminOrders() {
                 <div className="space-y-2">
                   <div className={cn("flex items-center justify-between text-sm", isRTL && "flex-row-reverse")}>
                     <span className="font-medium text-foreground">Total: {order.amount} {order.currency}</span>
-                    <span className="text-muted-foreground">{format(new Date(order.created_at), 'PPp')}</span>
+                    <span className="text-foreground opacity-75">{format(new Date(order.created_at), 'PPp')}</span>
                   </div>
                 </div>
               </CardContent>
