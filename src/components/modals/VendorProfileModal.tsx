@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { 
   Star, 
   MapPin, 
@@ -19,7 +19,7 @@ import {
   MessageCircle,
   Video
 } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useState } from "react";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useToast } from "@/hooks/use-toast";
@@ -43,14 +43,19 @@ interface VendorProfileModalProps {
     englishDescription: string;
     englishResponseTime: string;
     avatar_url?: string;
+    services?: string[];
+    projects?: Array<{ title: string; category: string; }>;
+    certifications?: string[];
   };
 }
 
 export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps) => {
-  const { t } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const t = languageContext?.t || ((key: string) => key);
+  const language = languageContext?.language || 'en';
   const { toast } = useToast();
   const { startConversation, sendMessage } = useRealTimeChat();
-  const isArabic = t('language') === 'ar';
+  const isArabic = language === 'ar';
   const [isLoadingCall, setIsLoadingCall] = useState(false);
   const [isLoadingMessage, setIsLoadingMessage] = useState(false);
 
@@ -62,26 +67,23 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
     responseTime: isArabic ? vendor.responseTime : vendor.englishResponseTime
   };
 
-  const portfolioItems = [
-    { title: "Corporate Summit 2024", category: "Conference", image: "CS" },
-    { title: "Tech Exhibition", category: "Trade Show", image: "TE" },
-    { title: "Product Launch Campaign", category: "Launch", image: "PL" },
-    { title: "Annual Gala", category: "Gala", image: "AG" }
+  // Use actual vendor data or provide defaults
+  const services = vendor.services || [
+    isArabic ? 'خدمات احترافية' : 'Professional Services',
+    isArabic ? 'حلول مخصصة' : 'Custom Solutions',
+    isArabic ? 'دعم فني' : 'Technical Support'
   ];
 
-  const services = [
-    "Audio Equipment Setup",
-    "Video Production",
-    "Stage Lighting",
-    "Office Supply Services",
-    "Live Streaming",
-    "Technical Support"
+  const projects = vendor.projects || [
+    { 
+      title: isArabic ? 'مشروع حديث' : 'Recent Project', 
+      category: vendorInfo.category 
+    }
   ];
 
-  const certifications = [
-    "ISO 9001:2015 Certified",
-    "Supply Management Professional",
-    "Audio-Visual Technology Specialist"
+  const certifications = vendor.certifications || [
+    isArabic ? 'شهادة الجودة المعتمدة' : 'ISO Quality Certified',
+    isArabic ? 'مورد معتمد' : 'Approved Vendor'
   ];
 
   const handleSendMessage = async () => {
@@ -89,21 +91,27 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
     try {
       const conversation = await startConversation(vendor.id.toString());
       if (conversation) {
+        const message = isArabic 
+          ? 'مرحباً، أنا مهتم بخدماتكم.'
+          : "Hello, I'm interested in your services.";
+        
         await sendMessage(
           conversation.id, 
-          t("Hello, I'm interested in your services."), 
+          message, 
           vendor.id.toString()
         );
         
         toast({
-          title: t("Message Sent"),
-          description: t(`Your message has been sent to ${vendorInfo.name}. They typically respond within ${vendorInfo.responseTime}.`),
+          title: isArabic ? 'تم إرسال الرسالة' : 'Message Sent',
+          description: isArabic 
+            ? `تم إرسال رسالتك إلى ${vendorInfo.name}. عادة ما يردون خلال ${vendorInfo.responseTime}.`
+            : `Your message has been sent to ${vendorInfo.name}. They typically respond within ${vendorInfo.responseTime}.`,
         });
       }
     } catch (error) {
       toast({
-        title: "Failed to Send Message",
-        description: "Please try again or use the chat feature.",
+        title: isArabic ? 'فشل في إرسال الرسالة' : 'Failed to Send Message',
+        description: isArabic ? 'يرجى المحاولة مرة أخرى أو استخدم ميزة الدردشة.' : 'Please try again or use the chat feature.',
         variant: "destructive",
       });
     } finally {
@@ -114,18 +122,22 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
   const handleVideoCall = async () => {
     setIsLoadingCall(true);
     try {
-      // Placeholder for video call functionality
-      toast({
-        title: t("Video Call Initiated"),
-        description: t(`Connecting to ${vendorInfo.name}... They will be notified of your call request.`),
-      });
+      // Simulate video call initiation
+      setTimeout(() => {
+        toast({
+          title: isArabic ? 'تم بدء المكالمة المرئية' : 'Video Call Initiated',
+          description: isArabic 
+            ? `جاري الاتصال بـ ${vendorInfo.name}... سيتم إشعارهم بطلب المكالمة.`
+            : `Connecting to ${vendorInfo.name}... They will be notified of your call request.`,
+        });
+        setIsLoadingCall(false);
+      }, 1000);
     } catch (error) {
       toast({
-        title: "Call Failed",
-        description: error instanceof Error ? error.message : "Failed to connect call. Please try again.",
+        title: isArabic ? 'فشلت المكالمة' : 'Call Failed',
+        description: isArabic ? 'فشل في الاتصال. يرجى المحاولة مرة أخرى.' : 'Failed to connect call. Please try again.',
         variant: "destructive",
       });
-    } finally {
       setIsLoadingCall(false);
     }
   };
@@ -139,9 +151,13 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
         <DialogHeader className="space-y-4">
           <div className="flex items-start gap-4">
             <Avatar className="h-16 w-16">
-              <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white font-bold text-xl">
-                {vendorInfo.name.charAt(0)}
-              </AvatarFallback>
+              {vendor.avatar_url ? (
+                <AvatarImage src={vendor.avatar_url} alt={vendorInfo.name} />
+              ) : (
+                <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-white font-bold text-xl">
+                  {vendorInfo.name.charAt(0)}
+                </AvatarFallback>
+              )}
             </Avatar>
             <div className="flex-1">
               <DialogTitle className="text-2xl">{vendorInfo.name}</DialogTitle>
@@ -152,7 +168,9 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
                 <div className="flex items-center gap-1">
                   <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                   <span className="font-semibold">{vendor.rating}</span>
-                  <span className="text-muted-foreground">({vendor.reviews} reviews)</span>
+                  <span className="text-muted-foreground">
+                    ({vendor.reviews} {isArabic ? 'تقييم' : 'reviews'})
+                  </span>
                 </div>
                 <div className="flex items-center gap-1 text-muted-foreground">
                   <MapPin className="h-4 w-4" />
@@ -171,7 +189,7 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
                 ) : (
                   <MessageCircle className="h-4 w-4 mr-2" />
                 )}
-                Send Message
+                {isArabic ? 'إرسال رسالة' : 'Send Message'}
               </Button>
               <Button 
                 variant="outline"
@@ -183,7 +201,7 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
                 ) : (
                   <Video className="h-4 w-4 mr-2" />
                 )}
-                Video Call
+                {isArabic ? 'مكالمة مرئية' : 'Video Call'}
               </Button>
             </div>
           </div>
@@ -195,7 +213,9 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
             <Card>
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-primary">{vendor.completedProjects}+</div>
-                <p className="text-sm text-muted-foreground">Projects Completed</p>
+                <p className="text-sm text-muted-foreground">
+                  {isArabic ? 'مشاريع مكتملة' : 'Projects Completed'}
+                </p>
               </CardContent>
             </Card>
             <Card>
@@ -204,13 +224,17 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
                   <Clock className="h-4 w-4 text-accent" />
                   <span className="font-bold text-accent">{vendorInfo.responseTime}</span>
                 </div>
-                <p className="text-sm text-muted-foreground">Avg Response Time</p>
+                <p className="text-sm text-muted-foreground">
+                  {isArabic ? 'متوسط وقت الاستجابة' : 'Avg Response Time'}
+                </p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-green-600">98%</div>
-                <p className="text-sm text-muted-foreground">Client Satisfaction</p>
+                <p className="text-sm text-muted-foreground">
+                  {isArabic ? 'رضا العملاء' : 'Client Satisfaction'}
+                </p>
               </CardContent>
             </Card>
           </div>
@@ -218,7 +242,7 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
           {/* About */}
           <Card>
             <CardHeader>
-              <CardTitle>About</CardTitle>
+              <CardTitle>{isArabic ? 'نبذة عنا' : 'About'}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground leading-relaxed">{vendorInfo.description}</p>
@@ -228,7 +252,7 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
           {/* Services */}
           <Card>
             <CardHeader>
-              <CardTitle>Services Offered</CardTitle>
+              <CardTitle>{isArabic ? 'الخدمات المقدمة' : 'Services Offered'}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
@@ -245,15 +269,19 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
           {/* Portfolio */}
           <Card>
             <CardHeader>
-              <CardTitle>Recent Projects</CardTitle>
-              <CardDescription>Some of our latest work</CardDescription>
+              <CardTitle>{isArabic ? 'المشاريع الحديثة' : 'Recent Projects'}</CardTitle>
+              <CardDescription>
+                {isArabic ? 'بعض من أعمالنا الأخيرة' : 'Some of our latest work'}
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {portfolioItems.map((item, index) => (
+                {projects.map((item, index) => (
                   <Card key={index} className="overflow-hidden">
                     <div className="aspect-square bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                      <span className="text-2xl font-bold text-primary">{item.image}</span>
+                      <span className="text-2xl font-bold text-primary">
+                        {item.title.split(' ').map(word => word[0]).join('').substring(0, 2)}
+                      </span>
                     </div>
                     <CardContent className="p-3">
                       <h4 className="font-semibold text-sm">{item.title}</h4>
@@ -270,7 +298,7 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Award className="h-5 w-5" />
-                Certifications & Awards
+                {isArabic ? 'الشهادات والجوائز' : 'Certifications & Awards'}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -288,11 +316,14 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
           {/* Communication Section */}
           <Card>
             <CardHeader>
-              <CardTitle>Communication</CardTitle>
+              <CardTitle>{isArabic ? 'التواصل' : 'Communication'}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-sm text-muted-foreground mb-4">
-                All communication with this vendor happens within the MWRD platform to ensure security and transparency.
+                {isArabic 
+                  ? 'جميع المراسلات مع هذا المورد تتم داخل منصة MWRD لضمان الأمان والشفافية.'
+                  : 'All communication with this vendor happens within the MWRD platform to ensure security and transparency.'
+                }
               </p>
               <div className="flex gap-2">
                 <Button 
@@ -305,7 +336,7 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
                   ) : (
                     <MessageCircle className="h-4 w-4 mr-2" />
                   )}
-                  Chat Now
+                  {isArabic ? 'دردشة الآن' : 'Chat Now'}
                 </Button>
                 <Button 
                   variant="outline" 
@@ -318,7 +349,7 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
                   ) : (
                     <Video className="h-4 w-4 mr-2" />
                   )}
-                  Video Call
+                  {isArabic ? 'مكالمة مرئية' : 'Video Call'}
                 </Button>
               </div>
             </CardContent>
