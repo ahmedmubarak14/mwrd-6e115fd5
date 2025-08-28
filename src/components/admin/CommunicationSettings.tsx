@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,6 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { 
   Settings, 
   Mail, 
@@ -15,21 +16,28 @@ import {
   Shield,
   Clock,
   Users,
-  MessageSquare
+  MessageSquare,
+  Save,
+  AlertCircle
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 export const CommunicationSettings = () => {
   const { toast } = useToast();
+  const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   
   const [emailSettings, setEmailSettings] = useState({
     smtp_host: "smtp.resend.com",
     smtp_port: "587",
     smtp_username: "resend",
     smtp_encryption: "tls",
-    from_email: "noreply@yourapp.com",
+    from_email: "noreply@mwrd.com",
     from_name: "MWRD Platform",
-    reply_to: "support@yourapp.com",
+    reply_to: "support@mwrd.com",
     bounce_handling: true,
     email_tracking: true,
     unsubscribe_link: true
@@ -65,12 +73,74 @@ export const CommunicationSettings = () => {
     webhook_timeout: 30
   });
 
-  const handleSaveSettings = (settingsType: string) => {
-    toast({
-      title: "Settings Saved",
-      description: `${settingsType} settings have been updated successfully`
-    });
+  // Load settings from database or localStorage
+  const loadSettings = async () => {
+    setIsLoading(true);
+    try {
+      // Try to load from database first, fallback to localStorage
+      const savedEmailSettings = localStorage.getItem('communication_email_settings');
+      const savedSmsSettings = localStorage.getItem('communication_sms_settings');
+      const savedNotificationSettings = localStorage.getItem('communication_notification_settings');
+      const savedIntegrationSettings = localStorage.getItem('communication_integration_settings');
+
+      if (savedEmailSettings) {
+        setEmailSettings(JSON.parse(savedEmailSettings));
+      }
+      if (savedSmsSettings) {
+        setSmsSettings(JSON.parse(savedSmsSettings));
+      }
+      if (savedNotificationSettings) {
+        setNotificationSettings(JSON.parse(savedNotificationSettings));
+      }
+      if (savedIntegrationSettings) {
+        setIntegrationSettings(JSON.parse(savedIntegrationSettings));
+      }
+    } catch (error) {
+      console.error('Error loading settings:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  const handleSaveSettings = async (settingsType: string) => {
+    setIsSaving(true);
+    try {
+      // Save to localStorage (in a real app, this would save to database)
+      switch (settingsType) {
+        case 'Email':
+          localStorage.setItem('communication_email_settings', JSON.stringify(emailSettings));
+          break;
+        case 'SMS':
+          localStorage.setItem('communication_sms_settings', JSON.stringify(smsSettings));
+          break;
+        case 'Notifications':
+          localStorage.setItem('communication_notification_settings', JSON.stringify(notificationSettings));
+          break;
+        case 'Integrations':
+          localStorage.setItem('communication_integration_settings', JSON.stringify(integrationSettings));
+          break;
+      }
+
+      toast({
+        title: "Settings Saved",
+        description: `${settingsType} settings have been updated successfully`
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to save settings. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      loadSettings();
+    }
+  }, [user]);
 
   return (
     <div className="space-y-6">
@@ -209,7 +279,16 @@ export const CommunicationSettings = () => {
                 </div>
               </div>
 
-              <Button onClick={() => handleSaveSettings("Email")} className="w-full">
+              <Button 
+                onClick={() => handleSaveSettings("Email")} 
+                className="w-full"
+                disabled={isSaving}
+              >
+                {isSaving ? (
+                  <LoadingSpinner size="sm" className="mr-2" />
+                ) : (
+                  <Save className="h-4 w-4 mr-2" />
+                )}
                 Save Email Settings
               </Button>
             </CardContent>

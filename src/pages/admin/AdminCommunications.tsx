@@ -7,6 +7,7 @@ import { EmailCampaignManager } from "@/components/admin/EmailCampaignManager";
 import { RealTimeChatSystem } from "@/components/admin/RealTimeChatSystem";
 import { PushNotificationManager } from "@/components/admin/PushNotificationManager";
 import { CommunicationSettings } from "@/components/admin/CommunicationSettings";
+import { CommunicationOverview } from "@/components/admin/CommunicationOverview";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { cn } from "@/lib/utils";
 import { AdminPageContainer } from "@/components/admin/AdminPageContainer";
@@ -31,8 +32,12 @@ const AdminCommunications = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="notifications" className="space-y-6">
-          <TabsList className="grid grid-cols-5 w-full">
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="grid grid-cols-6 w-full">
+            <TabsTrigger value="overview" className="flex items-center gap-2">
+              <MessageSquare className="h-4 w-4" />
+              Overview
+            </TabsTrigger>
             <TabsTrigger value="notifications" className="flex items-center gap-2">
               <Bell className="h-4 w-4" />
               Notifications
@@ -54,6 +59,10 @@ const AdminCommunications = () => {
               Settings
             </TabsTrigger>
           </TabsList>
+
+          <TabsContent value="overview">
+            <CommunicationOverview />
+          </TabsContent>
 
           <TabsContent value="notifications">
             <NotificationCenter />

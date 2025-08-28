@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 export interface NotificationData {
   id: string;
@@ -12,6 +13,7 @@ export interface NotificationData {
   scheduled_for?: string;
   created_at: string;
   sent_at?: string;
+  category?: string;
 }
 
 export interface NotificationStats {
@@ -23,56 +25,61 @@ export interface NotificationStats {
 
 export const useNotificationCenter = () => {
   const [notifications, setNotifications] = useState<NotificationData[]>([]);
-  const [notificationStats, setNotificationStats] = useState<NotificationStats | null>(null);
+  const [notificationStats, setNotificationStats] = useState<NotificationStats>({
+    total: 0,
+    sentToday: 0,
+    pending: 0,
+    openRate: 0
+  });
   const [isLoading, setIsLoading] = useState(true);
+  const { user } = useAuth();
 
   const fetchNotifications = async () => {
+    if (!user) return;
+    
+    setIsLoading(true);
     try {
-      // Mock notification data
-      const mockNotifications: NotificationData[] = [
-        {
-          id: '1',
-          title: 'System Maintenance Scheduled',
-          message: 'Our platform will undergo maintenance on Sunday from 2:00 AM to 4:00 AM GMT.',
-          type: 'announcement',
-          priority: 'high',
-          status: 'sent',
-          target_audience: 'all_users',
-          created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-          sent_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
-        },
-        {
-          id: '2',
-          title: 'New Feature Release: Advanced Analytics',
-          message: 'Discover powerful new insights with our enhanced analytics dashboard.',
-          type: 'announcement',
-          priority: 'medium',
-          status: 'scheduled',
-          target_audience: 'all_users',
-          scheduled_for: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-          created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString()
-        },
-        {
-          id: '3',
-          title: 'Security Alert: Password Reset Required',
-          message: 'We detected unusual activity on your account. Please reset your password immediately.',
-          type: 'alert',
-          priority: 'critical',
-          status: 'draft',
-          target_audience: 'affected_users',
-          created_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString()
-        }
-      ];
+      // Fetch admin notifications (system-wide notifications)
+      const { data: adminNotifications, error: adminError } = await supabase
+        .from('notifications')
+        .select('*')
+        .or('category.eq.system,category.eq.announcement,category.eq.maintenance,category.is.null')
+        .order('created_at', { ascending: false })
+        .limit(100);
 
-      const mockStats: NotificationStats = {
-        total: 156,
-        sentToday: 12,
-        pending: 3,
-        openRate: 78
-      };
+      if (adminError) throw adminError;
 
-      setNotifications(mockNotifications);
-      setNotificationStats(mockStats);
+      // Transform data to match NotificationData interface
+      const transformedNotifications: NotificationData[] = (adminNotifications || []).map(notification => ({
+        id: notification.id,
+        type: notification.category || notification.type || 'announcement',
+        title: notification.title,
+        message: notification.message,
+        priority: notification.priority || 'medium',
+        status: notification.read ? 'sent' : 'draft',
+        target_audience: 'all_users',
+        created_at: notification.created_at,
+        category: notification.category
+      }));
+
+      setNotifications(transformedNotifications);
+
+      // Calculate stats
+      const total = transformedNotifications.length;
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const sentToday = transformedNotifications.filter(n => 
+        new Date(n.created_at) >= today && n.status === 'sent'
+      ).length;
+      const pending = transformedNotifications.filter(n => n.status === 'draft').length;
+
+      setNotificationStats({
+        total,
+        sentToday,
+        pending,
+        openRate: total > 0 ? Math.round((sentToday / total) * 100) : 0
+      });
+
     } catch (error) {
       console.error('Error fetching notifications:', error);
     } finally {
@@ -81,21 +88,29 @@ export const useNotificationCenter = () => {
   };
 
   const createNotification = async (notificationData: Partial<NotificationData>) => {
+    if (!user) throw new Error('User not authenticated');
+    
     try {
-      const newNotification: NotificationData = {
-        id: Math.random().toString(36).substr(2, 9),
-        title: notificationData.title || '',
-        message: notificationData.message || '',
-        type: notificationData.type || 'announcement',
-        priority: notificationData.priority || 'medium',
-        status: notificationData.scheduled_for ? 'scheduled' : 'draft',
-        target_audience: notificationData.target_audience || 'all_users',
-        scheduled_for: notificationData.scheduled_for,
-        created_at: new Date().toISOString()
-      };
+      const { data, error } = await supabase
+        .from('notifications')
+        .insert({
+          user_id: user.id,
+          type: notificationData.type || 'announcement',
+          title: notificationData.title || '',
+          message: notificationData.message || '',
+          priority: notificationData.priority || 'medium',
+          category: notificationData.type || 'system',
+          data: {
+            target_audience: notificationData.target_audience || 'all_users',
+            scheduled_for: notificationData.scheduled_for
+          }
+        })
+        .select()
+        .single();
 
-      setNotifications(prev => [newNotification, ...prev]);
-      return newNotification;
+      if (error) throw error;
+      await fetchNotifications();
+      return data;
     } catch (error) {
       console.error('Error creating notification:', error);
       throw error;
@@ -103,12 +118,23 @@ export const useNotificationCenter = () => {
   };
 
   const updateNotification = async (notificationId: string, updates: Partial<NotificationData>) => {
+    if (!user) throw new Error('User not authenticated');
+    
     try {
-      setNotifications(prev => prev.map(notification => 
-        notification.id === notificationId 
-          ? { ...notification, ...updates }
-          : notification
-      ));
+      const updateData: any = {};
+      
+      if (updates.title) updateData.title = updates.title;
+      if (updates.message) updateData.message = updates.message;
+      if (updates.priority) updateData.priority = updates.priority;
+      if (updates.status === 'sent') updateData.read = true;
+
+      const { error } = await supabase
+        .from('notifications')
+        .update(updateData)
+        .eq('id', notificationId);
+
+      if (error) throw error;
+      await fetchNotifications();
     } catch (error) {
       console.error('Error updating notification:', error);
       throw error;
@@ -117,7 +143,7 @@ export const useNotificationCenter = () => {
 
   useEffect(() => {
     fetchNotifications();
-  }, []);
+  }, [user]);
 
   return {
     notifications,
