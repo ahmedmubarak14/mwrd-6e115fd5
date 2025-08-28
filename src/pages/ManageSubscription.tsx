@@ -8,13 +8,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { EnterpriseConsultationModal } from "@/components/modals/EnterpriseConsultationModal";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { usePaymentIntegration } from "@/hooks/usePaymentIntegration";
 import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AuthForm } from "@/components/auth/AuthForm";
+import { format } from "date-fns";
 
 export const ManageSubscription = () => {
   const { user, userProfile, loading } = useAuth();
@@ -22,74 +22,132 @@ export const ManageSubscription = () => {
   const { toast } = useToast();
   const { processSubscriptionPayment } = usePaymentIntegration();
   const [activeView, setActiveView] = useState<'overview' | 'upgrade' | 'billing' | 'payment'>('overview');
-  const [subscriptionData, setSubscriptionData] = useLocalStorage<any>('subscription-data', {
-    subscribed: true,
-    subscription_tier: 'Professional',
-    subscription_end: '2024-03-15T00:00:00Z',
-    next_billing_date: '2024-03-15',
-    current_period_start: '2024-02-15',
-    amount: 799,
-    status: 'active'
-  });
+  const [transactions, setTransactions] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const isRTL = language === 'ar';
 
-  // Subscription metrics
-  const metrics = useMemo(() => {
+  // Get real subscription data from user profile
+  const subscriptionData = useMemo(() => {
+    if (!userProfile) return null;
+    
     return {
-      daysRemaining: Math.ceil((new Date(subscriptionData.subscription_end).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)),
-      monthlySpend: subscriptionData.amount || 0,
-      annualSavings: subscriptionData.subscription_tier === 'Professional' ? 1200 : 0,
-      tierLevel: subscriptionData.subscription_tier || 'Basic'
+      subscription_tier: userProfile.subscription_plan || 'free',
+      subscription_status: userProfile.subscription_status || 'active',
+      subscription_expires_at: userProfile.subscription_expires_at,
+      created_at: userProfile.created_at,
+      updated_at: userProfile.updated_at
     };
-  }, [subscriptionData]);
+  }, [userProfile]);
 
-  // Check subscription status on component load
+  // Real subscription metrics
+  const metrics = useMemo(() => {
+    if (!subscriptionData || !transactions.length) {
+      return {
+        daysRemaining: subscriptionData?.subscription_expires_at 
+          ? Math.ceil((new Date(subscriptionData.subscription_expires_at).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+          : 0,
+        monthlySpend: 0,
+        totalSpent: 0,
+        tierLevel: subscriptionData?.subscription_tier || 'free'
+      };
+    }
+
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    const monthlyTransactions = transactions.filter(t => {
+      const transactionDate = new Date(t.created_at);
+      return transactionDate.getMonth() === currentMonth && 
+             transactionDate.getFullYear() === currentYear &&
+             t.status === 'completed';
+    });
+
+    return {
+      daysRemaining: subscriptionData.subscription_expires_at 
+        ? Math.ceil((new Date(subscriptionData.subscription_expires_at).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
+        : 0,
+      monthlySpend: monthlyTransactions.reduce((sum, t) => sum + Number(t.amount), 0),
+      totalSpent: transactions.filter(t => t.status === 'completed').reduce((sum, t) => sum + Number(t.amount), 0),
+      tierLevel: subscriptionData.subscription_tier
+    };
+  }, [subscriptionData, transactions]);
+
+  // Load real data on component mount
   useEffect(() => {
     if (user) {
-      checkSubscription();
+      fetchFinancialTransactions();
     }
   }, [user]);
 
-  const checkSubscription = async () => {
+  const fetchFinancialTransactions = async () => {
     try {
-      const { data, error } = await supabase.functions.invoke('check-subscription');
+      const { data, error } = await supabase
+        .from('financial_transactions')
+        .select('*')
+        .eq('user_id', user?.id)
+        .order('created_at', { ascending: false });
+
       if (error) throw error;
-      setSubscriptionData(data);
+      setTransactions(data || []);
     } catch (error: any) {
-      console.error('Error checking subscription:', error);
+      console.error('Error fetching transactions:', error);
       toast({
         title: "Error",
-        description: "Failed to check subscription status",
+        description: "Failed to load financial data",
         variant: "destructive",
       });
     }
   };
 
   const handleUpgrade = async (plan: string) => {
+    if (!user) return;
+    
     setIsLoading(true);
     try {
-      // Simulate successful upgrade
-      toast({
-        title: "Redirecting to Checkout",
-        description: `Processing upgrade to ${plan} plan...`,
-      });
+      // Create a real transaction record
+      const planPrices = {
+        'basic': 299,
+        'professional': 799,
+        'enterprise': 1299
+      };
       
-      // Simulate successful upgrade after 2 seconds
-      setTimeout(() => {
-        setSubscriptionData(prev => ({
-          ...prev,
-          subscription_tier: plan,
-          amount: plan === 'Basic' ? 299 : plan === 'Professional' ? 799 : 1299
-        }));
-        
-        toast({
-          title: "Upgrade Successful",
-          description: `Your subscription has been upgraded to ${plan}!`,
-        });
-      }, 2000);
+      const { error: transactionError } = await supabase
+        .from('financial_transactions')
+        .insert([{
+          user_id: user.id,
+          type: 'subscription',
+          amount: planPrices[plan.toLowerCase() as keyof typeof planPrices] || 0,
+          status: 'completed',
+          description: `Subscription upgrade to ${plan} plan`,
+          payment_method: 'credit_card'
+        }]);
+
+      if (transactionError) throw transactionError;
+
+      // Update user profile with new subscription
+      const expirationDate = new Date();
+      expirationDate.setMonth(expirationDate.getMonth() + 1);
+
+      const { error: profileError } = await supabase
+        .from('user_profiles')
+        .update({
+          subscription_plan: plan.toLowerCase(),
+          subscription_status: 'active',
+          subscription_expires_at: expirationDate.toISOString(),
+          updated_at: new Date().toISOString()
+        })
+        .eq('user_id', user.id);
+
+      if (profileError) throw profileError;
+
+      // Refresh data
+      await fetchFinancialTransactions();
+      
+      toast({
+        title: "Upgrade Successful",
+        description: `Your subscription has been upgraded to ${plan}!`,
+      });
     } catch (error: any) {
-      console.error('Error creating checkout:', error);
+      console.error('Error upgrading subscription:', error);
       toast({
         title: "Upgrade Failed",
         description: error.message || "Failed to process upgrade. Please try again.",
@@ -130,18 +188,22 @@ export const ManageSubscription = () => {
   };
 
   const handleDowngradeSubscription = async () => {
+    if (!user) return;
+    
     try {
       setIsLoading(true);
       
-      // Simulate downgrade process
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setSubscriptionData(prev => ({
-        ...prev,
-        subscription_tier: 'Basic',
-        amount: 299,
-        status: 'downgrading'
-      }));
+      // Update user profile with downgrade
+      const { error } = await supabase
+        .from('user_profiles')
+        .update({
+          subscription_plan: 'basic',
+          subscription_status: 'active',
+          updated_at: new Date().toISOString()
+        })
+        .eq('user_id', user.id);
+
+      if (error) throw error;
       
       toast({
         title: isRTL ? "تم تخفيض الاشتراك" : "Subscription Downgraded", 
@@ -159,17 +221,21 @@ export const ManageSubscription = () => {
   };
 
   const handleCancelSubscription = async () => {
+    if (!user) return;
+    
     try {
       setIsLoading(true);
       
-      // Simulate cancellation process
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setSubscriptionData(prev => ({
-        ...prev,
-        status: 'cancelled',
-        subscription_end: prev.subscription_end // Keep current end date
-      }));
+      // Update user profile to cancelled status
+      const { error } = await supabase
+        .from('user_profiles')
+        .update({
+          subscription_status: 'cancelled',
+          updated_at: new Date().toISOString()
+        })
+        .eq('user_id', user.id);
+
+      if (error) throw error;
       
       toast({
         title: isRTL ? "تم إلغاء الاشتراك" : "Subscription Cancelled",
@@ -236,20 +302,25 @@ export const ManageSubscription = () => {
                   <span className="text-muted-foreground text-sm">
                     {isRTL ? 'الخطة:' : 'Plan:'}
                   </span>
-                  <span className="font-medium">{subscriptionData.subscription_tier}</span>
+                  <span className="font-medium capitalize">{subscriptionData?.subscription_tier}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground text-sm">
-                    {isRTL ? 'تاريخ التجديد:' : 'Next Billing:'}
+                    {isRTL ? 'تاريخ الانتهاء:' : 'Expires:'}
                   </span>
-                  <span className="font-medium">March 15, 2024</span>
+                  <span className="font-medium">
+                    {subscriptionData?.subscription_expires_at 
+                      ? format(new Date(subscriptionData.subscription_expires_at), 'MMM dd, yyyy')
+                      : 'No expiration'
+                    }
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground text-sm">
                     {isRTL ? 'الحالة:' : 'Status:'}
                   </span>
-                  <Badge variant={subscriptionData.status === 'active' ? 'default' : 'destructive'}>
-                    {subscriptionData.status}
+                  <Badge variant={subscriptionData?.subscription_status === 'active' ? 'default' : 'destructive'}>
+                    {subscriptionData?.subscription_status || 'inactive'}
                   </Badge>
                 </div>
               </div>
@@ -298,7 +369,7 @@ export const ManageSubscription = () => {
           isRTL ? 'أولوية في المطابقة الذكية' : 'Priority smart matching',
           isRTL ? 'دعم فني متخصص' : 'Specialist technical support'
         ],
-        current: subscriptionData.subscription_tier === 'Basic'
+        current: subscriptionData?.subscription_tier === 'basic'
       },
       {
         name: isRTL ? 'التميز المهني' : 'Professional Excellence',
@@ -309,7 +380,7 @@ export const ManageSubscription = () => {
           isRTL ? 'فريق دعم مخصص' : 'Dedicated support team',
           isRTL ? 'استشارات استراتيجية' : 'Strategic consultations'
         ],
-        current: subscriptionData.subscription_tier === 'Professional'
+        current: subscriptionData?.subscription_tier === 'professional'
       },
       {
         name: isRTL ? 'قيادة المؤسسات' : 'Enterprise Leadership',
@@ -320,7 +391,7 @@ export const ManageSubscription = () => {
           isRTL ? 'تكاملات تقنية مخصصة' : 'Custom technical integrations',
           isRTL ? 'استشارات تحول رقمي' : 'Digital transformation consultancy'
         ],
-        current: subscriptionData.subscription_tier === 'Enterprise'
+        current: subscriptionData?.subscription_tier === 'enterprise'
       }
     ];
 
@@ -367,7 +438,7 @@ export const ManageSubscription = () => {
               <Button 
                 className="w-full"
                 variant={plan.current ? "outline" : "default"}
-                onClick={() => !plan.current && handleUpgrade(index === 0 ? 'Basic' : 'Professional')}
+                onClick={() => !plan.current && handleUpgrade(index === 0 ? 'basic' : 'professional')}
                 disabled={isLoading || plan.current}
               >
                 {isLoading ? (
@@ -423,77 +494,35 @@ export const ManageSubscription = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
-            {/* Current Period */}
-            <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
-              <h4 className="font-semibold text-lg mb-3 text-primary">
-                {isRTL ? 'الفترة الحالية' : 'Current Billing Period'}
+            {/* Real Transaction History */}
+            <div className="space-y-4">
+              <h4 className="font-semibold text-lg">
+                {isRTL ? 'سجل المعاملات' : 'Transaction History'}
               </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <span className="text-muted-foreground text-sm">
-                    {isRTL ? 'بداية الفترة:' : 'Period Start:'}
-                  </span>
-                  <p className="font-medium">February 15, 2024</p>
-                </div>
-                <div>
-                  <span className="text-muted-foreground text-sm">
-                    {isRTL ? 'نهاية الفترة:' : 'Period End:'}
-                  </span>
-                  <p className="font-medium">March 15, 2024</p>
-                </div>
-                <div>
-                  <span className="text-muted-foreground text-sm">
-                    {isRTL ? 'المبلغ:' : 'Amount:'}
-                  </span>
-                  <div className="flex items-center gap-1">
-                    <p className="font-medium">{subscriptionData.amount}</p>
-                    <span className="text-sm">SAR</span>
-                  </div>
-                </div>
-                <div>
-                  <span className="text-muted-foreground text-sm">
-                    {isRTL ? 'الحالة:' : 'Status:'}
-                  </span>
-                  <p className="font-medium text-success">Paid</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Billing History */}
-            <div>
-              <h4 className="font-semibold text-lg mb-4">
-                {isRTL ? 'تاريخ الفوترة' : 'Billing History'}
-              </h4>
-              <div className="space-y-3">
-                {[
-                  { date: 'January 15, 2024', amount: '799', status: 'Paid', invoice: 'INV-001' },
-                  { date: 'December 15, 2023', amount: '799', status: 'Paid', invoice: 'INV-002' },
-                  { date: 'November 15, 2023', amount: '799', status: 'Paid', invoice: 'INV-003' },
-                ].map((bill) => (
-                  <div key={bill.invoice} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div>
-                      <p className="font-medium">{bill.date}</p>
-                      <p className="text-sm text-muted-foreground">{bill.invoice}</p>
-                    </div>
-                    <div className="text-right">
-                      <div className="flex items-center gap-1 font-medium">
-                        <span>{bill.amount} SAR</span>
+              {transactions.length > 0 ? (
+                <div className="space-y-3">
+                  {transactions.slice(0, 5).map((transaction) => (
+                    <div key={transaction.id} className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
+                      <div>
+                        <p className="font-medium">{transaction.description || transaction.type}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {format(new Date(transaction.created_at), 'MMM dd, yyyy')}
+                        </p>
                       </div>
-                      <span className="text-sm text-success">{bill.status}</span>
+                      <div className="text-right">
+                        <p className="font-medium">{transaction.amount} SAR</p>
+                        <Badge variant={transaction.status === 'completed' ? 'default' : 'secondary'}>
+                          {transaction.status}
+                        </Badge>
+                      </div>
                     </div>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => toast({
-                        title: "Invoice Downloaded",
-                        description: `Invoice ${bill.invoice} has been downloaded.`,
-                      })}
-                    >
-                      {isRTL ? 'تحميل' : 'Download'}
-                    </Button>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-muted-foreground text-center py-4">
+                  {isRTL ? 'لا توجد معاملات' : 'No transactions found'}
+                </p>
+              )}
             </div>
           </div>
         </CardContent>
@@ -620,9 +649,9 @@ export const ManageSubscription = () => {
         />
         <MetricCard
           title="Status"
-          value={subscriptionData.status === 'active' ? 'Active' : 'Cancelled'}
+          value={subscriptionData?.subscription_status === 'active' ? 'Active' : 'Cancelled'}
           icon={Shield}
-          variant={subscriptionData.status === 'active' ? "success" : "warning"}
+          variant={subscriptionData?.subscription_status === 'active' ? "success" : "warning"}
         />
       </div>
 

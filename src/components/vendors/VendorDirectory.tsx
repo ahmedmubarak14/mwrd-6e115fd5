@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Star, MapPin, Clock, Shield, DollarSign, Search, Filter, Users, Building2 } from "lucide-react";
+import { MapPin, Clock, Shield, Search, Filter, Users, Building2 } from "lucide-react";
+import { format } from "date-fns";
 import { useVendors, VendorFilters } from "@/hooks/useVendors";
 import { useCategories } from "@/hooks/useCategories";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -67,17 +68,20 @@ export const VendorDirectory: React.FC = () => {
             <div>
               <CardTitle className="text-lg">{vendor.company_name || vendor.full_name}</CardTitle>
               <div className="flex items-center gap-2 mt-1">
-                <div className="flex items-center gap-1">
-                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  <span className="text-sm font-medium">4.8</span>
-                  <span className="text-sm text-muted-foreground">(124)</span>
-                </div>
                 {vendor.address && (
+                  <div className="flex items-center gap-1">
+                    <MapPin className="h-3 w-3 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">{vendor.address}</span>
+                  </div>
+                )}
+                {vendor.verification_status === 'approved' && (
                   <>
-                    <span className="text-muted-foreground">•</span>
+                    {vendor.address && <span className="text-muted-foreground">•</span>}
                     <div className="flex items-center gap-1">
-                      <MapPin className="h-3 w-3 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">{vendor.address}</span>
+                      <Shield className="h-3 w-3 text-green-600" />
+                      <span className="text-sm text-green-600">
+                        {isRTL ? 'معتمد' : 'Verified'}
+                      </span>
                     </div>
                   </>
                 )}
@@ -116,37 +120,24 @@ export const VendorDirectory: React.FC = () => {
           </div>
         )}
 
-        {/* Key metrics */}
-        <div className="grid grid-cols-3 gap-4 pt-3 border-t">
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <Clock className="h-3 w-3 text-muted-foreground" />
-              <span className="text-xs text-muted-foreground">
-                {isRTL ? 'التسليم' : 'Delivery'}
-              </span>
-            </div>
-            <span className="text-sm font-medium">3-5 {isRTL ? 'أيام' : 'days'}</span>
+        {/* Vendor Info */}
+        <div className="flex items-center justify-between pt-3 border-t text-sm text-muted-foreground">
+          <div className="flex items-center gap-1">
+            <Clock className="h-3 w-3" />
+            <span>
+              {isRTL ? 'انضم في' : 'Joined'} {format(new Date(vendor.created_at), 'MMM yyyy')}
+            </span>
           </div>
-          
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <Shield className="h-3 w-3 text-muted-foreground" />
-              <span className="text-xs text-muted-foreground">
-                {isRTL ? 'معتمد' : 'Certified'}
-              </span>
-            </div>
-            <span className="text-sm font-medium">ISO 9001</span>
-          </div>
-          
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <DollarSign className="h-3 w-3 text-muted-foreground" />
-              <span className="text-xs text-muted-foreground">
-                {isRTL ? 'أدنى طلب' : 'Min Order'}
-              </span>
-            </div>
-            <span className="text-sm font-medium">1,000 SAR</span>
-          </div>
+          {vendor.portfolio_url && (
+            <a 
+              href={vendor.portfolio_url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              {isRTL ? 'عرض الأعمال' : 'Portfolio'}
+            </a>
+          )}
         </div>
 
         <div className="flex gap-2 pt-2">
