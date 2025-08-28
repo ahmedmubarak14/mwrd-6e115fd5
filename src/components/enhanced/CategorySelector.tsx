@@ -36,9 +36,8 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
   // Find selected main category data
   const selectedMainCategoryData = categories.find(cat => cat.slug === mainCategory);
   
-  // Get subcategories for the selected main category
-  const subCategories = selectedMainCategoryData ? 
-    categories.filter(cat => cat.parent_id === selectedMainCategoryData.id && cat.is_active) : [];
+  // Get subcategories from the hierarchical structure
+  const subCategories = selectedMainCategoryData?.children || [];
 
   const handleMainCategoryChange = (categorySlug: string) => {
     setMainCategory(categorySlug);
