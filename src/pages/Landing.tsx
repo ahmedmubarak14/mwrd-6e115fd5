@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useOptionalAuth } from "@/contexts/useOptionalAuth";
 import { useState } from "react";
 import { 
@@ -48,7 +48,9 @@ import { Footer } from "@/components/ui/layout/Footer";
 import { cn } from "@/lib/utils";
 
 export const Landing = () => {
-  const { t, language } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const t = languageContext?.t || ((key: string) => key.split('.').pop() || key);
+  const language = languageContext?.language || 'en';
   const auth = useOptionalAuth();
   const user = auth?.user;
   const userProfile = auth?.userProfile;
