@@ -92,7 +92,7 @@ export default function AdminOrders() {
   }
 
   return (
-    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'} data-admin-dashboard>
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
       <div className={cn(isRTL ? "text-right" : "text-left")}>
         <h1 className="text-2xl font-bold">{t('admin.orders')}</h1>
         <p className="text-muted-foreground">{t('common.manageDescription')}</p>
