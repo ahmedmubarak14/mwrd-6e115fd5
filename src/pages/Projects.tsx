@@ -32,7 +32,7 @@ export default function Projects() {
       total: projects.length,
       active: projects.filter(p => p.status === 'active').length,
       completed: projects.filter(p => p.status === 'completed').length,
-      pending: projects.filter(p => p.status === 'planning' || p.status === 'draft').length,
+      pending: projects.filter(p => p.status === 'draft').length,
     };
   }, [projects]);
 
@@ -92,24 +92,25 @@ export default function Projects() {
           title="Total Projects"
           value={metrics.total}
           icon={Building2}
-          trend="up"
-          trendValue="12%"
+          trend={{ value: 12, label: "vs last month", isPositive: true }}
         />
         <MetricCard
           title="Active Projects"
           value={metrics.active}
           icon={Clock}
-          trend={{ value: 8, label: "8%", isPositive: true }}
+          trend={{ value: 8, label: "this month", isPositive: true }}
         />
         <MetricCard
           title="Completed"
           value={metrics.completed}
           icon={CheckCircle}
+          variant="success"
         />
         <MetricCard
           title="In Planning"
           value={metrics.pending}
           icon={BarChart3}
+          variant="warning"
         />
       </div>
 
@@ -195,12 +196,11 @@ export default function Projects() {
               : 'Create your first project to get started with procurement management.'
           }
           action={
-            !searchTerm && statusFilter === 'all' && priorityFilter === 'all' ? (
-              <Button onClick={() => setShowCreateModal(true)}>
-                <Plus className="mr-2 h-4 w-4" />
-                Create Your First Project
-              </Button>
-            ) : undefined
+            !searchTerm && statusFilter === 'all' && priorityFilter === 'all' ? {
+              label: "Create Your First Project",
+              onClick: () => setShowCreateModal(true),
+              variant: "default" as const
+            } : undefined
           }
         />
       ) : (

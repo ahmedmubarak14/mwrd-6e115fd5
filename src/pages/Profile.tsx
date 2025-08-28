@@ -87,7 +87,6 @@ const Profile = () => {
       bio: userProfile?.bio || "",
       portfolio_url: userProfile?.portfolio_url || "",
       categories: userProfile?.categories || [],
-      position: userProfile?.position || "",
       email: userProfile?.email || "",
     });
     setIsEditing(false);
@@ -193,10 +192,7 @@ const Profile = () => {
                     {getVerificationBadge()}
                   </div>
                   <CardDescription className="text-base">
-                    {userProfile.position && userProfile.company_name 
-                      ? `${userProfile.position} at ${userProfile.company_name}`
-                      : userProfile.company_name || userProfile.email
-                    }
+                    {userProfile.company_name || userProfile.email}
                   </CardDescription>
                   <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
                     <Calendar className="h-4 w-4" />
@@ -302,18 +298,6 @@ const Profile = () => {
                   )}
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="position">Position/Title</Label>
-                  {isEditing ? (
-                    <Input
-                      id="position"
-                      value={formData.position}
-                      onChange={(e) => setFormData({ ...formData, position: e.target.value })}
-                    />
-                  ) : (
-                    <p className="text-sm py-2">{userProfile.position || 'Not provided'}</p>
-                  )}
-                </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="address">

@@ -40,9 +40,9 @@ const Requests = () => {
     
     return {
       total: requests.length,
-      active: requests.filter(r => r.status === 'active' || r.status === 'in_progress').length,
+      active: requests.filter(r => r.status === 'in_progress').length,
       completed: requests.filter(r => r.status === 'completed').length,
-      pending: requests.filter(r => r.status === 'new' || r.status === 'pending').length,
+      pending: requests.filter(r => r.status === 'new').length,
     };
   }, [requests]);
 
@@ -95,28 +95,26 @@ const Requests = () => {
           title="Total Requests"
           value={metrics.total}
           icon={FileText}
-          trend="up"
-          trendValue="15%"
+          trend={{ value: 15, label: "vs last month", isPositive: true }}
         />
         <MetricCard
           title="Active Requests"
           value={metrics.active}
           icon={TrendingUp}
-          trend="up"
-          trendValue="5%"
-          color="success"
+          trend={{ value: 5, label: "this week", isPositive: true }}
+          variant="success"
         />
         <MetricCard
           title="Completed"
           value={metrics.completed}
           icon={CheckCircle}
-          color="default"
+          variant="success"
         />
         <MetricCard
           title="Pending"
           value={metrics.pending}
           icon={AlertCircle}
-          color="warning"
+          variant="warning"
         />
       </div>
 
@@ -237,12 +235,11 @@ const Requests = () => {
               : t('requests.createFirst')
           }
           action={
-            !searchTerm && statusFilter === "all" ? (
-              <Button onClick={() => navigate('/requests/create')}>
-                <Plus className="mr-2 h-4 w-4" />
-                {t('requests.createNew')}
-              </Button>
-            ) : undefined
+            !searchTerm && statusFilter === "all" ? {
+              label: t('requests.createNew'),
+              onClick: () => navigate('/requests/create'),
+              variant: "default" as const
+            } : undefined
           }
         />
       )}
