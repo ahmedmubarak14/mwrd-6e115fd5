@@ -28,6 +28,7 @@ import {
   EyeOff
 } from "lucide-react";
 import { AdminPageContainer } from "@/components/admin/AdminPageContainer";
+import { RecentAdminActivity } from "@/components/admin/RecentAdminActivity";
 
 interface AdminSettings {
   two_factor_enabled: boolean;
@@ -98,27 +99,44 @@ const AdminProfile = () => {
     try {
       setStatsLoading(true);
       
-      // Load admin settings from localStorage (in real app, this would be from database)
-      const savedSettings = localStorage.getItem('admin_settings');
-      if (savedSettings) {
-        setAdminSettings(JSON.parse(savedSettings));
+      // Load admin settings from database
+      const { data: settingsData, error: settingsError } = await supabase
+        .from('admin_settings')
+        .select('*')
+        .eq('user_id', user?.id)
+        .maybeSingle();
+
+      if (settingsError && settingsError.code !== 'PGRST116') {
+        console.error('Error loading admin settings:', settingsError);
+      } else if (settingsData) {
+        setAdminSettings({
+          two_factor_enabled: settingsData.two_factor_enabled,
+          email_notifications: settingsData.email_notifications,
+          security_alerts: settingsData.security_alerts,
+          admin_dashboard_theme: settingsData.admin_dashboard_theme as 'light' | 'dark' | 'system',
+          session_timeout: settingsData.session_timeout,
+          audit_log_retention: settingsData.audit_log_retention,
+        });
       }
 
-      // Mock admin stats (in real app, these would come from audit logs and session tables)
-      const mockStats: AdminStats = {
-        total_logins: Math.floor(Math.random() * 500) + 100,
-        last_login: new Date(Date.now() - Math.random() * 86400000 * 7).toISOString(),
-        failed_attempts: Math.floor(Math.random() * 5),
-        sessions_active: Math.floor(Math.random() * 3) + 1,
-        permissions_granted: [
-          'users:read', 'users:write', 'users:delete',
-          'analytics:read', 'reports:generate',
-          'system:admin', 'security:manage',
-          'communications:send', 'verification:approve'
-        ]
-      };
-      
-      setAdminStats(mockStats);
+      // Get real admin statistics
+      if (user?.id) {
+        const { data: statsData, error: statsError } = await supabase
+          .rpc('get_admin_statistics', { admin_user_id: user.id });
+
+        if (statsError) {
+          console.error('Error loading admin statistics:', statsError);
+        } else if (statsData) {
+          const stats = statsData as any; // Type assertion for JSON response
+          setAdminStats({
+            total_logins: stats.total_logins || 0,
+            last_login: stats.last_login || new Date().toISOString(),
+            failed_attempts: stats.failed_attempts || 0,
+            sessions_active: stats.sessions_active || 1,
+            permissions_granted: stats.permissions_granted || []
+          });
+        }
+      }
     } catch (error) {
       console.error('Error loading admin data:', error);
     } finally {
@@ -141,11 +159,25 @@ const AdminProfile = () => {
   };
 
   const handleSaveSettings = async () => {
+    if (!user?.id) return;
+    
     try {
-      // Save to localStorage (in real app, this would save to database)
-      localStorage.setItem('admin_settings', JSON.stringify(adminSettings));
+      const { error } = await supabase
+        .from('admin_settings')
+        .upsert({
+          user_id: user.id,
+          two_factor_enabled: adminSettings.two_factor_enabled,
+          email_notifications: adminSettings.email_notifications,
+          security_alerts: adminSettings.security_alerts,
+          admin_dashboard_theme: adminSettings.admin_dashboard_theme,
+          session_timeout: adminSettings.session_timeout,
+          audit_log_retention: adminSettings.audit_log_retention,
+        });
+
+      if (error) throw error;
       showSuccess('Admin settings saved successfully');
     } catch (error) {
+      console.error('Error saving admin settings:', error);
       showError('Failed to save settings');
     }
   };
@@ -495,22 +527,7 @@ const AdminProfile = () => {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="space-y-4">
-                        {[
-                          { action: 'User verification approved', target: 'vendor_123', time: '2 hours ago' },
-                          { action: 'System settings updated', target: 'notification_config', time: '5 hours ago' },
-                          { action: 'Financial transaction reviewed', target: 'txn_456', time: '1 day ago' },
-                          { action: 'Category management update', target: 'construction', time: '2 days ago' }
-                        ].map((activity, index) => (
-                          <div key={index} className="flex items-center justify-between py-2 border-b last:border-b-0">
-                            <div>
-                              <p className="font-medium">{activity.action}</p>
-                              <p className="text-sm text-muted-foreground">Target: {activity.target}</p>
-                            </div>
-                            <span className="text-sm text-muted-foreground">{activity.time}</span>
-                          </div>
-                        ))}
-                      </div>
+                      <RecentAdminActivity userId={user?.id} />
                     </CardContent>
                   </Card>
                 </>
