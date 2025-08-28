@@ -40,7 +40,7 @@ import CategoryManagement from './pages/admin/CategoryManagement';
 import AdminVerificationQueue from './pages/admin/AdminVerificationQueue';
 import { AdminAnalytics } from './pages/admin/AdminAnalytics';
 import { AdminLayout } from './components/admin/AdminLayout';
-import { DashboardLayout } from './components/layout/DashboardLayout';
+import { ClientLayout } from './components/layout/ClientLayout';
 import NotFound from './pages/NotFound';
 import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import AdminOrders from './pages/admin/AdminOrders';
@@ -110,49 +110,52 @@ const AppRoutes: React.FC = () => {
       <Route path="/enhanced-login" element={<Navigate to="/login" replace />} />
       <Route path="/enhanced-register" element={<Navigate to="/register" replace />} />
       
-      {/* Client Routes */}
+      {/* Client/Vendor Routes - Use ClientLayout */}
       <Route path="/client/*" element={
         <RoleProtectedRoute allowedRoles={['client']}>
-          <DashboardLayout>
+          <ClientLayout>
             <Routes>
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="profile" element={<Profile />} />
-              {/* Add more client routes here */}
             </Routes>
-          </DashboardLayout>
+          </ClientLayout>
         </RoleProtectedRoute>
       } />
 
-      {/* Vendor Routes */}
       <Route path="/vendor/*" element={
         <RoleProtectedRoute allowedRoles={['vendor']}>
-          <DashboardLayout>
+          <ClientLayout>
             <Routes>
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="profile" element={<Profile />} />
-              {/* Add more vendor routes here */}
             </Routes>
-          </DashboardLayout>
+          </ClientLayout>
         </RoleProtectedRoute>
       } />
 
       {/* Vendor Dashboard Route */}
       <Route path="/vendor-dashboard" element={
         <RoleProtectedRoute allowedRoles={['vendor']}>
-          <VendorDashboard />
+          <ClientLayout>
+            <VendorDashboard />
+          </ClientLayout>
         </RoleProtectedRoute>
       } />
 
       {/* Vendor-specific Routes */}
       <Route path="/browse-requests" element={
         <RoleProtectedRoute allowedRoles={['vendor', 'admin']}>
-          <BrowseRequests />
+          <ClientLayout>
+            <BrowseRequests />
+          </ClientLayout>
         </RoleProtectedRoute>
       } />
 
       <Route path="/my-offers" element={
         <RoleProtectedRoute allowedRoles={['vendor', 'admin']}>
-          <MyOffers />
+          <ClientLayout>
+            <MyOffers />
+          </ClientLayout>
         </RoleProtectedRoute>
       } />
 
@@ -181,72 +184,92 @@ const AppRoutes: React.FC = () => {
         <Route path="settings" element={<AdminSettings />} />
       </Route>
 
-      {/* Main Navigation Routes - Accessible to all authenticated users */}
+      {/* Main Navigation Routes - Use ClientLayout for all authenticated users */}
       <Route path="/dashboard" element={
         <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <Dashboard />
+          <ClientLayout>
+            <Dashboard />
+          </ClientLayout>
         </RoleProtectedRoute>
       } />
 
-      {/* Profile Route - Accessible to all authenticated users */}
       <Route path="/profile" element={
         <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <Profile />
+          <ClientLayout>
+            <Profile />
+          </ClientLayout>
         </RoleProtectedRoute>
       } />
 
       <Route path="/projects" element={
         <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <Projects />
+          <ClientLayout>
+            <Projects />
+          </ClientLayout>
         </RoleProtectedRoute>
       } />
 
       <Route path="/requests" element={
         <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <Requests />
+          <ClientLayout>
+            <Requests />
+          </ClientLayout>
         </RoleProtectedRoute>
       } />
 
       <Route path="/vendors" element={
         <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <Vendors />
+          <ClientLayout>
+            <Vendors />
+          </ClientLayout>
         </RoleProtectedRoute>
       } />
 
       <Route path="/messages" element={
         <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <Messages />
+          <ClientLayout>
+            <Messages />
+          </ClientLayout>
         </RoleProtectedRoute>
       } />
 
       <Route path="/orders" element={
         <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <Orders />
+          <ClientLayout>
+            <Orders />
+          </ClientLayout>
         </RoleProtectedRoute>
       } />
 
       <Route path="/settings" element={
         <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <Settings />
+          <ClientLayout>
+            <Settings />
+          </ClientLayout>
         </RoleProtectedRoute>
       } />
 
       <Route path="/manage-subscription" element={
         <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <ManageSubscription />
+          <ClientLayout>
+            <ManageSubscription />
+          </ClientLayout>
         </RoleProtectedRoute>
       } />
 
       <Route path="/support" element={
         <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <Support />
+          <ClientLayout>
+            <Support />
+          </ClientLayout>
         </RoleProtectedRoute>
       } />
 
-      {/* Analytics route for authenticated users */}
       <Route path="/analytics" element={
         <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <Analytics />
+          <ClientLayout>
+            <Analytics />
+          </ClientLayout>
         </RoleProtectedRoute>
       } />
 
