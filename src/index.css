@@ -5,6 +5,30 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile-first CSS additions */
+@layer utilities {
+  .safe-area-pt { padding-top: env(safe-area-inset-top); }
+  .safe-area-pb { padding-bottom: env(safe-area-inset-bottom); }
+  .safe-area-pl { padding-left: env(safe-area-inset-left); }
+  .safe-area-pr { padding-right: env(safe-area-inset-right); }
+  
+  .line-clamp-1 { 
+    overflow: hidden; 
+    display: -webkit-box; 
+    -webkit-line-clamp: 1; 
+    -webkit-box-orient: vertical; 
+  }
+  
+  .line-clamp-2 { 
+    overflow: hidden; 
+    display: -webkit-box; 
+    -webkit-line-clamp: 2; 
+    -webkit-box-orient: vertical; 
+  }
+  
+  .touch-pan-y { touch-action: pan-y; }
+}
+
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
 All colors MUST be HSL.
 */

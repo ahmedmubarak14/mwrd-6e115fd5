@@ -1,0 +1,79 @@
+{
+  "name": "MWRD - Procurement Platform",
+  "short_name": "MWRD",
+  "description": "Advanced procurement and vendor management platform",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
+  "orientation": "portrait-primary",
+  "categories": ["business", "productivity"],
+  "lang": "en",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Access your main dashboard", 
+      "url": "/dashboard",
+      "icons": [
+        {
+          "src": "/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Messages",
+      "short_name": "Messages", 
+      "description": "View your messages",
+      "url": "/messages",
+      "icons": [
+        {
+          "src": "/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "New Request",
+      "short_name": "Request",
+      "description": "Create a new procurement request",
+      "url": "/create-request",
+      "icons": [
+        {
+          "src": "/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png", 
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
+}

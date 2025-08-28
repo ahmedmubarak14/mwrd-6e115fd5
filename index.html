@@ -3,15 +3,41 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MWRD - مورد</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="MWRD" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-TileColor" content="#0f172a" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    
+    <title>MWRD - Advanced Procurement Platform</title>
     <meta name="description" content="Smart B2B procurement platform connecting buyers with verified suppliers" />
     <meta name="author" content="MWRD" />
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
     <link rel="icon" href="/lovable-uploads/c18ac1e0-584d-4883-aaa4-4ef9d5a17d85.png" type="image/png">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png" />
+    <link rel="apple-touch-icon" sizes="167x167" href="/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png" />
+    
+    <!-- Splash Screen Meta Tags -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="apple-touch-startup-image" href="/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png" />
 
+    <!-- Social Media -->
     <meta property="og:title" content="منصة المشتريات التجارية الذكية - MWRD" />
     <meta property="og:description" content="Smart B2B procurement platform connecting buyers with verified suppliers" />
     <meta property="og:type" content="website" />
@@ -25,5 +51,57 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <script>
+      // Register service worker for PWA
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+      
+      // Install prompt handling
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        
+        // Show install button or banner
+        const installBanner = document.createElement('div');
+        installBanner.id = 'install-banner';
+        installBanner.innerHTML = `
+          <div style="position: fixed; bottom: 20px; left: 20px; right: 20px; background: #0f172a; color: white; padding: 16px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1000; display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <strong>Install MWRD App</strong>
+              <br><small>Get the full app experience</small>
+            </div>
+            <button id="install-btn" style="background: white; color: #0f172a; border: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; cursor: pointer;">Install</button>
+            <button id="dismiss-btn" style="background: transparent; color: white; border: 1px solid white; padding: 8px 16px; border-radius: 4px; margin-left: 8px; cursor: pointer;">Later</button>
+          </div>
+        `;
+        document.body.appendChild(installBanner);
+        
+        document.getElementById('install-btn').addEventListener('click', () => {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+              console.log('User accepted the install prompt');
+            }
+            deferredPrompt = null;
+            document.getElementById('install-banner').remove();
+          });
+        });
+        
+        document.getElementById('dismiss-btn').addEventListener('click', () => {
+          document.getElementById('install-banner').remove();
+        });
+      });
+    </script>
   </body>
 </html>
