@@ -475,7 +475,7 @@ export default function AdminUsers() {
     >
       <div className="space-y-6">
         {/* Metrics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total Users</CardTitle>
@@ -527,7 +527,7 @@ export default function AdminUsers() {
             <CardTitle>Filters & Actions</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4 mb-4">
               <Input
                 placeholder="Search users..."
                 value={searchTerm}
@@ -590,8 +590,8 @@ export default function AdminUsers() {
                 </div>
 
                 {selectedCount > 0 && (
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="flex gap-2">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4">
+                     <div className="flex flex-col sm:flex-row gap-2">
                       <Select value={bulkRole} onValueChange={setBulkRole}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select role" />
@@ -630,7 +630,7 @@ export default function AdminUsers() {
                       </AlertDialog>
                     </div>
 
-                    <div className="flex gap-2">
+                    <div className="flex flex-col sm:flex-row gap-2">
                       <Select value={bulkStatus} onValueChange={setBulkStatus}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select status" />
@@ -716,42 +716,49 @@ export default function AdminUsers() {
               ) : (
                 filteredUsers.map((user) => (
                   <Card key={user.id} className="hover:shadow-md transition-shadow">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <Checkbox
-                            checked={selectedUsers.includes(user.id)}
-                            onCheckedChange={(checked) => handleUserSelection(user.id, checked as boolean)}
-                          />
-                          <Users className="h-5 w-5 text-foreground" />
-                          <div>
-                            <CardTitle className="text-lg">
-                              {user.full_name}
-                            </CardTitle>
-                            <p className="text-sm text-foreground opacity-75">
-                              {user.company_name ? `${user.company_name} • ` : ''}{user.email}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {getRoleBadge(user.role)}
-                          {getStatusBadge(user.status)}
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setEditingUser(user)}
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </Button>
-                            </AlertDialogTrigger>
+                     <CardHeader className="pb-3">
+                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
+                         <div className="flex items-center gap-3">
+                           <Checkbox
+                             checked={selectedUsers.includes(user.id)}
+                             onCheckedChange={(checked) => handleUserSelection(user.id, checked as boolean)}
+                           />
+                           <Users className="h-5 w-5 text-foreground" />
+                           <div className="min-w-0 flex-1">
+                             <CardTitle className="text-base sm:text-lg truncate">
+                               {user.full_name}
+                             </CardTitle>
+                             <p className="text-sm text-foreground opacity-75 truncate">
+                               {user.company_name ? `${user.company_name} • ` : ''}{user.email}
+                             </p>
+                           </div>
+                         </div>
+                         <div className="flex items-center gap-2 shrink-0 ml-auto sm:ml-0">
+                           <div className="flex flex-col sm:flex-row gap-1 sm:gap-2">
+                             {getRoleBadge(user.role)}
+                             {getStatusBadge(user.status)}
+                           </div>
+                           <div className="flex gap-1">
+                             <Button
+                               variant="outline"
+                               size="sm"
+                               onClick={() => setEditingUser(user)}
+                               className="h-8 w-8 p-0 sm:h-auto sm:w-auto sm:px-3"
+                             >
+                               <Edit className="h-4 w-4" />
+                               <span className="sr-only sm:not-sr-only sm:ml-2">Edit</span>
+                             </Button>
+                             <AlertDialog>
+                               <AlertDialogTrigger asChild>
+                                 <Button
+                                   variant="outline"
+                                   size="sm"
+                                   className="h-8 w-8 p-0 sm:h-auto sm:w-auto sm:px-3"
+                                 >
+                                   <Trash2 className="h-4 w-4" />
+                                   <span className="sr-only sm:not-sr-only sm:ml-2">Delete</span>
+                                 </Button>
+                               </AlertDialogTrigger>
                             <AlertDialogContent>
                               <AlertDialogHeader>
                                 <AlertDialogTitle>Delete User</AlertDialogTitle>
@@ -770,29 +777,30 @@ export default function AdminUsers() {
                               </AlertDialogFooter>
                             </AlertDialogContent>
                           </AlertDialog>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex items-center justify-between text-sm">
-                        <div className="flex items-center gap-4">
-                          {user.phone && (
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium">{user.phone}</span>
-                            </div>
-                          )}
-                          <div className="flex items-center gap-2">
-                            <Mail className="h-4 w-4 text-blue-500" />
-                            <span className="font-medium">
-                              Verification: {user.verification_status}
-                            </span>
-                          </div>
-                        </div>
-                        <span className="text-foreground opacity-75">
-                          Joined: {format(new Date(user.created_at), 'MMM dd, yyyy')}
-                        </span>
-                      </div>
-                    </CardContent>
+                           </div>
+                         </div>
+                       </div>
+                     </CardHeader>
+                     <CardContent>
+                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-sm">
+                         <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                           {user.phone && (
+                             <div className="flex items-center gap-2">
+                               <span className="font-medium">{user.phone}</span>
+                             </div>
+                           )}
+                           <div className="flex items-center gap-2">
+                             <Mail className="h-4 w-4 text-blue-500" />
+                             <span className="font-medium">
+                               Verification: {user.verification_status}
+                             </span>
+                           </div>
+                         </div>
+                         <span className="text-foreground opacity-75 text-xs sm:text-sm">
+                           Joined: {format(new Date(user.created_at), 'MMM dd, yyyy')}
+                         </span>
+                       </div>
+                     </CardContent>
                   </Card>
                 ))
               )}
