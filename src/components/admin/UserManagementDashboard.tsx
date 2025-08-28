@@ -186,7 +186,7 @@ export const UserManagementDashboard: React.FC = () => {
             {isExporting ? t('common.loading') : t('common.export')}
           </Button>
           <Button
-            variant="default"
+            variant="outline"
             size="sm"
             onClick={() => setShowAddUserModal(true)}
             className={cn("gap-2", isRTL && "flex-row-reverse")}
