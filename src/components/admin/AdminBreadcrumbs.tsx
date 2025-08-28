@@ -51,7 +51,7 @@ export const AdminBreadcrumbs = () => {
       <BreadcrumbList>
         {/* Home/Admin root */}
         <BreadcrumbItem>
-          <BreadcrumbLink href="/admin" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+          <BreadcrumbLink href="/admin" className="flex items-center gap-1 text-foreground opacity-80 hover:text-foreground hover:opacity-100 transition-colors">
             <Home className="h-3 w-3" />
             <span className="admin-caption">Admin</span>
           </BreadcrumbLink>
@@ -60,7 +60,7 @@ export const AdminBreadcrumbs = () => {
         {breadcrumbItems.length > 1 && (
           <>
             <BreadcrumbSeparator>
-              <ChevronRight className="h-3 w-3 text-muted-foreground/60" />
+              <ChevronRight className="h-3 w-3 text-foreground opacity-60" />
             </BreadcrumbSeparator>
             
             {breadcrumbItems.slice(1).map((item, index) => (
@@ -71,7 +71,7 @@ export const AdminBreadcrumbs = () => {
                       {item.title}
                     </BreadcrumbPage>
                   ) : (
-                    <BreadcrumbLink href={item.path} className="text-muted-foreground hover:text-foreground admin-caption transition-colors">
+                    <BreadcrumbLink href={item.path} className="text-foreground opacity-80 hover:text-foreground hover:opacity-100 admin-caption transition-colors">
                       {item.title}
                     </BreadcrumbLink>
                   )}
@@ -79,7 +79,7 @@ export const AdminBreadcrumbs = () => {
                 
                 {!item.isLast && (
                   <BreadcrumbSeparator>
-                    <ChevronRight className="h-3 w-3 text-muted-foreground/60" />
+                    <ChevronRight className="h-3 w-3 text-foreground opacity-60" />
                   </BreadcrumbSeparator>
                 )}
               </div>

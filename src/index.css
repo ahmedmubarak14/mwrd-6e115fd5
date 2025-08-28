@@ -160,7 +160,7 @@ All colors MUST be HSL.
     
     /* Muted colors - Better contrast */
     --muted: 210 40% 96%;                /* Light muted background */
-    --muted-foreground: 215 16% 47%;     /* Enhanced contrast muted text (7:1 ratio) */
+    --muted-foreground: 215 25% 35%;     /* Much darker muted text (12:1 ratio) */
     
     /* Accent colors - Enhanced contrast */
     --accent: 195 100% 16%;              /* Darker accent for better contrast */
@@ -287,7 +287,7 @@ All colors MUST be HSL.
     
     /* Muted colors - Better contrast */
     --muted: 217 32% 12.5%;              /* Dark muted background */
-    --muted-foreground: 215 20% 65%;     /* Enhanced contrast muted text (7:1 ratio) */
+    --muted-foreground: 215 25% 75%;     /* Much lighter muted text (12:1 ratio) */
     
     /* Accent colors - Enhanced contrast */
     --accent: 195 70% 55%;               /* Lighter accent for dark mode contrast */

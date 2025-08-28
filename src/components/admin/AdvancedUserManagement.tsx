@@ -212,7 +212,7 @@ export const AdvancedUserManagement = () => {
           </div>
           <div>
             <p className="admin-body font-medium text-foreground">{user.full_name || 'No Name'}</p>
-            <p className="admin-caption text-muted-foreground">{user.email}</p>
+            <p className="admin-caption text-foreground opacity-80">{user.email}</p>
           </div>
         </div>
       )

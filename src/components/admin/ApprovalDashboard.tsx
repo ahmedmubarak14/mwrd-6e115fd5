@@ -236,7 +236,7 @@ export const ApprovalDashboard = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading approval dashboard...</p>
+          <p className="text-foreground opacity-75">Loading approval dashboard...</p>
         </div>
       </div>
     );
@@ -248,7 +248,7 @@ export const ApprovalDashboard = () => {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Approval Center</h1>
-          <p className="text-muted-foreground">
+          <p className="text-foreground opacity-75">
             Centralized approval management with automated workflows
           </p>
         </div>
@@ -270,11 +270,11 @@ export const ApprovalDashboard = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Pending Items</p>
+                <p className="text-sm text-foreground opacity-75">Pending Items</p>
                 <p className="text-3xl font-bold text-warning">
                   {metrics.pendingRequests + metrics.pendingOffers}
                 </p>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-foreground opacity-75 mt-1">
                   {metrics.pendingRequests} requests, {metrics.pendingOffers} offers
                 </p>
               </div>
@@ -287,7 +287,7 @@ export const ApprovalDashboard = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Approval Rate</p>
+                <p className="text-sm text-foreground opacity-75">Approval Rate</p>
                 <p className="text-3xl font-bold text-success">
                   {metrics.approvalRate.toFixed(1)}%
                 </p>
@@ -297,7 +297,7 @@ export const ApprovalDashboard = () => {
                   ) : (
                     <TrendingDown className="h-3 w-3 text-destructive" />
                   )}
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-foreground opacity-75">
                     {Math.abs(metrics.weeklyTrend)}% this week
                   </span>
                 </div>
@@ -311,9 +311,9 @@ export const ApprovalDashboard = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Avg Processing</p>
+                <p className="text-sm text-foreground opacity-75">Avg Processing</p>
                 <p className="text-3xl font-bold">{metrics.avgProcessingTime}h</p>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-foreground opacity-75 mt-1">
                   Average response time
                 </p>
               </div>
@@ -326,11 +326,11 @@ export const ApprovalDashboard = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Total Processed</p>
+                <p className="text-sm text-foreground opacity-75">Total Processed</p>
                 <p className="text-3xl font-bold">
                   {metrics.approvedRequests + metrics.approvedOffers + metrics.rejectedRequests + metrics.rejectedOffers}
                 </p>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-foreground opacity-75 mt-1">
                   All time approvals/rejections
                 </p>
               </div>
@@ -350,7 +350,7 @@ export const ApprovalDashboard = () => {
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">Requests</span>
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-foreground opacity-75">
                   {metrics.approvedRequests + metrics.rejectedRequests} / {metrics.totalRequests}
                 </span>
               </div>
@@ -358,7 +358,7 @@ export const ApprovalDashboard = () => {
                 value={metrics.totalRequests > 0 ? ((metrics.approvedRequests + metrics.rejectedRequests) / metrics.totalRequests) * 100 : 0} 
                 className="h-2"
               />
-              <div className="flex justify-between text-xs text-muted-foreground">
+              <div className="flex justify-between text-xs text-foreground opacity-75">
                 <span>{metrics.pendingRequests} pending</span>
                 <span>{metrics.approvedRequests} approved</span>
                 <span>{metrics.rejectedRequests} rejected</span>
@@ -368,7 +368,7 @@ export const ApprovalDashboard = () => {
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">Offers</span>
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-foreground opacity-75">
                   {metrics.approvedOffers + metrics.rejectedOffers} / {metrics.totalOffers}
                 </span>
               </div>
@@ -376,7 +376,7 @@ export const ApprovalDashboard = () => {
                 value={metrics.totalOffers > 0 ? ((metrics.approvedOffers + metrics.rejectedOffers) / metrics.totalOffers) * 100 : 0} 
                 className="h-2"
               />
-              <div className="flex justify-between text-xs text-muted-foreground">
+              <div className="flex justify-between text-xs text-foreground opacity-75">
                 <span>{metrics.pendingOffers} pending</span>
                 <span>{metrics.approvedOffers} approved</span>
                 <span>{metrics.rejectedOffers} rejected</span>
@@ -411,7 +411,7 @@ export const ApprovalDashboard = () => {
           <Card>
             <CardHeader>
               <CardTitle>Priority Queue</CardTitle>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-foreground opacity-75">
                 Items sorted by urgency score (time + priority)
               </p>
             </CardHeader>
@@ -437,7 +437,7 @@ export const ApprovalDashboard = () => {
                         <h3 className="font-medium">{item.title}</h3>
                       </div>
                       
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-4 text-sm text-foreground opacity-75">
                         <span>{item.user_name}</span>
                         <span>•</span>
                         <span>{format(new Date(item.created_at), 'MMM dd, HH:mm')}</span>
@@ -469,7 +469,7 @@ export const ApprovalDashboard = () => {
                 ))}
                 
                 {pendingItems.length === 0 && (
-                  <div className="text-center py-8 text-muted-foreground">
+                  <div className="text-center py-8 text-foreground opacity-75">
                     <CheckCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
                     <p>All caught up! No pending items require approval.</p>
                   </div>
@@ -481,14 +481,14 @@ export const ApprovalDashboard = () => {
 
         <TabsContent value="requests">
           {/* Request-specific content */}
-          <div className="text-center py-8 text-muted-foreground">
+          <div className="text-center py-8 text-foreground opacity-75">
             Request approval interface will be loaded here
           </div>
         </TabsContent>
 
         <TabsContent value="offers">
           {/* Offer-specific content */}
-          <div className="text-center py-8 text-muted-foreground">
+          <div className="text-center py-8 text-foreground opacity-75">
             Offer approval interface will be loaded here
           </div>
         </TabsContent>

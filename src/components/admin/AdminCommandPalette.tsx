@@ -180,7 +180,7 @@ export const AdminCommandPalette = () => {
               >
                 <Users className="h-4 w-4" />
                 <span className="ml-2">{u.full_name || u.email}</span>
-                <span className="ml-auto text-xs text-muted-foreground">{u.role}</span>
+                <span className="ml-auto text-xs text-foreground opacity-75">{u.role}</span>
               </CommandItem>
             ))}
           </CommandGroup>
@@ -198,7 +198,7 @@ export const AdminCommandPalette = () => {
               >
                 <FileText className="h-4 w-4" />
                 <span className="ml-2 truncate">{r.title}</span>
-                <span className="ml-auto text-xs text-muted-foreground">{r.admin_approval_status}</span>
+                <span className="ml-auto text-xs text-foreground opacity-75">{r.admin_approval_status}</span>
               </CommandItem>
             ))}
           </CommandGroup>
@@ -216,7 +216,7 @@ export const AdminCommandPalette = () => {
               >
                 <Tag className="h-4 w-4" />
                 <span className="ml-2 truncate">{o.title}</span>
-                <span className="ml-auto text-xs text-muted-foreground">{o.client_approval_status}</span>
+                <span className="ml-auto text-xs text-foreground opacity-75">{o.client_approval_status}</span>
               </CommandItem>
             ))}
           </CommandGroup>

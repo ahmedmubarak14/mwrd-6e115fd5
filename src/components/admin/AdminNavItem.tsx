@@ -50,7 +50,7 @@ export const AdminNavItem: React.FC<AdminNavItemProps> = ({
   const iconClasses = cn(
     "shrink-0 transition-all duration-300",
     variant === "sidebar" ? "h-4 w-4" : "h-5 w-5",
-    activeState ? "text-primary-foreground drop-shadow-sm" : "text-muted-foreground group-hover:text-accent-foreground group-hover:scale-110"
+    activeState ? "text-primary-foreground drop-shadow-sm" : "text-foreground opacity-75 group-hover:text-accent-foreground group-hover:opacity-100 group-hover:scale-110"
   );
 
   const content = (

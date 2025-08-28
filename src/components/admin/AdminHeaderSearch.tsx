@@ -38,14 +38,14 @@ export const AdminHeaderSearch = () => {
   return (
     <form onSubmit={handleSearch} className="hidden sm:block">
       <div className="relative">
-        <Search className={cn("absolute top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4", isRTL ? "right-3" : "left-3")} />
+        <Search className={cn("absolute top-1/2 transform -translate-y-1/2 text-foreground opacity-75 h-4 w-4", isRTL ? "right-3" : "left-3")} />
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder={t('admin.searchPlaceholder')}
           className={cn(
-            "py-2 border border-input rounded-md w-64 bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring text-sm",
+            "py-2 border border-input rounded-md w-64 bg-background text-foreground placeholder:text-input-placeholder focus:outline-none focus:ring-2 focus:ring-ring text-sm",
             isRTL ? "pr-10 pl-4 text-right" : "pl-10 pr-4 text-left"
           )}
           dir={isRTL ? 'rtl' : 'ltr'}

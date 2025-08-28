@@ -73,7 +73,7 @@ export const AdminPageContainer = ({
                 </h1>
               )}
               {description && (
-                <p className="text-muted-foreground text-sm sm:text-base max-w-2xl">
+                <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
                   {description}
                 </p>
               )}

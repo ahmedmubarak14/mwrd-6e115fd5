@@ -40,7 +40,7 @@ export const AdminHeaderUserMenu = ({ userProfile }: AdminHeaderUserMenuProps) =
             <p className="text-sm font-medium leading-none">
               {userProfile?.full_name || userProfile?.email?.split('@')[0] || t('admin.adminUser')}
             </p>
-            <p className="text-xs text-muted-foreground capitalize">
+            <p className="text-xs text-foreground opacity-75 capitalize">
               {userProfile?.role}
             </p>
           </div>
