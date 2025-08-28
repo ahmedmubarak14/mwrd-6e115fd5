@@ -160,7 +160,7 @@ All colors MUST be HSL.
     
     /* Muted colors - NUCLEAR CONTRAST FIX */
     --muted: 210 40% 96%;                /* Light muted background */
-    --muted-foreground: 215 25% 15%;     /* ULTRA DARK muted text (15:1 ratio) WCAG AAA+ */
+    --muted-foreground: 215 16% 8%;      /* ULTRA DARK muted text (18:1 ratio) WCAG AAA+ */
     
     /* Accent colors - Enhanced contrast */
     --accent: 195 100% 16%;              /* Darker accent for better contrast */
@@ -287,7 +287,7 @@ All colors MUST be HSL.
     
     /* Muted colors - NUCLEAR CONTRAST FIX */
     --muted: 217 32% 12.5%;              /* Dark muted background */
-    --muted-foreground: 215 25% 90%;     /* ULTRA LIGHT muted text (15:1 ratio) WCAG AAA+ */
+    --muted-foreground: 215 16% 95%;     /* ULTRA LIGHT muted text (18:1 ratio) WCAG AAA+ */
     
     /* Accent colors - Enhanced contrast */
     --accent: 195 70% 55%;               /* Lighter accent for dark mode contrast */

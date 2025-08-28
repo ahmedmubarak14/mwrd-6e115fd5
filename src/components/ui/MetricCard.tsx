@@ -94,7 +94,7 @@ export const MetricCard = ({
             {value}
           </div>
           {description && (
-            <p className="text-xs text-muted-foreground">
+            <p className="text-foreground opacity-75">
               {description}
             </p>
           )}
@@ -112,7 +112,7 @@ export const MetricCard = ({
                 {trend.value}%
               </Badge>
               {trend.label && (
-                <span className="text-xs text-muted-foreground">
+                <span className="text-xs text-foreground opacity-75">
                   {trend.label}
                 </span>
               )}

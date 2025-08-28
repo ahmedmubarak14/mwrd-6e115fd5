@@ -140,7 +140,7 @@ export const AdminSupport = () => {
       </CardHeader>
       <CardContent className="pt-0">
         <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
-          <div className={cn("text-sm text-muted-foreground", isRTL ? "text-right" : "text-left")}>
+          <div className={cn("text-sm text-foreground opacity-75", isRTL ? "text-right" : "text-left")}>
             {t('common.date')}: {formatDate(new Date(ticket.created_at))}
           </div>
           <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
@@ -177,8 +177,8 @@ export const AdminSupport = () => {
       {/* Header */}
       <div className={cn(isRTL ? "text-right" : "text-left")}>
         <h1 className="text-3xl font-bold">{t('admin.supportTickets')}</h1>
-        <p className="text-muted-foreground mt-2">
-          {t('admin.supportTickets')}
+        <p className="text-foreground opacity-75 mt-2">
+          {t('admin.supportTicketsDescription')}
         </p>
       </div>
 
@@ -237,7 +237,7 @@ export const AdminSupport = () => {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div className="relative">
-              <Search className={cn("absolute top-3 h-4 w-4 text-muted-foreground", isRTL ? "right-3" : "left-3")} />
+              <Search className={cn("absolute top-3 h-4 w-4 text-foreground opacity-60", isRTL ? "right-3" : "left-3")} />
               <Input
                 placeholder={t('common.search')}
                 value={searchTerm}
@@ -317,8 +317,8 @@ export const AdminSupport = () => {
           {filteredTickets.length === 0 ? (
             <Card>
               <CardContent className="py-8 text-center">
-                <Ticket className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-muted-foreground">{t('search.noResults')}</p>
+                <Ticket className="h-12 w-12 mx-auto mb-4 text-foreground opacity-60" />
+                <p className="text-foreground opacity-75">{t('search.noResults')}</p>
               </CardContent>
             </Card>
           ) : (

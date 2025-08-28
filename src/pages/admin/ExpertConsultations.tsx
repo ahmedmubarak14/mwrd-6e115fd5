@@ -121,10 +121,10 @@ export const ExpertConsultations = () => {
   }
 
   return (
-    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'} data-admin-dashboard>
       <div className={cn(isRTL ? "text-right" : "text-left")}>
         <h1 className="text-3xl font-bold">{t('admin.expertConsultations')}</h1>
-        <p className="text-muted-foreground">{t('admin.expertConsultations')}</p>
+        <p className="text-foreground opacity-75">{t('admin.expertConsultationsDescription')}</p>
       </div>
 
       {/* Search and Filters */}
@@ -138,7 +138,7 @@ export const ExpertConsultations = () => {
         <CardContent className="space-y-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">
-              <Search className={cn("absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground", isRTL ? "right-3" : "left-3")} />
+              <Search className={cn("absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-foreground opacity-60", isRTL ? "right-3" : "left-3")} />
               <Input
                 placeholder={t('common.search')}
                 className={cn(isRTL ? "pr-10 text-right" : "pl-10 text-left")}
@@ -168,9 +168,9 @@ export const ExpertConsultations = () => {
         {filteredConsultations.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-8">
-              <MessageSquare className="h-12 w-12 text-muted-foreground mb-4" />
+              <MessageSquare className="h-12 w-12 text-foreground opacity-60 mb-4" />
               <h3 className="text-lg font-semibold mb-2">{t('search.noResults')}</h3>
-              <p className="text-muted-foreground text-center">
+              <p className="text-foreground opacity-75 text-center">
                 {t('search.noResults')}
               </p>
             </CardContent>
@@ -194,27 +194,27 @@ export const ExpertConsultations = () => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-                  <div className={cn("space-y-2", isRTL ? "text-right" : "text-left")}>
-                    <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse justify-end")}>
-                      <User className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">{t('vendors.contact')}:</span>
-                    </div>
-                    <p className="font-medium">{consultation.email}</p>
-                    {consultation.phone && (
+                    <div className={cn("space-y-2", isRTL ? "text-right" : "text-left")}>
                       <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse justify-end")}>
-                        <Phone className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm">{consultation.phone}</span>
+                        <User className="h-4 w-4 text-foreground opacity-60" />
+                        <span className="text-sm text-foreground opacity-75">{t('vendors.contact')}:</span>
                       </div>
-                    )}
-                    {consultation.company && (
-                      <p className="text-muted-foreground text-xs">{consultation.company}</p>
-                    )}
-                  </div>
+                      <p className="font-medium">{consultation.email}</p>
+                      {consultation.phone && (
+                        <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse justify-end")}>
+                          <Phone className="h-4 w-4 text-foreground opacity-60" />
+                          <span className="text-sm">{consultation.phone}</span>
+                        </div>
+                      )}
+                      {consultation.company && (
+                        <p className="text-foreground opacity-75 text-xs">{consultation.company}</p>
+                      )}
+                    </div>
                   
                   <div className={cn("space-y-2", isRTL ? "text-right" : "text-left")}>
                     <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse justify-end")}>
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">{t('common.details')}:</span>
+                      <Calendar className="h-4 w-4 text-foreground opacity-60" />
+                      <span className="text-sm text-foreground opacity-75">{t('common.details')}:</span>
                     </div>
                     {consultation.event_date && (
                       <p className="font-medium">
@@ -222,7 +222,7 @@ export const ExpertConsultations = () => {
                       </p>
                     )}
                     {consultation.location && (
-                      <p className="text-sm text-muted-foreground">{consultation.location}</p>
+                      <p className="text-sm text-foreground opacity-75">{consultation.location}</p>
                     )}
                     {consultation.budget_range && (
                       <p className="text-sm font-medium">{t('common.price')}: {consultation.budget_range}</p>
@@ -230,12 +230,12 @@ export const ExpertConsultations = () => {
                   </div>
                   
                   <div className={cn("space-y-2", isRTL ? "text-right" : "text-left")}>
-                    <span className="text-sm text-muted-foreground">{t('messages.title')}:</span>
+                    <span className="text-sm text-foreground opacity-75">{t('messages.title')}:</span>
                     <p className="text-sm bg-muted/50 p-2 rounded">{consultation.message}</p>
                   </div>
                 </div>
                 
-                <div className={cn("text-xs text-muted-foreground mt-4", isRTL ? "text-right" : "text-left")}>
+                <div className={cn("text-xs text-foreground opacity-75 mt-4", isRTL ? "text-right" : "text-left")}>
                   {t('common.date')}: {formatDate(new Date(consultation.created_at))}
                 </div>
               </CardHeader>

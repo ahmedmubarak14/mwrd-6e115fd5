@@ -318,7 +318,7 @@ export const AdminDashboard = () => {
               <div className="flex items-center justify-between p-4 bg-warning/10 border border-warning/20 rounded-lg">
                 <div>
                   <p className="font-medium">{t('admin.pendingOfferApprovals')}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-foreground opacity-75">
                     {formatNumber(stats.pendingOffers)} {t('admin.offersAwaitingReview')}
                   </p>
                 </div>
@@ -332,7 +332,7 @@ export const AdminDashboard = () => {
               <div className="flex items-center justify-between p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
                 <div>
                   <p className="font-medium">{t('admin.openSupportTickets')}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-foreground opacity-75">
                     {formatNumber(stats.openTickets)} {t('admin.ticketsNeedResponse')}
                   </p>
                 </div>
@@ -343,7 +343,7 @@ export const AdminDashboard = () => {
             )}
 
             {stats.pendingOffers === 0 && stats.openTickets === 0 && (
-              <div className="text-center py-6 text-muted-foreground">
+              <div className="text-center py-6 text-foreground opacity-75">
                 <CheckCircle className="h-8 w-8 mx-auto mb-2 text-success" />
                 <p>{t('admin.allCaughtUp')}</p>
               </div>
@@ -372,11 +372,11 @@ export const AdminDashboard = () => {
                 <p className="text-2xl font-bold">
                   {((stats.completedOrders / (stats.completedOrders + stats.confirmedOrders)) * 100 || 0).toFixed(1)}%
                 </p>
-                <p className="text-xs text-muted-foreground">{t('admin.completionRate')}</p>
+                <p className="text-xs text-foreground opacity-75">{t('admin.completionRate')}</p>
               </div>
               <div className="text-center">
                 <p className="text-2xl font-bold">{formatNumber(stats.totalUsers)}</p>
-                <p className="text-xs text-muted-foreground">{t('admin.totalUsers')}</p>
+                <p className="text-xs text-foreground opacity-75">{t('admin.totalUsers')}</p>
               </div>
             </div>
           </CardContent>
