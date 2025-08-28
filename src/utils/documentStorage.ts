@@ -61,13 +61,16 @@ export const uploadDocument = async (
 };
 
 /**
- * Verifies that a file exists in storage
+ * Verifies that a file exists in storage with enhanced admin diagnostics
  */
 export const verifyFileExists = async (filePath: string): Promise<{ success: boolean; error?: string }> => {
   try {
     const pathParts = filePath.split('/');
     const fileName = pathParts.pop();
     const folderPath = pathParts.join('/');
+
+    // Enhanced logging for debugging
+    console.log('Verifying file existence:', { filePath, folderPath, fileName });
 
     const { data, error } = await supabase.storage
       .from('chat-files')
@@ -77,20 +80,30 @@ export const verifyFileExists = async (filePath: string): Promise<{ success: boo
 
     if (error) {
       console.error('Error verifying file:', error);
-      return { success: false, error: error.message };
+      return { success: false, error: `Storage error: ${error.message}` };
     }
 
     const fileExists = data && data.length > 0;
-    return { success: fileExists, error: fileExists ? undefined : 'File not found in storage' };
+    
+    if (!fileExists) {
+      console.warn('File not found in storage:', { filePath, folderPath, fileName, availableFiles: data?.map(f => f.name) });
+    } else {
+      console.log('File verification successful:', fileName);
+    }
+    
+    return { 
+      success: fileExists, 
+      error: fileExists ? undefined : `File not found in storage at path: ${folderPath}/${fileName}` 
+    };
 
   } catch (error: any) {
     console.error('Error during file verification:', error);
-    return { success: false, error: error.message };
+    return { success: false, error: `Verification failed: ${error.message}` };
   }
 };
 
 /**
- * Generates a signed URL for accessing a document
+ * Generates a signed URL for accessing a document with admin support
  */
 export const generateDocumentSignedUrl = async (
   filePath: string,
@@ -107,35 +120,92 @@ export const generateDocumentSignedUrl = async (
         console.log('Extracted file path from public URL:', actualFilePath);
       } else {
         console.error('Unable to extract file path from URL:', filePath);
+        await logDocumentAccessAttempt(filePath, false, 'Invalid document URL format');
         return { success: false, error: 'Invalid document URL format' };
       }
     }
 
-    // First verify the file exists
+    // Check if current user is admin for better error handling
+    const { data: { user } } = await supabase.auth.getUser();
+    let userRole = 'unknown';
+    
+    if (user) {
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('role')
+        .eq('user_id', user.id)
+        .single();
+      userRole = profile?.role || 'unknown';
+    }
+
+    // First verify the file exists (with enhanced logging for admins)
     const verificationResult = await verifyFileExists(actualFilePath);
     if (!verificationResult.success) {
       console.error('File does not exist:', actualFilePath);
-      return { 
-        success: false, 
-        error: 'Document not found in storage. The file may have been deleted or corrupted.' 
-      };
+      const errorMsg = userRole === 'admin' 
+        ? `Admin access: Document not found in storage at path: ${actualFilePath}. File may have been deleted or path is incorrect.`
+        : 'Document not found in storage. The file may have been deleted or corrupted.';
+      
+      await logDocumentAccessAttempt(actualFilePath, false, errorMsg);
+      return { success: false, error: errorMsg };
     }
 
-    // Generate signed URL
+    // Generate signed URL with longer expiry for admins
+    const adminExpiresIn = userRole === 'admin' ? Math.max(expiresIn, 7200) : expiresIn; // Min 2 hours for admins
+    
     const { data, error } = await supabase.storage
       .from('chat-files')
-      .createSignedUrl(actualFilePath, expiresIn);
+      .createSignedUrl(actualFilePath, adminExpiresIn);
 
     if (error) {
       console.error('Error creating signed URL:', error);
-      return { success: false, error: `Failed to generate document access URL: ${error.message}` };
+      const errorMsg = userRole === 'admin'
+        ? `Admin access failed: ${error.message}. Check storage policies and file permissions.`
+        : `Failed to generate document access URL: ${error.message}`;
+      
+      await logDocumentAccessAttempt(actualFilePath, false, errorMsg);
+      return { success: false, error: errorMsg };
     }
 
+    // Log successful access
+    await logDocumentAccessAttempt(actualFilePath, true);
+    console.log(`Document access granted for ${userRole}:`, actualFilePath);
+    
     return { success: true, signedUrl: data.signedUrl };
 
   } catch (error: any) {
     console.error('Error generating signed URL:', error);
+    await logDocumentAccessAttempt(filePath, false, error.message);
     return { success: false, error: error.message };
+  }
+};
+
+/**
+ * Helper function to log document access attempts
+ */
+const logDocumentAccessAttempt = async (
+  filePath: string, 
+  success: boolean, 
+  errorMessage?: string
+): Promise<void> => {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const { data: profile } = await supabase
+      .from('user_profiles')
+      .select('role')
+      .eq('user_id', user.id)
+      .single();
+
+    await supabase.rpc('log_document_access_attempt', {
+      file_path: filePath,
+      user_role: profile?.role || 'unknown',
+      success: success,
+      error_message: errorMessage || null
+    });
+  } catch (error) {
+    console.error('Failed to log document access attempt:', error);
   }
 };
 
