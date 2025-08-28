@@ -5,6 +5,7 @@ import { Header } from "@/components/ui/layout/Header";
 import { Footer } from "@/components/ui/layout/Footer";
 import { MobileSidebar } from "./MobileSidebar";
 import { MobileContainer } from "@/components/ui/MobileContainer";
+import { MobileBottomNav, MobileBottomNavSpacer } from "@/components/navigation/MobileBottomNav";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -39,11 +40,12 @@ export const DashboardLayout = ({ children, className }: DashboardLayoutProps) =
             onOpenChange={setMobileMenuOpen} 
           />
 
-          <main className="flex-1 overflow-auto bg-background p-4">
+          <main className="flex-1 overflow-auto bg-background p-4 pb-20">
             {children}
           </main>
 
-          <Footer />
+          <MobileBottomNavSpacer />
+          <MobileBottomNav />
         </div>
       </MobileContainer>
     );

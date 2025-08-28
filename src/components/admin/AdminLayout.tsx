@@ -5,6 +5,7 @@ import { AdminSidebar } from "./AdminSidebar";
 import { AdminHeader } from "./AdminHeader";
 import { AdminMobileSidebar } from "./AdminMobileSidebar";
 import { MobileContainer } from "@/components/ui/MobileContainer";
+import { MobileBottomNav, MobileBottomNavSpacer } from "@/components/navigation/MobileBottomNav";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
@@ -72,11 +73,13 @@ export const AdminLayout = () => {
               isOpen={mobileMenuOpen} 
               onOpenChange={setMobileMenuOpen} 
             />
-            <main className="flex-1 overflow-auto bg-muted/20 p-4 sm:p-6 min-h-[calc(100vh-8rem)] safe-area-inset-bottom">
+            <main className="flex-1 overflow-auto bg-muted/20 p-4 sm:p-6 min-h-[calc(100vh-8rem)] pb-20 safe-area-inset-bottom">
               <AdminErrorBoundary>
                 <Outlet />
               </AdminErrorBoundary>
             </main>
+            <MobileBottomNavSpacer />
+            <MobileBottomNav />
             <AdminCommandPalette />
           </div>
         ) : (
