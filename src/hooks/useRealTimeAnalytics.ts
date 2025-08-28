@@ -169,25 +169,59 @@ export const useRealTimeAnalytics = () => {
   useEffect(() => {
     refreshData();
 
-    // Set up real-time subscriptions
-    const metricsSubscription = supabase
-      .channel('analytics-metrics')
-      .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'user_profiles' },
-        () => fetchMetrics()
-      )
-      .on('postgres_changes',
-        { event: '*', schema: 'public', table: 'requests' },
-        () => fetchMetrics()
-      )
-      .on('postgres_changes',
-        { event: '*', schema: 'public', table: 'orders' },
-        () => fetchMetrics()
-      )
-      .subscribe();
+    // Set up real-time subscriptions with error handling
+    let metricsSubscription: any = null;
+    
+    try {
+      metricsSubscription = supabase
+        .channel('analytics-metrics')
+        .on('postgres_changes', 
+          { event: '*', schema: 'public', table: 'user_profiles' },
+          () => {
+            console.log('User profiles changed, refreshing metrics');
+            fetchMetrics();
+          }
+        )
+        .on('postgres_changes',
+          { event: '*', schema: 'public', table: 'requests' },
+          () => {
+            console.log('Requests changed, refreshing metrics');
+            fetchMetrics();
+          }
+        )
+        .on('postgres_changes',
+          { event: '*', schema: 'public', table: 'orders' },
+          () => {
+            console.log('Orders changed, refreshing metrics');
+            fetchMetrics();
+          }
+        )
+        .subscribe((status: string, err?: any) => {
+          if (status === 'SUBSCRIBED') {
+            console.log('Analytics real-time subscription active');
+          } else if (status === 'CHANNEL_ERROR') {
+            console.warn('Analytics subscription error:', err);
+            // Continue without real-time updates
+          } else if (status === 'TIMED_OUT') {
+            console.warn('Analytics subscription timed out');
+            // Continue without real-time updates
+          } else if (status === 'CLOSED') {
+            console.log('Analytics subscription closed');
+          }
+        });
+    } catch (error) {
+      console.warn('Failed to set up analytics real-time subscription:', error);
+      // Continue without real-time updates - the dashboard will still work with polling
+    }
 
     return () => {
-      supabase.removeChannel(metricsSubscription);
+      if (metricsSubscription) {
+        try {
+          supabase.removeChannel(metricsSubscription);
+        } catch (error) {
+          console.warn('Error removing analytics subscription:', error);
+        }
+      }
     };
   }, []);
 
