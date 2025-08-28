@@ -52,60 +52,49 @@ interface RoleProtectedRouteProps {
   allowedRoles: ('client' | 'vendor' | 'admin')[];
 }
 
-// Component definitions that need auth context - will be defined inside AuthWrapper
-let RoleProtectedRoute: React.FC<RoleProtectedRouteProps>;
-let RootRedirect: React.FC;
+const RoleProtectedRoute: React.FC<RoleProtectedRouteProps> = ({ children, allowedRoles }) => {
+  const { userProfile, loading } = useAuth();
 
-// Wrapper component that provides auth context to route components
-const AuthWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Define components that need auth context here
-  RoleProtectedRoute = ({ children, allowedRoles }) => {
-    const { userProfile, loading } = useAuth();
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
-    if (loading) {
-      return (
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-        </div>
-      );
-    }
+  if (!userProfile) {
+    return <Navigate to="/login" replace />;
+  }
 
-    if (!userProfile) {
-      return <Navigate to="/login" replace />;
-    }
-
-    if (!allowedRoles.includes(userProfile.role as 'client' | 'vendor' | 'admin')) {
-      return <Navigate to="/login" replace />;
-    }
-
-    return <>{children}</>;
-  };
-
-  RootRedirect = () => {
-    const { user, userProfile, loading } = useAuth();
-
-    if (loading) {
-      return (
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-        </div>
-      );
-    }
-
-    if (user && userProfile) {
-      return <Navigate to="/dashboard" replace />;
-    }
-
-    return <Navigate to="/landing" replace />;
-  };
+  if (!allowedRoles.includes(userProfile.role as 'client' | 'vendor' | 'admin')) {
+    return <Navigate to="/login" replace />;
+  }
 
   return <>{children}</>;
 };
 
+const RootRedirect: React.FC = () => {
+  const { user, userProfile, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (user && userProfile) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return <Navigate to="/landing" replace />;
+};
+
 const AppRoutes: React.FC = () => {
   return (
-    <AuthWrapper>
-      <Routes>
+    <Routes>
       {/* Public Routes */}
       <Route path="/landing" element={<Landing />} />
       <Route path="/why-start-with-mwrd" element={<WhyStartWithMWRD />} />
@@ -267,7 +256,6 @@ const AppRoutes: React.FC = () => {
       {/* Catch-all route for 404 Not Found */}
       <Route path="*" element={<NotFound />} />
       </Routes>
-    </AuthWrapper>
   );
 };
 
