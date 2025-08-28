@@ -73,52 +73,115 @@ export const CommunicationSettings = () => {
     webhook_timeout: 30
   });
 
-  // Load settings from database or localStorage
+  // Load settings from database
   const loadSettings = async () => {
+    if (!user?.id) return;
+    
     setIsLoading(true);
     try {
-      // Try to load from database first, fallback to localStorage
-      const savedEmailSettings = localStorage.getItem('communication_email_settings');
-      const savedSmsSettings = localStorage.getItem('communication_sms_settings');
-      const savedNotificationSettings = localStorage.getItem('communication_notification_settings');
-      const savedIntegrationSettings = localStorage.getItem('communication_integration_settings');
+      // Load all communication settings from database
+      const { data, error } = await supabase
+        .from('communication_settings')
+        .select('*')
+        .eq('user_id', user.id);
 
-      if (savedEmailSettings) {
-        setEmailSettings(JSON.parse(savedEmailSettings));
+      if (error) {
+        console.error('Error loading settings:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load communication settings",
+          variant: "destructive"
+        });
+        return;
       }
-      if (savedSmsSettings) {
-        setSmsSettings(JSON.parse(savedSmsSettings));
-      }
-      if (savedNotificationSettings) {
-        setNotificationSettings(JSON.parse(savedNotificationSettings));
-      }
-      if (savedIntegrationSettings) {
-        setIntegrationSettings(JSON.parse(savedIntegrationSettings));
+
+      // Process the loaded settings
+      if (data) {
+        data.forEach(setting => {
+          const settingsData = setting.settings_data as Record<string, any> | null;
+          if (settingsData && typeof settingsData === 'object') {
+            switch (setting.settings_type) {
+              case 'email':
+                setEmailSettings(prev => ({ ...prev, ...settingsData }));
+                break;
+              case 'sms':
+                setSmsSettings(prev => ({ ...prev, ...settingsData }));
+                break;
+              case 'notifications':
+                setNotificationSettings(prev => ({ ...prev, ...settingsData }));
+                break;
+              case 'integrations':
+                setIntegrationSettings(prev => ({ ...prev, ...settingsData }));
+                break;
+            }
+          }
+        });
       }
     } catch (error) {
       console.error('Error loading settings:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load communication settings",
+        variant: "destructive"
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleSaveSettings = async (settingsType: string) => {
+    if (!user?.id) {
+      toast({
+        title: "Error",
+        description: "User not authenticated",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsSaving(true);
     try {
-      // Save to localStorage (in a real app, this would save to database)
+      let settingsData = {};
+      let dbSettingsType = '';
+
       switch (settingsType) {
         case 'Email':
-          localStorage.setItem('communication_email_settings', JSON.stringify(emailSettings));
+          settingsData = emailSettings;
+          dbSettingsType = 'email';
           break;
         case 'SMS':
-          localStorage.setItem('communication_sms_settings', JSON.stringify(smsSettings));
+          settingsData = smsSettings;
+          dbSettingsType = 'sms';
           break;
         case 'Notifications':
-          localStorage.setItem('communication_notification_settings', JSON.stringify(notificationSettings));
+          settingsData = notificationSettings;
+          dbSettingsType = 'notifications';
           break;
         case 'Integrations':
-          localStorage.setItem('communication_integration_settings', JSON.stringify(integrationSettings));
+          settingsData = integrationSettings;
+          dbSettingsType = 'integrations';
           break;
+      }
+
+      // Upsert settings to database
+      const { error } = await supabase
+        .from('communication_settings')
+        .upsert({
+          user_id: user.id,
+          settings_type: dbSettingsType,
+          settings_data: settingsData
+        }, { 
+          onConflict: 'user_id,settings_type' 
+        });
+
+      if (error) {
+        console.error('Error saving settings:', error);
+        toast({
+          title: "Error",
+          description: "Failed to save settings. Please try again.",
+          variant: "destructive"
+        });
+        return;
       }
 
       toast({
@@ -126,6 +189,7 @@ export const CommunicationSettings = () => {
         description: `${settingsType} settings have been updated successfully`
       });
     } catch (error) {
+      console.error('Error saving settings:', error);
       toast({
         title: "Error",
         description: "Failed to save settings. Please try again.",
@@ -144,6 +208,11 @@ export const CommunicationSettings = () => {
 
   return (
     <div className="space-y-6">
+      {isLoading ? (
+        <div className="flex items-center justify-center min-h-[400px]">
+          <LoadingSpinner size="lg" />
+        </div>
+      ) : (
       <Tabs defaultValue="email" className="space-y-6">
         <TabsList className="grid grid-cols-4 w-full">
           <TabsTrigger value="email" className="flex items-center gap-2">
@@ -501,9 +570,9 @@ export const CommunicationSettings = () => {
                 </div>
               </div>
 
-              <Button onClick={() => handleSaveSettings("Notification")} className="w-full">
-                Save Notification Settings
-              </Button>
+               <Button onClick={() => handleSaveSettings("Notifications")} className="w-full">
+                 Save Notification Settings
+               </Button>
             </CardContent>
           </Card>
         </TabsContent>
@@ -608,13 +677,14 @@ export const CommunicationSettings = () => {
                 </div>
               </div>
 
-              <Button onClick={() => handleSaveSettings("Integration")} className="w-full">
+              <Button onClick={() => handleSaveSettings("Integrations")} className="w-full">
                 Save Integration Settings
               </Button>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
+      )}
     </div>
   );
 };

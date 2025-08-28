@@ -11,11 +11,15 @@ import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Settings as SettingsIcon, User, Bell, Shield, Globe, Palette } from "lucide-react";
 import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 export const Settings = () => {
-  const { userProfile, updateProfile } = useAuth();
+  const { userProfile, updateProfile, user } = useAuth();
   const languageContext = useOptionalLanguage();
+  const { toast } = useToast();
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isLoadingSettings, setIsLoadingSettings] = useState(true);
   const [notifications, setNotifications] = useState({
     email: true,
     push: true,
@@ -38,9 +42,84 @@ export const Settings = () => {
     }
   };
 
-  const handleNotificationChange = (type: string, value: boolean) => {
-    setNotifications(prev => ({ ...prev, [type]: value }));
+  // Load notification settings from database
+  const loadNotificationSettings = async () => {
+    if (!user?.id) return;
+    
+    setIsLoadingSettings(true);
+    try {
+      const { data, error } = await supabase
+        .from('user_notification_settings')
+        .select('*')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error loading notification settings:', error);
+        return;
+      }
+
+      if (data) {
+        setNotifications({
+          email: data.email_notifications,
+          push: data.push_notifications,
+          sms: data.sms_notifications
+        });
+      }
+    } catch (error) {
+      console.error('Error loading notification settings:', error);
+    } finally {
+      setIsLoadingSettings(false);
+    }
   };
+
+  const handleNotificationChange = async (type: string, value: boolean) => {
+    if (!user?.id) return;
+    
+    const newNotifications = { ...notifications, [type]: value };
+    setNotifications(newNotifications);
+
+    try {
+      const { error } = await supabase
+        .from('user_notification_settings')
+        .upsert({
+          user_id: user.id,
+          email_notifications: newNotifications.email,
+          push_notifications: newNotifications.push,
+          sms_notifications: newNotifications.sms
+        }, { onConflict: 'user_id' });
+
+      if (error) {
+        console.error('Error updating notification settings:', error);
+        // Revert the change
+        setNotifications(notifications);
+        toast({
+          title: "Error",
+          description: "Failed to update notification settings",
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Settings Updated",
+          description: "Notification preferences saved successfully"
+        });
+      }
+    } catch (error) {
+      console.error('Error updating notification settings:', error);
+      setNotifications(notifications);
+      toast({
+        title: "Error",
+        description: "Failed to update notification settings",
+        variant: "destructive"
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (user?.id) {
+      loadNotificationSettings();
+    }
+  }, [user?.id]);
 
   // If language context is not available, show error state
   if (!languageContext) {
@@ -174,10 +253,14 @@ export const Settings = () => {
                   <Label>{t('settings.emailNotifications')}</Label>
                   <p className="text-sm text-muted-foreground">{t('settings.emailNotificationsDesc')}</p>
                 </div>
-                <Switch
-                  checked={notifications.email}
-                  onCheckedChange={(value) => handleNotificationChange('email', value)}
-                />
+                {isLoadingSettings ? (
+                  <LoadingSpinner size="sm" />
+                ) : (
+                  <Switch
+                    checked={notifications.email}
+                    onCheckedChange={(value) => handleNotificationChange('email', value)}
+                  />
+                )}
               </div>
               
               <div className="flex items-center justify-between">
