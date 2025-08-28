@@ -43,6 +43,7 @@ import NotFound from './pages/NotFound';
 import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminCommunications from './pages/admin/AdminCommunications';
+import AdminProfile from './pages/AdminProfile';
 
 interface RoleProtectedRouteProps {
   children: React.ReactNode;
@@ -171,6 +172,7 @@ const AppRoutes: React.FC = () => {
         <Route path="subscriptions" element={<AdminSubscriptions />} />
         <Route path="orders" element={<AdminOrders />} />
         <Route path="communications" element={<AdminCommunications />} />
+        <Route path="profile" element={<AdminProfile />} />
       </Route>
 
       {/* Main Navigation Routes - Accessible to all authenticated users */}

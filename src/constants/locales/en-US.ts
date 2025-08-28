@@ -294,6 +294,7 @@ export const enUS = {
     categoryManagement: 'Category Management',
     verificationQueue: 'Verification Queue',
     analytics: 'Analytics',
+    profile: 'Profile',
     
     // Header Interface
     searchPlaceholder: 'Search admin panel...',

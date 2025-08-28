@@ -18,7 +18,8 @@ import {
   FolderOpen,
   Building2,
   Ticket,
-  Crown
+  Crown,
+  User
 } from "lucide-react";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
@@ -111,6 +112,11 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
       name: t('admin.analytics'),
       href: "/admin/analytics",
       icon: BarChart3,
+    },
+    {
+      name: t('admin.profile'),
+      href: "/profile",
+      icon: User,
     },
   ];
 

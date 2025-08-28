@@ -241,6 +241,7 @@ export const arSA = {
     categoryManagement: 'إدارة الفئات',
     verificationQueue: 'قائمة انتظار التحقق',
     analytics: 'التحليلات',
+    profile: 'الملف الشخصي',
     
     // Header Interface
     searchPlaceholder: 'البحث في لوحة المدير...',
