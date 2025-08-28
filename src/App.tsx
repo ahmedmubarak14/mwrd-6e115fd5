@@ -22,6 +22,7 @@ import Vendors from './pages/Vendors';
 import Messages from './pages/Messages';
 import Orders from './pages/Orders';
 import Settings from './pages/Settings';
+import { AdminSettings } from './pages/AdminSettings';
 import { ManageSubscription } from './pages/ManageSubscription';
 import { Support } from './pages/Support';
 import BrowseRequests from './pages/BrowseRequests';
@@ -173,6 +174,7 @@ const AppRoutes: React.FC = () => {
         <Route path="orders" element={<AdminOrders />} />
         <Route path="communications" element={<AdminCommunications />} />
         <Route path="profile" element={<AdminProfile />} />
+        <Route path="settings" element={<AdminSettings />} />
       </Route>
 
       {/* Main Navigation Routes - Accessible to all authenticated users */}

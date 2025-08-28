@@ -12,6 +12,7 @@ import { Settings as SettingsIcon, User, Bell, Shield, Globe, Palette } from "lu
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { Navigate } from "react-router-dom";
 
 export const Settings = () => {
   const { userProfile, updateProfile } = useAuth();
@@ -29,6 +30,11 @@ export const Settings = () => {
   const t = languageContext?.t || ((key: string) => key);
   const language = languageContext?.language || 'en';
   const setLanguage = languageContext?.setLanguage || (() => {});
+
+  // Redirect admins to admin settings
+  if (userProfile?.role === 'admin') {
+    return <Navigate to="/admin/settings" replace />;
+  }
 
   const loadNotificationSettings = async () => {
     if (!userProfile) return;
