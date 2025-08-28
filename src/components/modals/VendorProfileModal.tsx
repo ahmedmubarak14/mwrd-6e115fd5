@@ -24,6 +24,7 @@ import { useState } from "react";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useToast } from "@/hooks/use-toast";
 import { useRealTimeChat } from "@/hooks/useRealTimeChat";
+import { useNavigate } from "react-router-dom";
 
 interface VendorProfileModalProps {
   children: React.ReactNode;
@@ -55,9 +56,11 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
   const language = languageContext?.language || 'en';
   const { toast } = useToast();
   const { startConversation, sendMessage } = useRealTimeChat();
+  const navigate = useNavigate();
   const isArabic = language === 'ar';
   const [isLoadingCall, setIsLoadingCall] = useState(false);
   const [isLoadingMessage, setIsLoadingMessage] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const vendorInfo = {
     name: isArabic ? vendor.name : vendor.englishName,
@@ -89,12 +92,15 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
   const handleSendMessage = async () => {
     setIsLoadingMessage(true);
     try {
+      console.log('Starting conversation with vendor:', vendor.id);
       const conversation = await startConversation(vendor.id.toString());
+      
       if (conversation) {
         const message = isArabic 
           ? 'مرحباً، أنا مهتم بخدماتكم.'
           : "Hello, I'm interested in your services.";
         
+        console.log('Sending message to conversation:', conversation.id);
         await sendMessage(
           conversation.id, 
           message, 
@@ -104,14 +110,23 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
         toast({
           title: isArabic ? 'تم إرسال الرسالة' : 'Message Sent',
           description: isArabic 
-            ? `تم إرسال رسالتك إلى ${vendorInfo.name}. عادة ما يردون خلال ${vendorInfo.responseTime}.`
-            : `Your message has been sent to ${vendorInfo.name}. They typically respond within ${vendorInfo.responseTime}.`,
+            ? `تم إرسال رسالتك إلى ${vendorInfo.name}. جاري توجيهك إلى صفحة المحادثات.`
+            : `Your message has been sent to ${vendorInfo.name}. Redirecting to messages.`,
         });
+
+        // Close modal and navigate to messages
+        setOpen(false);
+        setTimeout(() => {
+          navigate('/messages');
+        }, 500);
       }
     } catch (error) {
+      console.error('Error sending message:', error);
       toast({
         title: isArabic ? 'فشل في إرسال الرسالة' : 'Failed to Send Message',
-        description: isArabic ? 'يرجى المحاولة مرة أخرى أو استخدم ميزة الدردشة.' : 'Please try again or use the chat feature.',
+        description: isArabic 
+          ? 'حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.'
+          : 'An error occurred while sending the message. Please try again.',
         variant: "destructive",
       });
     } finally {
@@ -122,28 +137,50 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
   const handleVideoCall = async () => {
     setIsLoadingCall(true);
     try {
-      // Simulate video call initiation
-      setTimeout(() => {
+      // First create a conversation for the video call
+      console.log('Starting video call conversation with vendor:', vendor.id);
+      const conversation = await startConversation(vendor.id.toString());
+      
+      if (conversation) {
+        const message = isArabic 
+          ? 'أود إجراء مكالمة مرئية معكم. هل أنتم متاحون؟'
+          : "I'd like to have a video call with you. Are you available?";
+        
+        await sendMessage(
+          conversation.id, 
+          message, 
+          vendor.id.toString()
+        );
+
         toast({
-          title: isArabic ? 'تم بدء المكالمة المرئية' : 'Video Call Initiated',
+          title: isArabic ? 'طلب المكالمة المرئية' : 'Video Call Request',
           description: isArabic 
-            ? `جاري الاتصال بـ ${vendorInfo.name}... سيتم إشعارهم بطلب المكالمة.`
-            : `Connecting to ${vendorInfo.name}... They will be notified of your call request.`,
+            ? `تم إرسال طلب المكالمة المرئية إلى ${vendorInfo.name}. جاري توجيهك إلى صفحة المحادثات.`
+            : `Video call request sent to ${vendorInfo.name}. Redirecting to messages.`,
         });
-        setIsLoadingCall(false);
-      }, 1000);
+
+        // Close modal and navigate to messages
+        setOpen(false);
+        setTimeout(() => {
+          navigate('/messages');
+        }, 500);
+      }
     } catch (error) {
+      console.error('Error initiating video call:', error);
       toast({
-        title: isArabic ? 'فشلت المكالمة' : 'Call Failed',
-        description: isArabic ? 'فشل في الاتصال. يرجى المحاولة مرة أخرى.' : 'Failed to connect call. Please try again.',
+        title: isArabic ? 'فشل في طلب المكالمة' : 'Call Request Failed',
+        description: isArabic 
+          ? 'حدث خطأ أثناء طلب المكالمة. يرجى المحاولة مرة أخرى.'
+          : 'An error occurred while requesting the call. Please try again.',
         variant: "destructive",
       });
+    } finally {
       setIsLoadingCall(false);
     }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
