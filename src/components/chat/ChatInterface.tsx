@@ -155,7 +155,7 @@ export const ChatInterface = ({ conversation, className }: ChatInterfaceProps) =
     }
   };
 
-  const handleVoiceRecording = async (audioBlob: Blob, duration: number) => {
+  const handleVoiceRecording = async (audioBlob: Blob, duration: number, transcription?: string) => {
     if (!conversation || !otherParticipant) return;
 
     try {
@@ -168,11 +168,14 @@ export const ChatInterface = ({ conversation, className }: ChatInterfaceProps) =
       if (result) {
         const recipientId = conversation.client_id === user?.id ? conversation.vendor_id : conversation.client_id;
 
+        // Use transcription as content if available, otherwise use duration info
+        const messageContent = transcription || `Voice message (${Math.round(duration)}s)`;
+
         await sendChatMessage(
           conversation.id,
-          `Voice message (${Math.round(duration)}s)`,
+          messageContent,
           recipientId,
-          'file',
+          'voice',
           result.url
         );
         
@@ -238,7 +241,7 @@ export const ChatInterface = ({ conversation, className }: ChatInterfaceProps) =
   const MessageBubble = ({ msg, isOwn }: { msg: MessageWithStatus; isOwn: boolean }) => {
     const isImage = msg.message_type === 'image';
     const isFile = msg.message_type === 'file';
-    const isAudio = isFile && (msg.content?.includes('Voice message') || msg.attachment_url?.includes('.webm') || msg.attachment_url?.includes('.wav') || msg.attachment_url?.includes('.mp3'));
+    const isAudio = (isFile && (msg.content?.includes('Voice message') || msg.attachment_url?.includes('.webm') || msg.attachment_url?.includes('.wav') || msg.attachment_url?.includes('.mp3'))) || msg.message_type === 'voice';
     const hasAttachment = msg.attachment_url && (isImage || isFile);
     
     return (

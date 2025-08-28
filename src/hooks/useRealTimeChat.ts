@@ -227,7 +227,7 @@ export const useRealTimeChat = () => {
     conversationId: string,
     content: string,
     recipientId: string,
-    messageType: 'text' | 'image' | 'file' = 'text',
+    messageType: 'text' | 'image' | 'file' | 'voice' = 'text',
     attachmentUrl?: string
   ) => {
     if (!user) throw new Error('User not authenticated');
@@ -250,11 +250,15 @@ export const useRealTimeChat = () => {
 
       if (error) throw error;
 
-      // Update conversation last message
+      // Update conversation last message with proper text for voice messages
+      const lastMessageText = messageType === 'voice' ? '🎵 Voice message' : 
+                            messageType === 'text' ? content : 
+                            `Sent ${messageType}`;
+
       await supabase
         .from('conversations')
         .update({
-          last_message: content,
+          last_message: lastMessageText,
           last_message_at: new Date().toISOString()
         })
         .eq('id', conversationId);
@@ -324,17 +328,44 @@ export const useRealTimeChat = () => {
   const getOtherParticipant = useCallback(async (conversation: Conversation) => {
     if (!user) return null;
 
-    const otherUserId = conversation.client_id === user.id 
-      ? conversation.vendor_id 
-      : conversation.client_id;
-
     try {
-      const { data: profile } = await supabase
+      // First get current user's profile ID
+      const { data: currentUserProfile } = await supabase
+        .from('user_profiles')
+        .select('id')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (!currentUserProfile) {
+        console.error('Current user profile not found');
+        return null;
+      }
+
+      // Determine which profile ID is the "other" participant
+      const otherParticipantId = conversation.client_id === currentUserProfile.id 
+        ? conversation.vendor_id 
+        : conversation.client_id;
+
+      console.log('Looking for other participant with profile ID:', otherParticipantId);
+
+      // Fetch the other participant's profile using their profile ID
+      const { data: profile, error } = await supabase
         .from('user_profiles')
         .select('*')
-        .eq('user_id', otherUserId)
-        .single();
+        .eq('id', otherParticipantId)
+        .maybeSingle();
 
+      if (error) {
+        console.error('Error fetching other participant:', error);
+        return null;
+      }
+
+      if (!profile) {
+        console.error('Other participant profile not found for ID:', otherParticipantId);
+        return null;
+      }
+
+      console.log('Found other participant:', profile.full_name || profile.company_name);
       return profile;
     } catch (error) {
       console.error('Error fetching participant:', error);
