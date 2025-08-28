@@ -19,12 +19,15 @@ import {
   AlertTriangle,
   Info,
   Database,
-  Key
+  Key,
+  RefreshCw
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { CommunicationSettings } from '@/components/admin/CommunicationSettings';
+import { AdminPageContainer } from '@/components/admin/AdminPageContainer';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 
 interface PlatformSetting {
   id: string;
@@ -37,14 +40,20 @@ interface PlatformSetting {
 export const AdminSettings = () => {
   const { toast } = useToast();
   const { user } = useAuth();
+  const languageContext = useOptionalLanguage();
+  const { t } = languageContext || { t: (key: string) => key };
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [settings, setSettings] = useState<Record<string, any>>({});
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
-  const loadPlatformSettings = async () => {
+  const loadPlatformSettings = async (showRefreshToast = false) => {
     if (!user) return;
     
     setIsLoading(true);
+    if (showRefreshToast) setIsRefreshing(true);
+    
     try {
       const { data, error } = await supabase
         .from('platform_settings')
@@ -66,15 +75,29 @@ export const AdminSettings = () => {
       });
       
       setSettings(settingsMap);
+      setHasUnsavedChanges(false);
+      
+      if (showRefreshToast) {
+        toast({
+          title: "Settings Refreshed",
+          description: "Platform settings have been refreshed from the database."
+        });
+      }
     } catch (error) {
       console.error('Error loading platform settings:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load platform settings.",
+        variant: "destructive"
+      });
     } finally {
       setIsLoading(false);
+      setIsRefreshing(false);
     }
   };
 
   const updateSetting = async (settingKey: string, value: any) => {
-    if (!user) return;
+    if (!user) return false;
     
     try {
       const { error } = await supabase
@@ -95,7 +118,6 @@ export const AdminSettings = () => {
         return false;
       }
       
-      setSettings(prev => ({ ...prev, [settingKey]: value }));
       return true;
     } catch (error) {
       console.error('Error updating setting:', error);
@@ -108,15 +130,20 @@ export const AdminSettings = () => {
     let allSuccessful = true;
     
     for (const key of sectionKeys) {
-      const success = await updateSetting(key, settings[key]);
-      if (!success) allSuccessful = false;
+      if (settings[key] !== undefined) {
+        const success = await updateSetting(key, settings[key]);
+        if (!success) allSuccessful = false;
+      }
     }
     
     if (allSuccessful) {
+      setHasUnsavedChanges(false);
       toast({
         title: "Settings Saved",
         description: "Platform settings have been updated successfully."
       });
+      // Refresh to get latest values
+      await loadPlatformSettings();
     }
     
     setIsSaving(false);
@@ -124,6 +151,35 @@ export const AdminSettings = () => {
 
   const handleSettingChange = (key: string, value: any) => {
     setSettings(prev => ({ ...prev, [key]: value }));
+    setHasUnsavedChanges(true);
+  };
+
+  const resetToDefaults = async () => {
+    const defaultSettings = {
+      site_name: "MWRD Platform",
+      site_description: "Professional procurement and vendor management platform",
+      registration_open: true,
+      email_verification_required: false,
+      default_user_role: "client",
+      session_timeout: 480,
+      max_login_attempts: 5,
+      password_min_length: 8,
+      require_password_symbols: true,
+      enable_two_factor: false,
+      api_rate_limit: 1000,
+      file_upload_max_size: 10,
+      maintenance_mode: false,
+      default_timezone: "Asia/Riyadh",
+      default_currency: "SAR"
+    };
+    
+    setSettings(defaultSettings);
+    setHasUnsavedChanges(true);
+    
+    toast({
+      title: "Settings Reset",
+      description: "Settings have been reset to defaults. Click save to apply changes."
+    });
   };
 
   useEffect(() => {
@@ -134,24 +190,43 @@ export const AdminSettings = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
-      </div>
+      <AdminPageContainer>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <LoadingSpinner size="lg" />
+        </div>
+      </AdminPageContainer>
     );
   }
 
-  return (
-    <div className="container mx-auto space-y-6 p-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-2">
-          <Settings className="h-8 w-8" />
-          Platform Settings
-        </h1>
-        <p className="text-muted-foreground mt-2">
-          Manage global platform configuration and administrative settings
-        </p>
-      </div>
+  const headerActions = (
+    <div className="flex items-center gap-2">
+      {hasUnsavedChanges && (
+        <Badge variant="outline" className="text-amber-600 border-amber-600">
+          Unsaved Changes
+        </Badge>
+      )}
+      <Button 
+        variant="outline" 
+        size="sm"
+        onClick={() => loadPlatformSettings(true)}
+        disabled={isRefreshing}
+      >
+        {isRefreshing ? (
+          <LoadingSpinner size="sm" className="mr-2" />
+        ) : (
+          <RefreshCw className="h-4 w-4 mr-2" />
+        )}
+        Refresh
+      </Button>
+    </div>
+  );
 
+  return (
+    <AdminPageContainer
+      title="Platform Settings"
+      description="Manage global platform configuration and administrative settings"
+      headerActions={headerActions}
+    >
       <Tabs defaultValue="general" className="space-y-6">
         <TabsList className="grid grid-cols-5 w-full">
           <TabsTrigger value="general" className="flex items-center gap-2">
@@ -277,14 +352,16 @@ export const AdminSettings = () => {
                 />
               </div>
 
-              <Button 
-                onClick={() => handleSaveSection(['site_name', 'site_description', 'default_currency', 'default_timezone', 'default_user_role', 'registration_open'])}
-                className="w-full"
-                disabled={isSaving}
-              >
-                {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
-                Save General Settings
-              </Button>
+              <div className="flex items-center gap-2 pt-4 border-t">
+                <Button 
+                  onClick={() => handleSaveSection(['site_name', 'site_description', 'default_currency', 'default_timezone', 'default_user_role', 'registration_open'])}
+                  disabled={isSaving}
+                  className="flex-1"
+                >
+                  {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
+                  Save General Settings
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -308,7 +385,7 @@ export const AdminSettings = () => {
                     id="sessionTimeout"
                     type="number"
                     value={settings.session_timeout || 480}
-                    onChange={(e) => handleSettingChange('session_timeout', parseInt(e.target.value))}
+                    onChange={(e) => handleSettingChange('session_timeout', parseInt(e.target.value) || 480)}
                     min="30"
                     max="1440"
                   />
@@ -321,7 +398,7 @@ export const AdminSettings = () => {
                     id="maxLoginAttempts"
                     type="number"
                     value={settings.max_login_attempts || 5}
-                    onChange={(e) => handleSettingChange('max_login_attempts', parseInt(e.target.value))}
+                    onChange={(e) => handleSettingChange('max_login_attempts', parseInt(e.target.value) || 5)}
                     min="3"
                     max="10"
                   />
@@ -336,7 +413,7 @@ export const AdminSettings = () => {
                     id="passwordMinLength"
                     type="number"
                     value={settings.password_min_length || 8}
-                    onChange={(e) => handleSettingChange('password_min_length', parseInt(e.target.value))}
+                    onChange={(e) => handleSettingChange('password_min_length', parseInt(e.target.value) || 8)}
                     min="6"
                     max="128"
                   />
@@ -378,14 +455,16 @@ export const AdminSettings = () => {
                 </div>
               </div>
 
-              <Button 
-                onClick={() => handleSaveSection(['session_timeout', 'max_login_attempts', 'password_min_length', 'require_password_symbols', 'email_verification_required', 'enable_two_factor'])}
-                className="w-full"
-                disabled={isSaving}
-              >
-                {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
-                Save Security Settings
-              </Button>
+              <div className="flex items-center gap-2 pt-4 border-t">
+                <Button 
+                  onClick={() => handleSaveSection(['session_timeout', 'max_login_attempts', 'password_min_length', 'require_password_symbols', 'email_verification_required', 'enable_two_factor'])}
+                  disabled={isSaving}
+                  className="flex-1"
+                >
+                  {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
+                  Save Security Settings
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -409,7 +488,7 @@ export const AdminSettings = () => {
                     id="apiRateLimit"
                     type="number"
                     value={settings.api_rate_limit || 1000}
-                    onChange={(e) => handleSettingChange('api_rate_limit', parseInt(e.target.value))}
+                    onChange={(e) => handleSettingChange('api_rate_limit', parseInt(e.target.value) || 1000)}
                     min="100"
                     max="10000"
                   />
@@ -422,7 +501,7 @@ export const AdminSettings = () => {
                     id="fileUploadMaxSize"
                     type="number"
                     value={settings.file_upload_max_size || 10}
-                    onChange={(e) => handleSettingChange('file_upload_max_size', parseInt(e.target.value))}
+                    onChange={(e) => handleSettingChange('file_upload_max_size', parseInt(e.target.value) || 10)}
                     min="1"
                     max="100"
                   />
@@ -456,14 +535,16 @@ export const AdminSettings = () => {
                 </div>
               )}
 
-              <Button 
-                onClick={() => handleSaveSection(['api_rate_limit', 'file_upload_max_size', 'maintenance_mode'])}
-                className="w-full"
-                disabled={isSaving}
-              >
-                {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
-                Save System Settings
-              </Button>
+              <div className="flex items-center gap-2 pt-4 border-t">
+                <Button 
+                  onClick={() => handleSaveSection(['api_rate_limit', 'file_upload_max_size', 'maintenance_mode'])}
+                  disabled={isSaving}
+                  className="flex-1"
+                >
+                  {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
+                  Save System Settings
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -493,7 +574,7 @@ export const AdminSettings = () => {
                   <p className="text-sm text-muted-foreground mb-4">
                     Manage external service API keys and integrations
                   </p>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" disabled>
                     Manage API Keys
                   </Button>
                 </Card>
@@ -506,7 +587,7 @@ export const AdminSettings = () => {
                   <p className="text-sm text-muted-foreground mb-4">
                     Database maintenance and optimization tools
                   </p>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" disabled>
                     Database Tools
                   </Button>
                 </Card>
@@ -520,7 +601,7 @@ export const AdminSettings = () => {
                       <h5 className="font-medium text-destructive">Reset Platform Settings</h5>
                       <p className="text-sm text-muted-foreground">Reset all platform settings to default values</p>
                     </div>
-                    <Button variant="destructive" size="sm">
+                    <Button variant="destructive" size="sm" onClick={resetToDefaults}>
                       Reset Settings
                     </Button>
                   </div>
@@ -530,7 +611,7 @@ export const AdminSettings = () => {
                       <h5 className="font-medium text-destructive">Export Platform Data</h5>
                       <p className="text-sm text-muted-foreground">Download a complete backup of platform data</p>
                     </div>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" disabled>
                       Export Data
                     </Button>
                   </div>
@@ -540,7 +621,7 @@ export const AdminSettings = () => {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
+    </AdminPageContainer>
   );
 };
 
