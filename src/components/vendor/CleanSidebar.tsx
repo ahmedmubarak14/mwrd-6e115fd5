@@ -1,6 +1,6 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
@@ -19,7 +19,9 @@ interface CleanSidebarProps {
 }
 
 export const CleanSidebar = ({ userRole, onItemClick }: CleanSidebarProps) => {
-  const { t, isRTL } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const t = languageContext?.t || ((key: string) => key.split('.').pop() || key);
+  const isRTL = languageContext?.isRTL || false;
   const location = useLocation();
 
   const getNavigationItems = () => {

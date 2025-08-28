@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -22,7 +22,11 @@ interface CleanHeaderProps {
 
 export const CleanHeader = ({ onMobileMenuOpen }: CleanHeaderProps) => {
   const { user, userProfile, signOut } = useAuth();
-  const { t, isRTL, language, setLanguage } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const t = languageContext?.t || ((key: string) => key.split('.').pop() || key);
+  const isRTL = languageContext?.isRTL || false;
+  const language = languageContext?.language || 'en';
+  const setLanguage = languageContext?.setLanguage || (() => {});
   const [searchTerm, setSearchTerm] = useState("");
   const isMobile = useIsMobile();
 
