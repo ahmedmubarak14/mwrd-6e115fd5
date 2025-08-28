@@ -29,19 +29,19 @@ export const SystemHealthMonitor = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'healthy': return 'text-green-500';
-      case 'warning': return 'text-yellow-500';
-      case 'critical': return 'text-red-500';
-      default: return 'text-gray-500';
+      case 'healthy': return 'text-success';
+      case 'warning': return 'text-warning';
+      case 'critical': return 'text-destructive';
+      default: return 'text-muted-foreground';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'healthy': return <CheckCircle className="h-4 w-4 text-green-500" />;
-      case 'warning': return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
-      case 'critical': return <AlertTriangle className="h-4 w-4 text-red-500" />;
-      default: return <Activity className="h-4 w-4 text-gray-500" />;
+      case 'healthy': return <CheckCircle className="h-4 w-4 text-success" />;
+      case 'warning': return <AlertTriangle className="h-4 w-4 text-warning" />;
+      case 'critical': return <AlertTriangle className="h-4 w-4 text-destructive" />;
+      default: return <Activity className="h-4 w-4 text-muted-foreground" />;
     }
   };
 
@@ -254,7 +254,7 @@ export const SystemHealthMonitor = () => {
             </div>
             <div className="flex justify-between">
               <span className="text-sm">Error Rate</span>
-              <span className="font-medium text-green-600">0.02%</span>
+              <span className="font-medium text-success">0.02%</span>
             </div>
             <div className="flex justify-between">
               <span className="text-sm">Throughput</span>
@@ -281,11 +281,11 @@ export const SystemHealthMonitor = () => {
             </div>
             <div className="flex justify-between">
               <span className="text-sm">This Month</span>
-              <span className="font-medium text-green-600">99.95%</span>
+              <span className="font-medium text-success">99.95%</span>
             </div>
             <div className="flex justify-between">
               <span className="text-sm">Last 90 Days</span>
-              <span className="font-medium text-green-600">99.89%</span>
+              <span className="font-medium text-success">99.89%</span>
             </div>
             <div className="flex justify-between">
               <span className="text-sm">Last Incident</span>

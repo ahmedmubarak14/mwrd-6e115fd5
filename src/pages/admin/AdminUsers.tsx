@@ -21,26 +21,28 @@ const AdminUsers = () => {
       title={t('admin.userManagement.management')}
       description={t('admin.userManagement.manageDescription')}
     >
-      <Tabs defaultValue="users" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="users" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
-            <Users className="h-4 w-4" />
-            {t('admin.users')}
-          </TabsTrigger>
-          <TabsTrigger value="verification" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
-            <FileCheck className="h-4 w-4" />
-            {t('admin.verification.queue')}
-          </TabsTrigger>
-        </TabsList>
+      <div data-admin-dashboard className="admin-page">
+        <Tabs defaultValue="users" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="users" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
+              <Users className="h-4 w-4" />
+              {t('admin.users')}
+            </TabsTrigger>
+            <TabsTrigger value="verification" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
+              <FileCheck className="h-4 w-4" />
+              {t('admin.verification.queue')}
+            </TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="users">
-          <AdvancedUserManagement />
-        </TabsContent>
+          <TabsContent value="users">
+            <AdvancedUserManagement />
+          </TabsContent>
 
-        <TabsContent value="verification">
-          <VerificationQueue />
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="verification">
+            <VerificationQueue />
+          </TabsContent>
+        </Tabs>
+      </div>
     </AdminPageContainer>
   );
 };

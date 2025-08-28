@@ -26,18 +26,26 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": "off",
       // Prevent hardcoded colors in admin dashboard components
       "no-restricted-syntax": [
-        "warn",
+        "error",
         {
-          "selector": "Literal[value=/text-(red|green|blue|yellow|purple|orange|gray)-(\\d{3}|\\d{2})/]",
-          "message": "Use semantic color tokens (text-success, text-destructive, text-info, text-warning, text-muted-foreground) instead of hardcoded colors."
+          "selector": "Literal[value=/text-(red|green|blue|yellow|purple|orange|gray|slate|zinc|neutral|stone|amber|lime|emerald|teal|cyan|sky|indigo|violet|fuchsia|pink|rose)-(\\d{3}|\\d{2}|\\d{1})/]",
+          "message": "Use semantic color tokens (text-success, text-destructive, text-info, text-warning, text-muted-foreground, text-accent, text-primary) instead of hardcoded colors."
         },
         {
-          "selector": "Literal[value=/bg-(red|green|blue|yellow|purple|orange|gray)-(\\d{3}|\\d{2})/]",
-          "message": "Use semantic background tokens instead of hardcoded colors."
+          "selector": "Literal[value=/bg-(red|green|blue|yellow|purple|orange|gray|slate|zinc|neutral|stone|amber|lime|emerald|teal|cyan|sky|indigo|violet|fuchsia|pink|rose)-(\\d{3}|\\d{2}|\\d{1})/]",
+          "message": "Use semantic background tokens (bg-primary, bg-secondary, bg-accent, bg-success, bg-warning, bg-destructive, bg-info) instead of hardcoded colors."
         },
         {
-          "selector": "Literal[value=/border-(red|green|blue|yellow|purple|orange|gray)-(\\d{3}|\\d{2})/]",
-          "message": "Use semantic border tokens instead of hardcoded colors."
+          "selector": "Literal[value=/border-(red|green|blue|yellow|purple|orange|gray|slate|zinc|neutral|stone|amber|lime|emerald|teal|cyan|sky|indigo|violet|fuchsia|pink|rose)-(\\d{3}|\\d{2}|\\d{1})/]",
+          "message": "Use semantic border tokens (border-primary, border-secondary, border-accent, border-success, border-warning, border-destructive) instead of hardcoded colors."
+        },
+        {
+          "selector": "JSXAttribute[name.name='className'] Literal[value=/text-(white|black)/]",
+          "message": "Use semantic color tokens (text-foreground, text-background, text-primary-foreground) instead of text-white or text-black."
+        },
+        {
+          "selector": "JSXAttribute[name.name='className'] Literal[value=/bg-(white|black)/]",
+          "message": "Use semantic background tokens (bg-background, bg-foreground, bg-card) instead of bg-white or bg-black."
         }
       ]
     },

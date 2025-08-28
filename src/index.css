@@ -1098,4 +1098,168 @@ All colors MUST be HSL.
       scroll-behavior: auto !important;
     }
   }
+
+  /* Admin-specific component styles */
+  .admin-table th {
+    @apply bg-card text-card-foreground;
+  }
+
+  .admin-table td {
+    @apply border-border;
+  }
+
+  .admin-sidebar {
+    @apply bg-card border-border;
+  }
+
+  .admin-main-content {
+    @apply bg-background text-foreground;
+  }
+
+  /* Force visibility overrides for admin dashboard */
+  [data-admin-dashboard] button,
+  [data-admin-dashboard] .admin-button,
+  .admin-page button,
+  button[data-admin-button] {
+    color: hsl(var(--primary-foreground)) !important;
+    background-color: hsl(var(--primary)) !important;
+    border-color: hsl(var(--primary)) !important;
+    caret-color: hsl(var(--primary-foreground)) !important;
+  }
+
+  [data-admin-dashboard] button:hover,
+  [data-admin-dashboard] .admin-button:hover,
+  .admin-page button:hover,
+  button[data-admin-button]:hover {
+    background-color: hsl(var(--primary-hover)) !important;
+    border-color: hsl(var(--primary-hover)) !important;
+  }
+
+  [data-admin-dashboard] button:disabled,
+  [data-admin-dashboard] .admin-button:disabled,
+  .admin-page button:disabled,
+  button[data-admin-button]:disabled {
+    color: hsl(var(--button-disabled-foreground)) !important;
+    background-color: hsl(var(--button-disabled)) !important;
+    border-color: hsl(var(--button-disabled-border)) !important;
+    opacity: 0.7 !important;
+  }
+
+  [data-admin-dashboard] input,
+  [data-admin-dashboard] textarea,
+  [data-admin-dashboard] select,
+  .admin-page input,
+  .admin-page textarea,
+  .admin-page select,
+  input[data-admin-input],
+  textarea[data-admin-input],
+  select[data-admin-input] {
+    color: hsl(var(--foreground)) !important;
+    background-color: hsl(var(--input)) !important;
+    border-color: hsl(var(--input-border)) !important;
+    caret-color: hsl(var(--input-caret)) !important;
+  }
+
+  [data-admin-dashboard] input::placeholder,
+  [data-admin-dashboard] textarea::placeholder,
+  [data-admin-dashboard] select::placeholder,
+  .admin-page input::placeholder,
+  .admin-page textarea::placeholder,
+  .admin-page select::placeholder,
+  input[data-admin-input]::placeholder,
+  textarea[data-admin-input]::placeholder,
+  select[data-admin-input]::placeholder {
+    color: hsl(var(--input-placeholder)) !important;
+    opacity: 0.6 !important;
+  }
+
+  [data-admin-dashboard] input:focus,
+  [data-admin-dashboard] textarea:focus,
+  [data-admin-dashboard] select:focus,
+  .admin-page input:focus,
+  .admin-page textarea:focus,
+  .admin-page select:focus,
+  input[data-admin-input]:focus,
+  textarea[data-admin-input]:focus,
+  select[data-admin-input]:focus {
+    outline: 2px solid hsl(var(--focus-outline)) !important;
+    outline-offset: 2px !important;
+    border-color: hsl(var(--primary)) !important;
+    box-shadow: 0 0 0 2px hsl(var(--focus-ring) / 0.3) !important;
+  }
+
+  [data-admin-dashboard] input:disabled,
+  [data-admin-dashboard] textarea:disabled,
+  [data-admin-dashboard] select:disabled,
+  .admin-page input:disabled,
+  .admin-page textarea:disabled,
+  .admin-page select:disabled,
+  input[data-admin-input]:disabled,
+  textarea[data-admin-input]:disabled,
+  select[data-admin-input]:disabled {
+    color: hsl(var(--button-disabled-foreground)) !important;
+    background-color: hsl(var(--button-disabled)) !important;
+    border-color: hsl(var(--button-disabled-border)) !important;
+    opacity: 0.7 !important;
+  }
+
+  /* Force visibility for selection and autofill */
+  [data-admin-dashboard] input::selection,
+  [data-admin-dashboard] textarea::selection,
+  [data-admin-dashboard] select::selection,
+  .admin-page input::selection,
+  .admin-page textarea::selection,
+  .admin-page select::selection,
+  input[data-admin-input]::selection,
+  textarea[data-admin-input]::selection,
+  select[data-admin-input]::selection {
+    background-color: hsl(var(--input-selection) / 0.4) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+
+  [data-admin-dashboard] input:-webkit-autofill,
+  [data-admin-dashboard] textarea:-webkit-autofill,
+  [data-admin-dashboard] select:-webkit-autofill,
+  .admin-page input:-webkit-autofill,
+  .admin-page textarea:-webkit-autofill,
+  .admin-page select:-webkit-autofill,
+  input[data-admin-input]:-webkit-autofill,
+  textarea[data-admin-input]:-webkit-autofill,
+  select[data-admin-input]:-webkit-autofill {
+    -webkit-text-fill-color: hsl(var(--foreground)) !important;
+    -webkit-box-shadow: inset 0 0 0px 1000px hsl(var(--input)) !important;
+    background-color: hsl(var(--input)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+
+  /* Ensure form fields are visible in admin pages */
+  .admin-form input,
+  .admin-form textarea,
+  .admin-form select {
+    @apply bg-input text-foreground border-input-border;
+    @apply placeholder:text-input-placeholder;
+  }
+
+  .admin-form input:focus,
+  .admin-form textarea:focus,
+  .admin-form select:focus {
+    @apply ring-focus-ring border-primary;
+  }
+
+  /* Admin typography classes */
+  .admin-heading {
+    @apply text-2xl font-bold text-foreground;
+  }
+
+  .admin-subheading {
+    @apply text-lg font-semibold text-foreground;
+  }
+
+  .admin-body {
+    @apply text-sm text-foreground;
+  }
+
+  .admin-caption {
+    @apply text-xs text-muted-foreground;
+  }
 }

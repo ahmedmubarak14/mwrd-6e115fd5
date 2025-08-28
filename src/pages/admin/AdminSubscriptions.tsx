@@ -17,7 +17,9 @@ const AdminSubscriptions: React.FC = () => {
       title={t('admin.subscriptions')}
       description={t('admin.subscriptionsDescription')}
     >
-      <SubscriptionManagement />
+      <div data-admin-dashboard>
+        <SubscriptionManagement />
+      </div>
     </AdminPageContainer>
   );
 };
