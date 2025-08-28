@@ -97,6 +97,12 @@ All colors MUST be HSL.
     --shadow-lg: 0 10px 15px hsl(var(--neutral-900) / 0.1), 0 4px 6px hsl(var(--neutral-900) / 0.05);
     --shadow-xl: 0 20px 25px hsl(var(--neutral-900) / 0.1), 0 8px 10px hsl(var(--neutral-900) / 0.04);
     --shadow-2xl: 0 25px 50px hsl(var(--neutral-900) / 0.25);
+
+    /* ========== ADMIN-SPECIFIC ENHANCED FOCUS STATES ========== */
+    --admin-focus-ring: 324 96% 20%;
+    --admin-focus-outline: 324 96% 20%;
+    --admin-button-focus: 0 0 0 2px hsl(var(--admin-focus-ring) / 0.2);
+    --admin-input-focus: 0 0 0 2px hsl(var(--admin-focus-ring) / 0.3);
     
     /* Colored shadows for depth */
     --shadow-primary: 0 10px 30px hsl(var(--primary-600) / 0.3), 0 4px 12px hsl(var(--primary-600) / 0.2);
@@ -188,6 +194,12 @@ All colors MUST be HSL.
     --focus-ring-offset: 0 0% 100%;      /* Focus ring offset */
     --focus-outline: 324 96% 20%;        /* Focus outline color */
     --radius: 0.75rem;
+
+    /* ========== AUTOFILL AND SELECTION OVERRIDES ========== */
+    --autofill-background: 210 40% 98%;   /* Light autofill background */
+    --autofill-text: 222 84% 4.9%;       /* Dark autofill text */
+    --selection-background: 324 96% 20%;  /* Primary selection background */
+    --selection-text: 0 0% 100%;          /* White selection text */
     
     /* Status color interaction states - Enhanced for WCAG 2.1 AA+ */
     --success-hover: 142 71% 26%;        /* Darker success hover */
@@ -579,7 +591,77 @@ All colors MUST be HSL.
     transition: background-color 5000s ease-in-out 0s;
   }
   
-  /* Dark mode autofill overrides */
+  /* ========== ADMIN DASHBOARD VISIBILITY FIXES ========== */
+  
+  /* Critical: Force visibility for all admin buttons */
+  .admin-dashboard button,
+  [data-route*="admin"] button,
+  [class*="admin"] button,
+  div[class*="Admin"] button {
+    color: hsl(var(--foreground)) !important;
+    background-color: transparent !important;
+    border: 1px solid hsl(var(--border)) !important;
+    transition: all 0.2s ease-in-out !important;
+  }
+
+  .admin-dashboard button:hover,
+  [data-route*="admin"] button:hover,
+  [class*="admin"] button:hover,
+  div[class*="Admin"] button:hover {
+    background-color: hsl(var(--secondary)) !important;
+    border-color: hsl(var(--border-strong)) !important;
+  }
+
+  /* Critical: Force visibility for all admin form fields */
+  .admin-dashboard input,
+  .admin-dashboard textarea,
+  .admin-dashboard select,
+  [data-route*="admin"] input,
+  [data-route*="admin"] textarea,
+  [data-route*="admin"] select,
+  [class*="admin"] input,
+  [class*="admin"] textarea,
+  [class*="admin"] select,
+  div[class*="Admin"] input,
+  div[class*="Admin"] textarea,
+  div[class*="Admin"] select {
+    color: hsl(var(--foreground)) !important;
+    background-color: hsl(var(--input)) !important;
+    border-color: hsl(var(--input-border)) !important;
+    caret-color: hsl(var(--input-caret)) !important;
+  }
+
+  /* Critical: Force placeholder visibility in admin */
+  .admin-dashboard input::placeholder,
+  .admin-dashboard textarea::placeholder,
+  [data-route*="admin"] input::placeholder,
+  [data-route*="admin"] textarea::placeholder,
+  [class*="admin"] input::placeholder,
+  [class*="admin"] textarea::placeholder,
+  div[class*="Admin"] input::placeholder,
+  div[class*="Admin"] textarea::placeholder {
+    color: hsl(var(--input-placeholder)) !important;
+    opacity: 0.6 !important;
+  }
+
+  /* Critical: Force focus visibility in admin */
+  .admin-dashboard input:focus,
+  .admin-dashboard textarea:focus,
+  .admin-dashboard select:focus,
+  [data-route*="admin"] input:focus,
+  [data-route*="admin"] textarea:focus,
+  [data-route*="admin"] select:focus,
+  [class*="admin"] input:focus,
+  [class*="admin"] textarea:focus,
+  [class*="admin"] select:focus,
+  div[class*="Admin"] input:focus,
+  div[class*="Admin"] textarea:focus,
+  div[class*="Admin"] select:focus {
+    outline: 2px solid hsl(var(--focus-outline)) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 2px hsl(var(--focus-ring) / 0.3) !important;
+    border-color: hsl(var(--primary)) !important;
+  }
   .dark input:-webkit-autofill,
   .dark input:-webkit-autofill:hover,
   .dark input:-webkit-autofill:focus,

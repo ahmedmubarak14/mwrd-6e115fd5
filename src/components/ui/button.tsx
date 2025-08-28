@@ -23,7 +23,7 @@ const buttonVariants = cva(
         link: 
           "text-primary underline-offset-4 hover:underline hover:text-primary-hover active:text-primary-active focus-visible:ring-focus-ring/30 disabled:text-button-disabled-foreground disabled:no-underline",
         success:
-          "bg-success text-success-foreground shadow-sm hover:bg-success-hover hover:shadow-success/50 active:bg-success-active focus-visible:ring-success/30 disabled:bg-success-disabled disabled:text-success-disabled-foreground disabled:shadow-none",
+          "bg-success text-success-foreground shadow-sm hover:bg-success-hover hover:shadow-success/50 active:bg-success-active focus-visible:ring-success/30 disabled:bg-button-disabled disabled:text-button-disabled-foreground disabled:border-button-disabled-border disabled:shadow-none",
         warning:
           "bg-warning text-warning-foreground shadow-sm hover:bg-warning-hover hover:shadow-warning/50 active:bg-warning-active focus-visible:ring-warning/30 disabled:bg-warning-disabled disabled:text-warning-disabled-foreground disabled:shadow-none",
         info:

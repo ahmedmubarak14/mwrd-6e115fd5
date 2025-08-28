@@ -194,11 +194,11 @@ export const VerificationQueue = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'approved':
-        return <Badge className="bg-green-500">{t('verification.approved')}</Badge>;
+        return <Badge variant="success">{t('verification.approved')}</Badge>;
       case 'rejected':
         return <Badge variant="destructive">{t('verification.rejected')}</Badge>;
       case 'under_review':
-        return <Badge variant="outline">{t('verification.underReview')}</Badge>;
+        return <Badge variant="warning">{t('verification.underReview')}</Badge>;
       default:
         return <Badge variant="secondary">{t('users.pending')}</Badge>;
     }
@@ -211,7 +211,7 @@ export const VerificationQueue = () => {
       case 'checking':
         return <Badge variant="outline">{t('verification.checking')}</Badge>;
       case 'available':
-        return <Badge variant="default" className="bg-green-500">{t('verification.available')}</Badge>;
+        return <Badge variant="success">{t('verification.available')}</Badge>;
       case 'missing':
         return <Badge variant="destructive">{t('verification.missing')}</Badge>;
       default:
@@ -306,7 +306,7 @@ export const VerificationQueue = () => {
                   onClick={() => handleStatusUpdate(request.id, 'approved')}
                   disabled={processing === request.id || documentStatus[request.id] === 'missing'}
                   size="sm"
-                  className="bg-green-500 hover:bg-green-600"
+                  variant="success"
                 >
                   <Check className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
                   {processing === request.id ? t('verification.processing') : t('verification.approve')}
