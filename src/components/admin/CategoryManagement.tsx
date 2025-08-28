@@ -475,97 +475,228 @@ export const CategoryManagement: React.FC = () => {
   };
 
   const renderTableView = () => (
-    <Card>
-      <CardHeader>
-        <CardTitle>Categories Table</CardTitle>
-        <CardDescription>All categories in a flat table structure</CardDescription>
+    <Card className="overflow-hidden">
+      <CardHeader className="bg-muted/30">
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="flex items-center gap-2">
+              <List className="h-5 w-5" />
+              Categories Table
+            </CardTitle>
+            <CardDescription>
+              Comprehensive view of all categories with hierarchy indicators
+            </CardDescription>
+          </div>
+          <Badge variant="outline" className="font-mono">
+            {flatCategories.length} total
+          </Badge>
+        </div>
       </CardHeader>
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-12">
-                <Checkbox
-                  checked={selectedCategories.length === flatCategories.length}
-                  onCheckedChange={(checked) => {
-                    if (checked) {
-                      setSelectedCategories(flatCategories.map(cat => cat.id));
-                    } else {
-                      setSelectedCategories([]);
-                    }
-                  }}
-                />
-              </TableHead>
-              <TableHead>Category</TableHead>
-              <TableHead>Arabic Name</TableHead>
-              <TableHead>Slug</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {flatCategories.map((category) => (
-              <TableRow key={category.id}>
-                <TableCell>
+      <CardContent className="p-0">
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-muted/20">
+                <TableHead className="w-12 pl-6">
                   <Checkbox
-                    checked={selectedCategories.includes(category.id)}
+                    checked={selectedCategories.length === flatCategories.length && flatCategories.length > 0}
                     onCheckedChange={(checked) => {
                       if (checked) {
-                        setSelectedCategories([...selectedCategories, category.id]);
+                        setSelectedCategories(flatCategories.map(cat => cat.id));
                       } else {
-                        setSelectedCategories(selectedCategories.filter(id => id !== category.id));
+                        setSelectedCategories([]);
                       }
                     }}
+                    className="transition-colors"
                   />
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center space-x-2">
-                    {category.level > 0 && (
-                      <span className="text-muted-foreground ml-4">└─</span>
-                    )}
-                    <div>
-                      <div className="font-medium">{category.name_en}</div>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell>{category.name_ar}</TableCell>
-                <TableCell>
-                  <code className="bg-muted px-2 py-1 rounded text-xs">{category.slug}</code>
-                </TableCell>
-                <TableCell>
-                  <Badge variant="outline">
-                    {category.level === 0 ? 'Parent' : 'Subcategory'}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <Badge variant={category.is_active ? "default" : "secondary"}>
-                    {category.is_active ? 'Active' : 'Inactive'}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <div className="flex space-x-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => openEditDialog(category)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => handleDelete(category.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </TableCell>
+                </TableHead>
+                <TableHead className="font-semibold">Category Hierarchy</TableHead>
+                <TableHead className="font-semibold">Arabic Name</TableHead>
+                <TableHead className="font-semibold">Slug</TableHead>
+                <TableHead className="font-semibold text-center">Type</TableHead>
+                <TableHead className="font-semibold text-center">Status</TableHead>
+                <TableHead className="font-semibold text-center">Actions</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {flatCategories.map((category, index) => {
+                const isActive = category.is_active;
+                const isParent = category.level === 0;
+                const hasChildren = category.children && category.children.length > 0;
+                
+                return (
+                  <TableRow 
+                    key={category.id} 
+                    className={cn(
+                      "group transition-colors hover:bg-muted/30",
+                      index % 2 === 0 ? "bg-background" : "bg-muted/10",
+                      !isActive && "opacity-75"
+                    )}
+                  >
+                    <TableCell className="pl-6">
+                      <Checkbox
+                        checked={selectedCategories.includes(category.id)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedCategories([...selectedCategories, category.id]);
+                          } else {
+                            setSelectedCategories(selectedCategories.filter(id => id !== category.id));
+                          }
+                        }}
+                        className="transition-colors"
+                      />
+                    </TableCell>
+                    
+                    <TableCell className="py-4">
+                      <div className="flex items-center gap-3">
+                        {/* Hierarchy Indicator */}
+                        <div className="flex items-center gap-1">
+                          {category.level > 0 && (
+                            <>
+                              <div className="flex items-center text-muted-foreground">
+                                {Array.from({ length: category.level }).map((_, i) => (
+                                  <div key={i} className="w-4 h-px bg-border mx-1"></div>
+                                ))}
+                                <ChevronRight className="h-3 w-3" />
+                              </div>
+                            </>
+                          )}
+                          
+                          {/* Category Icon */}
+                          {isParent ? (
+                            hasChildren ? (
+                              <FolderOpen className="h-4 w-4 text-primary" />
+                            ) : (
+                              <Folder className="h-4 w-4 text-primary" />
+                            )
+                          ) : (
+                            <Folder className="h-4 w-4 text-muted-foreground" />
+                          )}
+                        </div>
+                        
+                        {/* Category Name and Info */}
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="font-medium text-foreground truncate">
+                              {category.name_en}
+                            </span>
+                            {hasChildren && (
+                              <Badge variant="outline" className="text-xs shrink-0">
+                                {category.children?.length} sub{(category.children?.length || 0) !== 1 ? 's' : ''}
+                              </Badge>
+                            )}
+                          </div>
+                          {category.level > 0 && (
+                            <div className="text-xs text-muted-foreground">
+                              Subcategory of parent
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </TableCell>
+                    
+                    <TableCell className="py-4">
+                      <div className="font-medium text-right" dir="rtl">
+                        {category.name_ar}
+                      </div>
+                    </TableCell>
+                    
+                    <TableCell className="py-4">
+                      <code className={cn(
+                        "inline-flex items-center px-2.5 py-1 rounded-md text-xs font-mono",
+                        "bg-muted border transition-colors",
+                        "hover:bg-muted/80"
+                      )}>
+                        {category.slug}
+                      </code>
+                    </TableCell>
+                    
+                    <TableCell className="py-4 text-center">
+                      <Badge 
+                        variant={isParent ? "default" : "secondary"}
+                        className="font-medium"
+                      >
+                        {isParent ? 'Parent' : 'Subcategory'}
+                      </Badge>
+                    </TableCell>
+                    
+                    <TableCell className="py-4 text-center">
+                      <Badge 
+                        variant={isActive ? "default" : "secondary"}
+                        className={cn(
+                          "font-medium transition-colors",
+                          isActive 
+                            ? "bg-green-100 text-green-800 border-green-200 dark:bg-green-900 dark:text-green-100" 
+                            : "bg-gray-100 text-gray-600 border-gray-200 dark:bg-gray-800 dark:text-gray-300"
+                        )}
+                      >
+                        <div className={cn(
+                          "w-2 h-2 rounded-full mr-1.5",
+                          isActive ? "bg-green-500" : "bg-gray-400"
+                        )}></div>
+                        {isActive ? 'Active' : 'Inactive'}
+                      </Badge>
+                    </TableCell>
+                    
+                    <TableCell className="py-4">
+                      <div className="flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => openEditDialog(category)}
+                          disabled={!isAdmin}
+                          className="h-7 w-7 p-0 hover:bg-blue-50 hover:border-blue-200 dark:hover:bg-blue-950"
+                        >
+                          <Edit className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDelete(category.id)}
+                          disabled={!isAdmin}
+                          className="h-7 w-7 p-0 hover:bg-red-50 hover:border-red-200 dark:hover:bg-red-950 text-red-600 hover:text-red-700"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+        
+        {flatCategories.length === 0 && (
+          <div className="p-12 text-center border-t">
+            <List className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-medium mb-2">No Categories in Table</h3>
+            <p className="text-muted-foreground">
+              Switch to tree view or adjust your filters to see categories.
+            </p>
+          </div>
+        )}
       </CardContent>
+      
+      {/* Table Footer with Summary */}
+      {flatCategories.length > 0 && (
+        <div className="border-t bg-muted/20 px-6 py-3">
+          <div className="flex items-center justify-between text-sm text-muted-foreground">
+            <div className="flex items-center gap-4">
+              <span>Showing {flatCategories.length} categories</span>
+              <span>•</span>
+              <span>{analytics?.parentCategories || 0} parent categories</span>
+              <span>•</span>
+              <span>{analytics?.subcategories || 0} subcategories</span>
+            </div>
+            {selectedCategories.length > 0 && (
+              <span className="font-medium text-primary">
+                {selectedCategories.length} selected
+              </span>
+            )}
+          </div>
+        </div>
+      )}
     </Card>
   );
 
