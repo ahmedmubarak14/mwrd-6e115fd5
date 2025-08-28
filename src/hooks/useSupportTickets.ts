@@ -18,10 +18,12 @@ export interface SupportTicket {
     full_name?: string;
     email: string;
     company_name?: string;
+    avatar_url?: string;
   };
   assigned_admin?: {
     full_name?: string;
     email: string;
+    avatar_url?: string;
   };
 }
 
@@ -58,7 +60,7 @@ export const useSupportTickets = () => {
           if (ticket.user_id) {
             const { data: userProfileData } = await supabase
               .from('user_profiles')
-              .select('full_name, email, company_name')
+              .select('full_name, email, company_name, avatar_url')
               .eq('user_id', ticket.user_id)
               .single();
             
@@ -71,7 +73,7 @@ export const useSupportTickets = () => {
           if (ticket.assigned_admin_id) {
             const { data: adminData } = await supabase
               .from('user_profiles')
-              .select('full_name, email')
+              .select('full_name, email, avatar_url')
               .eq('user_id', ticket.assigned_admin_id)
               .single();
             
