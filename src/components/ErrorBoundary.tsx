@@ -1,8 +1,9 @@
 
-import React, { Component, ReactNode } from 'react';
-import { AlertCircle } from 'lucide-react';
+import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { AlertCircle, RefreshCw } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { logSecurityEvent } from '@/utils/security';
 
 interface Props {
   children: ReactNode;
@@ -12,6 +13,7 @@ interface Props {
 interface State {
   hasError: boolean;
   error?: Error;
+  errorInfo?: ErrorInfo;
 }
 
 export class ErrorBoundary extends Component<Props, State> {
@@ -27,8 +29,21 @@ export class ErrorBoundary extends Component<Props, State> {
     };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('ErrorBoundary caught an error:', error, errorInfo);
+    
+    // Log security event for potential attacks or system issues
+    logSecurityEvent('application_error', {
+      error_message: error.message,
+      error_stack: error.stack,
+      component_stack: errorInfo.componentStack,
+      error_boundary: 'global'
+    });
+
+    this.setState({
+      error,
+      errorInfo,
+    });
     
     // Handle WebSocket errors gracefully without breaking the app
     if (error.message?.includes('WebSocket') || error.message?.includes('insecure')) {
@@ -38,6 +53,19 @@ export class ErrorBoundary extends Component<Props, State> {
       return;
     }
   }
+
+  private handleRefresh = () => {
+    this.setState({
+      hasError: false,
+      error: undefined,
+      errorInfo: undefined,
+    });
+    
+    // Force a hard refresh if the error persists
+    if (this.state.hasError) {
+      window.location.reload();
+    }
+  };
 
   render() {
     if (this.state.hasError) {
@@ -66,19 +94,27 @@ export class ErrorBoundary extends Component<Props, State> {
               </CardDescription>
             </CardHeader>
             <CardContent className="text-center">
-              <Button 
-                onClick={() => window.location.reload()} 
-                className="w-full"
-              >
-                Refresh Page
-              </Button>
+              <div className="flex gap-2 justify-center mb-4">
+                <Button onClick={this.handleRefresh} className="flex items-center gap-2">
+                  <RefreshCw className="h-4 w-4" />
+                  Try Again
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => window.location.href = '/'}
+                >
+                  Go Home
+                </Button>
+              </div>
+              
               {process.env.NODE_ENV === 'development' && this.state.error && (
-                <details className="mt-4 text-left">
-                  <summary className="cursor-pointer text-sm text-muted-foreground">
-                    Error Details
+                <details className="text-left bg-muted p-3 rounded text-xs">
+                  <summary className="cursor-pointer font-medium mb-2">
+                    Error Details (Development Only)
                   </summary>
-                  <pre className="mt-2 text-xs bg-muted p-2 rounded overflow-auto">
-                    {this.state.error.stack}
+                  <pre className="whitespace-pre-wrap break-all">
+                    {this.state.error.toString()}
+                    {this.state.errorInfo?.componentStack}
                   </pre>
                 </details>
               )}
@@ -91,3 +127,26 @@ export class ErrorBoundary extends Component<Props, State> {
     return this.props.children;
   }
 }
+
+// Simpler functional error boundary for smaller components
+interface SimpleErrorBoundaryProps {
+  children: ReactNode;
+  onError?: (error: Error, errorInfo: ErrorInfo) => void;
+}
+
+export const SimpleErrorBoundary: React.FC<SimpleErrorBoundaryProps> = ({ 
+  children, 
+  onError 
+}) => {
+  return (
+    <ErrorBoundary 
+      fallback={
+        <div className="p-4 text-center text-muted-foreground">
+          <p>Unable to load this component</p>
+        </div>
+      }
+    >
+      {children}
+    </ErrorBoundary>
+  );
+};
