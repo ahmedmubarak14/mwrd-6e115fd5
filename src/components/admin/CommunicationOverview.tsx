@@ -143,7 +143,7 @@ export const CommunicationOverview = () => {
       </div>
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Messages</CardTitle>
@@ -200,7 +200,7 @@ export const CommunicationOverview = () => {
             <CardDescription>Messages and notifications sent over time</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={250}>
               <LineChart data={messageActivityData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="time" />
@@ -222,7 +222,7 @@ export const CommunicationOverview = () => {
             <CardDescription>Usage by communication method</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={250}>
               <BarChart data={channelUsageData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="channel" />
@@ -299,22 +299,26 @@ export const CommunicationOverview = () => {
       </Card>
 
       {/* Quick Actions */}
-      <div className="flex flex-wrap gap-3">
-        <Button variant="default">
+      <div className="grid grid-cols-2 lg:flex lg:flex-wrap gap-3">
+        <Button variant="default" className="w-full lg:w-auto">
           <Bell className="h-4 w-4 mr-2" />
-          Send Announcement
+          <span className="hidden sm:inline">Send Announcement</span>
+          <span className="sm:hidden">Announce</span>
         </Button>
-        <Button variant="outline">
+        <Button variant="outline" className="w-full lg:w-auto">
           <Mail className="h-4 w-4 mr-2" />
-          Create Email Campaign
+          <span className="hidden sm:inline">Create Email Campaign</span>
+          <span className="sm:hidden">Email</span>
         </Button>
-        <Button variant="outline">
+        <Button variant="outline" className="w-full lg:w-auto">
           <MessageSquare className="h-4 w-4 mr-2" />
-          View All Chats
+          <span className="hidden sm:inline">View All Chats</span>
+          <span className="sm:hidden">Chats</span>
         </Button>
-        <Button variant="outline">
+        <Button variant="outline" className="w-full lg:w-auto">
           <Users className="h-4 w-4 mr-2" />
-          User Engagement Report
+          <span className="hidden sm:inline">User Engagement Report</span>
+          <span className="sm:hidden">Report</span>
         </Button>
       </div>
     </div>

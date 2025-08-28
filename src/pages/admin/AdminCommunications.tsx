@@ -33,30 +33,30 @@ const AdminCommunications = () => {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid grid-cols-6 w-full">
-            <TabsTrigger value="overview" className="flex items-center gap-2">
+          <TabsList className="grid grid-cols-2 md:grid-cols-6 w-full">
+            <TabsTrigger value="overview" className="flex items-center gap-1 md:gap-2">
               <MessageSquare className="h-4 w-4" />
-              Overview
+              <span className="hidden sm:inline">Overview</span>
             </TabsTrigger>
-            <TabsTrigger value="notifications" className="flex items-center gap-2">
+            <TabsTrigger value="notifications" className="flex items-center gap-1 md:gap-2">
               <Bell className="h-4 w-4" />
-              Notifications
+              <span className="hidden sm:inline">Notifications</span>
             </TabsTrigger>
-            <TabsTrigger value="chat" className="flex items-center gap-2">
+            <TabsTrigger value="chat" className="flex items-center gap-1 md:gap-2">
               <MessageSquare className="h-4 w-4" />
-              Live Chat
+              <span className="hidden sm:inline">Live Chat</span>
             </TabsTrigger>
-            <TabsTrigger value="email" className="flex items-center gap-2">
+            <TabsTrigger value="email" className="flex items-center gap-1 md:gap-2">
               <Mail className="h-4 w-4" />
-              Email Campaigns
+              <span className="hidden sm:inline">Email</span>
             </TabsTrigger>
-            <TabsTrigger value="push" className="flex items-center gap-2">
+            <TabsTrigger value="push" className="flex items-center gap-1 md:gap-2">
               <Smartphone className="h-4 w-4" />
-              Push Notifications
+              <span className="hidden sm:inline">Push</span>
             </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
+            <TabsTrigger value="settings" className="flex items-center gap-1 md:gap-2">
               <Settings className="h-4 w-4" />
-              Settings
+              <span className="hidden sm:inline">Settings</span>
             </TabsTrigger>
           </TabsList>
 

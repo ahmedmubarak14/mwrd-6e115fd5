@@ -145,10 +145,10 @@ export const EmailCampaignManager = () => {
                     New Campaign
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl">
-                  <DialogHeader>
-                    <DialogTitle>Create Email Campaign</DialogTitle>
-                  </DialogHeader>
+                 <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                   <DialogHeader>
+                     <DialogTitle>Create Email Campaign</DialogTitle>
+                   </DialogHeader>
                   <div className="space-y-4">
                     <div>
                       <label className="text-sm font-medium">Campaign Name</label>
@@ -290,7 +290,7 @@ export const EmailCampaignManager = () => {
 
         <TabsContent value="campaigns" className="space-y-6">
           {/* Campaign Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Total Campaigns</CardTitle>

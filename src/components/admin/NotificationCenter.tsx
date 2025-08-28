@@ -113,7 +113,7 @@ export const NotificationCenter = () => {
   return (
     <div className="space-y-6">
       {/* Stats Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Notifications</CardTitle>
@@ -160,50 +160,53 @@ export const NotificationCenter = () => {
       </div>
 
       {/* Controls */}
-      <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-4">
+      <div className="flex flex-col space-y-4 lg:flex-row lg:justify-between lg:items-center lg:space-y-0">
+        <div className="flex flex-col space-y-3 lg:flex-row lg:items-center lg:space-y-0 lg:space-x-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search notifications..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 w-64"
+              className="pl-10 w-full lg:w-64"
             />
           </div>
-          <Select value={filterStatus} onValueChange={setFilterStatus}>
-            <SelectTrigger className="w-40">
-              <SelectValue placeholder="Filter by status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="draft">Draft</SelectItem>
-              <SelectItem value="scheduled">Scheduled</SelectItem>
-              <SelectItem value="sent">Sent</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={filterPriority} onValueChange={setFilterPriority}>
-            <SelectTrigger className="w-40">
-              <SelectValue placeholder="Filter by priority" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Priority</SelectItem>
-              <SelectItem value="low">Low</SelectItem>
-              <SelectItem value="medium">Medium</SelectItem>
-              <SelectItem value="high">High</SelectItem>
-              <SelectItem value="critical">Critical</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="flex space-x-2">
+            <Select value={filterStatus} onValueChange={setFilterStatus}>
+              <SelectTrigger className="w-full sm:w-40">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="draft">Draft</SelectItem>
+                <SelectItem value="scheduled">Scheduled</SelectItem>
+                <SelectItem value="sent">Sent</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={filterPriority} onValueChange={setFilterPriority}>
+              <SelectTrigger className="w-full sm:w-40">
+                <SelectValue placeholder="Priority" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Priority</SelectItem>
+                <SelectItem value="low">Low</SelectItem>
+                <SelectItem value="medium">Medium</SelectItem>
+                <SelectItem value="high">High</SelectItem>
+                <SelectItem value="critical">Critical</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
-            <Button>
+            <Button className="w-full lg:w-auto">
               <Plus className="h-4 w-4 mr-2" />
-              Create Notification
+              <span className="hidden sm:inline">Create Notification</span>
+              <span className="sm:hidden">Create</span>
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Create New Notification</DialogTitle>
             </DialogHeader>
@@ -327,20 +330,24 @@ export const NotificationCenter = () => {
           filteredNotifications.map((notification) => (
             <Card key={notification.id} className="hover:shadow-md transition-shadow">
               <CardContent className="p-6">
-                <div className="flex items-start justify-between">
+                <div className="flex flex-col space-y-3 lg:flex-row lg:items-start lg:justify-between lg:space-y-0">
                   <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
-                      {typeIcons[notification.type as keyof typeof typeIcons]}
-                      <h3 className="font-semibold text-lg">{notification.title}</h3>
-                      <Badge variant={priorityColors[notification.priority as keyof typeof priorityColors] as "default" | "secondary" | "destructive"}>
-                        {notification.priority}
-                      </Badge>
-                      <Badge variant={notification.status === 'sent' ? 'default' : notification.status === 'scheduled' ? 'secondary' : 'outline'}>
-                        {notification.status}
-                      </Badge>
+                    <div className="flex flex-col space-y-2 lg:flex-row lg:items-center lg:space-y-0 lg:space-x-3 mb-2">
+                      <div className="flex items-center space-x-2">
+                        {typeIcons[notification.type as keyof typeof typeIcons]}
+                        <h3 className="font-semibold text-base lg:text-lg">{notification.title}</h3>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Badge variant={priorityColors[notification.priority as keyof typeof priorityColors] as "default" | "secondary" | "destructive"}>
+                          {notification.priority}
+                        </Badge>
+                        <Badge variant={notification.status === 'sent' ? 'default' : notification.status === 'scheduled' ? 'secondary' : 'outline'}>
+                          {notification.status}
+                        </Badge>
+                      </div>
                     </div>
                     <p className="text-muted-foreground mb-3 line-clamp-2">{notification.message}</p>
-                    <div className="flex items-center space-x-6 text-sm text-muted-foreground">
+                    <div className="flex flex-col space-y-2 lg:flex-row lg:items-center lg:space-y-0 lg:space-x-6 text-sm text-muted-foreground">
                       <div className="flex items-center space-x-1">
                         <Users className="h-4 w-4" />
                         <span>Target: {notification.target_audience}</span>
@@ -357,16 +364,17 @@ export const NotificationCenter = () => {
                       )}
                     </div>
                   </div>
-                  <div className="flex space-x-2">
+                  <div className="flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-2">
                     {notification.status === 'draft' && (
-                      <Button size="sm" onClick={() => handleSendNow(notification.id)}>
-                        <Send className="h-4 w-4 mr-1" />
-                        Send Now
+                      <Button size="sm" onClick={() => handleSendNow(notification.id)} className="flex-1 lg:flex-none">
+                        <Send className="h-4 w-4 lg:mr-1" />
+                        <span className="hidden lg:inline">Send Now</span>
                       </Button>
                     )}
                     {notification.status === 'scheduled' && (
-                      <Button size="sm" variant="outline">
-                        Edit Schedule
+                      <Button size="sm" variant="outline" className="flex-1 lg:flex-none">
+                        <span className="hidden lg:inline">Edit Schedule</span>
+                        <span className="lg:hidden">Edit</span>
                       </Button>
                     )}
                   </div>

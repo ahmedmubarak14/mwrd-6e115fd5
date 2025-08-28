@@ -109,9 +109,9 @@ export const RealTimeChatSystem = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[700px]">
+    <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6 h-[700px]">
       {/* Conversations Sidebar */}
-      <Card className="lg:col-span-1">
+      <Card className="lg:col-span-1 h-[300px] lg:h-auto">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg">Conversations</CardTitle>
@@ -128,7 +128,7 @@ export const RealTimeChatSystem = () => {
           </div>
         </CardHeader>
         <CardContent className="p-0">
-          <ScrollArea className="h-[600px]">
+          <ScrollArea className="h-[200px] lg:h-[600px]">
             {isLoading ? (
               <div className="p-4 space-y-3">
                 {[...Array(5)].map((_, i) => (
@@ -199,7 +199,7 @@ export const RealTimeChatSystem = () => {
       </Card>
 
       {/* Chat Area */}
-      <Card className="lg:col-span-2 flex flex-col">
+      <Card className="lg:col-span-2 flex flex-col h-[400px] lg:h-auto">
         {activeConversation ? (
           <>
             {/* Chat Header */}
@@ -220,14 +220,14 @@ export const RealTimeChatSystem = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1 lg:space-x-2">
                 <Button size="sm" variant="outline">
                   <Phone className="h-4 w-4" />
                 </Button>
                 <Button size="sm" variant="outline">
                   <Video className="h-4 w-4" />
                 </Button>
-                <Button size="sm" variant="outline">
+                <Button size="sm" variant="outline" className="hidden sm:flex">
                   <MoreHorizontal className="h-4 w-4" />
                 </Button>
               </div>
@@ -235,7 +235,7 @@ export const RealTimeChatSystem = () => {
 
             {/* Messages Area */}
             <CardContent className="flex-1 p-0">
-              <ScrollArea className="h-[450px] p-4">
+              <ScrollArea className="h-[250px] lg:h-[450px] p-4">
                 <div className="space-y-4">
                   {!activeConversation || !messages[activeConversation] || messages[activeConversation].length === 0 ? (
                     <div className="text-center text-muted-foreground py-8">
