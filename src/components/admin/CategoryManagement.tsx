@@ -13,7 +13,7 @@ import { AdminPageContainer } from './AdminPageContainer';
 import { useCategories } from '@/hooks/useCategories';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { Plus, Edit, Trash2, ChevronRight, AlertTriangle, Search, Filter, Download, Grid, List, MoreHorizontal, Folder, FolderOpen } from 'lucide-react';
+import { Plus, Edit, Trash2, ChevronRight, ChevronDown, AlertTriangle, Search, Filter, Download, Grid, List, MoreHorizontal, Folder, FolderOpen, Expand, Minimize } from 'lucide-react';
 import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 import { cn } from '@/lib/utils';
 
@@ -44,6 +44,7 @@ export const CategoryManagement: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>('all');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     name_en: '',
     name_ar: '',
@@ -271,65 +272,136 @@ export const CategoryManagement: React.FC = () => {
     URL.revokeObjectURL(url);
   };
 
+  const toggleCategoryExpansion = (categoryId: string) => {
+    setExpandedCategories(prev => 
+      prev.includes(categoryId) 
+        ? prev.filter(id => id !== categoryId)
+        : [...prev, categoryId]
+    );
+  };
+
+  const expandAllCategories = () => {
+    const allParentIds = categories?.filter(cat => cat.children && cat.children.length > 0).map(cat => cat.id) || [];
+    setExpandedCategories(allParentIds);
+  };
+
+  const collapseAllCategories = () => {
+    setExpandedCategories([]);
+  };
+
   const renderCategoryTree = (cats: Category[], level = 0) => {
-    return cats.map(category => (
-      <div key={category.id} className="space-y-2">
-        <Card className={`${level > 0 ? (isRTL ? 'mr-8' : 'ml-8') : ''} hover:shadow-md transition-shadow`}>
-          <CardContent className="p-4">
-            <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
-              <div className={cn("flex items-center space-x-3", isRTL && "flex-row-reverse space-x-reverse")}>
-                <Checkbox
-                  checked={selectedCategories.includes(category.id)}
-                  onCheckedChange={(checked) => {
-                    if (checked) {
-                      setSelectedCategories([...selectedCategories, category.id]);
-                    } else {
-                      setSelectedCategories(selectedCategories.filter(id => id !== category.id));
-                    }
-                  }}
-                />
-                {level > 0 ? (
-                  <Folder className="h-4 w-4 text-muted-foreground" />
-                ) : (
-                  <FolderOpen className="h-4 w-4 text-primary" />
-                )}
-                <div className={cn(isRTL ? "text-right" : "text-left")}>
-                  <div className="flex items-center space-x-2">
-                    <h4 className="font-medium">{category.name_en}</h4>
-                    <Badge variant={category.is_active ? "default" : "secondary"} className="text-xs">
-                      {category.is_active ? 'Active' : 'Inactive'}
-                    </Badge>
+    return cats.map(category => {
+      const hasChildren = category.children && category.children.length > 0;
+      const isExpanded = expandedCategories.includes(category.id);
+      const childrenCount = category.children?.length || 0;
+
+      return (
+        <div key={category.id} className="space-y-2">
+          <Card className={`${level > 0 ? (isRTL ? 'mr-8' : 'ml-8') : ''} hover:shadow-md transition-all duration-200 ${hasChildren ? 'cursor-pointer' : ''}`}>
+            <CardContent className="p-4">
+              <div 
+                className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}
+                onClick={hasChildren ? () => toggleCategoryExpansion(category.id) : undefined}
+              >
+                <div className={cn("flex items-center space-x-3", isRTL && "flex-row-reverse space-x-reverse")}>
+                  <Checkbox
+                    checked={selectedCategories.includes(category.id)}
+                    onCheckedChange={(checked) => {
+                      if (checked) {
+                        setSelectedCategories([...selectedCategories, category.id]);
+                      } else {
+                        setSelectedCategories(selectedCategories.filter(id => id !== category.id));
+                      }
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  
+                  {/* Expand/Collapse Button */}
+                  {hasChildren && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 w-6 p-0 hover:bg-muted"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleCategoryExpansion(category.id);
+                      }}
+                    >
+                      {isExpanded ? (
+                        <ChevronDown className="h-4 w-4" />
+                      ) : (
+                        <ChevronRight className={cn("h-4 w-4", isRTL && "transform rotate-180")} />
+                      )}
+                    </Button>
+                  )}
+                  
+                  {/* Category Icon */}
+                  {level > 0 ? (
+                    <Folder className="h-4 w-4 text-muted-foreground" />
+                  ) : hasChildren ? (
+                    isExpanded ? (
+                      <FolderOpen className="h-4 w-4 text-primary" />
+                    ) : (
+                      <Folder className="h-4 w-4 text-primary" />
+                    )
+                  ) : (
+                    <Folder className="h-4 w-4 text-muted-foreground" />
+                  )}
+                  
+                  <div className={cn(isRTL ? "text-right" : "text-left", "flex-1")}>
+                    <div className="flex items-center space-x-2">
+                      <h4 className="font-medium">{category.name_en}</h4>
+                      <Badge variant={category.is_active ? "default" : "secondary"} className="text-xs">
+                        {category.is_active ? 'Active' : 'Inactive'}
+                      </Badge>
+                      {hasChildren && (
+                        <Badge variant="outline" className="text-xs">
+                          {childrenCount} sub{childrenCount > 1 ? 's' : ''}
+                        </Badge>
+                      )}
+                    </div>
+                    <p className="text-sm text-muted-foreground">{category.name_ar}</p>
+                    <p className="text-xs text-muted-foreground">Slug: {category.slug}</p>
                   </div>
-                  <p className="text-sm text-muted-foreground">{category.name_ar}</p>
-                  <p className="text-xs text-muted-foreground">Slug: {category.slug}</p>
+                </div>
+                
+                <div className={cn("flex space-x-2", isRTL && "flex-row-reverse space-x-reverse")}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openEditDialog(category);
+                    }}
+                    disabled={!isAdmin}
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(category.id);
+                    }}
+                    disabled={!isAdmin}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
                 </div>
               </div>
-              <div className={cn("flex space-x-2", isRTL && "flex-row-reverse space-x-reverse")}>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => openEditDialog(category)}
-                  disabled={!isAdmin}
-                >
-                  <Edit className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => handleDelete(category.id)}
-                  disabled={!isAdmin}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
+            </CardContent>
+          </Card>
+          
+          {/* Subcategories - Only show if expanded */}
+          {hasChildren && isExpanded && (
+            <div className="animate-in slide-in-from-top-2 duration-200">
+              {renderCategoryTree(category.children, level + 1)}
             </div>
-          </CardContent>
-        </Card>
-        {category.children && category.children.length > 0 && 
-          renderCategoryTree(category.children, level + 1)
-        }
-      </div>
-    ));
+          )}
+        </div>
+      );
+    });
   };
 
   const renderTableView = () => (
@@ -618,6 +690,30 @@ export const CategoryManagement: React.FC = () => {
         </Select>
 
         <div className="flex gap-2">
+          {viewMode === 'tree' && (
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={expandAllCategories}
+                disabled={expandedCategories.length === (categories?.filter(cat => cat.children && cat.children.length > 0).length || 0)}
+              >
+                <Expand className="h-4 w-4 mr-2" />
+                Expand All
+              </Button>
+              
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={collapseAllCategories}
+                disabled={expandedCategories.length === 0}
+              >
+                <Minimize className="h-4 w-4 mr-2" />
+                Collapse All
+              </Button>
+            </>
+          )}
+          
           <Button
             variant="outline"
             size="sm"
