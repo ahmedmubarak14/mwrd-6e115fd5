@@ -257,6 +257,7 @@ export const EnhancedAdminSidebar = ({ className }: AdminSidebarProps) => {
                   className={cn(
                     "flex items-center justify-between cursor-pointer group",
                     "text-xs uppercase tracking-wider font-medium px-3 py-2 mb-1",
+                    "text-sidebar-foreground/70 hover:text-sidebar-foreground",
                     "hover:bg-accent/10 rounded-md transition-all duration-200",
                     hasActiveItem && "text-primary font-semibold"
                   )}
@@ -314,7 +315,7 @@ export const EnhancedAdminSidebar = ({ className }: AdminSidebarProps) => {
                             
                             {state !== "collapsed" && (
                               <>
-                                <span className="truncate flex-1 transition-all duration-200">
+                                <span className="truncate flex-1 transition-all duration-200 text-sidebar-foreground">
                                   {item.name}
                                 </span>
                                 
