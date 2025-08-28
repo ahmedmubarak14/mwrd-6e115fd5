@@ -40,11 +40,6 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
   const subCategories = selectedMainCategoryData ? 
     categories.filter(cat => cat.parent_id === selectedMainCategoryData.id && cat.is_active) : [];
 
-  // Debug logging
-  console.log('Main categories:', mainCategories);
-  console.log('Selected main category:', selectedMainCategoryData);
-  console.log('Subcategories for selected category:', subCategories);
-
   const handleMainCategoryChange = (categorySlug: string) => {
     setMainCategory(categorySlug);
     setSubCategory(''); // Reset subcategory when main category changes
