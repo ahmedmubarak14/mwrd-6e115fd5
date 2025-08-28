@@ -1,542 +1,386 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { 
-  Send, 
-  MessageCircle, 
-  Clock, 
-  Check, 
-  CheckCheck, 
-  Reply, 
-  MoreHorizontal, 
-  Phone, 
-  Video, 
-  Paperclip,
-  Smile,
-  Mic
-} from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { useRealTimeChat, type Conversation, type Message } from "@/hooks/useRealTimeChat";
-import { useFileUpload } from "@/hooks/useFileUpload";
-import { TypingIndicator } from "./TypingIndicator";
-import { FileAttachment } from "./FileAttachment";
-import { VoiceRecorder } from "./VoiceRecorder";
-import { ImageViewer } from "./ImageViewer";
-import { EmojiPicker } from "./EmojiPicker";
-import { DocumentPreview } from "./DocumentPreview";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useRealTimeChat } from "@/hooks/useRealTimeChat";
 import { useAuth } from "@/contexts/AuthContext";
-import { useCallNotificationContext } from "@/components/conversations/CallNotificationProvider";
-
-interface MessageWithStatus extends Message {
-  status?: 'sending' | 'sent' | 'delivered' | 'read';
-  replyTo?: string;
-}
+import { format } from "date-fns";
+import { Send, Paperclip, Image, Mic, MoreVertical, Phone, Video, Archive, Search } from "lucide-react";
+import { FileUploader } from "./FileUploader";
+import { VoiceRecorder } from "./VoiceRecorder";
+import { MessageBubble } from "./MessageBubble";
+import { ConversationList } from "./ConversationList";
+import { TypingIndicator } from "./TypingIndicator";
+import { useToast } from "@/components/ui/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface ChatInterfaceProps {
-  conversation?: Conversation;
-  className?: string;
+  initialConversationId?: string;
+  recipientId?: string;
+  requestId?: string;
+  offerId?: string;
 }
 
-export const ChatInterface = ({ conversation, className }: ChatInterfaceProps) => {
-  const [message, setMessage] = useState("");
-  const [replyToMessage, setReplyToMessage] = useState<MessageWithStatus | null>(null);
-  const [isTyping, setIsTyping] = useState(false);
-  const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(null);
-  const [otherParticipant, setOtherParticipant] = useState<any>(null);
-  const [showVoiceRecorder, setShowVoiceRecorder] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<{ src: string; alt: string; fileName?: string } | null>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const { toast } = useToast();
-  const { user } = useAuth();
-  const { showVideoCall } = useCallNotificationContext();
-  
+export const ChatInterface: React.FC<ChatInterfaceProps> = ({
+  initialConversationId,
+  recipientId,
+  requestId,
+  offerId
+}) => {
   const {
+    conversations,
     messages,
-    loading,
+    activeConversation,
     setActiveConversation,
-    sendMessage: sendChatMessage,
-    markAsRead,
+    startConversation,
+    sendMessage,
     fetchMessages,
-    getOtherParticipant
+    markAsRead,
+    getUnreadCount,
+    getOtherParticipant,
+    loading
   } = useRealTimeChat();
 
-  const { uploadFile, uploading } = useFileUpload();
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [newMessage, setNewMessage] = useState('');
+  const [showFileUploader, setShowFileUploader] = useState(false);
+  const [showVoiceRecorder, setShowVoiceRecorder] = useState(false);
+  const [otherParticipant, setOtherParticipant] = useState<any>(null);
+  const [isTyping, setIsTyping] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const [conversationMessages, setConversationMessages] = useState<MessageWithStatus[]>([]);
-
-  // Set active conversation when prop changes
+  // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
-    if (conversation) {
-      setActiveConversation(conversation.id);
-      fetchMessages(conversation.id);
-      getOtherParticipant(conversation).then(setOtherParticipant);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, activeConversation]);
+
+  // Initialize conversation if IDs are provided
+  useEffect(() => {
+    if (initialConversationId) {
+      setActiveConversation(initialConversationId);
+      fetchMessages(initialConversationId);
+    } else if (recipientId && user) {
+      handleStartConversation(recipientId);
     }
-  }, [conversation]);
+  }, [initialConversationId, recipientId, user]);
 
-  // Update messages when they change
+  // Load other participant info when conversation changes
   useEffect(() => {
-    if (conversation && messages[conversation.id]) {
-      const msgs = messages[conversation.id].map(msg => ({
-        ...msg,
-        status: (msg.sender_id === user?.id ? 'sent' : 'delivered') as 'sent' | 'delivered'
-      })) as MessageWithStatus[];
-      setConversationMessages(msgs);
-      scrollToBottom();
-      
-      // Mark messages as read
-      const unreadMessages = msgs
-        .filter(msg => msg.recipient_id === user?.id && !msg.read_at)
+    if (activeConversation) {
+      const conversation = conversations.find(c => c.id === activeConversation);
+      if (conversation) {
+        getOtherParticipant(conversation).then(setOtherParticipant);
+        fetchMessages(activeConversation);
+      }
+    }
+  }, [activeConversation, conversations]);
+
+  // Mark messages as read when conversation is active
+  useEffect(() => {
+    if (activeConversation && user) {
+      const conversationMessages = messages[activeConversation] || [];
+      const unreadMessages = conversationMessages
+        .filter(msg => msg.recipient_id === user.id && !msg.read_at)
         .map(msg => msg.id);
+      
       if (unreadMessages.length > 0) {
         markAsRead(unreadMessages);
       }
     }
-  }, [messages, conversation, user]);
+  }, [activeConversation, messages, user, markAsRead]);
 
-  const handleSendMessage = async () => {
-    if (!message.trim() || !conversation || !otherParticipant) return;
-    
-    const recipientId = conversation.client_id === user?.id ? conversation.vendor_id : conversation.client_id;
-    
+  const handleStartConversation = async (targetRecipientId: string) => {
     try {
-      await sendChatMessage(conversation.id, message, recipientId);
-      setMessage("");
-      setReplyToMessage(null);
-      scrollToBottom();
+      const conversation = await startConversation(
+        targetRecipientId,
+        requestId,
+        offerId
+      );
+      setActiveConversation(conversation.id);
+    } catch (error) {
+      console.error('Error starting conversation:', error);
+      toast({
+        title: "Error",
+        description: "Failed to start conversation",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newMessage.trim() || !activeConversation || !otherParticipant) return;
+
+    try {
+      await sendMessage(
+        activeConversation,
+        newMessage.trim(),
+        otherParticipant.user_id,
+        'text'
+      );
+      setNewMessage('');
+      inputRef.current?.focus();
     } catch (error) {
       console.error('Error sending message:', error);
       toast({
         title: "Error",
         description: "Failed to send message",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
 
-  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file || !conversation) return;
+  const handleFileUpload = async (url: string, fileName: string, fileSize: number, messageType: 'image' | 'file') => {
+    if (!activeConversation || !otherParticipant) return;
 
     try {
-      const result = await uploadFile(file);
-      if (result && otherParticipant) {
-        const recipientId = conversation.client_id === user?.id ? conversation.vendor_id : conversation.client_id;
-        const messageType = file.type.startsWith('image/') ? 'image' : 'file';
-        
-        await sendChatMessage(
-          conversation.id,
-          file.name,
-          recipientId,
-          messageType,
-          result.url
-        );
-        
-        scrollToBottom();
-      }
+      const content = messageType === 'image' ? '📷 Image' : `📎 ${fileName}`;
+      await sendMessage(
+        activeConversation,
+        content,
+        otherParticipant.user_id,
+        messageType,
+        url
+      );
+      setShowFileUploader(false);
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error('Error sending file:', error);
       toast({
         title: "Error",
-        description: "Failed to upload file",
-        variant: "destructive",
+        description: "Failed to send file",
+        variant: "destructive"
       });
-    }
-    
-    // Clear the file input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
     }
   };
 
-  const handleVoiceRecording = async (audioBlob: Blob, duration: number, transcription?: string) => {
-    if (!conversation || !otherParticipant) return;
+  const handleVoiceMessage = async (audioUrl: string) => {
+    if (!activeConversation || !otherParticipant) return;
 
     try {
-      // Create a File from the Blob for uploading
-      const audioFile = new File([audioBlob], `voice-${Date.now()}.webm`, {
-        type: 'audio/webm'
-      });
-
-      const result = await uploadFile(audioFile);
-      if (result) {
-        const recipientId = conversation.client_id === user?.id ? conversation.vendor_id : conversation.client_id;
-
-        // Use transcription as content if available, otherwise use duration info
-        const messageContent = transcription || `Voice message (${Math.round(duration)}s)`;
-
-        await sendChatMessage(
-          conversation.id,
-          messageContent,
-          recipientId,
-          'voice',
-          result.url
-        );
-        
-        setShowVoiceRecorder(false);
-        scrollToBottom();
-      }
+      await sendMessage(
+        activeConversation,
+        '🎵 Voice message',
+        otherParticipant.user_id,
+        'voice',
+        audioUrl
+      );
+      setShowVoiceRecorder(false);
     } catch (error) {
       console.error('Error sending voice message:', error);
       toast({
         title: "Error",
         description: "Failed to send voice message",
-        variant: "destructive",
+        variant: "destructive"
       });
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
+  const currentConversation = conversations.find(c => c.id === activeConversation);
+  const conversationMessages = activeConversation ? messages[activeConversation] || [] : [];
+  const filteredMessages = conversationMessages.filter(msg => 
+    searchQuery ? msg.content.toLowerCase().includes(searchQuery.toLowerCase()) : true
+  );
 
-  const handleTyping = () => {
-    if (!isTyping) {
-      setIsTyping(true);
-    }
-    
-    if (typingTimeout) {
-      clearTimeout(typingTimeout);
-    }
-    
-    const timeout = setTimeout(() => {
-      setIsTyping(false);
-    }, 1000);
-    
-    setTypingTimeout(timeout);
-  };
-
-  const scrollToBottom = () => {
-    setTimeout(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
-  };
-
-  const formatTime = (timestamp: string) => {
-    return new Date(timestamp).toLocaleTimeString([], { 
-      hour: '2-digit', 
-      minute: '2-digit' 
-    });
-  };
-
-  const getMessageStatusIcon = (status: string) => {
-    switch (status) {
-      case 'sending': return <Clock className="h-3 w-3 text-muted-foreground" />;
-      case 'sent': return <Check className="h-3 w-3 text-muted-foreground" />;
-      case 'delivered': return <CheckCheck className="h-3 w-3 text-muted-foreground" />;
-      case 'read': return <CheckCheck className="h-3 w-3 text-primary" />;
-      default: return null;
-    }
-  };
-
-  const MessageBubble = ({ msg, isOwn }: { msg: MessageWithStatus; isOwn: boolean }) => {
-    const isImage = msg.message_type === 'image';
-    const isFile = msg.message_type === 'file';
-    const isAudio = (isFile && (msg.content?.includes('Voice message') || msg.attachment_url?.includes('.webm') || msg.attachment_url?.includes('.wav') || msg.attachment_url?.includes('.mp3'))) || msg.message_type === 'voice';
-    const hasAttachment = msg.attachment_url && (isImage || isFile);
-    
+  if (loading) {
     return (
-      <div className={cn(
-        "flex gap-2 mb-4",
-        isOwn ? "flex-row-reverse" : "flex-row"
-      )}>
-        {!isOwn && (
-          <Avatar className="h-8 w-8">
-            <AvatarImage src={otherParticipant?.avatar_url} />
-            <AvatarFallback>
-              {otherParticipant?.full_name?.[0] || otherParticipant?.company_name?.[0] || 'U'}
-            </AvatarFallback>
-          </Avatar>
-        )}
-        
-        <div className={cn(
-          "max-w-[70%] group",
-          isOwn ? "items-end" : "items-start"
-        )}>
-          {msg.replyTo && (
-            <div className="text-xs text-muted-foreground mb-1 px-3 py-1 bg-muted rounded">
-              Replying to: {conversationMessages.find(m => m.id === msg.replyTo)?.content?.substring(0, 50)}...
-            </div>
-          )}
-          
-          {/* File/Media content */}
-          {hasAttachment ? (
-            <div className="mb-2">
-              {isImage && (
-                <div className="cursor-pointer" onClick={() => setSelectedImage({ 
-                  src: msg.attachment_url!, 
-                  alt: msg.content,
-                  fileName: msg.content
-                })}>
-                  <FileAttachment
-                    fileName={msg.content}
-                    fileSize={0}
-                    fileType="image/*"
-                    fileUrl={msg.attachment_url!}
-                  />
-                </div>
-              )}
-              {isFile && !isAudio && (
-                  <DocumentPreview
-                    fileName={msg.content}
-                    fileUrl={msg.attachment_url!}
-                    fileType={msg.message_type === 'image' ? 'image/*' : 'application/octet-stream'}
-                  />
-              )}
-              {isAudio && (
-                <div className="bg-muted rounded-lg p-3 max-w-xs">
-                  <audio controls className="w-full mb-2">
-                    <source src={msg.attachment_url!} type="audio/webm" />
-                    Your browser does not support audio playback.
-                  </audio>
-                  <p className="text-xs text-muted-foreground">{msg.content}</p>
-                </div>
-              )}
-            </div>
-          ) : (
-            /* Text message */
-            <div className={cn(
-              "px-3 py-2 rounded-lg relative",
-              isOwn 
-                ? "bg-primary text-primary-foreground ml-auto" 
-                : "bg-muted"
-            )}>
-              <p className="text-sm whitespace-pre-wrap break-words">{msg.content}</p>
-              
-              <div className={cn(
-                "flex items-center gap-1 mt-1",
-                isOwn ? "justify-end" : "justify-start"
-              )}>
-                <span className="text-xs opacity-70">
-                  {formatTime(msg.created_at)}
-                </span>
-                {isOwn && getMessageStatusIcon(msg.status || 'sent')}
-              </div>
-            </div>
-          )}
-          
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="absolute -top-2 -right-2 h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <MoreHorizontal className="h-3 w-3" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => setReplyToMessage(msg)}>
-                <Reply className="h-4 w-4 mr-2" />
-                Reply
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
-    );
-  };
-
-  if (!conversation) {
-    return (
-      <div className={cn("flex items-center justify-center h-full", className)}>
-        <div className="text-center text-muted-foreground">
-          <MessageCircle className="h-16 w-16 mx-auto mb-4 opacity-50" />
-          <h3 className="text-xl font-semibold mb-2">Select a conversation</h3>
-          <p>Choose a conversation from the sidebar to start chatting</p>
+      <div className="flex items-center justify-center h-96">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
+          <p>Loading conversations...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={cn("flex flex-col h-full", className)}>
-      {/* Chat Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b bg-background">
-        <div className="flex items-center gap-3">
-          <Avatar className="h-10 w-10">
-            <AvatarImage src={otherParticipant?.avatar_url} />
-            <AvatarFallback>
-              {otherParticipant?.full_name?.[0] || otherParticipant?.company_name?.[0] || 'U'}
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <h3 className="font-semibold">
-              {otherParticipant?.full_name || otherParticipant?.company_name || "Unknown User"}
-            </h3>
-            <div className="flex items-center gap-2">
-              <Badge variant="outline" className="text-xs">
-                {otherParticipant?.role || 'User'}
-              </Badge>
-              <span className="text-xs text-muted-foreground">
-                {otherParticipant?.status === 'approved' ? 'Verified' : 'Pending'}
-              </span>
-            </div>
-          </div>
-        </div>
-        
-        <div className="flex gap-2">
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={() => {
-              if (otherParticipant?.user_id) {
-                showVideoCall(otherParticipant.user_id, otherParticipant.full_name, conversation.id);
-              }
-            }}
-            title="Start video call"
-          >
-            <Video className="h-4 w-4" />
-          </Button>
-          <Button variant="outline" size="sm" title="Audio call (coming soon)">
-            <Phone className="h-4 w-4" />
-          </Button>
-        </div>
+    <div className="flex h-[600px] max-w-6xl mx-auto border rounded-lg overflow-hidden bg-background">
+      {/* Conversation List */}
+      <div className="w-1/3 border-r">
+        <ConversationList
+          conversations={conversations}
+          activeConversation={activeConversation}
+          onSelectConversation={setActiveConversation}
+          getUnreadCount={getUnreadCount}
+          getOtherParticipant={getOtherParticipant}
+        />
       </div>
-      
-      {/* Messages Area */}
-      <ScrollArea className="flex-1 px-6">
-        {loading ? (
-          <div className="flex items-center justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          </div>
-        ) : conversationMessages.length === 0 ? (
-          <div className="text-center text-muted-foreground py-8">
-            <MessageCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
-            <h3 className="text-lg font-semibold mb-2">Start the conversation</h3>
-            <p className="text-sm">
-              Send your first message to {otherParticipant?.full_name || "this user"}
-            </p>
-          </div>
-        ) : (
-          <div className="py-4">
-            {conversationMessages.map((msg) => (
-              <MessageBubble 
-                key={msg.id} 
-                msg={msg} 
-                isOwn={msg.sender_id === user?.id} 
-              />
-            ))}
-            {isTyping && (
-              <div className="flex gap-2 mb-4">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={otherParticipant?.avatar_url} />
-                  <AvatarFallback>
-                    {otherParticipant?.full_name?.[0] || otherParticipant?.company_name?.[0] || 'U'}
-                  </AvatarFallback>
-                </Avatar>
-                <TypingIndicator userName={otherParticipant?.full_name || otherParticipant?.company_name} />
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-        )}
-      </ScrollArea>
-      
-      {/* Message Input Area */}
-      <div className="px-6 py-4 border-t bg-background">
-        {/* Voice Recorder */}
-        {showVoiceRecorder && (
-          <div className="mb-4">
-            <VoiceRecorder
-              onRecordingComplete={handleVoiceRecording}
-              onCancel={() => setShowVoiceRecorder(false)}
-            />
-          </div>
-        )}
 
-        {!showVoiceRecorder && (
+      {/* Chat Area */}
+      <div className="flex-1 flex flex-col">
+        {activeConversation && currentConversation ? (
           <>
-            {replyToMessage && (
-              <div className="flex items-center gap-2 mb-3 p-2 bg-muted rounded text-sm">
-                <Reply className="h-4 w-4" />
-                <span>Replying to: {replyToMessage.content?.substring(0, 50)}...</span>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => setReplyToMessage(null)}
-                  className="ml-auto h-6 w-6 p-0"
-                >
-                  ×
-                </Button>
+            {/* Chat Header */}
+            <div className="p-4 border-b bg-muted/50">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                    {otherParticipant?.avatar_url ? (
+                      <img 
+                        src={otherParticipant.avatar_url} 
+                        alt="Avatar" 
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-primary font-medium">
+                        {(otherParticipant?.company_name || otherParticipant?.full_name || 'U')[0].toUpperCase()}
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">
+                      {otherParticipant?.company_name || otherParticipant?.full_name || 'Loading...'}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      {otherParticipant?.role === 'vendor' ? 'Vendor' : 'Client'}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-2">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                    <Input
+                      placeholder="Search messages..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10 w-48"
+                    />
+                  </div>
+                  
+                  <Button variant="ghost" size="sm">
+                    <Phone className="h-4 w-4" />
+                  </Button>
+                  <Button variant="ghost" size="sm">
+                    <Video className="h-4 w-4" />
+                  </Button>
+                  
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm">
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem>
+                        <Archive className="h-4 w-4 mr-2" />
+                        Archive Conversation
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
-            )}
-            
-            <div className="flex gap-2">
-              <input
-                ref={fileInputRef}
-                type="file"
-                onChange={handleFileSelect}
-                className="hidden"
-                accept="image/*,.pdf,.doc,.docx,.txt,.mp3,.wav"
-              />
-              
-              <Button 
-                variant="outline" 
-                size="icon" 
-                className="shrink-0"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={uploading}
-              >
-                <Paperclip className="h-4 w-4" />
-              </Button>
-              
-              <Input
-                value={message}
-                onChange={(e) => {
-                  setMessage(e.target.value);
-                  handleTyping();
-                }}
-                placeholder="Type your message..."
-                onKeyPress={handleKeyPress}
-                className="flex-1"
-              />
-              
-              <Button 
-                variant="outline" 
-                size="icon" 
-                className="shrink-0"
-                onClick={() => setShowVoiceRecorder(true)}
-                title="Record voice message"
-              >
-                <Mic className="h-4 w-4" />
-              </Button>
-              
-              <EmojiPicker 
-                onEmojiSelect={(emoji) => {
-                  setMessage(prev => prev + emoji);
-                }}
-              />
-              
-              <Button 
-                onClick={handleSendMessage} 
-                size="icon"
-                disabled={!message.trim() || loading || uploading}
-              >
-                <Send className="h-4 w-4" />
-              </Button>
+            </div>
+
+            {/* Messages Area */}
+            <ScrollArea className="flex-1 p-4">
+              <div className="space-y-4">
+                {filteredMessages.length === 0 ? (
+                  <div className="text-center text-muted-foreground py-8">
+                    {searchQuery ? 'No messages found matching your search.' : 'No messages yet. Start the conversation!'}
+                  </div>
+                ) : (
+                  filteredMessages.map((message, index) => (
+                    <MessageBubble
+                      key={message.id}
+                      message={message}
+                      isOwn={message.sender_id === user?.id}
+                      showAvatar={
+                        index === 0 || 
+                        filteredMessages[index - 1]?.sender_id !== message.sender_id
+                      }
+                      otherParticipant={otherParticipant}
+                    />
+                  ))
+                )}
+                {isTyping && <TypingIndicator />}
+                <div ref={messagesEndRef} />
+              </div>
+            </ScrollArea>
+
+            {/* Message Input */}
+            <div className="p-4 border-t">
+              <form onSubmit={handleSendMessage} className="flex items-end gap-2">
+                <div className="flex gap-1">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowFileUploader(true)}
+                  >
+                    <Paperclip className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowFileUploader(true)}
+                  >
+                    <Image className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowVoiceRecorder(true)}
+                  >
+                    <Mic className="h-4 w-4" />
+                  </Button>
+                </div>
+                
+                <Input
+                  ref={inputRef}
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  placeholder="Type a message..."
+                  className="flex-1"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage(e);
+                    }
+                  }}
+                />
+                
+                <Button type="submit" disabled={!newMessage.trim()}>
+                  <Send className="h-4 w-4" />
+                </Button>
+              </form>
             </div>
           </>
+        ) : (
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center text-muted-foreground">
+              <div className="mb-4 text-4xl">💬</div>
+              <h3 className="text-lg font-medium mb-2">Select a Conversation</h3>
+              <p>Choose a conversation from the list to start messaging</p>
+            </div>
+          </div>
         )}
       </div>
 
-      {/* Image Viewer Modal */}
-      {selectedImage && (
-        <ImageViewer
-          src={selectedImage.src}
-          alt={selectedImage.alt}
-          fileName={selectedImage.fileName}
-          isOpen={!!selectedImage}
-          onClose={() => setSelectedImage(null)}
+      {/* File Upload Modal */}
+      {showFileUploader && (
+        <FileUploader
+          onUpload={handleFileUpload}
+          onClose={() => setShowFileUploader(false)}
+        />
+      )}
+
+      {/* Voice Recorder Modal */}
+      {showVoiceRecorder && (
+        <VoiceRecorder
+          onRecordingComplete={handleVoiceMessage}
+          onClose={() => setShowVoiceRecorder(false)}
         />
       )}
     </div>

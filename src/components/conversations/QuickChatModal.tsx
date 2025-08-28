@@ -335,7 +335,7 @@ export const QuickChatModal = ({
                       {otherParticipant?.full_name?.[0] || recipientName?.[0] || 'U'}
                     </AvatarFallback>
                   </Avatar>
-                  <TypingIndicator userName={otherParticipant?.full_name || recipientName} />
+                  <TypingIndicator />
                 </div>
               )}
               <div ref={messagesEndRef} />

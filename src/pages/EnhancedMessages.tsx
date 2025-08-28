@@ -415,8 +415,7 @@ export default function EnhancedMessages() {
                         
                         {/* Chat Content */}
                         <ChatInterface 
-                          conversation={selectedConversation} 
-                          className="flex-1"
+                          initialConversationId={selectedConversation?.id}
                         />
                       </>
                     ) : (
