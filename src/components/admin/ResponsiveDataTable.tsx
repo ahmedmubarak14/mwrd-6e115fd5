@@ -231,15 +231,15 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
   }
 
   return (
-    <div className={cn("space-y-4", className)}>
+    <div className={cn("space-y-4", className)} data-admin-dashboard>
       {/* Header */}
       {(title || description || onSearch || exportable || bulkActions.length > 0) && (
         <Card>
           <CardHeader className="pb-4">
             <div className="flex flex-col sm:flex-row gap-4 justify-between">
               <div>
-                {title && <CardTitle className="admin-subtitle">{title}</CardTitle>}
-                {description && <p className="admin-caption mt-1">{description}</p>}
+                {title && <CardTitle className="admin-subtitle text-foreground">{title}</CardTitle>}
+                {description && <p className="admin-caption text-muted-foreground mt-1">{description}</p>}
               </div>
               
               <div className="flex flex-col sm:flex-row gap-2">
@@ -247,15 +247,15 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                 {onSearch && (
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      value={localSearchValue}
-                      onChange={(e) => {
-                        setLocalSearchValue(e.target.value);
-                        onSearch(e.target.value);
-                      }}
-                      placeholder={searchPlaceholder || t('admin.searchPlaceholder')}
-                      className="pl-10 w-full sm:w-64 admin-body"
-                    />
+                      <Input
+                        value={localSearchValue}
+                        onChange={(e) => {
+                          setLocalSearchValue(e.target.value);
+                          onSearch(e.target.value);
+                        }}
+                        placeholder={searchPlaceholder || t('admin.searchPlaceholder')}
+                        className="pl-10 w-full sm:w-64 admin-body text-foreground bg-input"
+                      />
                     {localSearchValue && (
                       <Button
                         variant="ghost"
@@ -281,13 +281,13 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                         {t('common.filter')}
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-56 bg-popover border border-border shadow-lg z-[100] backdrop-blur-sm">
-                      <DropdownMenuLabel className="admin-caption">{t('admin.filterBy')}</DropdownMenuLabel>
+                    <DropdownMenuContent className="w-56 bg-popover text-popover-foreground border border-border shadow-lg z-[100] backdrop-blur-sm">
+                      <DropdownMenuLabel className="admin-caption text-foreground">{t('admin.filterBy')}</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       {filterableColumns.map(column => (
                         <DropdownMenuItem key={column.key} asChild>
                           <div className="flex items-center justify-between p-2">
-                            <span className="admin-body">{column.title}</span>
+                            <span className="admin-body text-foreground">{column.title}</span>
                             <Select
                               value={localFilters[column.key] || ''}
                               onValueChange={(value) => {
@@ -299,8 +299,8 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                               <SelectTrigger className="w-24 h-8">
                                 <SelectValue />
                               </SelectTrigger>
-                              <SelectContent className="bg-popover border border-border shadow-lg z-[100] backdrop-blur-sm">
-                                <SelectItem value="all">{t('common.all')}</SelectItem>
+                              <SelectContent className="bg-popover text-popover-foreground border border-border shadow-lg z-[100] backdrop-blur-sm">
+                                <SelectItem value="all" className="text-foreground">{t('common.all')}</SelectItem>
                                 {/* Add dynamic filter options based on data */}
                               </SelectContent>
                             </Select>
@@ -327,7 +327,7 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                         {t('admin.bulkActions')} ({selectedRows.length})
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent className="bg-popover border border-border shadow-lg z-[100] backdrop-blur-sm">
+                    <DropdownMenuContent className="bg-popover text-popover-foreground border border-border shadow-lg z-[100] backdrop-blur-sm">
                       {bulkActions.map((action, index) => (
                         <DropdownMenuItem
                           key={index}
@@ -336,7 +336,7 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                             action.onClick(selectedData);
                           }}
                           className={cn(
-                            "admin-body",
+                            "admin-body text-foreground",
                             action.variant === 'destructive' && "text-destructive focus:text-destructive"
                           )}
                         >
@@ -370,10 +370,10 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                     </TableHead>
                   )}
                   {columns.map((column) => (
-                    <TableHead 
+                     <TableHead 
                       key={column.key}
                       className={cn(
-                        "admin-caption font-semibold",
+                        "admin-caption font-semibold text-foreground",
                         column.className,
                         column.sortable && "cursor-pointer hover:bg-muted/50 transition-colors"
                       )}
@@ -398,8 +398,8 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                       </div>
                     </TableHead>
                   ))}
-                  {actions.length > 0 && (
-                    <TableHead className="w-16 admin-caption font-semibold">
+                   {actions.length > 0 && (
+                    <TableHead className="w-16 admin-caption font-semibold text-foreground">
                       {t('common.actions')}
                     </TableHead>
                   )}
@@ -441,7 +441,7 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                         {columns.map((column) => (
                           <TableCell 
                             key={column.key}
-                            className={cn("admin-body", column.className)}
+                            className={cn("admin-body text-foreground", column.className)}
                           >
                             {column.render 
                               ? column.render(row[column.key], row)
@@ -457,14 +457,14 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                                   <MoreHorizontal className="h-4 w-4" />
                                 </Button>
                               </DropdownMenuTrigger>
-                              <DropdownMenuContent className="bg-popover border border-border shadow-lg z-[100] backdrop-blur-sm">
+                              <DropdownMenuContent className="bg-popover text-popover-foreground border border-border shadow-lg z-[100] backdrop-blur-sm">
                                 {actions.map((action, index) => (
                                   <DropdownMenuItem
                                     key={index}
                                     onClick={() => action.onClick(row)}
                                     disabled={action.disabled?.(row)}
                                     className={cn(
-                                      "admin-body",
+                                      "admin-body text-foreground",
                                       action.variant === 'destructive' && "text-destructive focus:text-destructive"
                                     )}
                                   >

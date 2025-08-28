@@ -13,9 +13,9 @@ import { cn } from "@/lib/utils";
 
 interface Order {
   id: string;
-  user_id: string;
+  client_id: string;
   status: string;
-  total_amount: number;
+  amount: number;
   currency: string;
   created_at: string;
   updated_at: string;
@@ -29,7 +29,8 @@ export default function AdminOrders() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  
   const languageContext = useOptionalLanguage();
   const { t, isRTL } = languageContext || { 
     t: (key: string) => key, 
@@ -52,10 +53,15 @@ export default function AdminOrders() {
             email
           )
         `)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .limit(100);
 
-      if (error) throw error;
-      setOrders((data as unknown as Order[]) || []);
+      if (error) {
+        console.error('Error fetching orders:', error);
+        return;
+      }
+
+      setOrders((data as any) || []);
     } catch (error) {
       console.error('Error fetching orders:', error);
     } finally {
@@ -63,99 +69,45 @@ export default function AdminOrders() {
     }
   };
 
-  const filteredOrders = orders.filter((order) => {
-    const matchesSearch = 
-      order.user_profiles?.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.user_profiles?.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.total_amount.toString().includes(searchTerm);
-    
-    const matchesStatus = statusFilter === "all" || order.status === statusFilter;
-    
-    return matchesSearch && matchesStatus;
-  });
+  const getStatusBadge = (status: string) => {
+    const variants = {
+      pending: "secondary",
+      processing: "warning",
+      completed: "success",
+      cancelled: "destructive"
+    } as const;
 
-  const getStatusBadgeVariant = (status: string) => {
-    switch (status) {
-      case 'completed': return 'default';
-      case 'pending': return 'secondary';
-      case 'cancelled': return 'destructive';
-      default: return 'outline';
-    }
+    return (
+      <Badge variant={variants[status as keyof typeof variants] || "secondary"}>
+        {status.charAt(0).toUpperCase() + status.slice(1)}
+      </Badge>
+    );
   };
+
+  const filteredOrders = orders.filter(order => {
+    const searchMatch = searchTerm === "" || 
+      order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.user_profiles?.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.user_profiles?.email.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const statusMatch = statusFilter === "all" || order.status === statusFilter;
+    
+    return searchMatch && statusMatch;
+  });
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <LoadingSpinner size="lg" text={t('common.loading')} />
+      <div className="flex items-center justify-center min-h-[400px]" data-admin-dashboard>
+        <LoadingSpinner size="lg" />
       </div>
     );
   }
 
   return (
-    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'} data-admin-dashboard>
       <div className={cn(isRTL ? "text-right" : "text-left")}>
-        <h1 className="text-2xl font-bold">{t('admin.orders')}</h1>
+        <h1 className="text-2xl font-bold text-foreground">{t('admin.orders')}</h1>
         <p className="text-muted-foreground">{t('common.manageDescription')}</p>
-      </div>
-
-      {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('common.total')} {t('admin.orders')}</CardTitle>
-            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{orders.length}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('common.completed')}</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {orders.filter(o => o.status === 'completed').length}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('financial.totalRevenue')}</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {orders.filter(o => o.status === 'completed').reduce((sum, o) => sum + o.total_amount, 0)} SAR
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Search and Filter */}
-      <div className={cn("flex flex-col sm:flex-row gap-4", isRTL && "sm:flex-row-reverse")}>
-        <div className="flex-1">
-          <Input
-            placeholder={t('common.searchPlaceholder')}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full"
-          />
-        </div>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-full sm:w-48">
-            <SelectValue placeholder={t('common.filterByStatus')} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">{t('common.allStatus')}</SelectItem>
-            <SelectItem value="pending">{t('common.pending')}</SelectItem>
-            <SelectItem value="completed">{t('common.completed')}</SelectItem>
-            <SelectItem value="cancelled">{t('common.cancelled')}</SelectItem>
-          </SelectContent>
-        </Select>
       </div>
 
       {/* Orders List */}
@@ -174,23 +126,21 @@ export default function AdminOrders() {
                   <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
                     <ShoppingCart className="h-4 w-4" />
                     <div className={cn(isRTL ? "text-right" : "text-left")}>
-                      <CardTitle className="text-lg">
-                        {t('common.order')} #{order.id.slice(0, 8)}
+                      <CardTitle className="text-lg text-foreground">
+                        Order #{order.id.slice(0, 8)}
                       </CardTitle>
                       <p className="text-sm text-muted-foreground">
-                        {order.user_profiles?.full_name || order.user_profiles?.email || t('financial.unknownUser')}
+                        {order.user_profiles?.full_name || order.user_profiles?.email || 'Unknown User'}
                       </p>
                     </div>
                   </div>
-                  <Badge variant={getStatusBadgeVariant(order.status)}>
-                    {order.status}
-                  </Badge>
+                  {getStatusBadge(order.status)}
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   <div className={cn("flex items-center justify-between text-sm", isRTL && "flex-row-reverse")}>
-                    <span className="font-medium">{t('common.total')}: {order.total_amount} {order.currency}</span>
+                    <span className="font-medium text-foreground">Total: {order.amount} {order.currency}</span>
                     <span className="text-muted-foreground">{format(new Date(order.created_at), 'PPp')}</span>
                   </div>
                 </div>

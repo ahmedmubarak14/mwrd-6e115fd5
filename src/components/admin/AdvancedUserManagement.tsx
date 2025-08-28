@@ -211,8 +211,8 @@ export const AdvancedUserManagement = () => {
             {user.full_name?.[0] || user.email?.[0] || 'U'}
           </div>
           <div>
-            <p className="admin-body font-medium">{user.full_name || 'No Name'}</p>
-            <p className="admin-caption">{user.email}</p>
+            <p className="admin-body font-medium text-foreground">{user.full_name || 'No Name'}</p>
+            <p className="admin-caption text-muted-foreground">{user.email}</p>
           </div>
         </div>
       )
@@ -220,13 +220,15 @@ export const AdvancedUserManagement = () => {
     {
       key: 'company_name',
       title: t('admin.users.company'),
-      render: (value: string) => value || t('common.notSpecified')
+      render: (value: string) => (
+        <span className="text-foreground">{value || t('common.notSpecified')}</span>
+      )
     },
     {
       key: 'role',
       title: t('admin.users.role'),
       render: (value: string) => (
-        <Badge variant="outline" className="capitalize">
+        <Badge variant="outline" className="capitalize text-foreground border-border">
           {t(`admin.users.${value}`) || value}
         </Badge>
       )
@@ -239,7 +241,9 @@ export const AdvancedUserManagement = () => {
     {
       key: 'created_at',
       title: t('admin.users.joinedDate'),
-      render: (value: string) => new Date(value).toLocaleDateString()
+      render: (value: string) => (
+        <span className="text-foreground">{new Date(value).toLocaleDateString()}</span>
+      )
     }
   ];
 

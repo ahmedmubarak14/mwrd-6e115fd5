@@ -13,12 +13,14 @@ const AdminSubscriptions: React.FC = () => {
   };
   
   return (
-    <AdminPageContainer
-      title={t('admin.subscriptions')}
-      description={t('admin.subscriptionsDescription')}
-    >
-      <SubscriptionManagement />
-    </AdminPageContainer>
+    <div data-admin-dashboard>
+      <AdminPageContainer
+        title={t('admin.subscriptions')}
+        description={t('admin.subscriptionsDescription')}
+      >
+        <SubscriptionManagement />
+      </AdminPageContainer>
+    </div>
   );
 };
 
