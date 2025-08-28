@@ -1,12 +1,15 @@
 
-import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { VendorDirectory } from "@/components/vendors/VendorDirectory";
 
 const Vendors = () => {
   return (
-    <DashboardLayout>
+    <ClientPageContainer
+      title="Vendor Directory"
+      description="Browse and connect with qualified vendors"
+    >
       <VendorDirectory />
-    </DashboardLayout>
+    </ClientPageContainer>
   );
 };
 
