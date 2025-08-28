@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { AdminUserProfile } from "./AdminUserProfile";
 import { cn } from "@/lib/utils";
 import { useLocation } from "react-router-dom";
 
@@ -136,12 +137,8 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
 
   return (
     <div className="flex h-full flex-col bg-sidebar" dir={isRTL ? 'rtl' : 'ltr'}>
-      <SidebarHeader className="border-b border-sidebar-border">
-        <div className="flex h-14 items-center justify-between px-4">
-          <h2 className="font-semibold text-lg text-sidebar-foreground truncate">
-            {t('admin.title')}
-          </h2>
-        </div>
+      <SidebarHeader className="border-b border-sidebar-border bg-sidebar">
+        <AdminUserProfile variant="mobile" />
       </SidebarHeader>
       
       <SidebarContent>

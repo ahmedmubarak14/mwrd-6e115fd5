@@ -33,6 +33,7 @@ import {
 } from "lucide-react";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { AdminUserProfile } from "./AdminUserProfile";
 import { cn } from "@/lib/utils";
 
 interface AdminSidebarProps {
@@ -143,22 +144,20 @@ export const AdminSidebar = ({ className }: AdminSidebarProps) => {
       className={cn("border-sidebar-border", className)} 
       dir={isRTL ? 'rtl' : 'ltr'}
     >
-      <SidebarHeader className="border-b border-sidebar-border">
-        <div className="flex h-14 items-center justify-between px-4">
-          <h2 className={cn(
-            "font-semibold text-sidebar-foreground truncate",
-            state === "collapsed" ? "text-xs" : "text-lg"
-          )}>
-            {state === "collapsed" ? t('admin.titleShort') || "Admin" : t('admin.title')}
-          </h2>
-        </div>
+      <SidebarHeader className="border-b border-sidebar-border bg-sidebar">
+        <AdminUserProfile 
+          variant="sidebar" 
+          collapsed={state === "collapsed"} 
+        />
       </SidebarHeader>
       
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs uppercase tracking-wider text-muted-foreground px-3 py-2">
-            {state === "collapsed" ? "" : t('admin.navigation') || "Navigation"}
-          </SidebarGroupLabel>
+          {state !== "collapsed" && (
+            <SidebarGroupLabel className="text-xs uppercase tracking-wider text-muted-foreground px-3 py-2">
+              {t('admin.navigation') || "Navigation"}
+            </SidebarGroupLabel>
+          )}
           <SidebarGroupContent>
             <SidebarMenu>
               {navigation.map((item) => {
