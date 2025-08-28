@@ -1,8 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { EnhancedAdminSidebar } from "./EnhancedAdminSidebar";
+import { AdminSidebar } from "./AdminSidebar";
 import { AdminHeader } from "./AdminHeader";
 import { AdminMobileSidebar } from "./AdminMobileSidebar";
 import { MobileContainer } from "@/components/ui/MobileContainer";
@@ -78,20 +77,21 @@ export const AdminLayout = () => {
           </div>
         ) : (
           // Desktop Layout
-          <SidebarProvider defaultOpen={sidebarOpen} onOpenChange={setSidebarOpen}>
-            <div className="min-h-screen flex w-full" dir={isRTL ? 'rtl' : 'ltr'}>
-              <EnhancedAdminSidebar />
-              <div className="flex-1 flex flex-col min-w-0">
-                <AdminHeader />
-                <main className="flex-1 overflow-auto bg-muted/20">
-                  <AdminErrorBoundary>
-                    <Outlet />
-                  </AdminErrorBoundary>
-                </main>
-              </div>
-              <AdminCommandPalette />
+          <div className="min-h-screen flex w-full" dir={isRTL ? 'rtl' : 'ltr'}>
+            <AdminSidebar 
+              collapsed={!sidebarOpen} 
+              onToggle={() => setSidebarOpen(!sidebarOpen)} 
+            />
+            <div className="flex-1 flex flex-col min-w-0">
+              <AdminHeader />
+              <main className="flex-1 overflow-auto bg-muted/20 p-6">
+                <AdminErrorBoundary>
+                  <Outlet />
+                </AdminErrorBoundary>
+              </main>
             </div>
-          </SidebarProvider>
+            <AdminCommandPalette />
+          </div>
         )}
       </MobileContainer>
     </AdminErrorBoundary>
