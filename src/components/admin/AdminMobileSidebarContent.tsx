@@ -168,21 +168,21 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
       
       <SidebarContent className="flex-1 overflow-y-auto">
         {navigationGroups.map((group) => (
-          <SidebarGroup key={group.id} className="mb-4">
+          <SidebarGroup key={group.id} className="mb-3">
             <SidebarGroupLabel className="text-xs uppercase tracking-wider text-muted-foreground px-4 py-2 font-medium">
               {group.label}
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu className="px-2" role="menu" aria-label={`${group.label} navigation`}>
+              <SidebarMenu className="px-3" role="menu" aria-label={`${group.label} navigation`}>
                 {group.items.map((item) => {
                   const active = isActive(item.href) || isParentActive(item.href);
                   return (
                     <SidebarMenuItem key={item.href}>
-                      <SidebarMenuButton 
+                       <SidebarMenuButton 
                         asChild
                         isActive={active}
                         className={cn(
-                          "group relative transition-all duration-200 h-12 px-3 mb-1",
+                          "group relative transition-all duration-200 h-11 px-3 mb-1.5 rounded-lg",
                           active && "bg-primary/10 text-primary border border-primary/20 shadow-sm"
                         )}
                       >
@@ -197,7 +197,7 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
                             "h-4 w-4 shrink-0 transition-colors",
                             active ? "text-primary" : "text-neutral-600"
                           )} />
-                          <span className="truncate flex-1 text-sm font-medium text-foreground">
+                          <span className="truncate flex-1 text-sm font-medium">
                             {item.name}
                           </span>
                           {item.badge && item.badge > 0 && (

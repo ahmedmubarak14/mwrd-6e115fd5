@@ -33,10 +33,10 @@ export const AdminHeader = ({ onMobileMenuOpen, onSidebarToggle, sidebarOpen }: 
   return (
     <header className="border-b border-border bg-card sticky top-0 z-50 shadow-sm">
       {/* Main Header Bar */}
-      <div className="h-16">
-        <div className="max-w-full mx-auto px-4 h-full flex items-center justify-between">
+      <div className="h-16 min-h-16">
+        <div className="max-w-full mx-auto px-3 sm:px-4 h-full flex items-center justify-between gap-2">
           {/* Logo, Menu Trigger, and Sidebar Toggle */}
-          <div className="flex items-center gap-3 min-w-0 flex-1 mr-4">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 mr-2 sm:mr-4">
             {isMobile && (
               <Button
                 variant="ghost"
@@ -72,10 +72,10 @@ export const AdminHeader = ({ onMobileMenuOpen, onSidebarToggle, sidebarOpen }: 
                 className="h-8 w-auto shrink-0"
               />
               <div className="hidden sm:flex flex-col items-start min-w-0">
-                <span className="text-base font-semibold leading-tight truncate text-foreground">
+                <span className="text-sm sm:text-base font-semibold leading-tight truncate text-foreground">
                   Admin Dashboard
                 </span>
-                <span className="text-xs leading-tight text-muted-foreground">
+                <span className="text-xs leading-tight text-muted-foreground hidden md:block">
                   {t('admin.managementPortal') || 'Management Portal'}
                 </span>
               </div>
