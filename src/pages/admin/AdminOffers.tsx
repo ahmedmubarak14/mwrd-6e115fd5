@@ -449,11 +449,8 @@ const AdminOffers = () => {
                       </div>
                     </div>
                     <div className="flex flex-col gap-2 text-right">
-                      <Badge variant={getStatusBadgeVariant(offer.admin_approval_status)}>
-                        Admin: {offer.admin_approval_status.toUpperCase()}
-                      </Badge>
                       <Badge variant={getStatusBadgeVariant(offer.client_approval_status)}>
-                        Client: {offer.client_approval_status.toUpperCase()}
+                        Status: {offer.client_approval_status.toUpperCase()}
                       </Badge>
                     </div>
                   </div>
@@ -501,28 +498,6 @@ const AdminOffers = () => {
                       <MessageSquare className="h-4 w-4" />
                       Start Group Chat
                     </Button>
-                    
-                    {offer.admin_approval_status === 'pending' && (
-                      <>
-                        <Button 
-                          size="sm" 
-                          className="flex items-center gap-1"
-                          onClick={() => updateOfferApproval(offer.id, 'approved')}
-                        >
-                          <CheckCircle className="h-4 w-4" />
-                          Approve
-                        </Button>
-                        <Button 
-                          variant="destructive" 
-                          size="sm" 
-                          className="flex items-center gap-1"
-                          onClick={() => updateOfferApproval(offer.id, 'rejected')}
-                        >
-                          <XCircle className="h-4 w-4" />
-                          Reject
-                        </Button>
-                      </>
-                    )}
                     
                     <Button 
                       variant="outline" 

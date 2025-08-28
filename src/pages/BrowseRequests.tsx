@@ -233,8 +233,8 @@ const BrowseRequests = () => {
                       <RequestDetailsModal 
                         request={{
                           ...request,
-                          status: request.admin_approval_status || 'new',
-                          user_id: request.client_id
+                          status: 'new',
+                          user_id: request.client
                         }} 
                         userRole="vendor"
                       >
