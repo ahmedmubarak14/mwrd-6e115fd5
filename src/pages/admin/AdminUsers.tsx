@@ -6,10 +6,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { format } from "date-fns";
-import { Users, UserCheck, Clock, TrendingUp, Download, RefreshCw, UserPlus, Mail, Shield } from "lucide-react";
+import { Users, UserCheck, Clock, TrendingUp, Download, RefreshCw, UserPlus, Mail, Shield, FileCheck } from "lucide-react";
 import { AdminPageContainer } from "@/components/admin/AdminPageContainer";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { VerificationQueue } from "@/components/admin/VerificationQueue";
 
 interface User {
   id: string;
@@ -36,78 +39,46 @@ export default function AdminUsers() {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      // Using mock data temporarily - replace with real Supabase query when ready
-      const mockUsers: User[] = [
-        {
-          id: "user_001",
-          user_id: "auth_1",
-          full_name: "Ahmed Al-Rashid",
-          email: "ahmed@example.com",
-          role: "client",
-          status: "approved",
-          verification_status: "approved",
-          company_name: "Al-Rashid Construction",
-          phone: "+966501234567",
-          created_at: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-          updated_at: new Date().toISOString()
-        },
-        {
-          id: "user_002",
-          user_id: "auth_2",
-          full_name: "Sara Mohammed",
-          email: "sara@example.com", 
-          role: "vendor",
-          status: "approved",
-          verification_status: "approved",
-          company_name: "Sara Tech Solutions",
-          phone: "+966502345678",
-          created_at: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
-          updated_at: new Date().toISOString()
-        },
-        {
-          id: "user_003",
-          user_id: "auth_3",
-          full_name: "Omar Hassan",
-          email: "omar@example.com",
-          role: "vendor",
-          status: "pending",
-          verification_status: "pending",
-          company_name: "Hassan Engineering",
-          phone: "+966503456789",
-          created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-          updated_at: new Date().toISOString()
-        },
-        {
-          id: "user_004",
-          user_id: "auth_4",
-          full_name: "Fatima Ali",
-          email: "fatima@example.com",
-          role: "client",
-          status: "blocked",
-          verification_status: "rejected",
-          company_name: "Ali Trading",
-          phone: "+966504567890",
-          created_at: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
-          updated_at: new Date().toISOString()
-        },
-        {
-          id: "user_005",
-          user_id: "auth_5",
-          full_name: "System Admin",
-          email: "admin@example.com",
-          role: "admin",
-          status: "approved",
-          verification_status: "approved",
-          phone: "+966505678901",
-          created_at: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
-          updated_at: new Date().toISOString()
-        }
-      ];
       
-      await new Promise(resolve => setTimeout(resolve, 800));
-      setUsers(mockUsers);
+      // Fetch real users from Supabase
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching users:', error);
+        toast({
+          title: "Error",
+          description: "Failed to fetch users data",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Transform the data to match our interface
+      const transformedUsers: User[] = (data || []).map(user => ({
+        id: user.id,
+        user_id: user.user_id,
+        full_name: user.full_name || 'No name',
+        email: user.email,
+        role: user.role,
+        status: user.status,
+        verification_status: (user.verification_status as User['verification_status']) || 'pending',
+        company_name: user.company_name,
+        phone: user.phone,
+        created_at: user.created_at,
+        updated_at: user.updated_at
+      }));
+
+      setUsers(transformedUsers);
     } catch (error) {
       console.error('Error fetching users:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch users data",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -306,62 +277,82 @@ export default function AdminUsers() {
           </CardContent>
         </Card>
 
-        {/* Users List */}
-        <div className="space-y-4">
-          {filteredUsers.length === 0 ? (
-            <Card>
-              <CardContent className="py-12 text-center">
-                <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-semibold mb-2">No users found</h3>
-                <p className="text-muted-foreground">No users match your current filters</p>
-              </CardContent>
-            </Card>
-          ) : (
-            filteredUsers.map((user) => (
-              <Card key={user.id} className="hover:shadow-md transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Users className="h-5 w-5 text-foreground" />
-                      <div>
-                        <CardTitle className="text-lg">
-                          {user.full_name}
-                        </CardTitle>
-                        <p className="text-sm text-foreground opacity-75">
-                          {user.company_name ? `${user.company_name} • ` : ''}{user.email}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {getRoleBadge(user.role)}
-                      {getStatusBadge(user.status)}
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-4">
-                      {user.phone && (
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">{user.phone}</span>
+        {/* Tabs for Users and Verification Queue */}
+        <Tabs defaultValue="users" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="users" className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Users
+            </TabsTrigger>
+            <TabsTrigger value="verification" className="flex items-center gap-2">
+              <FileCheck className="h-4 w-4" />
+              Verification Queue
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="users">
+            {/* Users List */}
+            <div className="space-y-4">
+              {filteredUsers.length === 0 ? (
+                <Card>
+                  <CardContent className="py-12 text-center">
+                    <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold mb-2">No users found</h3>
+                    <p className="text-muted-foreground">No users match your current filters</p>
+                  </CardContent>
+                </Card>
+              ) : (
+                filteredUsers.map((user) => (
+                  <Card key={user.id} className="hover:shadow-md transition-shadow">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <Users className="h-5 w-5 text-foreground" />
+                          <div>
+                            <CardTitle className="text-lg">
+                              {user.full_name}
+                            </CardTitle>
+                            <p className="text-sm text-foreground opacity-75">
+                              {user.company_name ? `${user.company_name} • ` : ''}{user.email}
+                            </p>
+                          </div>
                         </div>
-                      )}
-                      <div className="flex items-center gap-2">
-                        <Mail className="h-4 w-4 text-blue-500" />
-                        <span className="font-medium">
-                          Verification: {user.verification_status}
+                        <div className="flex items-center gap-2">
+                          {getRoleBadge(user.role)}
+                          {getStatusBadge(user.status)}
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-4">
+                          {user.phone && (
+                            <div className="flex items-center gap-2">
+                              <span className="font-medium">{user.phone}</span>
+                            </div>
+                          )}
+                          <div className="flex items-center gap-2">
+                            <Mail className="h-4 w-4 text-blue-500" />
+                            <span className="font-medium">
+                              Verification: {user.verification_status}
+                            </span>
+                          </div>
+                        </div>
+                        <span className="text-foreground opacity-75">
+                          Joined: {format(new Date(user.created_at), 'MMM dd, yyyy')}
                         </span>
                       </div>
-                    </div>
-                    <span className="text-foreground opacity-75">
-                      Joined: {format(new Date(user.created_at), 'MMM dd, yyyy')}
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))
-          )}
-        </div>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="verification">
+            <VerificationQueue />
+          </TabsContent>
+        </Tabs>
       </div>
     </AdminPageContainer>
   );
