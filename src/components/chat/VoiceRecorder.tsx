@@ -1,36 +1,51 @@
-import { useState, useRef, useEffect } from 'react';
-import { Mic, MicOff, Play, Pause, Send, Trash2 } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { useToastFeedback } from '@/hooks/useToastFeedback';
-import { VoiceWaveform } from './VoiceWaveform';
+import { useToast } from '@/hooks/use-toast';
+import { Mic, MicOff, Square, Play, Pause, Loader2 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { cn } from '@/lib/utils';
 
 interface VoiceRecorderProps {
-  onRecordingComplete: (audioBlob: Blob, duration: number) => void;
+  onRecordingComplete: (audioBlob: Blob, duration: number, transcription?: string) => void;
   onCancel: () => void;
+  className?: string;
+  disabled?: boolean;
 }
 
-export const VoiceRecorder = ({ onRecordingComplete, onCancel }: VoiceRecorderProps) => {
+export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
+  onRecordingComplete,
+  onCancel,
+  className,
+  disabled = false
+}) => {
+  const { toast } = useToast();
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
+  const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
   const [recordingTime, setRecordingTime] = useState(0);
-  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const [audioLevel, setAudioLevel] = useState(0);
-  const [maxDuration] = useState(300); // 5 minutes max
   
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const streamRef = useRef<MediaStream | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const { showError } = useToastFeedback();
 
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-      if (audioUrl) URL.revokeObjectURL(audioUrl);
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+      }
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = '';
+      }
     };
-  }, [audioUrl]);
+  }, []);
 
   const startRecording = async () => {
     try {
@@ -39,65 +54,50 @@ export const VoiceRecorder = ({ onRecordingComplete, onCancel }: VoiceRecorderPr
           echoCancellation: true,
           noiseSuppression: true,
           autoGainControl: true
-        }
+        } 
       });
+      
+      streamRef.current = stream;
+      audioChunksRef.current = [];
       
       const mediaRecorder = new MediaRecorder(stream, {
         mimeType: 'audio/webm;codecs=opus'
       });
-      const chunks: Blob[] = [];
-
-      // Audio level monitoring
-      const audioContext = new AudioContext();
-      const analyser = audioContext.createAnalyser();
-      const microphone = audioContext.createMediaStreamSource(stream);
-      const dataArray = new Uint8Array(analyser.frequencyBinCount);
       
-      microphone.connect(analyser);
-      analyser.fftSize = 256;
-
-      const updateAudioLevel = () => {
-        analyser.getByteFrequencyData(dataArray);
-        const average = dataArray.reduce((sum, value) => sum + value, 0) / dataArray.length;
-        setAudioLevel(average / 255);
-        
-        if (isRecording) {
-          requestAnimationFrame(updateAudioLevel);
+      mediaRecorderRef.current = mediaRecorder;
+      
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
         }
       };
-
-      mediaRecorder.ondataavailable = (event) => {
-        chunks.push(event.data);
-      };
-
+      
       mediaRecorder.onstop = () => {
-        const blob = new Blob(chunks, { type: 'audio/webm' });
-        setAudioBlob(blob);
-        const url = URL.createObjectURL(blob);
-        setAudioUrl(url);
-        stream.getTracks().forEach(track => track.stop());
-        audioContext.close();
-        setAudioLevel(0);
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        setRecordedBlob(audioBlob);
+        
+        // Stop the stream
+        if (streamRef.current) {
+          streamRef.current.getTracks().forEach(track => track.stop());
+        }
       };
-
-      mediaRecorderRef.current = mediaRecorder;
-      mediaRecorder.start();
+      
+      mediaRecorder.start(100); // Collect data every 100ms
       setIsRecording(true);
       setRecordingTime(0);
-      updateAudioLevel();
-
-      intervalRef.current = setInterval(() => {
-        setRecordingTime(prev => {
-          if (prev >= maxDuration - 1) {
-            stopRecording();
-            return prev;
-          }
-          return prev + 1;
-        });
+      
+      // Start timer
+      timerRef.current = setInterval(() => {
+        setRecordingTime(prev => prev + 1);
       }, 1000);
+      
     } catch (error) {
-      showError('Could not access microphone');
-      console.error('Error accessing microphone:', error);
+      console.error('Error starting recording:', error);
+      toast({
+        title: "Error",
+        description: "Failed to access microphone. Please check permissions.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -105,124 +105,203 @@ export const VoiceRecorder = ({ onRecordingComplete, onCancel }: VoiceRecorderPr
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
+      
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
       }
     }
   };
 
   const playRecording = () => {
-    if (audioUrl) {
-      if (!audioRef.current) {
-        audioRef.current = new Audio(audioUrl);
-        audioRef.current.onended = () => setIsPlaying(false);
-      }
+    if (recordedBlob && !isPlaying) {
+      const audioUrl = URL.createObjectURL(recordedBlob);
+      audioRef.current = new Audio(audioUrl);
       
-      if (isPlaying) {
-        audioRef.current.pause();
+      audioRef.current.onended = () => {
         setIsPlaying(false);
-      } else {
-        audioRef.current.play();
-        setIsPlaying(true);
-      }
+        URL.revokeObjectURL(audioUrl);
+      };
+      
+      audioRef.current.play();
+      setIsPlaying(true);
     }
   };
 
-  const handleSend = () => {
-    if (audioBlob) {
-      onRecordingComplete(audioBlob, recordingTime);
-    }
-  };
-
-  const handleDiscard = () => {
-    setAudioBlob(null);
-    setAudioUrl(null);
-    setRecordingTime(0);
+  const pausePlayback = () => {
     if (audioRef.current) {
       audioRef.current.pause();
-      audioRef.current = null;
+      setIsPlaying(false);
     }
-    setIsPlaying(false);
   };
 
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  const transcribeAudio = async (blob: Blob): Promise<string | undefined> => {
+    try {
+      setIsTranscribing(true);
+      
+      // Convert blob to base64
+      const reader = new FileReader();
+      const base64Promise = new Promise<string>((resolve, reject) => {
+        reader.onload = () => {
+          const base64 = (reader.result as string).split(',')[1];
+          resolve(base64);
+        };
+        reader.onerror = reject;
+      });
+      
+      reader.readAsDataURL(blob);
+      const base64Audio = await base64Promise;
+      
+      // Send to transcription service
+      const { data, error } = await supabase.functions.invoke('voice-transcription', {
+        body: { audio: base64Audio }
+      });
+      
+      if (error) throw error;
+      
+      return data?.text;
+    } catch (error) {
+      console.error('Transcription error:', error);
+      toast({
+        title: "Transcription Failed",
+        description: "Could not transcribe audio. The message will be sent as voice only.",
+        variant: "destructive",
+      });
+      return undefined;
+    } finally {
+      setIsTranscribing(false);
+    }
   };
 
-  return (
-    <Card className="p-4 space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className="font-semibold">Voice Message</h3>
-        <Button variant="ghost" size="sm" onClick={onCancel}>
-          ✕
+  const sendVoiceMessage = async () => {
+    if (!recordedBlob) return;
+    
+    try {
+      // Transcribe the audio
+      const transcription = await transcribeAudio(recordedBlob);
+      
+      // Send the voice message with duration
+      onRecordingComplete(recordedBlob, recordingTime, transcription);
+      
+      // Reset state
+      setRecordedBlob(null);
+      setRecordingTime(0);
+      
+      toast({
+        title: "Voice Message Sent",
+        description: transcription ? "Message sent with transcription" : "Voice message sent",
+      });
+      
+    } catch (error) {
+      console.error('Error sending voice message:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send voice message",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const cancelRecording = () => {
+    setRecordedBlob(null);
+    setRecordingTime(0);
+    if (isPlaying) {
+      pausePlayback();
+    }
+    onCancel();
+  };
+
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  if (recordedBlob) {
+    return (
+      <div className={cn("flex items-center gap-2 p-3 bg-muted/50 rounded-lg", className)}>
+        <div className="flex items-center gap-2 flex-1">
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={isPlaying ? pausePlayback : playRecording}
+            disabled={isTranscribing}
+          >
+            {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+          </Button>
+          
+          <div className="flex-1">
+            <div className="text-sm font-medium">Voice Message</div>
+            <div className="text-xs text-muted-foreground">
+              {formatTime(recordingTime)}
+            </div>
+          </div>
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={cancelRecording}
+            disabled={isTranscribing}
+          >
+            Cancel
+          </Button>
+          <Button
+            size="sm"
+            onClick={sendVoiceMessage}
+            disabled={isTranscribing}
+          >
+            {isTranscribing ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              'Send'
+            )}
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (isRecording) {
+    return (
+      <div className={cn("flex items-center gap-2 p-3 bg-red-50 rounded-lg", className)}>
+        <Button
+          size="sm"
+          variant="destructive"
+          onClick={stopRecording}
+        >
+          <Square className="h-4 w-4" />
+        </Button>
+        <div className="flex items-center gap-2 text-sm">
+          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+          <span className="font-mono">{formatTime(recordingTime)}</span>
+        </div>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={cancelRecording}
+        >
+          Cancel
         </Button>
       </div>
+    );
+  }
 
-      {!audioBlob ? (
-        <div className="text-center space-y-4">
-          <div className="flex justify-center">
-            <Button
-              size="lg"
-              variant={isRecording ? "destructive" : "default"}
-              onClick={isRecording ? stopRecording : startRecording}
-              className="rounded-full w-16 h-16"
-            >
-              {isRecording ? <MicOff className="h-6 w-6" /> : <Mic className="h-6 w-6" />}
-            </Button>
-          </div>
-          
-          <div className="text-lg font-mono">
-            {formatTime(recordingTime)}
-          </div>
-          
-          {recordingTime > 0 && (
-            <Progress 
-              value={(recordingTime / maxDuration) * 100} 
-              className="w-full h-2"
-            />
-          )}
-          
-          {isRecording && (
-            <div className="space-y-2">
-              <VoiceWaveform isRecording={isRecording} audioLevel={audioLevel} />
-              <p className="text-sm text-muted-foreground">
-                Recording... Tap to stop ({Math.floor((maxDuration - recordingTime) / 60)}:{((maxDuration - recordingTime) % 60).toString().padStart(2, '0')} remaining)
-              </p>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="space-y-4">
-          <div className="flex items-center justify-center gap-4">
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={playRecording}
-            >
-              {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-            </Button>
-            
-            <div className="flex-1 text-center">
-              <div className="text-sm font-mono">{formatTime(recordingTime)}</div>
-              <div className="text-xs text-muted-foreground">Voice message recorded</div>
-            </div>
-          </div>
-          
-          <div className="flex gap-2 justify-center">
-            <Button variant="outline" size="sm" onClick={handleDiscard}>
-              <Trash2 className="h-4 w-4 mr-1" />
-              Discard
-            </Button>
-            <Button size="sm" onClick={handleSend}>
-              <Send className="h-4 w-4 mr-1" />
-              Send
-            </Button>
-          </div>
-        </div>
-      )}
-    </Card>
+  return (
+    <div className={cn("flex items-center gap-2", className)}>
+      <Button
+        size="sm"
+        variant="ghost"
+        onClick={startRecording}
+        disabled={disabled}
+        className="p-2"
+      >
+        <Mic className="h-4 w-4" />
+      </Button>
+    </div>
   );
 };
