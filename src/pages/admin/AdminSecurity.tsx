@@ -25,26 +25,31 @@ const AdminSecurity = () => {
     >
 
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid grid-cols-5 w-full">
-          <TabsTrigger value="overview" className="flex items-center gap-2">
-            <Shield className="h-4 w-4" />
-            Overview
+        <TabsList className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 w-full gap-1">
+          <TabsTrigger value="overview" className="flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4">
+            <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Overview</span>
+            <span className="sm:hidden">Home</span>
           </TabsTrigger>
-          <TabsTrigger value="incidents" className="flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4" />
-            Incidents
+          <TabsTrigger value="incidents" className="flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4">
+            <AlertTriangle className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Incidents</span>
+            <span className="sm:hidden">Issues</span>
           </TabsTrigger>
-          <TabsTrigger value="audit" className="flex items-center gap-2">
-            <Database className="h-4 w-4" />
-            Audit Trail
+          <TabsTrigger value="audit" className="flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4">
+            <Database className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Audit Trail</span>
+            <span className="sm:hidden">Audit</span>
           </TabsTrigger>
-          <TabsTrigger value="health" className="flex items-center gap-2">
-            <Activity className="h-4 w-4" />
-            System Health
+          <TabsTrigger value="health" className="flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4">
+            <Activity className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">System Health</span>
+            <span className="sm:hidden">Health</span>
           </TabsTrigger>
-          <TabsTrigger value="compliance" className="flex items-center gap-2">
-            <Lock className="h-4 w-4" />
-            Compliance
+          <TabsTrigger value="compliance" className="flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4">
+            <Lock className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Compliance</span>
+            <span className="sm:hidden">Rules</span>
           </TabsTrigger>
         </TabsList>
 

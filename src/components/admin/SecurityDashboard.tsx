@@ -69,18 +69,18 @@ export const SecurityDashboard = () => {
       )}
 
       {/* Key Security Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Security Score</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Security Score</CardTitle>
             <Shield className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="flex items-center space-x-2">
-              <div className={`text-2xl font-bold ${getScoreColor(securityScore)}`}>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 space-y-1 sm:space-y-0">
+              <div className={`text-lg sm:text-2xl font-bold ${getScoreColor(securityScore)}`}>
                 {securityScore}%
               </div>
-              <Badge variant={securityScore >= 90 ? "default" : securityScore >= 70 ? "secondary" : "destructive"}>
+              <Badge variant={securityScore >= 90 ? "default" : securityScore >= 70 ? "secondary" : "destructive"} className="text-xs">
                 {getScoreStatus(securityScore)}
               </Badge>
             </div>
@@ -90,11 +90,11 @@ export const SecurityDashboard = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Failed Login Attempts</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Failed Login Attempts</CardTitle>
             <UserX className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-destructive">
+            <div className="text-lg sm:text-2xl font-bold text-destructive">
               {securityMetrics?.failedLogins || 0}
             </div>
             <p className="text-xs text-muted-foreground">Last 24 hours</p>
@@ -103,22 +103,22 @@ export const SecurityDashboard = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Sessions</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Active Sessions</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{securityMetrics?.activeSessions || 0}</div>
+            <div className="text-lg sm:text-2xl font-bold">{securityMetrics?.activeSessions || 0}</div>
             <p className="text-xs text-muted-foreground">Currently online</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Security Incidents</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-medium">Security Incidents</CardTitle>
             <AlertTriangle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-warning">
+            <div className="text-lg sm:text-2xl font-bold text-warning">
               {securityMetrics?.incidents || 0}
             </div>
             <p className="text-xs text-muted-foreground">This month</p>
@@ -127,19 +127,31 @@ export const SecurityDashboard = () => {
       </div>
 
       {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 lg:gap-6">
         <Card>
           <CardHeader>
             <CardTitle>Login Attempts Trend</CardTitle>
             <CardDescription>Successful vs Failed login attempts over time</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={250}>
               <LineChart data={loginAttempts}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="time" />
-                <YAxis />
-                <Tooltip />
+                <XAxis 
+                  dataKey="time" 
+                  fontSize={12}
+                  tick={{ fontSize: 10 }}
+                />
+                <YAxis 
+                  fontSize={12}
+                  tick={{ fontSize: 10 }}
+                />
+                <Tooltip 
+                  contentStyle={{ 
+                    fontSize: '12px',
+                    padding: '8px'
+                  }}
+                />
                 <Line 
                   type="monotone" 
                   dataKey="successful" 
@@ -165,12 +177,24 @@ export const SecurityDashboard = () => {
             <CardDescription>Security threats detected by category</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={250}>
               <BarChart data={threatData}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="category" />
-                <YAxis />
-                <Tooltip />
+                <XAxis 
+                  dataKey="category" 
+                  fontSize={12}
+                  tick={{ fontSize: 10 }}
+                />
+                <YAxis 
+                  fontSize={12}
+                  tick={{ fontSize: 10 }}
+                />
+                <Tooltip 
+                  contentStyle={{ 
+                    fontSize: '12px',
+                    padding: '8px'
+                  }}
+                />
                 <Bar dataKey="count" fill="hsl(var(--chart-2))" />
               </BarChart>
             </ResponsiveContainer>
@@ -187,29 +211,38 @@ export const SecurityDashboard = () => {
         <CardContent>
           <div className="space-y-4">
             {securityMetrics?.recentEvents?.map((event, index) => (
-              <div key={index} className="flex items-center space-x-4 p-3 border rounded-lg">
-                <div className={`p-2 rounded-full ${
-                  event.severity === 'high' ? 'bg-destructive/20 text-destructive' :
-                  event.severity === 'medium' ? 'bg-warning/20 text-warning' :
-                  'bg-success/20 text-success'
-                }`}>
-                  {event.type === 'login_attempt' ? <Lock className="h-4 w-4" /> :
-                   event.type === 'suspicious_activity' ? <Eye className="h-4 w-4" /> :
-                   <Activity className="h-4 w-4" />}
+              <div key={index} className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 border rounded-lg">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <div className={`p-2 rounded-full shrink-0 ${
+                    event.severity === 'high' ? 'bg-destructive/20 text-destructive' :
+                    event.severity === 'medium' ? 'bg-warning/20 text-warning' :
+                    'bg-success/20 text-success'
+                  }`}>
+                    {event.type === 'login_attempt' ? <Lock className="h-4 w-4" /> :
+                     event.type === 'suspicious_activity' ? <Eye className="h-4 w-4" /> :
+                     <Activity className="h-4 w-4" />}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="font-medium text-sm sm:text-base truncate">{event.title}</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground line-clamp-2 sm:line-clamp-1">{event.description}</div>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <div className="font-medium">{event.title}</div>
-                  <div className="text-sm text-muted-foreground">{event.description}</div>
+                <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-4 shrink-0">
+                  <div className="text-xs sm:text-sm text-muted-foreground">
+                    {new Date(event.timestamp).toLocaleString(undefined, { 
+                      month: 'short', 
+                      day: 'numeric', 
+                      hour: '2-digit', 
+                      minute: '2-digit' 
+                    })}
+                  </div>
+                  <Badge variant={
+                    event.severity === 'high' ? 'destructive' :
+                    event.severity === 'medium' ? 'secondary' : 'default'
+                  } className="text-xs">
+                    {event.severity}
+                  </Badge>
                 </div>
-                <div className="text-sm text-muted-foreground">
-                  {new Date(event.timestamp).toLocaleString()}
-                </div>
-                <Badge variant={
-                  event.severity === 'high' ? 'destructive' :
-                  event.severity === 'medium' ? 'secondary' : 'default'
-                }>
-                  {event.severity}
-                </Badge>
               </div>
             )) || (
               <div className="text-center py-8 text-muted-foreground">
