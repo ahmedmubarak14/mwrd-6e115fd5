@@ -18,5 +18,17 @@ export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABL
     params: {
       eventsPerSecond: 10,
     },
+    // Add WebSocket configuration with graceful fallback
+    heartbeatIntervalMs: 30000,
+    reconnectAfterMs: (tries) => Math.min(tries * 1000, 10000),
+    timeout: 20000,
+    // Enable WebSocket detection and fallback
+    transport: typeof WebSocket !== 'undefined' ? WebSocket : undefined
   },
+  // Add global configuration
+  global: {
+    headers: {
+      'User-Agent': 'SupplyChain-Client'
+    }
+  }
 });

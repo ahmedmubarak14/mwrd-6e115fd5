@@ -29,12 +29,28 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('ErrorBoundary caught an error:', error, errorInfo);
+    
+    // Handle WebSocket errors gracefully without breaking the app
+    if (error.message?.includes('WebSocket') || error.message?.includes('insecure')) {
+      console.warn('WebSocket connection failed - continuing with limited functionality:', error.message);
+      // Don't show error UI for WebSocket issues, just log them
+      this.setState({ hasError: false });
+      return;
+    }
   }
 
   render() {
     if (this.state.hasError) {
       if (this.props.fallback) {
         return this.props.fallback;
+      }
+
+      const isWebSocketError = this.state.error?.message?.includes('WebSocket') || 
+                              this.state.error?.message?.includes('insecure');
+
+      // Don't show error UI for WebSocket issues - they're handled gracefully
+      if (isWebSocketError) {
+        return this.props.children;
       }
 
       return (

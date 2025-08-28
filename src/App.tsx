@@ -4,6 +4,7 @@ import { LanguageProvider } from './contexts/LanguageContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { RouteAwareThemeProvider } from './contexts/RouteAwareThemeContext';
 import { SecurityProvider } from './contexts/SecurityContext';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
@@ -257,17 +258,19 @@ const AppRoutes: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <LanguageProvider>
-      <Router>
-        <AuthProvider>
-          <SecurityProvider>
-            <RouteAwareThemeProvider>
-              <AppRoutes />
-            </RouteAwareThemeProvider>
-          </SecurityProvider>
-        </AuthProvider>
-      </Router>
-    </LanguageProvider>
+    <ErrorBoundary>
+      <LanguageProvider>
+        <Router>
+          <AuthProvider>
+            <SecurityProvider>
+              <RouteAwareThemeProvider>
+                <AppRoutes />
+              </RouteAwareThemeProvider>
+            </SecurityProvider>
+          </AuthProvider>
+        </Router>
+      </LanguageProvider>
+    </ErrorBoundary>
   );
 };
 

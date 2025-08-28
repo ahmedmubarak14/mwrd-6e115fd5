@@ -24,35 +24,74 @@ const StatusIndicator: React.FC = () => {
     };
   }, []);
 
-  // Monitor Supabase connection status
+  // Monitor Supabase connection status with error handling
   useEffect(() => {
     if (!user) return;
 
-    const channel = supabase.channel('connection-status');
+    let channel: any = null;
     
-    channel
-      .on('presence', { event: 'sync' }, () => {
-        setIsConnected(true);
-        setLastActivity(new Date());
-      })
-      .on('presence', { event: 'join' }, () => {
-        setIsConnected(true);
-        setLastActivity(new Date());
-      })
-      .on('presence', { event: 'leave' }, () => {
-        setIsConnected(false);
-      })
-      .subscribe(async (status) => {
-        if (status === 'SUBSCRIBED') {
-          await channel.track({
-            user_id: user.id,
-            online_at: new Date().toISOString()
-          });
-        }
-      });
+    try {
+      console.log('StatusIndicator: Attempting to create presence channel');
+      channel = supabase.channel('connection-status');
+      
+      channel
+        .on('presence', { event: 'sync' }, () => {
+          console.log('StatusIndicator: Presence sync event received');
+          setIsConnected(true);
+          setLastActivity(new Date());
+        })
+        .on('presence', { event: 'join' }, () => {
+          console.log('StatusIndicator: Presence join event received');
+          setIsConnected(true);
+          setLastActivity(new Date());
+        })
+        .on('presence', { event: 'leave' }, () => {
+          console.log('StatusIndicator: Presence leave event received');
+          setIsConnected(false);
+        })
+        .subscribe(async (status: string, error?: any) => {
+          console.log('StatusIndicator: Subscription status:', status, error ? 'Error:' : '', error);
+          
+          if (status === 'SUBSCRIBED') {
+            try {
+              await channel.track({
+                user_id: user.id,
+                online_at: new Date().toISOString()
+              });
+              console.log('StatusIndicator: User presence tracked successfully');
+              setIsConnected(true);
+            } catch (trackError) {
+              console.warn('StatusIndicator: Failed to track user presence:', trackError);
+              // Continue without tracking - app still works
+            }
+          } else if (status === 'CHANNEL_ERROR') {
+            console.warn('StatusIndicator: Channel error, continuing without presence:', error);
+            setIsConnected(false);
+          } else if (status === 'TIMED_OUT') {
+            console.warn('StatusIndicator: Channel timed out, continuing without presence');
+            setIsConnected(false);
+          } else if (status === 'CLOSED') {
+            console.log('StatusIndicator: Channel closed');
+            setIsConnected(false);
+          }
+        });
+        
+    } catch (error) {
+      console.warn('StatusIndicator: Failed to set up presence channel:', error);
+      console.log('StatusIndicator: Continuing without realtime presence - app will work normally');
+      // Set as disconnected but don't crash the app
+      setIsConnected(false);
+    }
 
     return () => {
-      supabase.removeChannel(channel);
+      if (channel) {
+        try {
+          console.log('StatusIndicator: Cleaning up presence channel');
+          supabase.removeChannel(channel);
+        } catch (cleanupError) {
+          console.warn('StatusIndicator: Error during channel cleanup:', cleanupError);
+        }
+      }
     };
   }, [user]);
 
