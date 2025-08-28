@@ -11,6 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
+import { AdminPageContainer } from '@/components/admin/AdminPageContainer';
 
 interface AdminOffer {
   id: string;
@@ -265,24 +266,21 @@ const AdminOffers = () => {
   const highUrgencyOffers = offers.filter(o => getUrgencyLevel(o) === 'high');
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">Offer Management</h1>
-        <p className="text-muted-foreground">
-          Monitor vendor responses, track conversion rates, and manage offer approvals with support integration
-        </p>
-      </div>
+    <AdminPageContainer
+      title="Offer Management"
+      description="Monitor vendor responses, track conversion rates, and manage offer approvals with support integration"
+    >
 
       {/* Enhanced Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Offers</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
+            <Package className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{offers.length}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground opacity-75">
               {pendingOffers.length} pending approval
             </p>
           </CardContent>
@@ -291,11 +289,11 @@ const AdminOffers = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Conversion Rate</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <TrendingUp className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{calculateConversionRate()}%</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground opacity-75">
               {clientApprovedOffers.length} offers accepted by clients
             </p>
           </CardContent>
@@ -304,11 +302,11 @@ const AdminOffers = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Average Price</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <DollarSign className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{calculateAveragePrice()} SAR</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground opacity-75">
               Across all offers
             </p>
           </CardContent>
@@ -317,11 +315,11 @@ const AdminOffers = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Avg Response Time</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
+            <Clock className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{calculateAverageResponseTime()}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground opacity-75">
               Vendor response time
             </p>
           </CardContent>
@@ -334,7 +332,7 @@ const AdminOffers = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-warning">{highUrgencyOffers.length}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground opacity-75">
               Requires immediate attention
             </p>
           </CardContent>
@@ -349,7 +347,7 @@ const AdminOffers = () => {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-foreground opacity-75" />
               <Input
                 placeholder="Search offers..."
                 value={searchTerm}
@@ -418,10 +416,10 @@ const AdminOffers = () => {
         <TabsContent value="all" className="space-y-4">
           {loading ? (
             <div className="text-center py-8">Loading offers...</div>
-          ) : filteredOffers.length === 0 ? (
+            ) : filteredOffers.length === 0 ? (
             <Card>
               <CardContent className="text-center py-8">
-                <p className="text-muted-foreground">No offers found matching your filters.</p>
+                <p className="text-foreground opacity-75">No offers found matching your filters.</p>
               </CardContent>
             </Card>
           ) : (
@@ -442,7 +440,7 @@ const AdminOffers = () => {
                       <CardDescription className="line-clamp-2">
                         {offer.description}
                       </CardDescription>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-4 text-sm text-foreground opacity-75">
                         <span>For: {offer.request?.title}</span>
                         <span>•</span>
                         <span>Vendor: {offer.vendor?.company_name || offer.vendor?.full_name}</span>
@@ -464,13 +462,13 @@ const AdminOffers = () => {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                     <div>
-                      <p className="text-sm font-medium text-muted-foreground">Offer Price</p>
+                      <p className="text-sm font-medium text-foreground opacity-75">Offer Price</p>
                       <p className="text-lg font-bold text-primary">
                         {offer.price.toLocaleString()} {offer.currency}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-muted-foreground">Request Budget</p>
+                      <p className="text-sm font-medium text-foreground opacity-75">Request Budget</p>
                       <p className="text-sm">
                         {offer.request?.budget_min && offer.request?.budget_max
                           ? `${offer.request.budget_min.toLocaleString()} - ${offer.request.budget_max.toLocaleString()}`
@@ -479,11 +477,11 @@ const AdminOffers = () => {
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-muted-foreground">Delivery Time</p>
+                      <p className="text-sm font-medium text-foreground opacity-75">Delivery Time</p>
                       <p className="text-sm">{offer.delivery_time_days} days</p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-muted-foreground">Created</p>
+                      <p className="text-sm font-medium text-foreground opacity-75">Created</p>
                       <p className="text-sm">{format(new Date(offer.created_at), 'MMM dd, yyyy HH:mm')}</p>
                     </div>
                   </div>
@@ -546,7 +544,7 @@ const AdminOffers = () => {
           {pendingOffers.map((offer) => (
             <Card key={offer.id}>
               <CardContent className="p-4">
-                <div className="text-sm text-muted-foreground mb-2">
+                <div className="text-sm text-foreground opacity-75 mb-2">
                   {offer.title} - Pending admin approval since {format(new Date(offer.created_at), 'MMM dd, yyyy')}
                 </div>
               </CardContent>
@@ -574,7 +572,7 @@ const AdminOffers = () => {
           {approvedOffers.map((offer) => (
             <Card key={offer.id}>
               <CardContent className="p-4">
-                <div className="text-sm text-muted-foreground mb-2">
+                <div className="text-sm text-foreground opacity-75 mb-2">
                   {offer.title} - Approved and active
                 </div>
               </CardContent>
@@ -582,7 +580,7 @@ const AdminOffers = () => {
           ))}
         </TabsContent>
       </Tabs>
-    </div>
+    </AdminPageContainer>
   );
 };
 

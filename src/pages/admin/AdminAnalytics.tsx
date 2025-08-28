@@ -35,6 +35,7 @@ import {
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useRealTimeAnalytics } from "@/hooks/useRealTimeAnalytics";
 import { cn } from "@/lib/utils";
+import { AdminPageContainer } from "@/components/admin/AdminPageContainer";
 
 export const AdminAnalytics = () => {
   const languageContext = useOptionalLanguage();
@@ -79,18 +80,10 @@ export const AdminAnalytics = () => {
   }
 
   return (
-    <div className={cn("p-4 sm:p-6 space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
-      {/* Header */}
-      <div className={cn("flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4", isRTL && "flex-row-reverse")}>
-        <div className={cn(isRTL ? "text-right" : "text-left")}>
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
-            {t('admin.analytics') || 'Analytics Dashboard'}
-          </h1>
-          <p className="text-muted-foreground mt-1">
-            {t('analytics.comprehensiveInsights') || 'Comprehensive insights into platform performance'}
-          </p>
-        </div>
-        
+    <AdminPageContainer
+      title={t('admin.analytics') || 'Analytics Dashboard'}
+      description={t('analytics.comprehensiveInsights') || 'Comprehensive insights into platform performance'}
+      headerActions={
         <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
           <Button
             variant="outline"
@@ -108,7 +101,8 @@ export const AdminAnalytics = () => {
             {t('analytics.export') || 'Export'}
           </Button>
         </div>
-      </div>
+      }
+    >
 
       {/* Key Metrics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -117,13 +111,13 @@ export const AdminAnalytics = () => {
             <CardTitle className="text-sm font-medium">
               {t('admin.totalUsers') || 'Total Users'}
             </CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <Users className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {formatNumber(metrics?.totalUsers || 0)}
             </div>
-            <div className={cn("flex items-center text-xs text-muted-foreground", isRTL && "flex-row-reverse")}>
+            <div className={cn("flex items-center text-xs text-foreground opacity-75", isRTL && "flex-row-reverse")}>
               <TrendingUp className="h-3 w-3 text-success mr-1" />
               +{metrics?.userGrowth || '0'}% {t('analytics.fromLastMonth') || 'from last month'}
             </div>
@@ -135,13 +129,13 @@ export const AdminAnalytics = () => {
             <CardTitle className="text-sm font-medium">
               {t('admin.activeRequests') || 'Active Requests'}
             </CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+            <Activity className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {formatNumber(metrics?.activeRequests || 0)}
             </div>
-            <div className={cn("flex items-center text-xs text-muted-foreground", isRTL && "flex-row-reverse")}>
+            <div className={cn("flex items-center text-xs text-foreground opacity-75", isRTL && "flex-row-reverse")}>
               <TrendingUp className="h-3 w-3 text-success mr-1" />
               +{metrics?.requestGrowth || '0'}% {t('analytics.fromLastWeek') || 'from last week'}
             </div>
@@ -153,13 +147,13 @@ export const AdminAnalytics = () => {
             <CardTitle className="text-sm font-medium">
               {t('admin.revenue') || 'Revenue'}
             </CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <DollarSign className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {formatCurrency(metrics?.totalRevenue || 0)}
             </div>
-            <div className={cn("flex items-center text-xs text-muted-foreground", isRTL && "flex-row-reverse")}>
+            <div className={cn("flex items-center text-xs text-foreground opacity-75", isRTL && "flex-row-reverse")}>
               <TrendingUp className="h-3 w-3 text-success mr-1" />
               +{metrics?.revenueGrowth || '0'}% {t('analytics.fromLastMonth') || 'from last month'}
             </div>
@@ -171,13 +165,13 @@ export const AdminAnalytics = () => {
             <CardTitle className="text-sm font-medium">
               {t('orders.title') || 'Orders'}
             </CardTitle>
-            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+            <ShoppingCart className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {formatNumber(metrics?.totalOrders || 0)}
             </div>
-            <div className={cn("flex items-center text-xs text-muted-foreground", isRTL && "flex-row-reverse")}>
+            <div className={cn("flex items-center text-xs text-foreground opacity-75", isRTL && "flex-row-reverse")}>
               <TrendingDown className="h-3 w-3 text-destructive mr-1" />
               -{metrics?.orderDecline || '0'}% {t('analytics.fromLastWeek') || 'from last week'}
             </div>
@@ -424,6 +418,6 @@ export const AdminAnalytics = () => {
           </div>
         </TabsContent>
       </Tabs>
-    </div>
+    </AdminPageContainer>
   );
 };

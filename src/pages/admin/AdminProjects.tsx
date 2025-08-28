@@ -10,6 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
+import { AdminPageContainer } from '@/components/admin/AdminPageContainer';
 
 interface AdminProject {
   id: string;
@@ -186,24 +187,21 @@ const AdminProjects = () => {
   const overdueProjects = projects.filter(p => isProjectOverdue(p));
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">Project Management</h1>
-        <p className="text-muted-foreground">
-          Monitor project lifecycles, BOQ items, and budget tracking across all client projects
-        </p>
-      </div>
+    <AdminPageContainer
+      title="Project Management"
+      description="Monitor project lifecycles, BOQ items, and budget tracking across all client projects"
+    >
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
-            <Building2 className="h-4 w-4 text-muted-foreground" />
+            <Building2 className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{projects.length}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground opacity-75">
               {activeProjects.length} active projects
             </p>
           </CardContent>
@@ -216,7 +214,7 @@ const AdminProjects = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-success">{completedProjects.length}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground opacity-75">
               Projects delivered
             </p>
           </CardContent>
@@ -229,7 +227,7 @@ const AdminProjects = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-destructive">{overdueProjects.length}</div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground opacity-75">
               Require attention
             </p>
           </CardContent>
@@ -238,13 +236,13 @@ const AdminProjects = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Value</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <DollarSign className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {projects.reduce((sum, p) => sum + calculateTotalBudget(p), 0).toLocaleString()} SAR
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-foreground opacity-75">
               Combined project value
             </p>
           </CardContent>
@@ -259,7 +257,7 @@ const AdminProjects = () => {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-foreground opacity-75" />
               <Input
                 placeholder="Search projects..."
                 value={searchTerm}
@@ -309,7 +307,7 @@ const AdminProjects = () => {
         ) : filteredProjects.length === 0 ? (
           <Card>
             <CardContent className="text-center py-8">
-              <p className="text-muted-foreground">No projects found matching your filters.</p>
+              <p className="text-foreground opacity-75">No projects found matching your filters.</p>
             </CardContent>
           </Card>
         ) : (
@@ -327,7 +325,7 @@ const AdminProjects = () => {
                     <CardDescription className="line-clamp-2">
                       {project.description || 'No description provided'}
                     </CardDescription>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-4 text-sm text-foreground opacity-75">
                       <span>Client: {project.client?.company_name || project.client?.full_name}</span>
                       {project.category && (
                         <>
@@ -366,17 +364,17 @@ const AdminProjects = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                   <div>
-                    <p className="text-sm font-medium text-muted-foreground">Budget</p>
+                    <p className="text-sm font-medium text-foreground opacity-75">Budget</p>
                     <p className="text-lg font-bold text-primary">
                       {calculateTotalBudget(project).toLocaleString()} {project.currency || 'SAR'}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-muted-foreground">BOQ Items</p>
+                    <p className="text-sm font-medium text-foreground opacity-75">BOQ Items</p>
                     <p className="text-sm">{project._count?.boq_items || 0} items</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-muted-foreground">Timeline</p>
+                    <p className="text-sm font-medium text-foreground opacity-75">Timeline</p>
                     <p className="text-sm">
                       {project.start_date && project.end_date
                         ? `${format(new Date(project.start_date), 'MMM dd')} - ${format(new Date(project.end_date), 'MMM dd, yyyy')}`
@@ -385,7 +383,7 @@ const AdminProjects = () => {
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-muted-foreground">Requests</p>
+                    <p className="text-sm font-medium text-foreground opacity-75">Requests</p>
                     <p className="text-sm">{project._count?.requests || 0} related requests</p>
                   </div>
                 </div>
@@ -436,7 +434,7 @@ const AdminProjects = () => {
           ))
         )}
       </div>
-    </div>
+    </AdminPageContainer>
   );
 };
 

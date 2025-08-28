@@ -391,7 +391,7 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                                 <ChevronDown className="h-3 w-3" />
                               )
                             ) : (
-                              <ArrowUpDown className="h-3 w-3 text-foreground opacity-75" />
+                            <ArrowUpDown className="h-3 w-3 text-foreground opacity-75" />
                             )}
                           </div>
                         )}

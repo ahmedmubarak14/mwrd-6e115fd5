@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { BulkApprovalActions } from '@/components/admin/BulkApprovalActions';
 import { Checkbox } from '@/components/ui/checkbox';
+import { AdminPageContainer } from '@/components/admin/AdminPageContainer';
 
 interface AdminRequest {
   id: string;
@@ -176,20 +177,17 @@ const AdminRequests = () => {
   const rejectedRequests = requests.filter(r => r.admin_approval_status === 'rejected');
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">Request Management</h1>
-        <p className="text-muted-foreground">
-          Monitor and manage all procurement requests across the platform
-        </p>
-      </div>
+    <AdminPageContainer
+      title="Request Management"
+      description="Monitor and manage all procurement requests across the platform"
+    >
 
       {/* Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Requests</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
+            <Clock className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{requests.length}</div>
@@ -235,7 +233,7 @@ const AdminRequests = () => {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-foreground opacity-75" />
               <Input
                 placeholder="Search requests..."
                 value={searchTerm}
@@ -315,7 +313,7 @@ const AdminRequests = () => {
           ) : filteredRequests.length === 0 ? (
             <Card>
               <CardContent className="text-center py-8">
-                <p className="text-muted-foreground">No requests found matching your filters.</p>
+                <p className="text-foreground opacity-75">No requests found matching your filters.</p>
               </CardContent>
             </Card>
           ) : (
@@ -333,7 +331,7 @@ const AdminRequests = () => {
                         <CardDescription className="line-clamp-2">
                           {request.description}
                         </CardDescription>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-2 text-sm text-foreground opacity-75">
                           <User className="h-4 w-4" />
                           {request.user_profiles?.company_name || request.user_profiles?.full_name || 'Unknown Client'}
                           <span>•</span>
@@ -364,7 +362,7 @@ const AdminRequests = () => {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                     <div>
-                      <p className="text-sm font-medium text-muted-foreground">Budget Range</p>
+                      <p className="text-sm font-medium text-foreground opacity-75">Budget Range</p>
                       <p className="text-sm">
                         {request.budget_min && request.budget_max 
                           ? `${request.budget_min.toLocaleString()} - ${request.budget_max.toLocaleString()} ${request.currency || 'SAR'}`
@@ -373,17 +371,17 @@ const AdminRequests = () => {
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-muted-foreground">Deadline</p>
+                      <p className="text-sm font-medium text-foreground opacity-75">Deadline</p>
                       <p className="text-sm">
                         {request.deadline ? format(new Date(request.deadline), 'MMM dd, yyyy') : 'Not specified'}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-muted-foreground">Offers Received</p>
+                      <p className="text-sm font-medium text-foreground opacity-75">Offers Received</p>
                       <p className="text-sm font-bold text-primary">{request._count?.offers || 0} offers</p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-muted-foreground">Created</p>
+                      <p className="text-sm font-medium text-foreground opacity-75">Created</p>
                       <p className="text-sm">{format(new Date(request.created_at), 'MMM dd, yyyy HH:mm')}</p>
                     </div>
                   </div>
@@ -436,7 +434,7 @@ const AdminRequests = () => {
           {/* Similar structure but filtered for rejected */}
         </TabsContent>
       </Tabs>
-    </div>
+    </AdminPageContainer>
   );
 };
 

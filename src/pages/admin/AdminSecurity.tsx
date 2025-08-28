@@ -9,6 +9,7 @@ import { SecurityIncidentManager } from "@/components/admin/SecurityIncidentMana
 import { SecurityComplianceCenter } from "@/components/admin/SecurityComplianceCenter";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { cn } from "@/lib/utils";
+import { AdminPageContainer } from "@/components/admin/AdminPageContainer";
 
 const AdminSecurity = () => {
   const languageContext = useOptionalLanguage();
@@ -18,16 +19,10 @@ const AdminSecurity = () => {
   };
 
   return (
-    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className={cn(isRTL ? "text-right" : "text-left")}>
-        <h1 className="text-3xl font-bold flex items-center gap-2">
-          <Shield className="h-8 w-8 text-primary" />
-          Security & Monitoring Center
-        </h1>
-        <p className="text-muted-foreground">
-          Comprehensive security analytics, compliance monitoring, and system health oversight
-        </p>
-      </div>
+    <AdminPageContainer
+      title="Security & Monitoring Center"
+      description="Comprehensive security analytics, compliance monitoring, and system health oversight"
+    >
 
       <Tabs defaultValue="overview" className="space-y-6">
         <TabsList className="grid grid-cols-5 w-full">
@@ -73,7 +68,7 @@ const AdminSecurity = () => {
           <SecurityComplianceCenter />
         </TabsContent>
       </Tabs>
-    </div>
+    </AdminPageContainer>
   );
 };
 

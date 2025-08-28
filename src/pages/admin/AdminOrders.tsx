@@ -10,6 +10,7 @@ import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { format } from "date-fns";
 import { ShoppingCart, Package, DollarSign } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { AdminPageContainer } from "@/components/admin/AdminPageContainer";
 
 interface Order {
   id: string;
@@ -104,20 +105,20 @@ export default function AdminOrders() {
   }
 
   return (
-    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'} data-admin-dashboard>
-      <div className={cn(isRTL ? "text-right" : "text-left")}>
-        <h1 className="text-2xl font-bold text-foreground">{t('admin.orders')}</h1>
-        <p className="text-foreground opacity-75">{t('common.manageDescription')}</p>
-      </div>
+    <AdminPageContainer
+      title={t('admin.orders')}
+      description={t('common.manageDescription')}
+    >
+      <div data-admin-dashboard>
 
       {/* Orders List */}
       <div className="space-y-4">
         {filteredOrders.length === 0 ? (
-          <Card>
-            <CardContent className="p-6 text-center">
-              <p className="text-foreground opacity-75">{t('common.noData')}</p>
-            </CardContent>
-          </Card>
+            <Card>
+              <CardContent className="p-6 text-center">
+                <p className="text-foreground opacity-75">{t('common.noData')}</p>
+              </CardContent>
+            </Card>
         ) : (
           filteredOrders.map((order) => (
             <Card key={order.id}>
@@ -149,6 +150,7 @@ export default function AdminOrders() {
           ))
         )}
       </div>
-    </div>
+      </div>
+    </AdminPageContainer>
   );
 }
