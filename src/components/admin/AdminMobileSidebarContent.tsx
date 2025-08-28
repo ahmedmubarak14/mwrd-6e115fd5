@@ -157,7 +157,7 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
                       isActive={active}
                       className={cn(
                         "group relative transition-all duration-200 h-14 px-4",
-                        active && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                        active && "bg-accent text-accent-foreground font-medium"
                       )}
                     >
                       <Link 
@@ -167,9 +167,9 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
                       >
                         <item.icon className={cn(
                           "h-5 w-5 shrink-0 transition-colors",
-                          active ? "text-sidebar-accent-foreground" : "text-muted-foreground"
+                          active ? "text-primary" : "text-muted-foreground"
                         )} />
-                        <span className="truncate flex-1">
+                        <span className="truncate flex-1 text-foreground">
                           {item.name}
                         </span>
                         {item.badge && item.badge > 0 && (

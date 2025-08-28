@@ -315,7 +315,7 @@ export const EnhancedAdminSidebar = ({ className }: AdminSidebarProps) => {
                             
                             {state !== "collapsed" && (
                               <>
-                                <span className="truncate flex-1 transition-all duration-200">
+                                <span className="truncate flex-1 transition-all duration-200 text-foreground">
                                   {item.name}
                                 </span>
                                 
