@@ -117,27 +117,59 @@ export const useRealTimeChat = () => {
   }, [user]);
 
   const startConversation = useCallback(async (
-    recipientId: string,
+    recipientUserIdOrProfileId: string,
     requestId?: string,
     offerId?: string,
     conversationType: string = 'business'
   ) => {
     if (!user) throw new Error('User not authenticated');
 
-    console.log('Starting conversation with:', {
-      recipientId,
-      conversationType,
-      requestId,
-      offerId,
-      userId: user.id
-    });
+    console.log('Starting conversation with recipient:', recipientUserIdOrProfileId);
 
     try {
-      // Check if conversation already exists
+      // First, get the current user's profile ID and the recipient's profile ID
+      const { data: currentUserProfile } = await supabase
+        .from('user_profiles')
+        .select('id')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!currentUserProfile) {
+        throw new Error('Current user profile not found');
+      }
+
+      // Check if recipient is a user_id or profile_id by trying both
+      let { data: recipientProfile } = await supabase
+        .from('user_profiles')
+        .select('id, user_id')
+        .eq('user_id', recipientUserIdOrProfileId)
+        .single();
+
+      if (!recipientProfile) {
+        // Try as profile ID
+        const { data: profileById } = await supabase
+          .from('user_profiles')
+          .select('id, user_id')
+          .eq('id', recipientUserIdOrProfileId)
+          .single();
+        
+        recipientProfile = profileById;
+      }
+
+      if (!recipientProfile) {
+        throw new Error('Recipient profile not found');
+      }
+
+      const clientProfileId = currentUserProfile.id;
+      const vendorProfileId = recipientProfile.id;
+
+      console.log('Profile IDs - Client:', clientProfileId, 'Vendor:', vendorProfileId);
+
+      // Check if conversation already exists between these profiles
       let query = supabase
         .from('conversations')
         .select('*')
-        .or(`and(client_id.eq.${user.id},vendor_id.eq.${recipientId}),and(client_id.eq.${recipientId},vendor_id.eq.${user.id})`)
+        .or(`and(client_id.eq.${clientProfileId},vendor_id.eq.${vendorProfileId}),and(client_id.eq.${vendorProfileId},vendor_id.eq.${clientProfileId})`)
         .eq('conversation_type', conversationType);
 
       // Add filters for request/offer if provided
@@ -155,11 +187,11 @@ export const useRealTimeChat = () => {
         return existingConversation;
       }
 
-      // Create new conversation
+      // Create new conversation using profile IDs
       console.log('Creating new conversation...');
       const conversationData: any = {
-        client_id: user.id,
-        vendor_id: recipientId,
+        client_id: clientProfileId,
+        vendor_id: vendorProfileId,
         status: 'active',
         conversation_type: conversationType
       };
@@ -314,10 +346,21 @@ export const useRealTimeChat = () => {
     setError(null);
 
     try {
+      // First get the current user's profile ID
+      const { data: currentUserProfile } = await supabase
+        .from('user_profiles')
+        .select('id')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!currentUserProfile) {
+        throw new Error('Current user profile not found');
+      }
+
       const { data, error } = await supabase
         .from('conversations')
         .select('*')
-        .or(`client_id.eq.${user.id},vendor_id.eq.${user.id}`)
+        .or(`client_id.eq.${currentUserProfile.id},vendor_id.eq.${currentUserProfile.id}`)
         .order('last_message_at', { ascending: false, nullsFirst: false });
 
       if (error) throw error;

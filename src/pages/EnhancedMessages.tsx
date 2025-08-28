@@ -51,27 +51,35 @@ export default function EnhancedMessages() {
     const fetchParticipants = async () => {
       if (!conversations.length || !user) return;
 
+      // Get current user's profile ID first
+      const { data: currentUserProfile } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!currentUserProfile) return;
+
       const participantIds = new Set<string>();
+      // Always include current user profile
+      participantIds.add(currentUserProfile.id);
+      
       conversations.forEach(conv => {
-        // Add the other participant's user_id to the set
-        if (conv.client_id !== user.id) {
-          participantIds.add(conv.client_id);
-        }
-        if (conv.vendor_id !== user.id) {
-          participantIds.add(conv.vendor_id);
-        }
+        // Add all participant profile IDs
+        participantIds.add(conv.client_id);
+        participantIds.add(conv.vendor_id);
       });
 
-      // Fetch user profiles for all participants
+      // Fetch user profiles for all participants using profile IDs
       if (participantIds.size > 0) {
         const { data: profiles } = await supabase
           .from('user_profiles')
           .select('*')
-          .in('user_id', Array.from(participantIds));
+          .in('id', Array.from(participantIds));
 
         const participantMap: Record<string, any> = {};
         profiles?.forEach(profile => {
-          participantMap[profile.user_id] = profile;
+          participantMap[profile.id] = profile;
         });
         
         setParticipantData(participantMap);
@@ -82,9 +90,14 @@ export default function EnhancedMessages() {
   }, [conversations, user]);
 
   const getOtherParticipant = (conversation: Conversation) => {
-    if (!user) return null;
+    if (!user || !participantData) return null;
     
-    const otherParticipantId = conversation.client_id === user.id 
+    // Find current user's profile ID from participant data
+    const currentUserProfile = Object.values(participantData).find(p => p.user_id === user.id);
+    if (!currentUserProfile) return null;
+    
+    // Get the other participant's profile ID
+    const otherParticipantId = conversation.client_id === currentUserProfile.id 
       ? conversation.vendor_id 
       : conversation.client_id;
     
