@@ -16,6 +16,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { VendorProfileModal } from "@/components/modals/VendorProfileModal";
 import { useNavigate } from "react-router-dom";
+import { useRealTimeChat } from "@/hooks/useRealTimeChat";
 
 export const VendorDirectory: React.FC = () => {
   const languageContext = useOptionalLanguage();
@@ -24,6 +25,7 @@ export const VendorDirectory: React.FC = () => {
   const navigate = useNavigate();
   const { vendors, loading, totalCount, fetchVendors } = useVendors();
   const { categories } = useCategories();
+  const { startConversation } = useRealTimeChat();
   const [filters, setFilters] = useState<VendorFilters>({});
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState('created_at');
@@ -174,8 +176,26 @@ export const VendorDirectory: React.FC = () => {
               {isRTL ? 'عرض الملف' : 'View Profile'}
             </Button>
           </VendorProfileModal>
+          <Button 
+            variant="secondary" 
+            size="sm" 
+            className="flex-1" 
+            onClick={async () => {
+              try {
+                console.log('Starting direct conversation with vendor:', vendor.id);
+                const conversation = await startConversation(vendor.id.toString());
+                if (conversation) {
+                  navigate('/messages');
+                }
+              } catch (error) {
+                console.error('Error starting conversation:', error);
+              }
+            }}
+          >
+            {isRTL ? 'إرسال رسالة' : 'Send Message'}
+          </Button>
           <Button size="sm" className="flex-1" onClick={() => navigate('/requests/create')}>
-            {isRTL ? 'إرسال طلب شراء' : 'Send Procurement Request'}
+            {isRTL ? 'طلب عام' : 'Public Request'}
           </Button>
         </div>
       </CardContent>

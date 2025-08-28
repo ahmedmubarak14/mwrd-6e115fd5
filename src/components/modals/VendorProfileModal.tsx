@@ -373,7 +373,7 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
                   ) : (
                     <MessageCircle className="h-4 w-4 mr-2" />
                   )}
-                  {isArabic ? 'دردشة الآن' : 'Chat Now'}
+                  {isArabic ? 'رسالة مباشرة' : 'Direct Message'}
                 </Button>
                 <Button 
                   variant="outline" 
@@ -389,6 +389,18 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
                   {isArabic ? 'مكالمة مرئية' : 'Video Call'}
                 </Button>
               </div>
+              <Button 
+                variant="secondary" 
+                className="w-full mt-2"
+                onClick={() => {
+                  setOpen(false);
+                  setTimeout(() => {
+                    navigate('/requests/create');
+                  }, 100);
+                }}
+              >
+                {isArabic ? 'إنشاء طلب عام للجميع' : 'Create Public Request for All Vendors'}
+              </Button>
             </CardContent>
           </Card>
         </div>
