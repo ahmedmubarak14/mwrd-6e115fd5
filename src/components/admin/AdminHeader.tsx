@@ -91,7 +91,7 @@ export const AdminHeader = ({ onMobileMenuOpen, onSidebarToggle, sidebarOpen }: 
               size="icon" 
               onClick={() => toast.info(t('admin.notificationsDemo'))}
               className="relative h-10 w-10 hover:bg-accent/50 transition-all duration-200 hover:scale-105 active:scale-95"
-              aria-label="View notifications"
+              aria-label="View notifications (3 pending)"
             >
               <Bell className="h-4 w-4" />
               <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center animate-pulse shadow-lg">

@@ -49,8 +49,11 @@ export const EnhancedAdminHeaderSearch = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
   
   const inputRef = useRef<HTMLInputElement>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const cacheRef = useRef<Map<string, SearchResult[]>>(new Map());
   const navigate = useNavigate();
   const languageContext = useOptionalLanguage();
   const { t, isRTL } = languageContext || { 
@@ -76,105 +79,149 @@ export const EnhancedAdminHeaderSearch = () => {
     localStorage.setItem('admin-recent-searches', JSON.stringify(updated));
   };
 
-  // Perform search
+  // Perform search with caching and error handling
   const performSearch = async (searchQuery: string) => {
     if (!searchQuery.trim()) {
       setResults([]);
+      setError(null);
       return;
     }
 
+    // Check cache first
+    const cacheKey = searchQuery.toLowerCase().trim();
+    const cachedResults = cacheRef.current.get(cacheKey);
+    if (cachedResults) {
+      setResults(cachedResults);
+      setError(null);
+      return;
+    }
+
+    // Cancel previous request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    // Create new abort controller
+    const abortController = new AbortController();
+    abortControllerRef.current = abortController;
+
     setLoading(true);
+    setError(null);
+    
     try {
       const searchResults: SearchResult[] = [];
+      const searchPromises = [];
 
       // Search users
-      const { data: users } = await supabase
-        .from('user_profiles')
-        .select('id, full_name, email, company_name, role')
-        .or(`full_name.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%,company_name.ilike.%${searchQuery}%`)
-        .limit(5);
-
-      users?.forEach(user => {
-        searchResults.push({
-          id: user.id,
-          type: 'user',
-          title: user.full_name || user.email,
-          subtitle: user.company_name || user.role,
-          url: `/admin/users?search=${user.id}`
-        });
-      });
+      searchPromises.push(
+        supabase
+          .from('user_profiles')
+          .select('id, full_name, email, company_name, role')
+          .or(`full_name.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%,company_name.ilike.%${searchQuery}%`)
+          .limit(3)
+          .abortSignal(abortController.signal)
+      );
 
       // Search requests
-      const { data: requests } = await supabase
-        .from('requests')
-        .select('id, title, description, status, admin_approval_status')
-        .or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`)
-        .limit(5);
+      searchPromises.push(
+        supabase
+          .from('requests')
+          .select('id, title, description, status, admin_approval_status')
+          .or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`)
+          .limit(3)
+          .abortSignal(abortController.signal)
+      );
 
-      requests?.forEach(request => {
-        searchResults.push({
-          id: request.id,
-          type: 'request',
-          title: request.title,
-          subtitle: request.description?.slice(0, 50) + '...',
-          status: request.admin_approval_status,
-          url: `/admin/requests?search=${request.id}`
+      // Search offers  
+      searchPromises.push(
+        supabase
+          .from('offers')
+          .select('id, title, description, admin_approval_status')
+          .or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`)
+          .limit(3)
+          .abortSignal(abortController.signal)
+      );
+
+      // Execute searches in parallel
+      const [usersResult, requestsResult, offersResult] = await Promise.allSettled(searchPromises);
+
+      // Process results
+      if (usersResult.status === 'fulfilled' && usersResult.value.data) {
+        usersResult.value.data.forEach(user => {
+          searchResults.push({
+            id: user.id,
+            type: 'user',
+            title: user.full_name || user.email,
+            subtitle: user.company_name || user.role,
+            url: `/admin/users?search=${user.id}`
+          });
         });
-      });
+      }
 
-      // Search offers
-      const { data: offers } = await supabase
-        .from('offers')
-        .select('id, title, description, admin_approval_status')
-        .or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`)
-        .limit(5);
-
-      offers?.forEach(offer => {
-        searchResults.push({
-          id: offer.id,
-          type: 'offer',
-          title: offer.title || 'Untitled Offer',
-          subtitle: offer.description?.slice(0, 50) + '...',
-          status: offer.admin_approval_status,
-          url: `/admin/offers?search=${offer.id}`
+      if (requestsResult.status === 'fulfilled' && requestsResult.value.data) {
+        requestsResult.value.data.forEach(request => {
+          searchResults.push({
+            id: request.id,
+            type: 'request',
+            title: request.title,
+            subtitle: request.description?.slice(0, 50) + '...',
+            status: request.admin_approval_status,
+            url: `/admin/requests?search=${request.id}`
+          });
         });
-      });
+      }
 
-      // Search orders by ID
-      const { data: orders } = await supabase
-        .from('orders')
-        .select('id, status, amount')
-        .or(`id.ilike.%${searchQuery}%`)
-        .limit(5);
-
-      orders?.forEach(order => {
-        searchResults.push({
-          id: order.id,
-          type: 'order',
-          title: `Order #${order.id.slice(0, 8)}`,
-          subtitle: `Amount: $${order.amount}`,
-          status: order.status,
-          url: `/admin/orders?search=${order.id}`
+      if (offersResult.status === 'fulfilled' && offersResult.value.data) {
+        offersResult.value.data.forEach(offer => {
+          searchResults.push({
+            id: offer.id,
+            type: 'offer',
+            title: offer.title || 'Untitled Offer',
+            subtitle: offer.description?.slice(0, 50) + '...',
+            status: offer.admin_approval_status,
+            url: `/admin/offers?search=${offer.id}`
+          });
         });
-      });
+      }
+
+      // Cache results (limit cache size)
+      if (cacheRef.current.size > 10) {
+        const firstKey = cacheRef.current.keys().next().value;
+        cacheRef.current.delete(firstKey);
+      }
+      cacheRef.current.set(cacheKey, searchResults);
 
       setResults(searchResults);
-    } catch (error) {
-      console.error('Search error:', error);
-      toast.error('Search failed. Please try again.');
+    } catch (error: any) {
+      // Don't show error for aborted requests
+      if (error.name !== 'AbortError') {
+        console.error('Search error:', error);
+        setError('Search failed. Please try again.');
+        setResults([]);
+      }
     } finally {
       setLoading(false);
+      abortControllerRef.current = null;
     }
   };
 
-  // Handle input change with debouncing
+  // Handle input change with improved debouncing
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
       performSearch(query);
-    }, 300);
+    }, 500); // Increased to 500ms for better performance
 
     return () => clearTimeout(debounceTimer);
   }, [query]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, []);
 
   // Handle keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -240,7 +287,7 @@ export const EnhancedAdminHeaderSearch = () => {
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="admin-subtitle">{t('admin.search')}</DialogTitle>
+            <DialogTitle className="text-lg font-semibold">{t('admin.search')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div className="relative">
@@ -251,7 +298,7 @@ export const EnhancedAdminHeaderSearch = () => {
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder={t('admin.searchPlaceholder')}
-                className="pl-10 admin-body"
+                className="pl-10 text-sm"
                 autoFocus
               />
               {query && (
@@ -265,8 +312,30 @@ export const EnhancedAdminHeaderSearch = () => {
                 </Button>
               )}
             </div>
+            {/* Loading state */}
+            {loading && (
+              <div className="flex items-center justify-center py-4">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+              </div>
+            )}
+
+            {/* Error state */}
+            {error && (
+              <div className="text-center py-4">
+                <div className="text-destructive text-sm mb-2">⚠ {error}</div>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => performSearch(query)}
+                  className="text-xs"
+                >
+                  Try Again
+                </Button>
+              </div>
+            )}
+
             {/* Search results for mobile */}
-            {results.length > 0 && (
+            {!error && !loading && results.length > 0 && (
               <div className="max-h-60 overflow-y-auto space-y-1">
                 {results.map((result, index) => {
                   const Icon = getResultIcon(result.type);
@@ -282,9 +351,9 @@ export const EnhancedAdminHeaderSearch = () => {
                       <div className="flex items-center gap-3">
                         <Icon className="h-4 w-4 text-muted-foreground shrink-0" />
                         <div className="flex-1 min-w-0">
-                          <p className="admin-body truncate">{result.title}</p>
+                          <p className="text-sm truncate">{result.title}</p>
                           {result.subtitle && (
-                            <p className="admin-caption truncate">{result.subtitle}</p>
+                            <p className="text-xs text-muted-foreground truncate">{result.subtitle}</p>
                           )}
                         </div>
                         {getStatusBadge(result.status)}
@@ -292,6 +361,15 @@ export const EnhancedAdminHeaderSearch = () => {
                     </button>
                   );
                 })}
+              </div>
+            )}
+              
+            {/* No results state */}
+            {!error && !loading && query && results.length === 0 && (
+              <div className="text-center py-4">
+                <Search className="h-6 w-6 text-muted-foreground mx-auto mb-2" />
+                <p className="text-sm">No results found</p>
+                <p className="text-xs text-muted-foreground">Try a different search term</p>
               </div>
             )}
           </div>
@@ -317,7 +395,7 @@ export const EnhancedAdminHeaderSearch = () => {
             onFocus={() => setIsOpen(true)}
             placeholder={t('admin.searchAdvancedPlaceholder') || 'Search users, requests, offers...'}
             className={cn(
-              "w-72 admin-body transition-all duration-200 hover:shadow-md focus:shadow-lg",
+              "w-72 text-sm transition-all duration-200 hover:shadow-md focus:shadow-lg",
               isRTL ? "pr-10 pl-4 text-right" : "pl-10 pr-4 text-left"
             )}
             dir={isRTL ? 'rtl' : 'ltr'}
@@ -350,7 +428,7 @@ export const EnhancedAdminHeaderSearch = () => {
 
           {!loading && results.length > 0 && (
             <div className="space-y-1">
-              <p className="admin-caption mb-2">{t('admin.searchResults')}</p>
+              <p className="text-xs text-muted-foreground mb-2">{t('admin.searchResults')}</p>
               {results.map((result, index) => {
                 const Icon = getResultIcon(result.type);
                 return (
@@ -365,9 +443,9 @@ export const EnhancedAdminHeaderSearch = () => {
                     <div className="flex items-center gap-3">
                       <Icon className="h-4 w-4 text-muted-foreground shrink-0" />
                       <div className="flex-1 min-w-0">
-                        <p className="admin-body truncate">{result.title}</p>
+                        <p className="text-sm truncate">{result.title}</p>
                         {result.subtitle && (
-                          <p className="admin-caption truncate">{result.subtitle}</p>
+                          <p className="text-xs text-muted-foreground truncate">{result.subtitle}</p>
                         )}
                       </div>
                       {getStatusBadge(result.status)}
@@ -378,24 +456,38 @@ export const EnhancedAdminHeaderSearch = () => {
             </div>
           )}
 
-          {!loading && query && results.length === 0 && (
+          {error && (
+            <div className="text-center py-6">
+              <div className="text-destructive text-sm mb-2">⚠ {error}</div>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => performSearch(query)}
+                className="text-xs"
+              >
+                Try Again
+              </Button>
+            </div>
+          )}
+
+          {!loading && !error && query && results.length === 0 && (
             <div className="text-center py-6">
               <Search className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-              <p className="admin-body">{t('admin.noSearchResults')}</p>
-              <p className="admin-caption">{t('admin.tryDifferentSearch')}</p>
+              <p className="text-sm">{t('admin.noSearchResults')}</p>
+              <p className="text-xs text-muted-foreground">{t('admin.tryDifferentSearch')}</p>
             </div>
           )}
 
           {!query && recentSearches.length > 0 && (
             <div className="space-y-2">
-              <p className="admin-caption flex items-center gap-2">
+              <p className="text-xs text-muted-foreground flex items-center gap-2">
                 <Clock className="h-3 w-3" />
                 {t('admin.recentSearches')}
               </p>
               {recentSearches.map((recent, index) => (
                 <button
                   key={index}
-                  className="w-full text-left p-2 rounded hover:bg-accent/50 transition-colors admin-body"
+                  className="w-full text-left p-2 rounded hover:bg-accent/50 transition-colors text-sm"
                   onClick={() => setQuery(recent)}
                 >
                   {recent}
@@ -406,11 +498,11 @@ export const EnhancedAdminHeaderSearch = () => {
 
           <Separator className="my-3" />
           <div className="flex items-center justify-between">
-            <p className="admin-caption flex items-center gap-1">
+            <p className="text-xs text-muted-foreground flex items-center gap-1">
               <Command className="h-3 w-3" />
               {t('admin.searchTips') || 'Use ↑↓ to navigate, Enter to select'}
             </p>
-            <Button variant="ghost" size="sm" className="admin-caption">
+            <Button variant="ghost" size="sm" className="text-xs">
               <Filter className="h-3 w-3 mr-1" />
               {t('admin.advancedFilters')}
             </Button>

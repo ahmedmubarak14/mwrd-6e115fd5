@@ -293,6 +293,8 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
                             : "text-neutral-700 hover:text-neutral-900 hover:bg-neutral-100"
                         )}
                         title={collapsed ? item.name : undefined}
+                        aria-label={`Navigate to ${item.name}`}
+                        aria-current={active ? 'page' : undefined}
                       >
                         <item.icon 
                           className={cn(
