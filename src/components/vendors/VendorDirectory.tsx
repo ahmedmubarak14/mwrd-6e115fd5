@@ -10,13 +10,16 @@ import { MapPin, Clock, Shield, Search, Filter, Users, Building2 } from "lucide-
 import { format } from "date-fns";
 import { useVendors, VendorFilters } from "@/hooks/useVendors";
 import { useCategories } from "@/hooks/useCategories";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { EmptyState } from "@/components/ui/empty-state";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { VendorProfileModal } from "@/components/modals/VendorProfileModal";
+import { CreateRequestModal } from "@/components/modals/CreateRequestModal";
 
 export const VendorDirectory: React.FC = () => {
-  const { language } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const language = languageContext?.language || 'en';
   const isRTL = language === 'ar';
   const { vendors, loading, totalCount, fetchVendors } = useVendors();
   const { categories } = useCategories();
@@ -48,6 +51,30 @@ export const VendorDirectory: React.FC = () => {
     setFilters({});
     setPage(1);
   };
+
+  // Convert vendor data to VendorProfileModal format
+  const mapVendorForModal = (vendor: any) => ({
+    id: vendor.id,
+    name: vendor.company_name || vendor.full_name || 'Unknown Vendor',
+    englishName: vendor.company_name || vendor.full_name || 'Unknown Vendor',
+    category: vendor.vendor_categories?.[0]?.categories?.name_en || 'General',
+    englishCategory: vendor.vendor_categories?.[0]?.categories?.name_en || 'General',
+    rating: vendor.rating || 4.5,
+    reviews: vendor.total_orders || 0,
+    location: vendor.address || 'Saudi Arabia',
+    englishLocation: vendor.address || 'Saudi Arabia',
+    description: vendor.bio || 'Professional vendor providing quality services.',
+    englishDescription: vendor.bio || 'Professional vendor providing quality services.',
+    completedProjects: vendor.total_orders || 5,
+    services: vendor.vendor_categories?.map((vc: any) => vc.categories?.name_en).filter(Boolean) || [],
+    projects: [
+      { title: 'Recent Project', category: vendor.vendor_categories?.[0]?.categories?.name_en || 'General' }
+    ],
+    certifications: vendor.certifications || ['ISO Certified', 'Quality Assured'],
+    responseTime: vendor.response_time || '2 hours',
+    englishResponseTime: vendor.response_time || '2 hours',
+    avatar_url: vendor.avatar_url
+  });
 
   const renderVendorCard = (vendor: any) => (
     <Card key={vendor.id} className="hover:shadow-lg transition-all duration-200">
@@ -141,12 +168,16 @@ export const VendorDirectory: React.FC = () => {
         </div>
 
         <div className="flex gap-2 pt-2">
-          <Button variant="outline" size="sm" className="flex-1">
-            {isRTL ? 'عرض الملف' : 'View Profile'}
-          </Button>
-          <Button size="sm" className="flex-1">
-            {isRTL ? 'إرسال طلب شراء' : 'Send Procurement Request'}
-          </Button>
+          <VendorProfileModal vendor={mapVendorForModal(vendor)}>
+            <Button variant="outline" size="sm" className="flex-1">
+              {isRTL ? 'عرض الملف' : 'View Profile'}
+            </Button>
+          </VendorProfileModal>
+          <CreateRequestModal>
+            <Button size="sm" className="flex-1">
+              {isRTL ? 'إرسال طلب شراء' : 'Send Procurement Request'}
+            </Button>
+          </CreateRequestModal>
         </div>
       </CardContent>
     </Card>
@@ -207,6 +238,30 @@ export const VendorDirectory: React.FC = () => {
               value={filters.budgetMax || ''}
               onChange={(e) => handleFilterChange('budgetMax', parseFloat(e.target.value) || undefined)}
             />
+          </div>
+        </div>
+
+        {/* Categories Filter */}
+        <div>
+          <label className="text-sm font-medium mb-2 block">
+            {isRTL ? 'الفئات' : 'Categories'}
+          </label>
+          <div className="space-y-2 max-h-48 overflow-y-auto">
+            {categories.map((category) => (
+              <div key={category.id} className="flex items-center space-x-2">
+                <Checkbox
+                  id={`category-${category.id}`}
+                  checked={(filters.categories || []).includes(category.id)}
+                  onCheckedChange={(checked) => handleCategoryToggle(category.id, checked as boolean)}
+                />
+                <label 
+                  htmlFor={`category-${category.id}`} 
+                  className="text-sm cursor-pointer flex-1"
+                >
+                  {isRTL ? category.name_ar : category.name_en}
+                </label>
+              </div>
+            ))}
           </div>
         </div>
 
