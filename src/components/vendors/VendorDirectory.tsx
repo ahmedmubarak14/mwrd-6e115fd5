@@ -15,12 +15,13 @@ import { MetricCard } from "@/components/ui/MetricCard";
 import { EmptyState } from "@/components/ui/empty-state";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { VendorProfileModal } from "@/components/modals/VendorProfileModal";
-import { CreateRequestModal } from "@/components/modals/CreateRequestModal";
+import { useNavigate } from "react-router-dom";
 
 export const VendorDirectory: React.FC = () => {
   const languageContext = useOptionalLanguage();
   const language = languageContext?.language || 'en';
   const isRTL = language === 'ar';
+  const navigate = useNavigate();
   const { vendors, loading, totalCount, fetchVendors } = useVendors();
   const { categories } = useCategories();
   const [filters, setFilters] = useState<VendorFilters>({});
@@ -173,11 +174,9 @@ export const VendorDirectory: React.FC = () => {
               {isRTL ? 'عرض الملف' : 'View Profile'}
             </Button>
           </VendorProfileModal>
-          <CreateRequestModal>
-            <Button size="sm" className="flex-1">
-              {isRTL ? 'إرسال طلب شراء' : 'Send Procurement Request'}
-            </Button>
-          </CreateRequestModal>
+          <Button size="sm" className="flex-1" onClick={() => navigate('/requests/create')}>
+            {isRTL ? 'إرسال طلب شراء' : 'Send Procurement Request'}
+          </Button>
         </div>
       </CardContent>
     </Card>
