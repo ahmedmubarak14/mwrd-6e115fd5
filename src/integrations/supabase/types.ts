@@ -1624,6 +1624,15 @@ export type Database = {
           total_vendors: number
         }[]
       }
+      log_document_access_attempt: {
+        Args: {
+          error_message?: string
+          file_path: string
+          success: boolean
+          user_role: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       order_status:
