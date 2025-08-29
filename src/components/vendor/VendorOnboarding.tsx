@@ -51,7 +51,6 @@ const SERVICE_CATEGORIES = [
   'Security Services',
   'Transportation & Logistics',
   'Catering & Food Services',
-  'Event Management',
   'Decoration & Flowers',
   'Entertainment & Shows'
 ];

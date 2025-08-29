@@ -202,34 +202,34 @@ export const SecurityDashboard = () => {
         </Card>
       </div>
 
-      {/* Recent Security Events */}
+      {/* Security Activity Overview */}
       <Card>
         <CardHeader>
-          <CardTitle>Recent Security Events</CardTitle>
+          <CardTitle>Security Activity Overview</CardTitle>
           <CardDescription>Latest security-related activities and alerts</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {securityMetrics?.recentEvents?.map((event, index) => (
+            {securityMetrics?.recentEvents?.map((activity, index) => (
               <div key={index} className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 border rounded-lg">
                 <div className="flex items-center gap-3 min-w-0 flex-1">
                   <div className={`p-2 rounded-full shrink-0 ${
-                    event.severity === 'high' ? 'bg-destructive/20 text-destructive' :
-                    event.severity === 'medium' ? 'bg-warning/20 text-warning' :
+                    activity.severity === 'high' ? 'bg-destructive/20 text-destructive' :
+                    activity.severity === 'medium' ? 'bg-warning/20 text-warning' :
                     'bg-success/20 text-success'
                   }`}>
-                    {event.type === 'login_attempt' ? <Lock className="h-4 w-4" /> :
-                     event.type === 'suspicious_activity' ? <Eye className="h-4 w-4" /> :
+                    {activity.type === 'login_attempt' ? <Lock className="h-4 w-4" /> :
+                     activity.type === 'suspicious_activity' ? <Eye className="h-4 w-4" /> :
                      <Activity className="h-4 w-4" />}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="font-medium text-sm sm:text-base truncate">{event.title}</div>
-                    <div className="text-xs sm:text-sm text-muted-foreground line-clamp-2 sm:line-clamp-1">{event.description}</div>
+                    <div className="font-medium text-sm sm:text-base truncate">{activity.title}</div>
+                    <div className="text-xs sm:text-sm text-muted-foreground line-clamp-2 sm:line-clamp-1">{activity.description}</div>
                   </div>
                 </div>
                 <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-4 shrink-0">
                   <div className="text-xs sm:text-sm text-muted-foreground">
-                    {new Date(event.timestamp).toLocaleString(undefined, { 
+                    {new Date(activity.timestamp).toLocaleString(undefined, { 
                       month: 'short', 
                       day: 'numeric', 
                       hour: '2-digit', 
@@ -237,16 +237,16 @@ export const SecurityDashboard = () => {
                     })}
                   </div>
                   <Badge variant={
-                    event.severity === 'high' ? 'destructive' :
-                    event.severity === 'medium' ? 'secondary' : 'default'
+                    activity.severity === 'high' ? 'destructive' :
+                    activity.severity === 'medium' ? 'secondary' : 'default'
                   } className="text-xs">
-                    {event.severity}
+                    {activity.severity}
                   </Badge>
                 </div>
               </div>
             )) || (
               <div className="text-center py-8 text-muted-foreground">
-                No recent security events
+                No recent security activities
               </div>
             )}
           </div>
