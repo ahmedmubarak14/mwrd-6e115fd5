@@ -64,55 +64,44 @@ export const AdminLayout = () => {
 
   return (
     <AdminErrorBoundary>
-      <MobileContainer pageType="dashboard" className="min-h-screen">
-        {isMobile ? (
-          // Mobile Layout
-          <div className="min-h-screen flex flex-col">
-            <AdminHeader onMobileMenuOpen={() => setMobileMenuOpen(true)} />
-            <AdminMobileSidebar 
-              isOpen={mobileMenuOpen} 
-              onOpenChange={setMobileMenuOpen} 
+      <div className="min-h-screen">
+        {/* Always show desktop layout with sidebar for admin */}
+        <div className="min-h-screen flex w-full" dir={isRTL ? 'rtl' : 'ltr'}>
+          <AdminSidebar 
+            collapsed={!sidebarOpen}
+          />
+          <div 
+            className={cn(
+              "flex-1 flex flex-col min-w-0 transition-all duration-300",
+              sidebarOpen ? "ml-64" : "ml-16"
+            )}
+          >
+            <AdminHeader 
+              onSidebarToggle={() => {
+                const newState = !sidebarOpen;
+                setSidebarOpen(newState);
+                localStorage.setItem('adminSidebarOpen', JSON.stringify(newState));
+              }}
+              sidebarOpen={sidebarOpen}
+              onMobileMenuOpen={() => setMobileMenuOpen(true)}
             />
-            <main className="flex-1 overflow-auto bg-muted/20 p-4 sm:p-6 min-h-[calc(100vh-8rem)] pb-20 safe-area-inset-bottom">
+            <main className="flex-1 overflow-auto bg-muted/20 p-6 min-h-[calc(100vh-4rem)]">
               <AdminErrorBoundary>
                 <Outlet />
               </AdminErrorBoundary>
             </main>
-            <MobileBottomNavSpacer />
-            <MobileBottomNav />
-            <AdminCommandPalette />
           </div>
-        ) : (
-          // Desktop Layout - Always show sidebar on admin dashboard
-          <div className="min-h-screen flex w-full" dir={isRTL ? 'rtl' : 'ltr'}>
-            <AdminSidebar 
-              collapsed={!sidebarOpen}
-              className="block"
-            />
-            <div 
-              className={cn(
-                "flex-1 flex flex-col min-w-0 transition-all duration-300",
-                sidebarOpen ? "ml-64" : "ml-16"
-              )}
-            >
-              <AdminHeader 
-                onSidebarToggle={() => {
-                  const newState = !sidebarOpen;
-                  setSidebarOpen(newState);
-                  localStorage.setItem('adminSidebarOpen', JSON.stringify(newState));
-                }}
-                sidebarOpen={sidebarOpen}
-              />
-              <main className="flex-1 overflow-auto bg-muted/20 p-6 min-h-[calc(100vh-4rem)]">
-                <AdminErrorBoundary>
-                  <Outlet />
-                </AdminErrorBoundary>
-              </main>
-            </div>
-            <AdminCommandPalette />
-          </div>
+          <AdminCommandPalette />
+        </div>
+        
+        {/* Mobile sidebar overlay for small screens */}
+        {isMobile && (
+          <AdminMobileSidebar 
+            isOpen={mobileMenuOpen} 
+            onOpenChange={setMobileMenuOpen} 
+          />
         )}
-      </MobileContainer>
+      </div>
     </AdminErrorBoundary>
   );
 };
