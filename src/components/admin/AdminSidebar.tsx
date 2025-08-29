@@ -198,7 +198,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
         },
         {
           name: t('admin.expertConsultations') || 'Expert Consultations',
-          href: "/admin/content/consultations",
+          href: "/admin/expert-consultations",
           icon: HelpCircle,
         },
         {
