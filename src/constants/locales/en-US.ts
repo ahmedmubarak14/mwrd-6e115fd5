@@ -127,6 +127,12 @@ export const enUS = {
     changePassword: 'Change Password',
     enableTwoFactor: 'Enable Two-Factor Authentication',
   },
+  theme: {
+    toggle: 'Theme',
+    light: 'Light',
+    dark: 'Dark',
+    system: 'System',
+  },
   vendor: {
     welcome: 'Welcome',
     subtitle: 'Manage your offers and track your success',

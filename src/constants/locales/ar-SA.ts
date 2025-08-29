@@ -127,6 +127,12 @@ export const arSA = {
     changePassword: 'تغيير كلمة المرور',
     enableTwoFactor: 'تفعيل المصادقة الثنائية',
   },
+  theme: {
+    toggle: 'المظهر',
+    light: 'فاتح',
+    dark: 'داكن',
+    system: 'النظام',
+  },
   vendor: {
     welcome: 'مرحباً',
     subtitle: 'إدارة عروضك وتتبع نجاحك',
