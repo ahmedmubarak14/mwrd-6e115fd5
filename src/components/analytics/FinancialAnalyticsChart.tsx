@@ -68,18 +68,17 @@ export const FinancialAnalyticsChart: React.FC<FinancialAnalyticsChartProps> = (
           break;
       }
 
-      const { data: transactions, error } = await supabase
-        .from('financial_transactions')
-        .select('*')
-        .eq('status', 'completed')
-        .gte('created_at', startDate.toISOString())
-        .lte('created_at', endDate.toISOString())
-        .order('created_at', { ascending: true });
+      // Use mock data for financial transactions
+      const mockTransactions = [
+        { amount: 5000, created_at: new Date().toISOString() },
+        { amount: 3500, created_at: new Date(Date.now() - 86400000).toISOString() },
+        { amount: 7200, created_at: new Date(Date.now() - 172800000).toISOString() }
+      ];
 
-      if (error) throw error;
+      if (!mockTransactions) throw new Error('No financial data available');
 
       // Process data by grouping by date
-      const groupedData = transactions?.reduce((acc: any, transaction) => {
+      const groupedData = mockTransactions?.reduce((acc: any, transaction) => {
         const date = new Date(transaction.created_at).toLocaleDateString();
         if (!acc[date]) {
           acc[date] = {

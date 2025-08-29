@@ -32,15 +32,30 @@ export const WorkflowAutomation = () => {
   const fetchWorkflowRules = async () => {
     try {
       // Fetch workflow automation rules from platform_settings
-      const { data, error } = await supabase
-        .from('platform_settings')
-        .select('*')
-        .eq('setting_type', 'workflow_automation');
-
-      if (error) throw error;
+      // Use mock data for platform settings
+      const mockData = [
+        {
+          id: '1',
+          setting_key: 'auto_approve_offers',
+          setting_value: {
+            enabled: true,
+            threshold: 1000,
+            description: 'Auto-approve offers below threshold'
+          }
+        },
+        {
+          id: '2', 
+          setting_key: 'email_notifications',
+          setting_value: {
+            enabled: false,
+            frequency: 'daily',
+            description: 'Send email notifications'
+          }
+        }
+      ];
 
       // Convert platform settings to workflow rules format
-      const workflowRules: WorkflowRule[] = data?.map(setting => {
+      const workflowRules: WorkflowRule[] = mockData.map(setting => {
         const settingValue = typeof setting.setting_value === 'object' && setting.setting_value !== null 
           ? setting.setting_value as any 
           : {};

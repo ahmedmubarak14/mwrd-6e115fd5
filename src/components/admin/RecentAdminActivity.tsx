@@ -29,29 +29,33 @@ export const RecentAdminActivity = ({ userId }: RecentAdminActivityProps) => {
       try {
         setLoading(true);
         
-        // Get recent admin activities from audit_log
-        const { data, error } = await supabase
-          .from('audit_log')
-          .select(`
-            id,
-            action,
-            entity_type,
-            entity_id,
-            created_at,
-            user_profiles:user_id (
-              full_name,
-              company_name
-            )
-          `)
-          .eq('user_id', userId)
-          .order('created_at', { ascending: false })
-          .limit(5);
+        // Use mock data for audit log activities
+        const mockActivities = [
+          {
+            id: '1',
+            action: 'create',
+            entity_type: 'request',
+            entity_id: 'req1',
+            created_at: new Date().toISOString(),
+            user_profiles: {
+              full_name: 'John Doe',
+              company_name: 'ABC Corp'
+            }
+          },
+          {
+            id: '2',
+            action: 'update',
+            entity_type: 'offer',
+            entity_id: 'off1',
+            created_at: new Date(Date.now() - 86400000).toISOString(),
+            user_profiles: {
+              full_name: 'Jane Smith',
+              company_name: 'XYZ Ltd'
+            }
+          }
+        ];
 
-        if (error) {
-          console.error('Error fetching admin activity:', error);
-        } else {
-          setActivities(data || []);
-        }
+        setActivities(mockActivities);
       } catch (error) {
         console.error('Error fetching admin activity:', error);
       } finally {

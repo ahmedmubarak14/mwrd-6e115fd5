@@ -413,7 +413,7 @@ export const EnhancedFinancialDashboard = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <FinancialAnalyticsChart data={chartData} />
+          <FinancialAnalyticsChart period="month" />
         </CardContent>
       </Card>
 

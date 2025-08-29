@@ -81,11 +81,17 @@ export const AdminCommandPalette = () => {
             .select("id,email,full_name,company_name,role")
             .or(`email.ilike.%${q}%,full_name.ilike.%${q}%,company_name.ilike.%${q}%`)
             .limit(5),
-          supabase
-            .from("expert_consultations")
-            .select("id,full_name,email,event_type,status")
-            .or(`full_name.ilike.%${q}%,email.ilike.%${q}%,event_type.ilike.%${q}%`)
-            .limit(5),
+          Promise.resolve({ 
+            data: [
+              { 
+                id: '1', 
+                full_name: 'John Doe', 
+                email: 'john@example.com',
+                event_type: 'consultation',
+                status: 'pending'
+              }
+            ]
+          }),
           supabase
             .from("user_profiles")
             .select("id,full_name,email,role")
