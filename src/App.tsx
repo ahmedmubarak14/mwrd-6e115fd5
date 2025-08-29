@@ -33,6 +33,9 @@ import { Support } from './pages/Support';
 import BrowseRequests from './pages/BrowseRequests';
 import { MyOffers } from './pages/MyOffers';
 import CreateRequest from './pages/CreateRequest';
+import CreateRFQ from "./pages/CreateRFQ";
+import RFQManagement from "./pages/RFQManagement";
+import VendorRFQs from "./pages/VendorRFQs";
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import AdminUsers from './pages/admin/AdminUsers';
 import AdminRequests from './pages/admin/AdminRequests';
@@ -230,6 +233,30 @@ const AppRoutes: React.FC = () => {
         <RoleProtectedRoute allowedRoles={['client', 'admin']}>
           <ClientLayout>
             <CreateRequest />
+          </ClientLayout>
+        </RoleProtectedRoute>
+      } />
+
+      <Route path="/rfqs/create" element={
+        <RoleProtectedRoute allowedRoles={['client', 'admin']}>
+          <ClientLayout>
+            <CreateRFQ />
+          </ClientLayout>
+        </RoleProtectedRoute>
+      } />
+
+      <Route path="/rfqs" element={
+        <RoleProtectedRoute allowedRoles={['client', 'admin']}>
+          <ClientLayout>
+            <RFQManagement />
+          </ClientLayout>
+        </RoleProtectedRoute>
+      } />
+
+      <Route path="/vendor/rfqs" element={
+        <RoleProtectedRoute allowedRoles={['vendor', 'admin']}>
+          <ClientLayout>
+            <VendorRFQs />
           </ClientLayout>
         </RoleProtectedRoute>
       } />
