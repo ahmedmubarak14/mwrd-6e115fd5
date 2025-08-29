@@ -22,7 +22,9 @@ import {
   User,
   ChevronDown,
   ChevronRight,
-  Menu
+  Menu,
+  Activity,
+  Bot
 } from "lucide-react";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
