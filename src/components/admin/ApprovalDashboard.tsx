@@ -73,22 +73,83 @@ export const ApprovalDashboard = () => {
 
   const fetchMetrics = async () => {
     try {
-      // Use mock data since tables don't match generated types
-      const mockMetrics = {
-        totalRequests: 10,
-        pendingRequests: 3,
-        approvedRequests: 5,
-        rejectedRequests: 2,
-        totalOffers: 15,
-        pendingOffers: 4,
-        approvedOffers: 8,
-        rejectedOffers: 3,
-        avgProcessingTime: 48,
-        approvalRate: 72.5,
-        weeklyTrend: 15.2
-      };
+      // Fetch real approval metrics from database
+      const [requestsResponse, offersResponse] = await Promise.all([
+        supabase
+          .from('requests')
+          .select('id, admin_approval_status, created_at'),
+        supabase
+          .from('offers')
+          .select('id, admin_approval_status, client_approval_status, created_at')
+      ]);
 
-      setMetrics(mockMetrics);
+      const requests = requestsResponse.data || [];
+      const offers = offersResponse.data || [];
+
+      // Calculate request metrics
+      const totalRequests = requests.length;
+      const pendingRequests = requests.filter(r => r.admin_approval_status === 'pending').length;
+      const approvedRequests = requests.filter(r => r.admin_approval_status === 'approved').length;
+      const rejectedRequests = requests.filter(r => r.admin_approval_status === 'rejected').length;
+
+      // Calculate offer metrics
+      const totalOffers = offers.length;
+      const pendingOffers = offers.filter(o => 
+        o.admin_approval_status === 'pending' || o.client_approval_status === 'pending'
+      ).length;
+      const approvedOffers = offers.filter(o => 
+        o.admin_approval_status === 'approved' && o.client_approval_status === 'approved'
+      ).length;
+      const rejectedOffers = offers.filter(o => 
+        o.admin_approval_status === 'rejected' || o.client_approval_status === 'rejected'
+      ).length;
+
+      // Calculate processing time (simplified)
+      const processedItems = [...requests, ...offers].filter(item => 
+        item.admin_approval_status !== 'pending'
+      );
+      const avgProcessingTime = processedItems.length > 0 ? 
+        processedItems.reduce((acc, item) => {
+          const created = new Date(item.created_at);
+          const now = new Date();
+          return acc + (now.getTime() - created.getTime()) / (1000 * 60 * 60);
+        }, 0) / processedItems.length : 0;
+
+      const totalApproved = approvedRequests + approvedOffers;
+      const totalItems = totalRequests + totalOffers;
+      const approvalRate = totalItems > 0 ? (totalApproved / totalItems) * 100 : 0;
+
+      // Calculate weekly trend (compare this week vs last week)
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+      
+      const thisWeekItems = [...requests, ...offers].filter(item => 
+        new Date(item.created_at) >= oneWeekAgo
+      ).length;
+      
+      const lastWeekItems = [...requests, ...offers].filter(item => {
+        const created = new Date(item.created_at);
+        const twoWeeksAgo = new Date();
+        twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+        return created >= twoWeeksAgo && created < oneWeekAgo;
+      }).length;
+
+      const weeklyTrend = lastWeekItems > 0 ? 
+        ((thisWeekItems - lastWeekItems) / lastWeekItems) * 100 : 0;
+
+      setMetrics({
+        totalRequests,
+        pendingRequests,
+        approvedRequests,
+        rejectedRequests,
+        totalOffers,
+        pendingOffers,
+        approvedOffers,
+        rejectedOffers,
+        avgProcessingTime: Math.round(avgProcessingTime),
+        approvalRate: Math.round(approvalRate * 10) / 10,
+        weeklyTrend: Math.round(weeklyTrend * 10) / 10
+      });
 
     } catch (error) {
       console.error('Error fetching metrics:', error);
@@ -102,33 +163,81 @@ export const ApprovalDashboard = () => {
 
   const fetchPendingItems = async () => {
     try {
-      // Use mock data for pending items
-      const mockPendingItems: PendingItem[] = [
-        {
-          id: '1',
-          title: 'Office Equipment Request',
-          type: 'request',
-          priority: 'high',
-          created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-          urgency_score: 120,
-          user_name: 'ABC Company',
-          budget: 25000
-        },
-        {
-          id: '2',
-          title: 'IT Consultation',
-          type: 'offer',
-          priority: 'medium',
-          created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-          urgency_score: 80,
-          user_name: 'John Smith',
-          price: 5000
-        }
-      ];
+      // Fetch real pending requests and offers
+      const [requestsResponse, offersResponse] = await Promise.all([
+        supabase
+          .from('requests')
+          .select(`
+            id,
+            title,
+            admin_approval_status,
+            created_at,
+            urgency,
+            budget_max,
+            user_profiles!inner(full_name)
+          `)
+          .eq('admin_approval_status', 'pending')
+          .order('created_at', { ascending: false })
+          .limit(10),
+        supabase
+          .from('offers')
+          .select(`
+            id,
+            title,
+            admin_approval_status,
+            client_approval_status,
+            created_at,
+            price,
+            user_profiles!inner(full_name)
+          `)
+          .or('admin_approval_status.eq.pending,client_approval_status.eq.pending')
+          .order('created_at', { ascending: false })
+          .limit(10)
+      ]);
 
-      setPendingItems(mockPendingItems);
+      const pendingRequests = (requestsResponse.data || []).map(request => ({
+        id: request.id,
+        title: request.title,
+        type: 'request' as const,
+        priority: (request.urgency === 'high' || request.urgency === 'medium' || request.urgency === 'low' || request.urgency === 'urgent' ? request.urgency : 'medium') as 'low' | 'medium' | 'high' | 'urgent',
+        created_at: request.created_at,
+        urgency_score: getPriorityScore(request.urgency || 'medium'),
+        user_name: request.user_profiles?.full_name || 'Unknown User',
+        budget: request.budget_max ? parseFloat(request.budget_max.toString()) : undefined
+      }));
+
+      const pendingOffers = (offersResponse.data || []).map(offer => ({
+        id: offer.id,
+        title: offer.title,
+        type: 'offer' as const,
+        priority: 'medium' as const,
+        created_at: offer.created_at,
+        urgency_score: 75,
+        user_name: offer.user_profiles?.full_name || 'Unknown User', 
+        price: offer.price ? parseFloat(offer.price.toString()) : undefined
+      }));
+
+      const allPendingItems = [...pendingRequests, ...pendingOffers]
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+        .slice(0, 20);
+
+      setPendingItems(allPendingItems);
     } catch (error) {
       console.error('Error fetching pending items:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to fetch pending items',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const getPriorityScore = (priority: string): number => {
+    switch (priority) {
+      case 'high': return 120;
+      case 'medium': return 80;
+      case 'low': return 40;
+      default: return 60;
     }
   };
 

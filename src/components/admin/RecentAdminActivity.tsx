@@ -29,33 +29,55 @@ export const RecentAdminActivity = ({ userId }: RecentAdminActivityProps) => {
       try {
         setLoading(true);
         
-        // Use mock data for audit log activities
-        const mockActivities = [
-          {
-            id: '1',
-            action: 'create',
-            entity_type: 'request',
-            entity_id: 'req1',
-            created_at: new Date().toISOString(),
-            user_profiles: {
-              full_name: 'John Doe',
-              company_name: 'ABC Corp'
-            }
-          },
-          {
-            id: '2',
-            action: 'update',
-            entity_type: 'offer',
-            entity_id: 'off1',
-            created_at: new Date(Date.now() - 86400000).toISOString(),
-            user_profiles: {
-              full_name: 'Jane Smith',
-              company_name: 'XYZ Ltd'
-            }
-          }
-        ];
+        // Fetch real audit log data with user profiles
+        const { data: auditLogs, error } = await supabase
+          .from('audit_log')
+          .select(`
+            id,
+            action,
+            entity_type,
+            entity_id,
+            user_id,
+            created_at
+          `)
+          .order('created_at', { ascending: false })
+          .limit(10);
 
-        setActivities(mockActivities);
+        if (error) {
+          console.error('Error fetching audit logs:', error);
+          setActivities([]);
+          return;
+        }
+
+        // Get user profiles for the audit log entries
+        const userIds = [...new Set(auditLogs?.map(log => log.user_id).filter(Boolean))];
+        const { data: profiles } = await supabase
+          .from('user_profiles')
+          .select('user_id, full_name, company_name')
+          .in('user_id', userIds);
+
+        const profilesMap = profiles?.reduce((acc, profile) => {
+          acc[profile.user_id] = profile;
+          return acc;
+        }, {} as Record<string, any>) || {};
+
+        // Transform audit logs to activity format
+        const transformedActivities = (auditLogs || []).map(log => ({
+          id: log.id,
+          action: log.action,
+          entity_type: log.entity_type,
+          entity_id: log.entity_id,
+          created_at: log.created_at,
+          user_profiles: log.user_id ? profilesMap[log.user_id] || {
+            full_name: 'Unknown User',
+            company_name: 'N/A'
+          } : {
+            full_name: 'System',
+            company_name: 'Automated'
+          }
+        }));
+
+        setActivities(transformedActivities);
       } catch (error) {
         console.error('Error fetching admin activity:', error);
       } finally {

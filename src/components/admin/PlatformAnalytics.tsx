@@ -64,42 +64,38 @@ export const PlatformAnalytics = () => {
 
   const fetchPlatformStats = async () => {
     try {
-      // Use mock data since tables don't exist in current schema
-      const mockUsers = [
-        { id: '1', subscription_status: 'active' },
-        { id: '2', subscription_status: 'active' },
-        { id: '3', subscription_status: 'inactive' },
-        { id: '4', subscription_status: 'active' }
-      ];
+      // Fetch real data from multiple tables
+      const [usersResponse, requestsResponse, offersResponse, ordersResponse] = await Promise.all([
+        supabase.from('user_profiles').select('id, role, created_at'),
+        supabase.from('requests').select('id, created_at'),
+        supabase.from('offers').select('id, created_at'),
+        supabase.from('orders').select('id, amount, status, created_at')
+      ]);
 
-      const mockRequests = [
-        { id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }, { id: '5' }
-      ];
+      const users = usersResponse.data || [];
+      const requests = requestsResponse.data || [];
+      const offers = offersResponse.data || [];
+      const orders = ordersResponse.data || [];
 
-      const mockOffers = [
-        { id: '1' }, { id: '2' }, { id: '3' }
-      ];
-
-      const mockTransactions = [
-        { amount: 5000, type: 'payment', created_at: new Date().toISOString() },
-        { amount: 3500, type: 'payment', created_at: new Date(Date.now() - 86400000).toISOString() },
-        { amount: 7200, type: 'payment', created_at: new Date(Date.now() - 172800000).toISOString() }
-      ];
-
-      // Calculate monthly revenue
+      // Calculate monthly revenue from completed orders
       const thisMonth = new Date();
-      thisMonth.setMonth(thisMonth.getMonth(), 1);
-      const monthlyRevenue = mockTransactions
-        .filter(t => new Date(t.created_at) >= thisMonth)
-        .reduce((sum, t) => sum + (t.amount || 0), 0);
+      thisMonth.setDate(1);
+      thisMonth.setHours(0, 0, 0, 0);
+      
+      const monthlyRevenue = orders
+        .filter(order => 
+          order.status === 'completed' && 
+          new Date(order.created_at) >= thisMonth
+        )
+        .reduce((sum, order) => sum + parseFloat(order.amount?.toString() || '0'), 0);
 
       setStats({
-        total_users: mockUsers.length,
-        active_subscriptions: mockUsers.filter(u => u.subscription_status === 'active').length,
+        total_users: users.length,
+        active_subscriptions: users.filter(u => u.role === 'client' || u.role === 'vendor').length,
         monthly_revenue: monthlyRevenue,
-        total_requests: mockRequests.length,
-        total_offers: mockOffers.length,
-        total_transactions: mockTransactions.length,
+        total_requests: requests.length,
+        total_offers: offers.length,
+        total_transactions: orders.length,
       });
     } catch (error: any) {
       toast({

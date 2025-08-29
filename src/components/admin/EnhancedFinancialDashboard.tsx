@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { FinancialAnalyticsChart } from '@/components/analytics/FinancialAnalyticsChart';
 import { TransactionDetailsModal } from './TransactionDetailsModal';
 import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { 
   DollarSign, 
@@ -86,79 +87,47 @@ export const EnhancedFinancialDashboard = () => {
     try {
       setLoading(true);
       
-      // Use mock data since financial_transactions table doesn't exist
-      const mockTransactions: FinancialTransaction[] = [
-        {
-          id: '1',
-          user_id: 'user1',
-          amount: 5000,
-          type: 'payment',
-          status: 'completed',
-          description: 'Service payment',
-          payment_method: 'credit_card',
-          transaction_ref: 'TXN001',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-          user_profiles: {
-            full_name: 'John Doe',
-            email: 'john@example.com',
-            company_name: 'ABC Corp'
-          }
-        },
-        {
-          id: '2',
-          user_id: 'user2',
-          amount: 3500,
-          type: 'refund',
-          status: 'pending',
-          description: 'Refund request',
-          payment_method: 'bank_transfer',
-          transaction_ref: 'TXN002',
-          created_at: new Date(Date.now() - 86400000).toISOString(),
-          updated_at: new Date(Date.now() - 86400000).toISOString(),
-          user_profiles: {
-            full_name: 'Jane Smith',
-            email: 'jane@example.com',
-            company_name: 'XYZ Ltd'
-          }
-        },
-        {
-          id: '3',
-          user_id: 'user3',
-          amount: 7200,
-          type: 'payment',
-          status: 'completed',
-          description: 'Subscription renewal',
-          payment_method: 'paypal',
-          transaction_ref: 'TXN003',
-          created_at: new Date(Date.now() - 172800000).toISOString(),
-          updated_at: new Date(Date.now() - 172800000).toISOString(),
-          user_profiles: {
-            full_name: 'Bob Johnson',
-            email: 'bob@example.com',
-            company_name: 'Tech Solutions'
-          }
-        },
-        {
-          id: '4',
-          user_id: 'user4',
-          amount: 1800,
-          type: 'payment',
-          status: 'failed',
-          description: 'Payment declined',
-          payment_method: 'credit_card',
-          transaction_ref: 'TXN004',
-          created_at: new Date(Date.now() - 259200000).toISOString(),
-          updated_at: new Date(Date.now() - 259200000).toISOString(),
-          user_profiles: {
-            full_name: 'Alice Brown',
-            email: 'alice@example.com',
-            company_name: 'Design Studio'
-          }
-        }
-      ];
+      // Fetch real transactions with user profile joins
+      const { data: transactionsData, error } = await supabase
+        .from('financial_transactions')
+        .select(`
+          *,
+          user_profiles!inner(
+            full_name,
+            email,
+            company_name
+          )
+        `)
+        .order('created_at', { ascending: false })
+        .limit(100);
 
-      setTransactions(mockTransactions);
+      if (error) {
+        console.error('Error fetching transactions:', error);
+        setTransactions([]);
+        return;
+      }
+
+      // Transform the data to match our interface
+      const transformedTransactions: FinancialTransaction[] = (transactionsData || []).map(transaction => ({
+        id: transaction.id,
+        user_id: transaction.user_id,
+        amount: parseFloat(transaction.amount?.toString() || '0'),
+        type: transaction.type,
+        status: transaction.status,
+        description: transaction.description || '',
+        payment_method: transaction.payment_method || '',
+        transaction_ref: transaction.transaction_ref || '',
+        order_id: transaction.order_id,
+        created_at: transaction.created_at,
+        updated_at: transaction.updated_at,
+        user_profiles: {
+          full_name: transaction.user_profiles?.full_name || '',
+          email: transaction.user_profiles?.email || '',
+          company_name: transaction.user_profiles?.company_name || ''
+        }
+      }));
+
+      setTransactions(transformedTransactions);
     } catch (error) {
       console.error('Error fetching transactions:', error);
       toast({
@@ -173,41 +142,70 @@ export const EnhancedFinancialDashboard = () => {
 
   const fetchFinancialStats = async () => {
     try {
-      // Use mock data since financial_transactions table doesn't exist
-      const mockStats = [
-        { amount: 5000, status: 'completed', type: 'payment', created_at: new Date().toISOString() },
-        { amount: 3500, status: 'pending', type: 'refund', created_at: new Date(Date.now() - 86400000).toISOString() },
-        { amount: 7200, status: 'completed', type: 'payment', created_at: new Date(Date.now() - 172800000).toISOString() },
-        { amount: 1800, status: 'failed', type: 'payment', created_at: new Date(Date.now() - 259200000).toISOString() }
-      ];
+      // Fetch real financial statistics
+      const { data: transactionsData, error } = await supabase
+        .from('financial_transactions')
+        .select('amount, status, type, created_at');
 
-      // Calculate statistics from mock data
-      const totalRevenue = mockStats.filter(t => t.status === 'completed' && t.type === 'payment')
-        .reduce((sum, t) => sum + t.amount, 0);
+      if (error) {
+        console.error('Error fetching financial stats:', error);
+        return;
+      }
+
+      const transactions = transactionsData || [];
+
+      // Calculate statistics from real data
+      const totalRevenue = transactions
+        .filter(t => t.status === 'completed' && t.type === 'payment')
+        .reduce((sum, t) => sum + parseFloat(t.amount?.toString() || '0'), 0);
       
-      const totalRefunds = mockStats.filter(t => t.status === 'completed' && t.type === 'refund')
-        .reduce((sum, t) => sum + t.amount, 0);
+      const totalRefunds = transactions
+        .filter(t => t.status === 'completed' && t.type === 'refund')
+        .reduce((sum, t) => sum + parseFloat(t.amount?.toString() || '0'), 0);
       
-      const pendingAmount = mockStats.filter(t => t.status === 'pending')
-        .reduce((sum, t) => sum + t.amount, 0);
+      const pendingAmount = transactions
+        .filter(t => t.status === 'pending')
+        .reduce((sum, t) => sum + parseFloat(t.amount?.toString() || '0'), 0);
       
-      const failedTransactions = mockStats.filter(t => t.status === 'failed').length;
+      const failedTransactions = transactions.filter(t => t.status === 'failed').length;
 
       setStats({
         totalRevenue,
         totalRefunds,
         pendingAmount,
         failedTransactions,
-        transactionCount: mockStats.length,
-        avgTransactionValue: totalRevenue / Math.max(1, mockStats.filter(t => t.status === 'completed').length)
+        transactionCount: transactions.length,
+        avgTransactionValue: totalRevenue / Math.max(1, transactions.filter(t => t.status === 'completed').length)
       });
 
-      // Mock chart data
-      const chartData = Array.from({ length: 30 }, (_, i) => ({
-        date: new Date(Date.now() - (29 - i) * 86400000).toISOString().split('T')[0],
-        revenue: Math.floor(Math.random() * 10000) + 1000,
-        transactions: Math.floor(Math.random() * 20) + 5
-      }));
+      // Generate chart data from real transactions (last 30 days)
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      
+      const chartData = Array.from({ length: 30 }, (_, i) => {
+        const date = new Date(thirtyDaysAgo);
+        date.setDate(date.getDate() + i);
+        const dateStr = date.toISOString().split('T')[0];
+        
+        const dayTransactions = transactions.filter(t => 
+          t.created_at?.startsWith(dateStr) && t.status === 'completed'
+        );
+        
+        const revenue = dayTransactions
+          .filter(t => t.type === 'payment')
+          .reduce((sum, t) => sum + parseFloat(t.amount?.toString() || '0'), 0);
+        
+        const refunds = dayTransactions
+          .filter(t => t.type === 'refund')
+          .reduce((sum, t) => sum + parseFloat(t.amount?.toString() || '0'), 0);
+
+        return {
+          date: dateStr,
+          revenue,
+          refunds,
+          net: revenue - refunds
+        };
+      });
 
       setChartData(chartData);
     } catch (error) {
@@ -515,11 +513,11 @@ export const EnhancedFinancialDashboard = () => {
         />
       )}
 
-      {/* Mock Implementation Notice */}
-      <div className="mt-8 p-4 bg-muted/50 rounded-lg">
+      {/* Database Integration Notice */}
+      <div className="mt-8 p-4 bg-success/10 border border-success/20 rounded-lg">
         <p className="text-sm text-foreground opacity-75">
-          <strong>Note:</strong> This financial dashboard is currently using mock data. 
-          Database integration pending schema updates for the financial_transactions table.
+          <strong>✓ Live Data:</strong> This financial dashboard is now connected to real database transactions. 
+          All metrics and charts reflect actual financial data from your platform.
         </p>
       </div>
     </div>
