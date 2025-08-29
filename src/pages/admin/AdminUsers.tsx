@@ -17,6 +17,8 @@ import { Users, UserCheck, Clock, TrendingUp, Download, RefreshCw, UserPlus, Mai
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { VerificationQueue } from "@/components/admin/VerificationQueue";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { cn } from "@/lib/utils";
 
 interface User {
   id: string;
@@ -33,6 +35,12 @@ interface User {
 }
 
 export default function AdminUsers() {
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL, formatDate } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false,
+    formatDate: (date: Date) => date.toLocaleDateString()
+  };
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -468,14 +476,14 @@ export default function AdminUsers() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className={cn("p-6 space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
-          User Management
+          {t('admin.userManagement')}
         </h1>
         <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
-          Manage users, roles, and permissions across the platform
+          {t('admin.userManagementDescription')}
         </p>
       </div>
       
@@ -484,45 +492,45 @@ export default function AdminUsers() {
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('admin.totalUsers')}</CardTitle>
               <Users className="h-4 w-4 text-foreground opacity-75" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{totalUsers.toLocaleString()}</div>
-              <p className="text-xs text-foreground opacity-75">All registered users</p>
+              <p className="text-xs text-foreground opacity-75">{t('admin.allRegisteredUsers')}</p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('admin.activeUsers')}</CardTitle>
               <UserCheck className="h-4 w-4 text-foreground opacity-75" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{activeUsers.toLocaleString()}</div>
-              <p className="text-xs text-foreground opacity-75">Approved & active</p>
+              <p className="text-xs text-foreground opacity-75">{t('admin.approvedUsers')}</p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Pending</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('admin.pending')}</CardTitle>
               <Clock className="h-4 w-4 text-foreground opacity-75" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{pendingUsers.toLocaleString()}</div>
-              <p className="text-xs text-foreground opacity-75">Awaiting approval</p>
+              <p className="text-xs text-foreground opacity-75">{t('admin.awaitingApproval')}</p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Administrators</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('admin.adminUsers')}</CardTitle>
               <Shield className="h-4 w-4 text-foreground opacity-75" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{adminUsers.toLocaleString()}</div>
-              <p className="text-xs text-foreground opacity-75">Admin accounts</p>
+              <p className="text-xs text-foreground opacity-75">{t('admin.systemAdministrators')}</p>
             </CardContent>
           </Card>
         </div>
@@ -530,12 +538,12 @@ export default function AdminUsers() {
         {/* Filters & Bulk Actions */}
         <Card>
           <CardHeader>
-            <CardTitle>Filters & Actions</CardTitle>
+            <CardTitle>{t('admin.filtersAndSearch')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4 mb-4">
               <Input
-                placeholder="Search users..."
+                placeholder={t('admin.searchUsers')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />

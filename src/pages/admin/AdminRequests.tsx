@@ -12,6 +12,8 @@ import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { BulkApprovalActions } from '@/components/admin/BulkApprovalActions';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { cn } from '@/lib/utils';
 
 interface AdminRequest {
   id: string;
@@ -43,6 +45,12 @@ interface AdminRequest {
 const AdminRequests = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL, formatDate } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false,
+    formatDate: (date: Date) => date.toLocaleDateString()
+  };
   const [requests, setRequests] = useState<AdminRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -176,14 +184,14 @@ const AdminRequests = () => {
   const rejectedRequests = requests.filter(r => r.admin_approval_status === 'rejected');
 
   return (
-    <div className="p-6 space-y-6">
+    <div className={cn("p-6 space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
-          Request Management
+          {t('admin.requestManagement')}
         </h1>
         <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
-          Monitor and manage all procurement requests across the platform
+          {t('admin.requestManagementDescription')}
         </p>
       </div>
 
@@ -191,7 +199,7 @@ const AdminRequests = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Requests</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.totalRequests')}</CardTitle>
             <Clock className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
@@ -201,7 +209,7 @@ const AdminRequests = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Approval</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.pendingApproval')}</CardTitle>
             <AlertCircle className="h-4 w-4 text-warning" />
           </CardHeader>
           <CardContent>
@@ -211,7 +219,7 @@ const AdminRequests = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Approved</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.approved')}</CardTitle>
             <CheckCircle className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
@@ -221,7 +229,7 @@ const AdminRequests = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Rejected</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.rejected')}</CardTitle>
             <XCircle className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent>
@@ -232,9 +240,9 @@ const AdminRequests = () => {
 
       {/* Filters */}
       <Card className="mb-6">
-        <CardHeader>
-          <CardTitle className="text-lg">Filters & Search</CardTitle>
-        </CardHeader>
+          <CardHeader>
+            <CardTitle className="text-lg">{t('admin.filtersAndSearch')}</CardTitle>
+          </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <div className="relative">

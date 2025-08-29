@@ -77,10 +77,10 @@ export const AdminHeader = ({ onMobileMenuOpen, onSidebarToggle, sidebarOpen }: 
               />
               <div className="hidden sm:flex flex-col items-start min-w-0">
                 <span className="text-sm sm:text-base font-semibold leading-tight truncate text-foreground">
-                  Admin Dashboard
+                  {t('admin.dashboard')}
                 </span>
                 <span className="text-xs leading-tight text-muted-foreground hidden md:block">
-                  {t('admin.managementPortal') || 'Management Portal'}
+                  {t('admin.managementPortal')}
                 </span>
               </div>
             </button>

@@ -104,7 +104,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           icon: BarChart3,
         },
         {
-          name: 'Performance Monitor',
+          name: t('admin.performanceMonitor'),
           href: "/admin/performance-monitor",
           icon: Activity,
         },
@@ -146,7 +146,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           icon: UserCheck,
         },
         {
-          name: 'Workflow Automation',
+          name: t('admin.workflowAutomation'),
           href: "/admin/automation",
           icon: Bot,
         },
