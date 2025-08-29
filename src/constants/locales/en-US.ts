@@ -423,4 +423,17 @@ export const enUS = {
     fromLastWeek: 'from last week',
     monitorDescription: 'Monitor platform performance and analytics',
   },
+  workflow: {
+    automationCenter: 'Workflow Automation Center',
+    automationDescription: 'Automate processes, manage workflows, and monitor automated tasks',
+    createWorkflow: 'Create Workflow',
+    nameRequired: 'Workflow name is required',
+    created: 'Workflow created successfully',
+    createError: 'Failed to create workflow',
+    loading: 'Loading automation center...'
+  },
+  financial: {
+    transactions: 'Financial Transactions',
+    description: 'Monitor and manage all financial transactions across the platform'
+  },
 };

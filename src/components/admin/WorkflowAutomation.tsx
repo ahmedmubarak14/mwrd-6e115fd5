@@ -13,9 +13,13 @@ import { Settings, Clock, Zap, Bell, AlertTriangle, CheckCircle, Plus, Activity,
 import { useToast } from '@/hooks/use-toast';
 import { useWorkflowAutomation, useAutomatedTasks } from '@/hooks/useWorkflowAutomation';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 
 export const WorkflowAutomation = () => {
   const { toast } = useToast();
+  const languageContext = useOptionalLanguage();
+  const { t } = languageContext || { t: (key: string) => key };
+  
   const {
     workflows,
     executions,
@@ -53,8 +57,8 @@ export const WorkflowAutomation = () => {
   const handleCreateWorkflow = async () => {
     if (!newWorkflow.name.trim()) {
       toast({
-        title: 'Error',
-        description: 'Workflow name is required',
+        title: t('common.error'),
+        description: t('workflow.nameRequired'),
         variant: 'destructive'
       });
       return;
@@ -74,13 +78,13 @@ export const WorkflowAutomation = () => {
         delay_minutes: 0
       });
       toast({
-        title: 'Success',
-        description: 'Workflow created successfully'
+        title: t('common.success'),
+        description: t('workflow.created')
       });
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to create workflow',
+        title: t('common.error'),
+        description: t('workflow.createError'),
         variant: 'destructive'
       });
     }
@@ -142,7 +146,7 @@ export const WorkflowAutomation = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <LoadingSpinner size="lg" label="Loading automation center..." />
+        <LoadingSpinner size="lg" label={t('workflow.loading')} />
       </div>
     );
   }
@@ -160,17 +164,17 @@ export const WorkflowAutomation = () => {
             <div>
               <CardTitle className="flex items-center gap-2">
                 <Zap className="h-5 w-5" />
-                Workflow Automation Center
+                {t('workflow.automationCenter')}
               </CardTitle>
               <p className="text-sm text-muted-foreground mt-1">
-                Automate processes, manage workflows, and monitor automated tasks
+                {t('workflow.automationDescription')}
               </p>
             </div>
             <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
               <DialogTrigger asChild>
                 <Button className="flex items-center gap-2">
                   <Plus className="h-4 w-4" />
-                  Create Workflow
+                  {t('workflow.createWorkflow')}
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[600px]">

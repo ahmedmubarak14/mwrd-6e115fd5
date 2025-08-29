@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { MessageSquare, Clock, User, AlertCircle, CheckCircle2, Search } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 
 interface SupportTicket {
   id: string;
@@ -35,6 +36,9 @@ export default function AdminSupport() {
   const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(null);
   const [response, setResponse] = useState('');
   const { toast } = useToast();
+  
+  const languageContext = useOptionalLanguage();
+  const { t } = languageContext || { t: (key: string) => key };
 
   useEffect(() => {
     fetchTickets();
@@ -136,7 +140,7 @@ export default function AdminSupport() {
 
   if (loading) {
     return (
-      <AdminPageContainer title="Support Center" description="Manage support tickets and help users">
+      <AdminPageContainer title={t('support.title')} description={t('support.description')}>
         <div className="space-y-4">
           {Array.from({ length: 5 }).map((_, i) => (
             <Card key={i} className="animate-pulse">
@@ -154,7 +158,7 @@ export default function AdminSupport() {
   }
 
   return (
-    <AdminPageContainer title="Support Center" description="Manage support tickets and help users">
+    <AdminPageContainer title={t('support.title')} description={t('support.description')}>
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
         <Card>

@@ -24,6 +24,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 
 interface FinancialTransaction {
   id: string;
@@ -54,6 +55,9 @@ export default function AdminFinancialTransactions() {
   const [statusFilter, setStatusFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
   const { toast } = useToast();
+  
+  const languageContext = useOptionalLanguage();
+  const { t } = languageContext || { t: (key: string) => key };
 
   const fetchTransactions = async () => {
     try {
@@ -291,10 +295,10 @@ export default function AdminFinancialTransactions() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
-          Financial Transactions
+          {t('financial.transactions')}
         </h1>
         <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
-          Monitor and manage all financial transactions across the platform
+          {t('financial.description')}
         </p>
       </div>
 
