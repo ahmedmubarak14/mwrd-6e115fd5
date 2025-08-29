@@ -1,12 +1,12 @@
 
-import { EnhancedAuthForm } from '@/components/auth/EnhancedAuthForm';
+import { SecureAuthForm } from '@/components/auth/SecureAuthForm';
 import { AuthRedirect } from '@/components/routing/AuthRedirect';
 
 const Register = () => {
   return (
     <>
       <AuthRedirect />
-      <EnhancedAuthForm />
+      <SecureAuthForm mode="signup" />
     </>
   );
 };

@@ -17,9 +17,12 @@ interface SecureAuthFormProps {
 export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [role, setRole] = useState<'client' | 'vendor'>('client');
   const [showPassword, setShowPassword] = useState(false);
   
-  const { secureSignIn, securePasswordReset, loading } = useSecureAuth();
+  const { secureSignIn, securePasswordReset, secureSignUp, loading } = useSecureAuth();
   const { showError, showSuccess } = useToastFeedback();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -43,6 +46,23 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
       } else {
         showSuccess('Welcome back!');
       }
+    } else if (mode === 'signup') {
+      if (!password || !fullName) {
+        showError('Please fill in all required fields.');
+        return;
+      }
+
+      const { error } = await secureSignUp(email, password, {
+        full_name: fullName,
+        company_name: companyName,
+        role: role
+      });
+      
+      if (error) {
+        showError(error.message);
+      } else {
+        showSuccess('Account created successfully! Please check your email.');
+      }
     } else if (mode === 'reset') {
       const { error } = await securePasswordReset(email);
       
@@ -55,6 +75,7 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
   const getDescription = () => {
     switch (mode) {
       case 'signin': return 'Sign in to your account';
+      case 'signup': return 'Create your account';
       case 'reset': return 'Reset your password';
       default: return 'Sign in to your account';
     }
@@ -81,6 +102,63 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
           
           <CardContent className="space-y-4">
             <form onSubmit={handleSubmit} className="space-y-4">
+              {mode === 'signup' && (
+                <>
+                  <div className="space-y-3">
+                    <Label className="text-white">Account Type *</Label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        className={`p-3 rounded-lg border text-center transition-all ${
+                          role === 'client' 
+                            ? 'bg-primary/20 border-primary text-white' 
+                            : 'bg-white/5 border-white/20 text-white/80 hover:bg-white/10'
+                        }`}
+                        onClick={() => setRole('client')}
+                      >
+                        <div className="font-semibold">Client</div>
+                        <div className="text-xs opacity-70">Request Services</div>
+                      </button>
+                      <button
+                        type="button"
+                        className={`p-3 rounded-lg border text-center transition-all ${
+                          role === 'vendor' 
+                            ? 'bg-primary/20 border-primary text-white' 
+                            : 'bg-white/5 border-white/20 text-white/80 hover:bg-white/10'
+                        }`}
+                        onClick={() => setRole('vendor')}
+                      >
+                        <div className="font-semibold">Vendor</div>
+                        <div className="text-xs opacity-70">Provide Services</div>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="fullName" className="text-white">Full Name *</Label>
+                    <Input
+                      id="fullName"
+                      type="text"
+                      value={fullName}
+                      onChange={(e) => setFullName(sanitizeInput(e.target.value))}
+                      required
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="companyName" className="text-white">Company Name</Label>
+                    <Input
+                      id="companyName"
+                      type="text"
+                      value={companyName}
+                      onChange={(e) => setCompanyName(sanitizeInput(e.target.value))}
+                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
+                    />
+                  </div>
+                </>
+              )}
+
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-white">Email *</Label>
                 <Input
@@ -94,7 +172,7 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
                 />
               </div>
 
-              {mode === 'signin' && (
+              {(mode === 'signin' || mode === 'signup') && (
                 <div className="space-y-2">
                   <Label htmlFor="password" className="text-white">Password *</Label>
                   <div className="relative">
@@ -104,7 +182,7 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
-                      autoComplete="current-password"
+                      autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
                       className="bg-white/10 border-white/20 text-white placeholder:text-white/60 pr-10"
                     />
                     <Button
@@ -121,7 +199,10 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
               )}
 
               <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white" disabled={loading}>
-                {loading ? 'Processing...' : mode === 'signin' ? 'Sign In' : 'Send Reset Link'}
+                {loading ? 'Processing...' : 
+                  mode === 'signin' ? 'Sign In' : 
+                  mode === 'signup' ? 'Create Account' : 
+                  'Send Reset Link'}
               </Button>
             </form>
 
@@ -138,6 +219,13 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
                     Forgot your password?
                   </Link>
                 </>
+              ) : mode === 'signup' ? (
+                <p className="text-sm text-white/70">
+                  Already have an account?{' '}
+                  <Link to="/login" className="text-primary hover:underline">
+                    Sign in
+                  </Link>
+                </p>
               ) : (
                 <p className="text-sm text-white/70">
                   Remember your password?{' '}
