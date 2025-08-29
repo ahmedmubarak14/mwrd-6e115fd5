@@ -24,7 +24,8 @@ import {
   ChevronRight,
   Menu,
   Activity,
-  Bot
+  Bot,
+  Zap
 } from "lucide-react";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
@@ -106,6 +107,11 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           name: 'Real-Time Monitor',
           href: "/admin/real-time-monitor",
           icon: Activity,
+        },
+        {
+          name: 'Performance Monitor',
+          href: "/admin/performance-monitor",
+          icon: Zap,
         },
       ]
     },
