@@ -26,6 +26,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useSystemHealth } from '@/hooks/useSystemHealth';
 import { usePerformanceOptimizations } from '@/hooks/usePerformanceOptimizations';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 
 interface PerformanceMetric {
   name: string;
@@ -57,6 +58,13 @@ export const PerformanceMonitor = () => {
   // System health integration
   const { systemMetrics, performanceData, alerts, isLoading: healthLoading, refreshHealth } = useSystemHealth();
   const { deviceCapabilities, networkSpeed, performanceConfig } = usePerformanceOptimizations();
+  
+  // Translation context
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false 
+  };
 
   const collectPerformanceMetrics = async () => {
     // Collect Web Vitals and performance metrics
@@ -69,49 +77,49 @@ export const PerformanceMonitor = () => {
     
     const metricsData: PerformanceMetric[] = [
       {
-        name: 'First Contentful Paint (FCP)',
+        name: t('performance.firstContentfulPaint'),
         value: fcpEntry?.startTime || 0,
         unit: 'ms',
         status: (fcpEntry?.startTime || 0) < 1800 ? 'good' : (fcpEntry?.startTime || 0) < 3000 ? 'needs-improvement' : 'poor',
         threshold: { good: 1800, poor: 3000 },
         trend: 'stable',
-        description: 'Time until first content is painted'
+        description: t('performance.fcpDescription')
       },
       {
-        name: 'Largest Contentful Paint (LCP)',
+        name: t('performance.largestContentfulPaint'),
         value: lcpEntries[lcpEntries.length - 1]?.startTime || 0,
         unit: 'ms',
         status: (lcpEntries[lcpEntries.length - 1]?.startTime || 0) < 2500 ? 'good' : (lcpEntries[lcpEntries.length - 1]?.startTime || 0) < 4000 ? 'needs-improvement' : 'poor',
         threshold: { good: 2500, poor: 4000 },
         trend: 'stable',
-        description: 'Time until largest content element is painted'
+        description: t('performance.lcpDescription')
       },
       {
-        name: 'Time to Interactive (TTI)',
+        name: t('performance.timeToInteractive'),
         value: navigationEntry?.loadEventStart - navigationEntry?.fetchStart || 0,
         unit: 'ms',
         status: (navigationEntry?.loadEventStart - navigationEntry?.fetchStart || 0) < 3800 ? 'good' : (navigationEntry?.loadEventStart - navigationEntry?.fetchStart || 0) < 7300 ? 'needs-improvement' : 'poor',
         threshold: { good: 3800, poor: 7300 },
         trend: 'stable',
-        description: 'Time until page is fully interactive'
+        description: t('performance.ttiDescription')
       },
       {
-        name: 'DOM Content Loaded',
+        name: t('performance.domContentLoaded'),
         value: navigationEntry?.domContentLoadedEventEnd - navigationEntry?.fetchStart || 0,
         unit: 'ms',
         status: (navigationEntry?.domContentLoadedEventEnd - navigationEntry?.fetchStart || 0) < 1500 ? 'good' : (navigationEntry?.domContentLoadedEventEnd - navigationEntry?.fetchStart || 0) < 2500 ? 'needs-improvement' : 'poor',
         threshold: { good: 1500, poor: 2500 },
         trend: 'stable',
-        description: 'Time until DOM is fully parsed'
+        description: t('performance.dclDescription')
       },
       {
-        name: 'Memory Usage',
+        name: t('performance.memoryUsage'),
         value: (performance as any).memory ? Math.round((performance as any).memory.usedJSHeapSize / 1024 / 1024) : 0,
         unit: 'MB',
         status: ((performance as any).memory ? (performance as any).memory.usedJSHeapSize / 1024 / 1024 : 0) < 50 ? 'good' : ((performance as any).memory ? (performance as any).memory.usedJSHeapSize / 1024 / 1024 : 0) < 100 ? 'needs-improvement' : 'poor',
         threshold: { good: 50, poor: 100 },
         trend: 'stable',
-        description: 'Current JavaScript heap memory usage'
+        description: t('performance.memoryDescription')
       }
     ];
 
@@ -157,9 +165,9 @@ export const PerformanceMonitor = () => {
 
   const getStatusBadge = (status: PerformanceMetric['status']) => {
     switch (status) {
-      case 'good': return <Badge variant="default" className="bg-success text-success-foreground">Good</Badge>;
-      case 'needs-improvement': return <Badge variant="secondary" className="bg-warning text-warning-foreground">Needs Improvement</Badge>;
-      case 'poor': return <Badge variant="destructive">Poor</Badge>;
+      case 'good': return <Badge variant="default" className="bg-success text-success-foreground">{t('performance.good')}</Badge>;
+      case 'needs-improvement': return <Badge variant="secondary" className="bg-warning text-warning-foreground">{t('performance.needsImprovement')}</Badge>;
+      case 'poor': return <Badge variant="destructive">{t('performance.poor')}</Badge>;
       default: return <Badge variant="secondary">{status}</Badge>;
     }
   };
@@ -200,7 +208,7 @@ export const PerformanceMonitor = () => {
     return (
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold">Performance Monitor</h2>
+          <h2 className="text-2xl font-bold">{t('performance.performanceMonitor')}</h2>
           <div className="animate-spin">
             <RefreshCw className="h-5 w-5" />
           </div>
@@ -223,35 +231,35 @@ export const PerformanceMonitor = () => {
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <Monitor className="h-6 w-6" />
-            Performance Monitor
+            {t('performance.performanceMonitor')}
           </h2>
           <p className="text-muted-foreground">
-            Real-time performance metrics and optimization insights
+            {t('performance.realTimeMetrics')}
           </p>
         </div>
         <div className="flex gap-2">
           <Button onClick={collectPerformanceMetrics} variant="outline">
             <RefreshCw className="h-4 w-4 mr-2" />
-            Refresh Metrics
+            {t('performance.refreshMetrics')}
           </Button>
           <Button onClick={refreshHealth} variant="outline" disabled={healthLoading}>
             <Server className="h-4 w-4 mr-2" />
-            {healthLoading ? 'Checking...' : 'Check System Health'}
+            {healthLoading ? t('performance.checking') : t('performance.checkSystemHealth')}
           </Button>
           <Button onClick={analyzeBundleSize} disabled={analyzing}>
             <Download className="h-4 w-4 mr-2" />
-            {analyzing ? 'Analyzing...' : 'Analyze Bundle'}
+            {analyzing ? t('performance.analyzing') : t('performance.analyzeBundle')}
           </Button>
         </div>
       </div>
 
       <Tabs defaultValue="vitals" className="space-y-6">
         <TabsList>
-          <TabsTrigger value="vitals">Core Web Vitals</TabsTrigger>
-          <TabsTrigger value="system">System Health</TabsTrigger>
-          <TabsTrigger value="bundle">Bundle Analysis</TabsTrigger>
-          <TabsTrigger value="network">Network</TabsTrigger>
-          <TabsTrigger value="recommendations">Recommendations</TabsTrigger>
+          <TabsTrigger value="vitals">{t('performance.coreWebVitals')}</TabsTrigger>
+          <TabsTrigger value="system">{t('performance.systemHealth')}</TabsTrigger>
+          <TabsTrigger value="bundle">{t('performance.bundleAnalysis')}</TabsTrigger>
+          <TabsTrigger value="network">{t('performance.network')}</TabsTrigger>
+          <TabsTrigger value="recommendations">{t('performance.recommendations')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="vitals" className="space-y-4">
@@ -260,29 +268,29 @@ export const PerformanceMonitor = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Zap className="h-5 w-5 text-primary" />
-                Performance Score
+                {t('performance.performanceScore')}
               </CardTitle>
               <CardDescription>
-                Overall performance assessment based on Core Web Vitals
+                {t('performance.overallAssessment')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between mb-4">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-success">87</div>
-                  <div className="text-sm text-muted-foreground">Performance Score</div>
+                  <div className="text-sm text-muted-foreground">{t('performance.performanceScore')}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-warning">73</div>
-                  <div className="text-sm text-muted-foreground">Accessibility</div>
+                  <div className="text-sm text-muted-foreground">{t('performance.accessibility')}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-success">92</div>
-                  <div className="text-sm text-muted-foreground">Best Practices</div>
+                  <div className="text-sm text-muted-foreground">{t('performance.bestPractices')}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-success">89</div>
-                  <div className="text-sm text-muted-foreground">SEO</div>
+                  <div className="text-sm text-muted-foreground">{t('performance.seo')}</div>
                 </div>
               </div>
               <Progress value={87} className="w-full" />

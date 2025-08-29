@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from "recharts";
 import { useSystemHealth } from "@/hooks/useSystemHealth";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 
 export const SystemHealthMonitor = () => {
   const { 
@@ -26,6 +27,12 @@ export const SystemHealthMonitor = () => {
     alerts, 
     isLoading 
   } = useSystemHealth();
+
+  // Translation context
+  const languageContext = useOptionalLanguage();
+  const { t } = languageContext || { 
+    t: (key: string) => key 
+  };
 
 const getStatusColor = (status: string) => {
     switch (status) {
@@ -85,26 +92,26 @@ const getStatusColor = (status: string) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">System Status</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.systemStatus')}</CardTitle>
             {getStatusIcon(systemMetrics?.overallStatus || 'healthy')}
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-2">
               <div className={`text-2xl font-bold ${getStatusColor(systemMetrics?.overallStatus || 'healthy')}`}>
-                {systemMetrics?.overallStatus === 'healthy' ? 'Healthy' :
-                 systemMetrics?.overallStatus === 'warning' ? 'Warning' :
-                 systemMetrics?.overallStatus === 'critical' ? 'Critical' : 'Unknown'}
+                {systemMetrics?.overallStatus === 'healthy' ? t('admin.healthy') :
+                 systemMetrics?.overallStatus === 'warning' ? t('admin.warning') :
+                 systemMetrics?.overallStatus === 'critical' ? t('admin.critical') : t('admin.unknown')}
               </div>
             </div>
             <p className="text-xs text-muted-foreground mt-1">
-              Uptime: {uptimeStats?.uptime || '99.9%'}
+              {t('admin.uptime')}: {uptimeStats?.uptime || '99.9%'}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">CPU Usage</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.cpuUsage')}</CardTitle>
             <Cpu className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -115,7 +122,7 @@ const getStatusColor = (status: string) => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Memory Usage</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.memoryUsage')}</CardTitle>
             <HardDrive className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -126,19 +133,19 @@ const getStatusColor = (status: string) => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Database Health</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.databaseHealth')}</CardTitle>
             <Database className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-2">
               {getStatusIcon(systemMetrics?.databaseStatus || 'healthy')}
               <span className="text-lg font-semibold">
-                {systemMetrics?.databaseStatus === 'healthy' ? 'Optimal' :
-                 systemMetrics?.databaseStatus === 'warning' ? 'Degraded' : 'Critical'}
+                {systemMetrics?.databaseStatus === 'healthy' ? t('admin.optimal') :
+                 systemMetrics?.databaseStatus === 'warning' ? t('admin.degraded') : t('admin.critical')}
               </span>
             </div>
             <p className="text-xs text-muted-foreground mt-1">
-              Connections: {systemMetrics?.activeConnections || 15}/100
+              {t('admin.connections')}: {systemMetrics?.activeConnections || 15}/100
             </p>
           </CardContent>
         </Card>
