@@ -106,16 +106,8 @@ export const preloadComponent = (componentPath: string) => {
 };
 
 // Admin-specific lazy loading components
-export const LazyAdminRealTimeMonitor = lazy(() => 
-  import('@/components/admin/AdminRealTimeMonitor').then(m => ({ default: m.AdminRealTimeMonitor }))
-);
-
 export const LazyAdminVerificationWorkflow = lazy(() => 
   import('@/components/admin/AdminVerificationWorkflow').then(m => ({ default: m.AdminVerificationWorkflow }))
-);
-
-export const LazyAdminAutomationCenter = lazy(() => 
-  import('@/components/admin/AdminAutomationCenter').then(m => ({ default: m.AdminAutomationCenter }))
 );
 
 export const LazyAdminCommunicationCenter = lazy(() => 

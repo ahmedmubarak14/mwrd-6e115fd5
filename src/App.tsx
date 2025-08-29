@@ -22,12 +22,12 @@ import AdminUsers from './pages/admin/AdminUsers';
 import AdminRequests from './pages/admin/AdminRequests';
 import AdminOffers from './pages/admin/AdminOffers';
 import AdminAnalytics from './pages/admin/AdminAnalytics';
-import AdminRealTimeMonitor from './pages/admin/AdminRealTimeMonitor';
+
 import AdminPerformanceMonitor from './pages/admin/AdminPerformanceMonitor';
 import AdminProjects from './pages/admin/AdminProjects';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminVerificationQueue from './pages/admin/AdminVerificationQueue';
-import AdminAutomationCenter from './pages/admin/AdminAutomationCenter';
+import WorkflowAutomation from './pages/admin/WorkflowAutomation';
 import AdminFinancialTransactions from './pages/admin/AdminFinancialTransactions';
 import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import AdminSupport from './pages/admin/AdminSupport';
@@ -174,12 +174,11 @@ function App() {
                       <Route path="requests" element={<AdminRequests />} />
                       <Route path="offers" element={<AdminOffers />} />
                       <Route path="analytics" element={<AdminAnalytics />} />
-                      <Route path="real-time-monitor" element={<AdminRealTimeMonitor />} />
                       <Route path="performance-monitor" element={<AdminPerformanceMonitor />} />
                       <Route path="projects" element={<AdminProjects />} />
                       <Route path="orders" element={<AdminOrders />} />
                       <Route path="verification" element={<AdminVerificationQueue />} />
-                      <Route path="automation" element={<AdminAutomationCenter />} />
+                      <Route path="automation" element={<WorkflowAutomation />} />
                       <Route path="financial-transactions" element={<AdminFinancialTransactions />} />
                       <Route path="subscriptions" element={<AdminSubscriptions />} />
                       <Route path="support" element={<AdminSupport />} />
