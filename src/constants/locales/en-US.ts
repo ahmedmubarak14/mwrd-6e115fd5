@@ -340,7 +340,6 @@ export const enUS = {
     approve: 'Approve',
     reject: 'Reject',
     notSpecified: 'Not specified',
-    offers: 'offers',
     
     // Offer Management
     totalOffers: 'Total Offers',
