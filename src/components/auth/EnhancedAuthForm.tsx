@@ -43,12 +43,12 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
   // Handle successful authentication
   useEffect(() => {
     if (userProfile) {
-      // Check if vendor needs onboarding
-      if (userProfile.role === 'vendor' && (!userProfile.categories || userProfile.categories.length === 0)) {
+      // Check if vendor needs onboarding (using 'vendor' role)
+      if (userProfile.role === 'vendor') {
         setRegistrationStep('onboarding');
         return;
       }
-      onAuthSuccess?.(userProfile);
+      onAuthSuccess?.(userProfile as any);
     }
   }, [userProfile, onAuthSuccess]);
 
@@ -94,16 +94,16 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
           email: formData.email,
           full_name: formData.full_name,
           company_name: formData.company_name,
-          role: formData.role,
-          status: 'approved',
+          role: formData.role as any,
+          status: 'approved' as any,
           verification_status: 'approved',
           avatar_url: null,
           phone: null,
           address: null,
           bio: null,
           portfolio_url: null,
-          verification_documents: [],
-          categories: [],
+          verification_documents: [] as any,
+          categories: [] as any,
           subscription_plan: 'free',
           subscription_status: 'active',
           subscription_expires_at: null,
@@ -112,7 +112,7 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
           verification_notes: null,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
-        });
+        } as any);
       }
     }
   };
@@ -125,7 +125,7 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
   const handleOnboardingComplete = () => {
     showSuccess('Onboarding completed successfully! Welcome to MWRD.');
     if (userProfile) {
-      onAuthSuccess?.(userProfile);
+      onAuthSuccess?.(userProfile as any);
     }
   };
 

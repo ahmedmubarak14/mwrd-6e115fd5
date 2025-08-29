@@ -112,7 +112,7 @@ export const ClientSidebar = ({ className, collapsed = false, onToggle }: Client
           href: "/requests",
           icon: FileText,
         },
-        ...(userProfile?.role === 'vendor' ? [
+        ...(userProfile?.role === 'supplier' ? [
           {
             name: 'Browse Requests',
             href: "/browse-requests",
@@ -295,7 +295,7 @@ export const ClientSidebar = ({ className, collapsed = false, onToggle }: Client
                             
                             {item.badge && item.badge > 0 && (
                               <Badge 
-                                variant={item.badgeVariant || "secondary"} 
+                                variant={(item.badgeVariant === "success" || item.badgeVariant === "warning") ? "secondary" : item.badgeVariant || "secondary"} 
                                 className={cn(
                                   "h-5 min-w-5 px-1.5 text-xs flex items-center justify-center shrink-0",
                                   item.badgeVariant === "destructive" && "animate-pulse"

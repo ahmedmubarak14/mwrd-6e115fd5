@@ -54,7 +54,7 @@ export const MobileDashboard = () => {
         { label: 'Pending Tasks', value: tasks.filter(t => t.status === 'pending').length, icon: Clock, color: 'text-orange-500' },
         { label: 'Completed', value: tasks.filter(t => t.status === 'completed').length, icon: CheckCircle, color: 'text-green-500' }
       ];
-    } else if (userProfile?.role === 'vendor') {
+    } else if (userProfile?.role === 'supplier') {
       return [
         { label: 'Active Offers', value: '12', icon: Package, color: 'text-blue-500' },
         { label: 'Won Projects', value: '8', change: '+2', icon: CheckCircle, color: 'text-green-500' },

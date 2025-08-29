@@ -13,9 +13,13 @@ export const useOptionalLanguage = (): LanguageContextType => {
       setLanguage: () => {},
       t: (key: string) => key,
       isRTL: false,
-      formatNumber: (num: number) => num.toString(),
+      formatNumber: (num: number) => num.toLocaleString(),
       formatDate: (date: Date) => date.toLocaleDateString(),
-      formatCurrency: (amount: number, currency = 'USD') => `$${amount}`
+      formatCurrency: (amount: number, currency = 'USD') => 
+        new Intl.NumberFormat('en-US', { 
+          style: 'currency', 
+          currency: currency 
+        }).format(amount)
     };
   }
   
