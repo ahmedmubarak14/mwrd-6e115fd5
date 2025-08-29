@@ -25,10 +25,10 @@ const AdminCommunications = () => {
         <div className={cn(isRTL ? "text-right" : "text-left")}>
           <h1 className="text-3xl font-bold flex items-center gap-2">
             <MessageSquare className="h-8 w-8 text-primary" />
-            Communication & Notification Center
+            {t('common.communicationCenter')}
           </h1>
           <p className="text-muted-foreground">
-            Manage notifications, messaging, email campaigns, and communication preferences
+            {t('common.communicationCenterDescription')}
           </p>
         </div>
 
@@ -36,27 +36,27 @@ const AdminCommunications = () => {
           <TabsList className="grid grid-cols-2 md:grid-cols-6 w-full">
             <TabsTrigger value="overview" className="flex items-center gap-1 md:gap-2">
               <MessageSquare className="h-4 w-4" />
-              <span className="hidden sm:inline">Overview</span>
+              <span className="hidden sm:inline">{t('common.overview')}</span>
             </TabsTrigger>
             <TabsTrigger value="notifications" className="flex items-center gap-1 md:gap-2">
               <Bell className="h-4 w-4" />
-              <span className="hidden sm:inline">Notifications</span>
+              <span className="hidden sm:inline">{t('nav.notifications')}</span>
             </TabsTrigger>
             <TabsTrigger value="chat" className="flex items-center gap-1 md:gap-2">
               <MessageSquare className="h-4 w-4" />
-              <span className="hidden sm:inline">Live Chat</span>
+              <span className="hidden sm:inline">{t('common.liveChat')}</span>
             </TabsTrigger>
             <TabsTrigger value="email" className="flex items-center gap-1 md:gap-2">
               <Mail className="h-4 w-4" />
-              <span className="hidden sm:inline">Email</span>
+              <span className="hidden sm:inline">{t('common.email')}</span>
             </TabsTrigger>
             <TabsTrigger value="push" className="flex items-center gap-1 md:gap-2">
               <Smartphone className="h-4 w-4" />
-              <span className="hidden sm:inline">Push</span>
+              <span className="hidden sm:inline">{t('common.push')}</span>
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-1 md:gap-2">
               <Settings className="h-4 w-4" />
-              <span className="hidden sm:inline">Settings</span>
+              <span className="hidden sm:inline">{t('common.settings')}</span>
             </TabsTrigger>
           </TabsList>
 

@@ -80,8 +80,8 @@ export default function AdminUsers() {
       if (error) {
         console.error('Error fetching users:', error);
         toast({
-          title: "Error",
-          description: "Failed to fetch users data",
+          title: t('common.error'),
+          description: t('admin.fetchUsersError') || "Failed to fetch users data",
           variant: "destructive",
         });
         return;
@@ -106,8 +106,8 @@ export default function AdminUsers() {
     } catch (error) {
       console.error('Error fetching users:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch users data",
+        title: t('common.error'),
+        description: t('admin.fetchUsersError') || "Failed to fetch users data",
         variant: "destructive",
       });
     } finally {
@@ -179,16 +179,16 @@ export default function AdminUsers() {
     window.URL.revokeObjectURL(url);
     
     toast({
-      title: "Export completed",
-      description: "Users data has been exported to CSV",
+      title: t('common.exportCompleted'),
+      description: t('admin.exportDescription') || "Users data has been exported to CSV",
     });
   };
 
   const handleRefresh = () => {
     fetchUsers();
     toast({
-      title: "Data refreshed",
-      description: "Users data has been updated",
+      title: t('common.dataRefreshed'),
+      description: t('admin.dataUpdated') || "Users data has been updated",
     });
   };
 
@@ -296,8 +296,8 @@ export default function AdminUsers() {
   const handleAddUser = async () => {
     if (!newUser.email || !newUser.full_name) {
       toast({
-        title: "Error",
-        description: "Email and full name are required",
+        title: t('common.error'),
+        description: t('common.fillRequiredFields') || 'Please fill in all required fields',
         variant: "destructive",
       });
       return;
@@ -313,8 +313,8 @@ export default function AdminUsers() {
 
       if (existingUser) {
         toast({
-          title: "Error",
-          description: "User with this email already exists",
+          title: t('common.error'),
+          description: t('common.userExists') || 'User with this email already exists',
           variant: "destructive",
         });
         return;
@@ -337,8 +337,8 @@ export default function AdminUsers() {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "User added successfully",
+        title: t('common.success'),
+        description: t('common.userAddedSuccess') || 'User added successfully',
       });
 
       setIsAddUserOpen(false);
@@ -378,8 +378,8 @@ export default function AdminUsers() {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "User updated successfully",
+        title: t('common.success'),
+        description: t('common.userUpdatedSuccess') || 'User updated successfully',
       });
 
       setEditingUser(null);
