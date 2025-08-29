@@ -539,7 +539,7 @@ export const ComprehensiveAdminOverview = () => {
                   <div className="w-2 h-2 bg-primary rounded-full"></div>
                   <div className="flex-1">
                     <span className="capitalize">{activity.action?.replace('_', ' ')}</span>
-                    <span className="text-muted-foreground"> on </span>
+                    <span className="text-muted-foreground"> {t('admin.activityOn')} </span>
                     <span className="capitalize">{activity.entity_type}</span>
                   </div>
                   <span className="text-xs text-muted-foreground">

@@ -286,7 +286,20 @@ export const arSA = {
     // مسارات التنقل
     breadcrumbs: {
       admin: 'الإدارة',
-      dashboardOverview: 'نظرة عامة على لوحة التحكم'
+      dashboardOverview: 'نظرة عامة على لوحة التحكم',
+      userManagement: 'إدارة المستخدمين',
+      requestsManagement: 'إدارة الطلبات',
+      offersManagement: 'إدارة العروض',
+      ordersManagement: 'إدارة الطلبيات',
+      projectsManagement: 'إدارة المشاريع',
+      platformAnalytics: 'تحليلات المنصة',
+      subscriptionManagement: 'إدارة الاشتراكات',
+      supportCenter: 'مركز الدعم',
+      verificationQueue: 'قائمة التحقق',
+      categoryManagement: 'إدارة الفئات',
+      expertConsultations: 'الاستشارات الخبيرة',
+      financialTransactions: 'المعاملات المالية',
+      securityMonitoring: 'مراقبة الأمان'
     },
     
     // الإجراءات السريعة
@@ -321,6 +334,7 @@ export const arSA = {
     recentActivity: 'النشاط الأخير',
     recentActivityDesc: 'أحدث أنشطة وتغييرات النظام',
     noRecentActivity: 'لا توجد أنشطة حديثة',
+    activityOn: 'على',
     systemAlerts: 'تنبيهات النظام',
     activeSystemAlerts: 'تنبيه نظام نشط',
     requireAttention: 'يتطلب انتباه',

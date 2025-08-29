@@ -286,7 +286,20 @@ export const enUS = {
     // Breadcrumbs
     breadcrumbs: {
       admin: 'Admin',
-      dashboardOverview: 'Dashboard Overview'
+      dashboardOverview: 'Dashboard Overview',
+      userManagement: 'User Management',
+      requestsManagement: 'Requests Management', 
+      offersManagement: 'Offers Management',
+      ordersManagement: 'Orders Management',
+      projectsManagement: 'Projects Management',
+      platformAnalytics: 'Platform Analytics',
+      subscriptionManagement: 'Subscription Management',
+      supportCenter: 'Support Center',
+      verificationQueue: 'Verification Queue',
+      categoryManagement: 'Category Management',
+      expertConsultations: 'Expert Consultations', 
+      financialTransactions: 'Financial Transactions',
+      securityMonitoring: 'Security Monitoring'
     },
     
     // Quick Actions
@@ -321,6 +334,7 @@ export const enUS = {
     recentActivity: 'Recent Activity',
     recentActivityDesc: 'Latest system activity and changes',
     noRecentActivity: 'No recent activities',
+    activityOn: 'on',
     systemAlerts: 'System Alerts',
     activeSystemAlerts: 'active system alert',
     requireAttention: 'require attention',
