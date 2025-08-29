@@ -48,27 +48,121 @@ export const ProcurementClientDashboard = () => {
   const [recentActivity, setRecentActivity] = useState<any[]>([]);
 
   const fetchClientStats = async () => {
-    if (!userProfile) return;
+    if (!userProfile?.user_id) return;
     
     try {
       setLoading(true);
       
-      // Use mock data since database schema doesn't match expected tables
-      const stats = {
-        totalRequests: 5,
-        activeRequests: 2,
-        completedRequests: 3,
-        totalOffers: 8,
-        pendingOffers: 3,
-        acceptedOffers: 5,
-        totalOrders: 3,
-        completedOrders: 2,
-        totalSpent: 50000,
-        avgResponseTime: 24
+      // Fetch client's requests
+      const { data: requests, error: requestsError } = await supabase
+        .from('requests')
+        .select('id, status, created_at, updated_at')
+        .eq('client_id', userProfile.user_id);
+
+      if (requestsError) {
+        console.error('Error fetching requests:', requestsError);
+        throw requestsError;
+      }
+
+      // Fetch offers for client's requests
+      const { data: offers, error: offersError } = await supabase
+        .from('offers')
+        .select('id, client_approval_status, status, price, currency, created_at, request_id')
+        .in('request_id', requests?.map(r => r.id) || []);
+
+      if (offersError) {
+        console.error('Error fetching offers:', offersError);
+        throw offersError;
+      }
+
+      // Fetch client's orders
+      const { data: orders, error: ordersError } = await supabase
+        .from('orders')
+        .select('id, status, amount, currency, created_at, completion_date')
+        .eq('client_id', userProfile.user_id);
+
+      if (ordersError) {
+        console.error('Error fetching orders:', ordersError);
+        throw ordersError;
+      }
+
+      // Fetch client's financial transactions
+      const { data: transactions, error: transactionsError } = await supabase
+        .from('financial_transactions')
+        .select('amount, created_at, status')
+        .eq('user_id', userProfile.user_id)
+        .eq('status', 'completed');
+
+      if (transactionsError) {
+        console.error('Error fetching transactions:', transactionsError);
+        throw transactionsError;
+      }
+
+      // Calculate statistics
+      const totalRequests = requests?.length || 0;
+      const activeRequests = requests?.filter(r => ['new', 'in_progress'].includes(r.status)).length || 0;
+      const completedRequests = requests?.filter(r => r.status === 'completed').length || 0;
+      
+      const totalOffers = offers?.length || 0;
+      const pendingOffers = offers?.filter(o => o.client_approval_status === 'pending').length || 0;
+      const acceptedOffers = offers?.filter(o => o.client_approval_status === 'approved').length || 0;
+      
+      const totalOrders = orders?.length || 0;
+      const completedOrders = orders?.filter(o => o.status === 'completed').length || 0;
+      
+      const totalSpent = transactions?.reduce((sum, t) => sum + (t.amount || 0), 0) || 0;
+      
+      // Calculate average response time (hours between request creation and first offer)
+      let avgResponseTime = 0;
+      if (requests && offers && requests.length > 0) {
+        const responseTimes = requests
+          .map(request => {
+            const requestOffers = offers.filter(o => o.request_id === request.id);
+            if (requestOffers.length > 0) {
+              const firstOffer = requestOffers.sort((a, b) => 
+                new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+              )[0];
+              const requestTime = new Date(request.created_at).getTime();
+              const firstOfferTime = new Date(firstOffer.created_at).getTime();
+              return (firstOfferTime - requestTime) / (1000 * 60 * 60); // Convert to hours
+            }
+            return null;
+          })
+          .filter(time => time !== null) as number[];
+        
+        if (responseTimes.length > 0) {
+          avgResponseTime = Math.round(responseTimes.reduce((sum, time) => sum + time, 0) / responseTimes.length);
+        }
+      }
+
+      const newStats = {
+        totalRequests,
+        activeRequests,
+        completedRequests,
+        totalOffers,
+        pendingOffers,
+        acceptedOffers,
+        totalOrders,
+        completedOrders,
+        totalSpent,
+        avgResponseTime
       };
 
-      setStats(stats);
-      setRecentActivity([]);
+      setStats(newStats);
+
+      // Fetch recent activity from activity feed
+      const { data: activity, error: activityError } = await supabase
+        .from('activity_feed')
+        .select('*')
+        .eq('user_id', userProfile.user_id)
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      if (activityError) {
+        console.error('Error fetching activity:', activityError);
+      } else {
+        setRecentActivity(activity || []);
+      }
 
     } catch (error) {
       console.error('Error fetching client stats:', error);
@@ -76,6 +170,20 @@ export const ProcurementClientDashboard = () => {
         title: "Error",
         description: "Failed to load dashboard statistics",
         variant: "destructive"
+      });
+      
+      // Set fallback stats to prevent UI breaking
+      setStats({
+        totalRequests: 0,
+        activeRequests: 0,
+        completedRequests: 0,
+        totalOffers: 0,
+        pendingOffers: 0,
+        acceptedOffers: 0,
+        totalOrders: 0,
+        completedOrders: 0,
+        totalSpent: 0,
+        avgResponseTime: 0
       });
     } finally {
       setLoading(false);
