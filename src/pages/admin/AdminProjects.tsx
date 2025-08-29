@@ -10,7 +10,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
-import { AdminPageContainer } from '@/components/admin/AdminPageContainer';
 
 interface AdminProject {
   id: string;
@@ -187,10 +186,16 @@ const AdminProjects = () => {
   const overdueProjects = projects.filter(p => isProjectOverdue(p));
 
   return (
-    <AdminPageContainer
-      title="Project Management"
-      description="Monitor project lifecycles, BOQ items, and budget tracking across all client projects"
-    >
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
+          Project Management
+        </h1>
+        <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
+          Monitor project lifecycles, BOQ items, and budget tracking across all client projects
+        </p>
+      </div>
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
@@ -434,7 +439,7 @@ const AdminProjects = () => {
           ))
         )}
       </div>
-    </AdminPageContainer>
+    </div>
   );
 };
 
