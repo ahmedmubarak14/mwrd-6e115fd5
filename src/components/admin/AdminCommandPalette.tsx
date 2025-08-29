@@ -75,27 +75,27 @@ export const AdminCommandPalette = () => {
     setLoading(true);
     const timer = setTimeout(async () => {
       try {
-        const [usersRes, reqsRes, offersRes] = await Promise.all([
+        const [users, orders, consultations] = await Promise.all([
           supabase
             .from("user_profiles")
             .select("id,email,full_name,company_name,role")
             .or(`email.ilike.%${q}%,full_name.ilike.%${q}%,company_name.ilike.%${q}%`)
             .limit(5),
           supabase
-            .from("requests")
-            .select("id,title,description,admin_approval_status")
+            .from("orders")
+            .select("id,title,description,status")
             .or(`title.ilike.%${q}%,description.ilike.%${q}%`)
             .limit(5),
           supabase
-            .from("offers")
-            .select("id,title,description,client_approval_status")
-            .or(`title.ilike.%${q}%,description.ilike.%${q}%`)
+            .from("expert_consultations")
+            .select("id,full_name,email,event_type,status")
+            .or(`full_name.ilike.%${q}%,email.ilike.%${q}%,event_type.ilike.%${q}%`)
             .limit(5),
         ]);
 
-        setUsers((usersRes.data as any) || []);
-        setRequests((reqsRes.data as any) || []);
-        setOffers((offersRes.data as any) || []);
+        setUsers((users.data as any) || []);
+        setRequests((orders.data as any) || []);
+        setOffers((consultations.data as any) || []);
       } catch (e) {
         // noop
       } finally {

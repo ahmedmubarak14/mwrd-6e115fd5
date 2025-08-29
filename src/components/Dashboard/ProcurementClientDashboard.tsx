@@ -56,17 +56,17 @@ export const ProcurementClientDashboard = () => {
       // Since the database schema has changed, we'll use mock data for now
       // and only fetch from tables that actually exist
       
-      // Fetch orders statistics (this table exists)
+      // Fix query to match correct user ID field - use profile id, not auth user_id
       const { data: orders, error: ordersError } = await supabase
         .from('orders')
         .select('id, status, amount')
-        .eq('client_id', userProfile.id); // Use id instead of user_id
+        .eq('client_id', userProfile.id); // Use profile id to match orders table
 
       // Fetch expert consultations (this table exists) 
       const { data: consultations, error: consultationsError } = await supabase
         .from('expert_consultations')
         .select('id, status')
-        .eq('user_id', userProfile.id);
+        .eq('user_id', userProfile.id); // Use id since UserProfile type doesn't have user_id
 
       // Use default/mock values for tables that don't exist
       const requests = []; // Mock data since requests table doesn't exist

@@ -10,7 +10,7 @@ import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 interface UserStats {
   total_users: number;
   total_clients: number;
-  total_vendors: number;
+  total_suppliers: number;
   total_admins: number;
 }
 
@@ -101,7 +101,7 @@ export const AdminDashboardStats = () => {
           <TrendingUp className="h-4 w-4 text-success" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{stats?.total_vendors || 0}</div>
+          <div className="text-2xl font-bold">{stats?.total_suppliers || 0}</div>
         </CardContent>
       </Card>
       

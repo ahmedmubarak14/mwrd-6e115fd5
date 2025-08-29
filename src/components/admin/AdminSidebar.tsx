@@ -44,7 +44,7 @@ interface NavigationGroup {
     href: string;
     icon: React.ElementType;
     badge?: number;
-    badgeVariant?: "default" | "secondary" | "destructive" | "success" | "warning";
+    badgeVariant?: "default" | "secondary" | "destructive" | "outline";
   }[];
 }
 
