@@ -15,7 +15,6 @@ import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { format } from "date-fns";
 import { ShoppingCart, DollarSign, Download, RefreshCw, TrendingUp, Clock, CheckCircle, Edit, Trash2, Eye, Users, BarChart3, Calendar, Building } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { AdminPageContainer } from "@/components/admin/AdminPageContainer";
 import { useToast } from "@/hooks/use-toast";
 
 interface AdminOrder {
@@ -323,10 +322,16 @@ export default function AdminOrders() {
   }
 
   return (
-    <AdminPageContainer
-      title="Orders Management"
-      description="Monitor and manage all orders across the platform"
-    >
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
+          Orders Management
+        </h1>
+        <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
+          Monitor and manage all orders across the platform
+        </p>
+      </div>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="all">All Orders</TabsTrigger>
@@ -657,6 +662,6 @@ export default function AdminOrders() {
           </Card>
         </TabsContent>
       </Tabs>
-    </AdminPageContainer>
+    </div>
   );
 }
