@@ -33,6 +33,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useSystemHealth } from '@/hooks/useSystemHealth';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 
@@ -61,6 +62,7 @@ interface QuickAction {
 export const ComprehensiveAdminOverview = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useOptionalLanguage();
   const { systemMetrics, alerts, isLoading: healthLoading } = useSystemHealth();
   
   const [metrics, setMetrics] = useState<PlatformMetrics>({
@@ -82,60 +84,60 @@ export const ComprehensiveAdminOverview = () => {
 
   const quickActions: QuickAction[] = [
     {
-      title: 'User Management',
-      description: 'Manage users, roles, and permissions',
+      title: t('admin.userManagement'),
+      description: t('admin.userManagementDesc'),
       icon: Users,
       link: '/admin/users',
       color: 'bg-blue-500',
       count: metrics.totalUsers
     },
     {
-      title: 'Approval Queue',
-      description: 'Review pending requests and offers',
+      title: t('admin.approvalQueue'),
+      description: t('admin.approvalQueueDesc'),
       icon: Clock,
       link: '/admin/requests',
       color: 'bg-orange-500',
       count: metrics.pendingApprovals
     },
     {
-      title: 'Financial Overview',
-      description: 'Monitor transactions and revenue',
+      title: t('admin.financialOverview'),
+      description: t('admin.financialOverviewDesc'),
       icon: DollarSign,
       link: '/admin/financial-transactions',
       color: 'bg-green-500'
     },
     {
-      title: 'System Health',
-      description: 'Monitor system performance',
+      title: t('admin.systemHealth'),
+      description: t('admin.systemHealthDesc'),
       icon: Server,
       link: '/admin/performance-monitor',
       color: systemMetrics?.overallStatus === 'healthy' ? 'bg-green-500' : 
              systemMetrics?.overallStatus === 'warning' ? 'bg-yellow-500' : 'bg-red-500'
     },
     {
-      title: 'Security Center',
-      description: 'Security monitoring and compliance',
+      title: t('admin.securityCenter'),
+      description: t('admin.securityCenterDesc'),
       icon: Shield,
       link: '/admin/security',
       color: 'bg-purple-500'
     },
     {
-      title: 'Communications',
-      description: 'Manage notifications and messages',
+      title: t('admin.communications'),
+      description: t('admin.communicationsDesc'),
       icon: MessageSquare,
       link: '/admin/communications',
       color: 'bg-indigo-500'
     },
     {
-      title: 'Analytics',
-      description: 'Platform insights and reporting',
+      title: t('admin.analytics'),
+      description: t('admin.analyticsDesc'),
       icon: BarChart3,
       link: '/admin/analytics',
       color: 'bg-teal-500'
     },
     {
-      title: 'Automation',
-      description: 'Workflow automation and rules',
+      title: t('admin.automation'),
+      description: t('admin.automationDesc'),
       icon: Zap,
       link: '/admin/automation',
       color: 'bg-yellow-500'
@@ -233,8 +235,8 @@ export const ComprehensiveAdminOverview = () => {
     } catch (error) {
       console.error('Error fetching comprehensive metrics:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to fetch platform metrics',
+        title: t('common.error'),
+        description: t('admin.metricsError'),
         variant: 'destructive'
       });
     } finally {
@@ -270,13 +272,13 @@ export const ComprehensiveAdminOverview = () => {
             <div className="flex items-center gap-2">
               <AlertCircle className="h-5 w-5 text-destructive" />
               <div>
-                <h3 className="font-semibold text-destructive">System Alerts</h3>
+                <h3 className="font-semibold text-destructive">{t('admin.systemAlerts')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {alerts.length} active system alert{alerts.length !== 1 ? 's' : ''} require attention
+                  {alerts.length} {t('admin.activeSystemAlerts')} {alerts.length !== 1 ? 's' : ''} {t('admin.requireAttention')}
                 </p>
               </div>
               <Button variant="outline" size="sm" asChild className="ml-auto">
-                <Link to="/admin/performance-monitor">View Details</Link>
+                <Link to="/admin/performance-monitor">{t('admin.viewDetails')}</Link>
               </Button>
             </div>
           </CardContent>
@@ -289,11 +291,11 @@ export const ComprehensiveAdminOverview = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Total Users</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('admin.totalUsers')}</p>
                 <p className="text-2xl font-bold">{metrics.totalUsers.toLocaleString()}</p>
                 <p className="text-xs text-success">
                   <TrendingUp className="h-3 w-3 inline mr-1" />
-                  {metrics.activeUsers} active this month
+                  {metrics.activeUsers} {t('admin.activeThisMonth')}
                 </p>
               </div>
               <Users className="h-8 w-8 text-primary" />
@@ -305,11 +307,11 @@ export const ComprehensiveAdminOverview = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Total Revenue</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('admin.totalRevenue')}</p>
                 <p className="text-2xl font-bold">${metrics.totalRevenue.toLocaleString()}</p>
                 <p className="text-xs text-success">
                   <TrendingUp className="h-3 w-3 inline mr-1" />
-                  +12.5% from last month
+                  {t('admin.monthlyGrowth')}
                 </p>
               </div>
               <DollarSign className="h-8 w-8 text-success" />
@@ -321,10 +323,10 @@ export const ComprehensiveAdminOverview = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Pending Approvals</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('admin.pendingApprovals')}</p>
                 <p className="text-2xl font-bold">{metrics.pendingApprovals}</p>
                 <p className="text-xs text-muted-foreground">
-                  Requires admin review
+                  {t('admin.requiresAdminReview')}
                 </p>
               </div>
               <Clock className="h-8 w-8 text-warning" />
@@ -336,16 +338,16 @@ export const ComprehensiveAdminOverview = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">System Health</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('admin.systemHealth')}</p>
                 <p className={cn(
                   "text-2xl font-bold capitalize",
                   metrics.systemHealth === 'healthy' ? 'text-success' :
                   metrics.systemHealth === 'warning' ? 'text-warning' : 'text-destructive'
                 )}>
-                  {metrics.systemHealth}
+                  {t(`admin.${metrics.systemHealth}`)}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  All systems operational
+                  {t('admin.allSystemsOperational')}
                 </p>
               </div>
               <Server className={cn(
@@ -361,9 +363,9 @@ export const ComprehensiveAdminOverview = () => {
       {/* Platform Performance Chart */}
       <Card>
         <CardHeader>
-          <CardTitle>Platform Activity (Last 7 Days)</CardTitle>
+          <CardTitle>{t('admin.platformActivity')}</CardTitle>
           <CardDescription>
-            Overview of user registrations, requests, and orders
+            {t('admin.platformActivityDesc')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -407,9 +409,9 @@ export const ComprehensiveAdminOverview = () => {
       {/* Quick Actions Grid */}
       <Card>
         <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
+          <CardTitle>{t('admin.quickActions')}</CardTitle>
           <CardDescription>
-            Access key administrative functions
+            {t('admin.quickActionsDesc')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -444,26 +446,26 @@ export const ComprehensiveAdminOverview = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>System Status</CardTitle>
+            <CardTitle>{t('admin.systemStatus')}</CardTitle>
             <CardDescription>
-              Real-time system health monitoring
+              {t('admin.systemStatusDesc')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Database className="h-4 w-4 text-primary" />
-                <span className="text-sm">Database</span>
+                <span className="text-sm">{t('admin.database')}</span>
               </div>
               <Badge variant={systemMetrics?.databaseStatus === 'healthy' ? 'default' : 'destructive'}>
-                {systemMetrics?.databaseStatus || 'Healthy'}
+                {t(`admin.${systemMetrics?.databaseStatus || 'healthy'}`)}
               </Badge>
             </div>
             
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Cpu className="h-4 w-4 text-primary" />
-                <span className="text-sm">CPU Usage</span>
+                <span className="text-sm">{t('admin.cpuUsage')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Progress value={systemMetrics?.cpuUsage || 25} className="w-16" />
@@ -474,7 +476,7 @@ export const ComprehensiveAdminOverview = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <HardDrive className="h-4 w-4 text-primary" />
-                <span className="text-sm">Memory Usage</span>
+                <span className="text-sm">{t('admin.memoryUsage')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Progress value={systemMetrics?.memoryUsage || 45} className="w-16" />
@@ -485,7 +487,7 @@ export const ComprehensiveAdminOverview = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Globe className="h-4 w-4 text-primary" />
-                <span className="text-sm">Active Connections</span>
+                <span className="text-sm">{t('admin.activeConnections')}</span>
               </div>
               <span className="text-sm">{systemMetrics?.activeConnections || 12}</span>
             </div>
@@ -494,9 +496,9 @@ export const ComprehensiveAdminOverview = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
+            <CardTitle>{t('admin.recentActivity')}</CardTitle>
             <CardDescription>
-              Latest system activities and changes
+              {t('admin.recentActivityDesc')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -516,7 +518,7 @@ export const ComprehensiveAdminOverview = () => {
               ))}
               {recentActivity.length === 0 && (
                 <p className="text-sm text-muted-foreground text-center py-4">
-                  No recent activity
+                  {t('admin.noRecentActivity')}
                 </p>
               )}
             </div>
