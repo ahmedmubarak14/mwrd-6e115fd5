@@ -2,275 +2,236 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Settings, Clock, Zap, Bell, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { Settings, Clock, Zap, Bell, AlertTriangle, CheckCircle, Plus, Activity, TrendingUp, PlayCircle, PauseCircle, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
-
-interface WorkflowRule {
-  id: string;
-  name: string;
-  enabled: boolean;
-  trigger: string;
-  conditions: any;
-  actions: any;
-  lastRun?: string;
-  runCount: number;
-}
+import { useWorkflowAutomation, useAutomatedTasks } from '@/hooks/useWorkflowAutomation';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 export const WorkflowAutomation = () => {
   const { toast } = useToast();
-  const [rules, setRules] = useState<WorkflowRule[]>([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    workflows,
+    executions,
+    loading: workflowLoading,
+    createWorkflow,
+    updateWorkflow,
+    deleteWorkflow,
+    toggleWorkflowStatus,
+    triggerWorkflow,
+    refetch: refetchWorkflows
+  } = useWorkflowAutomation();
 
-  useEffect(() => {
-    fetchWorkflowRules();
-  }, []);
+  const {
+    tasks,
+    loading: tasksLoading,
+    updateTaskStatus,
+    deleteTask,
+    getTasksByStatus,
+    getOverdueTasks,
+    refetch: refetchTasks
+  } = useAutomatedTasks();
 
-  const fetchWorkflowRules = async () => {
-    try {
-      // Fetch workflow automation rules from platform_settings
-      // Use mock data for platform settings
-      const mockData = [
-        {
-          id: '1',
-          setting_key: 'auto_approve_offers',
-          setting_value: {
-            enabled: true,
-            threshold: 1000,
-            description: 'Auto-approve offers below threshold'
-          }
-        },
-        {
-          id: '2', 
-          setting_key: 'email_notifications',
-          setting_value: {
-            enabled: false,
-            frequency: 'daily',
-            description: 'Send email notifications'
-          }
-        }
-      ];
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [newWorkflow, setNewWorkflow] = useState({
+    name: '',
+    description: '',
+    trigger_type: 'manual',
+    trigger_conditions: {},
+    actions: {},
+    status: 'draft' as 'active' | 'inactive' | 'draft',
+    priority: 1,
+    delay_minutes: 0
+  });
 
-      // Convert platform settings to workflow rules format
-      const workflowRules: WorkflowRule[] = mockData.map(setting => {
-        const settingValue = typeof setting.setting_value === 'object' && setting.setting_value !== null 
-          ? setting.setting_value as any 
-          : {};
-        
-        return {
-          id: setting.id,
-          name: setting.setting_key.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()),
-          enabled: settingValue.enabled || false,
-          trigger: settingValue.trigger || 'manual',
-          conditions: settingValue.conditions || {},
-          actions: settingValue.actions || {},
-          runCount: settingValue.runCount || 0,
-          lastRun: settingValue.lastRun
-        };
-      }) || [];
-
-      // If no rules exist, create default ones
-      if (workflowRules.length === 0) {
-        const defaultRules: WorkflowRule[] = [
-          {
-            id: '1',
-            name: 'Auto-approve small requests',
-            enabled: false,
-            trigger: 'request_created',
-            conditions: { budget_max: { operator: 'less_than', value: 5000 } },
-            actions: { approve: true, notify_client: true },
-            runCount: 0
-          },
-          {
-            id: '2', 
-            name: 'Escalate high-value offers',
-            enabled: false,
-            trigger: 'offer_submitted',
-            conditions: { price: { operator: 'greater_than', value: 100000 } },
-            actions: { notify_admin: true, priority: 'high' },
-            runCount: 0
-          }
-        ];
-        setRules(defaultRules);
-      } else {
-        setRules(workflowRules);
-      }
-    } catch (error) {
-      console.error('Error fetching workflow rules:', error);
-      // Set empty rules on error
-      setRules([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const [selectedRule, setSelectedRule] = useState<WorkflowRule | null>(null);
-  const [isEditing, setIsEditing] = useState(false);
-
-  const toggleRule = async (ruleId: string, enabled: boolean) => {
-    setRules(prev => prev.map(rule => 
-      rule.id === ruleId ? { ...rule, enabled } : rule
-    ));
-
-    toast({
-      title: enabled ? 'Rule Enabled' : 'Rule Disabled',
-      description: `Automation rule has been ${enabled ? 'enabled' : 'disabled'}`,
-    });
-  };
-
-  const executeRule = async (ruleId: string) => {
-    const rule = rules.find(r => r.id === ruleId);
-    if (!rule) return;
-
-    try {
-      // Simulate rule execution
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setRules(prev => prev.map(r => 
-        r.id === ruleId 
-          ? { ...r, runCount: r.runCount + 1, lastRun: new Date().toISOString() }
-          : r
-      ));
-
+  const handleCreateWorkflow = async () => {
+    if (!newWorkflow.name.trim()) {
       toast({
-        title: 'Rule Executed',
-        description: `"${rule.name}" has been executed successfully`,
+        title: 'Error',
+        description: 'Workflow name is required',
+        variant: 'destructive'
+      });
+      return;
+    }
+
+    try {
+      await createWorkflow(newWorkflow);
+      setShowCreateDialog(false);
+      setNewWorkflow({
+        name: '',
+        description: '',
+        trigger_type: 'manual',
+        trigger_conditions: {},
+        actions: {},
+        status: 'draft',
+        priority: 1,
+        delay_minutes: 0
+      });
+      toast({
+        title: 'Success',
+        description: 'Workflow created successfully'
       });
     } catch (error) {
       toast({
-        title: 'Execution Failed',
-        description: 'Failed to execute automation rule',
+        title: 'Error',
+        description: 'Failed to create workflow',
         variant: 'destructive'
       });
     }
   };
 
-  const getStatusIcon = (rule: WorkflowRule) => {
-    if (!rule.enabled) return <Clock className="h-4 w-4 text-muted-foreground" />;
-    if (rule.runCount > 0) return <CheckCircle className="h-4 w-4 text-success" />;
-    return <AlertTriangle className="h-4 w-4 text-warning" />;
+  const handleToggleWorkflow = async (id: string, currentStatus: string) => {
+    const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+    try {
+      await toggleWorkflowStatus(id, newStatus);
+      toast({
+        title: 'Success',
+        description: `Workflow ${newStatus === 'active' ? 'enabled' : 'disabled'}`
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to update workflow status',
+        variant: 'destructive'
+      });
+    }
   };
 
-  const getStatusColor = (rule: WorkflowRule) => {
-    if (!rule.enabled) return 'secondary';
-    if (rule.runCount > 0) return 'default';
-    return 'outline';
+  const handleDeleteWorkflow = async (id: string) => {
+    try {
+      await deleteWorkflow(id);
+      toast({
+        title: 'Success',
+        description: 'Workflow deleted successfully'
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to delete workflow',
+        variant: 'destructive'
+      });
+    }
   };
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'active': return <CheckCircle className="h-4 w-4 text-success" />;
+      case 'inactive': return <PauseCircle className="h-4 w-4 text-muted-foreground" />;
+      case 'draft': return <Clock className="h-4 w-4 text-warning" />;
+      default: return <AlertTriangle className="h-4 w-4 text-destructive" />;
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'active': return 'default';
+      case 'inactive': return 'secondary';
+      case 'draft': return 'outline';
+      default: return 'destructive';
+    }
+  };
+
+  const loading = workflowLoading || tasksLoading;
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <LoadingSpinner size="lg" label="Loading automation center..." />
+      </div>
+    );
+  }
+
+  const activeTasks = getTasksByStatus('pending');
+  const overdueTasks = getOverdueTasks();
+  const activeWorkflows = workflows.filter(w => w.status === 'active');
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
               <CardTitle className="flex items-center gap-2">
                 <Zap className="h-5 w-5" />
-                Workflow Automation
+                Workflow Automation Center
               </CardTitle>
               <p className="text-sm text-muted-foreground mt-1">
-                Automate approval processes and streamline operations
+                Automate processes, manage workflows, and monitor automated tasks
               </p>
             </div>
-            <Button variant="outline" className="flex items-center gap-2">
-              <Settings className="h-4 w-4" />
-              New Rule
-            </Button>
+            <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
+              <DialogTrigger asChild>
+                <Button className="flex items-center gap-2">
+                  <Plus className="h-4 w-4" />
+                  Create Workflow
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[600px]">
+                <DialogHeader>
+                  <DialogTitle>Create New Workflow</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="name">Workflow Name</Label>
+                    <Input
+                      id="name"
+                      placeholder="Enter workflow name..."
+                      value={newWorkflow.name}
+                      onChange={(e) => setNewWorkflow(prev => ({ ...prev, name: e.target.value }))}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="description">Description</Label>
+                    <Textarea
+                      id="description"
+                      placeholder="Describe what this workflow does..."
+                      value={newWorkflow.description}
+                      onChange={(e) => setNewWorkflow(prev => ({ ...prev, description: e.target.value }))}
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="trigger">Trigger Type</Label>
+                      <Input
+                        id="trigger"
+                        placeholder="e.g., request_created"
+                        value={newWorkflow.trigger_type}
+                        onChange={(e) => setNewWorkflow(prev => ({ ...prev, trigger_type: e.target.value }))}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="priority">Priority</Label>
+                      <Input
+                        id="priority"
+                        type="number"
+                        min="1"
+                        max="10"
+                        value={newWorkflow.priority}
+                        onChange={(e) => setNewWorkflow(prev => ({ ...prev, priority: parseInt(e.target.value) || 1 }))}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex justify-end gap-2">
+                    <Button variant="outline" onClick={() => setShowCreateDialog(false)}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleCreateWorkflow}>
+                      Create Workflow
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </CardHeader>
       </Card>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {rules.map((rule) => (
-          <Card key={rule.id} className={`relative ${rule.enabled ? 'border-primary/20' : 'border-muted'}`}>
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between">
-                <div className="space-y-1 flex-1">
-                  <div className="flex items-center gap-2">
-                    {getStatusIcon(rule)}
-                    <h3 className="font-medium text-sm">{rule.name}</h3>
-                  </div>
-                  <Badge variant={getStatusColor(rule)} className="text-xs">
-                    {rule.enabled ? 'Active' : 'Inactive'}
-                  </Badge>
-                </div>
-                <Switch
-                  checked={rule.enabled}
-                  onCheckedChange={(enabled) => toggleRule(rule.id, enabled)}
-                />
-              </div>
-            </CardHeader>
-            
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex justify-between text-xs">
-                  <span className="text-muted-foreground">Trigger:</span>
-                  <span className="font-medium">{rule.trigger.replace('_', ' ')}</span>
-                </div>
-                
-                <div className="flex justify-between text-xs">
-                  <span className="text-muted-foreground">Executions:</span>
-                  <span className="font-medium text-primary">{rule.runCount}</span>
-                </div>
-                
-                {rule.lastRun && (
-                  <div className="flex justify-between text-xs">
-                    <span className="text-muted-foreground">Last run:</span>
-                    <span className="font-medium">{new Date(rule.lastRun).toLocaleDateString()}</span>
-                  </div>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <h4 className="text-xs font-medium">Conditions:</h4>
-                <div className="bg-muted/50 p-2 rounded text-xs">
-                  {Object.entries(rule.conditions).map(([key, condition]: [string, any]) => (
-                    <div key={key} className="flex justify-between">
-                      <span>{key}:</span>
-                      <span>{condition.operator} {condition.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <h4 className="text-xs font-medium">Actions:</h4>
-                <div className="flex flex-wrap gap-1">
-                  {Object.entries(rule.actions).map(([action, value]) => (
-                    value && (
-                      <Badge key={action} variant="outline" className="text-xs">
-                        {action.replace('_', ' ')}
-                      </Badge>
-                    )
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex gap-2 pt-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => executeRule(rule.id)}
-                  disabled={!rule.enabled}
-                  className="flex-1 text-xs"
-                >
-                  Run Now
-                </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => setSelectedRule(rule)}
-                  className="flex-1 text-xs"
-                >
-                  Edit
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -278,8 +239,8 @@ export const WorkflowAutomation = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Active Rules</p>
-                <p className="text-2xl font-bold">{rules.filter(r => r.enabled).length}</p>
+                <p className="text-sm text-muted-foreground">Active Workflows</p>
+                <p className="text-2xl font-bold">{activeWorkflows.length}</p>
               </div>
               <Zap className="h-8 w-8 text-primary/20" />
             </div>
@@ -291,9 +252,9 @@ export const WorkflowAutomation = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Total Executions</p>
-                <p className="text-2xl font-bold">{rules.reduce((sum, r) => sum + r.runCount, 0)}</p>
+                <p className="text-2xl font-bold">{executions.length}</p>
               </div>
-              <Bell className="h-8 w-8 text-primary/20" />
+              <Activity className="h-8 w-8 text-primary/20" />
             </div>
           </CardContent>
         </Card>
@@ -302,9 +263,8 @@ export const WorkflowAutomation = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Avg Processing Time</p>
-                <p className="text-2xl font-bold">{rules.length > 0 ? 
-                  (rules.reduce((sum, r) => sum + r.runCount, 0) > 0 ? '0.8s' : 'N/A') : 'N/A'}</p>
+                <p className="text-sm text-muted-foreground">Pending Tasks</p>
+                <p className="text-2xl font-bold">{activeTasks.length}</p>
               </div>
               <Clock className="h-8 w-8 text-primary/20" />
             </div>
@@ -316,14 +276,228 @@ export const WorkflowAutomation = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-muted-foreground">Success Rate</p>
-                <p className="text-2xl font-bold">{rules.length > 0 && rules.some(r => r.runCount > 0) ? 
-                  (100 - Math.floor(Math.random() * 3)).toFixed(1) + '%' : 'N/A'}</p>
+                <p className="text-2xl font-bold">
+                  {executions.length > 0 
+                    ? Math.round((executions.filter(e => e.status === 'completed').length / executions.length) * 100)
+                    : 0}%
+                </p>
               </div>
-              <CheckCircle className="h-8 w-8 text-primary/20" />
+              <TrendingUp className="h-8 w-8 text-primary/20" />
             </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Main Content */}
+      <Tabs defaultValue="workflows" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="workflows">Workflows</TabsTrigger>
+          <TabsTrigger value="executions">Execution History</TabsTrigger>
+          <TabsTrigger value="tasks">Automated Tasks</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="workflows" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {workflows.map((workflow) => (
+              <Card key={workflow.id} className={`relative ${workflow.status === 'active' ? 'border-primary/20' : 'border-muted'}`}>
+                <CardHeader className="pb-3">
+                  <div className="flex items-start justify-between">
+                    <div className="space-y-1 flex-1">
+                      <div className="flex items-center gap-2">
+                        {getStatusIcon(workflow.status)}
+                        <h3 className="font-medium text-sm">{workflow.name}</h3>
+                      </div>
+                      <Badge variant={getStatusColor(workflow.status)} className="text-xs">
+                        {workflow.status}
+                      </Badge>
+                    </div>
+                    <Switch
+                      checked={workflow.status === 'active'}
+                      onCheckedChange={() => handleToggleWorkflow(workflow.id, workflow.status)}
+                    />
+                  </div>
+                </CardHeader>
+                
+                <CardContent className="space-y-4">
+                  {workflow.description && (
+                    <p className="text-xs text-muted-foreground">{workflow.description}</p>
+                  )}
+                  
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-muted-foreground">Trigger:</span>
+                      <span className="font-medium">{workflow.trigger_type.replace('_', ' ')}</span>
+                    </div>
+                    
+                    <div className="flex justify-between text-xs">
+                      <span className="text-muted-foreground">Priority:</span>
+                      <span className="font-medium">{workflow.priority}</span>
+                    </div>
+                    
+                    <div className="flex justify-between text-xs">
+                      <span className="text-muted-foreground">Created:</span>
+                      <span className="font-medium">{new Date(workflow.created_at).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-2 pt-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => triggerWorkflow(workflow.trigger_type, { workflow_id: workflow.id })}
+                      disabled={workflow.status !== 'active'}
+                      className="flex-1 text-xs"
+                    >
+                      <PlayCircle className="h-3 w-3 mr-1" />
+                      Execute
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => handleDeleteWorkflow(workflow.id)}
+                      className="text-xs"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="executions" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Recent Executions</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {executions.slice(0, 10).map((execution) => (
+                  <div key={execution.id} className="flex items-center justify-between p-3 border rounded-lg">
+                    <div className="flex items-center gap-3">
+                      {execution.status === 'completed' && <CheckCircle className="h-4 w-4 text-success" />}
+                      {execution.status === 'failed' && <AlertTriangle className="h-4 w-4 text-destructive" />}
+                      {execution.status === 'running' && <Clock className="h-4 w-4 text-warning" />}
+                      
+                      <div>
+                        <p className="font-medium text-sm">Workflow #{execution.workflow_rule_id}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {new Date(execution.created_at).toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="text-right">
+                      <Badge variant={execution.status === 'completed' ? 'default' : execution.status === 'failed' ? 'destructive' : 'secondary'}>
+                        {execution.status}
+                      </Badge>
+                      {execution.completed_at && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Duration: {Math.round((new Date(execution.completed_at).getTime() - new Date(execution.created_at).getTime()) / 1000)}s
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+                
+                {executions.length === 0 && (
+                  <div className="text-center py-8 text-muted-foreground">
+                    No executions found
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="tasks" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Pending Tasks */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Clock className="h-5 w-5" />
+                  Pending Tasks ({activeTasks.length})
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {activeTasks.slice(0, 5).map((task) => (
+                    <div key={task.id} className="flex items-center justify-between p-3 border rounded-lg">
+                      <div>
+                        <p className="font-medium text-sm">{task.title}</p>
+                        <p className="text-xs text-muted-foreground">
+                          Priority: {task.priority} | Due: {task.due_date ? new Date(task.due_date).toLocaleDateString() : 'No due date'}
+                        </p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => updateTaskStatus(task.id, 'completed')}
+                      >
+                        Complete
+                      </Button>
+                    </div>
+                  ))}
+                  
+                  {activeTasks.length === 0 && (
+                    <div className="text-center py-4 text-muted-foreground">
+                      No pending tasks
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Overdue Tasks */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <AlertTriangle className="h-5 w-5 text-destructive" />
+                  Overdue Tasks ({overdueTasks.length})
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {overdueTasks.slice(0, 5).map((task) => (
+                    <div key={task.id} className="flex items-center justify-between p-3 border border-destructive/20 rounded-lg">
+                      <div>
+                        <p className="font-medium text-sm">{task.title}</p>
+                        <p className="text-xs text-destructive">
+                          Overdue by {task.due_date ? Math.ceil((Date.now() - new Date(task.due_date).getTime()) / (1000 * 60 * 60 * 24)) : 0} days
+                        </p>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => updateTaskStatus(task.id, 'completed')}
+                        >
+                          Complete
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => deleteTask(task.id)}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                  
+                  {overdueTasks.length === 0 && (
+                    <div className="text-center py-4 text-muted-foreground">
+                      No overdue tasks
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
