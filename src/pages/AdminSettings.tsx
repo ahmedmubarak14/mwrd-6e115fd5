@@ -223,43 +223,43 @@ export const AdminSettings = () => {
 
   return (
     <AdminPageContainer
-      title="Platform Settings"
-      description="Manage global platform configuration and administrative settings"
+      title={t('platformSettings.title')}
+      description={t('platformSettings.description')}
       headerActions={headerActions}
     >
       <Tabs defaultValue="general" className="space-y-6">
-        <TabsList className="grid grid-cols-5 w-full">
-          <TabsTrigger value="general" className="flex items-center gap-2">
-            <Globe className="h-4 w-4" />
-            General
-          </TabsTrigger>
-          <TabsTrigger value="security" className="flex items-center gap-2">
-            <Shield className="h-4 w-4" />
-            Security
-          </TabsTrigger>
-          <TabsTrigger value="system" className="flex items-center gap-2">
-            <Server className="h-4 w-4" />
-            System
-          </TabsTrigger>
-          <TabsTrigger value="communication" className="flex items-center gap-2">
-            <Mail className="h-4 w-4" />
-            Communication
-          </TabsTrigger>
-          <TabsTrigger value="advanced" className="flex items-center gap-2">
-            <Database className="h-4 w-4" />
-            Advanced
-          </TabsTrigger>
-        </TabsList>
+          <TabsList className="grid grid-cols-5 w-full">
+            <TabsTrigger value="general" className="flex items-center gap-2">
+              <Globe className="h-4 w-4" />
+              {t('platformSettings.general')}
+            </TabsTrigger>
+            <TabsTrigger value="security" className="flex items-center gap-2">
+              <Shield className="h-4 w-4" />
+              {t('platformSettings.security')}
+            </TabsTrigger>
+            <TabsTrigger value="system" className="flex items-center gap-2">
+              <Server className="h-4 w-4" />
+              {t('platformSettings.system')}
+            </TabsTrigger>
+            <TabsTrigger value="communication" className="flex items-center gap-2">
+              <Mail className="h-4 w-4" />
+              {t('platformSettings.communication')}
+            </TabsTrigger>
+            <TabsTrigger value="advanced" className="flex items-center gap-2">
+              <Database className="h-4 w-4" />
+              {t('platformSettings.advanced')}
+            </TabsTrigger>
+          </TabsList>
 
         <TabsContent value="general" className="space-y-6">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Globe className="h-5 w-5" />
-                Platform Information
+                {t('platformSettings.platformInformation')}
               </CardTitle>
               <CardDescription>
-                Basic platform configuration and branding settings
+                {t('platformSettings.platformInfoDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">

@@ -366,9 +366,9 @@ export const ExpertConsultations = () => {
         {/* Header */}
         <div className={cn("flex items-start justify-between", isRTL && "flex-row-reverse")}>
           <div className={cn(isRTL ? "text-right" : "text-left")}>
-            <h1 className="text-3xl font-bold">Expert Consultations</h1>
+            <h1 className="text-3xl font-bold">{t('expertConsultations.title')}</h1>
             <p className="text-muted-foreground mt-2">
-              Comprehensive consultation management and customer engagement analytics
+              {t('expertConsultations.description')}
             </p>
           </div>
           <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
@@ -395,12 +395,12 @@ export const ExpertConsultations = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Consultations</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('expertConsultations.totalConsultations')}</CardTitle>
               <MessageSquare className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{analyticsData.totalConsultations}</div>
-              <p className="text-xs text-muted-foreground">All time</p>
+              <p className="text-xs text-muted-foreground">{t('expertConsultations.allTime')}</p>
             </CardContent>
           </Card>
           

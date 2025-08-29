@@ -212,15 +212,15 @@ const AdminProfile = () => {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Admin Profile</h1>
+            <h1 className="text-3xl font-bold">{t('profile.adminProfile')}</h1>
             <p className="text-muted-foreground">
-              Manage your admin profile, security settings, and system preferences
+              {t('profile.adminProfileDescription')}
             </p>
           </div>
           <div className="flex items-center gap-2">
             <Badge variant="default" className="flex items-center gap-1">
               <Shield className="h-3 w-3" />
-              Administrator
+              {t('profile.administrator')}
             </Badge>
           </div>
         </div>
@@ -229,23 +229,23 @@ const AdminProfile = () => {
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="profile" className="flex items-center gap-2">
               <User className="h-4 w-4" />
-              Profile
+              {t('common.profile')}
             </TabsTrigger>
             <TabsTrigger value="security" className="flex items-center gap-2">
               <Shield className="h-4 w-4" />
-              Security
+              {t('common.security')}
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Settings className="h-4 w-4" />
-              Settings
+              {t('common.settings')}
             </TabsTrigger>
             <TabsTrigger value="activity" className="flex items-center gap-2">
               <Activity className="h-4 w-4" />
-              Activity
+              {t('profile.activity')}
             </TabsTrigger>
             <TabsTrigger value="permissions" className="flex items-center gap-2">
               <Key className="h-4 w-4" />
-              Permissions
+              {t('profile.permissions')}
             </TabsTrigger>
           </TabsList>
 
@@ -255,16 +255,16 @@ const AdminProfile = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <User className="h-5 w-5" />
-                    Personal Information
+                    {t('profile.personalInformation')}
                   </CardTitle>
                   <CardDescription>
-                    Update your admin profile information
+                    {t('profile.personalInfoDescription')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="full_name">Full Name</Label>
+                      <Label htmlFor="full_name">{t('profile.fullName')}</Label>
                       <Input
                         id="full_name"
                         value={formData.full_name}
@@ -275,7 +275,7 @@ const AdminProfile = () => {
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
+                      <Label htmlFor="email">{t('profile.email')}</Label>
                       <Input
                         id="email"
                         value={userProfile.email}
@@ -287,7 +287,7 @@ const AdminProfile = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="phone">Phone</Label>
+                      <Label htmlFor="phone">{t('profile.phone')}</Label>
                       <Input
                         id="phone"
                         value={formData.phone}
@@ -298,10 +298,10 @@ const AdminProfile = () => {
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="role">Role</Label>
+                      <Label htmlFor="role">{t('profile.role')}</Label>
                       <Input
                         id="role"
-                        value="Administrator"
+                        value={t('profile.administrator')}
                         disabled
                         className="bg-muted"
                       />
@@ -309,14 +309,14 @@ const AdminProfile = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="bio">Bio</Label>
+                    <Label htmlFor="bio">{t('profile.bio')}</Label>
                     <Textarea
                       id="bio"
                       value={formData.bio}
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, bio: e.target.value }))
                       }
-                      placeholder="Tell us about yourself and your administrative responsibilities..."
+                      placeholder={t('profile.bioPlaceholder')}
                       rows={4}
                     />
                   </div>
@@ -324,7 +324,7 @@ const AdminProfile = () => {
                   <div className="flex justify-end">
                     <Button onClick={handleSaveProfile} disabled={loading}>
                       {loading ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
-                      Save Profile
+                      {t('profile.saveProfile')}
                     </Button>
                   </div>
                 </CardContent>
