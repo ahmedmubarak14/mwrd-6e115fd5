@@ -52,9 +52,22 @@ export const CommunicationOverview = () => {
     try {
       setIsLoading(true);
 
-      // Use mock data since tables don't exist in current schema
-      const messagesData = [];
-      const notificationCount = { count: 0 };
+      // Fetch real communication data from database
+      const [messagesResponse, notificationsResponse] = await Promise.all([
+        supabase
+          .from('messages')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(1000),
+        supabase
+          .from('notifications')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(1000)
+      ]);
+
+      const messagesData = messagesResponse.data || [];
+      const notificationCount = { count: notificationsResponse.data?.length || 0 };
 
       // Calculate real message activity data based on actual messages
       const messageActivityData = [];
