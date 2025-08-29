@@ -25,10 +25,15 @@ export const useLanguage = () => {
 };
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  console.log('LanguageProvider: Starting initialization');
+  
   const [language, setLanguage] = useState<Language>(() => {
+    console.log('LanguageProvider: Initializing useState');
     try {
       const saved = localStorage.getItem('language');
-      return (saved === 'ar' || saved === 'en') ? saved : 'en';
+      const result = (saved === 'ar' || saved === 'en') ? saved : 'en';
+      console.log('LanguageProvider: Initial language:', result);
+      return result;
     } catch (error) {
       console.warn('Failed to access localStorage:', error);
       return 'en';

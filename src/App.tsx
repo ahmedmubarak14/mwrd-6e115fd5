@@ -330,6 +330,7 @@ const AppRoutes: React.FC = () => {
 };
 
 const App: React.FC = () => {
+  console.log('App: Starting initialization');
   return (
     <ErrorBoundary>
       <LanguageProvider>
