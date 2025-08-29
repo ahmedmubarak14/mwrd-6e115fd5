@@ -62,7 +62,11 @@ interface QuickAction {
 export const ComprehensiveAdminOverview = () => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const { t } = useOptionalLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false 
+  };
   const { systemMetrics, alerts, isLoading: healthLoading } = useSystemHealth();
   
   const [metrics, setMetrics] = useState<PlatformMetrics>({
@@ -264,7 +268,7 @@ export const ComprehensiveAdminOverview = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Alert Banner */}
       {alerts && alerts.length > 0 && (
         <Card className="border-destructive/50 bg-destructive/5">
@@ -286,14 +290,23 @@ export const ComprehensiveAdminOverview = () => {
       )}
 
       {/* Key Metrics Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className={cn(
+        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6",
+        isRTL && "rtl"
+      )}>
         <Card>
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
+            <div className={cn(
+              "flex items-center justify-between",
+              isRTL && "flex-row-reverse"
+            )}>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">{t('admin.totalUsers')}</p>
                 <p className="text-2xl font-bold">{metrics.totalUsers.toLocaleString()}</p>
-                <p className="text-xs text-success">
+                <p className={cn(
+                  "text-xs text-success",
+                  isRTL && "text-right"
+                )}>
                   <TrendingUp className="h-3 w-3 inline mr-1" />
                   {metrics.activeUsers} {t('admin.activeThisMonth')}
                 </p>
@@ -305,11 +318,17 @@ export const ComprehensiveAdminOverview = () => {
 
         <Card>
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
+            <div className={cn(
+              "flex items-center justify-between",
+              isRTL && "flex-row-reverse"
+            )}>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">{t('admin.totalRevenue')}</p>
                 <p className="text-2xl font-bold">${metrics.totalRevenue.toLocaleString()}</p>
-                <p className="text-xs text-success">
+                <p className={cn(
+                  "text-xs text-success",
+                  isRTL && "text-right"
+                )}>
                   <TrendingUp className="h-3 w-3 inline mr-1" />
                   {t('admin.monthlyGrowth')}
                 </p>
@@ -321,11 +340,17 @@ export const ComprehensiveAdminOverview = () => {
 
         <Card>
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
+            <div className={cn(
+              "flex items-center justify-between",
+              isRTL && "flex-row-reverse"
+            )}>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">{t('admin.pendingApprovals')}</p>
                 <p className="text-2xl font-bold">{metrics.pendingApprovals}</p>
-                <p className="text-xs text-muted-foreground">
+                <p className={cn(
+                  "text-xs text-muted-foreground",
+                  isRTL && "text-right"
+                )}>
                   {t('admin.requiresAdminReview')}
                 </p>
               </div>
@@ -336,7 +361,10 @@ export const ComprehensiveAdminOverview = () => {
 
         <Card>
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
+            <div className={cn(
+              "flex items-center justify-between",
+              isRTL && "flex-row-reverse"
+            )}>
               <div>
                 <p className="text-sm font-medium text-muted-foreground">{t('admin.systemHealth')}</p>
                 <p className={cn(
@@ -346,7 +374,10 @@ export const ComprehensiveAdminOverview = () => {
                 )}>
                   {t(`admin.${metrics.systemHealth}`)}
                 </p>
-                <p className="text-xs text-muted-foreground">
+                <p className={cn(
+                  "text-xs text-muted-foreground",
+                  isRTL && "text-right"
+                )}>
                   {t('admin.allSystemsOperational')}
                 </p>
               </div>

@@ -229,8 +229,9 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
   return (
     <div 
       className={cn(
-        "flex flex-col h-screen bg-card border-r border-border transition-all duration-300 shadow-sm fixed left-0 top-0 z-50",
+        "flex flex-col h-screen bg-card border-border transition-all duration-300 shadow-sm fixed top-0 z-50",
         collapsed ? "w-16" : "w-64",
+        isRTL ? "right-0 border-l" : "left-0 border-r",
         className
       )} 
       dir={isRTL ? 'rtl' : 'ltr'}
@@ -266,20 +267,30 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
                       "w-full justify-between px-3 py-2 h-auto font-medium",
                       "text-xs uppercase tracking-wider",
                       "text-muted-foreground hover:text-foreground hover:bg-accent/50",
-                      hasActiveItem && "text-primary font-semibold"
+                      hasActiveItem && "text-primary font-semibold",
+                      isRTL && "flex-row-reverse"
                     )}
                     type="button"
                   >
-                    <span className="flex items-center gap-2">
+                    <span className={cn(
+                      "flex items-center gap-2",
+                      isRTL && "flex-row-reverse"
+                    )}>
                       <span>{group.label}</span>
                       {hasActiveItem && (
                         <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
                       )}
                     </span>
                     {isExpanded ? (
-                      <ChevronDown className="h-3 w-3 transition-transform duration-200" />
+                      <ChevronDown className={cn(
+                        "h-3 w-3 transition-transform duration-200",
+                        isRTL && "rotate-180"
+                      )} />
                     ) : (
-                      <ChevronRight className="h-3 w-3 transition-transform duration-200" />
+                      <ChevronRight className={cn(
+                        "h-3 w-3 transition-transform duration-200",
+                        isRTL && "rotate-180"
+                      )} />
                     )}
                   </Button>
                 )}
@@ -304,7 +315,8 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
                           collapsed ? "justify-center px-2" : "justify-start",
                           active 
                             ? "bg-primary/10 text-primary border border-primary/20 shadow-sm" 
-                            : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
+                            : "text-muted-foreground hover:text-foreground hover:bg-accent/30",
+                          isRTL && "flex-row-reverse"
                         )}
                         title={collapsed ? item.name : undefined}
                         aria-label={`Navigate to ${item.name}`}
@@ -320,7 +332,10 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
                         
                         {!collapsed && (
                           <>
-                            <span className="truncate flex-1 text-foreground">
+                            <span className={cn(
+                              "truncate flex-1 text-foreground",
+                              isRTL && "text-right"
+                            )}>
                               {item.name}
                             </span>
                             
