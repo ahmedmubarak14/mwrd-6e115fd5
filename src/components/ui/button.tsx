@@ -2,11 +2,12 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
+import { motion, HTMLMotionProps } from "framer-motion"
 
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium ring-offset-ring-offset transition-all duration-200 focus-visible:outline-2 focus-visible:outline-focus-outline focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 rtl-transition active:scale-[0.98]",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium ring-offset-ring-offset transition-all duration-200 focus-visible:outline-2 focus-visible:outline-focus-outline focus-visible:outline-offset-2 focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 rtl-transition",
   {
     variants: {
       variant: {
@@ -64,6 +65,7 @@ export interface ButtonProps
   asChild?: boolean
   loading?: boolean
   loadingText?: string
+  animation?: 'spring' | 'lift' | 'scale' | 'glow' | 'none'
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -76,16 +78,89 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     loadingText,
     children,
     disabled,
+    animation = 'scale',
     ...props 
   }, ref) => {
-    const Comp = asChild ? Slot : "button"
+    const animations = {
+      spring: {
+        whileHover: { scale: 1.05 },
+        whileTap: { scale: 0.95 },
+        transition: { type: "spring" as const, stiffness: 400, damping: 17 }
+      },
+      lift: {
+        whileHover: { y: -2 },
+        whileTap: { y: 0 },
+        transition: { type: "tween" as const, duration: 0.15 }
+      },
+      scale: {
+        whileHover: { scale: 1.02 },
+        whileTap: { scale: 0.98 },
+        transition: { type: "tween" as const, duration: 0.1 }
+      },
+      glow: {
+        whileHover: { scale: 1.02 },
+        whileTap: { scale: 0.98 },
+        transition: { type: "tween" as const, duration: 0.2 }
+      },
+      none: {}
+    };
+    
+    if (asChild) {
+      return (
+        <Slot
+          className={cn(buttonVariants({ variant, size, loading, className }))}
+          ref={ref}
+          {...props}
+        >
+          {children}
+        </Slot>
+      )
+    }
+
+    if (animation === 'none') {
+      return (
+        <button
+          className={cn(buttonVariants({ variant, size, loading, className }))}
+          ref={ref}
+          disabled={disabled || loading}
+          {...props}
+        >
+          <>
+            {loading && (
+              <svg 
+                className="mr-2 h-4 w-4 animate-spin" 
+                xmlns="http://www.w3.org/2000/svg" 
+                fill="none" 
+                viewBox="0 0 24 24"
+              >
+                <circle 
+                  className="opacity-25" 
+                  cx="12" 
+                  cy="12" 
+                  r="10" 
+                  stroke="currentColor" 
+                  strokeWidth="4"
+                />
+                <path 
+                  className="opacity-75" 
+                  fill="currentColor" 
+                  d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                />
+              </svg>
+            )}
+            {loading ? (loadingText || children) : children}
+          </>
+        </button>
+      )
+    }
     
     return (
-      <Comp
+      <motion.button
         className={cn(buttonVariants({ variant, size, loading, className }))}
         ref={ref}
         disabled={disabled || loading}
-        {...props}
+        {...animations[animation]}
+        {...(props as any)}
       >
         <>
           {loading && (
@@ -112,7 +187,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           )}
           {loading ? (loadingText || children) : children}
         </>
-      </Comp>
+      </motion.button>
     )
   }
 )

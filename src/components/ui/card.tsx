@@ -1,6 +1,7 @@
 
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
+import { motion, HTMLMotionProps } from "framer-motion"
 
 import { cn } from "@/lib/utils"
 
@@ -23,7 +24,7 @@ const cardVariants = cva(
         lg: "p-8"
       },
       interactive: {
-        true: "cursor-pointer hover:shadow-md hover:scale-[1.01] active:scale-[0.99]",
+        true: "cursor-pointer",
         false: ""
       }
     },
@@ -37,16 +38,64 @@ const cardVariants = cva(
 
 export interface CardProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof cardVariants> {}
+    VariantProps<typeof cardVariants> {
+  hoverEffect?: 'lift' | 'tilt' | 'glow' | 'scale' | 'none'
+}
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant, padding, interactive, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(cardVariants({ variant, padding, interactive }), className)}
-      {...props}
-    />
-  )
+  ({ className, variant, padding, interactive, hoverEffect = 'none', onClick, ...props }, ref) => {
+    const effects = {
+      lift: {
+        whileHover: { 
+          y: -8,
+          transition: { type: "tween" as const, duration: 0.2 }
+        }
+      },
+      tilt: {
+        whileHover: { 
+          rotateY: 5,
+          rotateX: 5,
+          scale: 1.02,
+          transition: { type: "spring" as const, stiffness: 300 }
+        }
+      },
+      glow: {
+        whileHover: {
+          scale: 1.02,
+          transition: { type: "tween" as const, duration: 0.2 }
+        }
+      },
+      scale: {
+        whileHover: {
+          scale: 1.05,
+          transition: { type: "spring" as const, stiffness: 300 }
+        }
+      },
+      none: {}
+    };
+
+    if (hoverEffect === 'none') {
+      return (
+        <div
+          ref={ref}
+          className={cn(cardVariants({ variant, padding, interactive }), className)}
+          onClick={onClick}
+          {...props}
+        />
+      )
+    }
+    
+    return (
+      <motion.div
+        ref={ref}
+        className={cn(cardVariants({ variant, padding, interactive }), className)}
+        {...effects[hoverEffect]}
+        whileTap={interactive ? { scale: 0.98 } : undefined}
+        onClick={onClick}
+        {...(props as any)}
+      />
+    )
+  }
 )
 Card.displayName = "Card"
 

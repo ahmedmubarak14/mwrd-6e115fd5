@@ -5,6 +5,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { RouteAwareThemeProvider } from './contexts/RouteAwareThemeContext';
 import { SecurityProvider } from './contexts/SecurityContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { PageTransition } from './components/ui/animations/PageTransition';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
@@ -95,7 +96,8 @@ const RootRedirect: React.FC = () => {
 
 const AppRoutes: React.FC = () => {
   return (
-    <Routes>
+    <PageTransition>
+      <Routes>
       {/* Public Routes */}
       <Route path="/landing" element={<Landing />} />
       <Route path="/why-start-with-mwrd" element={<WhyStartWithMWRD />} />
@@ -288,6 +290,7 @@ const AppRoutes: React.FC = () => {
       {/* Catch-all route for 404 Not Found */}
       <Route path="*" element={<NotFound />} />
       </Routes>
+    </PageTransition>
   );
 };
 

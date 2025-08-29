@@ -4,6 +4,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useOptionalAuth } from "@/contexts/useOptionalAuth";
 import { useState } from "react";
+import { StaggeredList } from "@/components/ui/animations/MicroInteractions";
 import { 
   ArrowRight, 
   Users, 
@@ -110,19 +111,19 @@ export const Landing = () => {
             </div>
             {user && userProfile ? (
               <Link to="/dashboard" className="hidden md:block">
-                <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
+                <Button size="lg" animation="lift" className="px-8 hover:shadow-2xl transition-all duration-500 bg-white/10 border border-white/30 text-white backdrop-blur-20">
                   {language === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
                 </Button>
               </Link>
             ) : (
               <>
                 <Link to="/enhanced-login" className="hidden md:block">
-                  <Button variant="ghost" size="lg" className="px-6 bg-white/5 border border-white/20 text-white transition-all duration-300 backdrop-blur-15">
+                  <Button variant="ghost" size="lg" animation="scale" className="px-6 bg-white/5 border border-white/20 text-white transition-all duration-300 backdrop-blur-15">
                     {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
                   </Button>
                 </Link>
                 <Link to="/enhanced-register" className="hidden md:block">
-                  <Button size="lg" className="px-8 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
+                  <Button size="lg" animation="lift" className="px-8 hover:shadow-2xl transition-all duration-500 bg-white/10 border border-white/30 text-white backdrop-blur-20">
                     {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
                   </Button>
                 </Link>
@@ -174,7 +175,7 @@ export const Landing = () => {
               {/* Action Button */}
               <div className="flex justify-center sm:justify-start">
                 <Link to="/enhanced-register" className="group">
-                  <Button size="lg" className="px-8 py-3 text-base font-semibold transition-all duration-300 hover:scale-105 bg-white/10 border border-white/30 text-white backdrop-blur-20">
+                  <Button size="lg" animation="spring" className="px-8 py-3 text-base font-semibold transition-all duration-300 bg-white/10 border border-white/30 text-white backdrop-blur-20">
                     {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
                   </Button>
                 </Link>
@@ -209,73 +210,75 @@ export const Landing = () => {
 
             {/* Right Stats Cards */}
             <div className={`${language === 'ar' ? 'lg:order-1' : 'lg:order-2'} space-y-6`}>
-              {[
-                { 
-                  icon: FileText, 
-                  title: language === 'ar' ? 'نظام طلب التسعير' : 'RFQ System',
-                  subtitle: language === 'ar' ? 'عروض ذكية' : 'Smart bidding',
-                  count: "24", 
-                  label: language === 'ar' ? 'طلبات نشطة' : 'Active RFQs', 
-                  color: '#8B5CF6',
-                  progress: 60
-                },
-                { 
-                  icon: Users, 
-                  title: language === 'ar' ? 'الموردون' : 'Vendors',
-                  subtitle: language === 'ar' ? 'موردون موثقون' : 'Verified vendors',
-                  count: "1,247", 
-                  label: language === 'ar' ? 'موردون نشطون' : 'Active vendors', 
-                  color: '#3B82F6',
-                  progress: 85
-                },
-                { 
-                  icon: Shield, 
-                  title: language === 'ar' ? 'آمان' : 'Secure',
-                  subtitle: language === 'ar' ? 'معاملات موثقة' : 'Verified transactions',
-                  count: "99.9%", 
-                  label: language === 'ar' ? 'معدل النجاح' : 'Success rate', 
-                  color: '#10B981',
-                  progress: 99
-                },
-                { 
-                  icon: Clock, 
-                  title: language === 'ar' ? 'سريع' : 'Fast',
-                  subtitle: language === 'ar' ? 'متوسط الاستجابة' : 'Average response',
-                  count: "4.2h", 
-                  label: language === 'ar' ? 'وقت استجابة العرض' : 'Bid response time', 
-                  color: '#F59E0B',
-                  progress: 70
-                }
-              ].map((stat, index) => (
-                <Card key={index} className="p-3 hover:scale-105 transition-all duration-300 animate-fade-in bg-white/5 border border-white/20 backdrop-blur-20" style={{ animationDelay: `${index * 0.1}s` }}>
-                  <div className="flex items-start gap-2">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${stat.color}20`, border: `1px solid ${stat.color}40` }}>
-                      <stat.icon className="h-4 w-4" style={{ color: stat.color }} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1">
-                        <h3 className="font-semibold text-white text-sm">{stat.title}</h3>
+              <StaggeredList staggerDelay={0.15}>
+                {[
+                  { 
+                    icon: FileText, 
+                    title: language === 'ar' ? 'نظام طلب التسعير' : 'RFQ System',
+                    subtitle: language === 'ar' ? 'عروض ذكية' : 'Smart bidding',
+                    count: "24", 
+                    label: language === 'ar' ? 'طلبات نشطة' : 'Active RFQs', 
+                    color: '#8B5CF6',
+                    progress: 60
+                  },
+                  { 
+                    icon: Users, 
+                    title: language === 'ar' ? 'الموردون' : 'Vendors',
+                    subtitle: language === 'ar' ? 'موردون موثقون' : 'Verified vendors',
+                    count: "1,247", 
+                    label: language === 'ar' ? 'موردون نشطون' : 'Active vendors', 
+                    color: '#3B82F6',
+                    progress: 85
+                  },
+                  { 
+                    icon: Shield, 
+                    title: language === 'ar' ? 'آمان' : 'Secure',
+                    subtitle: language === 'ar' ? 'معاملات موثقة' : 'Verified transactions',
+                    count: "99.9%", 
+                    label: language === 'ar' ? 'معدل النجاح' : 'Success rate', 
+                    color: '#10B981',
+                    progress: 99
+                  },
+                  { 
+                    icon: Clock, 
+                    title: language === 'ar' ? 'سريع' : 'Fast',
+                    subtitle: language === 'ar' ? 'متوسط الاستجابة' : 'Average response',
+                    count: "4.2h", 
+                    label: language === 'ar' ? 'وقت استجابة العرض' : 'Bid response time', 
+                    color: '#F59E0B',
+                    progress: 70
+                  }
+                ].map((stat, index) => (
+                  <Card key={index} hoverEffect="lift" className="p-3 transition-all duration-300 animate-fade-in bg-white/5 border border-white/20 backdrop-blur-20">
+                    <div className="flex items-start gap-2">
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${stat.color}20`, border: `1px solid ${stat.color}40` }}>
+                        <stat.icon className="h-4 w-4" style={{ color: stat.color }} />
                       </div>
-                      <p className="text-xs text-white mb-1">{stat.subtitle}</p>
-                      <div className="flex items-end justify-between">
-                        <div>
-                          <div className="text-lg font-black text-white mb-1">{stat.count}</div>
-                          <div className="text-xs text-white">{stat.label}</div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1">
+                          <h3 className="font-semibold text-white text-sm">{stat.title}</h3>
+                        </div>
+                        <p className="text-xs text-white mb-1">{stat.subtitle}</p>
+                        <div className="flex items-end justify-between">
+                          <div>
+                            <div className="text-lg font-black text-white mb-1">{stat.count}</div>
+                            <div className="text-xs text-white">{stat.label}</div>
+                          </div>
+                        </div>
+                        <div className="w-full bg-white/10 rounded-full h-1 mt-2">
+                          <div 
+                            className="h-1 rounded-full transition-all duration-1000" 
+                            style={{ 
+                              backgroundColor: stat.color, 
+                              width: `${stat.progress}%`
+                            }}
+                          ></div>
                         </div>
                       </div>
-                      <div className="w-full bg-white/10 rounded-full h-1 mt-2">
-                        <div 
-                          className="h-1 rounded-full transition-all duration-1000" 
-                          style={{ 
-                            backgroundColor: stat.color, 
-                            width: `${stat.progress}%`
-                          }}
-                        ></div>
-                      </div>
                     </div>
-                  </div>
-                </Card>
-              ))}
+                  </Card>
+                ))}
+              </StaggeredList>
             </div>
           </div>
         </div>
@@ -310,7 +313,7 @@ export const Landing = () => {
               <div className="relative mb-32 group">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                   <div className="lg:w-1/2 lg:pr-16">
-                     <Card className="p-4 hover:shadow-2xl transition-all duration-700 hover:scale-105 rounded-2xl bg-white/5 border border-white/20 backdrop-blur-20">
+                     <Card className="p-4 hover:shadow-2xl transition-all duration-700 rounded-2xl bg-white/5 border border-white/20 backdrop-blur-20" hoverEffect="tilt">
                       <div className="flex items-center gap-4 mb-6">
                         <div className="w-12 h-12 bg-gradient-to-br from-[#102C33] to-[#004F54] rounded-2xl flex items-center justify-center shadow-xl border border-white/20 backdrop-blur-20">
                           <Search className="h-6 w-6 text-white" />
@@ -337,7 +340,7 @@ export const Landing = () => {
                         { icon: Eye, label: language === 'ar' ? 'رؤى متقدمة' : 'Advanced Insights', color: '#765A3F' },
                         { icon: TrendingUp, label: language === 'ar' ? 'نمو مضمون' : 'Guaranteed Growth', color: '#102C33' }
                        ].map((feature, index) => (
-                        <Card key={index} className="p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl bg-white/5 border border-white/20 backdrop-blur-15">
+                        <Card key={index} hoverEffect="glow" className="p-3 hover:shadow-2xl transition-all duration-500 rounded-xl bg-white/5 border border-white/20 backdrop-blur-15">
                           <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
                           <div className="text-sm font-bold text-white">{feature.label}</div>
                         </Card>
@@ -351,7 +354,7 @@ export const Landing = () => {
               <div className="relative mb-32 group">
                 <div className="flex flex-col lg:flex-row-reverse items-center gap-16">
                   <div className="lg:w-1/2 lg:pl-16">
-                    <Card className="p-4 hover:shadow-2xl transition-all duration-700 hover:scale-105 rounded-2xl bg-white/5 border border-white/20 backdrop-blur-20">
+                    <Card className="p-4 hover:shadow-2xl transition-all duration-700 rounded-2xl bg-white/5 border border-white/20 backdrop-blur-20" hoverEffect="tilt">
                       <div className="flex items-center gap-4 mb-6">
                         <div className="w-12 h-12 bg-gradient-to-br from-[#102C33] to-[#004F54] rounded-2xl flex items-center justify-center shadow-xl border border-white/20 backdrop-blur-20">
                           <MessageSquare className="h-6 w-6 text-white" />
@@ -378,7 +381,7 @@ export const Landing = () => {
                         { icon: BarChart3, label: language === 'ar' ? 'مقارنة الأسعار' : 'Price Comparison', color: '#765A3F' },
                         { icon: Handshake, label: language === 'ar' ? 'اتفاقيات آمنة' : 'Secure Agreements', color: '#102C33' }
                       ].map((feature, index) => (
-                        <Card key={index} className="p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl bg-white/5 border border-white/20 backdrop-blur-15">
+                        <Card key={index} hoverEffect="glow" className="p-3 hover:shadow-2xl transition-all duration-500 rounded-xl bg-white/5 border border-white/20 backdrop-blur-15">
                           <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
                           <div className="text-sm font-bold text-white">{feature.label}</div>
                         </Card>
@@ -392,7 +395,7 @@ export const Landing = () => {
               <div className="relative mb-16 group">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                   <div className="lg:w-1/2 lg:pr-16">
-                    <Card className="p-4 hover:shadow-2xl transition-all duration-700 hover:scale-105 rounded-2xl bg-white/5 border border-white/20 backdrop-blur-20">
+                    <Card className="p-4 hover:shadow-2xl transition-all duration-700 rounded-2xl bg-white/5 border border-white/20 backdrop-blur-20" hoverEffect="tilt">
                       <div className="flex items-center gap-4 mb-6">
                         <div className="w-12 h-12 bg-gradient-to-br from-[#102C33] to-[#004F54] rounded-2xl flex items-center justify-center shadow-xl border border-white/20 backdrop-blur-20">
                           <Shield className="h-6 w-6 text-white" />
@@ -419,7 +422,7 @@ export const Landing = () => {
                         { icon: Package, label: language === 'ar' ? 'تتبع التسليم' : 'Delivery Tracking', color: '#765A3F' },
                         { icon: ThumbsUp, label: language === 'ar' ? 'رضا مضمون' : 'Guaranteed Satisfaction', color: '#102C33' }
                       ].map((feature, index) => (
-                        <Card key={index} className="p-3 hover:shadow-2xl transition-all duration-500 hover:scale-105 rounded-xl bg-white/5 border border-white/20 backdrop-blur-15">
+                        <Card key={index} hoverEffect="glow" className="p-3 hover:shadow-2xl transition-all duration-500 rounded-xl bg-white/5 border border-white/20 backdrop-blur-15">
                           <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
                           <div className="text-sm font-bold text-white">{feature.label}</div>
                         </Card>
@@ -474,7 +477,7 @@ export const Landing = () => {
                 color: '#102C33'
               }
             ].map((feature, index) => (
-              <Card key={index} className="p-6 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/5 border border-white/20 backdrop-blur-20">
+              <Card key={index} hoverEffect="scale" className="p-6 hover:shadow-2xl transition-all duration-500 bg-white/5 border border-white/20 backdrop-blur-20">
                 <div className="flex flex-col items-center text-center space-y-4">
                   <div className="w-16 h-16 rounded-2xl flex items-center justify-center border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${feature.color}30` }}>
                     <feature.icon className="h-8 w-8" style={{ color: feature.color }} />
@@ -543,7 +546,7 @@ export const Landing = () => {
                     color: '#102C33'
                   }
                 ].map((service, index) => (
-                  <Card key={index} className="p-6 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/5 border border-white/20 backdrop-blur-20">
+                  <Card key={index} hoverEffect="lift" className="p-6 hover:shadow-2xl transition-all duration-500 bg-white/5 border border-white/20 backdrop-blur-20">
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${service.color}30` }}>
                         <service.icon className="h-6 w-6" style={{ color: service.color }} />
@@ -596,7 +599,7 @@ export const Landing = () => {
                     color: '#102C33'
                   }
                 ].map((benefit, index) => (
-                  <Card key={index} className="p-6 hover:shadow-2xl transition-all duration-500 hover:scale-105 bg-white/5 border border-white/20 backdrop-blur-20">
+                  <Card key={index} hoverEffect="lift" className="p-6 hover:shadow-2xl transition-all duration-500 bg-white/5 border border-white/20 backdrop-blur-20">
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${benefit.color}30` }}>
                         <benefit.icon className="h-6 w-6" style={{ color: benefit.color }} />
@@ -628,7 +631,7 @@ export const Landing = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/enhanced-register">
-                <Button size="lg" className="px-8 py-3 bg-gradient-to-r from-primary to-accent hover:scale-105 transition-transform text-lg text-white">
+                <Button size="lg" animation="spring" className="px-8 py-3 bg-gradient-to-r from-primary to-accent transition-transform text-lg text-white">
                   {language === 'ar' ? 'ابدأ رحلتك' : 'Start Your Journey'}
                 </Button>
               </Link>
