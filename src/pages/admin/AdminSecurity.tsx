@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, AlertTriangle, Activity, Users, Database, Lock } from "lucide-react";
+import { Shield, AlertTriangle, Activity, Users, Database, Lock, Monitor } from "lucide-react";
 import { SecurityDashboard } from "@/components/admin/SecurityDashboard";
 import { AuditTrailDashboard } from "@/components/admin/AuditTrailDashboard";
 import { SystemHealthMonitor } from "@/components/admin/SystemHealthMonitor";
 import { SecurityIncidentManager } from "@/components/admin/SecurityIncidentManager";
 import { SecurityComplianceCenter } from "@/components/admin/SecurityComplianceCenter";
+import { RealTimeSecurityMonitor } from "@/components/admin/RealTimeSecurityMonitor";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { cn } from "@/lib/utils";
 import { AdminPageContainer } from "@/components/admin/AdminPageContainer";
@@ -24,8 +25,13 @@ const AdminSecurity = () => {
       description="Comprehensive security analytics, compliance monitoring, and system health oversight"
     >
 
-      <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 w-full gap-1">
+      <Tabs defaultValue="monitor" className="space-y-6">
+        <TabsList className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 w-full gap-1">
+          <TabsTrigger value="monitor" className="flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4">
+            <Monitor className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="hidden sm:inline">Live Monitor</span>
+            <span className="sm:hidden">Live</span>
+          </TabsTrigger>
           <TabsTrigger value="overview" className="flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4">
             <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
             <span className="hidden sm:inline">Overview</span>
@@ -52,6 +58,10 @@ const AdminSecurity = () => {
             <span className="sm:hidden">Rules</span>
           </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="monitor">
+          <RealTimeSecurityMonitor />
+        </TabsContent>
 
         <TabsContent value="overview">
           <SecurityDashboard />
