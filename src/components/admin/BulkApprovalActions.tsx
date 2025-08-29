@@ -3,10 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { CheckCircle, XCircle, MessageSquare, Download, AlertTriangle } from 'lucide-react';
+import { CheckCircle, XCircle, Download, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useRequestApprovals } from '@/hooks/useRequestApprovals';
+import { useOfferApprovals } from '@/hooks/useOfferApprovals';
 
 interface BulkApprovalActionsProps {
   selectedItems: string[];
@@ -26,14 +27,32 @@ export const BulkApprovalActions = ({
   const [notes, setNotes] = useState('');
   const [showBulkDialog, setShowBulkDialog] = useState(false);
   const [bulkAction, setBulkAction] = useState<'approve' | 'reject' | null>(null);
+  
+  // Get the appropriate hooks based on item type
+  const { bulkApproveRequests, bulkRejectRequests } = useRequestApprovals();
+  const { approveOffer, rejectOffer } = useOfferApprovals();
 
   const handleBulkAction = async (action: 'approve' | 'reject') => {
     if (selectedItems.length === 0) return;
     
     setLoading(true);
     try {
-      // Mock implementation since database tables don't match generated types
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      if (itemType === 'requests') {
+        if (action === 'approve') {
+          await bulkApproveRequests(selectedItems, notes);
+        } else {
+          await bulkRejectRequests(selectedItems, notes);
+        }
+      } else if (itemType === 'offers') {
+        // For offers, we need to process individually since there's no bulk operation
+        for (const offerId of selectedItems) {
+          if (action === 'approve') {
+            await approveOffer(offerId, notes);
+          } else {
+            await rejectOffer(offerId, notes);
+          }
+        }
+      }
       
       toast({
         title: `Bulk ${action} completed`,
@@ -58,22 +77,16 @@ export const BulkApprovalActions = ({
 
   const exportSelected = async () => {
     try {
-      // Mock export functionality
-      const mockData = selectedItems.map((id, index) => ({
+      // Create CSV export with selected item IDs
+      const headers = ['ID', 'Type', 'Status', 'Created At'];
+      const rows = selectedItems.map(id => [
         id,
-        title: `${itemType.slice(0, -1)} ${index + 1}`,
-        status: 'pending',
-        created_at: new Date().toISOString()
-      }));
-
-      const headers = Object.keys(mockData[0]).join(',');
-      const rows = mockData.map(item => 
-        Object.values(item).map(val => 
-          typeof val === 'string' ? `"${val.replace(/"/g, '""')}"` : val
-        ).join(',')
-      );
+        itemType.slice(0, -1),
+        'pending',
+        new Date().toISOString()
+      ]);
       
-      const csv = [headers, ...rows].join('\n');
+      const csv = [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
       const blob = new Blob([csv], { type: 'text/csv' });
       const url = URL.createObjectURL(blob);
       
@@ -149,14 +162,6 @@ export const BulkApprovalActions = ({
           >
             Clear Selection
           </Button>
-        </div>
-
-        {/* Mock Implementation Notice */}
-        <div className="mt-4 p-3 bg-muted/50 rounded-lg">
-          <p className="text-sm text-foreground opacity-75">
-            <strong>Note:</strong> Bulk approval actions are currently using mock implementation. 
-            Database integration pending schema updates.
-          </p>
         </div>
 
         <Dialog open={showBulkDialog} onOpenChange={setShowBulkDialog}>
