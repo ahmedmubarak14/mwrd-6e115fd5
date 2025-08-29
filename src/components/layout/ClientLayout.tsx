@@ -5,6 +5,7 @@ import { ClientHeader } from "./ClientHeader";
 import { ClientMobileSidebar } from "./ClientMobileSidebar";
 import { MobileContainer } from "@/components/ui/MobileContainer";
 import { MobileBottomNav, MobileBottomNavSpacer } from "@/components/navigation/MobileBottomNav";
+import { SmartBreadcrumbs } from "@/components/navigation/SmartBreadcrumbs";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
@@ -76,6 +77,7 @@ export const ClientLayout = ({ children }: ClientLayoutProps) => {
               onOpenChange={setMobileMenuOpen} 
             />
             <main className="flex-1 overflow-auto bg-muted/20 p-4 sm:p-6 min-h-[calc(100vh-8rem)] pb-20 safe-area-inset-bottom">
+              <SmartBreadcrumbs />
               <ErrorBoundary>
                 {children || <Outlet />}
               </ErrorBoundary>
@@ -104,6 +106,7 @@ export const ClientLayout = ({ children }: ClientLayoutProps) => {
                 sidebarOpen={sidebarOpen}
               />
               <main className="flex-1 overflow-auto bg-muted/20 p-6 min-h-[calc(100vh-4rem)]">
+                <SmartBreadcrumbs />
                 <ErrorBoundary>
                   {children || <Outlet />}
                 </ErrorBoundary>

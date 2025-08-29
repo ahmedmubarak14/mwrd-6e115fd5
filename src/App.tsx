@@ -5,7 +5,10 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { RouteAwareThemeProvider } from './contexts/RouteAwareThemeContext';
 import { SecurityProvider } from './contexts/SecurityContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { PageTransition } from './components/ui/animations/PageTransition';
+import OptimizedPageTransition from './components/ui/animations/OptimizedPageTransition';
+import { NavigationLoader } from './components/navigation/NavigationLoader';
+import { RoutePreloader } from './components/navigation/RoutePreloader';
+import { PerformanceMonitor } from './components/ui/animations/PerformanceMonitor';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
@@ -96,8 +99,11 @@ const RootRedirect: React.FC = () => {
 
 const AppRoutes: React.FC = () => {
   return (
-    <PageTransition>
-      <Routes>
+    <>
+      <NavigationLoader />
+      <RoutePreloader />
+      <OptimizedPageTransition>
+        <Routes>
       {/* Public Routes */}
       <Route path="/landing" element={<Landing />} />
       <Route path="/why-start-with-mwrd" element={<WhyStartWithMWRD />} />
@@ -290,7 +296,8 @@ const AppRoutes: React.FC = () => {
       {/* Catch-all route for 404 Not Found */}
       <Route path="*" element={<NotFound />} />
       </Routes>
-    </PageTransition>
+    </OptimizedPageTransition>
+    </>
   );
 };
 
@@ -303,6 +310,7 @@ const App: React.FC = () => {
             <SecurityProvider>
               <RouteAwareThemeProvider>
                 <AppRoutes />
+                <PerformanceMonitor />
               </RouteAwareThemeProvider>
             </SecurityProvider>
           </AuthProvider>
