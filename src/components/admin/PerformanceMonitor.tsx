@@ -17,9 +17,14 @@ import {
   TrendingUp,
   TrendingDown,
   RefreshCw,
-  Download
+  Download,
+  Server,
+  Cpu,
+  HardDrive
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useSystemHealth } from '@/hooks/useSystemHealth';
+import { usePerformanceOptimizations } from '@/hooks/usePerformanceOptimizations';
 
 interface PerformanceMetric {
   name: string;
@@ -47,6 +52,10 @@ export const PerformanceMonitor = () => {
   const [bundleData, setBundleData] = useState<BundleAnalysis | null>(null);
   const [loading, setLoading] = useState(true);
   const [analyzing, setAnalyzing] = useState(false);
+  
+  // System health integration
+  const { systemMetrics, performanceData, alerts, isLoading: healthLoading, refreshHealth } = useSystemHealth();
+  const { deviceCapabilities, networkSpeed, performanceConfig } = usePerformanceOptimizations();
 
   const collectPerformanceMetrics = async () => {
     // Collect Web Vitals and performance metrics
@@ -224,6 +233,10 @@ export const PerformanceMonitor = () => {
             <RefreshCw className="h-4 w-4 mr-2" />
             Refresh Metrics
           </Button>
+          <Button onClick={refreshHealth} variant="outline" disabled={healthLoading}>
+            <Server className="h-4 w-4 mr-2" />
+            {healthLoading ? 'Checking...' : 'Check System Health'}
+          </Button>
           <Button onClick={analyzeBundleSize} disabled={analyzing}>
             <Download className="h-4 w-4 mr-2" />
             {analyzing ? 'Analyzing...' : 'Analyze Bundle'}
@@ -234,6 +247,7 @@ export const PerformanceMonitor = () => {
       <Tabs defaultValue="vitals" className="space-y-6">
         <TabsList>
           <TabsTrigger value="vitals">Core Web Vitals</TabsTrigger>
+          <TabsTrigger value="system">System Health</TabsTrigger>
           <TabsTrigger value="bundle">Bundle Analysis</TabsTrigger>
           <TabsTrigger value="network">Network</TabsTrigger>
           <TabsTrigger value="recommendations">Recommendations</TabsTrigger>
@@ -310,6 +324,168 @@ export const PerformanceMonitor = () => {
               </Card>
             ))}
           </div>
+        </TabsContent>
+
+        <TabsContent value="system" className="space-y-4">
+          {/* System Status Overview */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Server className={cn("h-4 w-4", 
+                    systemMetrics?.overallStatus === 'healthy' ? 'text-success' : 
+                    systemMetrics?.overallStatus === 'warning' ? 'text-warning' : 'text-destructive'
+                  )} />
+                  <span className="text-sm font-medium">System Status</span>
+                </div>
+                <p className={cn("text-2xl font-bold capitalize",
+                  systemMetrics?.overallStatus === 'healthy' ? 'text-success' : 
+                  systemMetrics?.overallStatus === 'warning' ? 'text-warning' : 'text-destructive'
+                )}>
+                  {systemMetrics?.overallStatus || 'Unknown'}
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Cpu className="h-4 w-4 text-primary" />
+                  <span className="text-sm font-medium">CPU Usage</span>
+                </div>
+                <p className="text-2xl font-bold">{systemMetrics?.cpuUsage || 0}%</p>
+                <Progress value={systemMetrics?.cpuUsage || 0} className="w-full mt-2" />
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <HardDrive className="h-4 w-4 text-primary" />
+                  <span className="text-sm font-medium">Memory Usage</span>
+                </div>
+                <p className="text-2xl font-bold">{systemMetrics?.memoryUsage || 0}%</p>
+                <Progress value={systemMetrics?.memoryUsage || 0} className="w-full mt-2" />
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Database className={cn("h-4 w-4",
+                    systemMetrics?.databaseStatus === 'healthy' ? 'text-success' : 
+                    systemMetrics?.databaseStatus === 'warning' ? 'text-warning' : 'text-destructive'
+                  )} />
+                  <span className="text-sm font-medium">Database</span>
+                </div>
+                <p className={cn("text-lg font-bold capitalize",
+                  systemMetrics?.databaseStatus === 'healthy' ? 'text-success' : 
+                  systemMetrics?.databaseStatus === 'warning' ? 'text-warning' : 'text-destructive'
+                )}>
+                  {systemMetrics?.databaseStatus || 'Unknown'}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {systemMetrics?.activeConnections || 0} active connections
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Device Capabilities */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Device & Environment</CardTitle>
+              <CardDescription>
+                Current device capabilities and environment settings
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm">Device Type:</span>
+                    <Badge variant={deviceCapabilities.isLowEnd ? "destructive" : "default"}>
+                      {deviceCapabilities.isLowEnd ? "Low-end" : "High-performance"}
+                    </Badge>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm">CPU Cores:</span>
+                    <span className="text-sm font-medium">{deviceCapabilities.cpuCores}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm">Memory:</span>
+                    <span className="text-sm font-medium">{deviceCapabilities.memory}GB</span>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm">Network Speed:</span>
+                    <Badge variant={networkSpeed === 'fast' ? "default" : networkSpeed === 'medium' ? "secondary" : "destructive"}>
+                      {networkSpeed}
+                    </Badge>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm">Animations:</span>
+                    <Badge variant={performanceConfig.enableAnimations ? "default" : "secondary"}>
+                      {performanceConfig.enableAnimations ? "Enabled" : "Disabled"}
+                    </Badge>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm">GPU Acceleration:</span>
+                    <Badge variant={performanceConfig.useGPU ? "default" : "secondary"}>
+                      {performanceConfig.useGPU ? "Enabled" : "Disabled"}
+                    </Badge>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-sm">Transition Duration:</span>
+                    <span className="text-sm font-medium">{performanceConfig.transitionDuration}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm">Max Animations:</span>
+                    <span className="text-sm font-medium">{performanceConfig.maxConcurrentAnimations}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-sm">Debounce Time:</span>
+                    <span className="text-sm font-medium">{performanceConfig.debounceMs}ms</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* System Alerts */}
+          {alerts && alerts.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <AlertTriangle className="h-5 w-5 text-warning" />
+                  System Alerts
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {alerts.map((alert, index) => (
+                    <Alert key={index} className={
+                      alert.severity === 'critical' ? 'border-destructive' :
+                      alert.severity === 'high' ? 'border-warning' : ''
+                    }>
+                      <AlertTriangle className="h-4 w-4" />
+                      <AlertDescription>
+                        <span className="font-medium">{alert.component}:</span> {alert.message}
+                        <span className="text-xs text-muted-foreground block mt-1">
+                          {new Date(alert.timestamp).toLocaleString()}
+                        </span>
+                      </AlertDescription>
+                    </Alert>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </TabsContent>
 
         <TabsContent value="bundle" className="space-y-4">
