@@ -7,8 +7,13 @@ import App from './App.tsx'
 import './index.css'
 
 // Set the dir attribute based on language preference from localStorage
-const savedLanguage = localStorage.getItem('language') || 'en';
-document.documentElement.dir = savedLanguage === 'ar' ? 'rtl' : 'ltr';
+try {
+  const savedLanguage = localStorage.getItem('language') || 'en';
+  document.documentElement.dir = savedLanguage === 'ar' ? 'rtl' : 'ltr';
+} catch (error) {
+  console.warn('Failed to access localStorage for initial language setup:', error);
+  document.documentElement.dir = 'ltr';
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,7 +38,6 @@ createRoot(document.getElementById("root")!).render(
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <App />
-        <Toaster />
       </QueryClientProvider>
     </ErrorBoundary>
   </StrictMode>

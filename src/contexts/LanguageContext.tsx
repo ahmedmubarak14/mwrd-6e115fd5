@@ -26,14 +26,23 @@ export const useLanguage = () => {
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>(() => {
-    const saved = localStorage.getItem('language');
-    return (saved === 'ar' || saved === 'en') ? saved : 'en';
+    try {
+      const saved = localStorage.getItem('language');
+      return (saved === 'ar' || saved === 'en') ? saved : 'en';
+    } catch (error) {
+      console.warn('Failed to access localStorage:', error);
+      return 'en';
+    }
   });
 
   const isRTL = language === 'ar';
 
   useEffect(() => {
-    localStorage.setItem('language', language);
+    try {
+      localStorage.setItem('language', language);
+    } catch (error) {
+      console.warn('Failed to save language to localStorage:', error);
+    }
     
     // Update document attributes for RTL support
     document.documentElement.lang = language;
