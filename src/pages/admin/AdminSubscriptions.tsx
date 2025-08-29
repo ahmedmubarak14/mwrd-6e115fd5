@@ -15,7 +15,6 @@ import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { format, addDays, addMonths, isAfter, isBefore } from "date-fns";
 import { CreditCard, Download, RefreshCw, TrendingUp, Users, Edit, Trash2, Eye, Calendar, DollarSign, Crown, AlertTriangle, Plus, BarChart3, Building } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { AdminPageContainer } from "@/components/admin/AdminPageContainer";
 import { useToast } from "@/hooks/use-toast";
 
 interface AdminSubscription {
@@ -356,10 +355,16 @@ export default function AdminSubscriptions() {
   }
 
   return (
-    <AdminPageContainer
-      title="Subscription Management"
-      description="Comprehensive subscription management with plan changes and analytics"
-    >
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
+          Subscription Management
+        </h1>
+        <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
+          Comprehensive subscription management with plan changes and analytics
+        </p>
+      </div>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="all">All Subscriptions</TabsTrigger>
@@ -737,6 +742,6 @@ export default function AdminSubscriptions() {
           </Card>
         </TabsContent>
       </Tabs>
-    </AdminPageContainer>
+    </div>
   );
 }

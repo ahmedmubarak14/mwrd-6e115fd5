@@ -29,6 +29,7 @@ import AdminOrders from './pages/admin/AdminOrders';
 import AdminVerificationQueue from './pages/admin/AdminVerificationQueue';
 import AdminAutomationCenter from './pages/admin/AdminAutomationCenter';
 import AdminFinancialTransactions from './pages/admin/AdminFinancialTransactions';
+import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import Requests from './pages/Requests';
 import CreateSimpleRequest from './pages/CreateSimpleRequest';
 import { SearchPage } from './components/search/SearchPage';
@@ -174,6 +175,7 @@ function App() {
                       <Route path="verification" element={<AdminVerificationQueue />} />
                       <Route path="automation" element={<AdminAutomationCenter />} />
                       <Route path="financial-transactions" element={<AdminFinancialTransactions />} />
+                      <Route path="subscriptions" element={<AdminSubscriptions />} />
                     </Route>
                     
                     {/* Default and 404 routes */}
