@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { LanguageProvider } from './contexts/LanguageContext';
-import { MinimalAuthProvider, useAuth } from './contexts/MinimalAuthContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { RouteAwareThemeProvider } from './contexts/RouteAwareThemeContext';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { Toaster } from '@/components/ui/toaster';
@@ -15,10 +15,16 @@ import { VendorDashboard } from './pages/VendorDashboard';
 import Profile from './pages/Profile';
 import { Landing } from './pages/Landing';
 import NotFound from './pages/NotFound';
+import { AdminDashboard } from './pages/admin/AdminDashboard';
+import AdminUsers from './pages/admin/AdminUsers';
+import AdminRequests from './pages/admin/AdminRequests';
+import AdminOffers from './pages/admin/AdminOffers';
+import { AdminAnalytics } from './pages/admin/AdminAnalytics';
+import { AdminSupport } from './pages/admin/AdminSupport';
 
 const RoleProtectedRoute: React.FC<{
   children: React.ReactNode;
-  allowedRoles: ('client' | 'supplier' | 'admin')[];
+  allowedRoles: ('client' | 'vendor' | 'admin')[];
 }> = ({ children, allowedRoles }) => {
   const { userProfile, loading } = useAuth();
 
@@ -34,7 +40,7 @@ const RoleProtectedRoute: React.FC<{
     return <Navigate to="/login" replace />;
   }
 
-  if (!allowedRoles.includes(userProfile.role as 'client' | 'supplier' | 'admin')) {
+  if (!allowedRoles.includes(userProfile.role as 'client' | 'vendor' | 'admin')) {
     return <Navigate to="/login" replace />;
   }
 
@@ -47,7 +53,7 @@ const App: React.FC = () => {
     <ErrorBoundary>
       <LanguageProvider>
         <Router>
-          <MinimalAuthProvider>
+          <AuthProvider>
             <RouteAwareThemeProvider>
               <GlobalErrorHandler />
               <Toaster />
@@ -58,18 +64,48 @@ const App: React.FC = () => {
                 <Route path="/register" element={<Register />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/dashboard" element={
-                  <RoleProtectedRoute allowedRoles={['client', 'supplier', 'admin']}>
+                  <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
                     <Dashboard />
                   </RoleProtectedRoute>
                 } />
                 <Route path="/profile" element={
-                  <RoleProtectedRoute allowedRoles={['client', 'supplier', 'admin']}>
+                  <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
                     <Profile />
                   </RoleProtectedRoute>
                 } />
                 <Route path="/vendor-dashboard" element={
-                  <RoleProtectedRoute allowedRoles={['supplier']}>
+                  <RoleProtectedRoute allowedRoles={['vendor']}>
                     <VendorDashboard />
+                  </RoleProtectedRoute>
+                } />
+                <Route path="/admin/dashboard" element={
+                  <RoleProtectedRoute allowedRoles={['admin']}>
+                    <AdminDashboard />
+                  </RoleProtectedRoute>
+                } />
+                <Route path="/admin/users" element={
+                  <RoleProtectedRoute allowedRoles={['admin']}>
+                    <AdminUsers />
+                  </RoleProtectedRoute>
+                } />
+                <Route path="/admin/requests" element={
+                  <RoleProtectedRoute allowedRoles={['admin']}>
+                    <AdminRequests />
+                  </RoleProtectedRoute>
+                } />
+                <Route path="/admin/offers" element={
+                  <RoleProtectedRoute allowedRoles={['admin']}>
+                    <AdminOffers />
+                  </RoleProtectedRoute>
+                } />
+                <Route path="/admin/analytics" element={
+                  <RoleProtectedRoute allowedRoles={['admin']}>
+                    <AdminAnalytics />
+                  </RoleProtectedRoute>
+                } />
+                <Route path="/admin/support" element={
+                  <RoleProtectedRoute allowedRoles={['admin']}>
+                    <AdminSupport />
                   </RoleProtectedRoute>
                 } />
                 <Route path="/" element={<Navigate to="/landing" replace />} />
@@ -77,7 +113,7 @@ const App: React.FC = () => {
               </Routes>
               
             </RouteAwareThemeProvider>
-          </MinimalAuthProvider>
+          </AuthProvider>
         </Router>
       </LanguageProvider>
     </ErrorBoundary>

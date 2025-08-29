@@ -1,4 +1,3 @@
-
 import { CleanVendorDashboard } from "@/components/vendor/CleanVendorDashboard";
 import { CleanDashboardLayout } from "@/components/layout/CleanDashboardLayout";
 import { useAuth } from "@/contexts/AuthContext";
