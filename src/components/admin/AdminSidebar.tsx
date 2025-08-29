@@ -234,7 +234,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
   return (
     <div 
       className={cn(
-        "flex flex-col h-screen bg-card border-r border-border transition-all duration-300 shadow-sm fixed left-0 top-0 z-40",
+        "flex flex-col h-screen bg-card border-r border-border transition-all duration-300 shadow-sm fixed left-0 top-0 z-50",
         collapsed ? "w-16" : "w-64",
         className
       )} 
