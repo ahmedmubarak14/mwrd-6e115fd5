@@ -336,13 +336,13 @@ const App: React.FC = () => {
     <ErrorBoundary>
       <LanguageProvider>
         <Router>
+          <Toaster />
           <AuthProvider>
             <SecurityProvider>
               <RouteAwareThemeProvider>
                 <GlobalErrorHandler />
                 <AppRoutes />
                 <PerformanceMonitor />
-                <Toaster />
               </RouteAwareThemeProvider>
             </SecurityProvider>
           </AuthProvider>
