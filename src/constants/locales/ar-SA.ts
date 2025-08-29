@@ -437,19 +437,6 @@ export const arSA = {
     fromLastWeek: 'من الأسبوع الماضي',
     monitorDescription: 'راقب أداء المنصة والتحليلات',
   },
-  workflow: {
-    automationCenter: 'مركز أتمتة سير العمل',
-    automationDescription: 'أتمتة العمليات وإدارة سير العمل ومراقبة المهام المؤتمتة',
-    createWorkflow: 'إنشاء سير عمل',
-    nameRequired: 'اسم سير العمل مطلوب',
-    created: 'تم إنشاء سير العمل بنجاح',
-    createError: 'فشل في إنشاء سير العمل',
-    loading: 'جارٍ تحميل مركز الأتمتة...'
-  },
-  financial: {
-    transactions: 'المعاملات المالية',
-    description: 'مراقبة وإدارة جميع المعاملات المالية عبر المنصة'
-  },
   profile: {
     adminProfile: 'الملف الشخصي للمدير',
     adminProfileDescription: 'إدارة ملفك الشخصي كمدير وإعدادات الأمان وتفضيلات النظام',
