@@ -26,23 +26,60 @@ export const MinimalAuthProvider = ({ children }: { children: React.ReactNode })
   const showInfo = (message: string) => console.log("ℹ️", message);
   const showError = (message: string) => console.error("❌", message);
 
+  // Fetch user profile from database
+  const fetchUserProfile = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Profile fetch error:', error);
+        return null;
+      }
+      return data;
+    } catch (error) {
+      console.error('Profile fetch error:', error);
+      return null;
+    }
+  };
+
   useEffect(() => {
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session: initialSession }, error }) => {
+    supabase.auth.getSession().then(async ({ data: { session: initialSession }, error }) => {
       if (error) {
         console.error('Session retrieval error:', error);
       }
+      
       setSession(initialSession);
       setUser(initialSession?.user ?? null);
+      
+      // Fetch user profile if user exists
+      if (initialSession?.user) {
+        const profile = await fetchUserProfile(initialSession.user.id);
+        setUserProfile(profile);
+      }
+      
       setLoading(false);
     });
 
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, nextSession) => {
+    } = supabase.auth.onAuthStateChange(async (event, nextSession) => {
       setSession(nextSession);
       setUser(nextSession?.user ?? null);
+      
+      // Fetch user profile when user signs in
+      if (nextSession?.user) {
+        const profile = await fetchUserProfile(nextSession.user.id);
+        setUserProfile(profile);
+      } else {
+        setUserProfile(null);
+      }
+      
       setLoading(false);
     });
 

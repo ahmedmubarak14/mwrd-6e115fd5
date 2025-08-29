@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { LanguageProvider } from './contexts/LanguageContext';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { MinimalAuthProvider, useAuth } from './contexts/MinimalAuthContext';
 import { RouteAwareThemeProvider } from './contexts/RouteAwareThemeContext';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { Toaster } from '@/components/ui/toaster';
@@ -53,7 +53,7 @@ const App: React.FC = () => {
     <ErrorBoundary>
       <LanguageProvider>
         <Router>
-          <AuthProvider>
+          <MinimalAuthProvider>
             <RouteAwareThemeProvider>
               <GlobalErrorHandler />
               <Toaster />
@@ -113,7 +113,7 @@ const App: React.FC = () => {
               </Routes>
               
             </RouteAwareThemeProvider>
-          </AuthProvider>
+          </MinimalAuthProvider>
         </Router>
       </LanguageProvider>
     </ErrorBoundary>
