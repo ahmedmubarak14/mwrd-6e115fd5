@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User, Session, AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { useSafeToastFeedback } from '@/hooks/useSafeToastFeedback';
+import { noHooksToast } from '@/utils/noHooksToast';
 import { UserProfile } from '@/types/database';
 import { validateEmailDomain, rateLimiter, logSecurityEvent } from '@/utils/security';
 
@@ -24,7 +24,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const { showInfo, showError } = useSafeToastFeedback();
+  const showInfo = noHooksToast.showInfo;
+  const showError = noHooksToast.showError;
 
 useEffect(() => {
   // Listen for auth changes FIRST to avoid missing events
