@@ -1,5 +1,3 @@
-
-import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { useState, useMemo } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useRealTimeRequests } from '@/hooks/useRealTimeRequests';
@@ -66,7 +64,7 @@ const Requests = () => {
 
   if (loading) {
     return (
-      <ClientPageContainer>
+      <div className="p-6 space-y-6">
         <div className="mb-8">
           <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
           <div className="h-4 w-32 bg-muted rounded animate-pulse" />
@@ -77,25 +75,31 @@ const Requests = () => {
             <MetricCard key={i} title="" value="" loading={true} />
           ))}
         </div>
-      </ClientPageContainer>
+      </div>
     );
   }
 
   return (
-    <ClientPageContainer
-      title={t('nav.requests')}
-      description={t('requests.description')}
-      headerActions={
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-start mb-8">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
+            {t('nav.requests')}
+          </h1>
+          <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
+            {t('requests.description')}
+          </p>
+        </div>
         <Button 
           size="lg" 
           className="w-full md:w-auto gap-2"
-          onClick={() => navigate('/requests/create')}
+          onClick={() => navigate('/client/requests/create')}
         >
           <Plus className="h-4 w-4" />
           {t('requests.createNew')}
         </Button>
-      }
-    >
+      </div>
 
       {/* Metrics */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
@@ -288,7 +292,7 @@ const Requests = () => {
                 <Button 
                   size="lg" 
                   className="w-full md:w-auto gap-2"
-                  onClick={() => navigate('/requests/create')}
+                  onClick={() => navigate('/client/requests/create')}
                 >
                   <Plus className="h-4 w-4" />
                   Create Your First Request
@@ -312,7 +316,7 @@ const Requests = () => {
           </CardContent>
         </Card>
       )}
-    </ClientPageContainer>
+    </div>
   );
 };
 

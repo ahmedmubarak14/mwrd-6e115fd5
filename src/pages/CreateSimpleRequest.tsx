@@ -1,4 +1,3 @@
-import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { SimpleRequestForm } from "@/components/forms/SimpleRequestForm";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -8,12 +7,12 @@ export default function CreateSimpleRequest() {
   const navigate = useNavigate();
 
   return (
-    <ClientPageContainer className="max-w-none">
+    <div className="p-6 space-y-6">
       <div className="flex items-center space-x-4 mb-8">
         <Button
           variant="outline"
           size="sm"
-          onClick={() => navigate("/requests")}
+          onClick={() => navigate("/client/requests")}
           className="flex items-center gap-2"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -31,6 +30,6 @@ export default function CreateSimpleRequest() {
       </div>
 
       <SimpleRequestForm />
-    </ClientPageContainer>
+    </div>
   );
 }
