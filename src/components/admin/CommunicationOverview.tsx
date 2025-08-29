@@ -229,7 +229,7 @@ Average Response Time: ${reportData.avgResponseTime} minutes`;
   if (isLoading || chatLoading || notificationLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <LoadingSpinner label="Loading communication overview..." />
+        <LoadingSpinner label={t('communication.loadingOverview')} />
       </div>
     );
   }
@@ -254,45 +254,45 @@ Average Response Time: ${reportData.avgResponseTime} minutes`;
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Messages</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('communication.totalMessages')}</CardTitle>
             <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-primary">{metrics.totalMessages.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">All time</p>
+            <p className="text-xs text-muted-foreground">{t('communication.allTime')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Conversations</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('communication.activeConversations')}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-success">{metrics.activeConversations}</div>
-            <p className="text-xs text-muted-foreground">Last 7 days</p>
+            <p className="text-xs text-muted-foreground">{t('communication.lastSevenDays')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Notifications Today</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('communication.notificationsToday')}</CardTitle>
             <Bell className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-info">{metrics.notificationsSentToday}</div>
-            <p className="text-xs text-muted-foreground">Today's total</p>
+            <p className="text-xs text-muted-foreground">{t('communication.todaysTotal')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg Response Time</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('communication.avgResponseTime')}</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-warning">{metrics.averageResponseTime}m</div>
-            <p className="text-xs text-muted-foreground">Average response</p>
+            <p className="text-xs text-muted-foreground">{t('communication.averageResponse')}</p>
           </CardContent>
         </Card>
       </div>
@@ -303,9 +303,9 @@ Average Response Time: ${reportData.avgResponseTime} minutes`;
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <TrendingUp className="h-5 w-5" />
-              <span>Message Activity</span>
+              <span>{t('communication.messageActivity')}</span>
             </CardTitle>
-            <CardDescription>Messages and notifications sent over time</CardDescription>
+            <CardDescription>{t('communication.messageActivityDesc')}</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
@@ -325,9 +325,9 @@ Average Response Time: ${reportData.avgResponseTime} minutes`;
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <MessageSquare className="h-5 w-5" />
-              <span>Communication Channels</span>
+              <span>{t('communication.communicationChannels')}</span>
             </CardTitle>
-            <CardDescription>Usage by communication method</CardDescription>
+            <CardDescription>{t('communication.usageByMethod')}</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
@@ -348,9 +348,9 @@ Average Response Time: ${reportData.avgResponseTime} minutes`;
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <Activity className="h-5 w-5" />
-            <span>Recent Activity</span>
+            <span>{t('communication.recentActivity')}</span>
           </CardTitle>
-          <CardDescription>Latest communication events</CardDescription>
+          <CardDescription>{t('communication.latestEvents')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -361,19 +361,19 @@ Average Response Time: ${reportData.avgResponseTime} minutes`;
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium">
-                    Conversation {conv.conversation_type === 'support' ? 'Support' : 'Business'}
+                    {t('communication.conversation')} {conv.conversation_type === 'support' ? t('communication.support') : t('communication.business')}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    {conv.last_message ? conv.last_message.slice(0, 60) + '...' : 'No recent message'}
+                    {conv.last_message ? conv.last_message.slice(0, 60) + '...' : t('communication.noRecentMessage')}
                   </p>
                 </div>
                 <div className="text-xs text-muted-foreground flex items-center space-x-1">
                   <Calendar className="h-3 w-3" />
                   <span>
-                    {conv.last_message_at 
-                      ? new Date(conv.last_message_at).toLocaleString()
-                      : 'No activity'
-                    }
+                     {conv.last_message_at 
+                       ? new Date(conv.last_message_at).toLocaleString()
+                       : t('communication.noActivity')
+                     }
                   </span>
                 </div>
               </div>
@@ -381,7 +381,7 @@ Average Response Time: ${reportData.avgResponseTime} minutes`;
             {(!conversations || conversations.length === 0) && (
               <div className="text-center py-8 text-muted-foreground">
                 <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>No recent communication activity</p>
+                <p>{t('communication.noRecentActivity')}</p>
               </div>
             )}
           </div>

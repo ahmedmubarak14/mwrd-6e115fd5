@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 import { cn } from '@/lib/utils';
 
 interface Notification {
@@ -58,6 +59,7 @@ interface BroadcastMessage {
 
 export const AdminCommunicationCenter = () => {
   const { toast } = useToast();
+  const { t } = useOptionalLanguage();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [broadcasts, setBroadcasts] = useState<BroadcastMessage[]>([]);
   const [loading, setLoading] = useState(true);
@@ -247,7 +249,7 @@ export const AdminCommunicationCenter = () => {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center py-12">Loading communication center...</div>;
+    return <div className="flex items-center justify-center py-12">{t('communication.loadingCenter')}</div>;
   }
 
   return (
@@ -256,19 +258,19 @@ export const AdminCommunicationCenter = () => {
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <MessageSquare className="h-6 w-6" />
-            Communication Center
+            {t('communication.center')}
           </h2>
           <p className="text-muted-foreground">
-            Manage notifications, broadcasts, and user communications
+            {t('communication.centerDescription')}
           </p>
         </div>
       </div>
 
       <Tabs defaultValue="notifications" className="space-y-6">
         <TabsList>
-          <TabsTrigger value="notifications">Notifications</TabsTrigger>
-          <TabsTrigger value="broadcast">Broadcast Messages</TabsTrigger>
-          <TabsTrigger value="templates">Email Templates</TabsTrigger>
+          <TabsTrigger value="notifications">{t('communication.notifications')}</TabsTrigger>
+          <TabsTrigger value="broadcast">{t('communication.broadcastMessages')}</TabsTrigger>
+          <TabsTrigger value="templates">{t('communication.emailTemplates')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="notifications" className="space-y-4">
@@ -278,7 +280,7 @@ export const AdminCommunicationCenter = () => {
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
                   <Bell className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium">Total Sent</span>
+                  <span className="text-sm font-medium">{t('communication.totalSent')}</span>
                 </div>
                 <p className="text-2xl font-bold mt-1">{notifications.length}</p>
               </CardContent>
@@ -287,7 +289,7 @@ export const AdminCommunicationCenter = () => {
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
                   <AlertCircle className="h-4 w-4 text-warning" />
-                  <span className="text-sm font-medium">Unread</span>
+                  <span className="text-sm font-medium">{t('communication.unread')}</span>
                 </div>
                 <p className="text-2xl font-bold mt-1">
                   {notifications.filter(n => !n.read).length}
@@ -298,7 +300,7 @@ export const AdminCommunicationCenter = () => {
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
                   <Users className="h-4 w-4 text-success" />
-                  <span className="text-sm font-medium">Active Users</span>
+                  <span className="text-sm font-medium">{t('communication.activeUsers')}</span>
                 </div>
                 <p className="text-2xl font-bold mt-1">
                   {new Set(notifications.map(n => n.user_id)).size}
@@ -309,7 +311,7 @@ export const AdminCommunicationCenter = () => {
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm font-medium">Read Rate</span>
+                  <span className="text-sm font-medium">{t('communication.readRate')}</span>
                 </div>
                 <p className="text-2xl font-bold mt-1">
                   {notifications.length > 0 ? 
@@ -328,7 +330,7 @@ export const AdminCommunicationCenter = () => {
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
-                      placeholder="Search notifications..."
+                      placeholder={t('communication.searchNotifications')}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-10"
@@ -340,16 +342,16 @@ export const AdminCommunicationCenter = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
-                    <SelectItem value="offer_received">Offer Received</SelectItem>
-                    <SelectItem value="request_created">Request Created</SelectItem>
-                    <SelectItem value="order_update">Order Update</SelectItem>
-                    <SelectItem value="system">System</SelectItem>
+                    <SelectItem value="all">{t('communication.allTypes')}</SelectItem>
+                    <SelectItem value="offer_received">{t('communication.offerReceived')}</SelectItem>
+                    <SelectItem value="request_created">{t('communication.requestCreated')}</SelectItem>
+                    <SelectItem value="order_update">{t('communication.orderUpdate')}</SelectItem>
+                    <SelectItem value="system">{t('communication.system')}</SelectItem>
                   </SelectContent>
                 </Select>
                 <Button onClick={markAllAsRead} variant="outline">
                   <CheckCircle className="h-4 w-4 mr-2" />
-                  Mark All Read
+                  {t('communication.markAllRead')}
                 </Button>
               </div>
             </CardContent>
@@ -389,7 +391,7 @@ export const AdminCommunicationCenter = () => {
                       <div className="flex items-center gap-4 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <User className="h-3 w-3" />
-                          {notification.user_profiles?.full_name || 'Unknown User'}
+                          {notification.user_profiles?.full_name || t('communication.unknownUser')}
                         </span>
                         <span className="flex items-center gap-1">
                           <Mail className="h-3 w-3" />
@@ -413,11 +415,11 @@ export const AdminCommunicationCenter = () => {
               <Card>
                 <CardContent className="py-12 text-center">
                   <Bell className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="text-lg font-semibold mb-2">No Notifications Found</h3>
+                  <h3 className="text-lg font-semibold mb-2">{t('communication.noNotificationsFound')}</h3>
                   <p className="text-muted-foreground">
                     {searchTerm || filterType !== 'all' ? 
-                      'Try adjusting your search criteria.' : 
-                      'Notifications will appear here when sent to users.'
+                      t('communication.adjustSearchCriteria') : 
+                      t('communication.notificationsWillAppear')
                     }
                   </p>
                 </CardContent>
@@ -432,25 +434,25 @@ export const AdminCommunicationCenter = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Megaphone className="h-5 w-5" />
-                Send Broadcast Message
+                {t('communication.sendBroadcastMessage')}
               </CardTitle>
               <CardDescription>
-                Send messages to specific user groups or all users
+                {t('communication.sendMessageToGroups')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="title">Message Title</Label>
+                  <Label htmlFor="title">{t('communication.messageTitle')}</Label>
                   <Input
                     id="title"
                     value={newBroadcast.title}
                     onChange={(e) => setNewBroadcast(prev => ({ ...prev, title: e.target.value }))}
-                    placeholder="Important system update..."
+                    placeholder={t('communication.titlePlaceholder')}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="audience">Target Audience</Label>
+                  <Label htmlFor="audience">{t('communication.targetAudience')}</Label>
                   <Select
                     value={newBroadcast.target_audience}
                     onValueChange={(value) => setNewBroadcast(prev => ({ ...prev, target_audience: value }))}
@@ -470,18 +472,18 @@ export const AdminCommunicationCenter = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="message">Message Content</Label>
+                <Label htmlFor="message">{t('communication.messageContent')}</Label>
                 <Textarea
                   id="message"
                   value={newBroadcast.message}
                   onChange={(e) => setNewBroadcast(prev => ({ ...prev, message: e.target.value }))}
-                  placeholder="Your message content here..."
+                  placeholder={t('communication.messagePlaceholder')}
                   rows={4}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="priority">Priority Level</Label>
+                <Label htmlFor="priority">{t('communication.priorityLevel')}</Label>
                 <Select
                   value={newBroadcast.priority}
                   onValueChange={(value) => setNewBroadcast(prev => ({ ...prev, priority: value }))}
@@ -501,7 +503,7 @@ export const AdminCommunicationCenter = () => {
 
               <Button onClick={sendBroadcastMessage}>
                 <Send className="h-4 w-4 mr-2" />
-                Send Broadcast
+                {t('communication.sendBroadcast')}
               </Button>
             </CardContent>
           </Card>
@@ -509,16 +511,16 @@ export const AdminCommunicationCenter = () => {
           {/* Broadcast History */}
           <Card>
             <CardHeader>
-              <CardTitle>Broadcast History</CardTitle>
+              <CardTitle>{t('communication.broadcastHistory')}</CardTitle>
               <CardDescription>
-                Previously sent broadcast messages
+                {t('communication.previouslyBroadcast')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               {broadcasts.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">
                   <Megaphone className="h-8 w-8 mx-auto mb-2" />
-                  <p>No broadcast messages sent yet.</p>
+                  <p>{t('communication.noBroadcastMessages')}</p>
                 </div>
               ) : (
                 <div className="space-y-4">
