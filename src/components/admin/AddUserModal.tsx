@@ -26,16 +26,12 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
     email: '',
     fullName: '',
     companyName: '',
-    phone: '',
     role: 'client' as 'client' | 'vendor' | 'admin'
   });
 
   const { showSuccess, showError } = useToastFeedback();
   const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = languageContext;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,14 +49,11 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
       const { error: profileError } = await supabase
         .from('user_profiles')
         .insert({
-          user_id: crypto.randomUUID(), // Generate a UUID for demo purposes
+          id: crypto.randomUUID(), // Add required id field
           email: formData.email,
           full_name: formData.fullName,
           company_name: formData.companyName || null,
-          phone: formData.phone || null,
           role: formData.role,
-          status: 'pending',
-          verification_status: 'pending'
         });
 
       if (profileError) throw profileError;
@@ -80,7 +73,6 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
       email: '',
       fullName: '',
       companyName: '',
-      phone: '',
       role: 'client'
     });
     onClose();
@@ -137,20 +129,6 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
               value={formData.companyName}
               onChange={(e) => setFormData(prev => ({ ...prev, companyName: e.target.value }))}
               placeholder={t('user.companyName')}
-              disabled={loading}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="phone" className={cn(isRTL ? "text-right" : "text-left")}>
-              {t('common.phone')}
-            </Label>
-            <Input
-              id="phone"
-              type="tel"
-              value={formData.phone}
-              onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-              placeholder={t('common.phone')}
               disabled={loading}
             />
           </div>

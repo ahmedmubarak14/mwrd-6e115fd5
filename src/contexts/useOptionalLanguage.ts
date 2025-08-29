@@ -1,10 +1,23 @@
 
 import { useContext } from 'react';
-import { LanguageContext } from '@/contexts/LanguageContext';
+import { LanguageContext, LanguageContextType } from '@/contexts/LanguageContext';
 
 // Safe optional language hook for components that might not be wrapped in LanguageProvider
-export const useOptionalLanguage = () => {
+export const useOptionalLanguage = (): LanguageContextType => {
   const context = useContext(LanguageContext);
-  // Return undefined if the context is not available (component not wrapped in LanguageProvider)
+  
+  // Return fallback object with all required properties if context is not available
+  if (!context) {
+    return {
+      language: 'en' as const,
+      setLanguage: () => {},
+      t: (key: string) => key,
+      isRTL: false,
+      formatNumber: (num: number) => num.toString(),
+      formatDate: (date: Date) => date.toLocaleDateString(),
+      formatCurrency: (amount: number, currency = 'USD') => `$${amount}`
+    };
+  }
+  
   return context;
 };
