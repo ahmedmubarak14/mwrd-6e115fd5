@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
-import { Search, FileText, Package, Users, Calendar, MapPin } from "lucide-react";
+import { useSearch, SearchFilters } from "@/hooks/useSearch";
+import { SearchResults } from "@/components/search/SearchResults";
+import { Search, Filter, X } from "lucide-react";
 
 interface SearchModalProps {
   children: React.ReactNode;
@@ -12,73 +14,61 @@ interface SearchModalProps {
 
 export const SearchModal = ({ children }: SearchModalProps) => {
   const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState("");
+  const [filters, setFilters] = useState<SearchFilters>({
+    query: "",
+    category: "",
+    location: "",
+    budgetRange: [0, 10000],
+    rating: 0,
+    availability: false,
+    urgency: "",
+    tags: [],
+    entityType: 'all'
+  });
+  const [showFilters, setShowFilters] = useState(false);
+
   const languageContext = useOptionalLanguage();
-  const language = languageContext?.language || 'en';
-  const isRTL = language === 'ar';
-
-  // Dummy search results
-  const searchResults = query.length > 0 ? [
-    {
-      id: 1,
-      type: "request",
-      title: "Audio Equipment for Corporate Conference",
-      description: "Professional audio setup needed for 200+ attendees",
-      location: "Riyadh",
-      date: "March 25, 2024",
-      status: "active",
-      relevance: 95
-    },
-    {
-      id: 2,
-      type: "supplier",
-      title: "TechAudio Pro",
-      description: "Professional audio and lighting equipment rental",
-      location: "Riyadh",
-      rating: "4.9",
-      status: "verified",
-      relevance: 88
-    },
-    {
-      id: 3,
-      type: "offer",
-      title: "Complete Office Supplies Package",
-      description: "Full office supplies with setup service",
-      price: "8,500 SAR",
-      supplier: "Creative Lens Studio",
-      status: "pending",
-      relevance: 75
-    }
-  ].filter(item => 
-    item.title.toLowerCase().includes(query.toLowerCase()) ||
-    item.description.toLowerCase().includes(query.toLowerCase())
-  ) : [];
-
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case "request": return <FileText className="h-4 w-4" />;
-      case "supplier": return <Users className="h-4 w-4" />;
-      case "offer": return <Package className="h-4 w-4" />;
-      default: return <Search className="h-4 w-4" />;
-    }
+  const { t, isRTL } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false 
   };
 
-  const getTypeBadge = (type: string) => {
-    const typeMap = {
-      request: { label: isRTL ? "طلب" : "Request", variant: "default" as const },
-      supplier: { label: isRTL ? "مورد" : "Supplier", variant: "secondary" as const },
-      offer: { label: isRTL ? "عرض" : "Offer", variant: "outline" as const }
-    };
-    return typeMap[type as keyof typeof typeMap] || typeMap.request;
+  const { results, loading, search, clearResults } = useSearch();
+
+  // Auto-search when query changes
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      if (filters.query.trim()) {
+        search(filters);
+      } else {
+        clearResults();
+      }
+    }, 300);
+
+    return () => clearTimeout(debounceTimer);
+  }, [filters.query, search, clearResults]);
+
+  const handleSearch = () => {
+    search(filters);
   };
 
-  const getStatusBadge = (status: string) => {
-    const statusMap = {
-      active: { label: isRTL ? "نشط" : "Active", variant: "default" as const },
-      verified: { label: isRTL ? "موثق" : "Verified", variant: "default" as const },
-      pending: { label: isRTL ? "في الانتظار" : "Pending", variant: "secondary" as const }
-    };
-    return statusMap[status as keyof typeof statusMap] || statusMap.active;
+  const handleFilterChange = (key: keyof SearchFilters, value: any) => {
+    setFilters(prev => ({ ...prev, [key]: value }));
+  };
+
+  const clearAllFilters = () => {
+    setFilters({
+      query: "",
+      category: "",
+      location: "",
+      budgetRange: [0, 10000],
+      rating: 0,
+      availability: false,
+      urgency: "",
+      tags: [],
+      entityType: 'all'
+    });
+    clearResults();
   };
 
   return (
@@ -97,105 +87,103 @@ export const SearchModal = ({ children }: SearchModalProps) => {
         </DialogHeader>
 
         <div className="space-y-4">
-          <div className="relative">
-            <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4`} />
-            <Input
-              placeholder={isRTL ? "ابحث عن أي شيء..." : "Search for anything..."}
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className={`${isRTL ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4 text-left'}`}
-              autoFocus
-            />
-          </div>
+          {/* Search Input */}
+          <div className="space-y-3">
+            <div className="relative">
+              <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4`} />
+              <Input
+                placeholder={isRTL ? "ابحث عن الطلبات والعروض والموردين..." : "Search for requests, offers, vendors..."}
+                value={filters.query}
+                onChange={(e) => handleFilterChange('query', e.target.value)}
+                className={`${isRTL ? 'pr-10 pl-4 text-right' : 'pl-10 pr-4 text-left'}`}
+                autoFocus
+              />
+            </div>
 
-          {/* Search Results */}
-          <div className="space-y-3 max-h-96 overflow-y-auto">
-            {query.length === 0 ? (
-              <div className={`text-center py-8 text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
-                <Search className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>{isRTL ? "ابدأ بكتابة كلمة للبحث" : "Start typing to search"}</p>
+            {/* Filter Controls */}
+            <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Select value={filters.entityType} onValueChange={(value) => handleFilterChange('entityType', value)}>
+                <SelectTrigger className="w-32">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{isRTL ? "الكل" : "All"}</SelectItem>
+                  <SelectItem value="requests">{isRTL ? "الطلبات" : "Requests"}</SelectItem>
+                  <SelectItem value="offers">{isRTL ? "العروض" : "Offers"}</SelectItem>
+                  <SelectItem value="vendors">{isRTL ? "الموردين" : "Vendors"}</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowFilters(!showFilters)}
+                className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
+              >
+                <Filter className="h-3 w-3" />
+                {isRTL ? "المرشحات" : "Filters"}
+              </Button>
+
+              {(filters.category || filters.location) && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearAllFilters}
+                  className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
+                >
+                  <X className="h-3 w-3" />
+                  {isRTL ? "مسح الكل" : "Clear"}
+                </Button>
+              )}
+            </div>
+
+            {/* Advanced Filters */}
+            {showFilters && (
+              <div className="space-y-3 p-4 border rounded-lg bg-muted/20">
+                <div className="grid grid-cols-2 gap-3">
+                  <Select value={filters.category} onValueChange={(value) => handleFilterChange('category', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder={isRTL ? "التصنيف" : "Category"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">{isRTL ? "جميع التصنيفات" : "All Categories"}</SelectItem>
+                      <SelectItem value="Manufacturing">{isRTL ? "التصنيع" : "Manufacturing"}</SelectItem>
+                      <SelectItem value="Technology">{isRTL ? "التكنولوجيا" : "Technology"}</SelectItem>
+                      <SelectItem value="Logistics">{isRTL ? "اللوجستيات" : "Logistics"}</SelectItem>
+                      <SelectItem value="Marketing">{isRTL ? "التسويق" : "Marketing"}</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Input
+                    placeholder={isRTL ? "الموقع" : "Location"}
+                    value={filters.location}
+                    onChange={(e) => handleFilterChange('location', e.target.value)}
+                  />
+                </div>
               </div>
-            ) : searchResults.length === 0 ? (
-              <div className={`text-center py-8 text-muted-foreground ${isRTL ? 'text-right' : 'text-left'}`}>
-                <Search className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>{isRTL ? "لم يتم العثور على نتائج" : "No results found"}</p>
-                <p className="text-sm">{isRTL ? "جرب كلمات مختلفة" : "Try different keywords"}</p>
-              </div>
-            ) : (
-              searchResults.map((result) => {
-                const typeBadge = getTypeBadge(result.type);
-                const statusBadge = getStatusBadge(result.status);
-                
-                return (
-                  <div key={result.id} className="p-4 border rounded-lg hover:bg-accent/50 cursor-pointer transition-colors">
-                    <div className={`flex items-start justify-between mb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                        {getTypeIcon(result.type)}
-                        <Badge variant={typeBadge.variant}>{typeBadge.label}</Badge>
-                        <Badge variant={statusBadge.variant}>{statusBadge.label}</Badge>
-                      </div>
-                      <span className="text-xs text-muted-foreground">
-                        {result.relevance}% {isRTL ? "مطابقة" : "match"}
-                      </span>
-                    </div>
-
-                    <h4 className={`font-semibold mb-1 ${isRTL ? 'text-right' : 'text-left'}`}>
-                      {result.title}
-                    </h4>
-                    
-                    <p className={`text-sm text-muted-foreground mb-3 ${isRTL ? 'text-right' : 'text-left'}`}>
-                      {result.description}
-                    </p>
-
-                    <div className={`flex items-center gap-4 text-xs text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      {'location' in result && (
-                        <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                          <MapPin className="h-3 w-3" />
-                          <span>{result.location}</span>
-                        </div>
-                      )}
-                      
-                      {'date' in result && (
-                        <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                          <Calendar className="h-3 w-3" />
-                          <span>{result.date}</span>
-                        </div>
-                      )}
-                      
-                      {'price' in result && (
-                        <div className="font-medium text-primary">
-                          {result.price}
-                        </div>
-                      )}
-                      
-                      {'supplier' in result && (
-                        <div>
-                          {isRTL ? "بواسطة:" : "by"} {result.supplier}
-                        </div>
-                      )}
-                      
-                      {'rating' in result && (
-                        <div>
-                          ⭐ {result.rating}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })
             )}
           </div>
 
+          {/* Search Results */}
+          <div className="max-h-96 overflow-y-auto">
+            <SearchResults 
+              results={results}
+              loading={loading}
+              onResultClick={(result) => {
+                console.log('Result clicked:', result);
+                setOpen(false);
+              }}
+              showActions={false}
+            />
+          </div>
+
           {/* Quick Actions */}
-          {query.length > 0 && searchResults.length > 0 && (
+          {filters.query.length > 0 && results.length > 0 && (
             <div className={`flex gap-2 pt-4 border-t ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <Button variant="outline" size="sm">
-                {isRTL ? "حفظ البحث" : "Save Search"}
+              <Button variant="outline" size="sm" onClick={handleSearch}>
+                {isRTL ? "تطبيق المرشحات" : "Apply Filters"}
               </Button>
-              <Button variant="outline" size="sm">
-                {isRTL ? "تصفية النتائج" : "Filter Results"}
-              </Button>
-              <Button size="sm">
+              <Button size="sm" onClick={() => setOpen(false)}>
                 {isRTL ? "عرض الكل" : "View All"}
               </Button>
             </div>

@@ -24,10 +24,10 @@ export const ClientHeaderSearch = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // TODO: Implement search functionality
-      console.log("Searching for:", searchQuery);
-      setIsExpanded(false);
+      // Navigate to search page with query
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery("");
+      setIsExpanded(false);
     }
   };
 

@@ -22,6 +22,8 @@ import AdminOffers from './pages/admin/AdminOffers';
 import { AdminAnalytics } from './pages/admin/AdminAnalytics';
 import Requests from './pages/Requests';
 import CreateSimpleRequest from './pages/CreateSimpleRequest';
+import { SearchPage } from './components/search/SearchPage';
+import { ClientPageContainer } from './components/layout/ClientPageContainer';
 
 const RoleProtectedRoute: React.FC<{
   children: React.ReactNode;
@@ -88,6 +90,11 @@ const App: React.FC = () => {
                   <RoleProtectedRoute allowedRoles={['client', 'admin']}>
                     <CreateSimpleRequest />
                   </RoleProtectedRoute>
+                } />
+                <Route path="/search" element={
+                  <ClientPageContainer>
+                    <SearchPage />
+                  </ClientPageContainer>
                 } />
                 <Route path="/admin/dashboard" element={
                   <RoleProtectedRoute allowedRoles={['admin']}>
