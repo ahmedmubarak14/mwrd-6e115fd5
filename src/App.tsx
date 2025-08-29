@@ -1,68 +1,24 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { LanguageProvider } from './contexts/LanguageContext';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { MinimalAuthProvider, useAuth } from './contexts/MinimalAuthContext';
 import { RouteAwareThemeProvider } from './contexts/RouteAwareThemeContext';
-import { SecurityProvider } from './contexts/SecurityContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Toaster } from '@/components/ui/sonner';
 import { GlobalErrorHandler } from '@/components/ui/GlobalErrorHandler';
-import OptimizedPageTransition from './components/ui/animations/OptimizedPageTransition';
-import { NavigationLoader } from './components/navigation/NavigationLoader';
-import { RoutePreloader } from './components/navigation/RoutePreloader';
-import { PerformanceMonitor } from './components/ui/animations/PerformanceMonitor';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import { VendorDashboard } from './pages/VendorDashboard';
 import Profile from './pages/Profile';
-import { Analytics } from './pages/Analytics';
 import { Landing } from './pages/Landing';
-import { WhyStartWithMWRD } from './pages/WhyStartWithMWRD';
-import { WhatMakesUsUnique } from './pages/WhatMakesUsUnique';
-import { WhyMoveToMWRD } from './pages/WhyMoveToMWRD';
-import Pricing from './pages/Pricing';
-import Projects from './pages/Projects';
-import Requests from './pages/Requests';
-import Vendors from './pages/Vendors';
-import Messages from './pages/Messages';
-import Orders from './pages/Orders';
-import Settings from './pages/Settings';
-import { AdminSettings } from './pages/AdminSettings';
-import { ManageSubscription } from './pages/ManageSubscription';
-import { Support } from './pages/Support';
-import BrowseRequests from './pages/BrowseRequests';
-import { MyOffers } from './pages/MyOffers';
-import CreateRequest from './pages/CreateRequest';
-import CreateRFQ from "./pages/CreateRFQ";
-import RFQManagement from "./pages/RFQManagement";
-import VendorRFQs from "./pages/VendorRFQs";
-import { AdminDashboard } from './pages/admin/AdminDashboard';
-import AdminUsers from './pages/admin/AdminUsers';
-import AdminRequests from './pages/admin/AdminRequests';
-import AdminOffers from './pages/admin/AdminOffers';
-import AdminProjects from './pages/admin/AdminProjects';
-import AdminFinancialTransactions from './pages/admin/FinancialTransactions';
-import { AdminSupport } from './pages/admin/AdminSupport';
-import { ExpertConsultations } from './pages/admin/ExpertConsultations';
-import CategoryManagement from './pages/admin/CategoryManagement';
-import AdminVerificationQueue from './pages/admin/AdminVerificationQueue';
-import { AdminAnalytics } from './pages/admin/AdminAnalytics';
-import { AdminLayout } from './components/admin/AdminLayout';
-import { ClientLayout } from './components/layout/ClientLayout';
 import NotFound from './pages/NotFound';
-import AdminSubscriptions from './pages/admin/AdminSubscriptions';
-import AdminOrders from './pages/admin/AdminOrders';
-import AdminCommunications from './pages/admin/AdminCommunications';
-import AdminProfile from './pages/AdminProfile';
 
-interface RoleProtectedRouteProps {
+const RoleProtectedRoute: React.FC<{
   children: React.ReactNode;
   allowedRoles: ('client' | 'vendor' | 'admin')[];
-}
-
-const RoleProtectedRoute: React.FC<RoleProtectedRouteProps> = ({ children, allowedRoles }) => {
+}> = ({ children, allowedRoles }) => {
   const { userProfile, loading } = useAuth();
 
   if (loading) {
@@ -84,268 +40,44 @@ const RoleProtectedRoute: React.FC<RoleProtectedRouteProps> = ({ children, allow
   return <>{children}</>;
 };
 
-const RootRedirect: React.FC = () => {
-  const { user, userProfile, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  if (user && userProfile) {
-    return <Navigate to="/dashboard" replace />;
-  }
-
-  return <Navigate to="/landing" replace />;
-};
-
-const AppRoutes: React.FC = () => {
-  return (
-    <>
-      <NavigationLoader />
-      <RoutePreloader />
-      <OptimizedPageTransition>
-        <Routes>
-      {/* Public Routes */}
-      <Route path="/landing" element={<Landing />} />
-      <Route path="/why-start-with-mwrd" element={<WhyStartWithMWRD />} />
-      <Route path="/what-makes-us-unique" element={<WhatMakesUsUnique />} />
-      <Route path="/why-move-to-mwrd" element={<WhyMoveToMWRD />} />
-      <Route path="/pricing" element={<Pricing />} />
-      <Route path="/auth" element={<Navigate to="/login" replace />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      
-      {/* Enhanced auth redirects - redirect to standard auth pages */}
-      <Route path="/enhanced-login" element={<Navigate to="/login" replace />} />
-      <Route path="/enhanced-register" element={<Navigate to="/register" replace />} />
-      
-      {/* Client/Vendor Routes - Use ClientLayout */}
-      <Route path="/client/*" element={
-        <RoleProtectedRoute allowedRoles={['client']}>
-          <ClientLayout>
-            <Routes>
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="profile" element={<Profile />} />
-            </Routes>
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      <Route path="/vendor/*" element={
-        <RoleProtectedRoute allowedRoles={['vendor']}>
-          <ClientLayout>
-            <Routes>
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="profile" element={<Profile />} />
-            </Routes>
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      {/* Vendor Dashboard Route */}
-      <Route path="/vendor-dashboard" element={
-        <RoleProtectedRoute allowedRoles={['vendor']}>
-          <ClientLayout>
-            <VendorDashboard />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      {/* Vendor-specific Routes */}
-      <Route path="/browse-requests" element={
-        <RoleProtectedRoute allowedRoles={['vendor', 'admin']}>
-          <ClientLayout>
-            <BrowseRequests />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      <Route path="/my-offers" element={
-        <RoleProtectedRoute allowedRoles={['vendor', 'admin']}>
-          <ClientLayout>
-            <MyOffers />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      {/* Admin Routes */}
-      <Route path="/admin" element={
-        <RoleProtectedRoute allowedRoles={['admin']}>
-          <AdminLayout />
-        </RoleProtectedRoute>
-      }>
-        <Route index element={<Navigate to="/admin/dashboard" replace />} />
-        <Route path="dashboard" element={<AdminDashboard />} />
-        <Route path="users" element={<AdminUsers />} />
-        <Route path="requests" element={<AdminRequests />} />
-        <Route path="offers" element={<AdminOffers />} />
-        <Route path="projects" element={<AdminProjects />} />
-        <Route path="financial-transactions" element={<AdminFinancialTransactions />} />
-        <Route path="support" element={<AdminSupport />} />
-        <Route path="content/consultations" element={<ExpertConsultations />} />
-        <Route path="category-management" element={<CategoryManagement />} />
-        <Route path="verification" element={<AdminVerificationQueue />} />
-        <Route path="analytics" element={<AdminAnalytics />} />
-        <Route path="subscriptions" element={<AdminSubscriptions />} />
-        <Route path="orders" element={<AdminOrders />} />
-        <Route path="communications" element={<AdminCommunications />} />
-        <Route path="profile" element={<AdminProfile />} />
-        <Route path="settings" element={<AdminSettings />} />
-      </Route>
-
-      {/* Main Navigation Routes - Use ClientLayout for all authenticated users */}
-      <Route path="/dashboard" element={
-        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <ClientLayout>
-            <Dashboard />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      <Route path="/profile" element={
-        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <ClientLayout>
-            <Profile />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      <Route path="/projects" element={
-        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <ClientLayout>
-            <Projects />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      <Route path="/requests" element={
-        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <ClientLayout>
-            <Requests />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      <Route path="/requests/create" element={
-        <RoleProtectedRoute allowedRoles={['client', 'admin']}>
-          <ClientLayout>
-            <CreateRequest />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      <Route path="/rfqs/create" element={
-        <RoleProtectedRoute allowedRoles={['client', 'admin']}>
-          <ClientLayout>
-            <CreateRFQ />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      <Route path="/rfqs" element={
-        <RoleProtectedRoute allowedRoles={['client', 'admin']}>
-          <ClientLayout>
-            <RFQManagement />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      <Route path="/vendor/rfqs" element={
-        <RoleProtectedRoute allowedRoles={['vendor', 'admin']}>
-          <ClientLayout>
-            <VendorRFQs />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      <Route path="/vendors" element={
-        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <ClientLayout>
-            <Vendors />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      <Route path="/messages" element={
-        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <ClientLayout>
-            <Messages />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      <Route path="/orders" element={
-        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <ClientLayout>
-            <Orders />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      <Route path="/settings" element={
-        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <ClientLayout>
-            <Settings />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      <Route path="/manage-subscription" element={
-        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <ClientLayout>
-            <ManageSubscription />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      <Route path="/support" element={
-        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <ClientLayout>
-            <Support />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      <Route path="/analytics" element={
-        <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-          <ClientLayout>
-            <Analytics />
-          </ClientLayout>
-        </RoleProtectedRoute>
-      } />
-
-      {/* Root route with smart redirect */}
-      <Route path="/" element={<RootRedirect />} />
-
-      {/* Catch-all route for 404 Not Found */}
-      <Route path="*" element={<NotFound />} />
-      </Routes>
-    </OptimizedPageTransition>
-    </>
-  );
-};
-
 const App: React.FC = () => {
-  console.log('App: Starting initialization');
+  console.log('App: Starting with minimal auth provider');
   return (
     <ErrorBoundary>
       <LanguageProvider>
         <Router>
           <Toaster />
-          <AuthProvider>
-            <SecurityProvider>
-              <RouteAwareThemeProvider>
-                <GlobalErrorHandler />
-                <AppRoutes />
-                <PerformanceMonitor />
-              </RouteAwareThemeProvider>
-            </SecurityProvider>
-          </AuthProvider>
+          <MinimalAuthProvider>
+            <RouteAwareThemeProvider>
+              <GlobalErrorHandler />
+              
+              {/* Ultra-simplified routes for testing */}
+              <Routes>
+                <Route path="/landing" element={<Landing />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/dashboard" element={
+                  <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+                    <Dashboard />
+                  </RoleProtectedRoute>
+                } />
+                <Route path="/profile" element={
+                  <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+                    <Profile />
+                  </RoleProtectedRoute>
+                } />
+                <Route path="/vendor-dashboard" element={
+                  <RoleProtectedRoute allowedRoles={['vendor']}>
+                    <VendorDashboard />
+                  </RoleProtectedRoute>
+                } />
+                <Route path="/" element={<Navigate to="/landing" replace />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              
+            </RouteAwareThemeProvider>
+          </MinimalAuthProvider>
         </Router>
       </LanguageProvider>
     </ErrorBoundary>
