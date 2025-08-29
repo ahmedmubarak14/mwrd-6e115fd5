@@ -20,6 +20,9 @@ import { useRealTimeChat } from "@/hooks/useRealTimeChat";
 import { useNotifications } from "@/hooks/useNotifications";
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 interface CommunicationMetrics {
   totalMessages: number;
@@ -34,6 +37,8 @@ export const CommunicationOverview = () => {
   const { conversations, loading: chatLoading } = useRealTimeChat();
   const { notifications, loading: notificationLoading } = useNotifications();
   const { user } = useAuth();
+  const { t } = useOptionalLanguage();
+  const navigate = useNavigate();
   const [metrics, setMetrics] = useState<CommunicationMetrics>({
     totalMessages: 0,
     totalNotifications: 0,
@@ -45,6 +50,67 @@ export const CommunicationOverview = () => {
   const [messageActivityData, setMessageActivityData] = useState<any[]>([]);
   const [channelUsageData, setChannelUsageData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const handleSendAnnouncement = async () => {
+    try {
+      const { error } = await supabase
+        .from('push_notifications')
+        .insert({
+          title: t('communication.announcement'),
+          message: t('communication.announcementMessage'),
+          target_audience: 'all_users',
+          created_by: user?.id,
+          status: 'sent',
+          sent_at: new Date().toISOString()
+        });
+
+      if (error) throw error;
+      
+      toast.success(t('communication.announcementSent'));
+    } catch (error) {
+      toast.error(t('communication.announcementError'));
+    }
+  };
+
+  const handleCreateEmailCampaign = () => {
+    // Navigate to email campaign manager with new campaign state
+    navigate('/admin/communications?tab=email&action=create');
+  };
+
+  const handleViewAllChats = () => {
+    navigate('/admin/communications?tab=chat');
+  };
+
+  const handleUserEngagementReport = async () => {
+    try {
+      // Generate a basic engagement report
+      const reportData = {
+        totalUsers: metrics.activeConversations,
+        totalMessages: metrics.totalMessages,
+        avgResponseTime: metrics.averageResponseTime,
+        generatedAt: new Date().toISOString()
+      };
+      
+      // Create a simple CSV download
+      const csvContent = `User Engagement Report
+Generated: ${new Date().toLocaleString()}
+Total Active Users: ${reportData.totalUsers}
+Total Messages: ${reportData.totalMessages}
+Average Response Time: ${reportData.avgResponseTime} minutes`;
+      
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `engagement_report_${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      
+      toast.success(t('communication.reportGenerated'));
+    } catch (error) {
+      toast.error(t('communication.reportError'));
+    }
+  };
 
   const fetchMetrics = async () => {
     if (!user) return;
@@ -173,13 +239,13 @@ export const CommunicationOverview = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Communication Overview</h2>
-          <p className="text-muted-foreground">Real-time insights into platform communication</p>
+          <h2 className="text-2xl font-bold">{t('communication.overview')}</h2>
+          <p className="text-muted-foreground">{t('communication.overviewDescription')}</p>
         </div>
         <div className="flex items-center space-x-2">
           <Badge variant="outline" className="flex items-center space-x-1">
             <Activity className="h-3 w-3" />
-            <span>Live Data</span>
+            <span>{t('communication.liveData')}</span>
           </Badge>
         </div>
       </div>
@@ -324,25 +390,41 @@ export const CommunicationOverview = () => {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-2 lg:flex lg:flex-wrap gap-3">
-        <Button variant="default" className="w-full lg:w-auto">
+        <Button 
+          variant="default" 
+          className="w-full lg:w-auto"
+          onClick={handleSendAnnouncement}
+        >
           <Bell className="h-4 w-4 mr-2" />
-          <span className="hidden sm:inline">Send Announcement</span>
-          <span className="sm:hidden">Announce</span>
+          <span className="hidden sm:inline">{t('communication.sendAnnouncement')}</span>
+          <span className="sm:hidden">{t('communication.announce')}</span>
         </Button>
-        <Button variant="outline" className="w-full lg:w-auto">
+        <Button 
+          variant="outline" 
+          className="w-full lg:w-auto"
+          onClick={handleCreateEmailCampaign}
+        >
           <Mail className="h-4 w-4 mr-2" />
-          <span className="hidden sm:inline">Create Email Campaign</span>
-          <span className="sm:hidden">Email</span>
+          <span className="hidden sm:inline">{t('communication.createEmailCampaign')}</span>
+          <span className="sm:hidden">{t('communication.email')}</span>
         </Button>
-        <Button variant="outline" className="w-full lg:w-auto">
+        <Button 
+          variant="outline" 
+          className="w-full lg:w-auto"
+          onClick={handleViewAllChats}
+        >
           <MessageSquare className="h-4 w-4 mr-2" />
-          <span className="hidden sm:inline">View All Chats</span>
-          <span className="sm:hidden">Chats</span>
+          <span className="hidden sm:inline">{t('communication.viewAllChats')}</span>
+          <span className="sm:hidden">{t('communication.chats')}</span>
         </Button>
-        <Button variant="outline" className="w-full lg:w-auto">
+        <Button 
+          variant="outline" 
+          className="w-full lg:w-auto"
+          onClick={handleUserEngagementReport}
+        >
           <Users className="h-4 w-4 mr-2" />
-          <span className="hidden sm:inline">User Engagement Report</span>
-          <span className="sm:hidden">Report</span>
+          <span className="hidden sm:inline">{t('communication.userEngagementReport')}</span>
+          <span className="sm:hidden">{t('communication.report')}</span>
         </Button>
       </div>
     </div>
