@@ -100,6 +100,11 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           href: "/admin/analytics",
           icon: BarChart3,
         },
+        {
+          name: 'Real-Time Monitor',
+          href: "/admin/real-time-monitor",
+          icon: Activity,
+        },
       ]
     },
     {
@@ -136,6 +141,11 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           name: t('admin.verificationQueue') || 'Verification',
           href: "/admin/verification",
           icon: UserCheck,
+        },
+        {
+          name: 'Automation Center',
+          href: "/admin/automation",
+          icon: Bot,
         },
       ]
     },
