@@ -10,7 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
-import { useRequests } from '@/hooks/useRequests';
+import { useRealTimeRequests } from '@/hooks/useRealTimeRequests';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 
@@ -28,7 +28,7 @@ const CATEGORIES = [
 ];
 
 export const SimpleRequestForm = () => {
-  const { createRequest } = useRequests();
+  const { createRequest } = useRealTimeRequests();
   const { toast } = useToast();
   const navigate = useNavigate();
   

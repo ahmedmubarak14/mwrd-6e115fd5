@@ -10,7 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { CalendarIcon, Edit, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
-import { useRequests, Request } from '@/hooks/useRequests';
+import { useRealTimeRequests, Request } from '@/hooks/useRealTimeRequests';
 import { useToast } from '@/hooks/use-toast';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 
@@ -33,7 +33,7 @@ interface EditRequestModalProps {
 }
 
 export const EditRequestModal = ({ request, children }: EditRequestModalProps) => {
-  const { updateRequest, deleteRequest } = useRequests();
+  const { updateRequest, deleteRequest } = useRealTimeRequests();
   const { toast } = useToast();
   
   const [open, setOpen] = useState(false);

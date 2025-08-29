@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/MinimalAuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { useEmailNotifications } from './useEmailNotifications';
 
@@ -113,6 +113,15 @@ export const useRealTimeNotifications = () => {
     }
   };
 
+  // Request notification permission
+  const requestNotificationPermission = async () => {
+    if ('Notification' in window) {
+      const permission = await Notification.requestPermission();
+      return permission === 'granted';
+    }
+    return false;
+  };
+
   // Set up real-time subscription
   useEffect(() => {
     if (!user) return;
@@ -209,6 +218,7 @@ export const useRealTimeNotifications = () => {
     markAsRead,
     markAllAsRead,
     deleteNotification,
+    requestNotificationPermission,
     refetch: fetchNotifications,
   };
 };

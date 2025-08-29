@@ -2,7 +2,7 @@
 import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { useState, useMemo } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useRequests } from "@/hooks/useRequests";
+import { useRealTimeRequests } from '@/hooks/useRealTimeRequests';
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -34,7 +34,7 @@ import { useNavigate } from "react-router-dom";
 
 const Requests = () => {
   const { t } = useLanguage();
-  const { requests, loading } = useRequests();
+  const { requests, loading } = useRealTimeRequests();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
