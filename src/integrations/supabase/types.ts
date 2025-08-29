@@ -186,6 +186,109 @@ export type Database = {
           },
         ]
       }
+      bid_attachments: {
+        Row: {
+          bid_id: string
+          created_at: string
+          description: string | null
+          file_name: string
+          file_size: number
+          file_type: string
+          id: string
+          storage_path: string
+        }
+        Insert: {
+          bid_id: string
+          created_at?: string
+          description?: string | null
+          file_name: string
+          file_size: number
+          file_type: string
+          id?: string
+          storage_path: string
+        }
+        Update: {
+          bid_id?: string
+          created_at?: string
+          description?: string | null
+          file_name?: string
+          file_size?: number
+          file_type?: string
+          id?: string
+          storage_path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bid_attachments_bid_id_fkey"
+            columns: ["bid_id"]
+            isOneToOne: false
+            referencedRelation: "bids"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bids: {
+        Row: {
+          created_at: string
+          currency: string
+          delivery_timeline_days: number
+          expires_at: string | null
+          id: string
+          payment_terms: string | null
+          proposal: string
+          rfq_id: string
+          status: string
+          submitted_at: string | null
+          technical_specifications: Json | null
+          total_price: number
+          updated_at: string
+          vendor_id: string
+          warranty_period_months: number | null
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          delivery_timeline_days: number
+          expires_at?: string | null
+          id?: string
+          payment_terms?: string | null
+          proposal: string
+          rfq_id: string
+          status?: string
+          submitted_at?: string | null
+          technical_specifications?: Json | null
+          total_price: number
+          updated_at?: string
+          vendor_id: string
+          warranty_period_months?: number | null
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          delivery_timeline_days?: number
+          expires_at?: string | null
+          id?: string
+          payment_terms?: string | null
+          proposal?: string
+          rfq_id?: string
+          status?: string
+          submitted_at?: string | null
+          technical_specifications?: Json | null
+          total_price?: number
+          updated_at?: string
+          vendor_id?: string
+          warranty_period_months?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bids_rfq_id_fkey"
+            columns: ["rfq_id"]
+            isOneToOne: false
+            referencedRelation: "rfqs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       boq_items: {
         Row: {
           category: string
@@ -529,7 +632,7 @@ export type Database = {
           scheduled_date: string | null
           status: string
           updated_at: string
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           company?: string | null
@@ -545,7 +648,7 @@ export type Database = {
           scheduled_date?: string | null
           status?: string
           updated_at?: string
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           company?: string | null
@@ -561,7 +664,7 @@ export type Database = {
           scheduled_date?: string | null
           status?: string
           updated_at?: string
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
@@ -912,6 +1015,53 @@ export type Database = {
         }
         Relationships: []
       }
+      procurement_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          description_ar: string | null
+          icon: string | null
+          id: string
+          is_active: boolean
+          name: string
+          name_ar: string | null
+          parent_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          description_ar?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          name_ar?: string | null
+          parent_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          description_ar?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          name_ar?: string | null
+          parent_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "procurement_categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "procurement_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       projects: {
         Row: {
           budget_total: number | null
@@ -1112,6 +1262,143 @@ export type Database = {
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rfq_attachments: {
+        Row: {
+          created_at: string
+          description: string | null
+          file_name: string
+          file_size: number
+          file_type: string
+          id: string
+          rfq_id: string
+          storage_path: string
+          uploaded_by: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          file_name: string
+          file_size: number
+          file_type: string
+          id?: string
+          rfq_id: string
+          storage_path: string
+          uploaded_by: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          file_name?: string
+          file_size?: number
+          file_type?: string
+          id?: string
+          rfq_id?: string
+          storage_path?: string
+          uploaded_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rfq_attachments_rfq_id_fkey"
+            columns: ["rfq_id"]
+            isOneToOne: false
+            referencedRelation: "rfqs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rfqs: {
+        Row: {
+          budget_max: number | null
+          budget_min: number | null
+          category_id: string | null
+          client_id: string
+          created_at: string
+          currency: string
+          delivery_location: string | null
+          delivery_location_coordinates: unknown | null
+          description: string
+          evaluation_criteria: Json
+          id: string
+          invited_vendors: string[] | null
+          is_public: boolean
+          priority: Database["public"]["Enums"]["rfq_priority"]
+          project_end_date: string | null
+          project_start_date: string | null
+          requirements: Json
+          status: Database["public"]["Enums"]["rfq_status"]
+          subcategory_id: string | null
+          submission_deadline: string
+          terms_and_conditions: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          budget_max?: number | null
+          budget_min?: number | null
+          category_id?: string | null
+          client_id: string
+          created_at?: string
+          currency?: string
+          delivery_location?: string | null
+          delivery_location_coordinates?: unknown | null
+          description: string
+          evaluation_criteria?: Json
+          id?: string
+          invited_vendors?: string[] | null
+          is_public?: boolean
+          priority?: Database["public"]["Enums"]["rfq_priority"]
+          project_end_date?: string | null
+          project_start_date?: string | null
+          requirements?: Json
+          status?: Database["public"]["Enums"]["rfq_status"]
+          subcategory_id?: string | null
+          submission_deadline: string
+          terms_and_conditions?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          budget_max?: number | null
+          budget_min?: number | null
+          category_id?: string | null
+          client_id?: string
+          created_at?: string
+          currency?: string
+          delivery_location?: string | null
+          delivery_location_coordinates?: unknown | null
+          description?: string
+          evaluation_criteria?: Json
+          id?: string
+          invited_vendors?: string[] | null
+          is_public?: boolean
+          priority?: Database["public"]["Enums"]["rfq_priority"]
+          project_end_date?: string | null
+          project_start_date?: string | null
+          requirements?: Json
+          status?: Database["public"]["Enums"]["rfq_status"]
+          subcategory_id?: string | null
+          submission_deadline?: string
+          terms_and_conditions?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rfqs_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "procurement_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rfqs_subcategory_id_fkey"
+            columns: ["subcategory_id"]
+            isOneToOne: false
+            referencedRelation: "procurement_categories"
             referencedColumns: ["id"]
           },
         ]
@@ -1752,6 +2039,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_consultation_rate_limit: {
+        Args: { user_uuid: string }
+        Returns: boolean
+      }
       execute_workflow_rules: {
         Args: {
           trigger_data_param?: Json
@@ -1855,6 +2146,15 @@ export type Database = {
         | "completed"
         | "disputed"
         | "cancelled"
+      rfq_priority: "low" | "medium" | "high" | "urgent"
+      rfq_status:
+        | "draft"
+        | "published"
+        | "in_progress"
+        | "evaluation"
+        | "awarded"
+        | "cancelled"
+        | "completed"
       user_role: "admin" | "client" | "vendor"
       user_status: "pending" | "approved" | "blocked" | "rejected"
       workflow_action_type:
@@ -2016,6 +2316,16 @@ export const Constants = {
         "completed",
         "disputed",
         "cancelled",
+      ],
+      rfq_priority: ["low", "medium", "high", "urgent"],
+      rfq_status: [
+        "draft",
+        "published",
+        "in_progress",
+        "evaluation",
+        "awarded",
+        "cancelled",
+        "completed",
       ],
       user_role: ["admin", "client", "vendor"],
       user_status: ["pending", "approved", "blocked", "rejected"],
