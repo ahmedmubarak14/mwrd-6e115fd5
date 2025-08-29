@@ -505,12 +505,12 @@ export const enUS = {
     recentActivity: 'Recent Activity',
     performanceMetrics: 'Performance Metrics',
     usageTrends: 'Usage Trends',
-    systemActivity: 'Latest system activities and user actions',
+    systemActivity: 'Latest system activity and user actions',
     system: 'System',
     noActivityLogs: 'No activity logs available',
-    performanceDescription: 'System performance and optimization metrics',
+    performanceDescription: 'System performance metrics and optimization',
     performanceContent: 'Performance metrics will be displayed here when available',
-    trendsDescription: 'Usage patterns and trends analysis',
+    trendsDescription: 'Analysis of usage patterns and trends',
     trendsContent: 'Usage trends and patterns will be displayed here when available'
   },
     vendor: {
