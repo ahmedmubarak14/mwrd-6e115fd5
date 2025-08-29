@@ -260,12 +260,31 @@ export const enUS = {
     accessDenied: 'Access Denied',
     accessDeniedDescription: 'You must be an administrator to access this area',
     
+    // Dashboard metrics
+    totalUsers: 'Total Users',
+    totalRevenue: 'Total Revenue',
+    pendingApprovals: 'Pending Approvals',
+    systemHealth: 'System Health',
+    healthy: 'Healthy',
+    requiresAdminReview: 'Requires admin review',
+    activeThisMonth: 'Active this month',
+    monthlyGrowth: 'Monthly growth',
+    allSystemsOperational: 'All systems operational',
+    platformActivity: 'Platform Activity',
+    platformActivityDesc: 'User engagement and system activity metrics',
+    
     // Navigation Groups
     groups: {
       overview: 'Overview',
       management: 'Management', 
       business: 'Business & Support',
       system: 'System & Settings'
+    },
+    
+    // Breadcrumbs
+    breadcrumbs: {
+      admin: 'Admin',
+      dashboardOverview: 'Dashboard Overview'
     },
     
     // Navigation Items
@@ -293,7 +312,6 @@ export const enUS = {
     profile: 'Profile',
     
     // User Management
-    totalUsers: 'Total Users',
     activeUsers: 'Active Users', 
     pendingUsers: 'Pending Users',
     adminUsers: 'Admin Users',

@@ -253,8 +253,8 @@ export const arSA = {
     poor: 'ضعيف'
   },
   admin: {
-    dashboard: 'لوحة تحكم المدير',
-    dashboardDescription: 'مركز إدارة ومراقبة المنصة الشامل',
+    dashboard: 'لوحة تحكم الإدارة',
+    dashboardDescription: 'مركز شامل لإدارة ومراقبة المنصة',
     userManagement: 'إدارة المستخدمين',
     userManagementDesc: 'إدارة المستخدمين والأدوار والصلاحيات',
     approvalQueue: 'قائمة الموافقات',
@@ -430,6 +430,12 @@ export const arSA = {
       management: 'الإدارة',
       business: 'الأعمال والدعم',
       system: 'النظام والإعدادات'
+    },
+    
+    // مسارات التنقل
+    breadcrumbs: {
+      admin: 'الإدارة',
+      dashboardOverview: 'نظرة عامة على لوحة التحكم'
     },
     
     // عناصر التنقل

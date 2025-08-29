@@ -25,10 +25,10 @@ export const getTranslation = (key: string, locale: 'en' | 'ar' = 'en'): string 
     if (value && typeof value === 'object' && k in value) {
       value = value[k];
     } else {
-      // Return undefined if translation not found to enable fallbacks
-      return undefined as any;
+      // Return the original key if translation not found (fallback behavior)
+      return key;
     }
   }
   
-  return typeof value === 'string' ? value : undefined as any;
+  return typeof value === 'string' ? value : key;
 };
