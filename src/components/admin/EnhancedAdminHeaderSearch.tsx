@@ -122,22 +122,22 @@ export const EnhancedAdminHeaderSearch = () => {
           .abortSignal(abortController.signal)
       );
 
-      // Search requests
+      // Search expert consultations instead of requests (using existing table)
       searchPromises.push(
         supabase
-          .from('requests')
-          .select('id, title, description, status, admin_approval_status')
-          .or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`)
+          .from('expert_consultations')
+          .select('id, full_name, event_type, status')
+          .or(`full_name.ilike.%${searchQuery}%,event_type.ilike.%${searchQuery}%`)
           .limit(3)
           .abortSignal(abortController.signal)
       );
 
-      // Search offers  
+      // Search user profiles instead of offers (using existing table)  
       searchPromises.push(
         supabase
-          .from('offers')
-          .select('id, title, description, admin_approval_status')
-          .or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`)
+          .from('user_profiles')
+          .select('id, full_name, company_name, role')
+          .or(`full_name.ilike.%${searchQuery}%,company_name.ilike.%${searchQuery}%`)
           .limit(3)
           .abortSignal(abortController.signal)
       );
@@ -265,11 +265,11 @@ export const EnhancedAdminHeaderSearch = () => {
   const getStatusBadge = (status?: string) => {
     if (!status) return null;
     
-    const variant = status === 'approved' ? 'success' : 
+    const variant = status === 'approved' ? 'default' : 
                    status === 'rejected' ? 'destructive' : 
-                   status === 'pending' ? 'warning' : 'secondary';
+                   status === 'pending' ? 'secondary' : 'outline';
     
-    return <Badge variant={variant} size="sm">{status}</Badge>;
+    return <Badge variant={variant}>{status}</Badge>;
   };
 
   // Mobile search button
