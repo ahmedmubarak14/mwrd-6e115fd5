@@ -52,8 +52,8 @@ const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <LanguageProvider>
-        <Router>
-          <MinimalAuthProvider>
+        <MinimalAuthProvider>
+          <Router>
             <RouteAwareThemeProvider>
               <GlobalErrorHandler />
               <Toaster />
@@ -113,8 +113,8 @@ const App: React.FC = () => {
               </Routes>
               
             </RouteAwareThemeProvider>
-          </MinimalAuthProvider>
-        </Router>
+          </Router>
+        </MinimalAuthProvider>
       </LanguageProvider>
     </ErrorBoundary>
   );
