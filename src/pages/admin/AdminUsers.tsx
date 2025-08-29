@@ -14,7 +14,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
 import { Users, UserCheck, Clock, TrendingUp, Download, RefreshCw, UserPlus, Mail, Shield, FileCheck, UserCog, Edit, Trash2, BarChart3, Activity } from "lucide-react";
-import { AdminPageContainer } from "@/components/admin/AdminPageContainer";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { VerificationQueue } from "@/components/admin/VerificationQueue";
@@ -469,10 +468,17 @@ export default function AdminUsers() {
   }
 
   return (
-    <AdminPageContainer
-      title="User Management"
-      description="Manage users, roles, and permissions across the platform"
-    >
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
+          User Management
+        </h1>
+        <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
+          Manage users, roles, and permissions across the platform
+        </p>
+      </div>
+      
       <div className="space-y-6">
         {/* Metrics Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
@@ -1098,6 +1104,6 @@ export default function AdminUsers() {
           </DialogContent>
         </Dialog>
       </div>
-    </AdminPageContainer>
+    </div>
   );
 }

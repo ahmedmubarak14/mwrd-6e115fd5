@@ -12,7 +12,6 @@ import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { BulkApprovalActions } from '@/components/admin/BulkApprovalActions';
 import { Checkbox } from '@/components/ui/checkbox';
-import { AdminPageContainer } from '@/components/admin/AdminPageContainer';
 
 interface AdminRequest {
   id: string;
@@ -177,10 +176,16 @@ const AdminRequests = () => {
   const rejectedRequests = requests.filter(r => r.admin_approval_status === 'rejected');
 
   return (
-    <AdminPageContainer
-      title="Request Management"
-      description="Monitor and manage all procurement requests across the platform"
-    >
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
+          Request Management
+        </h1>
+        <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
+          Monitor and manage all procurement requests across the platform
+        </p>
+      </div>
 
       {/* Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
@@ -434,7 +439,7 @@ const AdminRequests = () => {
           {/* Similar structure but filtered for rejected */}
         </TabsContent>
       </Tabs>
-    </AdminPageContainer>
+    </div>
   );
 };
 

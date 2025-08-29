@@ -40,8 +40,6 @@ interface DashboardStats {
   monthlyGrowth: number;
 }
 
-import { AdminPageContainer } from '@/components/admin/AdminPageContainer';
-
 export const AdminDashboard = () => {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -204,7 +202,7 @@ export const AdminDashboard = () => {
 
   if (loading) {
     return (
-      <AdminPageContainer>
+      <div className="p-6 space-y-6">
         <div className="mb-8">
           <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
           <div className="h-4 w-32 bg-muted rounded animate-pulse" />
@@ -216,15 +214,21 @@ export const AdminDashboard = () => {
             <MetricCard key={i} title="" value="" loading={true} />
           ))}
         </div>
-      </AdminPageContainer>
+      </div>
     );
   }
 
   return (
-    <AdminPageContainer
-      title={t('admin.dashboard')}
-      description={t('admin.welcomeBack')}
-    >
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
+          {t('admin.dashboard')}
+        </h1>
+        <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
+          {t('admin.welcomeBack')}
+        </p>
+      </div>
 
       {/* Key Business Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -428,6 +432,6 @@ export const AdminDashboard = () => {
           </div>
         </CardContent>
       </Card>
-    </AdminPageContainer>
+    </div>
   );
 };
