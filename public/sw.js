@@ -1,96 +1,228 @@
-const CACHE_NAME = 'mwrd-v1';
-const urlsToCache = [
+// Enhanced service worker for PWA functionality
+const CACHE_NAME = 'mwrd-cache-v2';
+const STATIC_CACHE = 'mwrd-static-v2';
+const DYNAMIC_CACHE = 'mwrd-dynamic-v2';
+const IMAGE_CACHE = 'mwrd-images-v2';
+
+// Assets to cache immediately
+const STATIC_ASSETS = [
   '/',
   '/dashboard',
-  '/messages',
-  '/requests',
-  '/offers',
-  '/static/js/bundle.js',
-  '/static/css/main.css',
-  '/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png'
+  '/login',
+  '/register',
+  '/manifest.json',
+  '/offline.html'
 ];
 
-// Install event - cache resources
-self.addEventListener('install', (event) => {
+// Cache strategies
+const CACHE_STRATEGIES = {
+  static: ['/', '/dashboard', '/login', '/register'],
+  dynamic: ['/api/', '/supabase/'],
+  images: ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'],
+  networkFirst: ['/api/', '/functions/'],
+  cacheFirst: ['.js', '.css', '.woff', '.woff2']
+};
+
+// Install event - cache static assets
+self.addEventListener('install', event => {
+  console.log('Service Worker: Installing...');
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(urlsToCache))
-      .then(() => self.skipWaiting())
+    Promise.all([
+      caches.open(STATIC_CACHE).then(cache => {
+        console.log('Service Worker: Caching static assets');
+        return cache.addAll(STATIC_ASSETS);
+      }),
+      // Pre-cache shell assets
+      caches.open(CACHE_NAME).then(cache => {
+        return cache.addAll([
+          '/static/js/bundle.js',
+          '/static/css/main.css'
+        ].filter(Boolean));
+      })
+    ])
   );
+  self.skipWaiting();
 });
 
 // Activate event - clean up old caches
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', event => {
+  console.log('Service Worker: Activating...');
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    }).then(() => self.clients.claim())
+    Promise.all([
+      // Clean up old caches
+      caches.keys().then(cacheNames => {
+        return Promise.all(
+          cacheNames.map(cacheName => {
+            if (![CACHE_NAME, STATIC_CACHE, DYNAMIC_CACHE, IMAGE_CACHE].includes(cacheName)) {
+              console.log('Service Worker: Deleting old cache:', cacheName);
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      }),
+      // Take control of all pages
+      self.clients.claim()
+    ])
   );
 });
 
-// Fetch event - serve from cache, fallback to network
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Return cached version or fetch from network
-        return response || fetch(event.request).then((fetchResponse) => {
-          // Don't cache non-GET requests or external resources
-          if (event.request.method !== 'GET' || !event.request.url.startsWith(self.location.origin)) {
-            return fetchResponse;
-          }
+// Fetch event - implement caching strategies
+self.addEventListener('fetch', event => {
+  const { request } = event;
+  const url = new URL(request.url);
 
-          // Clone the response as it can only be consumed once
-          const responseToCache = fetchResponse.clone();
-          
-          caches.open(CACHE_NAME)
-            .then((cache) => {
-              cache.put(event.request, responseToCache);
-            });
+  // Skip non-GET requests
+  if (request.method !== 'GET') return;
 
-          return fetchResponse;
-        });
-      })
-      .catch(() => {
-        // Fallback for offline pages
-        if (event.request.destination === 'document') {
-          return caches.match('/');
-        }
-      })
-  );
+  // Skip cross-origin requests (except for known APIs)
+  if (url.origin !== location.origin && !url.hostname.includes('supabase')) {
+    return;
+  }
+
+  event.respondWith(handleRequest(request));
 });
 
-// Background sync for form submissions
-self.addEventListener('sync', (event) => {
-  if (event.tag === 'background-sync') {
-    event.waitUntil(
-      // Handle background sync operations
-      console.log('Background sync triggered')
-    );
+async function handleRequest(request) {
+  const url = new URL(request.url);
+  const pathname = url.pathname;
+
+  try {
+    // Network first for API calls
+    if (CACHE_STRATEGIES.networkFirst.some(pattern => pathname.includes(pattern))) {
+      return await networkFirst(request, DYNAMIC_CACHE);
+    }
+
+    // Cache first for static assets
+    if (CACHE_STRATEGIES.cacheFirst.some(ext => pathname.includes(ext))) {
+      return await cacheFirst(request, STATIC_CACHE);
+    }
+
+    // Image caching strategy
+    if (CACHE_STRATEGIES.images.some(ext => pathname.includes(ext))) {
+      return await cacheFirst(request, IMAGE_CACHE);
+    }
+
+    // Stale while revalidate for HTML pages
+    if (request.headers.get('accept')?.includes('text/html')) {
+      return await staleWhileRevalidate(request, STATIC_CACHE);
+    }
+
+    // Default: network first with cache fallback
+    return await networkFirst(request, DYNAMIC_CACHE);
+
+  } catch (error) {
+    console.error('Service Worker: Fetch error:', error);
+    
+    // Return offline page for navigation requests
+    if (request.headers.get('accept')?.includes('text/html')) {
+      const offlineResponse = await caches.match('/offline.html');
+      return offlineResponse || new Response('Offline', { status: 503 });
+    }
+
+    // Return cached version or basic error response
+    const cachedResponse = await caches.match(request);
+    return cachedResponse || new Response('Network Error', { status: 503 });
+  }
+}
+
+// Cache strategies implementation
+async function networkFirst(request, cacheName) {
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse.ok) {
+      const cache = await caches.open(cacheName);
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (error) {
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+    throw error;
+  }
+}
+
+async function cacheFirst(request, cacheName) {
+  const cachedResponse = await caches.match(request);
+  if (cachedResponse) {
+    return cachedResponse;
+  }
+
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse.ok) {
+      const cache = await caches.open(cacheName);
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function staleWhileRevalidate(request, cacheName) {
+  const cachedResponse = await caches.match(request);
+  
+  // Always attempt to fetch from network in background
+  const networkPromise = fetch(request).then(response => {
+    if (response.ok) {
+      const cache = caches.open(cacheName);
+      cache.then(c => c.put(request, response.clone()));
+    }
+    return response;
+  }).catch(() => null);
+
+  // Return cached version immediately if available
+  if (cachedResponse) {
+    // Update cache in background
+    networkPromise;
+    return cachedResponse;
+  }
+
+  // Wait for network if no cache available
+  return await networkPromise;
+}
+
+// Background sync for offline actions
+self.addEventListener('sync', event => {
+  console.log('Service Worker: Background sync triggered:', event.tag);
+  
+  if (event.tag === 'background-messages') {
+    event.waitUntil(syncMessages());
+  }
+  
+  if (event.tag === 'background-uploads') {
+    event.waitUntil(syncUploads());
   }
 });
 
-// Push notification event
-self.addEventListener('push', (event) => {
+async function syncMessages() {
+  // Implement message sync logic
+  console.log('Service Worker: Syncing messages...');
+}
+
+async function syncUploads() {
+  // Implement upload sync logic
+  console.log('Service Worker: Syncing uploads...');
+}
+
+// Push notifications
+self.addEventListener('push', event => {
+  console.log('Service Worker: Push received:', event);
+  
   const options = {
     body: event.data ? event.data.text() : 'New notification from MWRD',
     icon: '/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png',
     badge: '/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png',
-    vibrate: [100, 50, 100],
+    vibrate: [200, 100, 200],
     data: {
-      dateOfArrival: Date.now(),
-      primaryKey: 1
+      url: '/'
     },
     actions: [
       {
-        action: 'explore',
-        title: 'View Details',
+        action: 'open',
+        title: 'Open App',
         icon: '/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png'
       },
       {
@@ -98,21 +230,34 @@ self.addEventListener('push', (event) => {
         title: 'Close',
         icon: '/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png'
       }
-    ]
+    ],
+    requireInteraction: false,
+    tag: 'mwrd-notification'
   };
 
   event.waitUntil(
-    self.registration.showNotification('MWRD Notification', options)
+    self.registration.showNotification('MWRD', options)
   );
 });
 
-// Notification click event
-self.addEventListener('notificationclick', (event) => {
+// Notification click handling  
+self.addEventListener('notificationclick', event => {
+  console.log('Service Worker: Notification clicked:', event);
+  
   event.notification.close();
 
-  if (event.action === 'explore') {
+  if (event.action === 'open' || !event.action) {
     event.waitUntil(
-      clients.openWindow('/dashboard')
+      clients.openWindow(event.notification.data?.url || '/')
     );
   }
 });
+
+// Handle app shortcuts
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
+console.log('Service Worker: Loaded and ready');
