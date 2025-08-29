@@ -83,10 +83,11 @@ export const AdminLayout = () => {
             <AdminCommandPalette />
           </div>
         ) : (
-          // Desktop Layout
+          // Desktop Layout - Always show sidebar on admin dashboard
           <div className="min-h-screen flex w-full" dir={isRTL ? 'rtl' : 'ltr'}>
             <AdminSidebar 
-              collapsed={!sidebarOpen} 
+              collapsed={!sidebarOpen}
+              className="block"
             />
             <div 
               className={cn(
