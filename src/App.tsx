@@ -6,6 +6,7 @@ import { RouteAwareThemeProvider } from './contexts/RouteAwareThemeContext';
 import { SecurityProvider } from './contexts/SecurityContext';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Toaster } from '@/components/ui/sonner';
+import { GlobalErrorHandler } from '@/components/ui/GlobalErrorHandler';
 import OptimizedPageTransition from './components/ui/animations/OptimizedPageTransition';
 import { NavigationLoader } from './components/navigation/NavigationLoader';
 import { RoutePreloader } from './components/navigation/RoutePreloader';
@@ -338,6 +339,7 @@ const App: React.FC = () => {
           <AuthProvider>
             <SecurityProvider>
               <RouteAwareThemeProvider>
+                <GlobalErrorHandler />
                 <AppRoutes />
                 <PerformanceMonitor />
                 <Toaster />

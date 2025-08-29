@@ -15,10 +15,18 @@ export const AuthRedirect = () => {
     // Don't redirect while still loading auth state
     if (loading) return;
 
-    // If user is authenticated and we have their profile, redirect to dashboard
+    // If user is authenticated and we have their profile, redirect based on role
     if (user && userProfile) {
-      console.log('AuthRedirect: User authenticated, redirecting to dashboard');
-      navigate('/dashboard', { replace: true });
+      console.log('AuthRedirect: User authenticated, redirecting based on role');
+      
+      // Role-based redirection
+      if (userProfile.role === 'admin') {
+        navigate('/admin/dashboard', { replace: true });
+      } else if (userProfile.role === 'vendor') {
+        navigate('/vendor-dashboard', { replace: true });
+      } else {
+        navigate('/dashboard', { replace: true });
+      }
       return;
     }
 
