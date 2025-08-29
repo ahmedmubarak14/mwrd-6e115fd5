@@ -273,6 +273,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
                       "text-muted-foreground hover:text-foreground hover:bg-accent/50",
                       hasActiveItem && "text-primary font-semibold"
                     )}
+                    type="button"
                   >
                     <span className="flex items-center gap-2">
                       <span>{group.label}</span>
