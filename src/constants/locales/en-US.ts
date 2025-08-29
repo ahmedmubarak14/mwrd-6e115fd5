@@ -266,12 +266,14 @@ export const enUS = {
     pendingApprovals: 'Pending Approvals',
     systemHealth: 'System Health',
     healthy: 'Healthy',
+    warning: 'Warning',
+    critical: 'Critical',
     requiresAdminReview: 'Requires admin review',
     activeThisMonth: 'Active this month',
-    monthlyGrowth: 'Monthly growth',
+    monthlyGrowth: '+12.5% from last month',
     allSystemsOperational: 'All systems operational',
-    platformActivity: 'Platform Activity',
-    platformActivityDesc: 'User engagement and system activity metrics',
+    platformActivity: 'Platform Activity (Last 7 Days)',
+    platformActivityDesc: 'User registrations, requests, and orders overview',
     
     // Navigation Groups
     groups: {
@@ -287,10 +289,47 @@ export const enUS = {
       dashboardOverview: 'Dashboard Overview'
     },
     
+    // Quick Actions
+    quickActions: 'Quick Actions',
+    quickActionsDesc: 'Access key administrative functions',
+    userManagement: 'User Management',
+    userManagementDesc: 'Manage users, roles, and permissions',
+    approvalQueue: 'Approval Queue',
+    approvalQueueDesc: 'Review pending requests and offers',
+    financialOverview: 'Financial Overview',
+    financialOverviewDesc: 'Monitor transactions and revenue',
+    systemHealthDesc: 'Monitor system performance',
+    securityCenter: 'Security Center',
+    securityCenterDesc: 'Security monitoring and compliance',
+    communications: 'Communications',
+    communicationsDesc: 'Manage notifications and messages',
+    analytics: 'Analytics',
+    analyticsDesc: 'Platform insights and reports',
+    automation: 'Automation',
+    automationDesc: 'Workflow automation and rules',
+    
+    // System Status
+    systemStatus: 'System Status',
+    systemStatusDesc: 'Real-time system health monitoring',
+    database: 'Database',
+    cpuUsage: 'CPU Usage',
+    memoryUsage: 'Memory Usage',
+    databaseHealth: 'Database Health',
+    activeConnections: 'Active Connections',
+    
+    // Recent Activity
+    recentActivity: 'Recent Activity',
+    recentActivityDesc: 'Latest system activity and changes',
+    noRecentActivity: 'No recent activities',
+    systemAlerts: 'System Alerts',
+    activeSystemAlerts: 'active system alert',
+    requireAttention: 'require attention',
+    viewDetails: 'View Details',
+    metricsError: 'Failed to fetch platform metrics',
+    
     // Navigation Items
     performanceMonitor: 'Performance Monitor',
     workflowAutomation: 'Workflow Automation',
-    userManagement: 'User Management',
     requestManagement: 'Request Management',
     offerManagement: 'Offer Management',
     projectManagement: 'Project Management',
@@ -300,16 +339,12 @@ export const enUS = {
     offers: 'Offers',
     projects: 'Projects',
     orders: 'Orders',
-    analytics: 'Analytics',
     verificationQueue: 'Verification Queue',
     financialTransactions: 'Financial Transactions',
     subscriptions: 'Subscriptions',
     supportTickets: 'Support',
-    communications: 'Communications',
     categoryManagement: 'Categories',
     expertConsultations: 'Expert Consultations',
-    settings: 'Settings',
-    profile: 'Profile',
     
     // User Management
     activeUsers: 'Active Users', 
@@ -367,7 +402,6 @@ export const enUS = {
     budgetRange: 'Budget Range',
     deadline: 'Deadline',
     offersReceived: 'Offers Received',
-    viewDetails: 'View Details',
     contactClient: 'Contact Client',
     approve: 'Approve',
     reject: 'Reject',
