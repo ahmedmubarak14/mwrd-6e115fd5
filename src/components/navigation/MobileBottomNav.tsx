@@ -1,20 +1,20 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Badge } from '@/components/ui/badge';
+import { NavLink, useLocation } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/MinimalAuthContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useMobileDetection } from "@/hooks/useMobileDetection";
+import { useCapacitor } from "@/hooks/useCapacitor";
+import { cn } from "@/lib/utils";
 import { 
   Home, 
-  MessageSquare, 
-  Plus, 
+  Search, 
   FileText, 
+  Package, 
+  MessageCircle, 
   User,
-  Package,
-  Settings,
-  BarChart3
-} from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
-import { useNotifications } from '@/hooks/useNotifications';
-import { useRealTimeChat } from '@/hooks/useRealTimeChat';
-import { cn } from '@/lib/utils';
+  Plus,
+  ShoppingCart
+} from "lucide-react";
 
 interface NavItem {
   id: string;
@@ -28,81 +28,68 @@ interface NavItem {
 export const MobileBottomNav = () => {
   const location = useLocation();
   const { userProfile } = useAuth();
-  const { unreadCount } = useNotifications();
-  const { conversations } = useRealTimeChat();
-  
-  const unreadMessages = conversations.reduce((total, conv) => total + 1, 0); // Simplified for now
+  const { triggerHaptic } = useCapacitor();
+  const { isMobile } = useMobileDetection();
+  const languageContext = useOptionalLanguage();
+  const { isRTL } = languageContext || { isRTL: false };
 
-  const getNavItems = (): NavItem[] => {
-    const baseItems: NavItem[] = [
+  const handleNavClick = async () => {
+    await triggerHaptic();
+  };
+
+  if (!isMobile) return null;
+
+  const getNavItems = () => {
+    const baseItems = [
       {
-        id: 'home',
-        label: 'Home',
+        path: '/dashboard',
+        label: isRTL ? 'الرئيسية' : 'Home',
         icon: Home,
-        href: '/dashboard'
       },
       {
-        id: 'messages',
-        label: 'Messages',
-        icon: MessageSquare,
-        href: '/messages',
-        badge: unreadMessages
-      },
-      {
-        id: 'create',
-        label: 'Create',
-        icon: Plus,
-        href: userProfile?.role === 'vendor' ? '/offers' : '/create-request'
+        path: '/search',
+        label: isRTL ? 'البحث' : 'Search',
+        icon: Search,
       }
     ];
 
-    // Role-specific items
     if (userProfile?.role === 'admin') {
       baseItems.push(
         {
-          id: 'analytics',
-          label: 'Analytics',
-          icon: BarChart3,
-          href: '/admin/dashboard'
+          path: '/admin/dashboard',
+          label: isRTL ? 'الإدارة' : 'Admin',
+          icon: Package,
         },
         {
-          id: 'profile',
-          label: 'Profile',
+          path: '/admin/users',
+          label: isRTL ? 'المستخدمون' : 'Users',
           icon: User,
-          href: '/admin/profile',
-          badge: unreadCount
         }
       );
     } else if (userProfile?.role === 'vendor') {
       baseItems.push(
         {
-          id: 'offers',
-          label: 'Offers',
+          path: '/vendor-dashboard',
+          label: isRTL ? 'المورد' : 'Vendor',
           icon: Package,
-          href: '/my-offers'
         },
         {
-          id: 'profile',
-          label: 'Profile',
+          path: '/profile',
+          label: isRTL ? 'الملف الشخصي' : 'Profile',
           icon: User,
-          href: '/profile',
-          badge: unreadCount
         }
       );
     } else {
       baseItems.push(
         {
-          id: 'requests',
-          label: 'Requests',
+          path: '/requests',
+          label: isRTL ? 'الطلبات' : 'Requests',
           icon: FileText,
-          href: '/requests'
         },
         {
-          id: 'profile',
-          label: 'Profile',
+          path: '/profile',
+          label: isRTL ? 'الملف الشخصي' : 'Profile',
           icon: User,
-          href: '/profile',
-          badge: unreadCount
         }
       );
     }
@@ -112,42 +99,30 @@ export const MobileBottomNav = () => {
 
   const navItems = getNavItems();
 
-  const isActive = (href: string) => {
-    if (href === '/dashboard') {
-      return location.pathname === '/' || location.pathname === '/dashboard';
-    }
-    return location.pathname.startsWith(href);
-  };
-
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-t border-border z-50 safe-area-pb">
+    <nav className={cn(
+      "fixed bottom-0 left-0 right-0 z-50 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+      "mobile-bottom-nav safe-area-padding-bottom"
+    )}>
       <div className="flex items-center justify-around py-2 px-4 max-w-screen-xl mx-auto">
         {navItems.map((item) => (
-          <Link
-            key={item.id}
-            to={item.href}
-            className={cn(
-              "flex flex-col items-center gap-1 py-2 px-3 rounded-lg transition-colors min-w-0 flex-1 relative",
-              isActive(item.href)
-                ? "text-primary bg-primary/10"
-                : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
-            )}
-          >
-            <div className="relative">
-              <item.icon className="h-5 w-5" />
-              {item.badge && item.badge > 0 && (
-                <Badge 
-                  variant="destructive" 
-                  className="absolute -top-2 -right-2 h-4 w-4 p-0 flex items-center justify-center text-xs"
-                >
-                  {item.badge > 9 ? '9+' : item.badge}
-                </Badge>
+          <div key={item.path} className="flex-1 max-w-20">
+            <NavLink
+              key={item.path}
+              to={item.path}
+              onClick={handleNavClick}
+              className={({ isActive }) => cn(
+                "flex flex-col items-center justify-center p-2 min-w-0 flex-1 transition-colors",
+                "hover:bg-accent/50 rounded-lg haptic-button",
+                isActive ? "text-primary" : "text-muted-foreground"
               )}
-            </div>
-            <span className="text-xs font-medium truncate max-w-full">
-              {item.label}
-            </span>
-          </Link>
+            >
+              <item.icon className="h-5 w-5 mb-1" />
+              <span className="text-xs font-medium truncate">
+                {item.label}
+              </span>
+            </NavLink>
+          </div>
         ))}
       </div>
     </nav>

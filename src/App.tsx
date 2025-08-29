@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { MinimalAuthProvider, useAuth } from './contexts/MinimalAuthContext';
@@ -7,6 +7,7 @@ import { RouteAwareThemeProvider } from './contexts/RouteAwareThemeContext';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { Toaster } from '@/components/ui/toaster';
 import { GlobalErrorHandler } from '@/components/ui/GlobalErrorHandler';
+import { MobileAppShell } from './components/mobile/MobileAppShell';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
@@ -50,92 +51,92 @@ const RoleProtectedRoute: React.FC<{
   return <>{children}</>;
 };
 
-const App: React.FC = () => {
-  console.log('App: Starting with minimal auth provider');
+function App() {
   return (
     <ErrorBoundary>
-      <LanguageProvider>
-        <MinimalAuthProvider>
+      <GlobalErrorHandler />
+      <MinimalAuthProvider>
+        <LanguageProvider>
           <Router>
             <RouteAwareThemeProvider>
-              <GlobalErrorHandler />
+              <MobileAppShell>
+                <Suspense fallback={
+                  <div className="min-h-screen flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                  </div>
+                }>
+                  <Routes>
+                    <Route path="/landing" element={<Landing />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/dashboard" element={
+                      <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+                        <Dashboard />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/profile" element={
+                      <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+                        <Profile />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor-dashboard" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <VendorDashboard />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/requests" element={
+                      <RoleProtectedRoute allowedRoles={['client', 'admin']}>
+                        <Requests />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/requests/create" element={
+                      <RoleProtectedRoute allowedRoles={['client', 'admin']}>
+                        <CreateSimpleRequest />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/search" element={
+                      <ClientPageContainer>
+                        <SearchPage />
+                      </ClientPageContainer>
+                    } />
+                    <Route path="/admin/dashboard" element={
+                      <RoleProtectedRoute allowedRoles={['admin']}>
+                        <AdminDashboard />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/admin/users" element={
+                      <RoleProtectedRoute allowedRoles={['admin']}>
+                        <AdminUsers />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/admin/requests" element={
+                      <RoleProtectedRoute allowedRoles={['admin']}>
+                        <AdminRequests />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/admin/offers" element={
+                      <RoleProtectedRoute allowedRoles={['admin']}>
+                        <AdminOffers />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/admin/analytics" element={
+                      <RoleProtectedRoute allowedRoles={['admin']}>
+                        <AdminAnalytics />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/" element={<Navigate to="/landing" replace />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </Suspense>
+              </MobileAppShell>
               <Toaster />
-              
-              <Routes>
-                <Route path="/landing" element={<Landing />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/dashboard" element={
-                  <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-                    <Dashboard />
-                  </RoleProtectedRoute>
-                } />
-                <Route path="/profile" element={
-                  <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
-                    <Profile />
-                  </RoleProtectedRoute>
-                } />
-                <Route path="/vendor-dashboard" element={
-                  <RoleProtectedRoute allowedRoles={['vendor']}>
-                    <VendorDashboard />
-                  </RoleProtectedRoute>
-                } />
-                <Route path="/requests" element={
-                  <RoleProtectedRoute allowedRoles={['client', 'admin']}>
-                    <Requests />
-                  </RoleProtectedRoute>
-                } />
-                <Route path="/requests/create" element={
-                  <RoleProtectedRoute allowedRoles={['client', 'admin']}>
-                    <CreateSimpleRequest />
-                  </RoleProtectedRoute>
-                } />
-                <Route path="/search" element={
-                  <ClientPageContainer>
-                    <SearchPage />
-                  </ClientPageContainer>
-                } />
-                <Route path="/admin/dashboard" element={
-                  <RoleProtectedRoute allowedRoles={['admin']}>
-                    <AdminDashboard />
-                  </RoleProtectedRoute>
-                } />
-                <Route path="/admin/users" element={
-                  <RoleProtectedRoute allowedRoles={['admin']}>
-                    <AdminUsers />
-                  </RoleProtectedRoute>
-                } />
-                <Route path="/admin/requests" element={
-                  <RoleProtectedRoute allowedRoles={['admin']}>
-                    <AdminRequests />
-                  </RoleProtectedRoute>
-                } />
-                <Route path="/admin/offers" element={
-                  <RoleProtectedRoute allowedRoles={['admin']}>
-                    <AdminOffers />
-                  </RoleProtectedRoute>
-                } />
-                <Route path="/admin/analytics" element={
-                  <RoleProtectedRoute allowedRoles={['admin']}>
-                    <AdminAnalytics />
-                  </RoleProtectedRoute>
-                } />
-                {/* <Route path="/admin/support" element={
-                  <RoleProtectedRoute allowedRoles={['admin']}>
-                    <AdminSupport />
-                  </RoleProtectedRoute>
-                } /> */}
-                <Route path="/" element={<Navigate to="/landing" replace />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-              
             </RouteAwareThemeProvider>
           </Router>
-        </MinimalAuthProvider>
-      </LanguageProvider>
+        </LanguageProvider>
+      </MinimalAuthProvider>
     </ErrorBoundary>
   );
-};
+}
 
 export default App;

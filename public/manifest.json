@@ -1,79 +1,83 @@
 {
-  "name": "MWRD - Procurement Platform",
+  "name": "MWRD - Modern Procurement Platform",
   "short_name": "MWRD",
-  "description": "Advanced procurement and vendor management platform",
+  "description": "Connect with verified suppliers and streamline your procurement process",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#0f172a",
+  "theme_color": "#2563eb",
   "orientation": "portrait-primary",
-  "categories": ["business", "productivity"],
+  "scope": "/",
   "lang": "en",
-  "dir": "ltr",
+  "categories": ["business", "productivity"],
   "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32 48x48",
+      "type": "image/x-icon"
+    },
     {
       "src": "/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable any"
     },
     {
       "src": "/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Dashboard",
-      "short_name": "Dashboard",
-      "description": "Access your main dashboard", 
-      "url": "/dashboard",
-      "icons": [
-        {
-          "src": "/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "Messages",
-      "short_name": "Messages", 
-      "description": "View your messages",
-      "url": "/messages",
-      "icons": [
-        {
-          "src": "/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "New Request",
-      "short_name": "Request",
-      "description": "Create a new procurement request",
-      "url": "/create-request",
-      "icons": [
-        {
-          "src": "/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png",
-          "sizes": "96x96"
-        }
-      ]
+      "purpose": "maskable any"
     }
   ],
   "screenshots": [
     {
       "src": "/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png",
+      "sizes": "375x812",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png",
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Create Request",
+      "short_name": "New Request",
+      "description": "Create a new procurement request",
+      "url": "/requests/create",
+      "icons": [
+        {
+          "src": "/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
-      "src": "/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png", 
-      "sizes": "750x1334",
-      "type": "image/png",
-      "form_factor": "narrow"
+      "name": "Search",
+      "short_name": "Search",
+      "description": "Search for suppliers and offers",
+      "url": "/search",
+      "icons": [
+        {
+          "src": "/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png", 
+          "sizes": "192x192"
+        }
+      ]
     }
-  ]
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "dir": "auto",
+  "features": [
+    "Cross Platform",
+    "fast",
+    "simple"
+  ],
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
 }

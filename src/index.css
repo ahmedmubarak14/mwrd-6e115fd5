@@ -2,8 +2,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
-@tailwind components;
+@tailwind components; 
 @tailwind utilities;
+
+/* Import mobile styles */
+@import './styles/mobile.css';
 
 /* Mobile-first CSS additions */
 @layer utilities {
