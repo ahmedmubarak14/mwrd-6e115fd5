@@ -33,6 +33,7 @@ import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import { AdminSupport } from './pages/admin/AdminSupport';
 import AdminCommunications from './pages/admin/AdminCommunications';
 import AdminCategoryManagement from './pages/admin/CategoryManagement';
+import { ExpertConsultations } from './pages/admin/ExpertConsultations';
 import Requests from './pages/Requests';
 import CreateSimpleRequest from './pages/CreateSimpleRequest';
 import { SearchPage } from './components/search/SearchPage';
@@ -182,6 +183,7 @@ function App() {
                       <Route path="support" element={<AdminSupport />} />
                       <Route path="communications" element={<AdminCommunications />} />
                       <Route path="category-management" element={<AdminCategoryManagement />} />
+                      <Route path="expert-consultations" element={<ExpertConsultations />} />
                     </Route>
                     
                     {/* Default and 404 routes */}
