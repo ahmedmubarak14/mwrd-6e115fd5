@@ -24,62 +24,60 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const showInfo = noHooksToast.showInfo;
-  const showError = noHooksToast.showError;
 
-useEffect(() => {
-  // Listen for auth changes FIRST to avoid missing events
-  const {
-    data: { subscription },
-  } = supabase.auth.onAuthStateChange((event, nextSession) => {
-    setSession(nextSession);
-    setUser(nextSession?.user ?? null);
+  useEffect(() => {
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, nextSession) => {
+      setSession(nextSession);
+      setUser(nextSession?.user ?? null);
 
-    // Log security events
-    if (event === 'SIGNED_IN' && nextSession?.user) {
-      logSecurityEvent('user_login_success', {
-        user_id: nextSession.user.id,
-        email: nextSession.user.email,
-        login_method: 'password'
-      });
-    } else if (event === 'SIGNED_OUT') {
-      logSecurityEvent('user_logout', {
-        user_id: user?.id
-      });
-    } else if (event === 'TOKEN_REFRESHED') {
-      logSecurityEvent('token_refresh', {
-        user_id: nextSession?.user?.id
-      });
-    }
+      // Log security events
+      if (event === 'SIGNED_IN' && nextSession?.user) {
+        logSecurityEvent('user_login_success', {
+          user_id: nextSession.user.id,
+          email: nextSession.user.email,
+          login_method: 'password'
+        });
+      } else if (event === 'SIGNED_OUT') {
+        logSecurityEvent('user_logout', {
+          user_id: user?.id
+        });
+      } else if (event === 'TOKEN_REFRESHED') {
+        logSecurityEvent('token_refresh', {
+          user_id: nextSession?.user?.id
+        });
+      }
 
-    // Defer any Supabase calls to avoid deadlocks
-    if (nextSession?.user) {
-      setTimeout(() => {
-        fetchUserProfile(nextSession.user!.id);
-      }, 0);
-    } else {
-      setUserProfile(null);
-      setLoading(false);
-    }
-  });
+      // Handle user profile
+      if (nextSession?.user) {
+        setTimeout(() => {
+          fetchUserProfile(nextSession.user!.id);
+        }, 0);
+      } else {
+        setUserProfile(null);
+        setLoading(false);
+      }
+    });
 
-  // THEN get initial session
-  supabase.auth.getSession().then(({ data: { session: initialSession }, error }) => {
-    if (error) {
-      console.error('Session retrieval error:', error);
-      logSecurityEvent('session_retrieval_error', { error: error.message });
-    }
-    setSession(initialSession);
-    setUser(initialSession?.user ?? null);
-    if (initialSession?.user) {
-      fetchUserProfile(initialSession.user.id);
-    } else {
-      setLoading(false);
-    }
-  });
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session: initialSession }, error }) => {
+      if (error) {
+        console.error('Session retrieval error:', error);
+        logSecurityEvent('session_retrieval_error', { error: error.message });
+      }
+      setSession(initialSession);
+      setUser(initialSession?.user ?? null);
+      if (initialSession?.user) {
+        fetchUserProfile(initialSession.user.id);
+      } else {
+        setLoading(false);
+      }
+    });
 
-  return () => subscription.unsubscribe();
-}, [user?.id]);
+    return () => subscription.unsubscribe();
+  }, []);
 
   const fetchUserProfile = async (userId: string) => {
     try {
@@ -129,7 +127,7 @@ useEffect(() => {
       } else if (created) {
         setUserProfile(created as UserProfile);
         logSecurityEvent('profile_created', { user_id: userId });
-        showInfo('Your profile was created successfully.');
+        noHooksToast.showInfo('Your profile was created successfully.');
       }
     } catch (error) {
       console.error('Error fetching/creating user profile:', error);
@@ -145,10 +143,10 @@ useEffect(() => {
   const signIn = async (email: string, password: string): Promise<{ error: AuthError | null }> => {
     // Rate limiting
     const rateLimitKey = `signin_${email}`;
-    if (!rateLimiter.isAllowed(rateLimitKey, 5, 900000)) { // 5 attempts per 15 minutes
+    if (!rateLimiter.isAllowed(rateLimitKey, 5, 900000)) {
       const error = new Error('Too many login attempts. Please try again later.') as AuthError;
       logSecurityEvent('login_rate_limit_exceeded', { email, attempts: 5 });
-      showError('Too many login attempts. Please try again later.');
+      noHooksToast.showError('Too many login attempts. Please try again later.');
       return { error };
     }
 
@@ -156,7 +154,7 @@ useEffect(() => {
     if (!validateEmailDomain(email)) {
       const error = new Error('Invalid email domain') as AuthError;
       logSecurityEvent('invalid_email_domain', { email });
-      showError('Invalid email domain');
+      noHooksToast.showError('Invalid email domain');
       return { error };
     }
 
@@ -173,10 +171,10 @@ useEffect(() => {
           error: error.message,
           error_code: error.status 
         });
-        showError(error.message);
+        noHooksToast.showError(error.message);
       } else {
         rateLimiter.reset(rateLimitKey);
-        showInfo('Successfully signed in!');
+        noHooksToast.showInfo('Successfully signed in!');
       }
 
       return { error };
@@ -186,7 +184,7 @@ useEffect(() => {
         email, 
         error: error instanceof Error ? error.message : 'Unknown error' 
       });
-      showError('An unexpected error occurred during sign in');
+      noHooksToast.showError('An unexpected error occurred during sign in');
       return { error: error as AuthError };
     } finally {
       setLoading(false);
@@ -196,10 +194,10 @@ useEffect(() => {
   const signUp = async (email: string, password: string, userData?: any): Promise<{ error: AuthError | null }> => {
     // Rate limiting for signup
     const rateLimitKey = `signup_${email}`;
-    if (!rateLimiter.isAllowed(rateLimitKey, 3, 1800000)) { // 3 attempts per 30 minutes
+    if (!rateLimiter.isAllowed(rateLimitKey, 3, 1800000)) {
       const error = new Error('Too many signup attempts. Please try again later.') as AuthError;
       logSecurityEvent('signup_rate_limit_exceeded', { email });
-      showError('Too many signup attempts. Please try again later.');
+      noHooksToast.showError('Too many signup attempts. Please try again later.');
       return { error };
     }
 
@@ -207,7 +205,7 @@ useEffect(() => {
     if (!validateEmailDomain(email)) {
       const error = new Error('Invalid email domain') as AuthError;
       logSecurityEvent('invalid_email_domain_signup', { email });
-      showError('Invalid email domain');
+      noHooksToast.showError('Invalid email domain');
       return { error };
     }
 
@@ -230,11 +228,11 @@ useEffect(() => {
           error: error.message,
           error_code: error.status 
         });
-        showError(error.message);
+        noHooksToast.showError(error.message);
       } else {
         logSecurityEvent('signup_success', { email });
         rateLimiter.reset(rateLimitKey);
-        showInfo('Account created successfully! Please check your email to verify your account.');
+        noHooksToast.showInfo('Account created successfully! Please check your email to verify your account.');
       }
 
       return { error };
@@ -244,7 +242,7 @@ useEffect(() => {
         email, 
         error: error instanceof Error ? error.message : 'Unknown error' 
       });
-      showError('An unexpected error occurred during sign up');
+      noHooksToast.showError('An unexpected error occurred during sign up');
       return { error: error as AuthError };
     } finally {
       setLoading(false);
@@ -254,10 +252,10 @@ useEffect(() => {
   const resetPassword = async (email: string): Promise<{ error: AuthError | null }> => {
     // Rate limiting for password reset
     const rateLimitKey = `reset_${email}`;
-    if (!rateLimiter.isAllowed(rateLimitKey, 3, 1800000)) { // 3 attempts per 30 minutes
+    if (!rateLimiter.isAllowed(rateLimitKey, 3, 1800000)) {
       const error = new Error('Too many password reset attempts. Please try again later.') as AuthError;
       logSecurityEvent('password_reset_rate_limit_exceeded', { email });
-      showError('Too many password reset attempts. Please try again later.');
+      noHooksToast.showError('Too many password reset attempts. Please try again later.');
       return { error };
     }
 
@@ -272,10 +270,10 @@ useEffect(() => {
           email, 
           error: error.message 
         });
-        showError(error.message);
+        noHooksToast.showError(error.message);
       } else {
         logSecurityEvent('password_reset_requested', { email });
-        showInfo('Password reset email sent! Please check your inbox.');
+        noHooksToast.showInfo('Password reset email sent! Please check your inbox.');
       }
 
       return { error };
@@ -285,7 +283,7 @@ useEffect(() => {
         email, 
         error: error instanceof Error ? error.message : 'Unknown error' 
       });
-      showError('An unexpected error occurred during password reset');
+      noHooksToast.showError('An unexpected error occurred during password reset');
       return { error: error as AuthError };
     }
   };
@@ -308,7 +306,7 @@ useEffect(() => {
         user_id: user.id, 
         updated_fields: Object.keys(updates) 
       });
-      showInfo('Profile updated successfully.');
+      noHooksToast.showInfo('Profile updated successfully.');
       return true;
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -316,7 +314,7 @@ useEffect(() => {
         user_id: user.id, 
         error: error instanceof Error ? error.message : 'Unknown error' 
       });
-      showError('Failed to update profile');
+      noHooksToast.showError('Failed to update profile');
       return false;
     }
   };
@@ -339,14 +337,10 @@ useEffect(() => {
         throw error;
       }
       
-      showInfo('You have been signed out successfully.');
-      
-      // Let the routing system handle the redirect naturally
-      // The onAuthStateChange will trigger and clear the state
-      // The app routing will handle redirecting to appropriate page
+      noHooksToast.showInfo('You have been signed out successfully.');
     } catch (error) {
       console.error('Error signing out:', error);
-      showError('Error signing out');
+      noHooksToast.showError('Error signing out');
     }
   };
 
@@ -376,4 +370,3 @@ export const useAuth = () => {
   }
   return context;
 };
-
