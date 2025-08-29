@@ -47,8 +47,10 @@ export const MetricCard = ({
   if (loading) {
     return (
       <Card 
-        variant="elevated" 
-        className={cn("animate-pulse", className)}
+        className={cn(
+          "animate-pulse",
+          className
+        )}
       >
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
@@ -67,12 +69,9 @@ export const MetricCard = ({
 
   return (
     <Card 
-      variant="elevated"
-      interactive
-      className={cn(
-        "group",
-        variantStyles[variant],
-        className
+        className={cn(
+          "group",
+          className
       )}
     >
       <CardHeader className="pb-3">
@@ -106,8 +105,8 @@ export const MetricCard = ({
                 <TrendingDown className="h-3 w-3 text-destructive" />
               )}
               <Badge 
-                variant={trend.isPositive ? "success" : "destructive"}
-                size="sm"
+                variant={(trend.isPositive ? "secondary" : "destructive") as any}
+                className="text-xs"
               >
                 {trend.value}%
               </Badge>

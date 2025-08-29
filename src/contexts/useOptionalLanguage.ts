@@ -1,6 +1,16 @@
 
 import { useContext } from 'react';
-import { LanguageContext, LanguageContextType } from '@/contexts/LanguageContext';
+import { LanguageContext } from '@/contexts/LanguageContext';
+
+interface LanguageContextType {
+  language: 'en' | 'ar';
+  setLanguage: (language: 'en' | 'ar') => void;
+  t: (key: string) => string;
+  isRTL: boolean;
+  formatNumber: (num: number) => string;
+  formatDate: (date: Date) => string;
+  formatCurrency: (amount: number, currency?: string) => string;
+}
 
 // Safe optional language hook for components that might not be wrapped in LanguageProvider
 export const useOptionalLanguage = (): LanguageContextType => {

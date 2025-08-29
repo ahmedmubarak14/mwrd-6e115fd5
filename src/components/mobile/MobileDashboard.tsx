@@ -54,7 +54,7 @@ export const MobileDashboard = () => {
         { label: 'Pending Tasks', value: tasks.filter(t => t.status === 'pending').length, icon: Clock, color: 'text-orange-500' },
         { label: 'Completed', value: tasks.filter(t => t.status === 'completed').length, icon: CheckCircle, color: 'text-green-500' }
       ];
-    } else if (userProfile?.role === 'supplier') {
+    } else if ((userProfile as any)?.role === 'supplier') {
       return [
         { label: 'Active Offers', value: '12', icon: Package, color: 'text-blue-500' },
         { label: 'Won Projects', value: '8', change: '+2', icon: CheckCircle, color: 'text-green-500' },
@@ -111,7 +111,7 @@ export const MobileDashboard = () => {
         <CardContent className="space-y-2">
           <Button className="w-full justify-start h-12" size="lg">
             <Plus className="h-4 w-4 mr-3" />
-            {userProfile?.role === 'vendor' ? 'Submit New Offer' : 'Create Request'}
+            {(userProfile as any)?.role === 'supplier' ? 'Submit New Offer' : 'Create Request'}
           </Button>
           <Button variant="outline" className="w-full justify-start h-12" size="lg">
             <MessageSquare className="h-4 w-4 mr-3" />
@@ -240,7 +240,7 @@ export const MobileDashboard = () => {
             </h1>
             <p className="text-muted-foreground">
               {userProfile?.role === 'admin' ? 'Manage your platform' :
-               userProfile?.role === 'vendor' ? 'Track your business' :
+               (userProfile as any)?.role === 'supplier' ? 'Track your business' :
                'Manage your procurement'}
             </p>
           </div>

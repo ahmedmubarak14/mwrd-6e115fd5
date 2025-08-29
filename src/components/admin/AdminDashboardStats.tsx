@@ -37,9 +37,16 @@ export const AdminDashboardStats = () => {
         throw error;
       }
       
-      if (data && data.length > 0) {
-        setStats(data[0] as UserStats);
-      }
+        if (data && data.length > 0) {
+          const stats = data[0];
+          const transformedStats = {
+            total_users: stats.total_users,
+            total_clients: stats.total_clients,
+            total_suppliers: stats.total_vendors, // Map vendors to suppliers for compatibility
+            total_admins: stats.total_admins
+          };
+          setStats(transformedStats as UserStats);
+        }
     } catch (error: any) {
       console.error('Error fetching stats:', error);
       toast({

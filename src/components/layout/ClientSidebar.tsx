@@ -112,7 +112,7 @@ export const ClientSidebar = ({ className, collapsed = false, onToggle }: Client
           href: "/requests",
           icon: FileText,
         },
-        ...(userProfile?.role === 'supplier' ? [
+        ...((userProfile as any)?.role === 'supplier' ? [
           {
             name: 'Browse Requests',
             href: "/browse-requests",

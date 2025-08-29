@@ -59,7 +59,7 @@ export const ClientMobileSidebar = ({ isOpen, onOpenChange }: ClientMobileSideba
           href: "/requests",
           icon: FileText,
         },
-        ...(userProfile?.role === 'vendor' ? [
+        ...((userProfile as any)?.role === 'supplier' ? [
           {
             name: "Browse Requests",
             href: "/browse-requests",

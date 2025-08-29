@@ -49,6 +49,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
       const { error: profileError } = await supabase
         .from('user_profiles')
         .insert({
+          user_id: crypto.randomUUID(),
           id: crypto.randomUUID(), // Add required id field
           email: formData.email,
           full_name: formData.fullName,

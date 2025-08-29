@@ -143,7 +143,7 @@ export const OnboardingFlow = ({ onComplete, onSkip }: OnboardingFlowProps) => {
   const canProceed = () => {
     if (currentStepData.id === "verification" && userProfile?.role === 'client') {
       return crUploaded || completedSteps.includes("verification") || 
-             userProfile?.verification_status === 'approved';
+             ((userProfile as any)?.verification_status === 'approved');
     }
     return true;
   };
@@ -220,14 +220,14 @@ export const OnboardingFlow = ({ onComplete, onSkip }: OnboardingFlowProps) => {
                 </AlertDescription>
               </Alert>
 
-              {userProfile?.verification_status === 'approved' ? (
+              {((userProfile as any)?.verification_status === 'approved') ? (
                 <Alert>
                   <CheckCircle className="h-4 w-4" />
                   <AlertDescription>
                     Your account has been verified! You have full access to all platform features.
                   </AlertDescription>
                 </Alert>
-              ) : userProfile?.verification_status === 'under_review' ? (
+              ) : ((userProfile as any)?.verification_status === 'under_review') ? (
                 <Alert>
                   <Clock className="h-4 w-4" />
                   <AlertDescription>
@@ -270,7 +270,7 @@ export const OnboardingFlow = ({ onComplete, onSkip }: OnboardingFlowProps) => {
                 }
               </p>
               
-              {userProfile?.role === 'client' && userProfile?.verification_status !== 'approved' && (
+              {userProfile?.role === 'client' && ((userProfile as any)?.verification_status !== 'approved') && (
                 <Alert>
                   <Clock className="h-4 w-4" />
                   <AlertDescription>

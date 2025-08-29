@@ -43,8 +43,8 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
   // Handle successful authentication
   useEffect(() => {
     if (userProfile) {
-      // Check if vendor needs onboarding (using 'vendor' role)
-      if (userProfile.role === 'vendor') {
+      // Check if vendor needs onboarding (using actual role type)
+      if ((userProfile as any).role === 'supplier') {
         setRegistrationStep('onboarding');
         return;
       }
