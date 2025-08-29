@@ -117,12 +117,12 @@ export const Landing = () => {
               </Link>
             ) : (
               <>
-                <Link to="/enhanced-login" className="hidden md:block">
+                <Link to="/login" className="hidden md:block">
                   <Button variant="ghost" size="lg" animation="scale" className="px-6 bg-white/5 border border-white/20 text-white transition-all duration-300 backdrop-blur-15">
                     {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
                   </Button>
                 </Link>
-                <Link to="/enhanced-register" className="hidden md:block">
+                <Link to="/register" className="hidden md:block">
                   <Button size="lg" animation="lift" className="px-8 hover:shadow-2xl transition-all duration-500 bg-white/10 border border-white/30 text-white backdrop-blur-20">
                     {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
                   </Button>
@@ -174,7 +174,7 @@ export const Landing = () => {
 
               {/* Action Button */}
               <div className="flex justify-center sm:justify-start">
-                <Link to="/enhanced-register" className="group">
+                <Link to="/register" className="group">
                   <Button size="lg" animation="spring" className="px-8 py-3 text-base font-semibold transition-all duration-300 bg-white/10 border border-white/30 text-white backdrop-blur-20">
                     {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
                   </Button>
@@ -630,7 +630,7 @@ export const Landing = () => {
                 : 'Be part of the future of B2B e-commerce and start your journey with us today'}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/enhanced-register">
+              <Link to="/register">
                 <Button size="lg" animation="spring" className="px-8 py-3 bg-gradient-to-r from-primary to-accent transition-transform text-lg text-white">
                   {language === 'ar' ? 'ابدأ رحلتك' : 'Start Your Journey'}
                 </Button>

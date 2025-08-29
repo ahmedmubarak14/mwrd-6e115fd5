@@ -124,7 +124,7 @@ export const Footer = () => {
               <ul className="space-y-3">
                 <li>
                   <Link 
-                    to="/enhanced-register" 
+                    to="/register" 
                     className="text-white/70 hover:text-white transition-all duration-300 text-sm hover:translate-x-1 inline-block group"
                   >
                     <span className="group-hover:underline">{language === 'ar' ? 'إنشاء حساب' : 'Sign Up'}</span>
@@ -132,7 +132,7 @@ export const Footer = () => {
                 </li>
                 <li>
                   <Link 
-                    to="/enhanced-login" 
+                    to="/login" 
                     className="text-white/70 hover:text-white transition-all duration-300 text-sm hover:translate-x-1 inline-block group"
                   >
                     <span className="group-hover:underline">{language === 'ar' ? 'تسجيل الدخول' : 'Login'}</span>
