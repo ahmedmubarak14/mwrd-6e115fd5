@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Search, Bell, Menu, User } from "lucide-react";
-import { useAuth } from '@/contexts/MinimalAuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { NotificationBell } from '@/components/realtime/NotificationBell';
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { DashboardThemeToggle } from "@/components/ui/DashboardThemeToggle";

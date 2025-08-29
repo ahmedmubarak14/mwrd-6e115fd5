@@ -2,7 +2,7 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { LanguageProvider } from './contexts/LanguageContext';
-import { MinimalAuthProvider, useAuth } from './contexts/MinimalAuthContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { RouteAwareThemeProvider } from './contexts/RouteAwareThemeContext';
 import { ErrorBoundary } from './components/ui/ErrorBoundary';
 import { Toaster } from '@/components/ui/toaster';
@@ -55,7 +55,7 @@ function App() {
   return (
     <ErrorBoundary>
       <GlobalErrorHandler />
-      <MinimalAuthProvider>
+      <AuthProvider>
         <LanguageProvider>
           <Router>
             <RouteAwareThemeProvider>
@@ -134,7 +134,7 @@ function App() {
             </RouteAwareThemeProvider>
           </Router>
         </LanguageProvider>
-      </MinimalAuthProvider>
+      </AuthProvider>
     </ErrorBoundary>
   );
 }

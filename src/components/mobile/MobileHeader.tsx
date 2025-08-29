@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { NotificationBell } from "@/components/realtime/NotificationBell";
 import { SearchModal } from "@/components/modals/SearchModal";
-import { useAuth } from "@/contexts/MinimalAuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useMobileDetection } from "@/hooks/useMobileDetection";
 import { useCapacitor } from "@/hooks/useCapacitor";

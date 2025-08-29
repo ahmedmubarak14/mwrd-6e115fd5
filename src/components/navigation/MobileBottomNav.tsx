@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { useAuth } from "@/contexts/MinimalAuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useMobileDetection } from "@/hooks/useMobileDetection";
 import { useCapacitor } from "@/hooks/useCapacitor";
