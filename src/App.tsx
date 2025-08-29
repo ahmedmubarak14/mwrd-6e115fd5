@@ -20,7 +20,8 @@ import AdminUsers from './pages/admin/AdminUsers';
 import AdminRequests from './pages/admin/AdminRequests';
 import AdminOffers from './pages/admin/AdminOffers';
 import { AdminAnalytics } from './pages/admin/AdminAnalytics';
-import { AdminSupport } from './pages/admin/AdminSupport';
+import Requests from './pages/Requests';
+import CreateSimpleRequest from './pages/CreateSimpleRequest';
 
 const RoleProtectedRoute: React.FC<{
   children: React.ReactNode;
@@ -78,6 +79,16 @@ const App: React.FC = () => {
                     <VendorDashboard />
                   </RoleProtectedRoute>
                 } />
+                <Route path="/requests" element={
+                  <RoleProtectedRoute allowedRoles={['client', 'admin']}>
+                    <Requests />
+                  </RoleProtectedRoute>
+                } />
+                <Route path="/requests/create" element={
+                  <RoleProtectedRoute allowedRoles={['client', 'admin']}>
+                    <CreateSimpleRequest />
+                  </RoleProtectedRoute>
+                } />
                 <Route path="/admin/dashboard" element={
                   <RoleProtectedRoute allowedRoles={['admin']}>
                     <AdminDashboard />
@@ -103,11 +114,11 @@ const App: React.FC = () => {
                     <AdminAnalytics />
                   </RoleProtectedRoute>
                 } />
-                <Route path="/admin/support" element={
+                {/* <Route path="/admin/support" element={
                   <RoleProtectedRoute allowedRoles={['admin']}>
                     <AdminSupport />
                   </RoleProtectedRoute>
-                } />
+                } /> */}
                 <Route path="/" element={<Navigate to="/landing" replace />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

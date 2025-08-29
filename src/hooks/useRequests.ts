@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/MinimalAuthContext';
 
 export interface Request {
   id: string;
@@ -138,12 +138,86 @@ export const useRequests = () => {
     }
   };
 
+  const updateRequest = async (id: string, requestData: {
+    title?: string;
+    description?: string;
+    category?: string;
+    budget_min?: number;
+    budget_max?: number;
+    location?: string;
+    deadline?: string;
+    urgency?: 'low' | 'medium' | 'high' | 'urgent';
+    status?: 'new' | 'in_progress' | 'completed' | 'cancelled';
+  }) => {
+    if (!user) throw new Error('User not authenticated');
+
+    try {
+      const { data, error } = await supabase
+        .from('requests')
+        .update(requestData)
+        .eq('id', id)
+        .eq('client_id', user.id)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // Track activity
+      await trackActivity({
+        user_id: user.id,
+        activity_type: 'request_updated',
+        description: `Updated request: ${requestData.title || 'Request'}`,
+        title: `Request updated`,
+        metadata: { 
+          request_id: id,
+          updated_fields: Object.keys(requestData)
+        }
+      });
+
+      await fetchRequests();
+      return data;
+    } catch (error) {
+      console.error('Error updating request:', error);
+      throw error;
+    }
+  };
+
+  const deleteRequest = async (id: string) => {
+    if (!user) throw new Error('User not authenticated');
+
+    try {
+      const { error } = await supabase
+        .from('requests')
+        .delete()
+        .eq('id', id)
+        .eq('client_id', user.id);
+
+      if (error) throw error;
+
+      // Track activity
+      await trackActivity({
+        user_id: user.id,
+        activity_type: 'request_deleted',
+        description: `Deleted request`,
+        title: `Request deleted`,
+        metadata: { request_id: id }
+      });
+
+      await fetchRequests();
+    } catch (error) {
+      console.error('Error deleting request:', error);
+      throw error;
+    }
+  };
+
   return {
     requests,
     loading,
     refetch: fetchRequests,
     formatBudget,
     getOffersCount,
-    createRequest
+    createRequest,
+    updateRequest,
+    deleteRequest
   };
 };

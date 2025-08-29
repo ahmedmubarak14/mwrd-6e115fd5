@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RequestDetailsModal } from "@/components/modals/RequestDetailsModal";
+import { EditRequestModal } from "@/components/modals/EditRequestModal";
 import { EmptyState } from "@/components/ui/empty-state";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { 
@@ -23,8 +24,11 @@ import {
   FileText,
   CheckCircle,
   AlertCircle,
-  TrendingUp
+  TrendingUp,
+  Edit,
+  MoreHorizontal
 } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 
@@ -182,15 +186,11 @@ const Requests = () => {
       {filteredRequests.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredRequests.map((request) => (
-            <RequestDetailsModal
-              key={request.id}
-              request={request}
-              userRole="client"
-            >
-              <Card className="cursor-pointer hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex justify-between items-start">
-                    <CardTitle className="text-lg">{request.title}</CardTitle>
+            <Card key={request.id} className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <CardTitle className="text-lg">{request.title}</CardTitle>
+                  <div className="flex items-center gap-2">
                     <Badge variant={
                       request.status === 'new' ? 'default' :
                       request.status === 'in_progress' ? 'secondary' :
@@ -198,12 +198,34 @@ const Requests = () => {
                     }>
                       {request.status}
                     </Badge>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <RequestDetailsModal request={request} userRole="client">
+                          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                            View Details
+                          </DropdownMenuItem>
+                        </RequestDetailsModal>
+                        <EditRequestModal request={request}>
+                          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                            <Edit className="h-4 w-4 mr-2" />
+                            Edit Request
+                          </DropdownMenuItem>
+                        </EditRequestModal>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
-                  <CardDescription className="line-clamp-2">
-                    {request.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
+                </div>
+                <CardDescription className="line-clamp-2">
+                  {request.description}
+                </CardDescription>
+              </CardHeader>
+              <RequestDetailsModal request={request} userRole="client">
+                <CardContent className="cursor-pointer">
                   <div className="space-y-2 text-sm text-muted-foreground">
                     <div className="flex items-center gap-2">
                       <Package className="h-4 w-4" />
@@ -225,8 +247,8 @@ const Requests = () => {
                     </div>
                   </div>
                 </CardContent>
-              </Card>
-            </RequestDetailsModal>
+              </RequestDetailsModal>
+            </Card>
           ))}
         </div>
       ) : (
