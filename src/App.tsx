@@ -1,10 +1,11 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { MinimalAuthProvider, useAuth } from './contexts/MinimalAuthContext';
 import { RouteAwareThemeProvider } from './contexts/RouteAwareThemeContext';
-import { ErrorBoundary } from './components/ErrorBoundary';
-import { Toaster } from '@/components/ui/sonner';
+import { ErrorBoundary } from './components/ui/ErrorBoundary';
+import { Toaster } from '@/components/ui/toaster';
 import { GlobalErrorHandler } from '@/components/ui/GlobalErrorHandler';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -17,7 +18,7 @@ import NotFound from './pages/NotFound';
 
 const RoleProtectedRoute: React.FC<{
   children: React.ReactNode;
-  allowedRoles: ('client' | 'vendor' | 'admin')[];
+  allowedRoles: ('client' | 'supplier' | 'admin')[];
 }> = ({ children, allowedRoles }) => {
   const { userProfile, loading } = useAuth();
 
@@ -33,7 +34,7 @@ const RoleProtectedRoute: React.FC<{
     return <Navigate to="/login" replace />;
   }
 
-  if (!allowedRoles.includes(userProfile.role as 'client' | 'vendor' | 'admin')) {
+  if (!allowedRoles.includes(userProfile.role as 'client' | 'supplier' | 'admin')) {
     return <Navigate to="/login" replace />;
   }
 
@@ -46,29 +47,28 @@ const App: React.FC = () => {
     <ErrorBoundary>
       <LanguageProvider>
         <Router>
-          <Toaster />
           <MinimalAuthProvider>
             <RouteAwareThemeProvider>
               <GlobalErrorHandler />
+              <Toaster />
               
-              {/* Ultra-simplified routes for testing */}
               <Routes>
                 <Route path="/landing" element={<Landing />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/dashboard" element={
-                  <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+                  <RoleProtectedRoute allowedRoles={['client', 'supplier', 'admin']}>
                     <Dashboard />
                   </RoleProtectedRoute>
                 } />
                 <Route path="/profile" element={
-                  <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
+                  <RoleProtectedRoute allowedRoles={['client', 'supplier', 'admin']}>
                     <Profile />
                   </RoleProtectedRoute>
                 } />
                 <Route path="/vendor-dashboard" element={
-                  <RoleProtectedRoute allowedRoles={['vendor']}>
+                  <RoleProtectedRoute allowedRoles={['supplier']}>
                     <VendorDashboard />
                   </RoleProtectedRoute>
                 } />
