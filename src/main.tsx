@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
-import App from './App.tsx'
+import MinimalApp from './App-minimal.tsx'
 import './index.css'
 
 // Set the dir attribute based on language preference from localStorage
@@ -32,11 +32,7 @@ const queryClient = new QueryClient({
 });
 
 createRoot(document.getElementById("root")!).render(
-  <ErrorBoundary>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
-  </ErrorBoundary>
+  <MinimalApp />
 );
 
-console.log('Main: App rendered successfully');
+console.log('Main: MinimalApp rendered successfully');
