@@ -79,43 +79,36 @@ export const CommunicationSettings = () => {
     
     setIsLoading(true);
     try {
-      // Use mock data since communication_settings table doesn't exist
-      const mockData = [
-        {
-          settings_type: 'email',
-          settings_data: {
-            enabled: true,
-            frequency: 'daily',
-            notifications: true
+      // Fetch real communication settings from database
+      const { data: settings, error } = await supabase
+        .from('communication_settings')
+        .select('*')
+        .eq('user_id', user.id);
+
+      if (error && error.code !== 'PGRST116') {
+        throw error;
+      }
+
+      // Process settings data if exists
+      if (settings && settings.length > 0) {
+        settings.forEach(setting => {
+          const settingsData = setting.settings_data as Record<string, any>;
+          switch (setting.settings_type) {
+            case 'email':
+              setEmailSettings(prev => ({ ...prev, ...settingsData }));
+              break;
+            case 'sms':
+              setSmsSettings(prev => ({ ...prev, ...settingsData }));
+              break;
+            case 'notifications':
+              setNotificationSettings(prev => ({ ...prev, ...settingsData }));
+              break;
+            case 'integrations':
+              setIntegrationSettings(prev => ({ ...prev, ...settingsData }));
+              break;
           }
-        },
-        {
-          settings_type: 'sms', 
-          settings_data: {
-            enabled: false,
-            frequency: 'weekly',
-            notifications: false
-          }
-        }
-      ];
-      
-      mockData.forEach(setting => {
-        const settingsData = setting.settings_data as Record<string, any>;
-        switch (setting.settings_type) {
-          case 'email':
-            setEmailSettings(prev => ({ ...prev, ...settingsData }));
-            break;
-          case 'sms':
-            setSmsSettings(prev => ({ ...prev, ...settingsData }));
-            break;
-          case 'notifications':
-            setNotificationSettings(prev => ({ ...prev, ...settingsData }));
-            break;
-          case 'integrations':
-            setIntegrationSettings(prev => ({ ...prev, ...settingsData }));
-            break;
-        }
-      });
+        });
+      }
     } catch (error) {
       console.error('Error loading settings:', error);
     } finally {
@@ -150,7 +143,19 @@ export const CommunicationSettings = () => {
           break;
       }
 
-      // Mock save since communication_settings table doesn't exist
+      // Save to real database
+      const { error } = await supabase
+        .from('communication_settings')
+        .upsert({
+          user_id: user.id,
+          settings_type: dbSettingsType,
+          settings_data: settingsData
+        }, {
+          onConflict: 'user_id,settings_type'
+        });
+
+      if (error) throw error;
+
       toast({
         title: "Settings Saved",
         description: `${settingsType} settings have been updated successfully`

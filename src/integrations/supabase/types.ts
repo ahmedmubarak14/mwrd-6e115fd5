@@ -439,6 +439,36 @@ export type Database = {
           },
         ]
       }
+      communication_metrics: {
+        Row: {
+          campaign_id: string | null
+          id: string
+          metadata: Json | null
+          metric_name: string
+          metric_type: string
+          metric_value: number
+          recorded_at: string
+        }
+        Insert: {
+          campaign_id?: string | null
+          id?: string
+          metadata?: Json | null
+          metric_name: string
+          metric_type: string
+          metric_value?: number
+          recorded_at?: string
+        }
+        Update: {
+          campaign_id?: string | null
+          id?: string
+          metadata?: Json | null
+          metric_name?: string
+          metric_type?: string
+          metric_value?: number
+          recorded_at?: string
+        }
+        Relationships: []
+      }
       communication_settings: {
         Row: {
           created_at: string
@@ -532,6 +562,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      device_registrations: {
+        Row: {
+          device_info: Json | null
+          device_token: string
+          id: string
+          is_active: boolean
+          last_used_at: string | null
+          platform: string
+          registered_at: string
+          user_id: string
+        }
+        Insert: {
+          device_info?: Json | null
+          device_token: string
+          id?: string
+          is_active?: boolean
+          last_used_at?: string | null
+          platform: string
+          registered_at?: string
+          user_id: string
+        }
+        Update: {
+          device_info?: Json | null
+          device_token?: string
+          id?: string
+          is_active?: boolean
+          last_used_at?: string | null
+          platform?: string
+          registered_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       email_campaigns: {
         Row: {
@@ -1114,6 +1177,51 @@ export type Database = {
           start_date?: string | null
           status?: string
           tags?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      push_notifications: {
+        Row: {
+          created_at: string
+          created_by: string
+          delivery_stats: Json | null
+          id: string
+          message: string
+          metadata: Json | null
+          scheduled_for: string | null
+          sent_at: string | null
+          status: string
+          target_audience: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          delivery_stats?: Json | null
+          id?: string
+          message: string
+          metadata?: Json | null
+          scheduled_for?: string | null
+          sent_at?: string | null
+          status?: string
+          target_audience?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          delivery_stats?: Json | null
+          id?: string
+          message?: string
+          metadata?: Json | null
+          scheduled_for?: string | null
+          sent_at?: string | null
+          status?: string
+          target_audience?: string
           title?: string
           updated_at?: string
         }
