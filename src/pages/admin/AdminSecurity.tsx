@@ -20,44 +20,66 @@ const AdminSecurity = () => {
   };
 
   return (
-    <AdminPageContainer
-      title="Security & Monitoring Center"
-      description="Comprehensive security analytics, compliance monitoring, and system health oversight"
-    >
+    <div dir={isRTL ? 'rtl' : 'ltr'}>
+      <AdminPageContainer
+        title={t('admin.security.title')}
+        description={t('admin.security.description')}
+      >
 
-      <Tabs defaultValue="monitor" className="space-y-6">
-        <TabsList className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 w-full gap-1">
-          <TabsTrigger value="monitor" className="flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4">
-            <Monitor className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Live Monitor</span>
-            <span className="sm:hidden">Live</span>
-          </TabsTrigger>
-          <TabsTrigger value="overview" className="flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4">
-            <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Overview</span>
-            <span className="sm:hidden">Home</span>
-          </TabsTrigger>
-          <TabsTrigger value="incidents" className="flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4">
-            <AlertTriangle className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Incidents</span>
-            <span className="sm:hidden">Issues</span>
-          </TabsTrigger>
-          <TabsTrigger value="audit" className="flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4">
-            <Database className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Audit Trail</span>
-            <span className="sm:hidden">Audit</span>
-          </TabsTrigger>
-          <TabsTrigger value="health" className="flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4">
-            <Activity className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">System Health</span>
-            <span className="sm:hidden">Health</span>
-          </TabsTrigger>
-          <TabsTrigger value="compliance" className="flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4">
-            <Lock className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Compliance</span>
-            <span className="sm:hidden">Rules</span>
-          </TabsTrigger>
-        </TabsList>
+        <Tabs defaultValue="monitor" className="space-y-6">
+          <TabsList className={cn(
+            "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 w-full gap-1",
+            isRTL && "flex-row-reverse"
+          )}>
+            <TabsTrigger value="monitor" className={cn(
+              "flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4",
+              isRTL && "flex-row-reverse"
+            )}>
+              <Monitor className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">{t('admin.security.liveMonitor')}</span>
+              <span className="sm:hidden">{t('admin.security.liveMonitor')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="overview" className={cn(
+              "flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4",
+              isRTL && "flex-row-reverse"
+            )}>
+              <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">{t('admin.security.overview')}</span>
+              <span className="sm:hidden">{t('admin.security.overview')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="incidents" className={cn(
+              "flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4",
+              isRTL && "flex-row-reverse"
+            )}>
+              <AlertTriangle className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">{t('admin.security.incidents')}</span>
+              <span className="sm:hidden">{t('admin.security.incidents')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="audit" className={cn(
+              "flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4",
+              isRTL && "flex-row-reverse"
+            )}>
+              <Database className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">{t('admin.security.auditTrail')}</span>
+              <span className="sm:hidden">{t('admin.security.auditTrail')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="health" className={cn(
+              "flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4",
+              isRTL && "flex-row-reverse"
+            )}>
+              <Activity className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">{t('admin.security.systemHealth')}</span>
+              <span className="sm:hidden">{t('admin.security.systemHealth')}</span>
+            </TabsTrigger>
+            <TabsTrigger value="compliance" className={cn(
+              "flex items-center gap-1 text-xs sm:text-sm px-2 sm:px-4",
+              isRTL && "flex-row-reverse"
+            )}>
+              <Lock className="h-3 w-3 sm:h-4 sm:w-4" />
+              <span className="hidden sm:inline">{t('admin.security.compliance')}</span>
+              <span className="sm:hidden">{t('admin.security.compliance')}</span>
+            </TabsTrigger>
+          </TabsList>
 
         <TabsContent value="monitor">
           <RealTimeSecurityMonitor />
@@ -83,7 +105,8 @@ const AdminSecurity = () => {
           <SecurityComplianceCenter />
         </TabsContent>
       </Tabs>
-    </AdminPageContainer>
+      </AdminPageContainer>
+    </div>
   );
 };
 

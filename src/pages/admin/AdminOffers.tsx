@@ -12,6 +12,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { AdminPageContainer } from '@/components/admin/AdminPageContainer';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { cn } from '@/lib/utils';
 
 interface AdminOffer {
   id: string;
@@ -49,6 +51,11 @@ interface AdminOffer {
 const AdminOffers = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false 
+  };
   const [offers, setOffers] = useState<AdminOffer[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -93,8 +100,8 @@ const AdminOffers = () => {
     } catch (error) {
       console.error('Error fetching offers:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to fetch offers',
+        title: t('common.error'),
+        description: t('admin.offersManagement.loadingOffers'),
         variant: 'destructive'
       });
     } finally {
@@ -115,8 +122,8 @@ const AdminOffers = () => {
       if (error) throw error;
 
       toast({
-        title: 'Success',
-        description: `Offer ${status} successfully`,
+        title: t('common.success'),
+        description: t('admin.offersManagement.approveOffer'),
       });
 
       fetchOffers();
@@ -266,22 +273,26 @@ const AdminOffers = () => {
   const highUrgencyOffers = offers.filter(o => getUrgencyLevel(o) === 'high');
 
   return (
-    <AdminPageContainer
-      title="Offer Management"
-      description="Monitor vendor responses, track conversion rates, and manage offer approvals with support integration"
-    >
+    <div dir={isRTL ? 'rtl' : 'ltr'}>
+      <AdminPageContainer
+        title={t('admin.offersManagement.title')}
+        description={t('admin.offersManagement.description')}
+      >
 
       {/* Enhanced Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Offers</CardTitle>
+          <CardHeader className={cn(
+            "flex flex-row items-center justify-between space-y-0 pb-2",
+            isRTL && "flex-row-reverse"
+          )}>
+            <CardTitle className="text-sm font-medium">{t('admin.offersManagement.totalOffers')}</CardTitle>
             <Package className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{offers.length}</div>
             <p className="text-xs text-foreground opacity-75">
-              {pendingOffers.length} pending approval
+              {pendingOffers.length} {t('admin.offersManagement.pendingApproval')}
             </p>
           </CardContent>
         </Card>
@@ -555,7 +566,8 @@ const AdminOffers = () => {
           ))}
         </TabsContent>
       </Tabs>
-    </AdminPageContainer>
+      </AdminPageContainer>
+    </div>
   );
 };
 

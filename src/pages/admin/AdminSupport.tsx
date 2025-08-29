@@ -38,7 +38,7 @@ export default function AdminSupport() {
   const { toast } = useToast();
   
   const languageContext = useOptionalLanguage();
-  const { t } = languageContext || { t: (key: string) => key };
+  const { t, isRTL } = languageContext || { t: (key: string) => key, isRTL: false };
 
   useEffect(() => {
     fetchTickets();
@@ -158,7 +158,8 @@ export default function AdminSupport() {
   }
 
   return (
-    <AdminPageContainer title={t('support.title')} description={t('support.description')}>
+    <div dir={isRTL ? 'rtl' : 'ltr'}>
+      <AdminPageContainer title={t('admin.support.title')} description={t('admin.support.description')}>
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
         <Card>
@@ -369,6 +370,7 @@ export default function AdminSupport() {
           ))
         )}
       </div>
-    </AdminPageContainer>
+      </AdminPageContainer>
+    </div>
   );
 }

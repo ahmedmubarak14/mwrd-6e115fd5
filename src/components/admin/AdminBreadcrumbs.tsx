@@ -8,26 +8,34 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { ChevronRight, Home } from "lucide-react";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { cn } from "@/lib/utils";
 
-const breadcrumbMap: Record<string, string> = {
-  "/admin": "Dashboard",
-  "/admin/dashboard": "Dashboard Overview", 
-  "/admin/users": "User Management",
-  "/admin/requests": "Requests Management",
-  "/admin/offers": "Offers Management", 
-  "/admin/orders": "Orders Management",
-  "/admin/projects": "Projects Management",
-  "/admin/analytics": "Platform Analytics",
-  "/admin/subscriptions": "Subscription Management",
-  "/admin/support": "Support Center",
-  "/admin/verification-queue": "Verification Queue",
-  "/admin/category-management": "Category Management",
-  "/admin/expert-consultations": "Expert Consultations",
-  "/admin/financial-transactions": "Financial Transactions",
+const breadcrumbKeys: Record<string, string> = {
+  "/admin": "admin.breadcrumbs.admin",
+  "/admin/dashboard": "admin.breadcrumbs.dashboardOverview", 
+  "/admin/users": "admin.breadcrumbs.userManagement",
+  "/admin/requests": "admin.breadcrumbs.requestsManagement",
+  "/admin/offers": "admin.breadcrumbs.offersManagement", 
+  "/admin/orders": "admin.breadcrumbs.ordersManagement",
+  "/admin/projects": "admin.breadcrumbs.projectsManagement",
+  "/admin/analytics": "admin.breadcrumbs.platformAnalytics",
+  "/admin/subscriptions": "admin.breadcrumbs.subscriptionManagement",
+  "/admin/support": "admin.breadcrumbs.supportCenter",
+  "/admin/verification-queue": "admin.breadcrumbs.verificationQueue",
+  "/admin/category-management": "admin.breadcrumbs.categoryManagement",
+  "/admin/expert-consultations": "admin.breadcrumbs.expertConsultations",
+  "/admin/financial-transactions": "admin.breadcrumbs.financialTransactions",
+  "/admin/security": "admin.breadcrumbs.securityMonitoring"
 };
 
 export const AdminBreadcrumbs = () => {
   const location = useLocation();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false 
+  };
   const pathSegments = location.pathname.split('/').filter(Boolean);
   
   // Build breadcrumb items
@@ -37,7 +45,8 @@ export const AdminBreadcrumbs = () => {
   for (let i = 0; i < pathSegments.length; i++) {
     currentPath += '/' + pathSegments[i];
     const isLast = i === pathSegments.length - 1;
-    const title = breadcrumbMap[currentPath] || pathSegments[i].charAt(0).toUpperCase() + pathSegments[i].slice(1);
+    const translationKey = breadcrumbKeys[currentPath];
+    const title = translationKey ? t(translationKey) : pathSegments[i].charAt(0).toUpperCase() + pathSegments[i].slice(1);
     
     breadcrumbItems.push({
       path: currentPath,
@@ -47,46 +56,60 @@ export const AdminBreadcrumbs = () => {
   }
 
   return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        {/* Home/Admin root */}
-        <BreadcrumbItem>
-          <BreadcrumbLink href="/admin" className="flex items-center gap-1 text-foreground opacity-80 hover:text-foreground hover:opacity-100 transition-colors">
-            <Home className="h-3 w-3" />
-            <span className="admin-caption">Admin</span>
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        
-        {breadcrumbItems.length > 1 && (
-          <>
-            <BreadcrumbSeparator>
-              <ChevronRight className="h-3 w-3 text-foreground opacity-60" />
-            </BreadcrumbSeparator>
-            
-            {breadcrumbItems.slice(1).map((item, index) => (
-              <div key={item.path} className="flex items-center">
-                <BreadcrumbItem>
-                  {item.isLast ? (
-                  <BreadcrumbPage className="font-medium text-foreground text-xs">
-                    {item.title}
-                  </BreadcrumbPage>
-                  ) : (
-                  <BreadcrumbLink href={item.path} className="text-foreground opacity-80 hover:text-foreground hover:opacity-100 text-xs transition-colors">
-                    {item.title}
-                  </BreadcrumbLink>
+    <div dir={isRTL ? 'rtl' : 'ltr'}>
+      <Breadcrumb>
+        <BreadcrumbList className={cn(isRTL && "flex-row-reverse")}>
+          {/* Home/Admin root */}
+          <BreadcrumbItem>
+            <BreadcrumbLink 
+              href="/admin" 
+              className={cn(
+                "flex items-center gap-1 text-foreground opacity-80 hover:text-foreground hover:opacity-100 transition-colors",
+                isRTL && "flex-row-reverse"
+              )}
+            >
+              <Home className="h-3 w-3" />
+              <span className="admin-caption">{t('admin.breadcrumbs.admin')}</span>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          
+          {breadcrumbItems.length > 1 && (
+            <>
+              <BreadcrumbSeparator>
+                <ChevronRight className={cn(
+                  "h-3 w-3 text-foreground opacity-60",
+                  isRTL && "rotate-180"
+                )} />
+              </BreadcrumbSeparator>
+              
+              {breadcrumbItems.slice(1).map((item, index) => (
+                <div key={item.path} className={cn("flex items-center", isRTL && "flex-row-reverse")}>
+                  <BreadcrumbItem>
+                    {item.isLast ? (
+                    <BreadcrumbPage className="font-medium text-foreground text-xs">
+                      {item.title}
+                    </BreadcrumbPage>
+                    ) : (
+                    <BreadcrumbLink href={item.path} className="text-foreground opacity-80 hover:text-foreground hover:opacity-100 text-xs transition-colors">
+                      {item.title}
+                    </BreadcrumbLink>
+                    )}
+                  </BreadcrumbItem>
+                  
+                  {!item.isLast && (
+                    <BreadcrumbSeparator>
+                      <ChevronRight className={cn(
+                        "h-3 w-3 text-foreground opacity-60",
+                        isRTL && "rotate-180"
+                      )} />
+                    </BreadcrumbSeparator>
                   )}
-                </BreadcrumbItem>
-                
-                {!item.isLast && (
-                  <BreadcrumbSeparator>
-                    <ChevronRight className="h-3 w-3 text-foreground opacity-60" />
-                  </BreadcrumbSeparator>
-                )}
-              </div>
-            ))}
-          </>
-        )}
-      </BreadcrumbList>
-    </Breadcrumb>
+                </div>
+              ))}
+            </>
+          )}
+        </BreadcrumbList>
+      </Breadcrumb>
+    </div>
   );
 };
