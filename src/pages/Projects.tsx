@@ -1,4 +1,3 @@
-import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { useState, useMemo } from 'react';
 import { Plus, Search, Filter, FolderOpen, Clock, CheckCircle, BarChart3, Building2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -50,8 +49,10 @@ export default function Projects() {
     });
   }, [projects, searchTerm, statusFilter, priorityFilter]);
 
-  const handleView = (project: any) => {
-    window.location.href = `/projects/${project.id}`;
+  const clearFilters = () => {
+    setSearchTerm('');
+    setStatusFilter('all');
+    setPriorityFilter('all');
   };
 
   const handleEdit = (project: any) => {
@@ -62,9 +63,13 @@ export default function Projects() {
     console.log('Delete project:', project);
   };
 
+  const handleView = (project: any) => {
+    console.log('View project:', project);
+  };
+
   if (loading) {
     return (
-      <ClientPageContainer>
+      <div className="p-6 space-y-6">
         <div className="mb-8">
           <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
           <div className="h-4 w-32 bg-muted rounded animate-pulse" />
@@ -75,15 +80,22 @@ export default function Projects() {
             <MetricCard key={i} title="" value="" loading={true} />
           ))}
         </div>
-      </ClientPageContainer>
+      </div>
     );
   }
 
   return (
-    <ClientPageContainer
-      title="Projects"
-      description="Manage your procurement projects"
-      headerActions={
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-start mb-8">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
+            Projects
+          </h1>
+          <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
+            Manage your procurement projects
+          </p>
+        </div>
         <Button 
           onClick={() => setShowCreateModal(true)} 
           className="w-full md:w-auto gap-2"
@@ -91,22 +103,22 @@ export default function Projects() {
           <Plus className="h-4 w-4" />
           New Project
         </Button>
-      }
-    >
+      </div>
 
       {/* Metrics */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
         <MetricCard
           title="Total Projects"
           value={metrics.total}
-          icon={Building2}
+          icon={FolderOpen}
           trend={{ value: 12, label: "vs last month", isPositive: true }}
         />
         <MetricCard
           title="Active Projects"
           value={metrics.active}
-          icon={Clock}
-          trend={{ value: 8, label: "this month", isPositive: true }}
+          icon={BarChart3}
+          trend={{ value: 3, label: "this week", isPositive: true }}
+          variant="success"
         />
         <MetricCard
           title="Completed"
@@ -115,9 +127,9 @@ export default function Projects() {
           variant="success"
         />
         <MetricCard
-          title="In Planning"
+          title="Draft"
           value={metrics.pending}
-          icon={BarChart3}
+          icon={Clock}
           variant="warning"
         />
       </div>
@@ -127,38 +139,39 @@ export default function Projects() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Filter className="h-5 w-5" />
-            Filters & Search
+            Search & Filter
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search projects..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
+          <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search projects..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
             </div>
-
+            
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder="Filter by status" />
+              <SelectTrigger className="w-full md:w-48">
+                <SelectValue placeholder="All Status" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Status</SelectItem>
                 <SelectItem value="draft">Draft</SelectItem>
                 <SelectItem value="active">Active</SelectItem>
                 <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="on_hold">On Hold</SelectItem>
                 <SelectItem value="cancelled">Cancelled</SelectItem>
               </SelectContent>
             </Select>
 
             <Select value={priorityFilter} onValueChange={setPriorityFilter}>
-              <SelectTrigger>
-                <SelectValue placeholder="Filter by priority" />
+              <SelectTrigger className="w-full md:w-48">
+                <SelectValue placeholder="All Priority" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Priority</SelectItem>
@@ -168,24 +181,12 @@ export default function Projects() {
                 <SelectItem value="urgent">Urgent</SelectItem>
               </SelectContent>
             </Select>
-
-            <div className="text-sm text-muted-foreground flex items-center">
-              Showing {filteredProjects.length} of {metrics.total} projects
-            </div>
           </div>
 
-          {(searchTerm || statusFilter !== "all" || priorityFilter !== "all") && (
+          {(searchTerm || statusFilter !== 'all' || priorityFilter !== 'all') && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span>Showing {filteredProjects.length} of {metrics.total} projects</span>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setSearchTerm("");
-                  setStatusFilter("all");
-                  setPriorityFilter("all");
-                }}
-              >
+              <Button variant="ghost" size="sm" onClick={clearFilters}>
                 Clear filters
               </Button>
             </div>
@@ -194,43 +195,63 @@ export default function Projects() {
       </Card>
 
       {/* Projects Grid */}
-      {filteredProjects.length === 0 ? (
-        <EmptyState
-          icon={FolderOpen}
-          title={searchTerm || statusFilter !== 'all' || priorityFilter !== 'all' ? "No projects found" : "No projects yet"}
-          description={
-            searchTerm || statusFilter !== 'all' || priorityFilter !== 'all'
-              ? 'Try adjusting your filters to see more results.'
-              : 'Create your first project to get started with procurement management.'
-          }
-          action={
-            !searchTerm && statusFilter === 'all' && priorityFilter === 'all' ? {
-              label: "Create Your First Project",
-              onClick: () => setShowCreateModal(true),
-              variant: "default" as const
-            } : undefined
-          }
-        />
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {filteredProjects.length > 0 ? (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredProjects.map((project) => (
             <ProjectCard
               key={project.id}
               project={project}
-              onView={handleView}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              onView={handleView}
               getStatusColor={getStatusColor}
               getPriorityColor={getPriorityColor}
             />
           ))}
         </div>
+      ) : (
+        <Card className="border-dashed">
+          <CardContent className="p-12 text-center">
+            <div className="mx-auto w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+              <FolderOpen className="h-12 w-12 text-primary" />
+            </div>
+            
+            <h3 className="text-xl font-semibold text-foreground mb-2">
+              {searchTerm || statusFilter !== 'all' || priorityFilter !== 'all' 
+                ? "No projects found" 
+                : "Start Your First Project"}
+            </h3>
+            
+            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+              {searchTerm || statusFilter !== 'all' || priorityFilter !== 'all'
+                ? "Try adjusting your search criteria or filters to find what you're looking for"
+                : "Create your first project to organize your procurement activities and track progress"}
+            </p>
+
+            {!searchTerm && statusFilter === 'all' && priorityFilter === 'all' && (
+              <Button 
+                onClick={() => setShowCreateModal(true)} 
+                className="gap-2"
+              >
+                <Plus className="h-4 w-4" />
+                Create Your First Project
+              </Button>
+            )}
+
+            {(searchTerm || statusFilter !== 'all' || priorityFilter !== 'all') && (
+              <Button variant="outline" onClick={clearFilters} className="gap-2">
+                <FolderOpen className="h-4 w-4" />
+                Clear Filters
+              </Button>
+            )}
+          </CardContent>
+        </Card>
       )}
 
       <CreateProjectModal 
         open={showCreateModal} 
         onClose={() => setShowCreateModal(false)} 
       />
-    </ClientPageContainer>
+    </div>
   );
 }

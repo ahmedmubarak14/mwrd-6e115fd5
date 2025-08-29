@@ -25,6 +25,21 @@ import { AdminAnalytics } from './pages/admin/AdminAnalytics';
 import Requests from './pages/Requests';
 import CreateSimpleRequest from './pages/CreateSimpleRequest';
 import { SearchPage } from './components/search/SearchPage';
+import { Analytics } from './pages/Analytics';
+import BrowseRequests from './pages/BrowseRequests';
+import CreateRFQ from './pages/CreateRFQ';
+import CreateRequest from './pages/CreateRequest';
+import { ManageSubscription } from './pages/ManageSubscription';
+import Messages from './pages/Messages';
+import MyOffers from './pages/MyOffers';
+import Offers from './pages/Offers';
+import Orders from './pages/Orders';
+import Projects from './pages/Projects';
+import RFQManagement from './pages/RFQManagement';
+import Settings from './pages/Settings';
+import Support from './pages/Support';
+import VendorRFQs from './pages/VendorRFQs';
+import Vendors from './pages/Vendors';
 
 const RoleProtectedRoute: React.FC<{
   children: React.ReactNode;
@@ -89,6 +104,21 @@ function App() {
                       <Route path="requests/create" element={<CreateSimpleRequest />} />
                       <Route path="profile" element={<Profile />} />
                       <Route path="search" element={<SearchPage />} />
+                      <Route path="analytics" element={<Analytics />} />
+                      <Route path="browse-requests" element={<BrowseRequests />} />
+                      <Route path="create-rfq" element={<CreateRFQ />} />
+                      <Route path="create-request" element={<CreateRequest />} />
+                      <Route path="manage-subscription" element={<ManageSubscription />} />
+                      <Route path="messages" element={<Messages />} />
+                      <Route path="my-offers" element={<MyOffers />} />
+                      <Route path="offers" element={<Offers />} />
+                      <Route path="orders" element={<Orders />} />
+                      <Route path="projects" element={<Projects />} />
+                      <Route path="rfq-management" element={<RFQManagement />} />
+                      <Route path="settings" element={<Settings />} />
+                      <Route path="support" element={<Support />} />
+                      <Route path="vendor-rfqs" element={<VendorRFQs />} />
+                      <Route path="vendors" element={<Vendors />} />
                     </Route>
                     
                     {/* Legacy client routes (redirect to new structure) */}
@@ -96,6 +126,21 @@ function App() {
                     <Route path="/requests/create" element={<Navigate to="/client/requests/create" replace />} />
                     <Route path="/profile" element={<Navigate to="/client/profile" replace />} />
                     <Route path="/search" element={<Navigate to="/client/search" replace />} />
+                    <Route path="/analytics" element={<Navigate to="/client/analytics" replace />} />
+                    <Route path="/browse-requests" element={<Navigate to="/client/browse-requests" replace />} />
+                    <Route path="/create-rfq" element={<Navigate to="/client/create-rfq" replace />} />
+                    <Route path="/create-request" element={<Navigate to="/client/create-request" replace />} />
+                    <Route path="/manage-subscription" element={<Navigate to="/client/manage-subscription" replace />} />
+                    <Route path="/messages" element={<Navigate to="/client/messages" replace />} />
+                    <Route path="/my-offers" element={<Navigate to="/client/my-offers" replace />} />
+                    <Route path="/offers" element={<Navigate to="/client/offers" replace />} />
+                    <Route path="/orders" element={<Navigate to="/client/orders" replace />} />
+                    <Route path="/projects" element={<Navigate to="/client/projects" replace />} />
+                    <Route path="/rfq-management" element={<Navigate to="/client/rfq-management" replace />} />
+                    <Route path="/settings" element={<Navigate to="/client/settings" replace />} />
+                    <Route path="/support" element={<Navigate to="/client/support" replace />} />
+                    <Route path="/vendor-rfqs" element={<Navigate to="/client/vendor-rfqs" replace />} />
+                    <Route path="/vendors" element={<Navigate to="/client/vendors" replace />} />
                     
                     {/* Vendor routes */}
                     <Route path="/vendor-dashboard" element={

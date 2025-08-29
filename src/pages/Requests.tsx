@@ -290,9 +290,8 @@ const Requests = () => {
                 </div>
 
                 <Button 
-                  size="lg" 
+                  onClick={() => navigate('/client/requests/create')} 
                   className="w-full md:w-auto gap-2"
-                  onClick={() => navigate('/client/requests/create')}
                 >
                   <Plus className="h-4 w-4" />
                   Create Your First Request

@@ -29,7 +29,6 @@ import {
 } from "lucide-react";
 import { CRDocumentUpload } from "@/components/verification/CRDocumentUpload";
 import { VerificationStatus } from "@/components/verification/VerificationStatus";
-import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { AvatarUpload } from "@/components/profile/AvatarUpload";
 
@@ -150,10 +149,17 @@ const Profile = () => {
     : userProfile.email?.charAt(0).toUpperCase() || 'U';
 
   return (
-    <ClientPageContainer
-      title="Profile"
-      description="Manage your account information and verification status"
-      headerActions={
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-start mb-8">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
+            Profile
+          </h1>
+          <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
+            Manage your account information and verification status
+          </p>
+        </div>
         <div className="flex items-center gap-2">
           {getVerificationBadge()}
           {!isEditing && (
@@ -167,8 +173,7 @@ const Profile = () => {
             </Button>
           )}
         </div>
-      }
-    >
+      </div>
 
       <Tabs defaultValue="profile" className="space-y-6">
         <TabsList className="grid w-full grid-cols-2 lg:w-[400px]">
@@ -373,7 +378,7 @@ const Profile = () => {
           </Card>
         </TabsContent>
       </Tabs>
-    </ClientPageContainer>
+    </div>
   );
 };
 
