@@ -164,42 +164,51 @@ export const VerificationQueue = () => {
 
   const fetchVerificationRequests = async () => {
     try {
-      // Use mock data for verification requests
-      const mockData = [
-        {
-          id: '1',
-          user_id: 'user1',
-          document_type: 'business_license',
-          document_url: 'https://example.com/doc1.pdf',
-          status: 'pending',
-          submitted_at: new Date().toISOString(),
-          user_profiles: {
-            id: '1',
-            full_name: 'John Doe',
-            company_name: 'ABC Corp',
-            email: 'john@example.com'
-          }
-        },
-        {
-          id: '2', 
-          user_id: 'user2',
-          document_type: 'tax_certificate',
-          document_url: 'https://example.com/doc2.pdf',
-          status: 'approved',
-          submitted_at: new Date(Date.now() - 86400000).toISOString(),
-          user_profiles: {
-            id: '2',
-            full_name: 'Jane Smith',
-            company_name: 'XYZ Ltd',
-            email: 'jane@example.com'
-          }
-        }
-      ];
+      setLoading(true);
       
-      setRequests(mockData);
+      // Fetch real verification requests from database
+      const { data, error } = await supabase
+        .from('verification_requests')
+        .select(`
+          *,
+          user_profiles(
+            id,
+            full_name,
+            company_name,
+            email
+          )
+        `)
+        .order('submitted_at', { ascending: false });
+
+      if (error) {
+        console.error('Database error:', error);
+        // If table doesn't exist, show helpful message
+        if (error.code === '42P01') {
+          showError('Verification requests table not found. Please contact administrator to set up the database schema.');
+          return;
+        }
+        throw error;
+      }
+
+      const transformedRequests: VerificationRequest[] = (data || []).map(request => ({
+        id: request.id,
+        user_id: request.user_id,
+        document_type: request.document_type,
+        document_url: request.document_url,
+        status: request.status,
+        submitted_at: request.submitted_at,
+        reviewed_at: request.reviewed_at || undefined,
+        reviewed_by: request.reviewed_by || undefined,
+        reviewer_notes: request.reviewer_notes || undefined,
+        user_profiles: Array.isArray(request.user_profiles) 
+          ? request.user_profiles[0] || undefined
+          : request.user_profiles || undefined
+      }));
+
+      setRequests(transformedRequests);
 
       // Check document availability for each request
-      mockData.forEach(async (request) => {
+      transformedRequests.forEach(async (request) => {
         setDocumentStatus(prev => ({ ...prev, [request.id]: 'checking' }));
         
         // Extract file path from URL or use direct path
@@ -214,7 +223,52 @@ export const VerificationQueue = () => {
 
     } catch (error: any) {
       console.error('Error fetching verification requests:', error);
-      showError('Failed to load verification requests');
+      
+      // If it's a table not found error, provide a clearer message
+      if (error.code === '42P01') {
+        showError('Database table "verification_requests" not found. The verification system needs to be set up in the database first.');
+      } else {
+        showError('Failed to load verification requests. Using demo data for now.');
+        
+        // Fall back to demo data if real data fetch fails
+        const demoData: VerificationRequest[] = [
+          {
+            id: 'demo-1',
+            user_id: 'demo-user-1',
+            document_type: 'business_license',
+            document_url: '/demo/business-license.pdf',
+            status: 'pending',
+            submitted_at: new Date().toISOString(),
+            user_profiles: {
+              id: 'demo-profile-1',
+              full_name: 'Demo User 1',
+              company_name: 'Demo Company Ltd',
+              email: 'demo1@example.com'
+            }
+          },
+          {
+            id: 'demo-2',
+            user_id: 'demo-user-2',
+            document_type: 'tax_certificate',
+            document_url: '/demo/tax-certificate.pdf',
+            status: 'approved',
+            submitted_at: new Date(Date.now() - 86400000).toISOString(),
+            user_profiles: {
+              id: 'demo-profile-2',
+              full_name: 'Demo User 2',
+              company_name: 'Another Demo Corp',
+              email: 'demo2@example.com'
+            }
+          }
+        ];
+        
+        setRequests(demoData);
+        
+        // Set demo document status
+        demoData.forEach(request => {
+          setDocumentStatus(prev => ({ ...prev, [request.id]: 'available' }));
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -262,16 +316,21 @@ export const VerificationQueue = () => {
   const handleStatusUpdate = async (requestId: string, newStatus: 'approved' | 'rejected') => {
     setProcessing(requestId);
     try {
-      // Mock status update since table doesn't exist
-      setRequests(prev => prev.map(req => 
-        req.id === requestId ? { 
-          ...req, 
+      const { error } = await supabase
+        .from('verification_requests')
+        .update({
           status: newStatus,
           reviewed_at: new Date().toISOString(),
-          reviewer_notes: reviewNotes[requestId] || null
-        } : req
-      ));
+          reviewer_notes: reviewNotes[requestId] || null,
+          reviewed_by: 'current_admin' // You might want to get this from auth context
+        })
+        .eq('id', requestId);
 
+      if (error) throw error;
+
+      // Refresh the data
+      await fetchVerificationRequests();
+      
       showSuccess(`Request ${newStatus} successfully`);
       setReviewNotes(prev => ({ ...prev, [requestId]: '' }));
     } catch (error: any) {
