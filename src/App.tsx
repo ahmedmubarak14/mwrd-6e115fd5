@@ -22,6 +22,7 @@ import AdminUsers from './pages/admin/AdminUsers';
 import AdminRequests from './pages/admin/AdminRequests';
 import AdminOffers from './pages/admin/AdminOffers';
 import { AdminAnalytics } from './pages/admin/AdminAnalytics';
+import AdminRealTimeMonitor from './pages/admin/AdminRealTimeMonitor';
 import Requests from './pages/Requests';
 import CreateSimpleRequest from './pages/CreateSimpleRequest';
 import { SearchPage } from './components/search/SearchPage';
@@ -160,6 +161,7 @@ function App() {
                       <Route path="requests" element={<AdminRequests />} />
                       <Route path="offers" element={<AdminOffers />} />
                       <Route path="analytics" element={<AdminAnalytics />} />
+                      <Route path="real-time-monitor" element={<AdminRealTimeMonitor />} />
                     </Route>
                     
                     {/* Default and 404 routes */}
