@@ -31,6 +31,7 @@ import AdminAutomationCenter from './pages/admin/AdminAutomationCenter';
 import AdminFinancialTransactions from './pages/admin/AdminFinancialTransactions';
 import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import { AdminSupport } from './pages/admin/AdminSupport';
+import AdminCommunications from './pages/admin/AdminCommunications';
 import Requests from './pages/Requests';
 import CreateSimpleRequest from './pages/CreateSimpleRequest';
 import { SearchPage } from './components/search/SearchPage';
@@ -178,6 +179,7 @@ function App() {
                       <Route path="financial-transactions" element={<AdminFinancialTransactions />} />
                       <Route path="subscriptions" element={<AdminSubscriptions />} />
                       <Route path="support" element={<AdminSupport />} />
+                      <Route path="communications" element={<AdminCommunications />} />
                     </Route>
                     
                     {/* Default and 404 routes */}
