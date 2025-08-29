@@ -1,4 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { Resend } from "npm:resend@2.0.0";
+
+const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -10,7 +13,109 @@ interface EmailRequest {
   subject: string;
   message: string;
   type: 'offer' | 'request_approval' | 'offer_status' | 'general';
+  data?: any;
 }
+
+const generateEmailTemplate = (type: string, message: string, data?: any): string => {
+  const baseStyle = `
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
+      .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+      .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px 20px; text-align: center; border-radius: 8px 8px 0 0; }
+      .content { background: white; padding: 30px 20px; border: 1px solid #e1e5e9; }
+      .footer { background: #f8f9fa; padding: 20px; text-align: center; border-radius: 0 0 8px 8px; font-size: 14px; color: #6c757d; }
+      .button { display: inline-block; background: #667eea; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0; }
+      .highlight { background: #f8f9fa; padding: 15px; border-left: 4px solid #667eea; margin: 20px 0; }
+    </style>
+  `;
+
+  switch (type) {
+    case 'offer':
+      return `
+        ${baseStyle}
+        <div class="container">
+          <div class="header">
+            <h1>🎯 New Offer Received</h1>
+          </div>
+          <div class="content">
+            <p>You have received a new offer for your request!</p>
+            <div class="highlight">
+              <p>${message}</p>
+              ${data?.price ? `<p><strong>Price:</strong> ${data.price} ${data.currency || 'SAR'}</p>` : ''}
+              ${data?.delivery_time_days ? `<p><strong>Delivery Time:</strong> ${data.delivery_time_days} days</p>` : ''}
+            </div>
+            <a href="${data?.platform_url || '#'}" class="button">View Offer Details</a>
+          </div>
+          <div class="footer">
+            <p>MWRD Procurement Platform - Connecting You to the Right Vendors</p>
+          </div>
+        </div>
+      `;
+    
+    case 'request_approval':
+      return `
+        ${baseStyle}
+        <div class="container">
+          <div class="header">
+            <h1>📋 Request Status Update</h1>
+          </div>
+          <div class="content">
+            <p>Your procurement request status has been updated.</p>
+            <div class="highlight">
+              <p>${message}</p>
+              ${data?.request_title ? `<p><strong>Request:</strong> ${data.request_title}</p>` : ''}
+              ${data?.status ? `<p><strong>Status:</strong> ${data.status}</p>` : ''}
+            </div>
+            <a href="${data?.platform_url || '#'}" class="button">View Request</a>
+          </div>
+          <div class="footer">
+            <p>MWRD Procurement Platform - Streamlining Your Procurement Process</p>
+          </div>
+        </div>
+      `;
+    
+    case 'offer_status':
+      return `
+        ${baseStyle}
+        <div class="container">
+          <div class="header">
+            <h1>📊 Offer Status Update</h1>
+          </div>
+          <div class="content">
+            <p>There's an update on your offer status.</p>
+            <div class="highlight">
+              <p>${message}</p>
+              ${data?.offer_title ? `<p><strong>Offer:</strong> ${data.offer_title}</p>` : ''}
+              ${data?.status ? `<p><strong>New Status:</strong> ${data.status}</p>` : ''}
+            </div>
+            <a href="${data?.platform_url || '#'}" class="button">View Details</a>
+          </div>
+          <div class="footer">
+            <p>MWRD Procurement Platform - Your Success Is Our Priority</p>
+          </div>
+        </div>
+      `;
+    
+    default:
+      return `
+        ${baseStyle}
+        <div class="container">
+          <div class="header">
+            <h1>📢 Platform Notification</h1>
+          </div>
+          <div class="content">
+            <div class="highlight">
+              <p>${message}</p>
+            </div>
+            <a href="${data?.platform_url || '#'}" class="button">Visit Platform</a>
+          </div>
+          <div class="footer">
+            <p>MWRD Procurement Platform - Your Trusted Procurement Partner</p>
+          </div>
+        </div>
+      `;
+  }
+};
 
 const handler = async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
@@ -19,29 +124,27 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { to, subject, message, type }: EmailRequest = await req.json();
+    const { to, subject, message, type, data }: EmailRequest = await req.json();
 
     console.log('Sending notification email:', { to, subject, type });
 
-    // For now, we'll just log the email
-    // In production, you would integrate with a service like Resend
-    const emailLog = {
-      timestamp: new Date().toISOString(),
-      to,
+    // Generate email HTML based on type
+    const emailHtml = generateEmailTemplate(type, message, data);
+
+    const emailResponse = await resend.emails.send({
+      from: "MWRD Platform <notifications@resend.dev>",
+      to: [to],
       subject,
-      message,
-      type,
-      status: 'sent'
-    };
+      html: emailHtml,
+    });
 
-    console.log('Email notification logged:', emailLog);
+    console.log('Email sent successfully:', emailResponse);
 
-    // Simulate email sending success
     return new Response(
       JSON.stringify({ 
         success: true, 
         message: 'Notification email sent successfully',
-        emailId: `email_${Date.now()}`
+        emailId: emailResponse.data?.id || `email_${Date.now()}`
       }),
       {
         status: 200,

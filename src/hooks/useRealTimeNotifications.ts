@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { useEmailNotifications } from './useEmailNotifications';
 
 interface Notification {
   id: string;
@@ -19,6 +20,7 @@ interface Notification {
 export const useRealTimeNotifications = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { sendOfferNotification, sendRequestApprovalNotification, sendOfferStatusNotification } = useEmailNotifications();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -142,6 +144,38 @@ export const useRealTimeNotifications = () => {
               variant: newNotification.type.includes('error') ? 'destructive' : 'default',
               duration: 6000,
             });
+
+            // Send email notifications for critical updates
+            if (user?.email) {
+              const notificationData = newNotification.data as any;
+              
+              // Background email sending - don't await to avoid blocking UI
+              (async () => {
+                try {
+                  if (newNotification.type === 'offer_received') {
+                    await sendOfferNotification(user.email!, {
+                      request_title: notificationData?.request_title || 'Your Request',
+                      vendor_name: notificationData?.vendor_name || 'A Vendor',
+                      price: notificationData?.price || 0,
+                      currency: notificationData?.currency,
+                      delivery_time_days: notificationData?.delivery_time_days
+                    });
+                  } else if (newNotification.type === 'request_status_update') {
+                    await sendRequestApprovalNotification(user.email!, {
+                      title: notificationData?.request_title || newNotification.title,
+                      status: notificationData?.status || 'Updated'
+                    });
+                  } else if (newNotification.type === 'offer_status_update') {
+                    await sendOfferStatusNotification(user.email!, {
+                      title: notificationData?.offer_title || newNotification.title,
+                      status: notificationData?.new_status || 'Updated'
+                    });
+                  }
+                } catch (error) {
+                  console.error('Failed to send email notification:', error);
+                }
+              })();
+            }
           }
         }
       )
