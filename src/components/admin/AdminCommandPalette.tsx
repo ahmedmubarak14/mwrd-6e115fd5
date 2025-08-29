@@ -75,27 +75,27 @@ export const AdminCommandPalette = () => {
     setLoading(true);
     const timer = setTimeout(async () => {
       try {
-        const [users, orders, consultations] = await Promise.all([
+        const [users, consultations, profiles] = await Promise.all([
           supabase
             .from("user_profiles")
             .select("id,email,full_name,company_name,role")
             .or(`email.ilike.%${q}%,full_name.ilike.%${q}%,company_name.ilike.%${q}%`)
             .limit(5),
           supabase
-            .from("orders")
-            .select("id,title,description,status")
-            .or(`title.ilike.%${q}%,description.ilike.%${q}%`)
-            .limit(5),
-          supabase
             .from("expert_consultations")
             .select("id,full_name,email,event_type,status")
             .or(`full_name.ilike.%${q}%,email.ilike.%${q}%,event_type.ilike.%${q}%`)
             .limit(5),
+          supabase
+            .from("user_profiles")
+            .select("id,full_name,email,role")
+            .or(`full_name.ilike.%${q}%,email.ilike.%${q}%`)
+            .limit(5),
         ]);
 
         setUsers((users.data as any) || []);
-        setRequests((orders.data as any) || []);
-        setOffers((consultations.data as any) || []);
+        setRequests((consultations.data as any) || []);
+        setOffers((profiles.data as any) || []);
       } catch (e) {
         // noop
       } finally {

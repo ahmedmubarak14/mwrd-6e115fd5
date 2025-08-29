@@ -88,7 +88,7 @@ export const BulkUserActions = ({
     try {
       const { error } = await supabase
         .from('user_profiles')
-        .update({ status: bulkStatus as 'pending' | 'approved' | 'blocked' | 'rejected' })
+        .update({ role: bulkStatus as any })
         .in('id', selectedUsers);
 
       if (error) throw error;

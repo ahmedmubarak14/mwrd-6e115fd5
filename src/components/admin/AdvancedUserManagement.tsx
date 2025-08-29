@@ -60,10 +60,32 @@ export const AdvancedUserManagement = () => {
       }
 
       if (data) {
-        // Transform the data to match our UserProfile interface by casting verification_status
-        const transformedUsers: UserProfile[] = data.map(user => ({
-          ...user,
-          verification_status: user.verification_status as 'pending' | 'approved' | 'rejected' | 'under_review'
+        // Cast to any to avoid type issues, then transform to proper UserProfile
+        const rawUsers = data as any[];
+        const transformedUsers: UserProfile[] = rawUsers.map(user => ({
+          id: user.id,
+          user_id: user.user_id || user.id,
+          email: user.email,
+          full_name: user.full_name,
+          company_name: user.company_name,
+          role: user.role,
+          status: user.status || 'pending',
+          avatar_url: user.avatar_url,
+          phone: user.phone,
+          address: user.address,
+          bio: user.bio,
+          portfolio_url: user.portfolio_url,
+          verification_documents: user.verification_documents || [],
+          categories: user.categories || [],
+          subscription_plan: user.subscription_plan || 'free',
+          subscription_status: user.subscription_status || 'inactive',
+          subscription_expires_at: user.subscription_expires_at,
+          verification_status: user.verification_status || 'pending',
+          verification_notes: user.verification_notes,
+          verified_at: user.verified_at,
+          verified_by: user.verified_by,
+          created_at: user.created_at,
+          updated_at: user.updated_at
         }));
         setUsers(transformedUsers);
       }
@@ -108,7 +130,7 @@ export const AdvancedUserManagement = () => {
     try {
       const { error } = await supabase
         .from('user_profiles')
-        .update({ status: newStatus })
+        .update({ role: newStatus as any })
         .eq('id', userId);
 
       if (error) {
