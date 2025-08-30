@@ -92,11 +92,11 @@ export const CommunicationOverview = () => {
       };
       
       // Create a simple CSV download
-      const csvContent = `User Engagement Report
-Generated: ${new Date().toLocaleString()}
-Total Active Users: ${reportData.totalUsers}
-Total Messages: ${reportData.totalMessages}
-Average Response Time: ${reportData.avgResponseTime} minutes`;
+      const csvContent = `${t('communication.userEngagementReportTitle')}
+${t('communication.generated')}: ${new Date().toLocaleString()}
+${t('communication.totalActiveUsers')}: ${reportData.totalUsers}
+${t('communication.totalMessagesLabel')}: ${reportData.totalMessages}
+${t('communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${t('communication.minutes')}`;
       
       const blob = new Blob([csvContent], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
@@ -167,10 +167,10 @@ Average Response Time: ${reportData.avgResponseTime} minutes`;
       const smsNotifications = notifications?.filter(n => n.type === 'sms').length || 0;
 
       const channelUsageData = [
-        { channel: 'In-App Chat', count: chatMessages, color: '#8B5CF6' },
-        { channel: 'Email', count: emailNotifications, color: '#06B6D4' },
-        { channel: 'Push Notifications', count: pushNotifications, color: '#10B981' },
-        { channel: 'SMS', count: smsNotifications, color: '#F59E0B' }
+        { channel: t('communication.inAppChat'), count: chatMessages, color: '#8B5CF6' },
+        { channel: t('communication.email'), count: emailNotifications, color: '#06B6D4' },
+        { channel: t('communication.pushNotifications'), count: pushNotifications, color: '#10B981' },
+        { channel: t('communication.sms'), count: smsNotifications, color: '#F59E0B' }
       ];
 
       setMessageActivityData(messageActivityData);
