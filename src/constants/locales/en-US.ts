@@ -1336,6 +1336,70 @@ export const enUS = {
       categoryManagement: "Category Management",
       financialTransactions: "Financial Transactions",
       securityMonitoring: "Security Monitoring"
+    },
+    projectsManagement: {
+      title: "Project Management",
+      description: "Monitor project lifecycles, BOQ items, and budget tracking across all client projects",
+      overview: {
+        totalProjects: "Total Projects",
+        activeProjects: "active projects",
+        completed: "Completed",
+        projectsDelivered: "Projects delivered",
+        overdue: "Overdue",
+        requireAttention: "Require attention",
+        totalValue: "Total Value",
+        combinedProjectValue: "Combined project value"
+      },
+      filters: {
+        title: "Filters & Search",
+        searchPlaceholder: "Search projects...",
+        status: "Status",
+        priority: "Priority",
+        allStatuses: "All Statuses",
+        allPriorities: "All Priorities",
+        refresh: "Refresh"
+      },
+      status: {
+        draft: "Draft",
+        active: "Active",
+        completed: "Completed",
+        onHold: "On Hold",
+        cancelled: "Cancelled"
+      },
+      priority: {
+        urgent: "Urgent",
+        high: "High",
+        medium: "Medium",
+        low: "Low"
+      },
+      details: {
+        noDescription: "No description provided",
+        client: "Client",
+        projectProgress: "Project Progress",
+        budget: "Budget",
+        boqItems: "BOQ Items",
+        items: "items",
+        timeline: "Timeline",
+        notSpecified: "Not specified",
+        requests: "Requests",
+        relatedRequests: "related requests"
+      },
+      actions: {
+        viewDetails: "View Details",
+        viewBOQ: "View BOQ",
+        contactClient: "Contact Client",
+        putOnHold: "Put on Hold",
+        markComplete: "Mark Complete",
+        resumeProject: "Resume Project"
+      },
+      messages: {
+        loading: "Loading projects...",
+        noProjectsFound: "No projects found matching your filters.",
+        statusUpdated: "Project status updated to",
+        updateSuccess: "Success",
+        updateError: "Failed to update project status",
+        fetchError: "Failed to fetch projects"
+      }
     }
   }
 };

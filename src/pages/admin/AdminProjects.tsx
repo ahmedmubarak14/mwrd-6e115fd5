@@ -9,6 +9,7 @@ import { Building2, Calendar, DollarSign, Package, Search, Eye, MessageSquare, F
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 import { format } from 'date-fns';
 
 interface AdminProject {
@@ -42,6 +43,7 @@ interface AdminProject {
 const AdminProjects = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useOptionalLanguage();
   const [projects, setProjects] = useState<AdminProject[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -86,8 +88,8 @@ const AdminProjects = () => {
     } catch (error) {
       console.error('Error fetching projects:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to fetch projects',
+        title: t('admin.projectsManagement.messages.updateError'),
+        description: t('admin.projectsManagement.messages.fetchError'),
         variant: 'destructive'
       });
     } finally {
@@ -108,16 +110,16 @@ const AdminProjects = () => {
       if (error) throw error;
 
       toast({
-        title: 'Success',
-        description: `Project status updated to ${status}`,
+        title: t('admin.projectsManagement.messages.updateSuccess'),
+        description: `${t('admin.projectsManagement.messages.statusUpdated')} ${status}`,
       });
 
       fetchProjects();
     } catch (error) {
       console.error('Error updating project status:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to update project status',
+        title: t('admin.projectsManagement.messages.updateError'),
+        description: t('admin.projectsManagement.messages.updateError'),
         variant: 'destructive'
       });
     }
@@ -190,10 +192,10 @@ const AdminProjects = () => {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
-          Project Management
+          {t('admin.projectsManagement.title')}
         </h1>
         <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
-          Monitor project lifecycles, BOQ items, and budget tracking across all client projects
+          {t('admin.projectsManagement.description')}
         </p>
       </div>
 
@@ -201,46 +203,46 @@ const AdminProjects = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.projectsManagement.overview.totalProjects')}</CardTitle>
             <Building2 className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{projects.length}</div>
             <p className="text-xs text-foreground opacity-75">
-              {activeProjects.length} active projects
+              {activeProjects.length} {t('admin.projectsManagement.overview.activeProjects')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Completed</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.projectsManagement.overview.completed')}</CardTitle>
             <Package className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-success">{completedProjects.length}</div>
             <p className="text-xs text-foreground opacity-75">
-              Projects delivered
+              {t('admin.projectsManagement.overview.projectsDelivered')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Overdue</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.projectsManagement.overview.overdue')}</CardTitle>
             <AlertTriangle className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-destructive">{overdueProjects.length}</div>
             <p className="text-xs text-foreground opacity-75">
-              Require attention
+              {t('admin.projectsManagement.overview.requireAttention')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Value</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.projectsManagement.overview.totalValue')}</CardTitle>
             <DollarSign className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
@@ -248,7 +250,7 @@ const AdminProjects = () => {
               {projects.reduce((sum, p) => sum + calculateTotalBudget(p), 0).toLocaleString()} SAR
             </div>
             <p className="text-xs text-foreground opacity-75">
-              Combined project value
+              {t('admin.projectsManagement.overview.combinedProjectValue')}
             </p>
           </CardContent>
         </Card>
@@ -257,14 +259,14 @@ const AdminProjects = () => {
       {/* Filters */}
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle className="text-lg">Filters & Search</CardTitle>
+          <CardTitle className="text-lg">{t('admin.projectsManagement.filters.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-foreground opacity-75" />
               <Input
-                placeholder="Search projects..."
+                placeholder={t('admin.projectsManagement.filters.searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -273,33 +275,33 @@ const AdminProjects = () => {
             
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={t('admin.projectsManagement.filters.status')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="draft">Draft</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="on_hold">On Hold</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
+                <SelectItem value="all">{t('admin.projectsManagement.filters.allStatuses')}</SelectItem>
+                <SelectItem value="draft">{t('admin.projectsManagement.status.draft')}</SelectItem>
+                <SelectItem value="active">{t('admin.projectsManagement.status.active')}</SelectItem>
+                <SelectItem value="completed">{t('admin.projectsManagement.status.completed')}</SelectItem>
+                <SelectItem value="on_hold">{t('admin.projectsManagement.status.onHold')}</SelectItem>
+                <SelectItem value="cancelled">{t('admin.projectsManagement.status.cancelled')}</SelectItem>
               </SelectContent>
             </Select>
 
             <Select value={priorityFilter} onValueChange={setPriorityFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Priority" />
+                <SelectValue placeholder={t('admin.projectsManagement.filters.priority')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Priorities</SelectItem>
-                <SelectItem value="urgent">Urgent</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
+                <SelectItem value="all">{t('admin.projectsManagement.filters.allPriorities')}</SelectItem>
+                <SelectItem value="urgent">{t('admin.projectsManagement.priority.urgent')}</SelectItem>
+                <SelectItem value="high">{t('admin.projectsManagement.priority.high')}</SelectItem>
+                <SelectItem value="medium">{t('admin.projectsManagement.priority.medium')}</SelectItem>
+                <SelectItem value="low">{t('admin.projectsManagement.priority.low')}</SelectItem>
               </SelectContent>
             </Select>
 
             <Button onClick={fetchProjects} variant="outline">
-              Refresh
+              {t('admin.projectsManagement.filters.refresh')}
             </Button>
           </div>
         </CardContent>
@@ -308,11 +310,11 @@ const AdminProjects = () => {
       {/* Projects List */}
       <div className="space-y-4">
         {loading ? (
-          <div className="text-center py-8">Loading projects...</div>
+          <div className="text-center py-8">{t('admin.projectsManagement.messages.loading')}</div>
         ) : filteredProjects.length === 0 ? (
           <Card>
             <CardContent className="text-center py-8">
-              <p className="text-foreground opacity-75">No projects found matching your filters.</p>
+              <p className="text-foreground opacity-75">{t('admin.projectsManagement.messages.noProjectsFound')}</p>
             </CardContent>
           </Card>
         ) : (
@@ -328,10 +330,10 @@ const AdminProjects = () => {
                       )}
                     </div>
                     <CardDescription className="line-clamp-2">
-                      {project.description || 'No description provided'}
+                      {project.description || t('admin.projectsManagement.details.noDescription')}
                     </CardDescription>
                     <div className="flex items-center gap-4 text-sm text-foreground opacity-75">
-                      <span>Client: {project.client?.company_name || project.client?.full_name}</span>
+                      <span>{t('admin.projectsManagement.details.client')}: {project.client?.company_name || project.client?.full_name}</span>
                       {project.category && (
                         <>
                           <span>•</span>
@@ -361,7 +363,7 @@ const AdminProjects = () => {
                 {/* Progress Bar */}
                 <div className="mb-4">
                   <div className="flex items-center justify-between text-sm mb-2">
-                    <span>Project Progress</span>
+                    <span>{t('admin.projectsManagement.details.projectProgress')}</span>
                     <span>{Math.round(calculateProjectProgress(project))}%</span>
                   </div>
                   <Progress value={calculateProjectProgress(project)} className="w-full" />
@@ -369,42 +371,42 @@ const AdminProjects = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                   <div>
-                    <p className="text-sm font-medium text-foreground opacity-75">Budget</p>
+                    <p className="text-sm font-medium text-foreground opacity-75">{t('admin.projectsManagement.details.budget')}</p>
                     <p className="text-lg font-bold text-primary">
                       {calculateTotalBudget(project).toLocaleString()} {project.currency || 'SAR'}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-foreground opacity-75">BOQ Items</p>
-                    <p className="text-sm">{project._count?.boq_items || 0} items</p>
+                    <p className="text-sm font-medium text-foreground opacity-75">{t('admin.projectsManagement.details.boqItems')}</p>
+                    <p className="text-sm">{project._count?.boq_items || 0} {t('admin.projectsManagement.details.items')}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-foreground opacity-75">Timeline</p>
+                    <p className="text-sm font-medium text-foreground opacity-75">{t('admin.projectsManagement.details.timeline')}</p>
                     <p className="text-sm">
                       {project.start_date && project.end_date
                         ? `${format(new Date(project.start_date), 'MMM dd')} - ${format(new Date(project.end_date), 'MMM dd, yyyy')}`
-                        : 'Not specified'
+                        : t('admin.projectsManagement.details.notSpecified')
                       }
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-foreground opacity-75">Requests</p>
-                    <p className="text-sm">{project._count?.requests || 0} related requests</p>
+                    <p className="text-sm font-medium text-foreground opacity-75">{t('admin.projectsManagement.details.requests')}</p>
+                    <p className="text-sm">{project._count?.requests || 0} {t('admin.projectsManagement.details.relatedRequests')}</p>
                   </div>
                 </div>
 
                 <div className="flex flex-wrap gap-2">
                   <Button variant="outline" size="sm" className="flex items-center gap-1">
                     <Eye className="h-4 w-4" />
-                    View Details
+                    {t('admin.projectsManagement.actions.viewDetails')}
                   </Button>
                   <Button variant="outline" size="sm" className="flex items-center gap-1">
                     <FileText className="h-4 w-4" />
-                    View BOQ
+                    {t('admin.projectsManagement.actions.viewBOQ')}
                   </Button>
                   <Button variant="outline" size="sm" className="flex items-center gap-1">
                     <MessageSquare className="h-4 w-4" />
-                    Contact Client
+                    {t('admin.projectsManagement.actions.contactClient')}
                   </Button>
                   
                   {project.status === 'active' && (
@@ -414,13 +416,13 @@ const AdminProjects = () => {
                         size="sm" 
                         onClick={() => updateProjectStatus(project.id, 'on_hold')}
                       >
-                        Put on Hold
+                        {t('admin.projectsManagement.actions.putOnHold')}
                       </Button>
                       <Button 
                         size="sm" 
                         onClick={() => updateProjectStatus(project.id, 'completed')}
                       >
-                        Mark Complete
+                        {t('admin.projectsManagement.actions.markComplete')}
                       </Button>
                     </>
                   )}
@@ -430,7 +432,7 @@ const AdminProjects = () => {
                       size="sm" 
                       onClick={() => updateProjectStatus(project.id, 'active')}
                     >
-                      Resume Project
+                      {t('admin.projectsManagement.actions.resumeProject')}
                     </Button>
                   )}
                 </div>

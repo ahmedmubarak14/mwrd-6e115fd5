@@ -1233,6 +1233,70 @@ export const arSA = {
       categoryManagement: "إدارة الفئات",
       financialTransactions: "المعاملات المالية",
       securityMonitoring: "مراقبة الأمان"
+    },
+    projectsManagement: {
+      title: "إدارة المشاريع",
+      description: "مراقبة دورات حياة المشاريع وعناصر قوائم الكميات وتتبع الميزانية عبر جميع مشاريع العملاء",
+      overview: {
+        totalProjects: "إجمالي المشاريع",
+        activeProjects: "مشاريع نشطة",
+        completed: "مكتملة",
+        projectsDelivered: "مشاريع مسلمة",
+        overdue: "متأخرة",
+        requireAttention: "تتطلب انتباه",
+        totalValue: "القيمة الإجمالية",
+        combinedProjectValue: "قيمة المشاريع المجمعة"
+      },
+      filters: {
+        title: "المرشحات والبحث",
+        searchPlaceholder: "البحث في المشاريع...",
+        status: "الحالة",
+        priority: "الأولوية",
+        allStatuses: "جميع الحالات",
+        allPriorities: "جميع الأولويات",
+        refresh: "تحديث"
+      },
+      status: {
+        draft: "مسودة",
+        active: "نشط",
+        completed: "مكتمل",
+        onHold: "معلق",
+        cancelled: "ملغى"
+      },
+      priority: {
+        urgent: "عاجل",
+        high: "عالي",
+        medium: "متوسط",
+        low: "منخفض"
+      },
+      details: {
+        noDescription: "لا يوجد وصف",
+        client: "العميل",
+        projectProgress: "تقدم المشروع",
+        budget: "الميزانية",
+        boqItems: "عناصر قائمة الكميات",
+        items: "عناصر",
+        timeline: "الجدول الزمني",
+        notSpecified: "غير محدد",
+        requests: "الطلبات",
+        relatedRequests: "طلبات ذات صلة"
+      },
+      actions: {
+        viewDetails: "عرض التفاصيل",
+        viewBOQ: "عرض قائمة الكميات",
+        contactClient: "الاتصال بالعميل",
+        putOnHold: "تعليق",
+        markComplete: "تحديد كمكتمل",
+        resumeProject: "استئناف المشروع"
+      },
+      messages: {
+        loading: "جاري تحميل المشاريع...",
+        noProjectsFound: "لم يتم العثور على مشاريع تطابق المرشحات الخاصة بك.",
+        statusUpdated: "تم تحديث حالة المشروع إلى",
+        updateSuccess: "نجح",
+        updateError: "فشل في تحديث حالة المشروع",
+        fetchError: "فشل في جلب المشاريع"
+      }
     }
   }
 };
