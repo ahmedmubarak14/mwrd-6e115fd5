@@ -621,6 +621,9 @@ export const arSA = {
       completed: "مكتمل",
       cancelled: "ملغى",
       
+      // Time Units
+      hoursUnit: "س",
+      
       // Bulk Actions
       consultationsSelected: "استشارة محددة",
       consultationSelected: "استشارة محددة",

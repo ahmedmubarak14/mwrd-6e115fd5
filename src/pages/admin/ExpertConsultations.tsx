@@ -57,6 +57,11 @@ export const ExpertConsultations = () => {
     isRTL: false,
     formatDate: (date: Date) => date.toLocaleDateString()
   };
+  
+  // Helper function to translate status
+  const getTranslatedStatus = (status: string) => {
+    return t(`expertConsultations.${status}`);
+  };
   const { showSuccess, showError } = useToastFeedback();
   const [consultations, setConsultations] = useState<Consultation[]>([]);
   const [loading, setLoading] = useState(true);
@@ -443,7 +448,7 @@ export const ExpertConsultations = () => {
               <Timer className="h-4 w-4 text-orange-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{analyticsData.avgResponseTime}h</div>
+              <div className="text-2xl font-bold">{analyticsData.avgResponseTime}{t('expertConsultations.hoursUnit')}</div>
               <p className="text-xs text-muted-foreground">{t('expertConsultations.responseTime')}</p>
             </CardContent>
           </Card>
@@ -660,7 +665,7 @@ export const ExpertConsultations = () => {
                       <TableCell>
                         <div className={cn("flex items-center gap-1", getStatusColor(consultation.status))}>
                           {getStatusIcon(consultation.status)}
-                          <span className="capitalize text-sm">{consultation.status}</span>
+                          <span className="capitalize text-sm">{getTranslatedStatus(consultation.status)}</span>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -852,9 +857,9 @@ export const ExpertConsultations = () => {
                   </div>
                   <div>
                     <Label>{t('expertConsultations.status')}</Label>
-                    <Badge variant={getStatusBadgeVariant(selectedConsultation.status)}>
-                      {selectedConsultation.status}
-                    </Badge>
+                        <Badge variant={getStatusBadgeVariant(selectedConsultation.status)}>
+                          {getTranslatedStatus(selectedConsultation.status)}
+                        </Badge>
                   </div>
                 </div>
                 
@@ -916,7 +921,7 @@ export const ExpertConsultations = () => {
             </div>
             <div className="flex items-center gap-2">
               <Badge variant={getStatusBadgeVariant(consultation.status)}>
-                {consultation.status}
+                {getTranslatedStatus(consultation.status)}
               </Badge>
               <Badge variant="outline">{consultation.event_type}</Badge>
             </div>

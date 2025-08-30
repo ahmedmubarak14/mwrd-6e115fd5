@@ -819,6 +819,9 @@ export const enUS = {
       completed: "Completed",
       cancelled: "Cancelled",
       
+      // Time Units
+      hoursUnit: "h",
+      
       // Bulk Actions
       consultationsSelected: "consultation(s) selected",
       consultationSelected: "consultation selected",
