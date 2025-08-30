@@ -782,7 +782,6 @@ export const arSA = {
     analytics: "التحليلات",
     projects: "المشاريع",
     orders: "الطلبات",
-    verificationQueue: "قائمة التحقق",
     workflowAutomation: "أتمتة سير العمل",
     subscriptions: "الاشتراكات",
     supportTickets: "تذاكر الدعم",
@@ -847,6 +846,15 @@ export const arSA = {
     userAddedSuccess: "تم إضافة المستخدم بنجاح",
     userUpdatedSuccess: "تم تحديث المستخدم بنجاح",
     userDeletedSuccess: "تم حذف المستخدم {name} بنجاح",
+    
+    // Verification Queue
+    verificationQueue: {
+      noVerificationRequests: "لا توجد طلبات تحقق",
+      noRequestsMatch: "لا توجد طلبات تطابق معايير البحث.",
+      noVerificationRequestsFound: "لم يتم العثور على طلبات تحقق.",
+      noStatusRequestsFound: "لم يتم العثور على طلبات تحقق {status}.",
+      clearSearch: "مسح البحث"
+    },
     
     // Offers Management
     offersManagement: {

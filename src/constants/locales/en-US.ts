@@ -890,7 +890,6 @@ export const enUS = {
      // Menu Items
      projects: "Projects",
      orders: "Orders",
-     verificationQueue: "Verification Queue",
      workflowAutomation: "Workflow Automation",
      subscriptions: "Subscriptions", 
      supportTickets: "Support Tickets",
@@ -953,6 +952,15 @@ export const enUS = {
     userAddedSuccess: "User added successfully", 
     userUpdatedSuccess: "User updated successfully",
     userDeletedSuccess: "User {name} deleted successfully",
+    
+    // Verification Queue
+    verificationQueue: {
+      noVerificationRequests: "No Verification Requests",
+      noRequestsMatch: "No requests match your search criteria.",
+      noVerificationRequestsFound: "No verification requests found.",
+      noStatusRequestsFound: "No {status} verification requests found.",
+      clearSearch: "Clear Search"
+    },
     
     // Offers Management
     offersManagement: {

@@ -852,13 +852,13 @@ export const VerificationQueue = () => {
               <Card>
                 <CardContent className="p-12 text-center">
                   <FileText className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-medium mb-2">No Verification Requests</h3>
+                  <h3 className="text-lg font-medium mb-2">{t('admin.verificationQueue.noVerificationRequests')}</h3>
                   <p className="text-muted-foreground">
                     {status === 'all' 
                       ? searchQuery 
-                        ? 'No requests match your search criteria.'
-                        : 'No verification requests found.'
-                      : `No ${status} verification requests found.`
+                        ? t('admin.verificationQueue.noRequestsMatch')
+                        : t('admin.verificationQueue.noVerificationRequestsFound')
+                      : t('admin.verificationQueue.noStatusRequestsFound').replace('{status}', status)
                     }
                   </p>
                   {searchQuery && (
@@ -867,7 +867,7 @@ export const VerificationQueue = () => {
                       className="mt-4"
                       onClick={() => setSearchQuery('')}
                     >
-                      Clear Search
+                      {t('admin.verificationQueue.clearSearch')}
                     </Button>
                   )}
                 </CardContent>
