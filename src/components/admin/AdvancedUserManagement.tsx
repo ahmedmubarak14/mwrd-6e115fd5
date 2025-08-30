@@ -226,7 +226,7 @@ export const AdvancedUserManagement = () => {
   const columns = [
     {
       key: 'user',
-      title: t('admin.users.user'),
+      title: t('admin.userDetails.user'),
       render: (value: any, user: UserProfile) => (
         <div className="flex items-center gap-3">
           <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center admin-caption font-medium">
@@ -241,28 +241,28 @@ export const AdvancedUserManagement = () => {
     },
     {
       key: 'company_name',
-      title: t('admin.users.company'),
+      title: t('admin.userDetails.company'),
       render: (value: string) => (
         <span className="text-foreground">{value || t('common.notSpecified')}</span>
       )
     },
     {
       key: 'role',
-      title: t('admin.users.role'),
+      title: t('admin.userDetails.role'),
       render: (value: string) => (
         <Badge variant="outline" className="capitalize text-foreground border-border">
-          {t(`admin.users.${value}`) || value}
+          {t(`admin.userDetails.${value}`) || value}
         </Badge>
       )
     },
     {
       key: 'status',
-      title: t('admin.users.status'),
+      title: t('admin.userDetails.status'),
       render: (value: string) => getStatusBadge(value)
     },
     {
       key: 'created_at',
-      title: t('admin.users.joinedDate'),
+      title: t('admin.userDetails.joinedDate'),
       render: (value: string) => (
         <span className="text-foreground">{new Date(value).toLocaleDateString()}</span>
       )
@@ -298,8 +298,8 @@ export const AdvancedUserManagement = () => {
         data={[]}
         columns={columns}
         loading={true}
-        title={t('admin.users.title')}
-        description={t('admin.users.description')}
+        title={t('admin.userDetails.title')}
+        description={t('admin.userDetails.description')}
       />
     );
   }
@@ -321,7 +321,7 @@ export const AdvancedUserManagement = () => {
           getRowId={(user) => user.id}
           searchValue={searchTerm}
           onSearch={setSearchTerm}
-          searchPlaceholder={t('admin.users.searchPlaceholder')}
+          searchPlaceholder={t('admin.userDetails.searchPlaceholder')}
           paginated={true}
           pageSize={10}
           exportable={true}
@@ -331,9 +331,9 @@ export const AdvancedUserManagement = () => {
               description: "User data exported successfully"
             });
           }}
-          title={t('admin.users.title')}
-          description={t('admin.users.description')}
-          emptyMessage={t('admin.users.noUsers')}
+          title={t('admin.userDetails.title')}
+          description={t('admin.userDetails.description')}
+          emptyMessage={t('admin.userDetails.noUsers')}
           className="w-full"
         />
       </div>

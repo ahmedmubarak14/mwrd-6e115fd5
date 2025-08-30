@@ -205,10 +205,15 @@ export const arSA = {
     urgentPriority: "أولوية عاجلة"
   },
   admin: {
+    // Core Dashboard
     dashboard: "لوحة تحكم الإدارة",
     dashboardDescription: "نظرة شاملة على عمليات المنصة وأدوات الإدارة",
     performanceMonitor: "مراقب الأداء",
     performanceMonitorDescription: "مراقبة أداء النظام واستخدام الموارد في الوقت الفعلي",
+    managementPortal: "بوابة الإدارة",
+    adminUser: "مستخدم إداري",
+    accessDenied: "الوصول مرفوض",
+    accessDeniedDescription: "ليس لديك إذن للوصول إلى هذه المنطقة",
     
     // Communication Center
     communicationCenter: "مركز الاتصالات",
@@ -217,16 +222,114 @@ export const arSA = {
     // User Management
     userManagement: "إدارة المستخدمين",
     userManagementDescription: "إدارة حسابات المستخدمين والأدوار والصلاحيات",
+    userManagementDesc: "إدارة حسابات المستخدمين والصلاحيات",
     totalUsers: "إجمالي المستخدمين",
     activeUsers: "المستخدمون النشطون",
     allRegisteredUsers: "جميع المستخدمين المسجلين",
     approvedUsers: "المستخدمون المعتمدون",
     pending: "معلق",
+    clients: "العملاء",
+    suppliers: "الموردون",
+    admins: "المسؤولون",
+    
+    // Request Management
+    requestManagement: "إدارة الطلبات",
+    requestManagementDescription: "إدارة واعتماد طلبات المشتريات",
+    totalRequests: "إجمالي الطلبات",
+    pendingApproval: "في انتظار الموافقة",
+    pendingApprovals: "في انتظار الموافقات",
+    approved: "معتمد",
+    rejected: "مرفوض", 
+    filtersAndSearch: "المرشحات والبحث",
+    
+    // Quick Actions
+    approvalQueue: "قائمة انتظار الموافقات",
+    approvalQueueDesc: "مراجعة واعتماد العناصر المعلقة",
+    financialOverview: "نظرة عامة مالية",
+    financialOverviewDesc: "مراقبة إيرادات المنصة والمعاملات",
+    systemHealth: "صحة النظام",
+    systemHealthDesc: "مراقبة أداء النظام ووقت التشغيل",
+    securityCenter: "مركز الأمان",
+    securityCenterDesc: "إدارة أمان المنصة والامتثال",
+    communications: "الاتصالات",
+    communicationsDesc: "إدارة الإشعارات وتواصل المستخدمين",
+    analytics: "التحليلات",
+    analyticsDesc: "عرض تحليلات المنصة والإحصائيات",
+    automation: "الأتمتة",
+    automationDesc: "إدارة سير العمل والعمليات المؤتمتة",
+    
+    // Metrics & Status
+    totalRevenue: "إجمالي الإيرادات",
+    activeThisMonth: "نشط هذا الشهر",
+    monthlyGrowth: "النمو الشهري",
+    requiresAdminReview: "يتطلب مراجعة إدارية",
+    healthy: "سليم",
+    warning: "تحذير",
+    critical: "حرج",
+    allSystemsOperational: "جميع الأنظمة تعمل",
+    
+    // System Alerts
+    systemAlerts: "تنبيهات النظام",
+    activeSystemAlerts: "تنبيه نظام نشط",
+    requireAttention: "تتطلب انتباه",
+    viewDetails: "عرض التفاصيل",
+    
+    // Platform Activity
+    platformActivity: "نشاط المنصة",
+    platformActivityDesc: "النشاط اليومي للمستخدمين واتجاهات استخدام المنصة",
+    quickActions: "الإجراءات السريعة",
+    quickActionsDesc: "الوصول إلى وظائف الإدارة المستخدمة بكثرة",
+    
+    // System Status
+    systemStatus: "حالة النظام",
+    systemStatusDesc: "مراقبة صحة النظام في الوقت الفعلي",
+    database: "قاعدة البيانات",
+    cpuUsage: "استخدام المعالج",
+    memoryUsage: "استخدام الذاكرة",
+    responseTime: "وقت الاستجابة",
+    uptime: "وقت التشغيل",
+    
+    // Navigation & Groups
+    groups: {
+      overview: "نظرة عامة",
+      management: "الإدارة",
+      business: "الأعمال والدعم",
+      system: "النظام والإعدادات"
+    },
+    
+    // Menu Items
+    users: "المستخدمين",
+    requests: "الطلبات", 
+    offers: "العروض",
+    projects: "المشاريع",
+    orders: "الطلبات",
+    verificationQueue: "قائمة التحقق",
+    workflowAutomation: "أتمتة سير العمل",
+    financialTransactions: "المعاملات المالية",
+    subscriptions: "الاشتراكات",
+    supportTickets: "تذاكر الدعم",
+    categoryManagement: "إدارة الفئات",
+    expertConsultations: "الاستشارات الخبيرة",
+    settings: "الإعدادات",
+    profile: "الملف الشخصي",
+    
+    // Search & Actions
+    searchPlaceholder: "البحث في لوحة الإدارة...",
+    
+    // Recent Activity
+    recentActivity: "النشاط الحديث",
+    recentActivityDesc: "أحدث الإجراءات الإدارية وأحداث النظام",
+    noRecentActivity: "لا يوجد نشاط حديث",
+    activeConnections: "الاتصالات النشطة",
+    activityOn: "على",
+    
+    // Errors & Messages
+    metricsError: "فشل في تحميل مقاييس الإدارة",
     fetchUsersError: "فشل في جلب بيانات المستخدمين",
     exportDescription: "تم تصدير بيانات المستخدمين إلى CSV",
     dataUpdated: "تم تحديث بيانات المستخدمين",
     bulkRoleUpdateSuccess: "تم تحديث أدوار {count} مستخدم بنجاح",
-    bulkRoleUpdateError: "فشل في تحديث أدوار المستخدمين",
+    bulkRoleUpdateError: "فشل في تحديث أدوار المستخدمين", 
     bulkStatusUpdateSuccess: "تم تحديث حالة {count} مستخدم بنجاح",
     bulkStatusUpdateError: "فشل في تحديث حالات المستخدمين",
     csvHeaders: "المعرف,الاسم,البريد الإلكتروني,الدور,الحالة,الشركة,الهاتف,تاريخ الإنشاء",
@@ -236,15 +339,6 @@ export const arSA = {
     userAddedSuccess: "تم إضافة المستخدم بنجاح",
     userUpdatedSuccess: "تم تحديث المستخدم بنجاح",
     userDeletedSuccess: "تم حذف المستخدم {name} بنجاح",
-    
-    // Request Management
-    requestManagement: "إدارة الطلبات",
-    requestManagementDescription: "إدارة واعتماد طلبات المشتريات",
-    totalRequests: "إجمالي الطلبات",
-    pendingApproval: "في انتظار الموافقة",
-    approved: "معتمد",
-    rejected: "مرفوض",
-    filtersAndSearch: "المرشحات والبحث",
     
     // Offers Management
     offersManagement: {
@@ -266,6 +360,45 @@ export const arSA = {
       auditTrail: "سجل التدقيق",
       systemHealth: "صحة النظام",
       compliance: "الامتثال"
+    },
+    
+    // User Management Details
+    userDetails: {
+      user: "المستخدم",
+      company: "الشركة",
+      role: "الدور",
+      status: "الحالة",
+      joinedDate: "تاريخ الانضمام",
+      addUser: "إضافة مستخدم",
+      addUserDescription: "إنشاء حساب مستخدم جديد",
+      fillRequiredFields: "يرجى ملء جميع الحقول المطلوبة",
+      userAddedSuccess: "تم إضافة المستخدم بنجاح",
+      addUserError: "فشل في إضافة المستخدم",
+      selectRole: "اختيار الدور",
+      client: "عميل",
+      vendor: "بائع",
+      admin: "مسؤول",
+      title: "إدارة المستخدمين",
+      description: "إدارة حسابات المستخدمين والصلاحيات",
+      searchPlaceholder: "البحث في المستخدمين...",
+      noUsers: "لم يتم العثور على مستخدمين",
+      bulkActions: "الإجراءات المجمعة",
+      selectUsers: "اختر مستخدمين لتنفيذ إجراءات مجمعة",
+      usersSelected: "مستخدمين محددين",
+      bulkUpdateRole: "تحديث الدور",
+      bulkUpdateStatus: "تحديث الحالة",
+      confirmBulkAction: "تأكيد الإجراء المجمع",
+      selectStatus: "اختيار الحالة",
+      pending: "معلق",
+      approved: "معتمد",
+      blocked: "محجوب",
+      rejected: "مرفوض",
+      exportUsers: "تصدير المستخدمين"
+    },
+    
+    // Breadcrumbs
+    breadcrumbs: {
+      admin: "الإدارة"
     }
   }
 };

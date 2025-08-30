@@ -205,67 +205,200 @@ export const enUS = {
     urgentPriority: "Urgent"
   },
   admin: {
+    // Core Dashboard
     dashboard: "Admin Dashboard",
     dashboardDescription: "Comprehensive overview of platform operations and management tools",
-    performanceMonitor: "Performance Monitor",
+    performanceMonitor: "Performance Monitor", 
     performanceMonitorDescription: "Monitor system performance and resource usage in real-time",
+    managementPortal: "Management Portal",
+    adminUser: "Admin User",
+    accessDenied: "Access Denied",
+    accessDeniedDescription: "You don't have permission to access this area",
     
     // Communication Center
-    communicationCenter: "Communication Center", 
+    communicationCenter: "Communication Center",
     communicationCenterDescription: "Manage platform communications and user interactions",
     
     // User Management
     userManagement: "User Management",
     userManagementDescription: "Manage user accounts, roles, and permissions",
+    userManagementDesc: "Manage user accounts and permissions",
     totalUsers: "Total Users",
-    activeUsers: "Active Users", 
-    allRegisteredUsers: "All registered users",
+    activeUsers: "Active Users",
+    allRegisteredUsers: "All registered users", 
     approvedUsers: "Approved users",
     pending: "Pending",
-    fetchUsersError: "Failed to fetch users data",
-    exportDescription: "Users data has been exported to CSV",
-    dataUpdated: "Users data has been updated",
-    bulkRoleUpdateSuccess: "Successfully updated {count} user roles",
-    bulkRoleUpdateError: "Failed to update user roles",
-    bulkStatusUpdateSuccess: "Successfully updated {count} user statuses", 
-    bulkStatusUpdateError: "Failed to update user statuses",
-    csvHeaders: "ID,Name,Email,Role,Status,Company,Phone,Created",
-    exportSelectedSuccess: "Exported {count} selected users to CSV",
-    fillRequiredFields: "Please fill in all required fields",
-    userExistsError: "A user with this email already exists",
-    userAddedSuccess: "User added successfully",
-    userUpdatedSuccess: "User updated successfully",
-    userDeletedSuccess: "User {name} deleted successfully",
+    clients: "Clients",
+    suppliers: "Suppliers", 
+    admins: "Admins",
     
     // Request Management
     requestManagement: "Request Management",
     requestManagementDescription: "Manage and approve procurement requests",
     totalRequests: "Total Requests",
-    pendingApproval: "Pending Approval", 
+    pendingApproval: "Pending Approval",
+    pendingApprovals: "Pending Approvals",
     approved: "Approved",
     rejected: "Rejected",
     filtersAndSearch: "Filters & Search",
+    
+    // Quick Actions
+    approvalQueue: "Approval Queue",
+    approvalQueueDesc: "Review and approve pending items",
+    financialOverview: "Financial Overview", 
+    financialOverviewDesc: "Monitor platform revenue and transactions",
+    systemHealth: "System Health",
+    systemHealthDesc: "Monitor system performance and uptime",
+    securityCenter: "Security Center",
+    securityCenterDesc: "Manage platform security and compliance",
+    communications: "Communications",
+    communicationsDesc: "Manage notifications and user communications", 
+    analytics: "Analytics",
+    analyticsDesc: "View platform analytics and insights",
+    automation: "Automation",
+    automationDesc: "Manage automated workflows and processes",
+    
+    // Metrics & Status
+    totalRevenue: "Total Revenue",
+    activeThisMonth: "active this month",
+    monthlyGrowth: "Monthly Growth",
+    requiresAdminReview: "Requires admin review",
+    healthy: "Healthy",
+    warning: "Warning", 
+    critical: "Critical",
+    allSystemsOperational: "All systems operational",
+    
+    // System Alerts
+    systemAlerts: "System Alerts",
+    activeSystemAlerts: "active system alert",
+    requireAttention: "require attention",
+    viewDetails: "View Details",
+    
+    // Platform Activity
+    platformActivity: "Platform Activity", 
+    platformActivityDesc: "Daily user activity and platform usage trends",
+    quickActions: "Quick Actions",
+    quickActionsDesc: "Access frequently used admin functions",
+    
+    // System Status
+    systemStatus: "System Status",
+    systemStatusDesc: "Real-time system health monitoring",
+    database: "Database",
+    cpuUsage: "CPU Usage",
+    memoryUsage: "Memory Usage", 
+    responseTime: "Response Time",
+    uptime: "Uptime",
+    
+    // Navigation & Groups
+    groups: {
+      overview: "Overview",
+      management: "Management", 
+      business: "Business & Support",
+      system: "System & Settings"
+    },
+    
+    // Menu Items
+    users: "Users",
+    requests: "Requests",
+    offers: "Offers", 
+    projects: "Projects",
+    orders: "Orders",
+    verificationQueue: "Verification Queue",
+    workflowAutomation: "Workflow Automation",
+    financialTransactions: "Financial Transactions",
+    subscriptions: "Subscriptions", 
+    supportTickets: "Support Tickets",
+    categoryManagement: "Category Management",
+    expertConsultations: "Expert Consultations",
+    settings: "Settings",
+    profile: "Profile",
+    
+    // Search & Actions
+    searchPlaceholder: "Search admin panel...",
+    
+    // Recent Activity
+    recentActivity: "Recent Activity",
+    recentActivityDesc: "Latest administrative actions and system events",
+    noRecentActivity: "No recent activity",
+    activeConnections: "Active Connections",
+    activityOn: "on",
+    
+    // Errors & Messages
+    metricsError: "Failed to load admin metrics",
+    fetchUsersError: "Failed to fetch users data",
+    exportDescription: "Users data has been exported to CSV", 
+    dataUpdated: "Users data has been updated",
+    bulkRoleUpdateSuccess: "Successfully updated {count} user roles",
+    bulkRoleUpdateError: "Failed to update user roles",
+    bulkStatusUpdateSuccess: "Successfully updated {count} user statuses",
+    bulkStatusUpdateError: "Failed to update user statuses",
+    csvHeaders: "ID,Name,Email,Role,Status,Company,Phone,Created",
+    exportSelectedSuccess: "Exported {count} selected users to CSV",
+    fillRequiredFields: "Please fill in all required fields",
+    userExistsError: "A user with this email already exists",
+    userAddedSuccess: "User added successfully", 
+    userUpdatedSuccess: "User updated successfully",
+    userDeletedSuccess: "User {name} deleted successfully",
     
     // Offers Management
     offersManagement: {
       title: "Offers Management",
       description: "Manage and approve vendor offers",
       loadingOffers: "Loading offers...",
-      approveOffer: "Approve this offer",
+      approveOffer: "Approve this offer", 
       totalOffers: "Total Offers",
       pendingApproval: "Pending Approval"
     },
     
-    // Security
+    // Security  
     security: {
       title: "Security Center",
       description: "Monitor and manage platform security",
-      liveMonitor: "Live Monitor", 
+      liveMonitor: "Live Monitor",
       overview: "Overview",
       incidents: "Incidents",
-      auditTrail: "Audit Trail",
+      auditTrail: "Audit Trail", 
       systemHealth: "System Health",
       compliance: "Compliance"
+    },
+    
+    // User Management Details
+    userDetails: {
+      user: "User",
+      company: "Company",
+      role: "Role",
+      status: "Status",
+      joinedDate: "Joined Date",
+      addUser: "Add User",
+      addUserDescription: "Create a new user account",
+      fillRequiredFields: "Please fill in all required fields",
+      userAddedSuccess: "User added successfully",
+      addUserError: "Failed to add user",
+      selectRole: "Select Role",
+      client: "Client",
+      vendor: "Vendor",
+      admin: "Admin",
+      title: "User Management",
+      description: "Manage user accounts and permissions",
+      searchPlaceholder: "Search users...",
+      noUsers: "No users found",
+      bulkActions: "Bulk Actions",
+      selectUsers: "Select users to perform bulk actions",
+      usersSelected: "users selected",
+      bulkUpdateRole: "Update Role",
+      bulkUpdateStatus: "Update Status",
+      confirmBulkAction: "Confirm Bulk Action",
+      selectStatus: "Select Status",
+      pending: "Pending",
+      approved: "Approved",
+      blocked: "Blocked",
+      rejected: "Rejected",
+      exportUsers: "Export Users"
+    },
+    
+    // Breadcrumbs
+    breadcrumbs: {
+      admin: "Admin"
     }
   }
 };

@@ -37,7 +37,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
     e.preventDefault();
     
     if (!formData.email || !formData.fullName) {
-      showError(t('admin.users.fillRequiredFields') || 'Please fill in all required fields');
+      showError(t('admin.userDetails.fillRequiredFields') || 'Please fill in all required fields');
       return;
     }
 
@@ -59,11 +59,11 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
 
       if (profileError) throw profileError;
 
-      showSuccess(t('admin.users.userAddedSuccess') || 'User added successfully');
+      showSuccess(t('admin.userDetails.userAddedSuccess') || 'User added successfully');
       onUserAdded();
       handleClose();
     } catch (error: any) {
-      showError(error.message || t('admin.users.addUserError'));
+      showError(error.message || t('admin.userDetails.addUserError'));
     } finally {
       setLoading(false);
     }
@@ -84,10 +84,10 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
       <DialogContent className={cn("sm:max-w-md", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
         <DialogHeader>
           <DialogTitle className={cn(isRTL ? "text-right" : "text-left")}>
-            {t('admin.users.addUser')}
+            {t('admin.userDetails.addUser')}
           </DialogTitle>
           <DialogDescription className={cn(isRTL ? "text-right" : "text-left")}>
-            {t('admin.users.addUserDescription')}
+            {t('admin.userDetails.addUserDescription')}
           </DialogDescription>
         </DialogHeader>
 
@@ -136,7 +136,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
 
           <div className="space-y-2">
             <Label htmlFor="role" className={cn(isRTL ? "text-right" : "text-left")}>
-              {t('admin.users.role')} *
+              {t('admin.userDetails.role')} *
             </Label>
             <Select
               value={formData.role}
@@ -146,12 +146,12 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
               disabled={loading}
             >
               <SelectTrigger>
-                <SelectValue placeholder={t('admin.users.selectRole')} />
+                <SelectValue placeholder={t('admin.userDetails.selectRole')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="client">{t('admin.users.client')}</SelectItem>
-                <SelectItem value="vendor">{t('admin.users.vendor')}</SelectItem>
-                <SelectItem value="admin">{t('admin.users.admin')}</SelectItem>
+                <SelectItem value="client">{t('admin.userDetails.client')}</SelectItem>
+                <SelectItem value="vendor">{t('admin.userDetails.vendor')}</SelectItem>
+                <SelectItem value="admin">{t('admin.userDetails.admin')}</SelectItem>
               </SelectContent>
             </Select>
           </div>

@@ -165,10 +165,10 @@ export const BulkUserActions = ({
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Users className="h-5 w-5" />
-          {t('admin.users.bulkActions')}
+          {t('admin.userDetails.bulkActions')}
         </CardTitle>
         <CardDescription>
-          {t('admin.users.selectUsers')} - {selectedCount} {t('admin.users.usersSelected')}
+          {t('admin.userDetails.selectUsers')} - {selectedCount} {t('admin.userDetails.usersSelected')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -188,12 +188,12 @@ export const BulkUserActions = ({
             <div className="flex gap-2">
               <Select value={bulkRole} onValueChange={setBulkRole}>
                 <SelectTrigger>
-                  <SelectValue placeholder={t('admin.users.selectRole')} />
+                  <SelectValue placeholder={t('admin.userDetails.selectRole')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="client">{t('admin.users.client')}</SelectItem>
-                  <SelectItem value="vendor">{t('admin.users.vendor')}</SelectItem>
-                  <SelectItem value="admin">{t('admin.users.admin')}</SelectItem>
+                  <SelectItem value="client">{t('admin.userDetails.client')}</SelectItem>
+                  <SelectItem value="vendor">{t('admin.userDetails.vendor')}</SelectItem>
+                  <SelectItem value="admin">{t('admin.userDetails.admin')}</SelectItem>
                 </SelectContent>
               </Select>
               <AlertDialog>
@@ -204,12 +204,12 @@ export const BulkUserActions = ({
                     disabled={!bulkRole || loading}
                   >
                     <UserCog className="h-4 w-4 mr-2" />
-                    {t('admin.users.bulkUpdateRole')}
+                    {t('admin.userDetails.bulkUpdateRole')}
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>{t('admin.users.confirmBulkAction')}</AlertDialogTitle>
+                    <AlertDialogTitle>{t('admin.userDetails.confirmBulkAction')}</AlertDialogTitle>
                     <AlertDialogDescription>
                       Update role to "{bulkRole}" for {selectedCount} selected users?
                     </AlertDialogDescription>
@@ -227,13 +227,13 @@ export const BulkUserActions = ({
             <div className="flex gap-2">
               <Select value={bulkStatus} onValueChange={setBulkStatus}>
                 <SelectTrigger>
-                  <SelectValue placeholder={t('admin.users.selectStatus')} />
+                  <SelectValue placeholder={t('admin.userDetails.selectStatus')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="pending">{t('admin.users.pending')}</SelectItem>
-                  <SelectItem value="approved">{t('admin.users.approved')}</SelectItem>
-                  <SelectItem value="blocked">{t('admin.users.blocked')}</SelectItem>
-                  <SelectItem value="rejected">{t('admin.users.rejected')}</SelectItem>
+                  <SelectItem value="pending">{t('admin.userDetails.pending')}</SelectItem>
+                  <SelectItem value="approved">{t('admin.userDetails.approved')}</SelectItem>
+                  <SelectItem value="blocked">{t('admin.userDetails.blocked')}</SelectItem>
+                  <SelectItem value="rejected">{t('admin.userDetails.rejected')}</SelectItem>
                 </SelectContent>
               </Select>
               <AlertDialog>
@@ -244,12 +244,12 @@ export const BulkUserActions = ({
                     disabled={!bulkStatus || loading}
                   >
                     <Shield className="h-4 w-4 mr-2" />
-                    {t('admin.users.bulkUpdateStatus')}
+                    {t('admin.userDetails.bulkUpdateStatus')}
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
-                    <AlertDialogTitle>{t('admin.users.confirmBulkAction')}</AlertDialogTitle>
+                    <AlertDialogTitle>{t('admin.userDetails.confirmBulkAction')}</AlertDialogTitle>
                     <AlertDialogDescription>
                       Update status to "{bulkStatus}" for {selectedCount} selected users?
                     </AlertDialogDescription>
@@ -270,7 +270,7 @@ export const BulkUserActions = ({
               onClick={handleExportUsers}
             >
               <Download className="h-4 w-4 mr-2" />
-              {t('admin.users.exportUsers')}
+              {t('admin.userDetails.exportUsers')}
             </Button>
           </div>
         )}
