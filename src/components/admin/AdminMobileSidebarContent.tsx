@@ -41,15 +41,15 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
   const navigationGroups = [
     {
       id: 'overview',
-      label: t('admin.groups.overview') || 'Overview',
+      label: t('admin.groups.overview'),
       items: [
         {
-          name: t('admin.dashboard') || 'Dashboard',
+          name: t('admin.dashboard'),
           href: "/admin/dashboard",
           icon: LayoutDashboard,
         },
         {
-          name: t('admin.analytics') || 'Analytics',
+          name: t('admin.analytics'),
           href: "/admin/analytics",
           icon: BarChart3,
         },
@@ -57,35 +57,35 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
     },
     {
       id: 'management',
-      label: t('admin.groups.management') || 'Management',
+      label: t('admin.groups.management'),
       items: [
         {
-          name: t('admin.users') || 'Users',
+          name: t('admin.users'),
           href: "/admin/users",
           icon: Users,
         },
         {
-          name: t('admin.requests') || 'Requests',
+          name: t('admin.requests'),
           href: "/admin/requests",
           icon: FileText,
         },
         {
-          name: t('admin.offers') || 'Offers',
+          name: t('admin.offers'),
           href: "/admin/offers",
           icon: Package,
         },
         {
-          name: t('admin.projects') || 'Projects',
+          name: t('admin.projects'),
           href: "/admin/projects", 
           icon: Building2,
         },
         {
-          name: t('admin.orders') || 'Orders',
+          name: t('admin.orders'),
           href: "/admin/orders",
           icon: ShoppingCart,
         },
         {
-          name: t('admin.verificationQueue') || 'Verification',
+          name: t('admin.verificationQueue'),
           href: "/admin/verification",
           icon: UserCheck,
         },
@@ -93,27 +93,27 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
     },
     {
       id: 'business',
-      label: t('admin.groups.business') || 'Business & Support',
+      label: t('admin.groups.business'),
       items: [
         {
-          name: t('admin.financialTransactions') || 'Financial Transactions',
+          name: t('admin.financialTransactions'),
           href: "/admin/financial-transactions",
           icon: CreditCard,
         },
         {
-          name: t('admin.subscriptions') || 'Subscriptions',
+          name: t('admin.subscriptions'),
           href: "/admin/subscriptions",
           icon: Crown,
         },
         {
-          name: t('admin.supportTickets') || 'Support',
+          name: t('admin.supportTickets'),
           href: "/admin/support",
           icon: Ticket,
           badge: pendingTickets > 0 ? pendingTickets : undefined,
           badgeVariant: "destructive" as const,
         },
         {
-          name: t('admin.communications') || 'Communications',
+          name: t('admin.communications'),
           href: "/admin/communications",
           icon: MessageSquare,
         },
@@ -121,25 +121,25 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
     },
     {
       id: 'system',
-      label: t('admin.groups.system') || 'System & Settings',
+      label: t('admin.groups.system'),
       items: [
         {
-          name: t('admin.categoryManagement') || 'Categories',
+          name: t('admin.categoryManagement'),
           href: "/admin/category-management",
           icon: FolderOpen,
         },
         {
-          name: t('admin.expertConsultations') || 'Expert Consultations',
+          name: t('admin.expertConsultations'),
           href: "/admin/content/consultations",
           icon: HelpCircle,
         },
         {
-          name: t('admin.settings') || 'Settings',
+          name: t('admin.settings'),
           href: "/admin/settings",
           icon: Settings,
         },
         {
-          name: t('admin.profile') || 'Profile',
+          name: t('admin.profile'),
           href: "/admin/profile",
           icon: User,
         },
@@ -175,7 +175,7 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
                       active && "bg-primary/10 text-primary border border-primary/20 shadow-sm"
                     )}
                     onClick={onItemClick}
-                    aria-label={`Navigate to ${item.name}`}
+                    aria-label={`${t('admin.navigateTo')} ${item.name}`}
                   >
                     <item.icon className={cn(
                       "h-4 w-4 shrink-0 transition-colors",

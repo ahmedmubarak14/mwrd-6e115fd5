@@ -787,6 +787,9 @@ export const enUS = {
       system: "System & Settings"
     },
     
+    // Navigation Accessibility
+    navigateTo: "Navigate to",
+    
      // Menu Items
      projects: "Projects",
      orders: "Orders",
@@ -830,6 +833,7 @@ export const enUS = {
     themeLight: "Light", 
     themeDark: "Dark",
     themeSystem: "System",
+    
     
      // Recent Activity
      recentActivityDesc: "Latest administrative actions and system events",

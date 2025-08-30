@@ -319,7 +319,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
                           isRTL && "flex-row-reverse"
                         )}
                         title={collapsed ? item.name : undefined}
-                        aria-label={`Navigate to ${item.name}`}
+                        aria-label={`${t('admin.navigateTo')} ${item.name}`}
                         aria-current={active ? 'page' : undefined}
                       >
                         <item.icon 

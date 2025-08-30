@@ -678,6 +678,9 @@ export const arSA = {
       system: "النظام والإعدادات"
     },
     
+    // Navigation Accessibility  
+    navigateTo: "الانتقال إلى",
+    
     // Menu Items
     analytics: "التحليلات",
     projects: "المشاريع",
@@ -722,6 +725,7 @@ export const arSA = {
     themeLight: "فاتح",
     themeDark: "داكن", 
     themeSystem: "النظام",
+    
     
     // Recent Activity
     recentActivity: "النشاط الحديث",
