@@ -365,7 +365,7 @@ export const AdminVerificationWorkflow = () => {
                     <div>
                       <label className="block text-sm font-medium mb-2">Review Notes</label>
                       <Textarea
-                        placeholder="Add notes about this verification..."
+                        placeholder={t('common.placeholders.addNotes')}
                         value={reviewNotes}
                         onChange={(e) => setReviewNotes(e.target.value)}
                         rows={3}

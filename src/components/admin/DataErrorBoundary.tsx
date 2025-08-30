@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { AlertTriangle, RefreshCw, Database, Wifi } from 'lucide-react';
 import { toast } from 'sonner';
+import { getTranslation } from '@/constants/translations';
 
 interface Props {
   children: ReactNode;
@@ -38,13 +39,16 @@ export class DataErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Data Error Boundary caught an error:', error, errorInfo);
     
+    // Get current language from localStorage or default to 'en'
+    const currentLanguage = localStorage.getItem('language') as 'en' | 'ar' || 'en';
+    
     // Track error patterns for better UX
     if (error.message.includes('fetch') || error.message.includes('network')) {
-      toast.error('Network connection issue. Please check your internet connection.');
+      toast.error(getTranslation('common.errors.networkConnection', currentLanguage));
     } else if (error.message.includes('timeout')) {
-      toast.error('Request timed out. Please try again.');
+      toast.error(getTranslation('common.errors.requestTimeout', currentLanguage));
     } else {
-      toast.error('Data loading failed. Please try again.');
+      toast.error(getTranslation('common.errors.dataLoading', currentLanguage));
     }
 
     this.setState({

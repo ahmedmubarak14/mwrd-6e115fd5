@@ -306,7 +306,7 @@ export const AdvancedUserManagement = () => {
 
   return (
     <DataErrorBoundary 
-      title="User Management Error"
+      title={t('common.errors.userManagement')}
       description="Failed to load user data. Please try again."
       onRetry={fetchUsers}
     >

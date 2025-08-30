@@ -22,12 +22,14 @@ import {
 import { format } from "date-fns";
 import { useAuditTrail } from "@/hooks/useAuditTrail";
 import { useToast } from "@/hooks/use-toast";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 
 import { DateRange } from "react-day-picker";
 
 export const AuditTrailDashboard = () => {
   const { auditLogs, exportAuditLog, isLoading } = useAuditTrail();
   const { toast } = useToast();
+  const { t } = useOptionalLanguage();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterAction, setFilterAction] = useState("all");
   const [filterEntity, setFilterEntity] = useState("all");
@@ -108,7 +110,7 @@ export const AuditTrailDashboard = () => {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search logs..."
+                placeholder={t('common.placeholders.searchLogs')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -117,7 +119,7 @@ export const AuditTrailDashboard = () => {
             
             <Select value={filterAction} onValueChange={setFilterAction}>
               <SelectTrigger>
-                <SelectValue placeholder="Filter by action" />
+                <SelectValue placeholder={t('common.placeholders.filterByAction')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Actions</SelectItem>
@@ -131,7 +133,7 @@ export const AuditTrailDashboard = () => {
             
             <Select value={filterEntity} onValueChange={setFilterEntity}>
               <SelectTrigger>
-                <SelectValue placeholder="Filter by entity" />
+                <SelectValue placeholder={t('common.placeholders.filterByEntity')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Entities</SelectItem>

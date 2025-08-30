@@ -1,5 +1,35 @@
 export const enUS = {
-  common: {
+    common: {
+      // ... existing translations
+      errors: {
+        networkConnection: 'Network connection issue. Please check your internet connection.',
+        requestTimeout: 'Request timed out. Please try again.',
+        dataLoading: 'Data loading failed. Please try again.',
+        userManagement: 'User Management Error'
+      },
+      placeholders: {
+        searchLogs: 'Search logs...',
+        filterByAction: 'Filter by action',
+        filterByEntity: 'Filter by entity',
+        searchNotifications: 'Search notifications...',
+        searchTransactions: 'Search transactions...',
+        searchIncidents: 'Search incidents...',
+        searchConversations: 'Search conversations...',
+        typeMessage: 'Type a message...',
+        addNotes: 'Add notes about this verification...',
+        enterEnglishName: 'Enter English name',
+        enterArabicName: 'Enter Arabic name',
+        categorySlug: 'category-slug',
+        emailSubject: 'Your Weekly Update from MWRD',
+        notificationTitle: 'Notification title',
+        notificationMessage: 'Notification message',
+        incidentTitle: 'Incident title',
+        incidentDescription: 'Detailed incident description',
+        affectedSystems: 'Systems or components affected'
+      },
+      titles: {
+        adminOnline: 'Admin Online'
+      },
     loading: 'Loading...',
     error: 'An error occurred',
     success: 'Success!',

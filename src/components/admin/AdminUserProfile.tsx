@@ -2,6 +2,7 @@ import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 import { cn } from '@/lib/utils';
 
 interface AdminUserProfileProps {
@@ -14,6 +15,7 @@ export const AdminUserProfile: React.FC<AdminUserProfileProps> = ({
   collapsed = false 
 }) => {
   const { user, userProfile } = useAuth();
+  const { t } = useOptionalLanguage();
   
   const displayName = userProfile?.full_name || user?.email?.split('@')[0] || 'Ahmed Mubark';
   const email = user?.email || '';
@@ -33,7 +35,7 @@ export const AdminUserProfile: React.FC<AdminUserProfileProps> = ({
             {initials}
           </AvatarFallback>
         </Avatar>
-        <div className="mt-1 w-1 h-1 bg-success rounded-full" title="Admin Online" />
+        <div className="mt-1 w-1 h-1 bg-success rounded-full" title={t('common.titles.adminOnline')} />
       </div>
     );
   }

@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { useNotificationCenter } from "@/hooks/useNotificationCenter";
 import { useToast } from "@/hooks/use-toast";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 
 export const NotificationCenter = () => {
   const { 
@@ -30,6 +31,7 @@ export const NotificationCenter = () => {
     isLoading 
   } = useNotificationCenter();
   const { toast } = useToast();
+  const { t } = useOptionalLanguage();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
@@ -165,7 +167,7 @@ export const NotificationCenter = () => {
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search notifications..."
+              placeholder={t('common.placeholders.searchNotifications')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 w-full lg:w-64"

@@ -1,5 +1,35 @@
 export const arSA = {
-  common: {
+    common: {
+      // ... existing translations
+      errors: {
+        networkConnection: 'مشكلة في الاتصال بالشبكة. يرجى التحقق من اتصال الإنترنت.',
+        requestTimeout: 'انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.',
+        dataLoading: 'فشل في تحميل البيانات. يرجى المحاولة مرة أخرى.',
+        userManagement: 'خطأ في إدارة المستخدمين'
+      },
+      placeholders: {
+        searchLogs: 'البحث في السجلات...',
+        filterByAction: 'تصفية حسب الإجراء',
+        filterByEntity: 'تصفية حسب الكيان',
+        searchNotifications: 'البحث في الإشعارات...',
+        searchTransactions: 'البحث في المعاملات...',
+        searchIncidents: 'البحث في الحوادث...',
+        searchConversations: 'البحث في المحادثات...',
+        typeMessage: 'اكتب رسالة...',
+        addNotes: 'إضافة ملاحظات حول هذا التحقق...',
+        enterEnglishName: 'أدخل الاسم بالإنجليزية',
+        enterArabicName: 'أدخل الاسم بالعربية',
+        categorySlug: 'رمز-الفئة',
+        emailSubject: 'تحديثك الأسبوعي من MWRD',
+        notificationTitle: 'عنوان الإشعار',
+        notificationMessage: 'رسالة الإشعار',
+        incidentTitle: 'عنوان الحادثة',
+        incidentDescription: 'وصف مفصل للحادثة',
+        affectedSystems: 'الأنظمة أو المكونات المتأثرة'
+      },
+      titles: {
+        adminOnline: 'المشرف متصل'
+      },
     loading: 'جارٍ التحميل...',
     error: 'حدث خطأ',
     success: 'تم بنجاح!',
