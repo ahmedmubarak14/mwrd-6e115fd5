@@ -70,8 +70,8 @@ export const AdminVerificationWorkflow = () => {
     } catch (error) {
       console.error('Error fetching pending verifications:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to fetch pending verifications',
+        title: t('admin.messages.error'),
+        description: t('admin.verification.fetchError'),
         variant: 'destructive'
       });
     } finally {
@@ -105,16 +105,16 @@ export const AdminVerificationWorkflow = () => {
       setReviewNotes('');
 
       toast({
-        title: 'Success',
-        description: `User verification ${status} successfully`,
+        title: t('admin.messages.success'),
+        description: t('admin.verification.statusUpdated') + ` ${status}`,
         variant: 'default'
       });
 
     } catch (error) {
       console.error('Error updating verification status:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to update verification status',
+        title: t('admin.messages.error'),
+        description: t('admin.verification.updateError'),
         variant: 'destructive'
       });
     } finally {
@@ -139,8 +139,8 @@ export const AdminVerificationWorkflow = () => {
       );
 
       toast({
-        title: 'Status Updated',
-        description: 'Verification marked as under review',
+        title: t('admin.verification.statusUpdatedTitle'),
+        description: t('admin.verification.markedUnderReview'),
         variant: 'default'
       });
 
@@ -156,13 +156,13 @@ export const AdminVerificationWorkflow = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'pending':
-        return <Badge variant="secondary" className="bg-yellow-100 text-yellow-800"><Clock className="w-3 h-3 mr-1" /> Pending</Badge>;
+        return <Badge variant="secondary" className="bg-yellow-100 text-yellow-800"><Clock className="w-3 h-3 mr-1" /> {t('admin.verification.pending')}</Badge>;
       case 'under_review':
-        return <Badge variant="outline" className="border-blue-200 text-blue-800"><Eye className="w-3 h-3 mr-1" /> Under Review</Badge>;
+        return <Badge variant="outline" className="border-blue-200 text-blue-800"><Eye className="w-3 h-3 mr-1" /> {t('admin.verification.underReview')}</Badge>;
       case 'approved':
-        return <Badge variant="default" className="bg-green-100 text-green-800"><CheckCircle className="w-3 h-3 mr-1" /> Approved</Badge>;
+        return <Badge variant="default" className="bg-green-100 text-green-800"><CheckCircle className="w-3 h-3 mr-1" /> {t('admin.verification.approved')}</Badge>;
       case 'rejected':
-        return <Badge variant="destructive"><XCircle className="w-3 h-3 mr-1" /> Rejected</Badge>;
+        return <Badge variant="destructive"><XCircle className="w-3 h-3 mr-1" /> {t('admin.verification.rejected')}</Badge>;
       default:
         return <Badge variant="secondary">{status}</Badge>;
     }
@@ -171,9 +171,9 @@ export const AdminVerificationWorkflow = () => {
   const getRoleBadge = (role: string) => {
     switch (role) {
       case 'vendor':
-        return <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">Vendor</Badge>;
+        return <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">{t('admin.verification.vendor')}</Badge>;
       case 'client':
-        return <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">Client</Badge>;
+        return <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">{t('admin.verification.client')}</Badge>;
       default:
         return <Badge variant="secondary">{role}</Badge>;
     }
@@ -243,7 +243,7 @@ export const AdminVerificationWorkflow = () => {
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <CardTitle className="text-base">{user.full_name || 'Unnamed User'}</CardTitle>
+                        <CardTitle className="text-base">{user.full_name || t('admin.verification.unnamedUser')}</CardTitle>
                         <CardDescription>{user.email}</CardDescription>
                       </div>
                     </div>
@@ -256,10 +256,10 @@ export const AdminVerificationWorkflow = () => {
                 <CardContent className="pt-0">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">
-                      Submitted {new Date(user.created_at).toLocaleDateString()}
+                      {t('admin.verification.submitted')} {new Date(user.created_at).toLocaleDateString()}
                     </span>
                     <span className="text-muted-foreground">
-                      {user.verification_documents?.length || 0} documents
+                      {user.verification_documents?.length || 0} {t('admin.verification.documents')}
                     </span>
                   </div>
                 </CardContent>
@@ -274,10 +274,10 @@ export const AdminVerificationWorkflow = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <User className="h-5 w-5" />
-                    Verification Details
+                    {t('admin.verification.verificationDetails')}
                   </CardTitle>
                   <CardDescription>
-                    Review and approve user verification
+                    {t('admin.verification.reviewAndApprove')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -291,7 +291,7 @@ export const AdminVerificationWorkflow = () => {
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <h3 className="text-xl font-semibold">{selectedUser.full_name || 'Unnamed User'}</h3>
+                        <h3 className="text-xl font-semibold">{selectedUser.full_name || t('admin.verification.unnamedUser')}</h3>
                         <p className="text-muted-foreground">{selectedUser.email}</p>
                         <div className="flex gap-2 mt-2">
                           {getStatusBadge(selectedUser.verification_status)}
@@ -323,10 +323,10 @@ export const AdminVerificationWorkflow = () => {
                           <span>{selectedUser.address}</span>
                         </div>
                       )}
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <span>Registered {new Date(selectedUser.created_at).toLocaleDateString()}</span>
-                      </div>
+                        <div className="flex items-center gap-2">
+                          <Calendar className="h-4 w-4 text-muted-foreground" />
+                          <span>{t('admin.verification.registered')} {new Date(selectedUser.created_at).toLocaleDateString()}</span>
+                        </div>
                     </div>
                   </div>
 
@@ -334,7 +334,7 @@ export const AdminVerificationWorkflow = () => {
                   <div>
                     <h4 className="font-semibold mb-3 flex items-center gap-2">
                       <FileText className="h-4 w-4" />
-                      Verification Documents ({selectedUser.verification_documents?.length || 0})
+                      {t('admin.verification.documentsTitle')} ({selectedUser.verification_documents?.length || 0})
                     </h4>
                     {selectedUser.verification_documents?.length > 0 ? (
                       <div className="space-y-2">
@@ -346,7 +346,7 @@ export const AdminVerificationWorkflow = () => {
                             </div>
                             <Button size="sm" variant="outline" asChild>
                               <a href={doc.url} target="_blank" rel="noopener noreferrer">
-                                View
+                                {t('admin.verification.view')}
                               </a>
                             </Button>
                           </div>
@@ -355,7 +355,7 @@ export const AdminVerificationWorkflow = () => {
                     ) : (
                       <div className="text-center py-6 text-muted-foreground">
                         <AlertCircle className="h-8 w-8 mx-auto mb-2" />
-                        <p>No documents uploaded</p>
+                        <p>{t('admin.verification.noDocuments')}</p>
                       </div>
                     )}
                   </div>
@@ -363,13 +363,13 @@ export const AdminVerificationWorkflow = () => {
                   {/* Review Actions */}
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium mb-2">Review Notes</label>
-                      <Textarea
-                        placeholder={t('common.placeholders.addNotes')}
-                        value={reviewNotes}
-                        onChange={(e) => setReviewNotes(e.target.value)}
-                        rows={3}
-                      />
+                      <label className="block text-sm font-medium mb-2">{t('admin.verification.reviewNotes')}</label>
+                        <Textarea
+                          placeholder={t('admin.verification.addNotesPlaceholder')}
+                          value={reviewNotes}
+                          onChange={(e) => setReviewNotes(e.target.value)}
+                          rows={3}
+                        />
                     </div>
 
                     <div className="flex gap-3">
@@ -379,7 +379,7 @@ export const AdminVerificationWorkflow = () => {
                           onClick={() => markUnderReview(selectedUser.id)}
                         >
                           <Eye className="h-4 w-4 mr-2" />
-                          Mark Under Review
+                          {t('admin.verification.markUnderReview')}
                         </Button>
                       )}
                       
@@ -390,7 +390,7 @@ export const AdminVerificationWorkflow = () => {
                         className="bg-success hover:bg-success/90"
                       >
                         <CheckCircle className="h-4 w-4 mr-2" />
-                        Approve
+                        {t('admin.verification.approve')}
                       </Button>
                       
                       <Button 
@@ -399,7 +399,7 @@ export const AdminVerificationWorkflow = () => {
                         disabled={actionLoading === selectedUser.id}
                       >
                         <XCircle className="h-4 w-4 mr-2" />
-                        Reject
+                        {t('admin.verification.reject')}
                       </Button>
                     </div>
                   </div>
@@ -409,8 +409,8 @@ export const AdminVerificationWorkflow = () => {
               <Card>
                 <CardContent className="py-12 text-center">
                   <User className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="text-lg font-semibold mb-2">Select a User</h3>
-                  <p className="text-muted-foreground">Choose a user from the queue to review their verification.</p>
+                  <h3 className="text-lg font-semibold mb-2">{t('admin.verification.selectUser')}</h3>
+                  <p className="text-muted-foreground">{t('admin.verification.selectUserDescription')}</p>
                 </CardContent>
               </Card>
             )}

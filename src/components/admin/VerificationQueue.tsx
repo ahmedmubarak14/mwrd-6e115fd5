@@ -184,8 +184,8 @@ export const VerificationQueue = () => {
         console.error('Database error:', error);
         // If table doesn't exist, show helpful message
         if (error.code === '42P01') {
-          showError('Verification requests table not found. Please contact administrator to set up the database schema.');
-          return;
+        showError(t('admin.verification.tableNotFoundError'));
+        return;
         }
         throw error;
       }
@@ -226,9 +226,9 @@ export const VerificationQueue = () => {
       
       // If it's a table not found error, provide a clearer message
       if (error.code === '42P01') {
-        showError('Database table "verification_requests" not found. The verification system needs to be set up in the database first.');
+        showError(t('admin.verification.tableNotFoundMessage'));
       } else {
-        showError('Failed to load verification requests. Using demo data for now.');
+        showError(t('admin.verification.fallbackToDemo'));
         
         // Fall back to demo data if real data fetch fails
         const demoData: VerificationRequest[] = [
@@ -241,8 +241,8 @@ export const VerificationQueue = () => {
             submitted_at: new Date().toISOString(),
             user_profiles: {
               id: 'demo-profile-1',
-              full_name: 'Demo User 1',
-              company_name: 'Demo Company Ltd',
+              full_name: t('admin.verification.demoUser1'),
+              company_name: t('admin.verification.demoCompany1'),
               email: 'demo1@example.com'
             }
           },
@@ -255,8 +255,8 @@ export const VerificationQueue = () => {
             submitted_at: new Date(Date.now() - 86400000).toISOString(),
             user_profiles: {
               id: 'demo-profile-2',
-              full_name: 'Demo User 2',
-              company_name: 'Another Demo Corp',
+              full_name: t('admin.verification.demoUser2'),
+              company_name: t('admin.verification.demoCompany2'),
               email: 'demo2@example.com'
             }
           }
@@ -278,7 +278,7 @@ export const VerificationQueue = () => {
     const status = documentStatus[requestId];
     
     if (status === 'missing') {
-      showError('Document not found in storage. The file may have been deleted or corrupted.');
+      showError(t('admin.verification.documentNotFound'));
       return;
     }
 
@@ -288,7 +288,7 @@ export const VerificationQueue = () => {
     if (result.success && result.signedUrl) {
       window.open(result.signedUrl, '_blank');
     } else {
-      showError(result.error || 'Failed to access document');
+      showError(result.error || t('admin.verification.failedAccessDocument'));
     }
   };
 
@@ -296,7 +296,7 @@ export const VerificationQueue = () => {
     const status = requestId ? documentStatus[requestId] : undefined;
     
     if (status === 'missing') {
-      showError('Document not found in storage. Cannot download missing file.');
+      showError(t('admin.verification.cannotDownloadMissing'));
       return;
     }
 
@@ -309,7 +309,7 @@ export const VerificationQueue = () => {
       link.download = `CR_${companyName || 'document'}.pdf`;
       link.click();
     } else {
-      showError(result.error || 'Failed to download document');
+      showError(result.error || t('admin.verification.failedDownloadDocument'));
     }
   };
 
@@ -331,11 +331,11 @@ export const VerificationQueue = () => {
       // Refresh the data
       await fetchVerificationRequests();
       
-      showSuccess(`Request ${newStatus} successfully`);
+      showSuccess(t('admin.verification.requestUpdated') + ` ${newStatus}`);
       setReviewNotes(prev => ({ ...prev, [requestId]: '' }));
     } catch (error: any) {
       console.error('Error updating verification status:', error);
-      showError('Failed to update request status');
+      showError(t('admin.verification.failedUpdateStatus'));
     } finally {
       setProcessing(null);
     }

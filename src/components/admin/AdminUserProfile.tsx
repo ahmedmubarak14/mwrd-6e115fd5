@@ -17,7 +17,7 @@ export const AdminUserProfile: React.FC<AdminUserProfileProps> = ({
   const { user, userProfile } = useAuth();
   const { t } = useOptionalLanguage();
   
-  const displayName = userProfile?.full_name || user?.email?.split('@')[0] || 'Ahmed Mubark';
+  const displayName = userProfile?.full_name || user?.email?.split('@')[0] || t('admin.users.unknownAdmin');
   const email = user?.email || '';
   const initials = displayName
     .split(' ')
@@ -35,7 +35,7 @@ export const AdminUserProfile: React.FC<AdminUserProfileProps> = ({
             {initials}
           </AvatarFallback>
         </Avatar>
-        <div className="mt-1 w-1 h-1 bg-success rounded-full" title={t('common.titles.adminOnline')} />
+        <div className="mt-1 w-1 h-1 bg-success rounded-full" title={t('admin.users.adminOnline')} />
       </div>
     );
   }
@@ -66,7 +66,7 @@ export const AdminUserProfile: React.FC<AdminUserProfileProps> = ({
             variant="secondary" 
             className="text-xs px-1.5 py-0.5 bg-primary/10 text-primary border border-primary/20"
           >
-            Admin
+            {t('admin.users.admin')}
           </Badge>
         </div>
         {!collapsed && (

@@ -88,60 +88,60 @@ export const ComprehensiveAdminOverview = () => {
 
   const quickActions: QuickAction[] = [
     {
-      title: t('admin.userManagement'),
-      description: t('admin.userManagementDesc'),
+      title: t('admin.navigation.userManagement'),
+      description: t('admin.navigation.userManagementDescription'),
       icon: Users,
       link: '/admin/users',
       color: 'bg-blue-500',
       count: metrics.totalUsers
     },
     {
-      title: t('admin.approvalQueue'),
-      description: t('admin.approvalQueueDesc'),
+      title: t('admin.navigation.approvalQueue'),
+      description: t('admin.navigation.approvalQueueDescription'),
       icon: Clock,
       link: '/admin/requests',
       color: 'bg-orange-500',
       count: metrics.pendingApprovals
     },
     {
-      title: t('admin.financialOverview'),
-      description: t('admin.financialOverviewDesc'),
+      title: t('admin.navigation.financialOverview'),
+      description: t('admin.navigation.financialOverviewDescription'),
       icon: DollarSign,
       link: '/admin/financial-transactions',
       color: 'bg-green-500'
     },
     {
-      title: t('admin.systemHealth'),
-      description: t('admin.systemHealthDesc'),
+      title: t('admin.navigation.systemHealth'),
+      description: t('admin.navigation.systemHealthDescription'),
       icon: Server,
       link: '/admin/performance-monitor',
       color: systemMetrics?.overallStatus === 'healthy' ? 'bg-green-500' : 
              systemMetrics?.overallStatus === 'warning' ? 'bg-yellow-500' : 'bg-red-500'
     },
     {
-      title: t('admin.securityCenter'),
-      description: t('admin.securityCenterDesc'),
+      title: t('admin.navigation.securityCenter'),
+      description: t('admin.navigation.securityCenterDescription'),
       icon: Shield,
       link: '/admin/security',
       color: 'bg-purple-500'
     },
     {
-      title: t('admin.communications'),
-      description: t('admin.communicationsDesc'),
+      title: t('admin.navigation.communications'),
+      description: t('admin.navigation.communicationsDescription'),
       icon: MessageSquare,
       link: '/admin/communications',
       color: 'bg-indigo-500'
     },
     {
-      title: t('admin.analytics'),
-      description: t('admin.analyticsDesc'),
+      title: t('admin.navigation.analytics'),
+      description: t('admin.navigation.analyticsDescription'),
       icon: BarChart3,
       link: '/admin/analytics',
       color: 'bg-teal-500'
     },
     {
-      title: t('admin.automation'),
-      description: t('admin.automationDesc'),
+      title: t('admin.navigation.automation'),
+      description: t('admin.navigation.automationDescription'),
       icon: Zap,
       link: '/admin/automation',
       color: 'bg-yellow-500'
@@ -212,7 +212,7 @@ export const ComprehensiveAdminOverview = () => {
         ).length;
 
         return {
-          date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+          date: date.toLocaleDateString(isRTL ? 'ar-SA' : 'en-US', { month: 'short', day: 'numeric' }),
           users: dayUsers,
           requests: dayRequests,
           orders: dayOrders,
@@ -239,8 +239,8 @@ export const ComprehensiveAdminOverview = () => {
     } catch (error) {
       console.error('Error fetching comprehensive metrics:', error);
       toast({
-        title: t('common.error'),
-        description: t('admin.metricsError'),
+        title: t('admin.messages.error'),
+        description: t('admin.system.metricsError'),
         variant: 'destructive'
       });
     } finally {
@@ -276,13 +276,13 @@ export const ComprehensiveAdminOverview = () => {
             <div className="flex items-center gap-2">
               <AlertCircle className="h-5 w-5 text-destructive" />
               <div>
-                <h3 className="font-semibold text-destructive">{t('admin.systemAlerts')}</h3>
+                <h3 className="font-semibold text-destructive">{t('admin.system.alerts')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {alerts.length} {t('admin.activeSystemAlerts')} {alerts.length !== 1 ? 's' : ''} {t('admin.requireAttention')}
+                  {alerts.length} {t('admin.system.activeSystemAlerts')} {t('admin.system.requireAttention')}
                 </p>
               </div>
               <Button variant="outline" size="sm" asChild className="ml-auto">
-                <Link to="/admin/performance-monitor">{t('admin.viewDetails')}</Link>
+                <Link to="/admin/performance-monitor">{t('admin.actions.viewDetails')}</Link>
               </Button>
             </div>
           </CardContent>
@@ -301,14 +301,14 @@ export const ComprehensiveAdminOverview = () => {
               isRTL && "flex-row-reverse"
             )}>
               <div>
-                <p className="text-sm font-medium text-muted-foreground">{t('admin.totalUsers')}</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('admin.users.totalUsers')}</p>
                 <p className="text-2xl font-bold">{metrics.totalUsers.toLocaleString()}</p>
                 <p className={cn(
                   "text-xs text-success",
                   isRTL && "text-right"
                 )}>
                   <TrendingUp className="h-3 w-3 inline mr-1" />
-                  {metrics.activeUsers} {t('admin.activeThisMonth')}
+                  {metrics.activeUsers} {t('admin.users.activeThisMonth')}
                 </p>
               </div>
               <Users className="h-8 w-8 text-primary" />
@@ -323,14 +323,14 @@ export const ComprehensiveAdminOverview = () => {
               isRTL && "flex-row-reverse"
             )}>
               <div>
-                <p className="text-sm font-medium text-muted-foreground">{t('admin.totalRevenue')}</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('admin.financial.totalRevenue')}</p>
                 <p className="text-2xl font-bold">${metrics.totalRevenue.toLocaleString()}</p>
                 <p className={cn(
                   "text-xs text-success",
                   isRTL && "text-right"
                 )}>
                   <TrendingUp className="h-3 w-3 inline mr-1" />
-                  {t('admin.monthlyGrowth')}
+                  {t('admin.financial.monthlyGrowth')}
                 </p>
               </div>
               <DollarSign className="h-8 w-8 text-success" />
@@ -345,13 +345,13 @@ export const ComprehensiveAdminOverview = () => {
               isRTL && "flex-row-reverse"
             )}>
               <div>
-                <p className="text-sm font-medium text-muted-foreground">{t('admin.pendingApprovals')}</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('admin.requests.pendingApprovals')}</p>
                 <p className="text-2xl font-bold">{metrics.pendingApprovals}</p>
                 <p className={cn(
                   "text-xs text-muted-foreground",
                   isRTL && "text-right"
                 )}>
-                  {t('admin.requiresAdminReview')}
+                  {t('admin.requests.requiresAdminReview')}
                 </p>
               </div>
               <Clock className="h-8 w-8 text-warning" />
@@ -366,19 +366,19 @@ export const ComprehensiveAdminOverview = () => {
               isRTL && "flex-row-reverse"
             )}>
               <div>
-                <p className="text-sm font-medium text-muted-foreground">{t('admin.systemHealth')}</p>
+                <p className="text-sm font-medium text-muted-foreground">{t('admin.system.health')}</p>
                 <p className={cn(
                   "text-2xl font-bold capitalize",
                   metrics.systemHealth === 'healthy' ? 'text-success' :
                   metrics.systemHealth === 'warning' ? 'text-warning' : 'text-destructive'
                 )}>
-                  {t(`admin.${metrics.systemHealth}`)}
+                  {t(`admin.system.${metrics.systemHealth}`)}
                 </p>
                 <p className={cn(
                   "text-xs text-muted-foreground",
                   isRTL && "text-right"
                 )}>
-                  {t('admin.allSystemsOperational')}
+                  {t('admin.system.allSystemsOperational')}
                 </p>
               </div>
               <Server className={cn(
@@ -394,9 +394,9 @@ export const ComprehensiveAdminOverview = () => {
       {/* Platform Performance Chart */}
       <Card>
         <CardHeader>
-          <CardTitle>{t('admin.platformActivity')}</CardTitle>
+          <CardTitle>{t('admin.analytics.platformActivity')}</CardTitle>
           <CardDescription>
-            {t('admin.platformActivityDesc')}
+            {t('admin.analytics.platformActivityDesc')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -440,9 +440,9 @@ export const ComprehensiveAdminOverview = () => {
       {/* Quick Actions Grid */}
       <Card>
         <CardHeader>
-          <CardTitle>{t('admin.quickActions')}</CardTitle>
+          <CardTitle>{t('admin.dashboard.quickActions')}</CardTitle>
           <CardDescription>
-            {t('admin.quickActionsDesc')}
+            {t('admin.dashboard.quickActionsDesc')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -477,26 +477,26 @@ export const ComprehensiveAdminOverview = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>{t('admin.systemStatus')}</CardTitle>
+          <CardTitle>{t('admin.system.status')}</CardTitle>
             <CardDescription>
-              {t('admin.systemStatusDesc')}
+              {t('admin.system.statusDescription')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Database className="h-4 w-4 text-primary" />
-                <span className="text-sm">{t('admin.database')}</span>
+                <span className="text-sm">{t('admin.system.database')}</span>
               </div>
               <Badge variant={systemMetrics?.databaseStatus === 'healthy' ? 'default' : 'destructive'}>
-                {t(`admin.${systemMetrics?.databaseStatus || 'healthy'}`)}
+                {t(`admin.system.${systemMetrics?.databaseStatus || 'healthy'}`)}
               </Badge>
             </div>
             
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Cpu className="h-4 w-4 text-primary" />
-                <span className="text-sm">{t('admin.cpuUsage')}</span>
+                <span className="text-sm">{t('admin.system.cpuUsage')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Progress value={systemMetrics?.cpuUsage || 25} className="w-16" />
@@ -507,7 +507,7 @@ export const ComprehensiveAdminOverview = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <HardDrive className="h-4 w-4 text-primary" />
-                <span className="text-sm">{t('admin.memoryUsage')}</span>
+                <span className="text-sm">{t('admin.system.memoryUsage')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Progress value={systemMetrics?.memoryUsage || 45} className="w-16" />
@@ -518,7 +518,7 @@ export const ComprehensiveAdminOverview = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Globe className="h-4 w-4 text-primary" />
-                <span className="text-sm">{t('admin.activeConnections')}</span>
+                <span className="text-sm">{t('admin.system.activeConnections')}</span>
               </div>
               <span className="text-sm">{systemMetrics?.activeConnections || 12}</span>
             </div>
@@ -527,9 +527,9 @@ export const ComprehensiveAdminOverview = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>{t('admin.recentActivity')}</CardTitle>
+            <CardTitle>{t('admin.analytics.recentActivity')}</CardTitle>
             <CardDescription>
-              {t('admin.recentActivityDesc')}
+              {t('admin.analytics.recentActivityDescription')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -539,7 +539,7 @@ export const ComprehensiveAdminOverview = () => {
                   <div className="w-2 h-2 bg-primary rounded-full"></div>
                   <div className="flex-1">
                     <span className="capitalize">{activity.action?.replace('_', ' ')}</span>
-                    <span className="text-muted-foreground"> {t('admin.activityOn')} </span>
+                    <span className="text-muted-foreground"> {t('admin.analytics.activityOn')} </span>
                     <span className="capitalize">{activity.entity_type}</span>
                   </div>
                   <span className="text-xs text-muted-foreground">
@@ -549,7 +549,7 @@ export const ComprehensiveAdminOverview = () => {
               ))}
               {recentActivity.length === 0 && (
                 <p className="text-sm text-muted-foreground text-center py-4">
-                  {t('admin.noRecentActivity')}
+                  {t('admin.analytics.noRecentActivity')}
                 </p>
               )}
             </div>
