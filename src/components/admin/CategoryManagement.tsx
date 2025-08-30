@@ -907,7 +907,7 @@ export const CategoryManagement: React.FC = () => {
                 disabled={expandedCategories.length === (categories?.filter(cat => cat.children && cat.children.length > 0).length || 0)}
               >
                 <Expand className="h-4 w-4 mr-2" />
-                Expand All
+                {t('admin.categoryManagement.expandAll')}
               </Button>
               
               <Button
@@ -917,7 +917,7 @@ export const CategoryManagement: React.FC = () => {
                 disabled={expandedCategories.length === 0}
               >
                 <Minimize className="h-4 w-4 mr-2" />
-                Collapse All
+                {t('admin.categoryManagement.collapseAll')}
               </Button>
             </>
           )}
@@ -928,12 +928,12 @@ export const CategoryManagement: React.FC = () => {
             onClick={() => setViewMode(viewMode === 'tree' ? 'table' : 'tree')}
           >
             {viewMode === 'tree' ? <List className="h-4 w-4" /> : <Grid className="h-4 w-4" />}
-            {viewMode === 'tree' ? 'Table View' : 'Tree View'}
+            {viewMode === 'tree' ? t('admin.categoryManagement.tableView') : t('admin.categoryManagement.treeView')}
           </Button>
           
           <Button variant="outline" size="sm" onClick={exportCategories}>
             <Download className="h-4 w-4 mr-2" />
-            Export
+            {t('admin.categoryManagement.export')}
           </Button>
         </div>
       </div>
