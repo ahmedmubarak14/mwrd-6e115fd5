@@ -793,6 +793,9 @@ export const enUS = {
     // Badge Text
     badgeMax: "99+",
     
+    // Missing Navigation Items
+    financialTransactions: "Financial Transactions",
+    
      // Menu Items
      projects: "Projects",
      orders: "Orders",
@@ -930,7 +933,6 @@ export const enUS = {
       supportCenter: "Support Center",
       verificationQueue: "Verification Queue",
       categoryManagement: "Category Management",
-      expertConsultations: "Expert Consultations",
       financialTransactions: "Financial Transactions",
       securityMonitoring: "Security Monitoring"
     }

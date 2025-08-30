@@ -129,7 +129,7 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
           icon: FolderOpen,
         },
         {
-          name: t('admin.expertConsultations'),
+          name: t('admin.expertConsultations.title'),
           href: "/admin/content/consultations",
           icon: HelpCircle,
         },

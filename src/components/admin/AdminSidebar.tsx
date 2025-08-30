@@ -192,7 +192,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           icon: FolderOpen,
         },
         {
-          name: t('admin.expertConsultations'),
+          name: t('admin.expertConsultations.title'),
           href: "/admin/expert-consultations",
           icon: HelpCircle,
         },

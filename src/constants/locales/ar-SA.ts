@@ -684,6 +684,9 @@ export const arSA = {
     // Badge Text
     badgeMax: "+99",
     
+    // Missing Navigation Items
+    financialTransactions: "المعاملات المالية",
+    
     // Menu Items
     analytics: "التحليلات",
     projects: "المشاريع",
@@ -824,7 +827,6 @@ export const arSA = {
       supportCenter: "مركز الدعم",
       verificationQueue: "قائمة التحقق",
       categoryManagement: "إدارة الفئات",
-      expertConsultations: "الاستشارات الخبيرة",
       financialTransactions: "المعاملات المالية",
       securityMonitoring: "مراقبة الأمان"
     }
