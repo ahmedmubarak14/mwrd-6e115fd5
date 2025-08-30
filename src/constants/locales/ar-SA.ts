@@ -719,10 +719,6 @@ export const arSA = {
     createError: 'فشل في إنشاء سير العمل',
     loading: 'جاري تحميل مركز الأتمتة...'
   },
-  financial: {
-    transactions: 'المعاملات المالية',
-    description: 'مراقبة وإدارة جميع المعاملات المالية عبر المنصة'
-  },
   profile: {
     adminProfile: 'الملف الشخصي للمدير',
     adminProfileDescription: 'إدارة ملفك الشخصي كمدير وإعدادات الأمان وتفضيلات النظام',
@@ -916,4 +912,42 @@ export const arSA = {
     accessDenied: 'تم رفض الوصول',
     adminRequired: 'تحتاج إلى صلاحيات المدير لإدارة الفئات.'
   },
+  financial: {
+    transactions: "المعاملات المالية",
+    description: "مراقبة وإدارة جميع المعاملات المالية على المنصة",
+    demoMode: "وضع التجريب",
+    demoDescription: "استخدام بيانات المعاملات المالية التجريبية. يجب إنشاء جدول قاعدة البيانات.",
+    error: "خطأ",
+    fetchError: "فشل في جلب المعاملات المالية. يرجى المحاولة مرة أخرى.",
+    totalTransactions: "إجمالي المعاملات",
+    completed: "مكتملة",
+    pending: "معلقة",
+    failed: "فاشلة",
+    cancelled: "ملغاة",
+    totalVolume: "إجمالي الحجم",
+    platformRevenue: "إيرادات المنصة",
+    searchPlaceholder: "البحث في المعاملات...",
+    status: "الحالة",
+    allStatus: "جميع الحالات",
+    type: "النوع",
+    allTypes: "جميع الأنواع",
+    payment: "دفع",
+    refund: "استرداد",
+    fee: "رسوم",
+    commission: "عمولة",
+    withdrawal: "سحب",
+    refresh: "تحديث",
+    export: "تصدير",
+    all: "الكل",
+    noTransactionsFound: "لم يتم العثور على معاملات",
+    noTransactionsMatch: "لا توجد معاملات تطابق معايير البحث الخاصة بك.",
+    noTransactionsAvailable: "لا توجد معاملات متاحة في هذه الفئة.",
+    transactionDetails: "تفاصيل المعاملة",
+    amount: "المبلغ",
+    date: "التاريخ",
+    reference: "المرجع",
+    paymentMethod: "طريقة الدفع",
+    user: "المستخدم",
+    order: "الطلب"
+  }
 };

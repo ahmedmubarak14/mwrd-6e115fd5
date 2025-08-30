@@ -140,8 +140,8 @@ export default function AdminFinancialTransactions() {
           
           setTransactions(demoTransactions);
           toast({
-            title: "Demo Mode",
-            description: "Using demo financial transaction data. Database table needs to be created.",
+            title: t('financial.demoMode'),
+            description: t('financial.demoDescription'),
             variant: "default",
           });
           return;
@@ -170,8 +170,8 @@ export default function AdminFinancialTransactions() {
     } catch (error) {
       console.error('Error fetching transactions:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch financial transactions. Please try again.",
+        title: t('financial.error'),
+        description: t('financial.fetchError'),
         variant: "destructive",
       });
     } finally {
@@ -310,7 +310,7 @@ export default function AdminFinancialTransactions() {
               <Receipt className="h-8 w-8 text-primary" />
               <div>
                 <p className="text-2xl font-bold">{transactionStats.total}</p>
-                <p className="text-sm text-muted-foreground">Total Transactions</p>
+                <p className="text-sm text-muted-foreground">{t('financial.totalTransactions')}</p>
               </div>
             </div>
           </CardContent>
@@ -322,7 +322,7 @@ export default function AdminFinancialTransactions() {
               <CheckCircle className="h-8 w-8 text-success" />
               <div>
                 <p className="text-2xl font-bold">{transactionStats.completed}</p>
-                <p className="text-sm text-muted-foreground">Completed</p>
+                <p className="text-sm text-muted-foreground">{t('financial.completed')}</p>
               </div>
             </div>
           </CardContent>
@@ -334,7 +334,7 @@ export default function AdminFinancialTransactions() {
               <Clock className="h-8 w-8 text-yellow-500" />
               <div>
                 <p className="text-2xl font-bold">{transactionStats.pending}</p>
-                <p className="text-sm text-muted-foreground">Pending</p>
+                <p className="text-sm text-muted-foreground">{t('financial.pending')}</p>
               </div>
             </div>
           </CardContent>
@@ -346,7 +346,7 @@ export default function AdminFinancialTransactions() {
               <DollarSign className="h-8 w-8 text-success" />
               <div>
                 <p className="text-2xl font-bold">{transactionStats.totalAmount.toLocaleString()} SAR</p>
-                <p className="text-sm text-muted-foreground">Total Volume</p>
+                <p className="text-sm text-muted-foreground">{t('financial.totalVolume')}</p>
               </div>
             </div>
           </CardContent>
@@ -358,7 +358,7 @@ export default function AdminFinancialTransactions() {
               <TrendingUp className="h-8 w-8 text-success" />
               <div>
                 <p className="text-2xl font-bold">{transactionStats.totalRevenue.toLocaleString()} SAR</p>
-                <p className="text-sm text-muted-foreground">Platform Revenue</p>
+                <p className="text-sm text-muted-foreground">{t('financial.platformRevenue')}</p>
               </div>
             </div>
           </CardContent>
@@ -370,7 +370,7 @@ export default function AdminFinancialTransactions() {
         <div className="relative flex-1">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search transactions..."
+            placeholder={t('financial.searchPlaceholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-9"
@@ -380,39 +380,39 @@ export default function AdminFinancialTransactions() {
         <div className="flex gap-2">
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder="Status" />
+              <SelectValue placeholder={t('financial.status')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
-              <SelectItem value="failed">Failed</SelectItem>
-              <SelectItem value="cancelled">Cancelled</SelectItem>
+              <SelectItem value="all">{t('financial.allStatus')}</SelectItem>
+              <SelectItem value="pending">{t('financial.pending')}</SelectItem>
+              <SelectItem value="completed">{t('financial.completed')}</SelectItem>
+              <SelectItem value="failed">{t('financial.failed')}</SelectItem>
+              <SelectItem value="cancelled">{t('financial.cancelled')}</SelectItem>
             </SelectContent>
           </Select>
 
           <Select value={typeFilter} onValueChange={setTypeFilter}>
             <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder="Type" />
+              <SelectValue placeholder={t('financial.type')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value="payment">Payment</SelectItem>
-              <SelectItem value="refund">Refund</SelectItem>
-              <SelectItem value="fee">Fee</SelectItem>
-              <SelectItem value="commission">Commission</SelectItem>
-              <SelectItem value="withdrawal">Withdrawal</SelectItem>
+              <SelectItem value="all">{t('financial.allTypes')}</SelectItem>
+              <SelectItem value="payment">{t('financial.payment')}</SelectItem>
+              <SelectItem value="refund">{t('financial.refund')}</SelectItem>
+              <SelectItem value="fee">{t('financial.fee')}</SelectItem>
+              <SelectItem value="commission">{t('financial.commission')}</SelectItem>
+              <SelectItem value="withdrawal">{t('financial.withdrawal')}</SelectItem>
             </SelectContent>
           </Select>
 
           <Button variant="outline" onClick={fetchTransactions}>
             <RefreshCw className="h-4 w-4 mr-2" />
-            Refresh
+            {t('financial.refresh')}
           </Button>
 
           <Button variant="outline" onClick={exportTransactions}>
             <Download className="h-4 w-4 mr-2" />
-            Export
+            {t('financial.export')}
           </Button>
         </div>
       </div>
@@ -420,11 +420,11 @@ export default function AdminFinancialTransactions() {
       {/* Transactions Tabs */}
       <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6">
         <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="all">All ({transactionStats.total})</TabsTrigger>
-          <TabsTrigger value="pending">Pending ({transactionStats.pending})</TabsTrigger>
-          <TabsTrigger value="completed">Completed ({transactionStats.completed})</TabsTrigger>
-          <TabsTrigger value="failed">Failed ({transactionStats.failed})</TabsTrigger>
-          <TabsTrigger value="cancelled">Cancelled</TabsTrigger>
+          <TabsTrigger value="all">{t('financial.all')} ({transactionStats.total})</TabsTrigger>
+          <TabsTrigger value="pending">{t('financial.pending')} ({transactionStats.pending})</TabsTrigger>
+          <TabsTrigger value="completed">{t('financial.completed')} ({transactionStats.completed})</TabsTrigger>
+          <TabsTrigger value="failed">{t('financial.failed')} ({transactionStats.failed})</TabsTrigger>
+          <TabsTrigger value="cancelled">{t('financial.cancelled')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value={selectedTab} className="space-y-4">
@@ -432,9 +432,9 @@ export default function AdminFinancialTransactions() {
             <Card>
               <CardContent className="py-12 text-center">
                 <Receipt className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-semibold mb-2">No Transactions Found</h3>
+                <h3 className="text-lg font-semibold mb-2">{t('financial.noTransactionsFound')}</h3>
                 <p className="text-muted-foreground">
-                  {searchTerm ? 'No transactions match your search criteria.' : 'No transactions available in this category.'}
+                  {searchTerm ? t('financial.noTransactionsMatch') : t('financial.noTransactionsAvailable')}
                 </p>
               </CardContent>
             </Card>

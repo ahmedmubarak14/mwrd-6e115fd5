@@ -719,10 +719,6 @@ export const enUS = {
     createError: 'Failed to create workflow',
     loading: 'Loading automation center...'
   },
-  financial: {
-    transactions: 'Financial Transactions',
-    description: 'Monitor and manage all financial transactions across the platform'
-  },
   profile: {
     adminProfile: 'Admin Profile',
     adminProfileDescription: 'Manage your admin profile, security settings, and system preferences',
@@ -916,4 +912,42 @@ export const enUS = {
     accessDenied: 'Access Denied',
     adminRequired: 'You need admin privileges to manage categories.'
   },
+  financial: {
+    transactions: "Financial Transactions",
+    description: "Monitor and manage all financial transactions on the platform",
+    demoMode: "Demo Mode",
+    demoDescription: "Using demo financial transaction data. Database table needs to be created.",
+    error: "Error",
+    fetchError: "Failed to fetch financial transactions. Please try again.",
+    totalTransactions: "Total Transactions",
+    completed: "Completed",
+    pending: "Pending",
+    failed: "Failed",
+    cancelled: "Cancelled",
+    totalVolume: "Total Volume",
+    platformRevenue: "Platform Revenue",
+    searchPlaceholder: "Search transactions...",
+    status: "Status",
+    allStatus: "All Status",
+    type: "Type",
+    allTypes: "All Types",
+    payment: "Payment",
+    refund: "Refund",
+    fee: "Fee",
+    commission: "Commission",
+    withdrawal: "Withdrawal",
+    refresh: "Refresh",
+    export: "Export",
+    all: "All",
+    noTransactionsFound: "No Transactions Found",
+    noTransactionsMatch: "No transactions match your search criteria.",
+    noTransactionsAvailable: "No transactions available in this category.",
+    transactionDetails: "Transaction Details",
+    amount: "Amount",
+    date: "Date",
+    reference: "Reference",
+    paymentMethod: "Payment Method",
+    user: "User",
+    order: "Order"
+  }
 };
