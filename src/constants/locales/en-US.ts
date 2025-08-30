@@ -1048,16 +1048,6 @@ export const enUS = {
       avgProcessing: "Avg. Processing"
     },
     
-    // Offers Management
-    offersManagement: {
-      title: "Offers Management",
-      description: "Manage and approve vendor offers",
-      loadingOffers: "Loading offers...",
-      approveOffer: "Approve this offer", 
-      totalOffers: "Total Offers",
-      pendingApproval: "Pending Approval"
-    },
-    
     // Security  
     security: {
       title: "Security Center",
@@ -1158,6 +1148,85 @@ export const enUS = {
       cancel: "Cancel",
       confirm: "Confirm",
       delete: "Delete"
+    },
+
+    // Offers Management
+    offersManagement: {
+      title: "Offers Management",
+      description: "Review, approve, and manage vendor offers across the platform. Monitor pricing trends and conversion rates.",
+      
+      // Analytics Cards
+      totalOffers: "Total Offers",
+      pendingApproval: "Pending Approval",
+      conversionRate: "Conversion Rate",
+      averagePrice: "Average Price",
+      avgResponseTime: "Avg Response Time",
+      highPriority: "High Priority",
+      acrossAllOffers: "Across all offers",
+      vendorResponseTime: "Vendor response time",
+      requiresAttention: "Requires immediate attention",
+      offersAcceptedByClients: "offers accepted by clients",
+      
+      // Filters & Search
+      filtersAndSearch: "Filters & Search",
+      searchPlaceholder: "Search offers...",
+      clientStatus: "Client Status",
+      adminApproval: "Admin Approval",
+      priceRange: "Price Range",
+      allClientStatuses: "All Client Statuses",
+      allAdminApprovals: "All Admin Approvals",
+      allPrices: "All Prices",
+      refresh: "Refresh",
+      exportReport: "Export Report",
+      
+      // Price Ranges
+      lessThan10k: "Less than 10,000 SAR",
+      between10k50k: "10,000 - 50,000 SAR",
+      greaterThan50k: "Greater than 50,000 SAR",
+      
+      // Status Options
+      pending: "Pending",
+      approved: "Approved",
+      rejected: "Rejected",
+      
+      // Tabs
+      allOffers: "All Offers",
+      pendingReview: "Pending Review",
+      urgent: "Urgent",
+      
+      // Offer Details
+      vendor: "Vendor",
+      client: "Client",
+      forRequest: "For",
+      status: "Status",
+      price: "Price",
+      deliveryTime: "Delivery Time",
+      days: "days",
+      requestCategory: "Request Category",
+      created: "Created",
+      budgetRange: "Budget Range",
+      
+      // Actions
+      viewDetails: "View Details",
+      approveOffer: "Approve Offer",
+      rejectOffer: "Reject Offer",
+      contactVendor: "Contact Vendor",
+      escalateToSupport: "Escalate to Support",
+      initiateDiscussion: "Initiate Discussion",
+      
+      // Messages
+      loading: "Loading offers...",
+      noOffersFound: "No offers found matching your filters.",
+      
+      // Toast Messages
+      loadingOffers: "Failed to load offers",
+      approveOfferSuccess: "Offer approved successfully",
+      rejectOfferSuccess: "Offer rejected successfully",
+      updateError: "Failed to update offer status",
+      escalateSuccess: "Issue escalated to support team",
+      escalateError: "Failed to escalate to support",
+      conversationSuccess: "Conversation initiated between all parties",
+      conversationError: "Failed to initiate conversation"
     },
 
     // Requests Management

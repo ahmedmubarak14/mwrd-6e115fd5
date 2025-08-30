@@ -123,15 +123,15 @@ const AdminOffers = () => {
 
       toast({
         title: t('common.success'),
-        description: t('admin.offersManagement.approveOffer'),
+        description: status === 'approved' ? t('admin.offersManagement.approveOfferSuccess') : t('admin.offersManagement.rejectOfferSuccess'),
       });
 
       fetchOffers();
     } catch (error) {
       console.error('Error updating offer status:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to update offer status',
+        title: t('common.error'),
+        description: t('admin.offersManagement.updateError'),
         variant: 'destructive'
       });
     }
@@ -155,14 +155,14 @@ const AdminOffers = () => {
       if (error) throw error;
 
       toast({
-        title: 'Success',
-        description: 'Issue escalated to support team',
+        title: t('common.success'),
+        description: t('admin.offersManagement.escalateSuccess'),
       });
     } catch (error) {
       console.error('Error escalating to support:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to escalate to support',
+        title: t('common.error'),
+        description: t('admin.offersManagement.escalateError'),
         variant: 'destructive'
       });
     }
@@ -196,14 +196,14 @@ const AdminOffers = () => {
         }]);
 
       toast({
-        title: 'Success',
-        description: 'Conversation initiated between all parties',
+        title: t('common.success'),
+        description: t('admin.offersManagement.conversationSuccess'),
       });
     } catch (error) {
       console.error('Error initiating conversation:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to initiate conversation',
+        title: t('common.error'),
+        description: t('admin.offersManagement.conversationError'),
         variant: 'destructive'
       });
     }
@@ -279,88 +279,88 @@ const AdminOffers = () => {
         description={t('admin.offersManagement.description')}
       >
 
-      {/* Enhanced Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6">
-        <Card>
-          <CardHeader className={cn(
-            "flex flex-row items-center justify-between space-y-0 pb-2",
-            isRTL && "flex-row-reverse"
-          )}>
-            <CardTitle className="text-sm font-medium">{t('admin.offersManagement.totalOffers')}</CardTitle>
-            <Package className="h-4 w-4 text-foreground opacity-75" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{offers.length}</div>
-            <p className="text-xs text-foreground opacity-75">
-              {pendingOffers.length} {t('admin.offersManagement.pendingApproval')}
-            </p>
-          </CardContent>
-        </Card>
+          {/* Enhanced Key Metrics */}
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6">
+            <Card>
+              <CardHeader className={cn(
+                "flex flex-row items-center justify-between space-y-0 pb-2",
+                isRTL && "flex-row-reverse"
+              )}>
+                <CardTitle className="text-sm font-medium">{t('admin.offersManagement.totalOffers')}</CardTitle>
+                <Package className="h-4 w-4 text-foreground opacity-75" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{offers.length}</div>
+                <p className="text-xs text-foreground opacity-75">
+                  {pendingOffers.length} {t('admin.offersManagement.pendingApproval')}
+                </p>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('admin.offersManagement.conversionRate')}</CardTitle>
-            <TrendingUp className="h-4 w-4 text-foreground opacity-75" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{calculateConversionRate()}%</div>
-            <p className="text-xs text-foreground opacity-75">
-              {clientApprovedOffers.length} offers accepted by clients
-            </p>
-          </CardContent>
-        </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">{t('admin.offersManagement.conversionRate')}</CardTitle>
+                <TrendingUp className="h-4 w-4 text-foreground opacity-75" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{calculateConversionRate()}%</div>
+                <p className="text-xs text-foreground opacity-75">
+                  {clientApprovedOffers.length} {t('admin.offersManagement.offersAcceptedByClients')}
+                </p>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Average Price</CardTitle>
-            <DollarSign className="h-4 w-4 text-foreground opacity-75" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{calculateAveragePrice()} SAR</div>
-            <p className="text-xs text-foreground opacity-75">
-              Across all offers
-            </p>
-          </CardContent>
-        </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">{t('admin.offersManagement.averagePrice')}</CardTitle>
+                <DollarSign className="h-4 w-4 text-foreground opacity-75" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{calculateAveragePrice()} SAR</div>
+                <p className="text-xs text-foreground opacity-75">
+                  {t('admin.offersManagement.acrossAllOffers')}
+                </p>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg Response Time</CardTitle>
-            <Clock className="h-4 w-4 text-foreground opacity-75" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{calculateAverageResponseTime()}</div>
-            <p className="text-xs text-foreground opacity-75">
-              Vendor response time
-            </p>
-          </CardContent>
-        </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">{t('admin.offersManagement.avgResponseTime')}</CardTitle>
+                <Clock className="h-4 w-4 text-foreground opacity-75" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{calculateAverageResponseTime()}</div>
+                <p className="text-xs text-foreground opacity-75">
+                  {t('admin.offersManagement.vendorResponseTime')}
+                </p>
+              </CardContent>
+            </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">High Priority</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-warning" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-warning">{highUrgencyOffers.length}</div>
-            <p className="text-xs text-foreground opacity-75">
-              Requires immediate attention
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">{t('admin.offersManagement.highPriority')}</CardTitle>
+                <AlertTriangle className="h-4 w-4 text-warning" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-warning">{highUrgencyOffers.length}</div>
+                <p className="text-xs text-foreground opacity-75">
+                  {t('admin.offersManagement.requiresAttention')}
+                </p>
+              </CardContent>
+            </Card>
+          </div>
 
       {/* Filters */}
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle className="text-lg">Filters & Search</CardTitle>
+          <CardTitle className="text-lg">{t('admin.offersManagement.filtersAndSearch')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-foreground opacity-75" />
               <Input
-                placeholder="Search offers..."
+                placeholder={t('admin.offersManagement.searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -369,47 +369,47 @@ const AdminOffers = () => {
             
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Client Status" />
+                <SelectValue placeholder={t('admin.offersManagement.clientStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Client Statuses</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
+                <SelectItem value="all">{t('admin.offersManagement.allClientStatuses')}</SelectItem>
+                <SelectItem value="pending">{t('admin.offersManagement.pending')}</SelectItem>
+                <SelectItem value="approved">{t('admin.offersManagement.approved')}</SelectItem>
+                <SelectItem value="rejected">{t('admin.offersManagement.rejected')}</SelectItem>
               </SelectContent>
             </Select>
 
             <Select value={approvalFilter} onValueChange={setApprovalFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Admin Approval" />
+                <SelectValue placeholder={t('admin.offersManagement.adminApproval')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Admin Approvals</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
+                <SelectItem value="all">{t('admin.offersManagement.allAdminApprovals')}</SelectItem>
+                <SelectItem value="pending">{t('admin.offersManagement.pending')}</SelectItem>
+                <SelectItem value="approved">{t('admin.offersManagement.approved')}</SelectItem>
+                <SelectItem value="rejected">{t('admin.offersManagement.rejected')}</SelectItem>
               </SelectContent>
             </Select>
 
             <Select value={priceFilter} onValueChange={setPriceFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Price Range" />
+                <SelectValue placeholder={t('admin.offersManagement.priceRange')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Prices</SelectItem>
-                <SelectItem value="low">Less than 10,000 SAR</SelectItem>
-                <SelectItem value="medium">10,000 - 50,000 SAR</SelectItem>
-                <SelectItem value="high">Greater than 50,000 SAR</SelectItem>
+                <SelectItem value="all">{t('admin.offersManagement.allPrices')}</SelectItem>
+                <SelectItem value="low">{t('admin.offersManagement.lessThan10k')}</SelectItem>
+                <SelectItem value="medium">{t('admin.offersManagement.between10k50k')}</SelectItem>
+                <SelectItem value="high">{t('admin.offersManagement.greaterThan50k')}</SelectItem>
               </SelectContent>
             </Select>
 
             <Button onClick={fetchOffers} variant="outline">
-              Refresh
+              {t('admin.offersManagement.refresh')}
             </Button>
 
             <Button variant="outline" className="flex items-center gap-1">
               <FileText className="h-4 w-4" />
-              Export Report
+              {t('admin.offersManagement.exportReport')}
             </Button>
           </div>
         </CardContent>
@@ -418,19 +418,19 @@ const AdminOffers = () => {
       {/* Tabs for better organization */}
       <Tabs defaultValue="all" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="all">All Offers ({offers.length})</TabsTrigger>
-          <TabsTrigger value="pending">Pending Review ({pendingOffers.length})</TabsTrigger>
-          <TabsTrigger value="urgent">High Priority ({highUrgencyOffers.length})</TabsTrigger>
-          <TabsTrigger value="approved">Approved ({approvedOffers.length})</TabsTrigger>
+          <TabsTrigger value="all">{t('admin.offersManagement.allOffers')} ({offers.length})</TabsTrigger>
+          <TabsTrigger value="pending">{t('admin.offersManagement.pendingReview')} ({pendingOffers.length})</TabsTrigger>
+          <TabsTrigger value="urgent">{t('admin.offersManagement.highPriority')} ({highUrgencyOffers.length})</TabsTrigger>
+          <TabsTrigger value="approved">{t('admin.offersManagement.approved')} ({approvedOffers.length})</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="space-y-4">
           {loading ? (
-            <div className="text-center py-8">Loading offers...</div>
+            <div className="text-center py-8">{t('admin.offersManagement.loading')}</div>
             ) : filteredOffers.length === 0 ? (
             <Card>
               <CardContent className="text-center py-8">
-                <p className="text-foreground opacity-75">No offers found matching your filters.</p>
+                <p className="text-foreground opacity-75">{t('admin.offersManagement.noOffersFound')}</p>
               </CardContent>
             </Card>
           ) : (
@@ -444,7 +444,7 @@ const AdminOffers = () => {
                         {getUrgencyLevel(offer) === 'high' && (
                           <Badge variant="outline" className="bg-orange-100 text-orange-700 border-orange-300">
                             <AlertTriangle className="h-3 w-3 mr-1" />
-                            Urgent
+                            {t('admin.offersManagement.urgent')}
                           </Badge>
                         )}
                       </div>
@@ -452,16 +452,16 @@ const AdminOffers = () => {
                         {offer.description}
                       </CardDescription>
                       <div className="flex items-center gap-4 text-sm text-foreground opacity-75">
-                        <span>For: {offer.request?.title}</span>
+                        <span>{t('admin.offersManagement.forRequest')}: {offer.request?.title}</span>
                         <span>•</span>
-                        <span>Vendor: {offer.vendor?.company_name || offer.vendor?.full_name}</span>
+                        <span>{t('admin.offersManagement.vendor')}: {offer.vendor?.company_name || offer.vendor?.full_name}</span>
                         <span>•</span>
-                        <span>Client: {offer.client?.company_name || offer.client?.full_name}</span>
+                        <span>{t('admin.offersManagement.client')}: {offer.client?.company_name || offer.client?.full_name}</span>
                       </div>
                     </div>
                     <div className="flex flex-col gap-2 text-right">
                       <Badge variant={getStatusBadgeVariant(offer.client_approval_status)}>
-                        Status: {offer.client_approval_status.toUpperCase()}
+                        {t('admin.offersManagement.status')}: {offer.client_approval_status.toUpperCase()}
                       </Badge>
                     </div>
                   </div>
@@ -470,26 +470,26 @@ const AdminOffers = () => {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                     <div>
-                      <p className="text-sm font-medium text-foreground opacity-75">Offer Price</p>
+                      <p className="text-sm font-medium text-foreground opacity-75">{t('admin.offersManagement.price')}</p>
                       <p className="text-lg font-bold text-primary">
                         {offer.price.toLocaleString()} {offer.currency}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-foreground opacity-75">Request Budget</p>
+                      <p className="text-sm font-medium text-foreground opacity-75">{t('admin.offersManagement.budgetRange')}</p>
                       <p className="text-sm">
                         {offer.request?.budget_min && offer.request?.budget_max
                           ? `${offer.request.budget_min.toLocaleString()} - ${offer.request.budget_max.toLocaleString()}`
-                          : 'Not specified'
+                          : t('admin.requestsManagement.notSpecified')
                         }
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-foreground opacity-75">Delivery Time</p>
-                      <p className="text-sm">{offer.delivery_time_days} days</p>
+                      <p className="text-sm font-medium text-foreground opacity-75">{t('admin.offersManagement.deliveryTime')}</p>
+                      <p className="text-sm">{offer.delivery_time_days} {t('admin.offersManagement.days')}</p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-foreground opacity-75">Created</p>
+                      <p className="text-sm font-medium text-foreground opacity-75">{t('admin.offersManagement.created')}</p>
                       <p className="text-sm">{format(new Date(offer.created_at), 'MMM dd, yyyy HH:mm')}</p>
                     </div>
                   </div>
@@ -497,7 +497,7 @@ const AdminOffers = () => {
                   <div className="flex flex-wrap gap-2">
                     <Button variant="outline" size="sm" className="flex items-center gap-1">
                       <Eye className="h-4 w-4" />
-                      View Details
+                      {t('admin.offersManagement.viewDetails')}
                     </Button>
                     
                     <Button 
@@ -507,7 +507,7 @@ const AdminOffers = () => {
                       onClick={() => initiateConversation(offer.vendor_id, offer.request?.client_id || '', offer.id)}
                     >
                       <MessageSquare className="h-4 w-4" />
-                      Start Group Chat
+                      {t('admin.offersManagement.initiateDiscussion')}
                     </Button>
                     
                     <Button 
@@ -517,7 +517,7 @@ const AdminOffers = () => {
                       onClick={() => escalateToSupport(offer.id, 'pricing')}
                     >
                       <AlertTriangle className="h-4 w-4" />
-                      Escalate Issue
+                      {t('admin.offersManagement.escalateToSupport')}
                     </Button>
                   </div>
                 </CardContent>

@@ -945,16 +945,6 @@ export const arSA = {
       avgProcessing: "متوسط المعالجة"
     },
     
-    // Offers Management
-    offersManagement: {
-      title: "إدارة العروض",
-      description: "إدارة واعتماد عروض البائعين",
-      loadingOffers: "تحميل العروض...",
-      approveOffer: "اعتماد هذا العرض",
-      totalOffers: "إجمالي العروض",
-      pendingApproval: "في انتظار الموافقة"
-    },
-    
     // Security
     security: {
       title: "مركز الأمان",
@@ -1055,6 +1045,85 @@ export const arSA = {
       cancel: "إلغاء",
       confirm: "تأكيد",
       delete: "حذف"
+    },
+
+    // Offers Management
+    offersManagement: {
+      title: "إدارة العروض",
+      description: "مراجعة والموافقة على وإدارة عروض الموردين عبر المنصة. مراقبة اتجاهات الأسعار ومعدلات التحويل.",
+      
+      // Analytics Cards
+      totalOffers: "إجمالي العروض",
+      pendingApproval: "قيد الموافقة",
+      conversionRate: "معدل التحويل",
+      averagePrice: "متوسط السعر",
+      avgResponseTime: "متوسط وقت الاستجابة",
+      highPriority: "أولوية عالية",
+      acrossAllOffers: "عبر جميع العروض",
+      vendorResponseTime: "وقت استجابة المورد",
+      requiresAttention: "تتطلب اهتماما فوريا",
+      offersAcceptedByClients: "عروض تم قبولها من العملاء",
+      
+      // Filters & Search
+      filtersAndSearch: "المرشحات والبحث",
+      searchPlaceholder: "البحث في العروض...",
+      clientStatus: "حالة العميل",
+      adminApproval: "موافقة الإدارة",
+      priceRange: "نطاق السعر",
+      allClientStatuses: "جميع حالات العميل",
+      allAdminApprovals: "جميع موافقات الإدارة",
+      allPrices: "جميع الأسعار",
+      refresh: "تحديث",
+      exportReport: "تصدير التقرير",
+      
+      // Price Ranges
+      lessThan10k: "أقل من 10,000 ريال",
+      between10k50k: "10,000 - 50,000 ريال",
+      greaterThan50k: "أكثر من 50,000 ريال",
+      
+      // Status Options
+      pending: "قيد الانتظار",
+      approved: "معتمد",
+      rejected: "مرفوض",
+      
+      // Tabs
+      allOffers: "جميع العروض",
+      pendingReview: "قيد المراجعة",
+      urgent: "عاجل",
+      
+      // Offer Details
+      vendor: "المورد",
+      client: "العميل",
+      forRequest: "للطلب",
+      status: "الحالة",
+      price: "السعر",
+      deliveryTime: "وقت التسليم",
+      days: "أيام",
+      requestCategory: "فئة الطلب",
+      created: "تاريخ الإنشاء",
+      budgetRange: "نطاق الميزانية",
+      
+      // Actions
+      viewDetails: "عرض التفاصيل",
+      approveOffer: "اعتماد العرض",
+      rejectOffer: "رفض العرض",
+      contactVendor: "اتصال بالمورد",
+      escalateToSupport: "تصعيد للدعم",
+      initiateDiscussion: "بدء نقاش",
+      
+      // Messages
+      loading: "جاري تحميل العروض...",
+      noOffersFound: "لا توجد عروض تطابق المرشحات المحددة.",
+      
+      // Toast Messages
+      loadingOffers: "فشل في تحميل العروض",
+      approveOfferSuccess: "تم اعتماد العرض بنجاح",
+      rejectOfferSuccess: "تم رفض العرض بنجاح",
+      updateError: "فشل في تحديث حالة العرض",
+      escalateSuccess: "تم تصعيد المشكلة لفريق الدعم",
+      escalateError: "فشل في تصعيد المشكلة للدعم",
+      conversationSuccess: "تم بدء المحادثة بين جميع الأطراف",
+      conversationError: "فشل في بدء المحادثة"
     },
 
     // Requests Management
