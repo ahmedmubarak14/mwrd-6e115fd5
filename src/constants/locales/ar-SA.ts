@@ -681,6 +681,9 @@ export const arSA = {
     // Navigation Accessibility  
     navigateTo: "الانتقال إلى",
     
+    // Badge Text
+    badgeMax: "+99",
+    
     // Menu Items
     analytics: "التحليلات",
     projects: "المشاريع",

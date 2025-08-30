@@ -192,7 +192,7 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
                           item.badgeVariant === "destructive" && "animate-pulse"
                         )}
                       >
-                        {item.badge > 99 ? '99+' : item.badge}
+                        {item.badge > 99 ? t('admin.badgeMax') : item.badge}
                       </Badge>
                     )}
                   </Link>

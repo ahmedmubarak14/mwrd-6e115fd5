@@ -790,6 +790,9 @@ export const enUS = {
     // Navigation Accessibility
     navigateTo: "Navigate to",
     
+    // Badge Text
+    badgeMax: "99+",
+    
      // Menu Items
      projects: "Projects",
      orders: "Orders",
