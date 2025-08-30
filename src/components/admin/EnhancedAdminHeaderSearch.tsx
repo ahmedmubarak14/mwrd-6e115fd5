@@ -241,7 +241,7 @@ export const EnhancedAdminHeaderSearch = () => {
         handleResultClick(results[selectedIndex]);
       } else if (query.trim()) {
         saveRecentSearch(query);
-        toast.info(`${t('admin.searchingFor') || 'Searching for'}: ${query}`);
+        toast.info(`${t('admin.searchingFor')}: ${query}`);
       }
     } else if (e.key === 'Escape') {
       setIsOpen(false);

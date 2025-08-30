@@ -101,25 +101,26 @@ export class DataErrorBoundary extends Component<Props, State> {
 
   getErrorMessage = () => {
     const errorType = this.getErrorType();
-    const { title = 'Data Loading Error', description } = this.props;
+    const currentLanguage = localStorage.getItem('language') as 'en' | 'ar' || 'en';
+    const { title = getTranslation('common.errors.dataLoadingError', currentLanguage), description } = this.props;
     
     if (description) return { title, description };
     
     switch (errorType) {
       case 'network':
         return {
-          title: 'Connection Error',
-          description: 'Unable to connect to the server. Please check your internet connection and try again.'
+          title: getTranslation('common.errors.connectionError', currentLanguage),
+          description: getTranslation('common.errors.connectionErrorDescription', currentLanguage)
         };
       case 'timeout':
         return {
-          title: 'Request Timeout',
-          description: 'The request took too long to complete. Please try again.'
+          title: getTranslation('common.errors.requestTimeout', currentLanguage),
+          description: getTranslation('common.errors.requestTimeoutDescription', currentLanguage)
         };
       case 'permission':
         return {
-          title: 'Access Denied',
-          description: 'You do not have permission to access this data. Please contact your administrator.'
+          title: getTranslation('common.errors.accessDenied', currentLanguage),
+          description: getTranslation('common.errors.accessDeniedDescription', currentLanguage)
         };
       case 'parse':
         return {
@@ -140,6 +141,7 @@ export class DataErrorBoundary extends Component<Props, State> {
         return this.props.fallback;
       }
 
+      const currentLanguage = localStorage.getItem('language') as 'en' | 'ar' || 'en';
       const { title, description } = this.getErrorMessage();
       const errorIcon = this.getErrorIcon();
       const { retryCount } = this.state;
@@ -173,13 +175,13 @@ export class DataErrorBoundary extends Component<Props, State> {
                 disabled={retryCount >= 3}
               >
                 <RefreshCw className="h-4 w-4 mr-2" />
-                {retryCount >= 3 ? 'Max Retries Reached' : 'Try Again'}
+                {retryCount >= 3 ? getTranslation('common.errors.maxRetriesReached', currentLanguage) : getTranslation('common.actions.tryAgain', currentLanguage)}
               </Button>
               <Button 
                 onClick={() => window.location.reload()} 
                 className="flex-1"
               >
-                Refresh Page
+                {getTranslation('common.actions.refreshPage', currentLanguage)}
               </Button>
             </div>
             

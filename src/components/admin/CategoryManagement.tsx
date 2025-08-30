@@ -719,8 +719,8 @@ export const CategoryManagement: React.FC = () => {
   if (!isAdmin) {
     return (
       <AdminPageContainer
-        title="Category Management"
-        description="Access Restricted"
+        title={t('admin.categoryManagement.title')}
+        description={t('admin.common.accessRestricted')}
       >
         <div className="flex flex-col items-center justify-center py-12">
           <AlertTriangle className="h-16 w-16 text-warning mb-6" />
@@ -760,22 +760,22 @@ export const CategoryManagement: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="name_en">English Name</Label>
+                  <Label htmlFor="name_en">{t('admin.categoryManagement.englishName')}</Label>
                   <Input
                     id="name_en"
                     value={formData.name_en}
                     onChange={(e) => setFormData(prev => ({ ...prev, name_en: e.target.value }))}
-                    placeholder="Enter English name"
+                    placeholder={t('admin.categoryManagement.enterEnglishName')}
                     required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="name_ar">Arabic Name</Label>
+                  <Label htmlFor="name_ar">{t('admin.categoryManagement.arabicName')}</Label>
                   <Input
                     id="name_ar"
                     value={formData.name_ar}
                     onChange={(e) => setFormData(prev => ({ ...prev, name_ar: e.target.value }))}
-                    placeholder="Enter Arabic name"
+                    placeholder={t('admin.categoryManagement.enterArabicName')}
                     dir="rtl"
                     required
                   />

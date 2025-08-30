@@ -127,7 +127,7 @@ export const OfferApprovalCard = ({ offer, onApprove, onReject, userRole }: Offe
         {canModifyOffer && (
           <div className="space-y-2">
             <Label htmlFor={`notes-${offer.id}`} className={isRTL ? 'text-right' : ''}>
-              {isRTL ? 'ملاحظات الموافقة' : 'Approval Notes'}
+              {languageContext?.t('admin.approvals.approvalNotes') || 'Approval Notes'}
             </Label>
             <Textarea
               id={`notes-${offer.id}`}
@@ -150,7 +150,7 @@ export const OfferApprovalCard = ({ offer, onApprove, onReject, userRole }: Offe
               variant="default"
             >
               <CheckCircle className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {isRTL ? 'قبول العرض' : 'Accept Offer'}
+              {languageContext?.t('admin.approvals.acceptOffer') || 'Accept Offer'}
             </Button>
             <Button
               onClick={handleReject}
@@ -159,7 +159,7 @@ export const OfferApprovalCard = ({ offer, onApprove, onReject, userRole }: Offe
               variant="destructive"
             >
               <XCircle className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {isRTL ? 'رفض العرض' : 'Reject Offer'}
+              {languageContext?.t('admin.approvals.rejectOffer') || 'Reject Offer'}
             </Button>
           </div>
         )}

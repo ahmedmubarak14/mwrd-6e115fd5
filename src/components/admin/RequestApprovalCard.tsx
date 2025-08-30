@@ -89,13 +89,14 @@ export const RequestApprovalCard = ({ request, onApprove, onReject }: RequestApp
   };
 
   const formatBudget = () => {
-    if (!request.budget_min && !request.budget_max) return isRTL ? 'غير محدد' : 'Not specified';
+    const notSpecified = languageContext?.t('common.notSpecified') || 'Not specified';
+    if (!request.budget_min && !request.budget_max) return notSpecified;
     if (request.budget_min && request.budget_max) {
       return `${request.budget_min.toLocaleString()} - ${request.budget_max.toLocaleString()} ${request.currency}`;
     }
-    if (request.budget_min) return `${isRTL ? 'من' : 'From'} ${request.budget_min.toLocaleString()} ${request.currency}`;
-    if (request.budget_max) return `${isRTL ? 'حتى' : 'Up to'} ${request.budget_max.toLocaleString()} ${request.currency}`;
-    return isRTL ? 'غير محدد' : 'Not specified';
+    if (request.budget_min) return `${languageContext?.t('common.from') || 'From'} ${request.budget_min.toLocaleString()} ${request.currency}`;
+    if (request.budget_max) return `${languageContext?.t('common.upTo') || 'Up to'} ${request.budget_max.toLocaleString()} ${request.currency}`;
+    return notSpecified;
   };
 
   return (
@@ -160,7 +161,7 @@ export const RequestApprovalCard = ({ request, onApprove, onReject }: RequestApp
         {/* Approval Notes */}
         <div className="space-y-2">
           <Label htmlFor={`notes-${request.id}`} className={isRTL ? 'text-right' : ''}>
-            {isRTL ? 'ملاحظات الموافقة' : 'Approval Notes'}
+            {languageContext?.t('admin.approvals.approvalNotes') || 'Approval Notes'}
           </Label>
           <Textarea
             id={`notes-${request.id}`}
