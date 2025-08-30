@@ -400,7 +400,37 @@ export const enUS = {
     demoMode: "Demo Mode",
     demoDescription: "Showing sample transaction data for demonstration",
     error: "Error",
-    fetchError: "Failed to fetch transactions data"
+    fetchError: "Failed to fetch transactions data",
+    user: "User",
+    company: "Company",
+    ref: "Ref",
+    currency: "SAR",
+    subscription: "Subscription",
+    transactionCsvHeaders: "ID,Type,Status,Amount,Currency,Description,Reference,Date,User",
+    notAvailable: "N/A",
+    totalRevenue: "Total Revenue",
+    thisMonth: "This Month",
+    pendingAmount: "Pending Amount",
+    avgTransaction: "Avg Transaction",
+    filtersActions: "Filters & Actions",
+    filterByStatus: "Filter by status",
+    filterByType: "Filter by type",
+    revenue: "Revenue",
+    allTransactions: "All Transactions",
+    fromCompleted: "From completed transactions",
+    currentMonthRevenue: "Current month revenue",
+    pendingTransactionsCount: "pending transactions",
+    failedTransactionsCount: "failed transactions",
+    demoData: {
+      paymentForConstruction: "Payment for construction services",
+      platformCommission: "Platform commission (5%)",
+      refundForCancelledOrder: "Refund for cancelled order"
+    },
+    paymentMethods: {
+      credit_card: "Credit Card",
+      bank_transfer: "Bank Transfer",
+      platform: "Platform"
+    }
   },
   
   // Navigation Section
@@ -527,12 +557,6 @@ export const enUS = {
     gatewayResponse: "Gateway Response",
     withdrawal: "Withdrawal",
     transaction: "Transaction",
-     user: "User",
-     company: "Company",
-     ref: "Ref",
-     currency: "SAR",
-     subscription: "Subscription",
-     transactionCsvHeaders: "ID,Type,Status,Amount,Currency,Description,Reference,Date,User",
     notAvailable: "N/A",
     demoData: {
       paymentForConstruction: "Payment for construction services",

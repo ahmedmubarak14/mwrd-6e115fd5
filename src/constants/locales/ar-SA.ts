@@ -400,7 +400,37 @@ export const arSA = {
     demoMode: "وضع العرض التوضيحي",
     demoDescription: "عرض بيانات معاملات نموذجية للتوضيح",
     error: "خطأ",
-    fetchError: "فشل في جلب بيانات المعاملات"
+    fetchError: "فشل في جلب بيانات المعاملات",
+    user: "المستخدم",
+    company: "الشركة",
+    ref: "رقم المرجع",
+    currency: "ريال سعودي",
+    subscription: "اشتراك",
+    transactionCsvHeaders: "المعرف,النوع,الحالة,المبلغ,العملة,الوصف,المرجع,التاريخ,المستخدم",
+    notAvailable: "غير متوفر",
+    totalRevenue: "إجمالي الإيرادات",
+    thisMonth: "هذا الشهر",
+    pendingAmount: "المبلغ المعلق",
+    avgTransaction: "متوسط المعاملة",
+    filtersActions: "المرشحات والإجراءات",
+    filterByStatus: "تصفية بالحالة",
+    filterByType: "تصفية بالنوع",
+    revenue: "الإيرادات",
+    allTransactions: "جميع المعاملات",
+    fromCompleted: "من المعاملات المكتملة",
+    currentMonthRevenue: "إيرادات الشهر الحالي",
+    pendingTransactionsCount: "معاملة معلقة",
+    failedTransactionsCount: "معاملة فاشلة",
+    demoData: {
+      paymentForConstruction: "دفعة مقابل خدمات البناء",
+      platformCommission: "عمولة المنصة (5%)",
+      refundForCancelledOrder: "استرداد للطلب الملغى"
+    },
+    paymentMethods: {
+      credit_card: "بطاقة ائتمان",
+      bank_transfer: "حوالة بنكية", 
+      platform: "المنصة"
+    }
   },
   
   // Navigation Section
@@ -527,12 +557,6 @@ export const arSA = {
     gatewayResponse: "استجابة البوابة",
     withdrawal: "سحب",
     transaction: "معاملة",
-     user: "المستخدم",
-     company: "الشركة",
-     ref: "رقم المرجع",
-     currency: "ريال سعودي",
-     subscription: "اشتراك",
-     transactionCsvHeaders: "المعرف,النوع,الحالة,المبلغ,العملة,الوصف,المرجع,التاريخ,المستخدم",
     notAvailable: "غير متوفر",
     demoData: {
       paymentForConstruction: "دفعة مقابل خدمات البناء",
