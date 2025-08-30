@@ -79,8 +79,8 @@ export default function AdminSupport() {
     } catch (error) {
       console.error('Error fetching tickets:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to fetch support tickets',
+        title: t('support.error'),
+        description: t('support.fetchError'),
         variant: 'destructive'
       });
     } finally {
@@ -99,14 +99,14 @@ export default function AdminSupport() {
       
       await fetchTickets();
       toast({
-        title: 'Success',
-        description: 'Ticket status updated successfully'
+        title: t('support.success'),
+        description: t('support.updateSuccess')
       });
     } catch (error) {
       console.error('Error updating ticket:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to update ticket status',
+        title: t('support.error'),
+        description: t('support.updateError'),
         variant: 'destructive'
       });
     }
@@ -159,12 +159,12 @@ export default function AdminSupport() {
 
   return (
     <div dir={isRTL ? 'rtl' : 'ltr'}>
-      <AdminPageContainer title={t('admin.support.title')} description={t('admin.support.description')}>
+      <AdminPageContainer title={t('support.title')} description={t('support.description')}>
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Tickets</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('support.totalTickets')}</CardTitle>
             <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -173,7 +173,7 @@ export default function AdminSupport() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Open Tickets</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('support.openTickets')}</CardTitle>
             <AlertCircle className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent>
@@ -184,7 +184,7 @@ export default function AdminSupport() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">In Progress</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('support.inProgress')}</CardTitle>
             <Clock className="h-4 w-4 text-warning" />
           </CardHeader>
           <CardContent>
@@ -195,7 +195,7 @@ export default function AdminSupport() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Resolved</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('support.resolved')}</CardTitle>
             <CheckCircle2 className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
@@ -213,7 +213,7 @@ export default function AdminSupport() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search tickets by subject or email..."
+                placeholder={t('support.searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-9"
@@ -221,14 +221,14 @@ export default function AdminSupport() {
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-full sm:w-48">
-                <SelectValue placeholder="Filter by status" />
+                <SelectValue placeholder={t('support.filterByStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="open">Open</SelectItem>
-                <SelectItem value="in_progress">In Progress</SelectItem>
-                <SelectItem value="resolved">Resolved</SelectItem>
-                <SelectItem value="closed">Closed</SelectItem>
+                <SelectItem value="all">{t('support.allStatus')}</SelectItem>
+                <SelectItem value="open">{t('support.open')}</SelectItem>
+                <SelectItem value="in_progress">{t('support.inProgress')}</SelectItem>
+                <SelectItem value="resolved">{t('support.resolved')}</SelectItem>
+                <SelectItem value="closed">{t('support.closed')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -241,11 +241,11 @@ export default function AdminSupport() {
           <Card>
             <CardContent className="p-12 text-center">
               <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-lg font-medium mb-2">No tickets found</p>
+              <p className="text-lg font-medium mb-2">{t('support.noTicketsFound')}</p>
               <p className="text-muted-foreground">
                 {searchTerm || statusFilter !== 'all' 
-                  ? 'Try adjusting your search or filters' 
-                  : 'All support tickets will appear here'
+                  ? t('support.adjustSearchFilters')
+                  : t('support.allTicketsAppearHere')
                 }
               </p>
             </CardContent>
@@ -272,10 +272,10 @@ export default function AdminSupport() {
                       </div>
                       <div className="flex items-center space-x-1">
                         <Clock className="h-4 w-4" />
-                        <span>Created: {new Date(ticket.created_at).toLocaleDateString()}</span>
+                        <span>{t('support.created')}: {new Date(ticket.created_at).toLocaleDateString()}</span>
                       </div>
                     </div>
-                    <p className="text-sm">Category: {ticket.category}</p>
+                    <p className="text-sm">{t('support.category')}: {ticket.category}</p>
                   </div>
                   <div className="flex space-x-2">
                     <Dialog>
@@ -285,21 +285,21 @@ export default function AdminSupport() {
                           variant="outline"
                           onClick={() => setSelectedTicket(ticket)}
                         >
-                          View Details
+                          {t('support.viewDetails')}
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="max-w-2xl">
                         <DialogHeader>
-                          <DialogTitle>Ticket Details</DialogTitle>
+                          <DialogTitle>{t('support.ticketDetails')}</DialogTitle>
                           <DialogDescription>
-                            Manage and respond to support ticket
+                            {t('support.manageTicket')}
                           </DialogDescription>
                         </DialogHeader>
                         {selectedTicket && (
                           <div className="space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                               <div>
-                                <label className="text-sm font-medium">Status</label>
+                                <label className="text-sm font-medium">{t('support.status')}</label>
                                 <Select 
                                   value={selectedTicket.status} 
                                   onValueChange={(value) => updateTicketStatus(selectedTicket.id, value)}
@@ -308,30 +308,30 @@ export default function AdminSupport() {
                                     <SelectValue />
                                   </SelectTrigger>
                                   <SelectContent>
-                                    <SelectItem value="open">Open</SelectItem>
-                                    <SelectItem value="in_progress">In Progress</SelectItem>
-                                    <SelectItem value="resolved">Resolved</SelectItem>
-                                    <SelectItem value="closed">Closed</SelectItem>
+                                    <SelectItem value="open">{t('support.open')}</SelectItem>
+                                    <SelectItem value="in_progress">{t('support.inProgress')}</SelectItem>
+                                    <SelectItem value="resolved">{t('support.resolved')}</SelectItem>
+                                    <SelectItem value="closed">{t('support.closed')}</SelectItem>
                                   </SelectContent>
                                 </Select>
                               </div>
                               <div>
-                                <label className="text-sm font-medium">Priority</label>
+                                <label className="text-sm font-medium">{t('support.priority')}</label>
                                 <Badge variant={getPriorityBadgeVariant(selectedTicket.priority)} className="ml-2">
-                                  {selectedTicket.priority}
+                                  {t(`support.${selectedTicket.priority}`)}
                                 </Badge>
                               </div>
                             </div>
                             <div>
-                              <label className="text-sm font-medium">Customer</label>
+                              <label className="text-sm font-medium">{t('support.customer')}</label>
                               <p className="text-sm text-muted-foreground">
                                 {selectedTicket.user_profiles?.full_name || selectedTicket.user_profiles?.email}
                               </p>
                             </div>
                             <div>
-                              <label className="text-sm font-medium">Add Response</label>
+                              <label className="text-sm font-medium">{t('support.addResponse')}</label>
                               <Textarea
-                                placeholder="Type your response here..."
+                                placeholder={t('support.responsePlaceholder')}
                                 value={response}
                                 onChange={(e) => setResponse(e.target.value)}
                                 rows={4}
@@ -339,16 +339,16 @@ export default function AdminSupport() {
                             </div>
                             <div className="flex justify-end space-x-2">
                               <Button variant="outline" onClick={() => setResponse('')}>
-                                Clear
+                                {t('support.clear')}
                               </Button>
                               <Button onClick={() => {
                                 toast({
-                                  title: 'Response Sent',
-                                  description: 'Customer will be notified of your response'
+                                  title: t('support.responseSent'),
+                                  description: t('support.customerNotified')
                                 });
                                 setResponse('');
                               }}>
-                                Send Response
+                                {t('support.sendResponse')}
                               </Button>
                             </div>
                           </div>
@@ -360,7 +360,7 @@ export default function AdminSupport() {
                         size="sm" 
                         onClick={() => updateTicketStatus(ticket.id, 'in_progress')}
                       >
-                        Take Ticket
+                        {t('support.takeTicket')}
                       </Button>
                     )}
                   </div>
