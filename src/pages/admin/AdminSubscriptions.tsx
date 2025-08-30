@@ -471,29 +471,29 @@ export default function AdminSubscriptions() {
                      </SelectContent>
                    </Select>
 
-                   <Select value={planFilter} onValueChange={setPlanFilter}>
-                     <SelectTrigger>
-                       <SelectValue placeholder={t('admin.filterByPlan')} />
-                     </SelectTrigger>
-                     <SelectContent>
-                       <SelectItem value="all">{t('admin.allPlans')}</SelectItem>
-                       {SUBSCRIPTION_PLANS.map((plan) => (
-                         <SelectItem key={plan.value} value={plan.value}>
-                           {plan.label}
-                         </SelectItem>
-                       ))}
-                     </SelectContent>
-                   </Select>
+                    <Select value={planFilter} onValueChange={setPlanFilter}>
+                      <SelectTrigger>
+                        <SelectValue placeholder={t('admin.filterByPlan')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">{t('admin.allPlans')}</SelectItem>
+                        {SUBSCRIPTION_PLANS.map((plan) => (
+                          <SelectItem key={plan.value} value={plan.value}>
+                            {plan.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
 
-                   <div className="flex gap-2">
-                     <Button variant="outline" onClick={handleRefresh}>
-                       <RefreshCw className="h-4 w-4 mr-2" />
-                       {t('admin.refresh')}
+                    <div className="flex gap-2">
+                      <Button variant="outline" onClick={handleRefresh}>
+                        <RefreshCw className="h-4 w-4 mr-2" />
+                        {t('admin.refresh')}
+                      </Button>
+                      <Button variant="outline" onClick={handleExportSelected}>
+                        <Download className="h-4 w-4 mr-2" />
+                        {t('admin.export')}
                      </Button>
-                     <Button variant="outline" onClick={handleExportSelected}>
-                       <Download className="h-4 w-4 mr-2" />
-                       {t('admin.export')}
-                    </Button>
                   </div>
                 </div>
 
@@ -556,7 +556,7 @@ export default function AdminSubscriptions() {
                     checked={selectedSubscriptions.length === filteredSubscriptions.length && filteredSubscriptions.length > 0}
                     onCheckedChange={selectAllSubscriptions}
                   />
-                  <span className="text-sm">{t('admin.selectAll')}</span>
+                   <span className="text-sm">{t('admin.selectAll')}</span>
                 </div>
               </div>
             </CardHeader>
@@ -635,7 +635,7 @@ export default function AdminSubscriptions() {
                                </div>
                              </div>
                            ) : (
-                             <span className="text-muted-foreground">{t('admin.noExpiry')}</span>
+                              <span className="text-muted-foreground">{t('admin.noExpiry')}</span>
                            )}
                         </div>
                         
