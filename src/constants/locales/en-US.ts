@@ -1070,6 +1070,96 @@ export const enUS = {
       compliance: "Compliance"
     },
     
+    // Orders Management
+    ordersManagement: {
+      title: "Orders Management",
+      description: "Monitor and manage all orders, track revenue, and analyze order trends across the platform.",
+      
+      // Tabs
+      allOrders: "All Orders", 
+      pending: "Pending",
+      active: "Active",
+      completed: "Completed",
+      
+      // Analytics Cards
+      totalOrders: "Total Orders",
+      completedOrders: "Completed Orders", 
+      totalRevenue: "Total Revenue",
+      inProgress: "In Progress",
+      thisMonth: "this month",
+      thisWeek: "this week",
+      average: "Avg",
+      pendingCount: "pending",
+      
+      // Filters & Actions
+      filtersActions: "Filters & Actions",
+      searchPlaceholder: "Search orders...",
+      filterByStatus: "Filter by status",
+      allStatus: "All Status",
+      confirmed: "Confirmed",
+      inProgressStatus: "In Progress",
+      cancelled: "Cancelled",
+      disputed: "Disputed",
+      refresh: "Refresh",
+      export: "Export",
+      
+      // Bulk Actions
+      orderSelected: "order(s) selected",
+      bulkActionPlaceholder: "Bulk action...",
+      markAsConfirmed: "Mark as Confirmed",
+      markAsInProgress: "Mark as In Progress", 
+      markAsCompleted: "Mark as Completed",
+      markAsCancelled: "Mark as Cancelled",
+      markAsDisputed: "Mark as Disputed",
+      deleteOrders: "Delete Orders",
+      applyAction: "Apply Action",
+      confirmBulkAction: "Confirm Bulk Action",
+      bulkActionConfirm: "Are you sure you want to",
+      bulkActionUpdate: "update",
+      bulkActionDelete: "delete",
+      bulkActionCannotUndo: "This action cannot be undone.",
+      
+      // Orders List
+      ordersCount: "Orders",
+      selectAll: "Select All",
+      noOrdersFound: "No orders found",
+      noOrdersMatch: "No orders match your current filters",
+      unknownClient: "Unknown Client",
+      unknownVendor: "Unknown",
+      vendor: "Vendor",
+      
+      // Order Details
+      orderDetails: "Order Details",
+      viewAndManage: "View and manage order",
+      orderTitle: "Title",
+      status: "Status",
+      client: "Client", 
+      amount: "Amount",
+      created: "Created",
+      notes: "Notes",
+      
+      // Delete Confirmation
+      deleteOrder: "Delete Order",
+      deleteConfirmation: "Are you sure you want to delete this order? This action cannot be undone.",
+      
+      // Toast Messages
+      fetchError: "Failed to fetch orders",
+      statusUpdated: "Order status updated to",
+      statusUpdateError: "Failed to update order status",
+      deleteSuccess: "Order deleted successfully",
+      deleteError: "Failed to delete order",
+      bulkDeleteSuccess: "orders deleted",
+      bulkUpdateSuccess: "orders updated",
+      bulkActionError: "Bulk action failed",
+      exportSuccess: "orders exported to CSV",
+      dataRefreshed: "Orders data has been updated",
+      
+      // Common Actions
+      cancel: "Cancel",
+      confirm: "Confirm",
+      delete: "Delete"
+    },
+
     // User Management Details
     userManagementDetails: {
       user: "User",

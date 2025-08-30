@@ -967,6 +967,96 @@ export const arSA = {
       compliance: "الامتثال"
     },
     
+    // Orders Management
+    ordersManagement: {
+      title: "إدارة الطلبات",
+      description: "راقب وأدر جميع الطلبات، تتبع الإيرادات، وحلل اتجاهات الطلبات عبر المنصة.",
+      
+      // Tabs
+      allOrders: "جميع الطلبات",
+      pending: "قيد الانتظار", 
+      active: "نشطة",
+      completed: "مكتملة",
+      
+      // Analytics Cards
+      totalOrders: "إجمالي الطلبات",
+      completedOrders: "الطلبات المكتملة",
+      totalRevenue: "إجمالي الإيرادات", 
+      inProgress: "قيد التنفيذ",
+      thisMonth: "هذا الشهر",
+      thisWeek: "هذا الأسبوع",
+      average: "متوسط",
+      pendingCount: "قيد الانتظار",
+      
+      // Filters & Actions
+      filtersActions: "المرشحات والإجراءات",
+      searchPlaceholder: "البحث في الطلبات...",
+      filterByStatus: "تصفية حسب الحالة",
+      allStatus: "جميع الحالات",
+      confirmed: "مؤكد",
+      inProgressStatus: "قيد التنفيذ",
+      cancelled: "ملغى",
+      disputed: "متنازع عليه",
+      refresh: "تحديث",
+      export: "تصدير",
+      
+      // Bulk Actions
+      orderSelected: "طلب محدد",
+      bulkActionPlaceholder: "إجراء جماعي...",
+      markAsConfirmed: "تعيين كمؤكد",
+      markAsInProgress: "تعيين قيد التنفيذ",
+      markAsCompleted: "تعيين كمكتمل", 
+      markAsCancelled: "تعيين كملغى",
+      markAsDisputed: "تعيين كمتنازع عليه",
+      deleteOrders: "حذف الطلبات",
+      applyAction: "تطبيق الإجراء",
+      confirmBulkAction: "تأكيد الإجراء الجماعي",
+      bulkActionConfirm: "هل أنت متأكد من أنك تريد",
+      bulkActionUpdate: "تحديث", 
+      bulkActionDelete: "حذف",
+      bulkActionCannotUndo: "لا يمكن التراجع عن هذا الإجراء.",
+      
+      // Orders List
+      ordersCount: "الطلبات",
+      selectAll: "تحديد الجميع",
+      noOrdersFound: "لا توجد طلبات",
+      noOrdersMatch: "لا توجد طلبات تطابق المرشحات الحالية",
+      unknownClient: "عميل غير معروف",
+      unknownVendor: "غير معروف",
+      vendor: "المورد",
+      
+      // Order Details
+      orderDetails: "تفاصيل الطلب",
+      viewAndManage: "عرض وإدارة الطلب",
+      orderTitle: "العنوان",
+      status: "الحالة",
+      client: "العميل",
+      amount: "المبلغ",
+      created: "تاريخ الإنشاء",
+      notes: "ملاحظات",
+      
+      // Delete Confirmation
+      deleteOrder: "حذف الطلب",
+      deleteConfirmation: "هل أنت متأكد من أنك تريد حذف هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء.",
+      
+      // Toast Messages
+      fetchError: "فشل في جلب الطلبات",
+      statusUpdated: "تم تحديث حالة الطلب إلى",
+      statusUpdateError: "فشل في تحديث حالة الطلب",
+      deleteSuccess: "تم حذف الطلب بنجاح",
+      deleteError: "فشل في حذف الطلب",
+      bulkDeleteSuccess: "طلبات محذوفة", 
+      bulkUpdateSuccess: "طلبات محدثة",
+      bulkActionError: "فشل الإجراء الجماعي",
+      exportSuccess: "طلبات مصدرة إلى CSV",
+      dataRefreshed: "تم تحديث بيانات الطلبات",
+      
+      // Common Actions
+      cancel: "إلغاء",
+      confirm: "تأكيد",
+      delete: "حذف"
+    },
+
     // User Management Details
     userManagementDetails: {
       user: "المستخدم",

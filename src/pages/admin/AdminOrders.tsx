@@ -107,8 +107,8 @@ export default function AdminOrders() {
     } catch (error: any) {
       console.error('Error fetching orders:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch orders",
+        title: t('common.error'),
+        description: t('admin.ordersManagement.fetchError'),
         variant: "destructive"
       });
     } finally {
@@ -131,14 +131,14 @@ export default function AdminOrders() {
       
       await fetchOrders();
       toast({
-        title: "Success",
-        description: `Order status updated to ${newStatus}`,
+        title: t('common.success'),
+        description: `${t('admin.ordersManagement.statusUpdated')} ${newStatus}`,
       });
     } catch (error: any) {
       console.error('Error updating order status:', error);
       toast({
-        title: "Error",
-        description: "Failed to update order status",
+        title: t('common.error'),
+        description: t('admin.ordersManagement.statusUpdateError'),
         variant: "destructive"
       });
     }
@@ -155,14 +155,14 @@ export default function AdminOrders() {
       
       await fetchOrders();
       toast({
-        title: "Success",
-        description: "Order deleted successfully",
+        title: t('common.success'),
+        description: t('admin.ordersManagement.deleteSuccess'),
       });
     } catch (error: any) {
       console.error('Error deleting order:', error);
       toast({
-        title: "Error",
-        description: "Failed to delete order",
+        title: t('common.error'),
+        description: t('admin.ordersManagement.deleteError'),
         variant: "destructive"
       });
     }
@@ -181,8 +181,8 @@ export default function AdminOrders() {
         if (error) throw error;
         
         toast({
-          title: "Success",
-          description: `${selectedOrders.length} orders deleted`,
+          title: t('common.success'),
+          description: `${selectedOrders.length} ${t('admin.ordersManagement.bulkDeleteSuccess')}`,
         });
       } else {
         const { error } = await supabase
@@ -193,8 +193,8 @@ export default function AdminOrders() {
         if (error) throw error;
         
         toast({
-          title: "Success",
-          description: `${selectedOrders.length} orders updated`,
+          title: t('common.success'),
+          description: `${selectedOrders.length} ${t('admin.ordersManagement.bulkUpdateSuccess')}`,
         });
       }
 
@@ -204,8 +204,8 @@ export default function AdminOrders() {
     } catch (error: any) {
       console.error('Error with bulk action:', error);
       toast({
-        title: "Error",
-        description: "Bulk action failed",
+        title: t('common.error'),
+        description: t('admin.ordersManagement.bulkActionError'),
         variant: "destructive"
       });
     }
@@ -232,16 +232,16 @@ export default function AdminOrders() {
     window.URL.revokeObjectURL(url);
     
     toast({
-      title: "Export completed",
-      description: `${ordersToExport.length} orders exported to CSV`,
+      title: t('common.success'),
+      description: `${ordersToExport.length} ${t('admin.ordersManagement.exportSuccess')}`,
     });
   };
 
   const handleRefresh = () => {
     fetchOrders();
     toast({
-      title: "Data refreshed",
-      description: "Orders data has been updated",
+      title: t('common.success'),
+      description: t('admin.ordersManagement.dataRefreshed'),
     });
   };
 
@@ -326,18 +326,18 @@ export default function AdminOrders() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
-          {t('admin.orders.title')}
+          {t('admin.ordersManagement.title')}
         </h1>
         <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
-          {t('admin.orders.description')}
+          {t('admin.ordersManagement.description')}
         </p>
       </div>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="all">All Orders</TabsTrigger>
-          <TabsTrigger value="pending">Pending</TabsTrigger>
-          <TabsTrigger value="active">Active</TabsTrigger>
-          <TabsTrigger value="completed">Completed</TabsTrigger>
+          <TabsTrigger value="all">{t('admin.ordersManagement.allOrders')}</TabsTrigger>
+          <TabsTrigger value="pending">{t('admin.ordersManagement.pending')}</TabsTrigger>
+          <TabsTrigger value="active">{t('admin.ordersManagement.active')}</TabsTrigger>
+          <TabsTrigger value="completed">{t('admin.ordersManagement.completed')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value={activeTab} className="space-y-6">
@@ -345,52 +345,52 @@ export default function AdminOrders() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.ordersManagement.totalOrders')}</CardTitle>
                 <ShoppingCart className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{totalOrders.toLocaleString()}</div>
                 <p className="text-xs text-muted-foreground">
-                  +{newOrdersThisMonth} this month
+                  +{newOrdersThisMonth} {t('admin.ordersManagement.thisMonth')}
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Completed Orders</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.ordersManagement.completedOrders')}</CardTitle>
                 <CheckCircle className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{completedOrders.toLocaleString()}</div>
                 <p className="text-xs text-muted-foreground">
-                  +{completedOrdersThisWeek} this week
+                  +{completedOrdersThisWeek} {t('admin.ordersManagement.thisWeek')}
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.ordersManagement.totalRevenue')}</CardTitle>
                 <TrendingUp className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{totalRevenue.toLocaleString()} SAR</div>
                 <p className="text-xs text-muted-foreground">
-                  Avg: {avgOrderValue.toLocaleString()} SAR
+                  {t('admin.ordersManagement.average')}: {avgOrderValue.toLocaleString()} SAR
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">In Progress</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.ordersManagement.inProgress')}</CardTitle>
                 <Clock className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{inProgressOrders.toLocaleString()}</div>
                 <p className="text-xs text-muted-foreground">
-                  {pendingOrders} pending
+                  {pendingOrders} {t('admin.ordersManagement.pendingCount')}
                 </p>
               </CardContent>
             </Card>
@@ -399,40 +399,40 @@ export default function AdminOrders() {
           {/* Filters and Bulk Actions */}
           <Card>
             <CardHeader>
-              <CardTitle>Filters & Actions</CardTitle>
+              <CardTitle>{t('admin.ordersManagement.filtersActions')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <Input
-                    placeholder="Search orders..."
+                    placeholder={t('admin.ordersManagement.searchPlaceholder')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                   
                   <Select value={statusFilter} onValueChange={setStatusFilter}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Filter by status" />
+                      <SelectValue placeholder={t('admin.ordersManagement.filterByStatus')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Status</SelectItem>
-                      <SelectItem value="pending">Pending</SelectItem>
-                      <SelectItem value="confirmed">Confirmed</SelectItem>
-                      <SelectItem value="in_progress">In Progress</SelectItem>
-                      <SelectItem value="completed">Completed</SelectItem>
-                      <SelectItem value="cancelled">Cancelled</SelectItem>
-                      <SelectItem value="disputed">Disputed</SelectItem>
+                      <SelectItem value="all">{t('admin.ordersManagement.allStatus')}</SelectItem>
+                      <SelectItem value="pending">{t('admin.ordersManagement.pending')}</SelectItem>
+                      <SelectItem value="confirmed">{t('admin.ordersManagement.confirmed')}</SelectItem>
+                      <SelectItem value="in_progress">{t('admin.ordersManagement.inProgressStatus')}</SelectItem>
+                      <SelectItem value="completed">{t('admin.ordersManagement.completed')}</SelectItem>
+                      <SelectItem value="cancelled">{t('admin.ordersManagement.cancelled')}</SelectItem>
+                      <SelectItem value="disputed">{t('admin.ordersManagement.disputed')}</SelectItem>
                     </SelectContent>
                   </Select>
 
                   <div className="flex gap-2">
                     <Button variant="outline" onClick={handleRefresh}>
                       <RefreshCw className="h-4 w-4 mr-2" />
-                      Refresh
+                      {t('admin.ordersManagement.refresh')}
                     </Button>
                     <Button variant="outline" onClick={handleExportSelected}>
                       <Download className="h-4 w-4 mr-2" />
-                      Export
+                      {t('admin.ordersManagement.export')}
                     </Button>
                   </div>
                 </div>
@@ -441,39 +441,39 @@ export default function AdminOrders() {
                 {selectedOrders.length > 0 && (
                   <div className="flex items-center gap-4 p-3 bg-muted rounded-lg">
                     <span className="text-sm font-medium">
-                      {selectedOrders.length} order(s) selected
+                      {selectedOrders.length} {t('admin.ordersManagement.orderSelected')}
                     </span>
                     <Select value={bulkAction} onValueChange={setBulkAction}>
                       <SelectTrigger className="w-48">
-                        <SelectValue placeholder="Bulk action..." />
+                        <SelectValue placeholder={t('admin.ordersManagement.bulkActionPlaceholder')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="confirmed">Mark as Confirmed</SelectItem>
-                        <SelectItem value="in_progress">Mark as In Progress</SelectItem>
-                        <SelectItem value="completed">Mark as Completed</SelectItem>
-                        <SelectItem value="cancelled">Mark as Cancelled</SelectItem>
-                        <SelectItem value="disputed">Mark as Disputed</SelectItem>
-                        <SelectItem value="delete">Delete Orders</SelectItem>
+                        <SelectItem value="confirmed">{t('admin.ordersManagement.markAsConfirmed')}</SelectItem>
+                        <SelectItem value="in_progress">{t('admin.ordersManagement.markAsInProgress')}</SelectItem>
+                        <SelectItem value="completed">{t('admin.ordersManagement.markAsCompleted')}</SelectItem>
+                        <SelectItem value="cancelled">{t('admin.ordersManagement.markAsCancelled')}</SelectItem>
+                        <SelectItem value="disputed">{t('admin.ordersManagement.markAsDisputed')}</SelectItem>
+                        <SelectItem value="delete">{t('admin.ordersManagement.deleteOrders')}</SelectItem>
                       </SelectContent>
                     </Select>
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
                         <Button variant="destructive" size="sm" disabled={!bulkAction}>
-                          Apply Action
+                          {t('admin.ordersManagement.applyAction')}
                         </Button>
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Confirm Bulk Action</AlertDialogTitle>
+                          <AlertDialogTitle>{t('admin.ordersManagement.confirmBulkAction')}</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Are you sure you want to {bulkAction === 'delete' ? 'delete' : 'update'} {selectedOrders.length} order(s)?
-                            This action cannot be undone.
+                            {t('admin.ordersManagement.bulkActionConfirm')} {bulkAction === 'delete' ? t('admin.ordersManagement.bulkActionDelete') : t('admin.ordersManagement.bulkActionUpdate')} {selectedOrders.length} {t('admin.ordersManagement.orderSelected')}?
+                            {t('admin.ordersManagement.bulkActionCannotUndo')}
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogCancel>{t('admin.ordersManagement.cancel')}</AlertDialogCancel>
                           <AlertDialogAction onClick={handleBulkAction}>
-                            Confirm
+                            {t('admin.ordersManagement.confirm')}
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
@@ -489,14 +489,14 @@ export default function AdminOrders() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle>
-                  Orders ({filteredOrders.length})
+                  {t('admin.ordersManagement.ordersCount')} ({filteredOrders.length})
                 </CardTitle>
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     checked={selectedOrders.length === filteredOrders.length && filteredOrders.length > 0}
                     onCheckedChange={selectAllOrders}
                   />
-                  <span className="text-sm">Select All</span>
+                  <span className="text-sm">{t('admin.ordersManagement.selectAll')}</span>
                 </div>
               </div>
             </CardHeader>
@@ -505,8 +505,8 @@ export default function AdminOrders() {
                 {filteredOrders.length === 0 ? (
                   <div className="py-12 text-center">
                     <ShoppingCart className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold mb-2">No orders found</h3>
-                    <p className="text-muted-foreground">No orders match your current filters</p>
+                    <h3 className="text-lg font-semibold mb-2">{t('admin.ordersManagement.noOrdersFound')}</h3>
+                    <p className="text-muted-foreground">{t('admin.ordersManagement.noOrdersMatch')}</p>
                   </div>
                 ) : (
                   filteredOrders.map((order) => (
@@ -530,10 +530,10 @@ export default function AdminOrders() {
                         
                         <div>
                           <p className="text-sm font-medium">
-                            {order.client?.full_name || order.client?.company_name || 'Unknown Client'}
+                            {order.client?.full_name || order.client?.company_name || t('admin.ordersManagement.unknownClient')}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            Vendor: {order.vendor?.full_name || order.vendor?.company_name || 'Unknown'}
+                            {t('admin.ordersManagement.vendor')}: {order.vendor?.full_name || order.vendor?.company_name || t('admin.ordersManagement.unknownVendor')}
                           </p>
                         </div>
                         
@@ -555,19 +555,19 @@ export default function AdminOrders() {
                               </DialogTrigger>
                               <DialogContent className="max-w-2xl">
                                 <DialogHeader>
-                                  <DialogTitle>Order Details</DialogTitle>
+                                  <DialogTitle>{t('admin.ordersManagement.orderDetails')}</DialogTitle>
                                   <DialogDescription>
-                                    View and manage order #{order.id.slice(0, 8)}
+                                    {t('admin.ordersManagement.viewAndManage')} #{order.id.slice(0, 8)}
                                   </DialogDescription>
                                 </DialogHeader>
                                 <div className="space-y-4">
                                   <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                      <label className="text-sm font-medium">Title</label>
+                                      <label className="text-sm font-medium">{t('admin.ordersManagement.orderTitle')}</label>
                                       <p className="text-sm text-muted-foreground">{order.title}</p>
                                     </div>
                                     <div>
-                                      <label className="text-sm font-medium">Status</label>
+                                      <label className="text-sm font-medium">{t('admin.ordersManagement.status')}</label>
                                       <div className="mt-1">
                                         <Select 
                                           value={order.status} 
@@ -577,12 +577,12 @@ export default function AdminOrders() {
                                             <SelectValue />
                                           </SelectTrigger>
                                           <SelectContent>
-                                            <SelectItem value="pending">Pending</SelectItem>
-                                            <SelectItem value="confirmed">Confirmed</SelectItem>
-                                            <SelectItem value="in_progress">In Progress</SelectItem>
-                                            <SelectItem value="completed">Completed</SelectItem>
-                                            <SelectItem value="cancelled">Cancelled</SelectItem>
-                                            <SelectItem value="disputed">Disputed</SelectItem>
+                                            <SelectItem value="pending">{t('admin.ordersManagement.pending')}</SelectItem>
+                                            <SelectItem value="confirmed">{t('admin.ordersManagement.confirmed')}</SelectItem>
+                                            <SelectItem value="in_progress">{t('admin.ordersManagement.inProgressStatus')}</SelectItem>
+                                            <SelectItem value="completed">{t('admin.ordersManagement.completed')}</SelectItem>
+                                            <SelectItem value="cancelled">{t('admin.ordersManagement.cancelled')}</SelectItem>
+                                            <SelectItem value="disputed">{t('admin.ordersManagement.disputed')}</SelectItem>
                                           </SelectContent>
                                         </Select>
                                       </div>
@@ -590,14 +590,14 @@ export default function AdminOrders() {
                                   </div>
                                   <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                      <label className="text-sm font-medium">Client</label>
+                                      <label className="text-sm font-medium">{t('admin.ordersManagement.client')}</label>
                                       <p className="text-sm text-muted-foreground">
                                         {order.client?.full_name || order.client?.company_name}
                                       </p>
                                       <p className="text-xs text-muted-foreground">{order.client?.email}</p>
                                     </div>
                                     <div>
-                                      <label className="text-sm font-medium">Vendor</label>
+                                      <label className="text-sm font-medium">{t('admin.ordersManagement.vendor')}</label>
                                       <p className="text-sm text-muted-foreground">
                                         {order.vendor?.full_name || order.vendor?.company_name}
                                       </p>
@@ -606,13 +606,13 @@ export default function AdminOrders() {
                                   </div>
                                   <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                      <label className="text-sm font-medium">Amount</label>
+                                      <label className="text-sm font-medium">{t('admin.ordersManagement.amount')}</label>
                                       <p className="text-sm text-muted-foreground">
                                         {order.amount.toLocaleString()} {order.currency}
                                       </p>
                                     </div>
                                     <div>
-                                      <label className="text-sm font-medium">Created</label>
+                                      <label className="text-sm font-medium">{t('admin.ordersManagement.created')}</label>
                                       <p className="text-sm text-muted-foreground">
                                         {format(new Date(order.created_at), 'MMM dd, yyyy HH:mm')}
                                       </p>
@@ -620,7 +620,7 @@ export default function AdminOrders() {
                                   </div>
                                   {order.notes && (
                                     <div>
-                                      <label className="text-sm font-medium">Notes</label>
+                                      <label className="text-sm font-medium">{t('admin.ordersManagement.notes')}</label>
                                       <p className="text-sm text-muted-foreground">{order.notes}</p>
                                     </div>
                                   )}
@@ -635,18 +635,18 @@ export default function AdminOrders() {
                               </AlertDialogTrigger>
                               <AlertDialogContent>
                                 <AlertDialogHeader>
-                                  <AlertDialogTitle>Delete Order</AlertDialogTitle>
+                                  <AlertDialogTitle>{t('admin.ordersManagement.deleteOrder')}</AlertDialogTitle>
                                   <AlertDialogDescription>
-                                    Are you sure you want to delete this order? This action cannot be undone.
+                                    {t('admin.ordersManagement.deleteConfirmation')}
                                   </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogCancel>{t('admin.ordersManagement.cancel')}</AlertDialogCancel>
                                   <AlertDialogAction 
                                     onClick={() => deleteOrder(order.id)}
                                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                                   >
-                                    Delete
+                                    {t('admin.ordersManagement.delete')}
                                   </AlertDialogAction>
                                 </AlertDialogFooter>
                               </AlertDialogContent>
