@@ -475,63 +475,63 @@ const AdminProfile = () => {
                ) : (
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <Card>
-                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Total Logins</CardTitle>
-                        <Users className="h-4 w-4 text-muted-foreground" />
-                      </CardHeader>
-                      <CardContent>
-                        <div className="text-2xl font-bold">{adminStats.total_logins}</div>
-                      </CardContent>
-                    </Card>
+                     <Card>
+                       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                         <CardTitle className="text-sm font-medium">{t('settings.totalLogins')}</CardTitle>
+                         <Users className="h-4 w-4 text-muted-foreground" />
+                       </CardHeader>
+                       <CardContent>
+                         <div className="text-2xl font-bold">{adminStats.total_logins}</div>
+                       </CardContent>
+                     </Card>
 
-                    <Card>
-                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Active Sessions</CardTitle>
-                        <Activity className="h-4 w-4 text-muted-foreground" />
-                      </CardHeader>
-                      <CardContent>
-                        <div className="text-2xl font-bold">{adminStats.sessions_active}</div>
-                      </CardContent>
-                    </Card>
+                     <Card>
+                       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                         <CardTitle className="text-sm font-medium">{t('settings.activeSessions')}</CardTitle>
+                         <Activity className="h-4 w-4 text-muted-foreground" />
+                       </CardHeader>
+                       <CardContent>
+                         <div className="text-2xl font-bold">{adminStats.sessions_active}</div>
+                       </CardContent>
+                     </Card>
 
-                    <Card>
-                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Failed Attempts</CardTitle>
-                        <Shield className="h-4 w-4 text-muted-foreground" />
-                      </CardHeader>
-                      <CardContent>
-                        <div className="text-2xl font-bold text-destructive">{adminStats.failed_attempts}</div>
-                      </CardContent>
-                    </Card>
+                     <Card>
+                       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                         <CardTitle className="text-sm font-medium">{t('settings.failedAttempts')}</CardTitle>
+                         <Shield className="h-4 w-4 text-muted-foreground" />
+                       </CardHeader>
+                       <CardContent>
+                         <div className="text-2xl font-bold text-destructive">{adminStats.failed_attempts}</div>
+                       </CardContent>
+                     </Card>
 
-                    <Card>
-                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Last Login</CardTitle>
-                        <Database className="h-4 w-4 text-muted-foreground" />
-                      </CardHeader>
-                      <CardContent>
-                        <div className="text-sm font-bold">
-                          {new Date(adminStats.last_login).toLocaleDateString()}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          {new Date(adminStats.last_login).toLocaleTimeString()}
-                        </div>
-                      </CardContent>
-                    </Card>
+                     <Card>
+                       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                         <CardTitle className="text-sm font-medium">{t('settings.lastLogin')}</CardTitle>
+                         <Database className="h-4 w-4 text-muted-foreground" />
+                       </CardHeader>
+                       <CardContent>
+                         <div className="text-sm font-bold">
+                           {new Date(adminStats.last_login).toLocaleDateString()}
+                         </div>
+                         <div className="text-xs text-muted-foreground">
+                           {new Date(adminStats.last_login).toLocaleTimeString()}
+                         </div>
+                       </CardContent>
+                     </Card>
                   </div>
 
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Activity className="h-5 w-5" />
-                        Recent Admin Activity
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <RecentAdminActivity userId={user?.id} />
-                    </CardContent>
-                  </Card>
+                   <Card>
+                     <CardHeader>
+                       <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                         <Activity className="h-5 w-5" />
+                         {t('settings.recentAdminActivity')}
+                       </CardTitle>
+                     </CardHeader>
+                     <CardContent>
+                       <RecentAdminActivity userId={user?.id} />
+                     </CardContent>
+                   </Card>
                 </>
               )}
             </div>
@@ -539,64 +539,64 @@ const AdminProfile = () => {
 
           <TabsContent value="permissions">
             <div className="grid gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Key className="h-5 w-5" />
-                    Admin Permissions
-                  </CardTitle>
-                  <CardDescription>
-                    Your current administrative permissions and access levels
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {adminStats.permissions_granted.map((permission, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div className="flex items-center gap-2">
-                          <Key className="h-4 w-4 text-success" />
-                          <span className="text-sm font-medium">{permission}</span>
-                        </div>
-                        <Badge variant="success" size="sm">Granted</Badge>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+               <Card>
+                 <CardHeader>
+                   <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                     <Key className="h-5 w-5" />
+                     {t('settings.adminPermissions')}
+                   </CardTitle>
+                   <CardDescription>
+                     {t('settings.adminPermissionsDescription')}
+                   </CardDescription>
+                 </CardHeader>
+                 <CardContent>
+                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                     {adminStats.permissions_granted.map((permission, index) => (
+                       <div key={index} className={`flex items-center justify-between p-3 border rounded-lg ${isRTL ? 'flex-row-reverse' : ''}`}>
+                         <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                           <Key className="h-4 w-4 text-success" />
+                           <span className="text-sm font-medium">{permission}</span>
+                         </div>
+                         <Badge variant="success" size="sm">{t('settings.granted')}</Badge>
+                       </div>
+                     ))}
+                   </div>
+                 </CardContent>
+               </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>API Access</CardTitle>
-                  <CardDescription>
-                    Manage your API keys and access tokens
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label>API Key</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Your personal admin API key
-                      </p>
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setShowApiKeys(!showApiKeys)}
-                    >
-                      {showApiKeys ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </Button>
-                  </div>
-                  
-                  <div className="p-3 bg-muted rounded-md font-mono text-sm">
-                    {showApiKeys ? 'admin_key_' + user?.id?.slice(0, 8) + '...' + user?.id?.slice(-8) : '••••••••••••••••••••••••••••••••'}
-                  </div>
-                  
-                  <Button variant="outline" size="sm">
-                    Generate New Key
-                  </Button>
-                </CardContent>
-              </Card>
+               <Card>
+                 <CardHeader>
+                   <CardTitle>{t('settings.apiAccess')}</CardTitle>
+                   <CardDescription>
+                     {t('settings.apiAccessDescription')}
+                   </CardDescription>
+                 </CardHeader>
+                 <CardContent className="space-y-4">
+                   <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+                     <div>
+                       <Label>{t('settings.apiKey')}</Label>
+                       <p className="text-sm text-muted-foreground">
+                         {t('settings.apiKeyDescription')}
+                       </p>
+                     </div>
+                     <Button
+                       variant="outline"
+                       size="sm"
+                       onClick={() => setShowApiKeys(!showApiKeys)}
+                     >
+                       {showApiKeys ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                     </Button>
+                   </div>
+                   
+                   <div className={`p-3 bg-muted rounded-md font-mono text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
+                     {showApiKeys ? 'admin_key_' + user?.id?.slice(0, 8) + '...' + user?.id?.slice(-8) : '••••••••••••••••••••••••••••••••'}
+                   </div>
+                   
+                   <Button variant="outline" size="sm">
+                     {t('settings.generateNewKey')}
+                   </Button>
+                 </CardContent>
+               </Card>
             </div>
           </TabsContent>
         </Tabs>
