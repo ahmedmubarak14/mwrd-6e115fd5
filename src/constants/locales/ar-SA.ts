@@ -601,6 +601,7 @@ export const arSA = {
     // Navigation
     users: "المستخدمون",
     requests: "الطلبات",
+    notifications: "الإشعارات",
     offers: "العروض",
     
     // Communication Center
@@ -1326,6 +1327,7 @@ export const arSA = {
       subscriptionManagement: "إدارة الاشتراكات",
       supportCenter: "مركز الدعم",
       verificationQueue: "قائمة التحقق",
+      communicationCenter: "مركز الاتصالات",
       categoryManagement: "إدارة الفئات",
       financialTransactions: "المعاملات المالية",
       securityMonitoring: "مراقبة الأمان"

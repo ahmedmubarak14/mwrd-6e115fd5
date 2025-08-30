@@ -601,6 +601,7 @@ export const enUS = {
     // Navigation
     users: "Users",
     requests: "Requests", 
+    notifications: "Notifications",
     offers: "Offers",
     
     // Communication Center
@@ -1538,6 +1539,7 @@ export const enUS = {
       subscriptionManagement: "Subscription Management",
       supportCenter: "Support Center",
       verificationQueue: "Verification Queue",
+      communicationCenter: "Communication Center",
       categoryManagement: "Category Management",
       financialTransactions: "Financial Transactions",
       securityMonitoring: "Security Monitoring"

@@ -26,7 +26,8 @@ const breadcrumbKeys: Record<string, string> = {
   "/admin/category-management": "admin.breadcrumbs.categoryManagement",
   "/admin/expert-consultations": "admin.breadcrumbs.expertConsultations",
   "/admin/financial-transactions": "admin.breadcrumbs.financialTransactions",
-  "/admin/security": "admin.breadcrumbs.securityMonitoring"
+  "/admin/security": "admin.breadcrumbs.securityMonitoring",
+  "/admin/communications": "admin.breadcrumbs.communicationCenter"
 };
 
 export const AdminBreadcrumbs = () => {
