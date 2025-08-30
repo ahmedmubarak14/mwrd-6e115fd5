@@ -991,6 +991,11 @@ export const enUS = {
       underReview: "Under Review",
       pendingReview: "Pending Review",
       
+      // Document Status
+      checking: "Checking...",
+      available: "Available",
+      missing: "Missing",
+      
       // Bulk Actions
       bulkApprove: "Bulk Approve",
       bulkReject: "Bulk Reject",
@@ -1026,6 +1031,7 @@ export const enUS = {
       requestsSelected: "{count} requests selected",
       bulkActionDescription: "This will {action} {count} selected verification requests.",
       bulkNotesPlaceholder: "Notes for {action} action...",
+      cancel: "Cancel",
       
       // Tab Labels
       all: "All",

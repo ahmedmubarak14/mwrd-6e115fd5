@@ -344,13 +344,13 @@ export const VerificationQueue = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'approved':
-        return <Badge variant="secondary" className="bg-green-100 text-green-800">{t('verification.approved')}</Badge>;
+        return <Badge variant="secondary" className="bg-green-100 text-green-800">{t('admin.verificationQueue.approved')}</Badge>;
       case 'rejected':
-        return <Badge variant="destructive">{t('verification.rejected')}</Badge>;
+        return <Badge variant="destructive">{t('admin.verificationQueue.rejected')}</Badge>;
       case 'under_review':
-        return <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">{t('verification.underReview')}</Badge>;
+        return <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">{t('admin.verificationQueue.underReview')}</Badge>;
       default:
-        return <Badge variant="secondary">{t('users.pending')}</Badge>;
+        return <Badge variant="secondary">{t('admin.verificationQueue.pending')}</Badge>;
     }
   };
 
@@ -359,13 +359,13 @@ export const VerificationQueue = () => {
     
     switch (status) {
       case 'checking':
-        return <Badge variant="outline">{t('verification.checking')}</Badge>;
+        return <Badge variant="outline">{t('admin.verificationQueue.checking')}</Badge>;
       case 'available':
-        return <Badge variant="secondary" className="bg-green-100 text-green-800">{t('verification.available')}</Badge>;
+        return <Badge variant="secondary" className="bg-green-100 text-green-800">{t('admin.verificationQueue.available')}</Badge>;
       case 'missing':
-        return <Badge variant="destructive">{t('verification.missing')}</Badge>;
+        return <Badge variant="destructive">{t('admin.verificationQueue.missing')}</Badge>;
       default:
-        return <Badge variant="secondary">{t('verification.unknown')}</Badge>;
+        return <Badge variant="secondary">{t('admin.verificationQueue.unknown')}</Badge>;
     }
   };
 
@@ -522,7 +522,7 @@ export const VerificationQueue = () => {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <List className="h-5 w-5" />
-          Verification Requests Table
+          {t('admin.verificationQueue.verificationRequestsTable')}
         </CardTitle>
           <CardDescription>
             {t('admin.verificationQueue.comprehensiveView')}
@@ -544,11 +544,11 @@ export const VerificationQueue = () => {
                   }}
                 />
               </TableHead>
-              <TableHead>Vendor Information</TableHead>
-              <TableHead>Document</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Submitted</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead>{t('admin.verificationQueue.vendorInformation')}</TableHead>
+              <TableHead>{t('admin.verificationQueue.document')}</TableHead>
+              <TableHead>{t('admin.verificationQueue.status')}</TableHead>
+              <TableHead>{t('admin.verificationQueue.submitted')}</TableHead>
+              <TableHead>{t('admin.verificationQueue.actions')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -568,7 +568,7 @@ export const VerificationQueue = () => {
                 </TableCell>
                 <TableCell>
                   <div>
-                    <div className="font-medium">{request.user_profiles?.full_name || t('admin.verificationQueue.unknown')}</div>
+                    <div className="font-medium">{request.user_profiles?.full_name || t('admin.verificationQueue.unknownUser')}</div>
                     <div className="text-sm text-muted-foreground">{request.user_profiles?.company_name}</div>
                     <div className="text-xs text-muted-foreground">{request.user_profiles?.email}</div>
                   </div>
@@ -636,7 +636,7 @@ export const VerificationQueue = () => {
     return (
       <Card>
         <CardContent className="p-6">
-          <div className="flex justify-center">Loading verification requests...</div>
+          <div className="flex justify-center">{t('admin.verificationQueue.loadingRequests')}</div>
         </CardContent>
       </Card>
     );
@@ -650,7 +650,7 @@ export const VerificationQueue = () => {
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <Users className="h-4 w-4" />
-              Total Requests
+              {t('admin.verificationQueue.totalRequests')}
             </CardDescription>
             <CardTitle className="text-2xl">{analytics.total}</CardTitle>
           </CardHeader>
@@ -660,7 +660,7 @@ export const VerificationQueue = () => {
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <Clock className="h-4 w-4" />
-              Pending Review
+              {t('admin.verificationQueue.pendingReview')}
             </CardDescription>
             <CardTitle className="text-2xl text-orange-600">{analytics.pending}</CardTitle>
           </CardHeader>
@@ -690,7 +690,7 @@ export const VerificationQueue = () => {
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <Eye className="h-4 w-4" />
-              Under Review
+              {t('admin.verificationQueue.underReview')}
             </CardDescription>
             <CardTitle className="text-2xl text-blue-600">{analytics.underReview}</CardTitle>
           </CardHeader>
@@ -700,7 +700,7 @@ export const VerificationQueue = () => {
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <TrendingUp className="h-4 w-4" />
-              Approval Rate
+              {t('admin.verificationQueue.approvalRate')}
             </CardDescription>
             <CardTitle className="text-2xl">{analytics.approvalRate}%</CardTitle>
           </CardHeader>
@@ -710,7 +710,7 @@ export const VerificationQueue = () => {
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
-              Avg. Processing
+              {t('admin.verificationQueue.avgProcessing')}
             </CardDescription>
             <CardTitle className="text-2xl">{analytics.avgProcessingTime}d</CardTitle>
           </CardHeader>
@@ -722,7 +722,7 @@ export const VerificationQueue = () => {
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search by name, company, email, or document type..."
+            placeholder={t('admin.verificationQueue.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
@@ -734,9 +734,9 @@ export const VerificationQueue = () => {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="date">Sort by Date</SelectItem>
-            <SelectItem value="name">Sort by Name</SelectItem>
-            <SelectItem value="status">Sort by Status</SelectItem>
+            <SelectItem value="date">{t('admin.verificationQueue.sortByDate')}</SelectItem>
+            <SelectItem value="name">{t('admin.verificationQueue.sortByName')}</SelectItem>
+            <SelectItem value="status">{t('admin.verificationQueue.sortByStatus')}</SelectItem>
           </SelectContent>
         </Select>
 
@@ -762,7 +762,7 @@ export const VerificationQueue = () => {
           <CardContent className="py-4">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">
-                {selectedRequests.length} requests selected
+                {t('admin.verificationQueue.requestsSelected').replace('{count}', selectedRequests.length.toString())}
               </span>
               <div className="flex gap-2">
                 <Dialog open={showBulkDialog} onOpenChange={setShowBulkDialog}>
@@ -780,19 +780,19 @@ export const VerificationQueue = () => {
                     <DialogHeader>
                       <DialogTitle>{bulkAction === 'approve' ? t('admin.verificationQueue.bulkApproveTitle') : t('admin.verificationQueue.bulkRejectTitle')}</DialogTitle>
                       <DialogDescription>
-                        This will {bulkAction} {selectedRequests.length} selected verification requests.
+                        {t('admin.verificationQueue.bulkActionDescription').replace('{action}', bulkAction || '').replace('{count}', selectedRequests.length.toString())}
                       </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4">
                       <Textarea
-                        placeholder={`Notes for ${bulkAction} action...`}
+                        placeholder={t('admin.verificationQueue.bulkNotesPlaceholder').replace('{action}', bulkAction || '')}
                         value={bulkNotes}
                         onChange={(e) => setBulkNotes(e.target.value)}
                         rows={3}
                       />
                       <div className="flex justify-end gap-2">
                         <Button variant="outline" onClick={() => setShowBulkDialog(false)}>
-                          Cancel
+                          {t('admin.verificationQueue.cancel')}
                         </Button>
                         <Button 
                           onClick={() => {
@@ -818,7 +818,7 @@ export const VerificationQueue = () => {
                   }}
                 >
                   <XSquare className="h-4 w-4 mr-2" />
-                  Bulk Reject
+                  {t('admin.verificationQueue.bulkReject')}
                 </Button>
               </div>
             </div>
@@ -830,10 +830,10 @@ export const VerificationQueue = () => {
       <Tabs value={activeFilter} onValueChange={(value) => setActiveFilter(value as StatusFilter)} className="w-full">
         <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="all">
-            All ({statusCounts.all})
+            {t('admin.verificationQueue.all')} ({statusCounts.all})
           </TabsTrigger>
           <TabsTrigger value="pending">
-            Pending ({statusCounts.pending})
+            {t('admin.verificationQueue.pending')} ({statusCounts.pending})
           </TabsTrigger>
           <TabsTrigger value="approved">
             {t('admin.verificationQueue.approved')} ({statusCounts.approved})

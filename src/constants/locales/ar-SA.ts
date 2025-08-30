@@ -885,6 +885,11 @@ export const arSA = {
       underReview: "قيد المراجعة",
       pendingReview: "في انتظار المراجعة",
       
+      // Document Status
+      checking: "جاري التحقق...",
+      available: "متاح",
+      missing: "مفقود",
+      
       // Bulk Actions
       bulkApprove: "موافقة جماعية",
       bulkReject: "رفض جماعي",
@@ -920,6 +925,7 @@ export const arSA = {
       requestsSelected: "{count} طلب محدد",
       bulkActionDescription: "سيتم {action} {count} طلب تحقق محدد.",
       bulkNotesPlaceholder: "ملاحظات لإجراء {action}...",
+      cancel: "إلغاء",
       
       // Tab Labels
       all: "الكل",
