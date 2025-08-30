@@ -81,7 +81,7 @@ export default function AdminUsers() {
         console.error('Error fetching users:', error);
         toast({
           title: t('common.error'),
-          description: t('admin.fetchUsersError') || "Failed to fetch users data",
+          description: t('admin.fetchUsersError'),
           variant: "destructive",
         });
         return;
@@ -107,7 +107,7 @@ export default function AdminUsers() {
       console.error('Error fetching users:', error);
       toast({
         title: t('common.error'),
-        description: t('admin.fetchUsersError') || "Failed to fetch users data",
+        description: t('admin.fetchUsersError'),
         variant: "destructive",
       });
     } finally {
@@ -180,7 +180,7 @@ export default function AdminUsers() {
     
     toast({
       title: t('common.exportCompleted'),
-      description: t('admin.exportDescription') || "Users data has been exported to CSV",
+      description: t('admin.exportDescription'),
     });
   };
 
@@ -188,7 +188,7 @@ export default function AdminUsers() {
     fetchUsers();
     toast({
       title: t('common.dataRefreshed'),
-      description: t('admin.dataUpdated') || "Users data has been updated",
+      description: t('admin.dataUpdated'),
     });
   };
 
@@ -425,9 +425,16 @@ export default function AdminUsers() {
       rejected: "destructive"
     } as const;
 
+    const statusLabels = {
+      pending: t('admin.statusPending'),
+      approved: t('admin.statusApproved'),
+      blocked: t('admin.statusBlocked'),
+      rejected: t('admin.statusRejected')
+    };
+
     return (
       <Badge variant={variants[status as keyof typeof variants] || "secondary"}>
-        {status.charAt(0).toUpperCase() + status.slice(1)}
+        {statusLabels[status as keyof typeof statusLabels] || status}
       </Badge>
     );
   };
@@ -439,9 +446,15 @@ export default function AdminUsers() {
       client: "secondary"
     } as const;
 
+    const roleLabels = {
+      admin: t('admin.roleAdmin'),
+      vendor: t('admin.roleVendor'),
+      client: t('admin.roleClient')
+    };
+
     return (
       <Badge variant={variants[role as keyof typeof variants] || "secondary"}>
-        {role.charAt(0).toUpperCase() + role.slice(1)}
+        {roleLabels[role as keyof typeof roleLabels] || role}
       </Badge>
     );
   };
