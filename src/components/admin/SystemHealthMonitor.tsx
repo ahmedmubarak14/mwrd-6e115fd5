@@ -18,6 +18,7 @@ import {
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from "recharts";
 import { useSystemHealth } from "@/hooks/useSystemHealth";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { cn } from "@/lib/utils";
 
 export const SystemHealthMonitor = () => {
   const { 
@@ -29,10 +30,7 @@ export const SystemHealthMonitor = () => {
   } = useSystemHealth();
 
   // Translation context
-  const languageContext = useOptionalLanguage();
-  const { t } = languageContext || { 
-    t: (key: string) => key 
-  };
+  const { t, isRTL } = useOptionalLanguage();
 
 const getStatusColor = (status: string) => {
     switch (status) {
@@ -73,7 +71,7 @@ const getStatusColor = (status: string) => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* System Alerts */}
       {alerts && alerts.length > 0 && (
         <div className="space-y-2">
@@ -91,27 +89,27 @@ const getStatusColor = (status: string) => {
       {/* System Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('admin.systemStatus')}</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('admin.systemHealth.systemStatus')}</CardTitle>
             {getStatusIcon(systemMetrics?.overallStatus || 'healthy')}
           </CardHeader>
           <CardContent>
-            <div className="flex items-center space-x-2">
+            <div className={cn("flex items-center space-x-2", isRTL && "space-x-reverse")}>
               <div className={`text-2xl font-bold ${getStatusColor(systemMetrics?.overallStatus || 'healthy')}`}>
-                {systemMetrics?.overallStatus === 'healthy' ? t('admin.healthy') :
-                 systemMetrics?.overallStatus === 'warning' ? t('admin.warning') :
-                 systemMetrics?.overallStatus === 'critical' ? t('admin.critical') : t('admin.unknown')}
+                {systemMetrics?.overallStatus === 'healthy' ? t('admin.systemHealth.healthy') :
+                 systemMetrics?.overallStatus === 'warning' ? t('admin.systemHealth.warning') :
+                 systemMetrics?.overallStatus === 'critical' ? t('admin.systemHealth.critical') : t('admin.systemHealth.unknown')}
               </div>
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {t('admin.uptime')}: {uptimeStats?.uptime || '99.9%'}
+            <p className={cn("text-xs text-muted-foreground mt-1", isRTL ? "text-right" : "text-left")}>
+              {t('admin.systemHealth.uptime')}: {uptimeStats?.uptime || '99.9%'}
             </p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('admin.cpuUsage')}</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('admin.systemHealth.cpuUsage')}</CardTitle>
             <Cpu className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -121,8 +119,8 @@ const getStatusColor = (status: string) => {
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('admin.memoryUsage')}</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('admin.systemHealth.memoryUsage')}</CardTitle>
             <HardDrive className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -132,20 +130,20 @@ const getStatusColor = (status: string) => {
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('admin.databaseHealth')}</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-sm font-medium">{t('admin.systemHealth.databaseHealth')}</CardTitle>
             <Database className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="flex items-center space-x-2">
+            <div className={cn("flex items-center space-x-2", isRTL && "space-x-reverse")}>
               {getStatusIcon(systemMetrics?.databaseStatus || 'healthy')}
               <span className="text-lg font-semibold">
-                {systemMetrics?.databaseStatus === 'healthy' ? t('admin.optimal') :
-                 systemMetrics?.databaseStatus === 'warning' ? t('admin.degraded') : t('admin.critical')}
+                {systemMetrics?.databaseStatus === 'healthy' ? t('admin.systemHealth.optimal') :
+                 systemMetrics?.databaseStatus === 'warning' ? t('admin.systemHealth.degraded') : t('admin.systemHealth.critical')}
               </span>
             </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {t('admin.connections')}: {systemMetrics?.activeConnections || 15}/100
+            <p className={cn("text-xs text-muted-foreground mt-1", isRTL ? "text-right" : "text-left")}>
+              {t('admin.systemHealth.connections')}: {systemMetrics?.activeConnections || 15}/100
             </p>
           </CardContent>
         </Card>
@@ -155,8 +153,8 @@ const getStatusColor = (status: string) => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>System Performance</CardTitle>
-            <CardDescription>CPU and Memory usage over time</CardDescription>
+            <CardTitle>{t('admin.systemHealth.performanceTitle')}</CardTitle>
+            <CardDescription>{t('admin.systemHealth.performanceDescription')}</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -170,14 +168,14 @@ const getStatusColor = (status: string) => {
                   dataKey="cpu" 
                   stroke="hsl(var(--chart-1))" 
                   strokeWidth={2}
-                  name="CPU %"
+                  name={t('admin.systemHealth.cpuPercentage')}
                 />
                 <Line 
                   type="monotone" 
                   dataKey="memory" 
                   stroke="hsl(var(--chart-2))" 
                   strokeWidth={2}
-                  name="Memory %"
+                  name={t('admin.systemHealth.memoryPercentage')}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -186,8 +184,8 @@ const getStatusColor = (status: string) => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Response Times</CardTitle>
-            <CardDescription>API response times and throughput</CardDescription>
+            <CardTitle>{t('admin.systemHealth.responseTimesTitle')}</CardTitle>
+            <CardDescription>{t('admin.systemHealth.responseTimesDescription')}</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -202,7 +200,7 @@ const getStatusColor = (status: string) => {
                   stroke="hsl(var(--chart-3))" 
                   fill="hsl(var(--chart-3))"
                   fillOpacity={0.6}
-                  name="Response Time (ms)"
+                  name={t('admin.systemHealth.responseTimeMs')}
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -214,68 +212,68 @@ const getStatusColor = (status: string) => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
               <Server className="h-5 w-5" />
-              Infrastructure
+              {t('admin.systemHealth.infrastructure')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-sm">API Server</span>
-              <Badge variant="default">Online</Badge>
+            <div className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
+              <span className="text-sm">{t('admin.systemHealth.apiServer')}</span>
+              <Badge variant="default">{t('admin.systemHealth.online')}</Badge>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm">Database</span>
-              <Badge variant="default">Connected</Badge>
+            <div className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
+              <span className="text-sm">{t('admin.systemHealth.database')}</span>
+              <Badge variant="default">{t('admin.systemHealth.connected')}</Badge>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm">Cache Layer</span>
-              <Badge variant="default">Active</Badge>
+            <div className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
+              <span className="text-sm">{t('admin.systemHealth.cacheLayer')}</span>
+              <Badge variant="default">{t('admin.systemHealth.active')}</Badge>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm">File Storage</span>
-              <Badge variant="default">Available</Badge>
+            <div className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
+              <span className="text-sm">{t('admin.systemHealth.fileStorage')}</span>
+              <Badge variant="default">{t('admin.systemHealth.available')}</Badge>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm">CDN</span>
-              <Badge variant="default">Operational</Badge>
+            <div className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
+              <span className="text-sm">{t('admin.systemHealth.cdn')}</span>
+              <Badge variant="default">{t('admin.systemHealth.operational')}</Badge>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
               <Activity className="h-5 w-5" />
-              Performance Metrics
+              {t('admin.systemHealth.performanceMetrics')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex justify-between">
-              <span className="text-sm">Avg Response Time</span>
+            <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+              <span className="text-sm">{t('admin.systemHealth.avgResponseTime')}</span>
               <span className="font-medium">{performanceData && performanceData.length > 0 
                 ? Math.round(performanceData.reduce((sum, d) => sum + d.responseTime, 0) / performanceData.length) 
                 : 0}ms</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-sm">Requests/min</span>
+            <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+              <span className="text-sm">{t('admin.systemHealth.requestsPerMin')}</span>
               <span className="font-medium">{performanceData && performanceData.length > 0 
                 ? Math.round(performanceData[performanceData.length - 1].requests / 60) 
                 : 0}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-sm">Error Rate</span>
+            <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+              <span className="text-sm">{t('admin.systemHealth.errorRate')}</span>
               <span className="font-medium text-success">{systemMetrics?.overallStatus === 'healthy' ? '0.02%' : 
                 systemMetrics?.overallStatus === 'warning' ? '0.15%' : '2.1%'}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-sm">Throughput</span>
+            <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+              <span className="text-sm">{t('admin.systemHealth.throughput')}</span>
               <span className="font-medium">{performanceData && performanceData.length > 0 
                 ? (performanceData[performanceData.length - 1].requests * 0.008).toFixed(1) 
                 : 0} MB/s</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-sm">Active Users</span>
+            <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+              <span className="text-sm">{t('admin.systemHealth.activeUsers')}</span>
               <span className="font-medium">{systemMetrics?.activeConnections 
                 ? systemMetrics.activeConnections * 80 
                 : 0}</span>
@@ -285,14 +283,14 @@ const getStatusColor = (status: string) => {
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
               <Clock className="h-5 w-5" />
-              Uptime Statistics
+              {t('admin.systemHealth.uptimeStatistics')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex justify-between">
-              <span className="text-sm">Current Uptime</span>
+            <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+              <span className="text-sm">{t('admin.systemHealth.currentUptime')}</span>
               <span className="font-medium">{(() => {
                 const days = Math.floor(Math.random() * 30) + 5;
                 const hours = Math.floor(Math.random() * 24);
@@ -300,23 +298,23 @@ const getStatusColor = (status: string) => {
                 return `${days}d ${hours}h ${minutes}m`;
               })()}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-sm">This Month</span>
+            <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+              <span className="text-sm">{t('admin.systemHealth.thisMonth')}</span>
               <span className="font-medium text-success">{uptimeStats?.uptime || '99.95%'}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-sm">Last 90 Days</span>
+            <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+              <span className="text-sm">{t('admin.systemHealth.last90Days')}</span>
               <span className="font-medium text-success">
                 {systemMetrics?.overallStatus === 'healthy' ? '99.89%' : 
                  systemMetrics?.overallStatus === 'warning' ? '98.5%' : '95.2%'}
               </span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-sm">Last Incident</span>
-              <span className="font-medium">{uptimeStats?.lastIncident || 'None recorded'}</span>
+            <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+              <span className="text-sm">{t('admin.systemHealth.lastIncident')}</span>
+              <span className="font-medium">{uptimeStats?.lastIncident || t('admin.systemHealth.noneRecorded')}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-sm">MTTR</span>
+            <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+              <span className="text-sm">{t('admin.systemHealth.mttr')}</span>
               <span className="font-medium">
                 {systemMetrics?.overallStatus === 'healthy' ? '4.2 min' : 
                  systemMetrics?.overallStatus === 'warning' ? '8.5 min' : '15.3 min'}

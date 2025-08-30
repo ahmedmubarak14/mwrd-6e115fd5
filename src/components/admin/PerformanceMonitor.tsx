@@ -226,18 +226,18 @@ export const PerformanceMonitor = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
         <div>
-          <h2 className="text-2xl font-bold flex items-center gap-2">
+          <h2 className={cn("text-2xl font-bold flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <Monitor className="h-6 w-6" />
             {t('performance.performanceMonitor')}
           </h2>
-          <p className="text-muted-foreground">
+          <p className={cn("text-muted-foreground", isRTL ? "text-right" : "text-left")}>
             {t('performance.realTimeMetrics')}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
           <Button onClick={collectPerformanceMetrics} variant="outline">
             <RefreshCw className="h-4 w-4 mr-2" />
             {t('performance.refreshMetrics')}
@@ -410,10 +410,10 @@ export const PerformanceMonitor = () => {
                   systemMetrics?.databaseStatus === 'warning' ? 'text-warning' : 'text-destructive'
                 )}>
                   {systemMetrics?.databaseStatus || 'Healthy'}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  {systemMetrics?.activeConnections || 12} active connections
-                </p>
+                 </p>
+                 <p className="text-xs text-muted-foreground">
+                   {systemMetrics?.activeConnections || 12} {t('performance.activeConnections')}
+                 </p>
               </CardContent>
             </Card>
           </div>
@@ -423,12 +423,12 @@ export const PerformanceMonitor = () => {
             {/* Active System Alerts */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                   <AlertTriangle className="h-5 w-5 text-warning" />
-                  System Alerts
+                  {t('performance.systemAlerts')}
                 </CardTitle>
                 <CardDescription>
-                  Real-time system alerts and monitoring
+                  {t('performance.realTimeSystemAlerts')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -437,9 +437,9 @@ export const PerformanceMonitor = () => {
                     <Alert key={index} className="border-l-4 border-l-warning">
                       <AlertTriangle className="h-4 w-4" />
                       <AlertDescription>
-                        <div className="flex items-start justify-between">
+                        <div className={cn("flex items-start justify-between", isRTL && "flex-row-reverse")}>
                           <div className="flex-1">
-                            <p className="font-medium">{alert.component || 'System Alert'}</p>
+                            <p className="font-medium">{alert.component || t('performance.systemAlert')}</p>
                             <p className="text-sm text-muted-foreground">{alert.message}</p>
                             <p className="text-xs text-muted-foreground mt-1">
                               {new Date(alert.timestamp).toLocaleTimeString()}
@@ -450,9 +450,9 @@ export const PerformanceMonitor = () => {
                     </Alert>
                   ))
                 ) : (
-                  <div className="text-center py-8 text-muted-foreground">
+                  <div className={cn("text-center py-8 text-muted-foreground", isRTL ? "text-right" : "text-left")}>
                     <CheckCircle className="h-8 w-8 mx-auto mb-2 text-success" />
-                    <p>All systems operational</p>
+                    <p>{t('performance.allSystemsOperational')}</p>
                   </div>
                 )}
               </CardContent>
@@ -461,29 +461,29 @@ export const PerformanceMonitor = () => {
             {/* Service Status */}
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                   <Server className="h-5 w-5 text-primary" />
-                  Service Status
+                  {t('performance.serviceStatus')}
                 </CardTitle>
                 <CardDescription>
-                  Core platform services health
+                  {t('performance.corePlatformServicesHealth')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {[
-                  { name: 'API Gateway', status: 'operational', icon: Server },
-                  { name: 'Database', status: 'operational', icon: Database },
-                  { name: 'Authentication', status: 'operational', icon: Globe },
-                  { name: 'Real-time Services', status: 'operational', icon: Activity }
+                  { name: t('performance.apiGateway'), status: 'operational', icon: Server },
+                  { name: t('performance.database'), status: 'operational', icon: Database },
+                  { name: t('performance.authentication'), status: 'operational', icon: Globe },
+                  { name: t('performance.realtimeServices'), status: 'operational', icon: Activity }
                 ].map((service) => (
-                  <div key={service.name} className="flex items-center justify-between p-3 rounded-lg border">
-                    <div className="flex items-center gap-3">
+                  <div key={service.name} className={cn("flex items-center justify-between p-3 rounded-lg border", isRTL && "flex-row-reverse")}>
+                    <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
                       <service.icon className="h-4 w-4 text-muted-foreground" />
                       <span className="font-medium">{service.name}</span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                       <div className="w-2 h-2 bg-success rounded-full animate-pulse" />
-                      <span className="text-sm text-success capitalize">{service.status}</span>
+                      <span className="text-sm text-success capitalize">{t('performance.operational')}</span>
                     </div>
                   </div>
                 ))}
@@ -494,62 +494,62 @@ export const PerformanceMonitor = () => {
           {/* Device Capabilities */}
           <Card>
             <CardHeader>
-              <CardTitle>Device & Environment</CardTitle>
+              <CardTitle>{t('performance.deviceEnvironment')}</CardTitle>
               <CardDescription>
-                Current device capabilities and environment settings
+                {t('performance.currentDeviceCapabilities')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-sm">Device Type:</span>
+                  <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+                    <span className="text-sm">{t('performance.deviceType')}:</span>
                     <Badge variant={deviceCapabilities.isLowEnd ? "destructive" : "default"}>
-                      {deviceCapabilities.isLowEnd ? "Low-end" : "High-performance"}
+                      {deviceCapabilities.isLowEnd ? t('performance.lowEnd') : t('performance.highPerformance')}
                     </Badge>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm">CPU Cores:</span>
+                  <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+                    <span className="text-sm">{t('performance.cpuCores')}:</span>
                     <span className="text-sm font-medium">{deviceCapabilities.cpuCores}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm">Memory:</span>
+                  <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+                    <span className="text-sm">{t('performance.memory')}:</span>
                     <span className="text-sm font-medium">{deviceCapabilities.memory}GB</span>
                   </div>
                 </div>
                 
                 <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-sm">Network Speed:</span>
+                  <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+                    <span className="text-sm">{t('performance.networkSpeed')}:</span>
                     <Badge variant={networkSpeed === 'fast' ? "default" : networkSpeed === 'medium' ? "secondary" : "destructive"}>
                       {networkSpeed}
                     </Badge>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm">Animations:</span>
+                  <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+                    <span className="text-sm">{t('performance.animations')}:</span>
                     <Badge variant={performanceConfig.enableAnimations ? "default" : "secondary"}>
-                      {performanceConfig.enableAnimations ? "Enabled" : "Disabled"}
+                      {performanceConfig.enableAnimations ? t('performance.enabled') : t('performance.disabled')}
                     </Badge>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm">GPU Acceleration:</span>
+                  <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+                    <span className="text-sm">{t('performance.gpuAcceleration')}:</span>
                     <Badge variant={performanceConfig.useGPU ? "default" : "secondary"}>
-                      {performanceConfig.useGPU ? "Enabled" : "Disabled"}
+                      {performanceConfig.useGPU ? t('performance.enabled') : t('performance.disabled')}
                     </Badge>
                   </div>
                 </div>
                 
                 <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-sm">Transition Duration:</span>
+                  <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+                    <span className="text-sm">{t('performance.transitionDuration')}:</span>
                     <span className="text-sm font-medium">{performanceConfig.transitionDuration}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm">Max Animations:</span>
+                  <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+                    <span className="text-sm">{t('performance.maxAnimations')}:</span>
                     <span className="text-sm font-medium">{performanceConfig.maxConcurrentAnimations}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-sm">Debounce Time:</span>
+                  <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+                    <span className="text-sm">{t('performance.debounceTime')}:</span>
                     <span className="text-sm font-medium">{performanceConfig.debounceMs}ms</span>
                   </div>
                 </div>
@@ -561,9 +561,9 @@ export const PerformanceMonitor = () => {
           {alerts && alerts.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                   <AlertTriangle className="h-5 w-5 text-warning" />
-                  System Alerts
+                  {t('performance.systemAlerts')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -595,38 +595,38 @@ export const PerformanceMonitor = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Card>
                   <CardContent className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className={cn("flex items-center gap-2 mb-2", isRTL && "flex-row-reverse")}>
                       <Database className="h-4 w-4 text-primary" />
-                      <span className="text-sm font-medium">Total Bundle Size</span>
+                      <span className="text-sm font-medium">{t('performance.totalBundleSize')}</span>
                     </div>
                     <p className="text-2xl font-bold">{formatBytes(bundleData.totalSize)}</p>
-                    <p className="text-xs text-muted-foreground">Uncompressed</p>
+                    <p className="text-xs text-muted-foreground">{t('performance.uncompressed')}</p>
                   </CardContent>
                 </Card>
                 
                 <Card>
                   <CardContent className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className={cn("flex items-center gap-2 mb-2", isRTL && "flex-row-reverse")}>
                       <Globe className="h-4 w-4 text-success" />
-                      <span className="text-sm font-medium">Gzipped Size</span>
+                      <span className="text-sm font-medium">{t('performance.gzippedSize')}</span>
                     </div>
                     <p className="text-2xl font-bold text-success">{formatBytes(bundleData.gzippedSize)}</p>
                     <p className="text-xs text-muted-foreground">
-                      {Math.round((bundleData.gzippedSize / bundleData.totalSize) * 100)}% compression
+                      {Math.round((bundleData.gzippedSize / bundleData.totalSize) * 100)}% {t('performance.compression')}
                     </p>
                   </CardContent>
                 </Card>
                 
                 <Card>
                   <CardContent className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
+                    <div className={cn("flex items-center gap-2 mb-2", isRTL && "flex-row-reverse")}>
                       <Smartphone className="h-4 w-4 text-warning" />
-                      <span className="text-sm font-medium">Mobile Impact</span>
+                      <span className="text-sm font-medium">{t('performance.mobileImpact')}</span>
                     </div>
                     <p className="text-2xl font-bold text-warning">
                       {Math.round(bundleData.gzippedSize / 1024 / 100) / 10}s
                     </p>
-                    <p className="text-xs text-muted-foreground">Load time on 3G</p>
+                    <p className="text-xs text-muted-foreground">{t('performance.loadTimeOn3G')}</p>
                   </CardContent>
                 </Card>
               </div>
@@ -634,16 +634,16 @@ export const PerformanceMonitor = () => {
               {/* Bundle Composition */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Bundle Composition</CardTitle>
+                  <CardTitle>{t('performance.bundleComposition')}</CardTitle>
                   <CardDescription>
-                    Breakdown of your application bundle by chunk size
+                    {t('performance.bundleBreakdownDescription')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {bundleData.chunks.map((chunk) => (
                       <div key={chunk.name} className="space-y-2">
-                        <div className="flex justify-between items-center">
+                        <div className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
                           <span className="font-medium">{chunk.name}</span>
                           <span className="text-sm text-muted-foreground">
                             {formatBytes(chunk.size)} ({chunk.percentage.toFixed(1)}%)
@@ -659,9 +659,9 @@ export const PerformanceMonitor = () => {
               {/* Optimization Suggestions */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                     <AlertTriangle className="h-5 w-5 text-warning" />
-                    Optimization Suggestions
+                    {t('performance.optimizationSuggestions')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -678,11 +678,11 @@ export const PerformanceMonitor = () => {
             </>
           ) : (
             <Card>
-              <CardContent className="py-12 text-center">
+              <CardContent className={cn("py-12 text-center", isRTL ? "text-right" : "text-left")}>
                 <Database className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
                 <h3 className="text-lg font-semibold mb-2">{t('performance.bundleAnalysisTitle')}</h3>
                 <p className="text-muted-foreground mb-4">
-                  Click "Analyze Bundle" to get detailed insights about your application bundle size and composition.
+                  {t('performance.bundleAnalysisDescription')}
                 </p>
                 <Button onClick={analyzeBundleSize} disabled={analyzing}>
                   <Download className="h-4 w-4 mr-2" />
@@ -713,12 +713,12 @@ export const PerformanceMonitor = () => {
         <TabsContent value="recommendations">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                 <CheckCircle className="h-5 w-5 text-success" />
-                Performance Recommendations
+                {t('performance.performanceRecommendations')}
               </CardTitle>
               <CardDescription>
-                Actionable suggestions to improve your application performance
+                {t('performance.actionableSuggestions')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -726,28 +726,28 @@ export const PerformanceMonitor = () => {
                 <Alert>
                   <CheckCircle className="h-4 w-4" />
                   <AlertDescription>
-                    <strong>Implement lazy loading:</strong> Load admin components only when needed to reduce initial bundle size.
+                    <strong>{t('performance.implementLazyLoading')}:</strong> {t('performance.lazyLoadingDescription')}
                   </AlertDescription>
                 </Alert>
                 
                 <Alert>
                   <CheckCircle className="h-4 w-4" />
                   <AlertDescription>
-                    <strong>Optimize images:</strong> Convert images to WebP format and implement responsive images for better loading performance.
+                    <strong>{t('performance.optimizeImages')}:</strong> {t('performance.optimizeImagesDescription')}
                   </AlertDescription>
                 </Alert>
                 
                 <Alert>
                   <CheckCircle className="h-4 w-4" />
                   <AlertDescription>
-                    <strong>Enable caching:</strong> Implement service worker caching for static assets and API responses.
+                    <strong>{t('performance.enableCaching')}:</strong> {t('performance.enableCachingDescription')}
                   </AlertDescription>
                 </Alert>
                 
                 <Alert>
                   <CheckCircle className="h-4 w-4" />
                   <AlertDescription>
-                    <strong>Database optimization:</strong> Add indexes to frequently queried columns and optimize query patterns.
+                    <strong>{t('performance.databaseOptimization')}:</strong> {t('performance.databaseOptimizationDescription')}
                   </AlertDescription>
                 </Alert>
               </div>

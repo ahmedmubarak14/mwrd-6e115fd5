@@ -21,10 +21,13 @@ import {
 } from "lucide-react";
 import { useSecurityIncidents } from "@/hooks/useSecurityIncidents";
 import { useToast } from "@/hooks/use-toast";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { cn } from "@/lib/utils";
 
 export const SecurityIncidentManager = () => {
   const { incidents, createIncident, updateIncident, isLoading } = useSecurityIncidents();
   const { toast } = useToast();
+  const { t, isRTL } = useOptionalLanguage();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterSeverity, setFilterSeverity] = useState("all");
@@ -75,13 +78,13 @@ export const SecurityIncidentManager = () => {
       });
       setIsCreateDialogOpen(false);
       toast({
-        title: "Success",
-        description: "Security incident created successfully"
+        title: t("common.success"),
+        description: t("admin.security.incidentCreatedSuccess")
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to create security incident",
+        title: t("common.error"),
+        description: t("admin.security.incidentCreateFailed"),
         variant: "destructive"
       });
     }
@@ -91,13 +94,13 @@ export const SecurityIncidentManager = () => {
     try {
       await updateIncident(incidentId, { status: status as "open" | "investigating" | "resolved" | "closed" });
       toast({
-        title: "Success",
-        description: `Incident status updated to ${status}`
+        title: t("common.success"),
+        description: t("admin.security.incidentStatusUpdated")
       });
     } catch (error) {
       toast({
-        title: "Error", 
-        description: "Failed to update incident status",
+        title: t("common.error"), 
+        description: t("admin.security.incidentStatusUpdateFailed"),
         variant: "destructive"
       });
     }
@@ -110,48 +113,48 @@ export const SecurityIncidentManager = () => {
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
     const diffDays = Math.floor(diffHours / 24);
     
-    if (diffDays > 0) return `${diffDays}d ago`;
-    if (diffHours > 0) return `${diffHours}h ago`;
-    return "< 1h ago";
+    if (diffDays > 0) return `${diffDays}${t("admin.security.daysAgo")}`;
+    if (diffHours > 0) return `${diffHours}${t("admin.security.hoursAgo")}`;
+    return t("admin.security.lessThanHourAgo");
   };
 
   return (
-    <div className="space-y-6">
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header Actions */}
-      <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+      <div className={cn("flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4", isRTL && "lg:flex-row-reverse")}>
+        <div className={cn("flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4", isRTL && "sm:flex-row-reverse")}>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className={cn("absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground", isRTL ? "right-3" : "left-3")} />
             <Input
-              placeholder="Search incidents..."
+              placeholder={t("admin.security.searchIncidents")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 w-full sm:w-64"
+              className={cn("w-full sm:w-64", isRTL ? "pr-10" : "pl-10")}
             />
           </div>
-          <div className="flex gap-2 sm:gap-4">
+          <div className={cn("flex gap-2 sm:gap-4", isRTL && "flex-row-reverse")}>
             <Select value={filterStatus} onValueChange={setFilterStatus}>
               <SelectTrigger className="w-full sm:w-40">
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={t("admin.security.status")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="open">Open</SelectItem>
-                <SelectItem value="investigating">Investigating</SelectItem>
-                <SelectItem value="resolved">Resolved</SelectItem>
-                <SelectItem value="closed">Closed</SelectItem>
+                <SelectItem value="all">{t("admin.security.allStatus")}</SelectItem>
+                <SelectItem value="open">{t("admin.security.open")}</SelectItem>
+                <SelectItem value="investigating">{t("admin.security.investigating")}</SelectItem>
+                <SelectItem value="resolved">{t("admin.security.resolved")}</SelectItem>
+                <SelectItem value="closed">{t("admin.security.closed")}</SelectItem>
               </SelectContent>
             </Select>
             <Select value={filterSeverity} onValueChange={setFilterSeverity}>
               <SelectTrigger className="w-full sm:w-40">
-                <SelectValue placeholder="Severity" />
+                <SelectValue placeholder={t("admin.security.severity")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Severity</SelectItem>
-                <SelectItem value="critical">Critical</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
+                <SelectItem value="all">{t("admin.security.allSeverity")}</SelectItem>
+                <SelectItem value="critical">{t("admin.security.critical")}</SelectItem>
+                <SelectItem value="high">{t("admin.security.high")}</SelectItem>
+                <SelectItem value="medium">{t("admin.security.medium")}</SelectItem>
+                <SelectItem value="low">{t("admin.security.low")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -161,77 +164,77 @@ export const SecurityIncidentManager = () => {
           <DialogTrigger asChild>
             <Button className="w-full sm:w-auto">
               <Plus className="h-4 w-4 mr-2" />
-              <span className="sm:inline">Create Incident</span>
+              <span className="sm:inline">{t("admin.security.createIncident")}</span>
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl mx-4 sm:mx-auto">
             <DialogHeader>
-              <DialogTitle>Create Security Incident</DialogTitle>
+              <DialogTitle>{t("admin.security.createSecurityIncident")}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium">Title</label>
+                <label className="text-sm font-medium">{t("admin.security.title")}</label>
                 <Input
                   value={newIncident.title}
                   onChange={(e) => setNewIncident({...newIncident, title: e.target.value})}
-                  placeholder="Incident title"
+                  placeholder={t("admin.security.incidentTitlePlaceholder")}
                 />
               </div>
               <div>
-                <label className="text-sm font-medium">Description</label>
+                <label className="text-sm font-medium">{t("admin.security.description")}</label>
                 <Textarea
                   value={newIncident.description}
                   onChange={(e) => setNewIncident({...newIncident, description: e.target.value})}
-                  placeholder="Detailed incident description"
+                  placeholder={t("admin.security.detailedIncidentDescription")}
                   rows={4}
                 />
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium">Severity</label>
+                  <label className="text-sm font-medium">{t("admin.security.severity")}</label>
                   <Select value={newIncident.severity} onValueChange={(value) => setNewIncident({...newIncident, severity: value as "low" | "medium" | "high" | "critical"})}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="critical">Critical</SelectItem>
-                      <SelectItem value="high">High</SelectItem>
-                      <SelectItem value="medium">Medium</SelectItem>
-                      <SelectItem value="low">Low</SelectItem>
+                      <SelectItem value="critical">{t("admin.security.critical")}</SelectItem>
+                      <SelectItem value="high">{t("admin.security.high")}</SelectItem>
+                      <SelectItem value="medium">{t("admin.security.medium")}</SelectItem>
+                      <SelectItem value="low">{t("admin.security.low")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <label className="text-sm font-medium">Category</label>
+                  <label className="text-sm font-medium">{t("admin.security.category")}</label>
                   <Select value={newIncident.category} onValueChange={(value) => setNewIncident({...newIncident, category: value})}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="security_breach">Security Breach</SelectItem>
-                      <SelectItem value="data_leak">Data Leak</SelectItem>
-                      <SelectItem value="unauthorized_access">Unauthorized Access</SelectItem>
-                      <SelectItem value="malware">Malware</SelectItem>
-                      <SelectItem value="phishing">Phishing</SelectItem>
-                      <SelectItem value="ddos">DDoS Attack</SelectItem>
+                      <SelectItem value="security_breach">{t("admin.security.securityBreach")}</SelectItem>
+                      <SelectItem value="data_leak">{t("admin.security.dataLeak")}</SelectItem>
+                      <SelectItem value="unauthorized_access">{t("admin.security.unauthorizedAccess")}</SelectItem>
+                      <SelectItem value="malware">{t("admin.security.malware")}</SelectItem>
+                      <SelectItem value="phishing">{t("admin.security.phishing")}</SelectItem>
+                      <SelectItem value="ddos">{t("admin.security.ddosAttack")}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
               <div>
-                <label className="text-sm font-medium">Affected Systems</label>
+                <label className="text-sm font-medium">{t("admin.security.affectedSystems")}</label>
                 <Input
                   value={newIncident.affectedSystems}
                   onChange={(e) => setNewIncident({...newIncident, affectedSystems: e.target.value})}
-                  placeholder="Systems or components affected"
+                  placeholder={t("admin.security.systemsOrComponentsAffected")}
                 />
               </div>
-              <div className="flex flex-col sm:flex-row justify-end gap-2 sm:space-x-2">
+              <div className={cn("flex flex-col sm:flex-row justify-end gap-2 sm:space-x-2", isRTL && "sm:flex-row-reverse sm:space-x-reverse")}>
                 <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)} className="w-full sm:w-auto">
-                  Cancel
+                  {t("common.cancel")}
                 </Button>
                 <Button onClick={handleCreateIncident} className="w-full sm:w-auto">
-                  Create Incident
+                  {t("admin.security.createIncident")}
                 </Button>
               </div>
             </div>
@@ -255,13 +258,13 @@ export const SecurityIncidentManager = () => {
           ))
         ) : filteredIncidents.length === 0 ? (
           <Card>
-            <CardContent className="p-12 text-center">
+            <CardContent className={cn("p-12 text-center", isRTL ? "text-right" : "text-left")}>
               <Shield className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-lg font-medium mb-2">No security incidents found</p>
+              <p className="text-lg font-medium mb-2">{t("admin.security.noSecurityIncidentsFound")}</p>
               <p className="text-muted-foreground">
                 {searchTerm || filterStatus !== "all" || filterSeverity !== "all" 
-                  ? "Try adjusting your filters"
-                  : "Great! No active security incidents to report"
+                  ? t("admin.security.tryAdjustingFilters")
+                  : t("admin.security.greatNoActiveIncidents")
                 }
               </p>
             </CardContent>
@@ -283,36 +286,36 @@ export const SecurityIncidentManager = () => {
                       </Badge>
                     </div>
                     <p className="text-muted-foreground mb-3 line-clamp-2">{incident.description}</p>
-                    <div className="flex items-center space-x-6 text-sm text-muted-foreground">
-                      <div className="flex items-center space-x-1">
+                    <div className={cn("flex items-center space-x-6 text-sm text-muted-foreground", isRTL && "space-x-reverse")}>
+                      <div className={cn("flex items-center space-x-1", isRTL && "space-x-reverse")}>
                         <Clock className="h-4 w-4" />
                         <span>{getTimeAgo(incident.created_at)}</span>
                       </div>
-                      <div>Category: {incident.category}</div>
+                      <div>{t("admin.security.category")}: {incident.category}</div>
                       {incident.affected_systems && (
-                        <div>Systems: {incident.affected_systems}</div>
+                        <div>{t("admin.security.systems")}: {incident.affected_systems}</div>
                       )}
                     </div>
                   </div>
-                  <div className="flex space-x-2">
+                  <div className={cn("flex space-x-2", isRTL && "space-x-reverse")}>
                     {incident.status !== 'closed' && (
                       <>
                         {incident.status === 'open' && (
                           <Button size="sm" variant="outline" 
                                   onClick={(e) => {e.stopPropagation(); handleUpdateStatus(incident.id, 'investigating')}}>
-                            Start Investigation
+                            {t("admin.security.startInvestigation")}
                           </Button>
                         )}
                         {incident.status === 'investigating' && (
                           <Button size="sm" variant="outline"
                                   onClick={(e) => {e.stopPropagation(); handleUpdateStatus(incident.id, 'resolved')}}>
-                            Mark Resolved
+                            {t("admin.security.markResolved")}
                           </Button>
                         )}
                         {incident.status === 'resolved' && (
                           <Button size="sm" variant="outline"
                                   onClick={(e) => {e.stopPropagation(); handleUpdateStatus(incident.id, 'closed')}}>
-                            Close Incident
+                            {t("admin.security.closeIncident")}
                           </Button>
                         )}
                       </>
@@ -344,32 +347,32 @@ export const SecurityIncidentManager = () => {
               
               <Tabs defaultValue="details">
                 <TabsList>
-                  <TabsTrigger value="details">Details</TabsTrigger>
-                  <TabsTrigger value="timeline">Timeline</TabsTrigger>
-                  <TabsTrigger value="response">Response Actions</TabsTrigger>
+                  <TabsTrigger value="details">{t("admin.security.details")}</TabsTrigger>
+                  <TabsTrigger value="timeline">{t("admin.security.timeline")}</TabsTrigger>
+                  <TabsTrigger value="response">{t("admin.security.responseActions")}</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="details" className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Created</label>
+                      <label className="text-sm font-medium text-muted-foreground">{t("admin.security.created")}</label>
                       <p>{new Date(selectedIncident.created_at).toLocaleString()}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Category</label>
+                      <label className="text-sm font-medium text-muted-foreground">{t("admin.security.category")}</label>
                       <p>{selectedIncident.category}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Affected Systems</label>
-                      <p>{selectedIncident.affected_systems || "Not specified"}</p>
+                      <label className="text-sm font-medium text-muted-foreground">{t("admin.security.affectedSystems")}</label>
+                      <p>{selectedIncident.affected_systems || t("admin.security.notSpecified")}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium text-muted-foreground">Reported By</label>
-                      <p>{selectedIncident.reported_by || "System"}</p>
+                      <label className="text-sm font-medium text-muted-foreground">{t("admin.security.reportedBy")}</label>
+                      <p>{selectedIncident.reported_by || t("admin.security.system")}</p>
                     </div>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-muted-foreground">Description</label>
+                    <label className="text-sm font-medium text-muted-foreground">{t("admin.security.description")}</label>
                     <p className="mt-1">{selectedIncident.description}</p>
                   </div>
                 </TabsContent>
@@ -377,9 +380,9 @@ export const SecurityIncidentManager = () => {
                 <TabsContent value="timeline">
                   <div className="space-y-4">
                     <div className="border-l-2 border-muted pl-4 pb-4">
-                      <div className="flex items-center space-x-2 mb-1">
+                      <div className={cn("flex items-center space-x-2 mb-1", isRTL && "space-x-reverse")}>
                         <div className="w-2 h-2 bg-primary rounded-full"></div>
-                        <span className="text-sm font-medium">Incident Created</span>
+                        <span className="text-sm font-medium">{t("admin.security.incidentCreated")}</span>
                       </div>
                       <p className="text-sm text-muted-foreground">
                         {new Date(selectedIncident.created_at).toLocaleString()}
@@ -387,9 +390,9 @@ export const SecurityIncidentManager = () => {
                     </div>
                     {selectedIncident.updated_at !== selectedIncident.created_at && (
                       <div className="border-l-2 border-muted pl-4">
-                        <div className="flex items-center space-x-2 mb-1">
+                        <div className={cn("flex items-center space-x-2 mb-1", isRTL && "space-x-reverse")}>
                           <div className="w-2 h-2 bg-secondary rounded-full"></div>
-                          <span className="text-sm font-medium">Last Updated</span>
+                          <span className="text-sm font-medium">{t("admin.security.lastUpdated")}</span>
                         </div>
                         <p className="text-sm text-muted-foreground">
                           {new Date(selectedIncident.updated_at).toLocaleString()}
@@ -402,30 +405,30 @@ export const SecurityIncidentManager = () => {
                 <TabsContent value="response">
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
-                      <Button variant="outline" className="justify-start">
-                        <Mail className="h-4 w-4 mr-2" />
-                        Send Alert Email
+                      <Button variant="outline" className={cn("justify-start", isRTL && "justify-end")}>
+                        <Mail className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
+                        {t("admin.security.sendAlertEmail")}
                       </Button>
-                      <Button variant="outline" className="justify-start">
-                        <Phone className="h-4 w-4 mr-2" />
-                        Escalate to On-Call
+                      <Button variant="outline" className={cn("justify-start", isRTL && "justify-end")}>
+                        <Phone className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
+                        {t("admin.security.escalateToOnCall")}
                       </Button>
                     </div>
                     
                     <div className="p-4 border rounded-lg">
-                      <h4 className="font-medium mb-2">Quick Actions</h4>
-                      <div className="flex space-x-2">
+                      <h4 className={cn("font-medium mb-2", isRTL ? "text-right" : "text-left")}>{t("admin.security.quickActions")}</h4>
+                      <div className={cn("flex space-x-2", isRTL && "space-x-reverse")}>
                         <Button size="sm" variant="outline"
                                 onClick={() => handleUpdateStatus(selectedIncident.id, 'investigating')}>
-                          Investigate
+                          {t("admin.security.investigate")}
                         </Button>
                         <Button size="sm" variant="outline"
                                 onClick={() => handleUpdateStatus(selectedIncident.id, 'resolved')}>
-                          Resolve
+                          {t("admin.security.resolve")}
                         </Button>
                         <Button size="sm" variant="outline"
                                 onClick={() => handleUpdateStatus(selectedIncident.id, 'closed')}>
-                          Close
+                          {t("admin.security.close")}
                         </Button>
                       </div>
                     </div>
