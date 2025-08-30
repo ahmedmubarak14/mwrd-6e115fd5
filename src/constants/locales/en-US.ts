@@ -354,7 +354,17 @@ export const enUS = {
     enableCaching: "Enable caching",
     enableCachingDesc: "Implement service worker caching for static assets and API responses",
     databaseOptimization: "Database optimization",
-    databaseOptimizationDesc: "Add indexes to frequently queried columns and optimize query patterns"
+    databaseOptimizationDesc: "Add indexes to frequently queried columns and optimize query patterns",
+    realTimeSystemMonitor: "Real-Time System Monitor",
+    lastUpdated: "Last updated",
+    systemStatus: "System Status",
+    healthy: "Healthy",
+    operational: "Operational",
+    cpuUsage: "CPU Usage",
+    highLoad: "High load",
+    normal: "Normal",
+    database: "Database",
+    activeConnections: "active connections"
   },
   
   // Financial Section  

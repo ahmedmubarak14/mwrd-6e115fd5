@@ -338,9 +338,9 @@ export const PerformanceMonitor = () => {
         <TabsContent value="system" className="space-y-4">
           {/* Real-Time System Status Overview */}
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Real-Time System Monitor</h3>
+            <h3 className="text-lg font-semibold">{t('performance.realTimeSystemMonitor')}</h3>
             <div className="text-sm text-muted-foreground">
-              Last updated: {new Date().toLocaleTimeString()}
+              {t('performance.lastUpdated')}: {new Date().toLocaleTimeString()}
             </div>
           </div>
 
@@ -352,17 +352,17 @@ export const PerformanceMonitor = () => {
                     systemMetrics?.overallStatus === 'healthy' ? 'text-success' : 
                     systemMetrics?.overallStatus === 'warning' ? 'text-warning' : 'text-destructive'
                   )} />
-                  <span className="text-sm font-medium">System Status</span>
+                  <span className="text-sm font-medium">{t('performance.systemStatus')}</span>
                 </div>
                 <p className={cn("text-2xl font-bold capitalize",
                   systemMetrics?.overallStatus === 'healthy' ? 'text-success' : 
                   systemMetrics?.overallStatus === 'warning' ? 'text-warning' : 'text-destructive'
                 )}>
-                  {systemMetrics?.overallStatus || 'Healthy'}
+                  {systemMetrics?.overallStatus || t('performance.healthy')}
                 </p>
                 <div className="flex items-center gap-1 mt-1">
                   <div className="w-1.5 h-1.5 bg-success rounded-full animate-pulse" />
-                  <span className="text-xs text-muted-foreground">Operational</span>
+                  <span className="text-xs text-muted-foreground">{t('performance.operational')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -371,12 +371,12 @@ export const PerformanceMonitor = () => {
               <CardContent className="p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <Cpu className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium">CPU Usage</span>
+                  <span className="text-sm font-medium">{t('performance.cpuUsage')}</span>
                 </div>
                 <p className="text-2xl font-bold">{systemMetrics?.cpuUsage || Math.floor(Math.random() * 30 + 40)}%</p>
                 <Progress value={systemMetrics?.cpuUsage || Math.floor(Math.random() * 30 + 40)} className="w-full mt-2" />
                 <p className="text-xs text-muted-foreground mt-1">
-                  {systemMetrics?.cpuUsage > 80 ? 'High load' : 'Normal'}
+                  {systemMetrics?.cpuUsage > 80 ? t('performance.highLoad') : t('performance.normal')}
                 </p>
               </CardContent>
             </Card>
@@ -385,7 +385,7 @@ export const PerformanceMonitor = () => {
               <CardContent className="p-4">
                 <div className="flex items-center gap-2 mb-2">
                   <HardDrive className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium">Memory Usage</span>
+                  <span className="text-sm font-medium">{t('performance.memoryUsage')}</span>
                 </div>
                 <p className="text-2xl font-bold">{systemMetrics?.memoryUsage || Math.floor(Math.random() * 20 + 60)}%</p>
                 <Progress value={systemMetrics?.memoryUsage || Math.floor(Math.random() * 20 + 60)} className="w-full mt-2" />
@@ -403,7 +403,7 @@ export const PerformanceMonitor = () => {
                     systemMetrics?.databaseStatus === 'healthy' ? 'text-success' : 
                     systemMetrics?.databaseStatus === 'warning' ? 'text-warning' : 'text-destructive'
                   )} />
-                  <span className="text-sm font-medium">Database</span>
+                  <span className="text-sm font-medium">{t('performance.database')}</span>
                 </div>
                 <p className={cn("text-lg font-bold capitalize",
                   systemMetrics?.databaseStatus === 'healthy' ? 'text-success' : 
@@ -680,13 +680,13 @@ export const PerformanceMonitor = () => {
             <Card>
               <CardContent className="py-12 text-center">
                 <Database className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-semibold mb-2">Bundle Analysis</h3>
+                <h3 className="text-lg font-semibold mb-2">{t('performance.bundleAnalysisTitle')}</h3>
                 <p className="text-muted-foreground mb-4">
                   Click "Analyze Bundle" to get detailed insights about your application bundle size and composition.
                 </p>
                 <Button onClick={analyzeBundleSize} disabled={analyzing}>
                   <Download className="h-4 w-4 mr-2" />
-                  {analyzing ? 'Analyzing Bundle...' : 'Start Analysis'}
+                  {analyzing ? t('performance.analyzing') : t('performance.startAnalysis')}
                 </Button>
               </CardContent>
             </Card>
@@ -696,15 +696,15 @@ export const PerformanceMonitor = () => {
         <TabsContent value="network">
           <Card>
             <CardHeader>
-              <CardTitle>Network Performance</CardTitle>
-              <CardDescription>
-                Network timing and resource loading analysis
-              </CardDescription>
+        <CardTitle>{t('performance.networkPerformanceTitle')}</CardTitle>
+        <CardDescription>
+          {t('performance.networkPerformanceDesc')}
+        </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="text-center py-12 text-muted-foreground">
                 <Globe className="h-12 w-12 mx-auto mb-4" />
-                <p>Network performance analysis coming soon...</p>
+                <p>{t('performance.networkAnalysisComingSoon')}</p>
               </div>
             </CardContent>
           </Card>

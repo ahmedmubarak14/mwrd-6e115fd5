@@ -354,7 +354,17 @@ export const arSA = {
     enableCaching: "تفعيل التخزين المؤقت",
     enableCachingDesc: "تطبيق تخزين service worker المؤقت للأصول الثابتة واستجابات API",
     databaseOptimization: "تحسين قاعدة البيانات",
-    databaseOptimizationDesc: "إضافة فهارس للأعمدة التي يتم الاستعلام عنها بكثرة وتحسين أنماط الاستعلام"
+    databaseOptimizationDesc: "إضافة فهارس للأعمدة التي يتم الاستعلام عنها بكثرة وتحسين أنماط الاستعلام",
+    realTimeSystemMonitor: "مراقب النظام في الوقت الفعلي",
+    lastUpdated: "آخر تحديث",
+    systemStatus: "حالة النظام",
+    healthy: "سليم",
+    operational: "تشغيلي",
+    cpuUsage: "استخدام المعالج",
+    highLoad: "حمولة عالية",
+    normal: "طبيعي",
+    database: "قاعدة البيانات",
+    activeConnections: "اتصالات نشطة"
   },
   
   // Financial Section
