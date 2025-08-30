@@ -153,8 +153,8 @@ export default function AdminFinancialTransactions() {
         type: transaction.type as FinancialTransaction['type'],
         status: transaction.status as FinancialTransaction['status'],
         amount: Number(transaction.amount) || 0,
-        currency: 'SAR', // Default since currency field may not exist in DB
-        description: transaction.description || 'Transaction',
+        currency: t('financial.currency'), // Use translation instead of hardcoded 'SAR'
+        description: transaction.description || t('financial.transaction'), // Use translation
         reference_id: transaction.transaction_ref, // Map transaction_ref to reference_id
         user_id: transaction.user_id,
         order_id: transaction.order_id,
@@ -199,7 +199,7 @@ export default function AdminFinancialTransactions() {
 
     return (
       <Badge variant={variants[status]} className={colors[status]}>
-        {status.toUpperCase()}
+        {t(`financial.${status}`)}
       </Badge>
     );
   };
@@ -215,7 +215,7 @@ export default function AdminFinancialTransactions() {
 
     return (
       <Badge variant="outline" className={colors[type]}>
-        {type.toUpperCase()}
+        {t(`financial.${type}`)}
       </Badge>
     );
   };
@@ -253,7 +253,7 @@ export default function AdminFinancialTransactions() {
 
   const exportTransactions = () => {
     const csvContent = [
-      'ID,Type,Status,Amount,Currency,Description,Reference,Date,User',
+      t('financial.transactionCsvHeaders'),
       ...filteredTransactions.map(transaction => 
         `${transaction.id},${transaction.type},${transaction.status},${transaction.amount},${transaction.currency},"${transaction.description}",${transaction.reference_id || 'N/A'},${format(new Date(transaction.created_at), 'yyyy-MM-dd HH:mm')},${transaction.user_profile?.full_name || 'N/A'}`
       )
@@ -344,7 +344,7 @@ export default function AdminFinancialTransactions() {
             <div className="flex items-center gap-3">
               <DollarSign className="h-8 w-8 text-success" />
               <div>
-                <p className="text-2xl font-bold">{transactionStats.totalAmount.toLocaleString()} SAR</p>
+                <p className="text-2xl font-bold">{transactionStats.totalAmount.toLocaleString()} {t('financial.currency')}</p>
                 <p className="text-sm text-muted-foreground">{t('financial.totalVolume')}</p>
               </div>
             </div>
@@ -356,7 +356,7 @@ export default function AdminFinancialTransactions() {
             <div className="flex items-center gap-3">
               <TrendingUp className="h-8 w-8 text-success" />
               <div>
-                <p className="text-2xl font-bold">{transactionStats.totalRevenue.toLocaleString()} SAR</p>
+                <p className="text-2xl font-bold">{transactionStats.totalRevenue.toLocaleString()} {t('financial.currency')}</p>
                 <p className="text-sm text-muted-foreground">{t('financial.platformRevenue')}</p>
               </div>
             </div>
@@ -449,7 +449,7 @@ export default function AdminFinancialTransactions() {
                           <div>
                             <p className="font-semibold">{transaction.description}</p>
                             <p className="text-sm text-muted-foreground">
-                              {transaction.reference_id && `Ref: ${transaction.reference_id} • `}
+                              {transaction.reference_id && `${t('financial.ref')}: ${transaction.reference_id} • `}
                               {format(new Date(transaction.created_at), 'MMM dd, yyyy HH:mm')}
                             </p>
                           </div>
@@ -457,9 +457,9 @@ export default function AdminFinancialTransactions() {
 
                         {transaction.user_profile && (
                           <div className="ml-7 text-sm text-muted-foreground">
-                            <p>User: {transaction.user_profile.full_name || transaction.user_profile.email}</p>
+                            <p>{t('financial.user')}: {transaction.user_profile.full_name || transaction.user_profile.email}</p>
                             {transaction.user_profile.company_name && (
-                              <p>Company: {transaction.user_profile.company_name}</p>
+                              <p>{t('financial.company')}: {transaction.user_profile.company_name}</p>
                             )}
                           </div>
                         )}

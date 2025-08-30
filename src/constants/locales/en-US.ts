@@ -525,6 +525,13 @@ export const enUS = {
     paymentMethod: "Payment Method",
     referenceId: "Reference ID",
     gatewayResponse: "Gateway Response",
+    withdrawal: "Withdrawal",
+    transaction: "Transaction",
+    user: "User",
+    company: "Company",
+    ref: "Ref",
+    currency: "SAR",
+    transactionCsvHeaders: "ID,Type,Status,Amount,Currency,Description,Reference,Date,User",
     
     // Expert Consultations  
     expertConsultations: {

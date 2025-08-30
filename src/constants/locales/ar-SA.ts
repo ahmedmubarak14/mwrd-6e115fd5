@@ -525,6 +525,13 @@ export const arSA = {
     paymentMethod: "طريقة الدفع",
     referenceId: "رقم المرجع",
     gatewayResponse: "استجابة البوابة",
+    withdrawal: "سحب",
+    transaction: "معاملة",
+    user: "المستخدم",
+    company: "الشركة",
+    ref: "رقم المرجع",
+    currency: "ريال سعودي",
+    transactionCsvHeaders: "المعرف,النوع,الحالة,المبلغ,العملة,الوصف,المرجع,التاريخ,المستخدم",
     
     // Expert Consultations
     expertConsultations: {
