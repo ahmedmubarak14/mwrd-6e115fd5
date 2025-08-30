@@ -426,6 +426,11 @@ export const enUS = {
     accessDenied: "Access Denied",
     accessDeniedDescription: "You don't have permission to access this area",
     
+    // Navigation
+    users: "Users",
+    requests: "Requests", 
+    offers: "Offers",
+    
     // Communication Center
     communicationCenter: "Communication Center",
     communicationCenterDescription: "Manage platform communications and user interactions",
@@ -466,6 +471,11 @@ export const enUS = {
     communicationsDesc: "Manage notifications and user communications", 
     automation: "Automation",
     automationDesc: "Manage automated workflows and processes",
+    
+    // Command Palette
+    commandPalette: {
+      searchUsersRequestsOffers: "Search users, requests, and offers...",
+    },
     
     // Metrics & Status
     totalRevenue: "Total Revenue",
@@ -508,9 +518,6 @@ export const enUS = {
     
     // Menu Items
     analytics: "Analytics",
-    users: "Users",
-    requests: "Requests",
-    offers: "Offers", 
     projects: "Projects",
     orders: "Orders",
     verificationQueue: "Verification Queue",

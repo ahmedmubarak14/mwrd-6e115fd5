@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import {
   CommandDialog,
   CommandEmpty,
@@ -42,6 +43,7 @@ export const AdminCommandPalette = () => {
   const [requests, setRequests] = useState<SearchRequest[]>([]);
   const [offers, setOffers] = useState<SearchOffer[]>([]);
   const navigate = useNavigate();
+  const { t } = useOptionalLanguage();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -155,9 +157,9 @@ export const AdminCommandPalette = () => {
         onValueChange={setQuery}
       />
       <CommandList>
-        <CommandEmpty>{loading ? "Searching…" : "No results found."}</CommandEmpty>
+        <CommandEmpty>{loading ? t('common.loading') : t('common.notFound')}</CommandEmpty>
 
-        <CommandGroup heading="Quick Actions">
+        <CommandGroup heading={t('admin.quickActions')}>
           {quickActions.map((a) => (
             <CommandItem
               key={a.label}
@@ -175,7 +177,7 @@ export const AdminCommandPalette = () => {
         <CommandSeparator />
 
         {users.length > 0 && (
-          <CommandGroup heading="Users">
+          <CommandGroup heading={t('admin.users')}>
             {users.map((u) => (
               <CommandItem
                 key={u.id}
@@ -193,7 +195,7 @@ export const AdminCommandPalette = () => {
         )}
 
         {requests.length > 0 && (
-          <CommandGroup heading="Requests">
+          <CommandGroup heading={t('admin.requests')}>
             {requests.map((r) => (
               <CommandItem
                 key={r.id}
@@ -211,7 +213,7 @@ export const AdminCommandPalette = () => {
         )}
 
         {offers.length > 0 && (
-          <CommandGroup heading="Offers">
+          <CommandGroup heading={t('admin.offers')}>
             {offers.map((o) => (
               <CommandItem
                 key={o.id}

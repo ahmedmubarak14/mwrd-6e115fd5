@@ -426,6 +426,11 @@ export const arSA = {
     accessDenied: "الوصول مرفوض",
     accessDeniedDescription: "ليس لديك إذن للوصول إلى هذه المنطقة",
     
+    // Navigation
+    users: "المستخدمون",
+    requests: "الطلبات",
+    offers: "العروض",
+    
     // Communication Center
     communicationCenter: "مركز الاتصالات",
     communicationCenterDescription: "إدارة التواصل والتفاعل مع المستخدمين",
@@ -466,6 +471,11 @@ export const arSA = {
     communicationsDesc: "إدارة الإشعارات وتواصل المستخدمين",
     automation: "الأتمتة",
     automationDesc: "إدارة سير العمل والعمليات المؤتمتة",
+    
+    // Command Palette
+    commandPalette: {
+      searchUsersRequestsOffers: "البحث عن المستخدمين والطلبات والعروض...",
+    },
     
     // Metrics & Status
     totalRevenue: "إجمالي الإيرادات",
@@ -508,9 +518,6 @@ export const arSA = {
     
     // Menu Items
     analytics: "التحليلات",
-    users: "المستخدمين",
-    requests: "الطلبات", 
-    offers: "العروض",
     projects: "المشاريع",
     orders: "الطلبات",
     verificationQueue: "قائمة التحقق",
