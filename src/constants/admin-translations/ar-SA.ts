@@ -9,7 +9,9 @@ export const adminTranslationsAR = {
     title: "لوحة تحكم المشرف",
     description: "إدارة شاملة للمنصة والإشراف",
     welcome: "مرحباً بك في لوحة تحكم المشرف",
-    overview: "نظرة عامة"
+    overview: "نظرة عامة",
+    quickActions: "الإجراءات السريعة",
+    quickActionsDesc: "الوصول إلى الوظائف والأدوات الإدارية الرئيسية"
   },
 
   navigation: {
@@ -29,7 +31,23 @@ export const adminTranslationsAR = {
     security: "الأمان",
     settings: "الإعدادات",
     profile: "الملف الشخصي",
-    workflowAutomation: "أتمتة سير العمل"
+    workflowAutomation: "أتمتة سير العمل",
+    userManagement: "إدارة المستخدمين",
+    requestsApproval: "موافقة الطلبات",
+    offersManagement: "إدارة العروض",
+    systemHealth: "صحة النظام",
+    securityCenter: "مركز الأمان",
+    approvalQueue: "قائمة انتظار الموافقة",
+    financialOverview: "النظرة المالية العامة",
+    automation: "الأتمتة",
+    userManagementDescription: "إدارة حسابات المستخدمين والأدوار والصلاحيات",
+    approvalQueueDescription: "مراجعة الطلبات والعروض المعلقة والموافقة عليها",
+    financialOverviewDescription: "مراقبة الإيرادات والمعاملات والمقاييس المالية",
+    systemHealthDescription: "فحص أداء النظام والحالة التشغيلية",
+    securityCenterDescription: "مراقبة الحوادث الأمنية والامتثال",
+    communicationsDescription: "إدارة الإشعارات وقنوات الاتصال",
+    analyticsDescription: "عرض تحليلات المنصة ومقاييس الأداء",
+    automationDescription: "تكوين سير العمل والعمليات المؤتمتة"
   },
 
   // Breadcrumbs
@@ -120,7 +138,8 @@ export const adminTranslationsAR = {
     fillRequiredFields: "يرجى ملء جميع الحقول المطلوبة",
     deleteConfirmation: "هل أنت متأكد من رغبتك في حذف هذا المستخدم؟",
     noUsersFound: "لم يتم العثور على مستخدمين",
-    loadingUsers: "جاري تحميل المستخدمين..."
+    loadingUsers: "جاري تحميل المستخدمين...",
+    activeThisMonth: "نشط هذا الشهر"
   },
 
   // Request Management
@@ -168,7 +187,9 @@ export const adminTranslationsAR = {
     requestApprovedMessage: "تمت الموافقة على الطلب بنجاح",
     requestRejectedMessage: "تم رفض الطلب بنجاح", 
     noRequestsFound: "لم يتم العثور على طلبات",
-    loadingRequests: "جاري تحميل الطلبات..."
+    loadingRequests: "جاري تحميل الطلبات...",
+    pendingApprovals: "الموافقات المعلقة",
+    requiresAdminReview: "يتطلب مراجعة المدير"
   },
 
   // Offer Management
@@ -300,7 +321,8 @@ export const adminTranslationsAR = {
     totalRevenue: "إجمالي الإيرادات",
     pendingAmount: "المبلغ المعلق",
     completedTransactions: "المعاملات المُكتملة",
-    failedTransactions: "المعاملات الفاشلة"
+    failedTransactions: "المعاملات الفاشلة",
+    monthlyGrowth: "+8.2% هذا الشهر"
   },
 
   // Verification Workflow  
@@ -375,7 +397,13 @@ export const adminTranslationsAR = {
     // Actions
     exportData: "تصدير البيانات",
     generateReport: "إنشاء تقرير",
-    viewDetails: "عرض التفاصيل"
+    viewDetails: "عرض التفاصيل",
+    platformActivity: "نشاط المنصة",
+    platformActivityDesc: "تتبع تسجيلات المستخدمين والطلبات والطلبيات بمرور الوقت",
+    recentActivity: "النشاط الأخير",
+    recentActivityDescription: "أحدث أحداث النظام وإجراءات المستخدمين",
+    activityOn: "على",
+    noRecentActivity: "لا يوجد نشاط حديث"
   },
 
   // System Health & Performance
@@ -406,7 +434,16 @@ export const adminTranslationsAR = {
     // Actions
     restartService: "إعادة تشغيل الخدمة",
     viewLogs: "عرض السجلات",
-    refreshStatus: "تحديث الحالة"
+    refreshStatus: "تحديث الحالة",
+    metricsError: "فشل تحميل مقاييس النظام",
+    alerts: "تنبيهات النظام",
+    activeSystemAlerts: "تنبيهات النظام النشطة",
+    requireAttention: "تتطلب الانتباه",
+    health: "صحة النظام",
+    allSystemsOperational: "جميع الأنظمة تعمل بشكل طبيعي",
+    status: "الحالة",
+    statusDescription: "حالة مكونات النظام في الوقت الفعلي",
+    activeConnections: "الاتصالات النشطة"
   },
 
   // Security

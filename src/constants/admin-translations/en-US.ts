@@ -9,7 +9,9 @@ export const adminTranslationsEN = {
     title: "Admin Dashboard",
     description: "Comprehensive platform management and oversight",
     welcome: "Welcome to Admin Dashboard",
-    overview: "Overview"
+    overview: "Overview",
+    quickActions: "Quick Actions",
+    quickActionsDesc: "Access key administrative functions and tools"
   },
 
   navigation: {
@@ -29,7 +31,23 @@ export const adminTranslationsEN = {
     security: "Security",
     settings: "Settings",
     profile: "Profile",
-    workflowAutomation: "Workflow Automation"
+    workflowAutomation: "Workflow Automation",
+    userManagement: "User Management",
+    requestsApproval: "Requests Approval",
+    offersManagement: "Offers Management",
+    systemHealth: "System Health",
+    securityCenter: "Security Center", 
+    approvalQueue: "Approval Queue",
+    financialOverview: "Financial Overview",
+    automation: "Automation",
+    userManagementDescription: "Manage user accounts, roles, and permissions",
+    approvalQueueDescription: "Review and approve pending requests and offers",
+    financialOverviewDescription: "Monitor revenue, transactions, and financial metrics",
+    systemHealthDescription: "Check system performance and operational status",
+    securityCenterDescription: "Monitor security incidents and compliance",
+    communicationsDescription: "Manage notifications and communication channels",
+    analyticsDescription: "View platform analytics and performance metrics",
+    automationDescription: "Configure automated workflows and processes"
   },
 
   // Breadcrumbs
@@ -120,7 +138,8 @@ export const adminTranslationsEN = {
     fillRequiredFields: "Please fill in all required fields",
     deleteConfirmation: "Are you sure you want to delete this user?",
     noUsersFound: "No users found",
-    loadingUsers: "Loading users..."
+    loadingUsers: "Loading users...",
+    activeThisMonth: "active this month"
   },
 
   // Request Management
@@ -168,7 +187,9 @@ export const adminTranslationsEN = {
     requestApprovedMessage: "Request approved successfully",
     requestRejectedMessage: "Request rejected successfully", 
     noRequestsFound: "No requests found",
-    loadingRequests: "Loading requests..."
+    loadingRequests: "Loading requests...",
+    pendingApprovals: "Pending Approvals",
+    requiresAdminReview: "requires admin review"
   },
 
   // Offer Management
@@ -300,7 +321,8 @@ export const adminTranslationsEN = {
     totalRevenue: "Total Revenue",
     pendingAmount: "Pending Amount",
     completedTransactions: "Completed Transactions",
-    failedTransactions: "Failed Transactions"
+    failedTransactions: "Failed Transactions",
+    monthlyGrowth: "+8.2% this month"
   },
 
   // Verification Workflow  
@@ -375,7 +397,13 @@ export const adminTranslationsEN = {
     // Actions
     exportData: "Export Data",
     generateReport: "Generate Report",
-    viewDetails: "View Details"
+    viewDetails: "View Details",
+    platformActivity: "Platform Activity",
+    platformActivityDesc: "Track user registrations, requests, and orders over time",
+    recentActivity: "Recent Activity",
+    recentActivityDescription: "Latest system events and user actions",
+    activityOn: "on",
+    noRecentActivity: "No recent activity"
   },
 
   // System Health & Performance
@@ -406,7 +434,16 @@ export const adminTranslationsEN = {
     // Actions
     restartService: "Restart Service",
     viewLogs: "View Logs",
-    refreshStatus: "Refresh Status"
+    refreshStatus: "Refresh Status",
+    metricsError: "Failed to load system metrics",
+    alerts: "System Alerts",
+    activeSystemAlerts: "active system alerts",
+    requireAttention: "require attention",
+    health: "System Health",
+    allSystemsOperational: "All systems operational",
+    status: "Status",
+    statusDescription: "Real-time system component status",
+    activeConnections: "Active Connections"
   },
 
   // Security
