@@ -150,7 +150,7 @@ export const AdminCommandPalette = () => {
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
       <CommandInput
-        placeholder="Search users, requests, offers… (⌘/Ctrl K)"
+        placeholder={t('admin.commandPalette.searchUsersRequestsOffers')}
         value={query}
         onValueChange={setQuery}
       />

@@ -326,10 +326,10 @@ export default function AdminOrders() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
-          Orders Management
+          {t('admin.orders.title')}
         </h1>
         <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
-          Monitor and manage all orders across the platform
+          {t('admin.orders.description')}
         </p>
       </div>
       <Tabs value={activeTab} onValueChange={setActiveTab}>

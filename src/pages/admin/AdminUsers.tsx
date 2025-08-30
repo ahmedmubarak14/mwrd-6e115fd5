@@ -91,7 +91,7 @@ export default function AdminUsers() {
       const transformedUsers: User[] = (data || []).map(user => ({
         id: user.id,
         user_id: user.user_id,
-        full_name: user.full_name || 'No name',
+        full_name: user.full_name || t('admin.userDetails.noName'),
         email: user.email,
         role: user.role,
         status: user.status,
