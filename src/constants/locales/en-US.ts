@@ -648,7 +648,6 @@ export const enUS = {
     last24Hours: "Last 24 hours",
     pendingScheduled: "Scheduled",
     searchNotificationsPlaceholder: "Search notifications...",
-    allStatus: "All Status",
     allPriority: "All Priority",
     createNotification: "Create Notification",
     create: "Create",
@@ -658,15 +657,7 @@ export const enUS = {
     type: "Type", 
     message: "Message",
     notificationMessage: "Notification message",
-    priority: "Priority",
-    critical: "Critical",
-    targetAudience: "Target Audience",
-    allUsersTarget: "All Users",
-    clientsOnlyTarget: "Clients Only",
-    vendorsOnlyTarget: "Vendors Only",
-    adminsOnly: "Admins Only",
     scheduleOptional: "Schedule (Optional)",
-    cancel: "Cancel",
     createNotificationSuccess: "Notification created successfully",
     createNotificationError: "Failed to create notification",
     notificationSentSuccess: "Notification sent successfully",
@@ -694,7 +685,6 @@ export const enUS = {
     emailSubjectPlaceholder: "Your Weekly Update from MWRD",
     template: "Template",
     selectTemplate: "Select template", 
-    activeUsers: "Active Users",
     totalCampaigns: "Total Campaigns",
     sentThisMonth: "Sent This Month",
     clickRate: "Click Rate",
@@ -734,7 +724,6 @@ export const enUS = {
     lastSevenDays: "Last 7 days",
     notificationsToday: "Notifications Today",
     todaysTotal: "Today's total",
-    avgResponseTime: "Avg Response Time",
     averageResponse: "Average response",
     messageActivity: "Message Activity",
     messageActivityDesc: "Messages and notifications sent throughout the day",
@@ -750,7 +739,6 @@ export const enUS = {
     noRecentActivity: "No recent communication activity",
     sendAnnouncement: "Send Announcement",
     announce: "Announce",
-    createEmailCampaign: "Create Email Campaign",
     viewAllChats: "View All Chats",
     chats: "Chats",
     userEngagementReport: "User Engagement Report",
@@ -768,8 +756,7 @@ export const enUS = {
     monthlyGrowth: "Monthly Growth",
     requiresAdminReview: "Requires admin review",
     healthy: "Healthy",
-    warning: "Warning", 
-    critical: "Critical",
+    warning: "Warning",
     allSystemsOperational: "All systems operational",
     
     // System Alerts
@@ -801,7 +788,6 @@ export const enUS = {
     },
     
      // Menu Items
-     analytics: "Analytics",
      projects: "Projects",
      orders: "Orders",
      verificationQueue: "Verification Queue",
@@ -815,11 +801,9 @@ export const enUS = {
     // Search & Actions
     searchPlaceholder: "Search admin panel...",
     
-    // Recent Activity
-    recentActivity: "Recent Activity",
-    recentActivityDesc: "Latest administrative actions and system events",
-    noRecentActivity: "No recent activity",
-    activeConnections: "Active Connections",
+     // Recent Activity
+     recentActivityDesc: "Latest administrative actions and system events",
+     activeConnections: "Active Connections",
     activityOn: "on",
     
     // Errors & Messages
