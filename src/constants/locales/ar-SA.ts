@@ -470,8 +470,8 @@ export const arSA = {
     securityCenterDesc: "إدارة أمان المنصة والامتثال",
     communications: "الاتصالات",
     communicationsDesc: "إدارة الإشعارات وتواصل المستخدمين",
-    automation: "الأتمتة",
-    automationDesc: "إدارة سير العمل والعمليات المؤتمتة",
+    workflowAutomationNav: "الأتمتة",
+    workflowAutomationDesc: "إدارة سير العمل والعمليات المؤتمتة",
     
     // Command Palette
     commandPalette: {
@@ -780,9 +780,7 @@ export const arSA = {
     
     // Menu Items
     analytics: "التحليلات",
-    projects: "المشاريع",
-    orders: "الطلبات",
-    workflowAutomation: "أتمتة سير العمل",
+    workflowAutomationNav: "أتمتة سير العمل",
     subscriptions: "الاشتراكات",
     supportTickets: "تذاكر الدعم",
     categoryManagement: "إدارة الفئات",
@@ -1296,6 +1294,70 @@ export const arSA = {
         updateSuccess: "نجح",
         updateError: "فشل في تحديث حالة المشروع",
         fetchError: "فشل في جلب المشاريع"
+      }
+    },
+    workflowAutomation: {
+      title: "أتمتة سير العمل",
+      description: "إدارة العمليات التجارية المؤتمتة وسير العمل الذكي",
+      automationCenter: "مركز الأتمتة",
+      automationDescription: "إنشاء وإدارة ومراقبة سير العمل المؤتمت لتبسيط عملياتك التجارية",
+      createWorkflow: "إنشاء سير عمل",
+      overview: {
+        activeWorkflows: "سير العمل النشط",
+        totalExecutions: "إجمالي عمليات التنفيذ",
+        pendingTasks: "المهام المعلقة",
+        successRate: "معدل النجاح"
+      },
+      tabs: {
+        workflows: "سير العمل",
+        executionHistory: "تاريخ التنفيذ",
+        tasks: "المهام المؤتمتة"
+      },
+      workflowForm: {
+        createTitle: "إنشاء سير عمل جديد",
+        workflowName: "اسم سير العمل",
+        workflowNamePlaceholder: "أدخل اسم سير العمل...",
+        description: "الوصف",
+        descriptionPlaceholder: "اوصف ما يفعله سير العمل هذا...",
+        triggerType: "نوع المحفز",
+        triggerPlaceholder: "مثال: request_created",
+        priority: "الأولوية",
+        cancel: "إلغاء",
+        createButton: "إنشاء سير العمل"
+      },
+      workflowCard: {
+        trigger: "المحفز:",
+        priority: "الأولوية:",
+        created: "تاريخ الإنشاء:",
+        execute: "تنفيذ",
+        delete: "حذف"
+      },
+      executions: {
+        title: "عمليات التنفيذ الأخيرة",
+        workflowId: "سير العمل #",
+        duration: "المدة:",
+        noExecutions: "لا توجد عمليات تنفيذ"
+      },
+      tasks: {
+        pendingTitle: "المهام المعلقة",
+        overdueTitle: "المهام المتأخرة",
+        priorityLabel: "الأولوية:",
+        dueLabel: "تاريخ الاستحقاق:",
+        noDueDate: "لا يوجد تاريخ استحقاق",
+        complete: "مكتمل",
+        noPendingTasks: "لا توجد مهام معلقة",
+        noOverdueTasks: "لا توجد مهام متأخرة"
+      },
+      messages: {
+        nameRequired: "اسم سير العمل مطلوب",
+        created: "تم إنشاء سير العمل بنجاح",
+        createError: "فشل في إنشاء سير العمل",
+        enabled: "تفعيل",
+        disabled: "تعطيل",
+        toggleError: "فشل في تحديث حالة سير العمل",
+        deleted: "تم حذف سير العمل بنجاح",
+        deleteError: "فشل في حذف سير العمل",
+        loading: "جاري تحميل سير العمل..."
       }
     }
   }

@@ -17,8 +17,7 @@ import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 
 export const WorkflowAutomation = () => {
   const { toast } = useToast();
-  const languageContext = useOptionalLanguage();
-  const { t } = languageContext || { t: (key: string) => key };
+  const { t } = useOptionalLanguage();
   
   const {
     workflows,
@@ -58,7 +57,7 @@ export const WorkflowAutomation = () => {
     if (!newWorkflow.name.trim()) {
       toast({
         title: t('common.error'),
-        description: t('workflow.nameRequired'),
+        description: t('admin.workflowAutomation.messages.nameRequired'),
         variant: 'destructive'
       });
       return;
@@ -79,12 +78,12 @@ export const WorkflowAutomation = () => {
       });
       toast({
         title: t('common.success'),
-        description: t('workflow.created')
+        description: t('admin.workflowAutomation.messages.created')
       });
     } catch (error) {
       toast({
         title: t('common.error'),
-        description: t('workflow.createError'),
+        description: t('admin.workflowAutomation.messages.createError'),
         variant: 'destructive'
       });
     }
@@ -94,14 +93,15 @@ export const WorkflowAutomation = () => {
     const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
     try {
       await toggleWorkflowStatus(id, newStatus);
+      const statusText = newStatus === 'active' ? t('admin.workflowAutomation.messages.enabled') : t('admin.workflowAutomation.messages.disabled');
       toast({
-        title: 'Success',
-        description: `Workflow ${newStatus === 'active' ? 'enabled' : 'disabled'}`
+        title: t('common.success'),
+        description: `Workflow ${statusText}`
       });
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to update workflow status',
+        title: t('common.error'),
+        description: t('admin.workflowAutomation.messages.toggleError'),
         variant: 'destructive'
       });
     }
@@ -111,13 +111,13 @@ export const WorkflowAutomation = () => {
     try {
       await deleteWorkflow(id);
       toast({
-        title: 'Success',
-        description: 'Workflow deleted successfully'
+        title: t('common.success'),
+        description: t('admin.workflowAutomation.messages.deleted')
       });
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to delete workflow',
+        title: t('common.error'),
+        description: t('admin.workflowAutomation.messages.deleteError'),
         variant: 'destructive'
       });
     }
@@ -146,7 +146,7 @@ export const WorkflowAutomation = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <LoadingSpinner size="lg" label={t('workflow.loading')} />
+        <LoadingSpinner size="lg" label={t('admin.workflowAutomation.messages.loading')} />
       </div>
     );
   }
@@ -164,54 +164,54 @@ export const WorkflowAutomation = () => {
             <div>
               <CardTitle className="flex items-center gap-2">
                 <Zap className="h-5 w-5" />
-                {t('workflow.automationCenter')}
+                {t('admin.workflowAutomation.automationCenter')}
               </CardTitle>
               <p className="text-sm text-muted-foreground mt-1">
-                {t('workflow.automationDescription')}
+                {t('admin.workflowAutomation.automationDescription')}
               </p>
             </div>
             <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
               <DialogTrigger asChild>
                 <Button className="flex items-center gap-2">
                   <Plus className="h-4 w-4" />
-                  {t('workflow.createWorkflow')}
+                  {t('admin.workflowAutomation.createWorkflow')}
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
-                  <DialogTitle>Create New Workflow</DialogTitle>
+                  <DialogTitle>{t('admin.workflowAutomation.workflowForm.createTitle')}</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="name">Workflow Name</Label>
+                    <Label htmlFor="name">{t('admin.workflowAutomation.workflowForm.workflowName')}</Label>
                     <Input
                       id="name"
-                      placeholder="Enter workflow name..."
+                      placeholder={t('admin.workflowAutomation.workflowForm.workflowNamePlaceholder')}
                       value={newWorkflow.name}
                       onChange={(e) => setNewWorkflow(prev => ({ ...prev, name: e.target.value }))}
                     />
                   </div>
                   <div>
-                    <Label htmlFor="description">Description</Label>
+                    <Label htmlFor="description">{t('admin.workflowAutomation.workflowForm.description')}</Label>
                     <Textarea
                       id="description"
-                      placeholder="Describe what this workflow does..."
+                      placeholder={t('admin.workflowAutomation.workflowForm.descriptionPlaceholder')}
                       value={newWorkflow.description}
                       onChange={(e) => setNewWorkflow(prev => ({ ...prev, description: e.target.value }))}
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="trigger">Trigger Type</Label>
+                      <Label htmlFor="trigger">{t('admin.workflowAutomation.workflowForm.triggerType')}</Label>
                       <Input
                         id="trigger"
-                        placeholder="e.g., request_created"
+                        placeholder={t('admin.workflowAutomation.workflowForm.triggerPlaceholder')}
                         value={newWorkflow.trigger_type}
                         onChange={(e) => setNewWorkflow(prev => ({ ...prev, trigger_type: e.target.value }))}
                       />
                     </div>
                     <div>
-                      <Label htmlFor="priority">Priority</Label>
+                      <Label htmlFor="priority">{t('admin.workflowAutomation.workflowForm.priority')}</Label>
                       <Input
                         id="priority"
                         type="number"
@@ -224,10 +224,10 @@ export const WorkflowAutomation = () => {
                   </div>
                   <div className="flex justify-end gap-2">
                     <Button variant="outline" onClick={() => setShowCreateDialog(false)}>
-                      Cancel
+                      {t('admin.workflowAutomation.workflowForm.cancel')}
                     </Button>
                     <Button onClick={handleCreateWorkflow}>
-                      Create Workflow
+                      {t('admin.workflowAutomation.workflowForm.createButton')}
                     </Button>
                   </div>
                 </div>
@@ -243,7 +243,7 @@ export const WorkflowAutomation = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Active Workflows</p>
+                <p className="text-sm text-muted-foreground">{t('admin.workflowAutomation.overview.activeWorkflows')}</p>
                 <p className="text-2xl font-bold">{activeWorkflows.length}</p>
               </div>
               <Zap className="h-8 w-8 text-primary/20" />
@@ -255,7 +255,7 @@ export const WorkflowAutomation = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Total Executions</p>
+                <p className="text-sm text-muted-foreground">{t('admin.workflowAutomation.overview.totalExecutions')}</p>
                 <p className="text-2xl font-bold">{executions.length}</p>
               </div>
               <Activity className="h-8 w-8 text-primary/20" />
@@ -267,7 +267,7 @@ export const WorkflowAutomation = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Pending Tasks</p>
+                <p className="text-sm text-muted-foreground">{t('admin.workflowAutomation.overview.pendingTasks')}</p>
                 <p className="text-2xl font-bold">{activeTasks.length}</p>
               </div>
               <Clock className="h-8 w-8 text-primary/20" />
@@ -279,7 +279,7 @@ export const WorkflowAutomation = () => {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Success Rate</p>
+                <p className="text-sm text-muted-foreground">{t('admin.workflowAutomation.overview.successRate')}</p>
                 <p className="text-2xl font-bold">
                   {executions.length > 0 
                     ? Math.round((executions.filter(e => e.status === 'completed').length / executions.length) * 100)
@@ -295,9 +295,9 @@ export const WorkflowAutomation = () => {
       {/* Main Content */}
       <Tabs defaultValue="workflows" className="space-y-6">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="workflows">Workflows</TabsTrigger>
-          <TabsTrigger value="executions">Execution History</TabsTrigger>
-          <TabsTrigger value="tasks">Automated Tasks</TabsTrigger>
+          <TabsTrigger value="workflows">{t('admin.workflowAutomation.tabs.workflows')}</TabsTrigger>
+          <TabsTrigger value="executions">{t('admin.workflowAutomation.tabs.executionHistory')}</TabsTrigger>
+          <TabsTrigger value="tasks">{t('admin.workflowAutomation.tabs.tasks')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="workflows" className="space-y-6">
@@ -329,17 +329,17 @@ export const WorkflowAutomation = () => {
                   
                   <div className="space-y-2">
                     <div className="flex justify-between text-xs">
-                      <span className="text-muted-foreground">Trigger:</span>
+                      <span className="text-muted-foreground">{t('admin.workflowAutomation.workflowCard.trigger')}</span>
                       <span className="font-medium">{workflow.trigger_type.replace('_', ' ')}</span>
                     </div>
                     
                     <div className="flex justify-between text-xs">
-                      <span className="text-muted-foreground">Priority:</span>
+                      <span className="text-muted-foreground">{t('admin.workflowAutomation.workflowCard.priority')}</span>
                       <span className="font-medium">{workflow.priority}</span>
                     </div>
                     
                     <div className="flex justify-between text-xs">
-                      <span className="text-muted-foreground">Created:</span>
+                      <span className="text-muted-foreground">{t('admin.workflowAutomation.workflowCard.created')}</span>
                       <span className="font-medium">{new Date(workflow.created_at).toLocaleDateString()}</span>
                     </div>
                   </div>
@@ -353,7 +353,7 @@ export const WorkflowAutomation = () => {
                       className="flex-1 text-xs"
                     >
                       <PlayCircle className="h-3 w-3 mr-1" />
-                      Execute
+                      {t('admin.workflowAutomation.workflowCard.execute')}
                     </Button>
                     <Button
                       size="sm"
@@ -373,7 +373,7 @@ export const WorkflowAutomation = () => {
         <TabsContent value="executions" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Recent Executions</CardTitle>
+              <CardTitle className="text-lg">{t('admin.workflowAutomation.executions.title')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -385,7 +385,7 @@ export const WorkflowAutomation = () => {
                       {execution.status === 'running' && <Clock className="h-4 w-4 text-warning" />}
                       
                       <div>
-                        <p className="font-medium text-sm">Workflow #{execution.workflow_rule_id}</p>
+                        <p className="font-medium text-sm">{t('admin.workflowAutomation.executions.workflowId')}{execution.workflow_rule_id}</p>
                         <p className="text-xs text-muted-foreground">
                           {new Date(execution.created_at).toLocaleString()}
                         </p>
@@ -398,7 +398,7 @@ export const WorkflowAutomation = () => {
                       </Badge>
                       {execution.completed_at && (
                         <p className="text-xs text-muted-foreground mt-1">
-                          Duration: {Math.round((new Date(execution.completed_at).getTime() - new Date(execution.created_at).getTime()) / 1000)}s
+                          {t('admin.workflowAutomation.executions.duration')} {Math.round((new Date(execution.completed_at).getTime() - new Date(execution.created_at).getTime()) / 1000)}s
                         </p>
                       )}
                     </div>
@@ -407,7 +407,7 @@ export const WorkflowAutomation = () => {
                 
                 {executions.length === 0 && (
                   <div className="text-center py-8 text-muted-foreground">
-                    No executions found
+                    {t('admin.workflowAutomation.executions.noExecutions')}
                   </div>
                 )}
               </div>
@@ -422,7 +422,7 @@ export const WorkflowAutomation = () => {
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Clock className="h-5 w-5" />
-                  Pending Tasks ({activeTasks.length})
+                  {t('admin.workflowAutomation.tasks.pendingTitle')} ({activeTasks.length})
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -432,7 +432,7 @@ export const WorkflowAutomation = () => {
                       <div>
                         <p className="font-medium text-sm">{task.title}</p>
                         <p className="text-xs text-muted-foreground">
-                          Priority: {task.priority} | Due: {task.due_date ? new Date(task.due_date).toLocaleDateString() : 'No due date'}
+                          {t('admin.workflowAutomation.tasks.priorityLabel')} {task.priority} | {t('admin.workflowAutomation.tasks.dueLabel')} {task.due_date ? new Date(task.due_date).toLocaleDateString() : t('admin.workflowAutomation.tasks.noDueDate')}
                         </p>
                       </div>
                       <Button
@@ -440,14 +440,14 @@ export const WorkflowAutomation = () => {
                         variant="outline"
                         onClick={() => updateTaskStatus(task.id, 'completed')}
                       >
-                        Complete
+                        {t('admin.workflowAutomation.tasks.complete')}
                       </Button>
                     </div>
                   ))}
                   
                   {activeTasks.length === 0 && (
                     <div className="text-center py-4 text-muted-foreground">
-                      No pending tasks
+                      {t('admin.workflowAutomation.tasks.noPendingTasks')}
                     </div>
                   )}
                 </div>
@@ -459,7 +459,7 @@ export const WorkflowAutomation = () => {
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <AlertTriangle className="h-5 w-5 text-destructive" />
-                  Overdue Tasks ({overdueTasks.length})
+                  {t('admin.workflowAutomation.tasks.overdueTitle')} ({overdueTasks.length})
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -478,7 +478,7 @@ export const WorkflowAutomation = () => {
                           variant="outline"
                           onClick={() => updateTaskStatus(task.id, 'completed')}
                         >
-                          Complete
+                          {t('admin.workflowAutomation.tasks.complete')}
                         </Button>
                         <Button
                           size="sm"
@@ -493,7 +493,7 @@ export const WorkflowAutomation = () => {
                   
                   {overdueTasks.length === 0 && (
                     <div className="text-center py-4 text-muted-foreground">
-                      No overdue tasks
+                      {t('admin.workflowAutomation.tasks.noOverdueTasks')}
                     </div>
                   )}
                 </div>

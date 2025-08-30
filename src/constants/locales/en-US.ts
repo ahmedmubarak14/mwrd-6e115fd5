@@ -469,9 +469,9 @@ export const enUS = {
     securityCenter: "Security Center",
     securityCenterDesc: "Manage platform security and compliance",
     communications: "Communications",
-    communicationsDesc: "Manage notifications and user communications", 
-    automation: "Automation",
-    automationDesc: "Manage automated workflows and processes",
+    communicationsDesc: "Manage notifications and user communications",
+    workflowAutomation: "Workflow Automation",
+    workflowAutomationDesc: "Manage automated workflows and processes",
     
     // Command Palette
     commandPalette: {
@@ -888,8 +888,6 @@ export const enUS = {
     companyName: "Company Name",
     
      // Menu Items
-     projects: "Projects",
-     orders: "Orders",
      workflowAutomation: "Workflow Automation",
      subscriptions: "Subscriptions", 
      supportTickets: "Support Tickets",
@@ -1399,6 +1397,70 @@ export const enUS = {
         updateSuccess: "Success",
         updateError: "Failed to update project status",
         fetchError: "Failed to fetch projects"
+      }
+    },
+    workflowAutomation: {
+      title: "Workflow Automation",
+      description: "Manage automated business processes and intelligent workflows",
+      automationCenter: "Automation Center",
+      automationDescription: "Create, manage and monitor automated workflows to streamline your business processes",
+      createWorkflow: "Create Workflow",
+      overview: {
+        activeWorkflows: "Active Workflows",
+        totalExecutions: "Total Executions",
+        pendingTasks: "Pending Tasks",
+        successRate: "Success Rate"
+      },
+      tabs: {
+        workflows: "Workflows",
+        executionHistory: "Execution History",
+        tasks: "Automated Tasks"
+      },
+      workflowForm: {
+        createTitle: "Create New Workflow",
+        workflowName: "Workflow Name",
+        workflowNamePlaceholder: "Enter workflow name...",
+        description: "Description",
+        descriptionPlaceholder: "Describe what this workflow does...",
+        triggerType: "Trigger Type",
+        triggerPlaceholder: "e.g., request_created",
+        priority: "Priority",
+        cancel: "Cancel",
+        createButton: "Create Workflow"
+      },
+      workflowCard: {
+        trigger: "Trigger:",
+        priority: "Priority:",
+        created: "Created:",
+        execute: "Execute",
+        delete: "Delete"
+      },
+      executions: {
+        title: "Recent Executions",
+        workflowId: "Workflow #",
+        duration: "Duration:",
+        noExecutions: "No executions found"
+      },
+      tasks: {
+        pendingTitle: "Pending Tasks",
+        overdueTitle: "Overdue Tasks",
+        priorityLabel: "Priority:",
+        dueLabel: "Due:",
+        noDueDate: "No due date",
+        complete: "Complete",
+        noPendingTasks: "No pending tasks",
+        noOverdueTasks: "No overdue tasks"
+      },
+      messages: {
+        nameRequired: "Workflow name is required",
+        created: "Workflow created successfully",
+        createError: "Failed to create workflow",
+        enabled: "enabled",
+        disabled: "disabled",
+        toggleError: "Failed to update workflow status",
+        deleted: "Workflow deleted successfully",
+        deleteError: "Failed to delete workflow",
+        loading: "Loading workflows..."
       }
     }
   }
