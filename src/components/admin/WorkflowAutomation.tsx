@@ -17,7 +17,12 @@ import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 
 export const WorkflowAutomation = () => {
   const { toast } = useToast();
-  const { t } = useOptionalLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t } = languageContext || { t: (key: string) => key };
+
+  // Debug logging to check translation system
+  console.log('WorkflowAutomation: languageContext:', languageContext);
+  console.log('WorkflowAutomation: Testing translation:', t('admin.workflowAutomation.workflowCard.trigger'));
   
   const {
     workflows,
