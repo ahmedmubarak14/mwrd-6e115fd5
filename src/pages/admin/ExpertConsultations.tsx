@@ -378,16 +378,18 @@ export const ExpertConsultations = () => {
               variant={viewMode === 'table' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setViewMode('table')}
+              className={cn("flex items-center", isRTL && "flex-row-reverse")}
             >
-              <FileText className="h-4 w-4 mr-2" />
+              <FileText className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
               {t('admin.expertConsultations.table')}
             </Button>
             <Button 
               variant={viewMode === 'cards' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setViewMode('cards')}
+              className={cn("flex items-center", isRTL && "flex-row-reverse")}
             >
-              <BookOpen className="h-4 w-4 mr-2" />
+              <BookOpen className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
               {t('admin.expertConsultations.cards')}
             </Button>
           </div>
@@ -466,7 +468,7 @@ export const ExpertConsultations = () => {
         <Card>
           <CardHeader>
             <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                 <Activity className="h-5 w-5" />
                 {t('admin.expertConsultations.consultationManagement')}
               </CardTitle>
@@ -475,7 +477,7 @@ export const ExpertConsultations = () => {
                   variant="outline" 
                   size="sm"
                   onClick={handleExportConsultations}
-                  className="flex items-center gap-2"
+                  className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}
                 >
                   <Download className="h-4 w-4" />
                   {t('admin.expertConsultations.export')}
@@ -484,7 +486,7 @@ export const ExpertConsultations = () => {
                   variant="outline" 
                   size="sm"
                   onClick={() => window.location.reload()}
-                  className="flex items-center gap-2"
+                  className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}
                 >
                   <RefreshCw className="h-4 w-4" />
                   {t('admin.expertConsultations.refresh')}
@@ -546,7 +548,7 @@ export const ExpertConsultations = () => {
               <Button 
                 variant="outline"
                 onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-                className="flex items-center gap-2"
+                className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}
               >
                 <ArrowUpDown className="h-4 w-4" />
                 {sortOrder === 'asc' ? t('admin.expertConsultations.asc') : t('admin.expertConsultations.desc')}
@@ -555,19 +557,19 @@ export const ExpertConsultations = () => {
 
             {/* Bulk Actions */}
             {selectedConsultations.length > 0 && (
-              <div className="flex items-center gap-2 mb-4 p-3 bg-muted rounded-lg">
+              <div className={cn("flex items-center gap-2 mb-4 p-3 bg-muted rounded-lg", isRTL && "flex-row-reverse")}>
                 <span className="text-sm font-medium">
                   {selectedConsultations.length} {selectedConsultations.length > 1 ? t('admin.expertConsultations.consultationsSelected') : t('admin.expertConsultations.consultationSelected')}
                 </span>
-                <div className="flex gap-2 ml-auto">
+                <div className={cn("flex gap-2", isRTL ? "mr-auto" : "ml-auto", isRTL && "flex-row-reverse")}>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="sm">
-                        <CheckCircle className="h-4 w-4 mr-2" />
+                      <Button variant="outline" size="sm" className={cn("flex items-center", isRTL && "flex-row-reverse")}>
+                        <CheckCircle className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
                         {t('admin.expertConsultations.changeStatus')}
                       </Button>
                     </DropdownMenuTrigger>
-                      <DropdownMenuContent>
+                      <DropdownMenuContent align={isRTL ? "start" : "end"}>
                         <DropdownMenuItem onClick={() => handleBulkStatusChange('pending')}>
                           {t('admin.expertConsultations.pending')}
                         </DropdownMenuItem>
@@ -585,8 +587,8 @@ export const ExpertConsultations = () => {
                   
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <Button variant="destructive" size="sm">
-                        <Trash2 className="h-4 w-4 mr-2" />
+                      <Button variant="destructive" size="sm" className={cn("flex items-center", isRTL && "flex-row-reverse")}>
+                        <Trash2 className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
                         {t('admin.expertConsultations.delete')}
                       </Button>
                     </AlertDialogTrigger>
@@ -643,14 +645,14 @@ export const ExpertConsultations = () => {
                         />
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-2">
+                        <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                           <Avatar className="h-8 w-8">
                             <AvatarImage src={consultation.user_profiles?.avatar_url} />
                             <AvatarFallback>
                               {consultation.full_name[0] || consultation.email[0]}
                             </AvatarFallback>
                           </Avatar>
-                          <div className="min-w-0">
+                          <div className={cn("min-w-0", isRTL ? "text-right" : "text-left")}>
                             <div className="font-medium truncate">{consultation.full_name}</div>
                             <div className="text-sm text-muted-foreground truncate">{consultation.email}</div>
                           </div>
@@ -660,7 +662,7 @@ export const ExpertConsultations = () => {
                         <Badge variant="outline">{consultation.event_type}</Badge>
                       </TableCell>
                       <TableCell>
-                        <div className={cn("flex items-center gap-1", getStatusColor(consultation.status))}>
+                        <div className={cn("flex items-center gap-1", getStatusColor(consultation.status), isRTL && "flex-row-reverse")}>
                           {getStatusIcon(consultation.status)}
                           <span className="capitalize text-sm">{getTranslatedStatus(consultation.status)}</span>
                         </div>
@@ -671,12 +673,12 @@ export const ExpertConsultations = () => {
                       <TableCell>
                         <div className="text-sm">
                           {consultation.phone ? (
-                            <div className="flex items-center gap-1">
+                            <div className={cn("flex items-center gap-1", isRTL && "flex-row-reverse")}>
                               <Phone className="h-3 w-3" />
                               {consultation.phone}
                             </div>
                           ) : (
-                            <div className="flex items-center gap-1">
+                            <div className={cn("flex items-center gap-1", isRTL && "flex-row-reverse")}>
                               <Mail className="h-3 w-3" />
                               {t('common.emailOnly')}
                             </div>
@@ -703,30 +705,30 @@ export const ExpertConsultations = () => {
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
+                          <DropdownMenuContent align={isRTL ? "start" : "end"}>
                             <DropdownMenuLabel>{t('admin.expertConsultations.actions')}</DropdownMenuLabel>
-                            <DropdownMenuItem onClick={() => setSelectedConsultation(consultation)}>
-                              <Eye className="h-4 w-4 mr-2" />
+                            <DropdownMenuItem onClick={() => setSelectedConsultation(consultation)} className={cn("flex items-center", isRTL && "flex-row-reverse")}>
+                              <Eye className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
                               {t('admin.expertConsultations.viewDetails')}
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => updateConsultationStatus(consultation.id, 'scheduled')}>
-                              <Calendar className="h-4 w-4 mr-2" />
+                            <DropdownMenuItem onClick={() => updateConsultationStatus(consultation.id, 'scheduled')} className={cn("flex items-center", isRTL && "flex-row-reverse")}>
+                              <Calendar className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
                               {t('admin.expertConsultations.schedule')}
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => updateConsultationStatus(consultation.id, 'completed')}>
-                              <CheckCircle className="h-4 w-4 mr-2" />
+                            <DropdownMenuItem onClick={() => updateConsultationStatus(consultation.id, 'completed')} className={cn("flex items-center", isRTL && "flex-row-reverse")}>
+                              <CheckCircle className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
                               {t('admin.expertConsultations.complete')}
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => updateConsultationStatus(consultation.id, 'cancelled')}>
-                              <AlertCircle className="h-4 w-4 mr-2" />
+                            <DropdownMenuItem onClick={() => updateConsultationStatus(consultation.id, 'cancelled')} className={cn("flex items-center", isRTL && "flex-row-reverse")}>
+                              <AlertCircle className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
                               {t('admin.expertConsultations.cancel')}
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
-                               <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                   <Trash2 className="h-4 w-4 mr-2" />
+                               <DropdownMenuItem onSelect={(e) => e.preventDefault()} className={cn("flex items-center", isRTL && "flex-row-reverse")}>
+                                   <Trash2 className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
                                    {t('admin.expertConsultations.delete')}
                                  </DropdownMenuItem>
                                </AlertDialogTrigger>
@@ -879,7 +881,7 @@ export const ExpertConsultations = () => {
                   </div>
                 )}
                 
-                <div className="flex gap-2 pt-4">
+                <div className={cn("flex gap-2 pt-4", isRTL && "flex-row-reverse")}>
                   <Button onClick={() => updateConsultationStatus(selectedConsultation.id, 'scheduled')}>
                     {t('expertConsultations.schedule')}
                   </Button>
@@ -904,19 +906,19 @@ export const ExpertConsultations = () => {
       <Card className="hover:shadow-md transition-shadow">
         <CardHeader>
           <div className={cn("flex justify-between items-start gap-4", isRTL && "flex-row-reverse")}>
-            <div className="flex items-center gap-3">
+            <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
               <Avatar className="h-10 w-10">
                 <AvatarImage src={consultation.user_profiles?.avatar_url} />
                 <AvatarFallback>
                   {consultation.full_name[0] || consultation.email[0]}
                 </AvatarFallback>
               </Avatar>
-              <div>
+              <div className={cn(isRTL ? "text-right" : "text-left")}>
                 <CardTitle className="text-lg">{consultation.full_name}</CardTitle>
                 <CardDescription>{consultation.email}</CardDescription>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
               <Badge variant={getStatusBadgeVariant(consultation.status)}>
                 {getTranslatedStatus(consultation.status)}
               </Badge>
@@ -928,20 +930,20 @@ export const ExpertConsultations = () => {
         <CardContent>
           <div className="space-y-3">
             {consultation.company && (
-              <div className="flex items-center gap-2">
+              <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                 <Building className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm">{consultation.company}</span>
               </div>
             )}
             
             {consultation.phone && (
-              <div className="flex items-center gap-2">
+              <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                 <Phone className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm">{consultation.phone}</span>
               </div>
             )}
             
-            <div className="flex items-center gap-2">
+            <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
               <Calendar className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">
                 {t('expertConsultations.created')} {formatDateString(consultation.created_at)}
@@ -949,7 +951,7 @@ export const ExpertConsultations = () => {
             </div>
             
             {consultation.scheduled_date && (
-              <div className="flex items-center gap-2">
+              <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                 <Clock className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm">
                   {t('expertConsultations.scheduledCard')} {formatDateString(consultation.scheduled_date)}
@@ -968,12 +970,13 @@ export const ExpertConsultations = () => {
             )}
           </div>
           
-          <div className="flex gap-2 mt-4">
+          <div className={cn("flex gap-2 mt-4", isRTL && "flex-row-reverse")}>
             <Button 
               size="sm" 
               onClick={() => setSelectedConsultation(consultation)}
+              className={cn("flex items-center", isRTL && "flex-row-reverse")}
             >
-              <Eye className="h-4 w-4 mr-1" />
+              <Eye className={cn("h-4 w-4", isRTL ? "ml-1" : "mr-1")} />
               {t('expertConsultations.view')}
             </Button>
             {consultation.status === 'pending' && (
