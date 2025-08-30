@@ -295,10 +295,10 @@ export default function AdminFinancialTransactions() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
-          {t('financial.transactions')}
+          {t('admin.financialTransactionsTitle')}
         </h1>
         <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
-          {t('financial.description')}
+          {t('admin.financialTransactionsDesc')}
         </p>
       </div>
 
@@ -370,7 +370,7 @@ export default function AdminFinancialTransactions() {
         <div className="relative flex-1">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder={t('financial.searchPlaceholder')}
+            placeholder={t('admin.searchTransactions')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-9"

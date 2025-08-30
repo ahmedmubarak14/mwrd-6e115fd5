@@ -387,13 +387,13 @@ export const Analytics = () => {
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">
-                    {isRTL ? 'عروض معلقة' : 'Pending Offers'}
+                    {t('analytics.pendingOffers')}
                   </span>
                   <Badge variant="secondary">{analytics?.pendingOffers || 0}</Badge>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">
-                    {isRTL ? 'عروض مقبولة' : 'Accepted Offers'}
+                    {t('analytics.acceptedOffers')}
                   </span>
                   <Badge variant="secondary">{analytics?.acceptedOffers || 0}</Badge>
                 </div>
@@ -406,24 +406,24 @@ export const Analytics = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <Card>
               <CardHeader>
-                <CardTitle>{isRTL ? 'مؤشرات الأداء' : 'Performance Metrics'}</CardTitle>
+                <CardTitle>{t('analytics.performanceMetrics')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">
-                    {isRTL ? 'معدل الإنجاز' : 'Completion Rate'}
+                    {t('analytics.completionRate')}
                   </span>
                   <Badge variant="secondary">{analytics?.completionRate || 0}%</Badge>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">
-                    {isRTL ? 'متوسط وقت الاستجابة' : 'Avg Response Time'}
+                    {t('analytics.avgResponseTime')}
                   </span>
                   <Badge variant="secondary">{analytics?.averageResponseTime || 0}h</Badge>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">
-                    {isRTL ? 'متوسط قيمة الطلب' : 'Avg Order Value'}
+                    {t('analytics.avgOrderValue')}
                   </span>
                   <Badge variant="secondary">{formatCurrency(analytics?.averageOrderValue || 0)}</Badge>
                 </div>

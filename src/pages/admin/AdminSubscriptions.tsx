@@ -359,18 +359,18 @@ export default function AdminSubscriptions() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
-          Subscription Management
+          {t('admin.subscriptionManagement')}
         </h1>
         <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
-          Comprehensive subscription management with plan changes and analytics
+          {t('admin.subscriptionManagementDesc')}
         </p>
       </div>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="all">All Subscriptions</TabsTrigger>
-          <TabsTrigger value="active">Active</TabsTrigger>
-          <TabsTrigger value="expiring">Expiring Soon</TabsTrigger>
-          <TabsTrigger value="expired">Expired</TabsTrigger>
+          <TabsTrigger value="all">{t('admin.allSubscriptions')}</TabsTrigger>
+          <TabsTrigger value="active">{t('common.active')}</TabsTrigger>
+          <TabsTrigger value="expiring">{t('admin.expiringSoon')}</TabsTrigger>
+          <TabsTrigger value="expired">{t('admin.expired')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value={activeTab} className="space-y-6">
@@ -378,52 +378,52 @@ export default function AdminSubscriptions() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Subscriptions</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.totalSubscriptions')}</CardTitle>
                 <Users className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{totalSubscriptions.toLocaleString()}</div>
                 <p className="text-xs text-muted-foreground">
-                  +{newSubscriptionsThisMonth} this month
+                  +{newSubscriptionsThisMonth} {t('admin.thisMonth')}
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Active Subscriptions</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.activeSubscriptions')}</CardTitle>
                 <CreditCard className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{activeSubscriptions.toLocaleString()}</div>
                 <p className="text-xs text-muted-foreground">
-                  {expiringSoonCount} expiring soon
+                  {expiringSoonCount} {t('admin.expiringSoon')}
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Monthly Revenue</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.monthlyRevenue')}</CardTitle>
                 <TrendingUp className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{monthlyRevenue.toLocaleString()} SAR</div>
                 <p className="text-xs text-muted-foreground">
-                  From active subscriptions
+                  {t('admin.fromActiveSubscriptions')}
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Expired/Cancelled</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.expiredCancelled')}</CardTitle>
                 <AlertTriangle className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{expiredSubscriptions.toLocaleString()}</div>
                 <p className="text-xs text-muted-foreground">
-                  Need attention
+                  {t('admin.needAttention')}
                 </p>
               </CardContent>
             </Card>
@@ -431,11 +431,9 @@ export default function AdminSubscriptions() {
 
           {/* Plan Distribution */}
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="h-5 w-5" />
-                Plan Distribution
-              </CardTitle>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">{t('admin.planDistribution')}</CardTitle>
+              <BarChart3 className="h-5 w-5" />
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -453,7 +451,7 @@ export default function AdminSubscriptions() {
           {/* Filters and Bulk Actions */}
           <Card>
             <CardHeader>
-              <CardTitle>Filters & Actions</CardTitle>
+              <CardTitle>{t('admin.filtersActions')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">

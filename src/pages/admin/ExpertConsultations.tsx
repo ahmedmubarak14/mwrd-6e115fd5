@@ -406,56 +406,56 @@ export const ExpertConsultations = () => {
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Pending</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('common.pending')}</CardTitle>
               <Clock className="h-4 w-4 text-warning" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-warning">{analyticsData.pendingConsultations}</div>
-              <p className="text-xs text-muted-foreground">Awaiting response</p>
+              <p className="text-xs text-muted-foreground">{t('expertConsultations.awaitingResponse')}</p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Scheduled</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('common.scheduled')}</CardTitle>
               <Calendar className="h-4 w-4 text-blue-500" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-blue-500">{analyticsData.scheduledConsultations}</div>
-              <p className="text-xs text-muted-foreground">Active bookings</p>
+              <p className="text-xs text-muted-foreground">{t('expertConsultations.activeBookings')}</p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Completed</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('common.completed')}</CardTitle>
               <CheckCircle className="h-4 w-4 text-success" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-success">{analyticsData.completedConsultations}</div>
-              <p className="text-xs text-muted-foreground">Successfully finished</p>
+              <p className="text-xs text-muted-foreground">{t('expertConsultations.successfullyFinished')}</p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Avg Response</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('expertConsultations.avgResponseTime')}</CardTitle>
               <Timer className="h-4 w-4 text-orange-500" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{analyticsData.avgResponseTime}h</div>
-              <p className="text-xs text-muted-foreground">Response time</p>
+              <p className="text-xs text-muted-foreground">{t('expertConsultations.responseTime')}</p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Conversion</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('expertConsultations.conversionRate')}</CardTitle>
               <Target className="h-4 w-4 text-green-500" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{analyticsData.conversionRate}%</div>
-              <p className="text-xs text-muted-foreground">Completion rate</p>
+              <p className="text-xs text-muted-foreground">{t('expertConsultations.completionRate')}</p>
             </CardContent>
           </Card>
         </div>
