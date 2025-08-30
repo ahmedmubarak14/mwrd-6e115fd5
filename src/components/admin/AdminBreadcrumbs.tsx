@@ -47,7 +47,7 @@ export const AdminBreadcrumbs = () => {
     currentPath += '/' + pathSegments[i];
     const isLast = i === pathSegments.length - 1;
     const translationKey = breadcrumbKeys[currentPath];
-    const title = translationKey ? t(translationKey) : pathSegments[i].charAt(0).toUpperCase() + pathSegments[i].slice(1);
+    const title = translationKey ? t(translationKey) : t('admin.breadcrumbs.unknown');
     
     breadcrumbItems.push({
       path: currentPath,

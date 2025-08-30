@@ -220,6 +220,27 @@ export const enUS = {
   },
   
   admin: {
+    // Breadcrumbs
+    breadcrumbs: {
+      admin: "Admin",
+      dashboardOverview: "Dashboard Overview",
+      userManagement: "User Management",
+      requestsManagement: "Requests Management",
+      offersManagement: "Offers Management",
+      ordersManagement: "Orders Management",
+      projectsManagement: "Projects Management",
+      platformAnalytics: "Platform Analytics",
+      subscriptionManagement: "Subscription Management",
+      supportCenter: "Support Center",
+      verificationQueue: "Verification Queue",
+      categoryManagement: "Category Management",
+      expertConsultations: "Expert Consultations",
+      financialTransactions: "Financial Transactions",
+      securityMonitoring: "Security Monitoring",
+      communicationCenter: "Communication Center",
+      unknown: "Unknown Page"
+    },
+    
     // Core Dashboard
     dashboard: "Admin Dashboard",
     dashboardDescription: "Comprehensive overview of platform operations and management tools",

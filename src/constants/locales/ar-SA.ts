@@ -220,6 +220,27 @@ export const arSA = {
   },
   
   admin: {
+    // Breadcrumbs
+    breadcrumbs: {
+      admin: "المشرف",
+      dashboardOverview: "نظرة عامة على لوحة التحكم", 
+      userManagement: "إدارة المستخدمين",
+      requestsManagement: "إدارة الطلبات",
+      offersManagement: "إدارة العروض",
+      ordersManagement: "إدارة الطلبيات",
+      projectsManagement: "إدارة المشاريع",
+      platformAnalytics: "تحليلات المنصة",
+      subscriptionManagement: "إدارة الاشتراكات",
+      supportCenter: "مركز الدعم",
+      verificationQueue: "قائمة التحقق",
+      categoryManagement: "إدارة الفئات",
+      expertConsultations: "استشارات الخبراء",
+      financialTransactions: "المعاملات المالية",
+      securityMonitoring: "مراقبة الأمان",
+      communicationCenter: "مركز التواصل",
+      unknown: "صفحة غير معروفة"
+    },
+    
     // Core Dashboard
     dashboard: "لوحة التحكم",
     dashboardDescription: "لوحة تحكم إدارية شاملة",
