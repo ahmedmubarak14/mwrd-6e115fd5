@@ -8,6 +8,8 @@ import { CheckCircle, XCircle, Download, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useRequestApprovals } from '@/hooks/useRequestApprovals';
 import { useOfferApprovals } from '@/hooks/useOfferApprovals';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { cn } from '@/lib/utils';
 
 interface BulkApprovalActionsProps {
   selectedItems: string[];
@@ -23,6 +25,7 @@ export const BulkApprovalActions = ({
   onClearSelection 
 }: BulkApprovalActionsProps) => {
   const { toast } = useToast();
+  const { t, isRTL } = useOptionalLanguage();
   const [loading, setLoading] = useState(false);
   const [notes, setNotes] = useState('');
   const [showBulkDialog, setShowBulkDialog] = useState(false);
@@ -55,8 +58,8 @@ export const BulkApprovalActions = ({
       }
       
       toast({
-        title: `Bulk ${action} completed`,
-        description: `${selectedItems.length} ${itemType} have been ${action}d`,
+        title: t(`admin.actions.bulkApproved`),
+        description: t('admin.actions.bulkActionCompleted'),
         variant: action === 'approve' ? 'default' : 'destructive'
       });
       
@@ -66,8 +69,8 @@ export const BulkApprovalActions = ({
       setNotes('');
     } catch (error) {
       toast({
-        title: 'Error',
-        description: `Failed to ${action} ${itemType}`,
+        title: t('common.error'),
+        description: t('admin.actions.bulkActionFailed'),
         variant: 'destructive'
       });
     } finally {
@@ -78,11 +81,11 @@ export const BulkApprovalActions = ({
   const exportSelected = async () => {
     try {
       // Create CSV export with selected item IDs
-      const headers = ['ID', 'Type', 'Status', 'Created At'];
+      const headers = [t('common.id'), t('common.type'), t('common.status'), t('common.createdAt')];
       const rows = selectedItems.map(id => [
         id,
         itemType.slice(0, -1),
-        'pending',
+        t('common.pending'),
         new Date().toISOString()
       ]);
       
@@ -99,13 +102,13 @@ export const BulkApprovalActions = ({
       URL.revokeObjectURL(url);
 
       toast({
-        title: 'Success',
-        description: `Exported ${selectedItems.length} ${itemType} to CSV`,
+        title: t('common.success'),
+        description: t('admin.actions.exportSuccess'),
       });
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to export data',
+        title: t('common.error'),
+        description: t('admin.actions.exportFailed'),
         variant: 'destructive'
       });
     }
@@ -119,101 +122,103 @@ export const BulkApprovalActions = ({
   if (selectedItems.length === 0) return null;
 
   return (
-    <Card className="border-primary/20 bg-primary/5">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <Checkbox checked={true} />
-          {selectedItems.length} {itemType} selected
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-wrap gap-2">
-          <Button
-            onClick={() => openBulkDialog('approve')}
-            className="flex items-center gap-2"
-            disabled={loading}
-          >
-            <CheckCircle className="h-4 w-4" />
-            Bulk Approve
-          </Button>
-          
-          <Button
-            onClick={() => openBulkDialog('reject')}
-            variant="destructive"
-            className="flex items-center gap-2"
-            disabled={loading}
-          >
-            <XCircle className="h-4 w-4" />
-            Bulk Reject
-          </Button>
+    <div className={cn(isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
+      <Card className="border-primary/20 bg-primary/5">
+        <CardHeader className="pb-3">
+          <CardTitle className={cn("text-lg flex items-center gap-2", isRTL && "flex-row-reverse")}>
+            <Checkbox checked={true} />
+            {t('admin.actions.itemsSelected')}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className={cn("flex flex-wrap gap-2", isRTL && "flex-row-reverse")}>
+            <Button
+              onClick={() => openBulkDialog('approve')}
+              className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}
+              disabled={loading}
+            >
+              <CheckCircle className="h-4 w-4" />
+              {t('admin.actions.bulkApprove')}
+            </Button>
+            
+            <Button
+              onClick={() => openBulkDialog('reject')}
+              variant="destructive"
+              className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}
+              disabled={loading}
+            >
+              <XCircle className="h-4 w-4" />
+              {t('admin.actions.bulkReject')}
+            </Button>
 
-          <Button
-            onClick={exportSelected}
-            variant="outline"
-            className="flex items-center gap-2"
-          >
-            <Download className="h-4 w-4" />
-            Export Selected
-          </Button>
+            <Button
+              onClick={exportSelected}
+              variant="outline"
+              className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}
+            >
+              <Download className="h-4 w-4" />
+              {t('admin.actions.exportSelected')}
+            </Button>
 
-          <Button
-            onClick={onClearSelection}
-            variant="outline"
-          >
-            Clear Selection
-          </Button>
-        </div>
+            <Button
+              onClick={onClearSelection}
+              variant="outline"
+            >
+              {t('admin.actions.clearSelection')}
+            </Button>
+          </div>
 
         <Dialog open={showBulkDialog} onOpenChange={setShowBulkDialog}>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>
-                {bulkAction === 'approve' ? 'Bulk Approve' : 'Bulk Reject'} {selectedItems.length} {itemType}
+                {t(`admin.actions.bulkApproveTitle`)}
               </DialogTitle>
             </DialogHeader>
             
             <div className="space-y-4">
               <div className="p-4 bg-muted/50 rounded-lg">
-                <div className="flex items-center gap-2 mb-2">
+                <div className={cn("flex items-center gap-2 mb-2", isRTL && "flex-row-reverse")}>
                   <AlertTriangle className="h-4 w-4 text-warning" />
-                  <span className="font-medium">Confirmation Required</span>
+                  <span className="font-medium">{t('admin.actions.confirmationRequired')}</span>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  You are about to {bulkAction} {selectedItems.length} {itemType}. 
-                  This action will send notifications to all affected users.
+                <p className={cn("text-sm text-muted-foreground", isRTL ? "text-right" : "text-left")}>
+                  {t('admin.actions.bulkActionWarning')}
                 </p>
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Notes (optional)</label>
+                <label className={cn("text-sm font-medium", isRTL ? "text-right" : "text-left")}>
+                  {t('admin.actions.notesOptional')}
+                </label>
                 <Textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder={`Add notes for this bulk ${bulkAction} action...`}
+                  placeholder={t('admin.actions.addNotesPlaceholder')}
                   className="min-h-20"
                 />
               </div>
 
-              <div className="flex gap-2 justify-end">
+              <div className={cn("flex gap-2 justify-end", isRTL && "flex-row-reverse justify-start")}>
                 <Button
                   variant="outline"
                   onClick={() => setShowBulkDialog(false)}
                   disabled={loading}
                 >
-                  Cancel
+                  {t('common.cancel')}
                 </Button>
                 <Button
                   onClick={() => handleBulkAction(bulkAction!)}
                   variant={bulkAction === 'approve' ? 'default' : 'destructive'}
                   disabled={loading}
-                  className="flex items-center gap-2"
+                  className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}
                 >
                   {loading ? (
-                    'Processing...'
+                    t('common.processing')
                   ) : (
                     <>
                       {bulkAction === 'approve' ? <CheckCircle className="h-4 w-4" /> : <XCircle className="h-4 w-4" />}
-                      Confirm {bulkAction === 'approve' ? 'Approve' : 'Reject'}
+                      {t(`admin.actions.confirm${bulkAction === 'approve' ? 'Approve' : 'Reject'}`)}
                     </>
                   )}
                 </Button>
@@ -223,5 +228,6 @@ export const BulkApprovalActions = ({
         </Dialog>
       </CardContent>
     </Card>
+    </div>
   );
 };

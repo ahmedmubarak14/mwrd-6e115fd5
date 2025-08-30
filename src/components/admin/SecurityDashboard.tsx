@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts";
 import { useSecurityAnalytics } from "@/hooks/useSecurityAnalytics";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { cn } from "@/lib/utils";
 
 export const SecurityDashboard = () => {
   const { 
@@ -24,6 +26,7 @@ export const SecurityDashboard = () => {
     activeThreats, 
     isLoading 
   } = useSecurityAnalytics();
+  const { t, isRTL } = useOptionalLanguage();
 
   const securityScore = securityMetrics?.overallScore || 85;
 
@@ -34,9 +37,9 @@ export const SecurityDashboard = () => {
   };
 
   const getScoreStatus = (score: number) => {
-    if (score >= 90) return "Excellent";
-    if (score >= 70) return "Good";
-    return "Needs Attention";
+    if (score >= 90) return t('admin.security.scoreExcellent');
+    if (score >= 70) return t('admin.security.scoreGood');
+    return t('admin.security.scoreNeedsAttention');
   };
 
   if (isLoading) {
@@ -57,13 +60,13 @@ export const SecurityDashboard = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Security Alerts */}
       {activeThreats.length > 0 && (
         <Alert variant="destructive">
           <AlertTriangle className="h-4 w-4" />
           <AlertDescription>
-            {activeThreats.length} active security threat(s) detected. Immediate attention required.
+            {t('admin.security.activeThreatsAlert')}
           </AlertDescription>
         </Alert>
       )}
@@ -71,12 +74,12 @@ export const SecurityDashboard = () => {
       {/* Key Security Metrics */}
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs sm:text-sm font-medium">Security Score</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-xs sm:text-sm font-medium">{t('admin.security.securityScore')}</CardTitle>
             <Shield className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 space-y-1 sm:space-y-0">
+            <div className={cn("flex flex-col sm:flex-row sm:items-center sm:space-x-2 space-y-1 sm:space-y-0", isRTL && "sm:flex-row-reverse sm:space-x-reverse")}>
               <div className={`text-lg sm:text-2xl font-bold ${getScoreColor(securityScore)}`}>
                 {securityScore}%
               </div>
@@ -89,39 +92,39 @@ export const SecurityDashboard = () => {
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs sm:text-sm font-medium">Failed Login Attempts</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-xs sm:text-sm font-medium">{t('admin.security.failedLoginAttempts')}</CardTitle>
             <UserX className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-lg sm:text-2xl font-bold text-destructive">
               {securityMetrics?.failedLogins || 0}
             </div>
-            <p className="text-xs text-muted-foreground">Last 24 hours</p>
+            <p className="text-xs text-muted-foreground">{t('admin.security.last24Hours')}</p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs sm:text-sm font-medium">Active Sessions</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-xs sm:text-sm font-medium">{t('admin.security.activeSessions')}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-lg sm:text-2xl font-bold">{securityMetrics?.activeSessions || 0}</div>
-            <p className="text-xs text-muted-foreground">Currently online</p>
+            <p className="text-xs text-muted-foreground">{t('admin.security.currentlyOnline')}</p>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-xs sm:text-sm font-medium">Security Incidents</CardTitle>
+          <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
+            <CardTitle className="text-xs sm:text-sm font-medium">{t('admin.security.securityIncidents')}</CardTitle>
             <AlertTriangle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-lg sm:text-2xl font-bold text-warning">
               {securityMetrics?.incidents || 0}
             </div>
-            <p className="text-xs text-muted-foreground">This month</p>
+            <p className="text-xs text-muted-foreground">{t('admin.security.thisMonth')}</p>
           </CardContent>
         </Card>
       </div>
@@ -130,8 +133,8 @@ export const SecurityDashboard = () => {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 lg:gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Login Attempts Trend</CardTitle>
-            <CardDescription>Successful vs Failed login attempts over time</CardDescription>
+            <CardTitle>{t('admin.security.loginAttemptsTrend')}</CardTitle>
+            <CardDescription>{t('admin.security.loginAttemptsDescription')}</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
@@ -157,14 +160,14 @@ export const SecurityDashboard = () => {
                   dataKey="successful" 
                   stroke="hsl(var(--primary))" 
                   strokeWidth={2}
-                  name="Successful"
+                  name={t('admin.security.successful')}
                 />
                 <Line 
                   type="monotone" 
                   dataKey="failed" 
                   stroke="hsl(var(--destructive))" 
                   strokeWidth={2}
-                  name="Failed"
+                  name={t('admin.security.failed')}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -173,8 +176,8 @@ export const SecurityDashboard = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Threat Detection</CardTitle>
-            <CardDescription>Security threats detected by category</CardDescription>
+            <CardTitle>{t('admin.security.threatDetection')}</CardTitle>
+            <CardDescription>{t('admin.security.threatDetectionDescription')}</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
@@ -205,14 +208,14 @@ export const SecurityDashboard = () => {
       {/* Security Activity Overview */}
       <Card>
         <CardHeader>
-          <CardTitle>Security Activity Overview</CardTitle>
-          <CardDescription>Latest security-related activities and alerts</CardDescription>
+          <CardTitle>{t('admin.security.activityOverview')}</CardTitle>
+          <CardDescription>{t('admin.security.activityDescription')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {securityMetrics?.recentEvents?.map((activity, index) => (
-              <div key={index} className="flex flex-col sm:flex-row sm:items-center gap-3 p-3 border rounded-lg">
-                <div className="flex items-center gap-3 min-w-0 flex-1">
+              <div key={index} className={cn("flex flex-col sm:flex-row sm:items-center gap-3 p-3 border rounded-lg", isRTL && "sm:flex-row-reverse")}>
+                <div className={cn("flex items-center gap-3 min-w-0 flex-1", isRTL && "flex-row-reverse")}>
                   <div className={`p-2 rounded-full shrink-0 ${
                     activity.severity === 'high' ? 'bg-destructive/20 text-destructive' :
                     activity.severity === 'medium' ? 'bg-warning/20 text-warning' :
@@ -222,12 +225,12 @@ export const SecurityDashboard = () => {
                      activity.type === 'suspicious_activity' ? <Eye className="h-4 w-4" /> :
                      <Activity className="h-4 w-4" />}
                   </div>
-                  <div className="min-w-0 flex-1">
+                  <div className={cn("min-w-0 flex-1", isRTL ? "text-right" : "text-left")}>
                     <div className="font-medium text-sm sm:text-base truncate">{activity.title}</div>
                     <div className="text-xs sm:text-sm text-muted-foreground line-clamp-2 sm:line-clamp-1">{activity.description}</div>
                   </div>
                 </div>
-                <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-4 shrink-0">
+                <div className={cn("flex items-center justify-between sm:justify-end gap-2 sm:gap-4 shrink-0", isRTL && "flex-row-reverse sm:justify-start")}>
                   <div className="text-xs sm:text-sm text-muted-foreground">
                     {new Date(activity.timestamp).toLocaleString(undefined, { 
                       month: 'short', 
@@ -245,8 +248,8 @@ export const SecurityDashboard = () => {
                 </div>
               </div>
             )) || (
-              <div className="text-center py-8 text-muted-foreground">
-                No recent security activities
+              <div className={cn("text-center py-8 text-muted-foreground", isRTL ? "text-right" : "text-left")}>
+                {t('admin.security.noRecentActivity')}
               </div>
             )}
           </div>

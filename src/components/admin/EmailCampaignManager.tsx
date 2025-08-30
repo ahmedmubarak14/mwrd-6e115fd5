@@ -22,6 +22,8 @@ import {
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { useEmailCampaigns } from "@/hooks/useEmailCampaigns";
 import { useToast } from "@/hooks/use-toast";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { cn } from "@/lib/utils";
 
 export const EmailCampaignManager = () => {
   const { 
@@ -34,6 +36,7 @@ export const EmailCampaignManager = () => {
     isLoading 
   } = useEmailCampaigns();
   const { toast } = useToast();
+  const { t, isRTL } = useOptionalLanguage();
 
   const [activeTab, setActiveTab] = useState("campaigns");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -66,13 +69,13 @@ export const EmailCampaignManager = () => {
       });
       setIsCreateDialogOpen(false);
       toast({
-        title: "Success",
-        description: "Email campaign created successfully"
+        title: t("common.success"),
+        description: t("admin.email.campaignCreatedSuccess")
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to create email campaign",
+        title: t("common.error"),
+        description: t("admin.email.campaignCreateFailed"),
         variant: "destructive"
       });
     }
@@ -89,13 +92,13 @@ export const EmailCampaignManager = () => {
       });
       setIsTemplateDialogOpen(false);
       toast({
-        title: "Success",
-        description: "Email template created successfully"
+        title: t("common.success"),
+        description: t("admin.email.templateCreatedSuccess")
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to create email template",
+        title: t("common.error"),
+        description: t("admin.email.templateCreateFailed"),
         variant: "destructive"
       });
     }
@@ -105,13 +108,13 @@ export const EmailCampaignManager = () => {
     try {
       await sendCampaign(campaignId);
       toast({
-        title: "Success",
-        description: "Email campaign sent successfully"
+        title: t("common.success"),
+        description: t("admin.email.campaignSentSuccess")
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to send email campaign",
+        title: t("common.error"),
+        description: t("admin.email.campaignSendFailed"),
         variant: "destructive"
       });
     }
@@ -147,13 +150,13 @@ export const EmailCampaignManager = () => {
   }, [campaigns]);
 
   return (
-    <div className="space-y-6">
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <div className="flex justify-between items-center">
+        <div className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
           <TabsList>
-            <TabsTrigger value="campaigns">Campaigns</TabsTrigger>
-            <TabsTrigger value="templates">Templates</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="campaigns">{t('admin.email.campaigns')}</TabsTrigger>
+            <TabsTrigger value="templates">{t('admin.email.templates')}</TabsTrigger>
+            <TabsTrigger value="analytics">{t('admin.email.analytics')}</TabsTrigger>
           </TabsList>
           
           <div className="flex space-x-2">
@@ -162,36 +165,36 @@ export const EmailCampaignManager = () => {
                 <DialogTrigger asChild>
                   <Button>
                     <Plus className="h-4 w-4 mr-2" />
-                    New Campaign
+                    {t('admin.email.newCampaign')}
                   </Button>
                 </DialogTrigger>
                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                    <DialogHeader>
-                     <DialogTitle>Create Email Campaign</DialogTitle>
+                     <DialogTitle>{t('admin.email.createCampaign')}</DialogTitle>
                    </DialogHeader>
                   <div className="space-y-4">
                     <div>
-                      <label className="text-sm font-medium">Campaign Name</label>
+                      <label className="text-sm font-medium">{t('admin.email.campaignName')}</label>
                       <Input
                         value={newCampaign.name}
                         onChange={(e) => setNewCampaign({...newCampaign, name: e.target.value})}
-                        placeholder="Weekly Newsletter - June 2024"
+                        placeholder={t('admin.email.campaignNamePlaceholder')}
                       />
                     </div>
                     <div>
-                      <label className="text-sm font-medium">Email Subject</label>
+                      <label className="text-sm font-medium">{t('admin.email.emailSubject')}</label>
                       <Input
                         value={newCampaign.subject}
                         onChange={(e) => setNewCampaign({...newCampaign, subject: e.target.value})}
-                        placeholder="Your Weekly Update from MWRD"
+                        placeholder={t('admin.email.subjectPlaceholder')}
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="text-sm font-medium">Template</label>
+                        <label className="text-sm font-medium">{t('admin.email.template')}</label>
                         <Select value={newCampaign.template_id} onValueChange={(value) => setNewCampaign({...newCampaign, template_id: value})}>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select template" />
+                            <SelectValue placeholder={t('admin.email.selectTemplate')} />
                           </SelectTrigger>
                           <SelectContent>
                             {templates?.map(template => (
@@ -203,34 +206,34 @@ export const EmailCampaignManager = () => {
                         </Select>
                       </div>
                       <div>
-                        <label className="text-sm font-medium">Target Audience</label>
+                        <label className="text-sm font-medium">{t('admin.email.targetAudience')}</label>
                         <Select value={newCampaign.target_audience} onValueChange={(value) => setNewCampaign({...newCampaign, target_audience: value})}>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="all_users">All Users</SelectItem>
-                            <SelectItem value="clients">Clients Only</SelectItem>
-                            <SelectItem value="vendors">Vendors Only</SelectItem>
-                            <SelectItem value="active_users">Active Users</SelectItem>
+                            <SelectItem value="all_users">{t('admin.email.allUsers')}</SelectItem>
+                            <SelectItem value="clients">{t('admin.email.clientsOnly')}</SelectItem>
+                            <SelectItem value="vendors">{t('admin.email.vendorsOnly')}</SelectItem>
+                            <SelectItem value="active_users">{t('admin.email.activeUsers')}</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
                     </div>
                     <div>
-                      <label className="text-sm font-medium">Schedule (Optional)</label>
+                      <label className="text-sm font-medium">{t('admin.email.scheduleOptional')}</label>
                       <Input
                         type="datetime-local"
                         value={newCampaign.scheduled_for}
                         onChange={(e) => setNewCampaign({...newCampaign, scheduled_for: e.target.value})}
                       />
                     </div>
-                    <div className="flex justify-end space-x-2">
+                    <div className={cn("flex justify-end space-x-2", isRTL && "flex-row-reverse space-x-reverse")}>
                       <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
-                        Cancel
+                        {t('common.cancel')}
                       </Button>
                       <Button onClick={handleCreateCampaign}>
-                        Create Campaign
+                        {t('admin.email.createCampaign')}
                       </Button>
                     </div>
                   </div>
