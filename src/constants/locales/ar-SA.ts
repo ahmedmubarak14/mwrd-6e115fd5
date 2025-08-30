@@ -600,6 +600,18 @@ export const arSA = {
     vsLastMonthAnalytics: 'مقارنة بالشهر الماضي',
     allTimeAnalytics: 'كل الأوقات',
     
+    // مفاتيح إضافية مفقودة لإدارة المستخدمين
+    userExistsError: 'مستخدم بهذا البريد الإلكتروني موجود بالفعل',
+    userAddedSuccess: 'تم إضافة المستخدم بنجاح',
+    userUpdatedSuccess: 'تم تحديث المستخدم بنجاح',
+    userDeletedSuccess: 'تم حذف المستخدم {name} بنجاح', 
+    fillRequiredFields: 'يرجى ملء جميع الحقول المطلوبة',
+    
+    // تسميات التبويبات
+    usersTab: 'المستخدمون',
+    verificationQueueTab: 'قائمة التحقق',
+    analyticsTab: 'التحليلات',
+    
     // التبويبات
     users: 'المستخدمون',
     verificationQueue: 'قائمة التحقق'

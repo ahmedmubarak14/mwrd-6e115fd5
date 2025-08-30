@@ -230,8 +230,8 @@ export default function AdminUsers() {
       setBulkRole("");
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to update user roles",
+        title: t('common.error'),
+        description: t('admin.bulkRoleUpdateError'),
         variant: "destructive",
       });
     } finally {
@@ -261,8 +261,8 @@ export default function AdminUsers() {
       setBulkStatus("");
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to update user status",
+        title: t('common.error'),
+        description: t('admin.bulkStatusUpdateError'),
         variant: "destructive",
       });
     } finally {
@@ -295,11 +295,11 @@ export default function AdminUsers() {
 
   const handleAddUser = async () => {
     if (!newUser.email || !newUser.full_name) {
-      toast({
-        title: t('common.error'),
-        description: t('common.fillRequiredFields') || 'Please fill in all required fields',
-        variant: "destructive",
-      });
+        toast({
+          title: t('common.error'),
+          description: t('admin.fillRequiredFields'),
+          variant: "destructive",
+        });
       return;
     }
 
@@ -314,7 +314,7 @@ export default function AdminUsers() {
       if (existingUser) {
         toast({
           title: t('common.error'),
-          description: 'User with this email already exists',
+          description: t('admin.userExistsError'),
           variant: "destructive",
         });
         return;
@@ -338,7 +338,7 @@ export default function AdminUsers() {
 
       toast({
         title: t('common.success'),
-        description: 'User added successfully',
+        description: t('admin.userAddedSuccess'),
       });
 
       setIsAddUserOpen(false);
@@ -352,7 +352,7 @@ export default function AdminUsers() {
       fetchUsers();
     } catch (error: any) {
       toast({
-        title: "Error",
+        title: t('common.error'),
         description: error.message,
         variant: "destructive",
       });
@@ -379,14 +379,14 @@ export default function AdminUsers() {
 
       toast({
         title: t('common.success'),
-        description: t('common.userUpdatedSuccess') || 'User updated successfully',
+        description: t('admin.userUpdatedSuccess'),
       });
 
       setEditingUser(null);
       fetchUsers();
     } catch (error: any) {
       toast({
-        title: "Error",
+        title: t('common.error'),
         description: error.message,
         variant: "destructive",
       });
@@ -403,14 +403,14 @@ export default function AdminUsers() {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: `User ${userName} deleted successfully`,
+        title: t('common.success'),
+        description: t('admin.userDeletedSuccess').replace('{name}', userName),
       });
 
       fetchUsers();
     } catch (error: any) {
       toast({
-        title: "Error",
+        title: t('common.error'),
         description: error.message,
         variant: "destructive",
       });
@@ -708,11 +708,11 @@ export default function AdminUsers() {
             </TabsTrigger>
             <TabsTrigger value="verification" className="flex items-center gap-2">
               <FileCheck className="h-4 w-4" />
-              Verification Queue
+              {t('admin.verificationQueueTab')}
             </TabsTrigger>
             <TabsTrigger value="analytics" className="flex items-center gap-2">
               <BarChart3 className="h-4 w-4" />
-              Analytics
+              {t('admin.analyticsTab')}
             </TabsTrigger>
           </TabsList>
 
@@ -831,47 +831,47 @@ export default function AdminUsers() {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">New This Month</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('admin.newThisMonthAnalytics')}</CardTitle>
                     <TrendingUp className="h-4 w-4 text-foreground opacity-75" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{analytics.newThisMonth}</div>
-                    <p className="text-xs text-foreground opacity-75">Users registered</p>
+                    <p className="text-xs text-foreground opacity-75">{t('admin.usersRegisteredAnalytics')}</p>
                   </CardContent>
                 </Card>
                 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Active This Week</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('admin.activeThisWeekAnalytics')}</CardTitle>
                     <Activity className="h-4 w-4 text-foreground opacity-75" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{analytics.activeThisWeek}</div>
-                    <p className="text-xs text-foreground opacity-75">Users with activity</p>
+                    <p className="text-xs text-foreground opacity-75">{t('admin.usersWithActivityAnalytics')}</p>
                   </CardContent>
                 </Card>
                 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Growth Rate</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('admin.growthRateAnalytics')}</CardTitle>
                     <BarChart3 className="h-4 w-4 text-foreground opacity-75" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">
                       {analytics.growthRate > 0 ? '+' : ''}{analytics.growthRate}%
                     </div>
-                    <p className="text-xs text-foreground opacity-75">vs last month</p>
+                    <p className="text-xs text-foreground opacity-75">{t('admin.vsLastMonthAnalytics')}</p>
                   </CardContent>
                 </Card>
                 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+                    <CardTitle className="text-sm font-medium">{t('admin.totalUsersAnalytics')}</CardTitle>
                     <Users className="h-4 w-4 text-foreground opacity-75" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold">{analytics.totalUsers}</div>
-                    <p className="text-xs text-foreground opacity-75">All time</p>
+                    <p className="text-xs text-foreground opacity-75">{t('admin.allTimeAnalytics')}</p>
                   </CardContent>
                 </Card>
               </div>
@@ -880,11 +880,11 @@ export default function AdminUsers() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>User Distribution by Role</CardTitle>
+                    <CardTitle>{t('admin.userDistributionByRole')}</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <span>Clients</span>
+                      <span>{t('admin.clients')}</span>
                       <div className="flex items-center gap-2">
                         <Badge variant="secondary">{users.filter(u => u.role === 'client').length}</Badge>
                         <span className="text-sm text-foreground opacity-75">
@@ -893,7 +893,7 @@ export default function AdminUsers() {
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span>Vendors</span>
+                      <span>{t('admin.vendors')}</span>
                       <div className="flex items-center gap-2">
                         <Badge variant="default">{users.filter(u => u.role === 'vendor').length}</Badge>
                         <span className="text-sm text-foreground opacity-75">
@@ -902,7 +902,7 @@ export default function AdminUsers() {
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span>Admins</span>
+                      <span>{t('admin.admins')}</span>
                       <div className="flex items-center gap-2">
                         <Badge variant="destructive">{users.filter(u => u.role === 'admin').length}</Badge>
                         <span className="text-sm text-foreground opacity-75">
@@ -915,11 +915,11 @@ export default function AdminUsers() {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>User Status Overview</CardTitle>
+                    <CardTitle>{t('admin.userStatusOverview')}</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex justify-between items-center">
-                      <span>Approved</span>
+                      <span>{t('admin.approvedStatus')}</span>
                       <div className="flex items-center gap-2">
                         <Badge variant="secondary">{users.filter(u => u.status === 'approved').length}</Badge>
                         <span className="text-sm text-foreground opacity-75">
@@ -928,7 +928,7 @@ export default function AdminUsers() {
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span>Pending</span>
+                      <span>{t('admin.pendingStatus')}</span>
                       <div className="flex items-center gap-2">
                         <Badge variant="secondary">{users.filter(u => u.status === 'pending').length}</Badge>
                         <span className="text-sm text-foreground opacity-75">
@@ -937,7 +937,7 @@ export default function AdminUsers() {
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span>Blocked</span>
+                      <span>{t('admin.blockedStatus')}</span>
                       <div className="flex items-center gap-2">
                         <Badge variant="destructive">{users.filter(u => u.status === 'blocked').length}</Badge>
                         <span className="text-sm text-foreground opacity-75">
@@ -956,69 +956,69 @@ export default function AdminUsers() {
         <Dialog open={isAddUserOpen} onOpenChange={setIsAddUserOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Add New User</DialogTitle>
+              <DialogTitle>{t('admin.addNewUser')}</DialogTitle>
               <DialogDescription>
-                Create a new user account. They will receive login credentials via email.
+                {t('admin.addNewUserDescription')}
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="full_name">Full Name *</Label>
+                <Label htmlFor="full_name">{t('admin.fullNameRequired')}</Label>
                 <Input
                   id="full_name"
                   value={newUser.full_name}
                   onChange={(e) => setNewUser({ ...newUser, full_name: e.target.value })}
-                  placeholder="Enter full name"
+                  placeholder={t('admin.enterFullName')}
                 />
               </div>
               <div>
-                <Label htmlFor="email">Email *</Label>
+                <Label htmlFor="email">{t('admin.emailRequired')}</Label>
                 <Input
                   id="email"
                   type="email"
                   value={newUser.email}
                   onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                  placeholder="Enter email address"
+                  placeholder={t('admin.enterEmailAddress')}
                 />
               </div>
               <div>
-                <Label htmlFor="role">Role</Label>
+                <Label htmlFor="role">{t('admin.roleLabel')}</Label>
                 <Select value={newUser.role} onValueChange={(value: 'admin' | 'client' | 'vendor') => setNewUser({ ...newUser, role: value })}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="client">Client</SelectItem>
-                    <SelectItem value="vendor">Vendor</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="client">{t('admin.clientRole')}</SelectItem>
+                    <SelectItem value="vendor">{t('admin.vendorRole')}</SelectItem>
+                    <SelectItem value="admin">{t('admin.adminRole')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div>
-                <Label htmlFor="company_name">Company Name</Label>
+                <Label htmlFor="company_name">{t('admin.companyName')}</Label>
                 <Input
                   id="company_name"
                   value={newUser.company_name}
                   onChange={(e) => setNewUser({ ...newUser, company_name: e.target.value })}
-                  placeholder="Enter company name (optional)"
+                  placeholder={t('admin.enterCompanyNameOptional')}
                 />
               </div>
               <div>
-                <Label htmlFor="phone">Phone</Label>
+                <Label htmlFor="phone">{t('common.phone')}</Label>
                 <Input
                   id="phone"
                   value={newUser.phone}
                   onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
-                  placeholder="Enter phone number (optional)"
+                  placeholder={t('admin.enterPhoneOptional')}
                 />
               </div>
               <div className="flex gap-2 pt-4">
                 <Button onClick={handleAddUser} className="flex-1">
                   <UserPlus className="h-4 w-4 mr-2" />
-                  Add User
+                  {t('admin.addUser')}
                 </Button>
                 <Button variant="outline" onClick={() => setIsAddUserOpen(false)}>
-                  Cancel
+                  {t('common.cancel')}
                 </Button>
               </div>
             </div>
@@ -1029,15 +1029,15 @@ export default function AdminUsers() {
         <Dialog open={!!editingUser} onOpenChange={() => setEditingUser(null)}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Edit User</DialogTitle>
+              <DialogTitle>{t('admin.editUser')}</DialogTitle>
               <DialogDescription>
-                Update user information and settings.
+                {t('admin.editUserDescription')}
               </DialogDescription>
             </DialogHeader>
             {editingUser && (
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="edit_full_name">Full Name</Label>
+                  <Label htmlFor="edit_full_name">{t('admin.editFullName')}</Label>
                   <Input
                     id="edit_full_name"
                     value={editingUser.full_name}
@@ -1045,7 +1045,7 @@ export default function AdminUsers() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="edit_email">Email</Label>
+                  <Label htmlFor="edit_email">{t('admin.editEmail')}</Label>
                   <Input
                     id="edit_email"
                     type="email"
@@ -1055,35 +1055,35 @@ export default function AdminUsers() {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="edit_role">Role</Label>
+                    <Label htmlFor="edit_role">{t('admin.editRole')}</Label>
                     <Select value={editingUser.role} onValueChange={(value: 'admin' | 'client' | 'vendor') => setEditingUser({ ...editingUser, role: value })}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="client">Client</SelectItem>
-                        <SelectItem value="vendor">Vendor</SelectItem>
-                        <SelectItem value="admin">Admin</SelectItem>
+                        <SelectItem value="client">{t('admin.clientRole')}</SelectItem>
+                        <SelectItem value="vendor">{t('admin.vendorRole')}</SelectItem>
+                        <SelectItem value="admin">{t('admin.adminRole')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="edit_status">Status</Label>
+                    <Label htmlFor="edit_status">{t('admin.editStatus')}</Label>
                     <Select value={editingUser.status} onValueChange={(value: 'pending' | 'approved' | 'blocked' | 'rejected') => setEditingUser({ ...editingUser, status: value })}>
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="pending">Pending</SelectItem>
-                        <SelectItem value="approved">Approved</SelectItem>
-                        <SelectItem value="blocked">Blocked</SelectItem>
-                        <SelectItem value="rejected">Rejected</SelectItem>
+                        <SelectItem value="pending">{t('admin.pendingStatus')}</SelectItem>
+                        <SelectItem value="approved">{t('admin.approvedStatus')}</SelectItem>
+                        <SelectItem value="blocked">{t('admin.blockedStatus')}</SelectItem>
+                        <SelectItem value="rejected">{t('admin.rejectedStatus')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
                 <div>
-                  <Label htmlFor="edit_company_name">Company Name</Label>
+                  <Label htmlFor="edit_company_name">{t('admin.editCompanyName')}</Label>
                   <Input
                     id="edit_company_name"
                     value={editingUser.company_name || ""}
@@ -1091,7 +1091,7 @@ export default function AdminUsers() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="edit_phone">Phone</Label>
+                  <Label htmlFor="edit_phone">{t('admin.editPhone')}</Label>
                   <Input
                     id="edit_phone"
                     value={editingUser.phone || ""}
@@ -1101,10 +1101,10 @@ export default function AdminUsers() {
                 <div className="flex gap-2 pt-4">
                   <Button onClick={handleEditUser} className="flex-1">
                     <Edit className="h-4 w-4 mr-2" />
-                    Update User
+                    {t('admin.updateUser')}
                   </Button>
                   <Button variant="outline" onClick={() => setEditingUser(null)}>
-                    Cancel
+                    {t('common.cancel')}
                   </Button>
                 </div>
               </div>

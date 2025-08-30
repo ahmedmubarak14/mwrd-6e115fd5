@@ -570,6 +570,18 @@ export const enUS = {
     vsLastMonthAnalytics: 'vs last month',
     allTimeAnalytics: 'All time',
     
+    // Additional missing keys for AdminUsers
+    userExistsError: 'User with this email already exists',
+    userAddedSuccess: 'User added successfully',
+    userUpdatedSuccess: 'User updated successfully', 
+    userDeletedSuccess: 'User {name} deleted successfully',
+    fillRequiredFields: 'Please fill in all required fields',
+    
+    // Tab labels
+    usersTab: 'Users',
+    verificationQueueTab: 'Verification Queue',
+    analyticsTab: 'Analytics',
+    
     // Tabs
     users: 'Users',
     verificationQueue: 'Verification Queue'
