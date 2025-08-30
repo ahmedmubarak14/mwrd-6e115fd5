@@ -318,8 +318,6 @@ export const arSA = {
     securityCenterDesc: "إدارة أمان المنصة والامتثال",
     communications: "الاتصالات",
     communicationsDesc: "إدارة الإشعارات وتواصل المستخدمين",
-    analytics: "التحليلات",
-    analyticsDesc: "عرض تحليلات المنصة والإحصائيات",
     automation: "الأتمتة",
     automationDesc: "إدارة سير العمل والعمليات المؤتمتة",
     
@@ -363,6 +361,7 @@ export const arSA = {
     },
     
     // Menu Items
+    analytics: "التحليلات",
     users: "المستخدمين",
     requests: "الطلبات", 
     offers: "العروض",

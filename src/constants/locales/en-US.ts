@@ -318,8 +318,6 @@ export const enUS = {
     securityCenterDesc: "Manage platform security and compliance",
     communications: "Communications",
     communicationsDesc: "Manage notifications and user communications", 
-    analytics: "Analytics",
-    analyticsDesc: "View platform analytics and insights",
     automation: "Automation",
     automationDesc: "Manage automated workflows and processes",
     
@@ -363,6 +361,7 @@ export const enUS = {
     },
     
     // Menu Items
+    analytics: "Analytics",
     users: "Users",
     requests: "Requests",
     offers: "Offers", 
