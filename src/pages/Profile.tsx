@@ -51,7 +51,7 @@ const SERVICE_CATEGORIES = [
 const Profile = () => {
   const { userProfile, updateProfile, loading } = useAuth();
   const languageContext = useOptionalLanguage();
-  const { t } = languageContext || { t: (key: string) => key };
+  const { t, isRTL } = languageContext || { t: (key: string) => key, isRTL: false };
   const [isSaving, setIsSaving] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const { showSuccess } = useToastFeedback();
@@ -79,7 +79,7 @@ const Profile = () => {
     try {
       const success = await updateProfile(formData);
       if (success) {
-        showSuccess(t('profile.saveChanges'));
+        showSuccess(t('settings.profileUpdated'));
         setIsEditing(false);
       }
     } finally {
@@ -116,13 +116,13 @@ const Profile = () => {
     
     switch (userProfile.verification_status) {
       case 'approved':
-        return <Badge variant="default" className="bg-green-100 text-green-800">Verified</Badge>;
+        return <Badge variant="default" className="bg-green-100 text-green-800">{t('settings.verified')}</Badge>;
       case 'rejected':
-        return <Badge variant="destructive">{t('profile.rejected')}</Badge>;
+        return <Badge variant="destructive">{t('settings.rejected')}</Badge>;
       case 'under_review':
-        return <Badge variant="outline">Under Review</Badge>;
+        return <Badge variant="outline">{t('settings.underReview')}</Badge>;
       default:
-        return <Badge variant="secondary">Not Verified</Badge>;
+        return <Badge variant="secondary">{t('settings.notVerified')}</Badge>;
     }
   };
 
@@ -138,7 +138,7 @@ const Profile = () => {
     <Card>
       <CardContent className="pt-6">
         <div className="text-center">
-          <p className="text-muted-foreground">Profile not found</p>
+          <p className="text-muted-foreground">{t('settings.profileNotFound')}</p>
         </div>
       </CardContent>
     </Card>
@@ -149,18 +149,18 @@ const Profile = () => {
     : userProfile.email?.charAt(0).toUpperCase() || 'U';
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header */}
-      <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-start mb-8">
+      <div className={`flex flex-col gap-4 md:flex-row md:justify-between md:items-start mb-8 ${isRTL ? 'md:flex-row-reverse' : ''}`}>
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
-            Profile
+            {t('settings.title')}
           </h1>
           <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
-            Manage your account information and verification status
+            {t('settings.subtitle')}
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
           {getVerificationBadge()}
           {!isEditing && (
             <Button 
@@ -168,8 +168,8 @@ const Profile = () => {
               variant="outline"
               className="w-full md:w-auto"
             >
-              <Edit className="mr-2 h-4 w-4" />
-              Edit Profile
+              <Edit className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('profile.editProfile')}
             </Button>
           )}
         </div>
@@ -177,13 +177,13 @@ const Profile = () => {
 
       <Tabs defaultValue="profile" className="space-y-6">
         <TabsList className="grid w-full grid-cols-2 lg:w-[400px]">
-          <TabsTrigger value="profile" className="flex items-center gap-2">
+          <TabsTrigger value="profile" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <User className="h-4 w-4" />
-            Profile
+            {t('settings.profile')}
           </TabsTrigger>
-          <TabsTrigger value="verification" className="flex items-center gap-2">
+          <TabsTrigger value="verification" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <Shield className="h-4 w-4" />
-            Verification
+            {t('settings.verification')}
           </TabsTrigger>
         </TabsList>
 
@@ -207,10 +207,10 @@ const Profile = () => {
                   <CardDescription className="text-base">
                     {userProfile.company_name || userProfile.email}
                   </CardDescription>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Calendar className="h-4 w-4" />
-                    Member since {new Date(userProfile.created_at || '').toLocaleDateString()}
-                  </div>
+                   <div className={`flex items-center gap-2 text-sm text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
+                     <Calendar className="h-4 w-4" />
+                     {t('profile.memberSince')} {new Date(userProfile.created_at || '').toLocaleDateString()}
+                   </div>
                 </div>
               </CardHeader>
             </Card>
@@ -220,146 +220,150 @@ const Profile = () => {
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle>Profile Information</CardTitle>
-                  <CardDescription>
-                    Update your personal and company information
-                  </CardDescription>
-                </div>
+                 <div>
+                   <CardTitle>{t('profile.profileInformation')}</CardTitle>
+                   <CardDescription>
+                     {t('profile.profileInfoDescription')}
+                   </CardDescription>
+                 </div>
                 
-                {isEditing && (
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleCancel}
-                    >
-                      <X className="mr-2 h-4 w-4" />
-                      Cancel
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={handleSave}
-                      disabled={isSaving}
-                    >
-                      {isSaving ? (
-                        <LoadingSpinner size="sm" className="mr-2" />
-                      ) : (
-                        <Save className="mr-2 h-4 w-4" />
-                      )}
-                      Save Changes
-                    </Button>
-                  </div>
-                )}
+                 {isEditing && (
+                   <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                     <Button
+                       variant="outline"
+                       size="sm"
+                       onClick={handleCancel}
+                     >
+                       <X className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                       {t('profile.cancel')}
+                     </Button>
+                     <Button
+                       size="sm"
+                       onClick={handleSave}
+                       disabled={isSaving}
+                     >
+                       {isSaving ? (
+                         <LoadingSpinner size="sm" className={`${isRTL ? 'ml-2' : 'mr-2'}`} />
+                       ) : (
+                         <Save className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                       )}
+                       {t('profile.saveChanges')}
+                     </Button>
+                   </div>
+                 )}
               </div>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid gap-6 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="full_name">
-                    <User className="inline mr-2 h-4 w-4" />
-                    Full Name
-                  </Label>
-                  {isEditing ? (
-                    <Input
-                      id="full_name"
-                      value={formData.full_name}
-                      onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                    />
-                  ) : (
-                    <p className="text-sm py-2">{userProfile.full_name || 'Not provided'}</p>
-                  )}
-                </div>
+                 <div className="space-y-2">
+                   <Label htmlFor="full_name" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                     <User className="h-4 w-4" />
+                     {t('profile.fullName')}
+                   </Label>
+                   {isEditing ? (
+                     <Input
+                       id="full_name"
+                       value={formData.full_name}
+                       onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+                       className={isRTL ? 'text-right' : ''}
+                     />
+                   ) : (
+                     <p className={`text-sm py-2 ${isRTL ? 'text-right' : ''}`}>{userProfile.full_name || t('profile.notProvided')}</p>
+                   )}
+                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="email">
-                    <Mail className="inline mr-2 h-4 w-4" />
-                    Email
-                  </Label>
-                  <p className="text-sm py-2">{userProfile.email}</p>
-                </div>
+                 <div className="space-y-2">
+                   <Label htmlFor="email" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                     <Mail className="h-4 w-4" />
+                     {t('profile.email')}
+                   </Label>
+                   <p className={`text-sm py-2 ${isRTL ? 'text-right' : ''}`}>{userProfile.email}</p>
+                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="phone">
-                    <Phone className="inline mr-2 h-4 w-4" />
-                    Phone Number
-                  </Label>
-                  {isEditing ? (
-                    <Input
-                      id="phone"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    />
-                  ) : (
-                    <p className="text-sm py-2">{userProfile.phone || 'Not provided'}</p>
-                  )}
-                </div>
+                 <div className="space-y-2">
+                   <Label htmlFor="phone" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                     <Phone className="h-4 w-4" />
+                     {t('profile.phone')}
+                   </Label>
+                   {isEditing ? (
+                     <Input
+                       id="phone"
+                       value={formData.phone}
+                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                       className={isRTL ? 'text-right' : ''}
+                     />
+                   ) : (
+                     <p className={`text-sm py-2 ${isRTL ? 'text-right' : ''}`}>{userProfile.phone || t('profile.notProvided')}</p>
+                   )}
+                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="company_name">
-                    <Building className="inline mr-2 h-4 w-4" />
-                    Company Name
-                  </Label>
-                  {isEditing ? (
-                    <Input
-                      id="company_name"
-                      value={formData.company_name}
-                      onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
-                    />
-                  ) : (
-                    <p className="text-sm py-2">{userProfile.company_name || 'Not provided'}</p>
-                  )}
-                </div>
+                 <div className="space-y-2">
+                   <Label htmlFor="company_name" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                     <Building className="h-4 w-4" />
+                     {t('profile.companyName')}
+                   </Label>
+                   {isEditing ? (
+                     <Input
+                       id="company_name"
+                       value={formData.company_name}
+                       onChange={(e) => setFormData({ ...formData, company_name: e.target.value })}
+                       className={isRTL ? 'text-right' : ''}
+                     />
+                   ) : (
+                     <p className={`text-sm py-2 ${isRTL ? 'text-right' : ''}`}>{userProfile.company_name || t('profile.notProvided')}</p>
+                   )}
+                 </div>
 
-
-                <div className="space-y-2">
-                  <Label htmlFor="address">
-                    <MapPin className="inline mr-2 h-4 w-4" />
-                    Address
-                  </Label>
-                  {isEditing ? (
-                    <Input
-                      id="address"
-                      value={formData.address}
-                      onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                    />
-                  ) : (
-                    <p className="text-sm py-2">{userProfile.address || 'Not provided'}</p>
-                  )}
-                </div>
+                 <div className="space-y-2">
+                   <Label htmlFor="address" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                     <MapPin className="h-4 w-4" />
+                     {t('profile.address')}
+                   </Label>
+                   {isEditing ? (
+                     <Input
+                       id="address"
+                       value={formData.address}
+                       onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                       className={isRTL ? 'text-right' : ''}
+                     />
+                   ) : (
+                     <p className={`text-sm py-2 ${isRTL ? 'text-right' : ''}`}>{userProfile.address || t('profile.notProvided')}</p>
+                   )}
+                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="bio">Bio</Label>
-                {isEditing ? (
-                  <Textarea
-                    id="bio"
-                    value={formData.bio}
-                    onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                    placeholder="Tell us about yourself..."
-                    rows={4}
-                  />
-                ) : (
-                  <p className="text-sm py-2 min-h-[80px] bg-muted/50 rounded-md p-3">
-                    {userProfile.bio || 'No bio provided'}
-                  </p>
-                )}
-              </div>
+               <div className="space-y-2">
+                 <Label htmlFor="bio">{t('profile.bio')}</Label>
+                 {isEditing ? (
+                   <Textarea
+                     id="bio"
+                     value={formData.bio}
+                     onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
+                     placeholder={t('profile.bioPlaceholder')}
+                     rows={4}
+                     className={isRTL ? 'text-right' : ''}
+                   />
+                 ) : (
+                   <p className={`text-sm py-2 min-h-[80px] bg-muted/50 rounded-md p-3 ${isRTL ? 'text-right' : ''}`}>
+                     {userProfile.bio || t('profile.noBioProvided')}
+                   </p>
+                 )}
+               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
         <TabsContent value="verification" className="space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="h-5 w-5" />
-                Account Verification
-              </CardTitle>
-              <CardDescription>
-                Verify your account to access all platform features
-              </CardDescription>
-            </CardHeader>
+             <CardHeader>
+               <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                 <Shield className="h-5 w-5" />
+                 {t('profile.accountVerification')}
+               </CardTitle>
+               <CardDescription>
+                 {t('profile.verificationDescription')}
+               </CardDescription>
+             </CardHeader>
             <CardContent>
               <VerificationStatus />
               
