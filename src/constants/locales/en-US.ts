@@ -121,6 +121,47 @@ export const enUS = {
   success: {
     updated: 'Successfully updated'
   },
+  settings: {
+    title: 'Settings',
+    subtitle: 'Manage your account settings and preferences',
+    profile: 'Profile',
+    profileDescription: 'Manage your personal information and account details',
+    fullName: 'Full Name',
+    fullNamePlaceholder: 'Enter your full name',
+    companyName: 'Company Name',
+    companyNamePlaceholder: 'Enter your company name',
+    phone: 'Phone',
+    phonePlaceholder: '+966 50 123 4567',
+    languageAndRegion: 'Language & Region',
+    languageDescription: 'Choose your preferred language and regional settings',
+    language: 'Language',
+    notifications: 'Notifications',
+    notificationsDescription: 'Manage how you receive notifications',
+    emailNotifications: 'Email Notifications',
+    emailNotificationsDesc: 'Receive notifications via email',
+    pushNotifications: 'Push Notifications',
+    pushNotificationsDesc: 'Receive push notifications in your browser',
+    smsNotifications: 'SMS Notifications',
+    smsNotificationsDesc: 'Receive important updates via SMS',
+    security: 'Security',
+    securityDescription: 'Manage your account security settings',
+    changePassword: 'Change Password',
+    enableTwoFactor: 'Enable Two-Factor Authentication',
+    profileCompletion: 'Profile Completion',
+    activeNotifications: 'Active Notifications',
+    enabledNotificationTypes: 'Enabled notification types',
+    securityScore: 'Security Score',
+    lastUpdated: 'Last Updated',
+    profileUpdated: 'Profile Updated',
+    profileUpdatedDesc: 'Your profile has been updated successfully',
+    settingsSaved: 'Settings Saved',
+    notificationPrefsUpdated: 'Notification preferences updated successfully',
+    updateError: 'Failed to update profile. Please try again.',
+    notificationError: 'Failed to save notification settings.',
+    languageContextError: 'Language Context Error',
+    languageContextErrorDesc: 'There was an error initializing the language system. Please refresh the page.',
+    refreshPage: 'Refresh Page'
+  },
   support: {
     title: "Support Management",
     description: "Manage and respond to customer support tickets",
@@ -357,6 +398,108 @@ export const enUS = {
     webhookRetries: "Webhook Retries",
     timeoutSeconds: "Timeout (seconds)",
     saveIntegrationSettings: "Save Integration Settings"
+  },
+  
+  platformSettings: {
+    // Page Headers
+    title: "Platform Settings",
+    description: "Configure platform-wide settings and system preferences",
+    
+    // Tab Navigation
+    general: "General",
+    security: "Security", 
+    system: "System",
+    communication: "Communication",
+    advanced: "Advanced",
+    
+    // General Settings Section
+    platformInformation: "Platform Information",
+    platformInfoDescription: "Basic platform configuration and branding",
+    platformName: "Platform Name",
+    platformDescription: "Platform Description", 
+    defaultCurrency: "Default Currency",
+    defaultTimezone: "Default Timezone",
+    defaultUserRole: "Default User Role",
+    userRegistration: "User Registration",
+    userRegistrationDesc: "Allow new users to register on the platform",
+    saveGeneralSettings: "Save General Settings",
+    
+    // Security Settings Section  
+    securityConfiguration: "Security Configuration",
+    securityConfigDesc: "Authentication and security policy settings",
+    sessionTimeout: "Session Timeout (minutes)",
+    sessionTimeoutDesc: "How long users stay logged in",
+    maxLoginAttempts: "Max Login Attempts",
+    maxLoginAttemptsDesc: "Failed attempts before account lockout",
+    passwordMinLength: "Password Minimum Length",
+    requirePasswordSymbols: "Require Password Symbols",
+    requirePasswordSymbolsDesc: "Require special characters in passwords",
+    emailVerificationRequired: "Email Verification Required",
+    emailVerificationDesc: "Require email verification for new accounts",
+    twoFactorAuth: "Two-Factor Authentication", 
+    twoFactorAuthDesc: "Require 2FA for all admin accounts",
+    saveSecuritySettings: "Save Security Settings",
+    
+    // System Settings Section
+    systemConfiguration: "System Configuration", 
+    systemConfigDesc: "Performance, limits, and system behavior settings",
+    apiRateLimit: "API Rate Limit (requests/hour)",
+    apiRateLimitDesc: "Maximum API requests per user per hour",
+    fileUploadMaxSize: "Max File Upload Size (MB)",
+    fileUploadMaxSizeDesc: "Maximum file size for uploads",
+    maintenanceMode: "Maintenance Mode",
+    maintenanceModeDesc: "Temporarily disable platform access for maintenance",
+    maintenanceModeActive: "Maintenance Mode Active",
+    maintenanceModeActiveDesc: "The platform is currently in maintenance mode. Only administrators can access the system.",
+    enableLogging: "Enable System Logging",
+    enableLoggingDesc: "Log system events and user activities", 
+    saveSystemSettings: "Save System Settings",
+    
+    // Advanced Settings Section
+    advancedConfiguration: "Advanced Configuration",
+    advancedConfigDesc: "Advanced system settings and database operations",
+    apiKeyManagement: "API Keys",
+    apiKeyManagementDesc: "Manage external service API keys and integrations",
+    manageApiKeys: "Manage API Keys",
+    databaseTools: "Database",
+    databaseToolsDesc: "Database maintenance and optimization tools",
+    manageDatabaseTools: "Database Tools",
+    dangerZone: "Danger Zone",
+    resetPlatformSettings: "Reset Platform Settings",
+    resetPlatformSettingsDesc: "Reset all platform settings to default values",
+    resetSettings: "Reset Settings",
+    exportPlatformData: "Export Platform Data",
+    exportDataDesc: "Download a complete backup of platform data",
+    exportData: "Export Data",
+    
+    // Actions & Messages
+    unsavedChanges: "Unsaved Changes",
+    refresh: "Refresh", 
+    settingsRefreshed: "Settings Refreshed",
+    settingsRefreshedDesc: "Platform settings have been refreshed from the database",
+    settingsSaved: "Settings Saved",
+    settingsSavedDesc: "Platform settings have been updated successfully",
+    settingsReset: "Settings Reset",
+    settingsResetDesc: "Settings have been reset to defaults. Click save to apply changes",
+    loadSettingsError: "Failed to load platform settings",
+    updateSettingsError: "Failed to update {settingKey}",
+    
+    // Currency Options
+    currencySAR: "SAR (Saudi Riyal)",
+    currencyUSD: "USD (US Dollar)", 
+    currencyEUR: "EUR (Euro)",
+    currencyAED: "AED (UAE Dirham)",
+    
+    // Timezone Options  
+    timezoneRiyadh: "Asia/Riyadh",
+    timezoneUTC: "UTC",
+    timezoneNewYork: "America/New_York",
+    timezoneLondon: "Europe/London", 
+    timezoneDubai: "Asia/Dubai",
+    
+    // User Roles
+    roleClient: "Client",
+    roleVendor: "Vendor"
   },
   
   // Analytics Section

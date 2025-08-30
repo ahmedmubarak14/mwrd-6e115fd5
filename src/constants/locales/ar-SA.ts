@@ -121,6 +121,47 @@ export const arSA = {
   success: {
     updated: 'تم التحديث بنجاح'
   },
+  settings: {
+    title: 'الإعدادات',
+    subtitle: 'إدارة إعدادات حسابك وتفضيلاتك',
+    profile: 'الملف الشخصي',
+    profileDescription: 'إدارة معلوماتك الشخصية وتفاصيل الحساب',
+    fullName: 'الاسم الكامل',
+    fullNamePlaceholder: 'أدخل اسمك الكامل',
+    companyName: 'اسم الشركة',
+    companyNamePlaceholder: 'أدخل اسم شركتك',
+    phone: 'الهاتف',
+    phonePlaceholder: '+966 50 123 4567',
+    languageAndRegion: 'اللغة والمنطقة',
+    languageDescription: 'اختر لغتك المفضلة والإعدادات الإقليمية',
+    language: 'اللغة',
+    notifications: 'الإشعارات',
+    notificationsDescription: 'إدارة كيفية استقبال الإشعارات',
+    emailNotifications: 'إشعارات البريد الإلكتروني',
+    emailNotificationsDesc: 'استقبال الإشعارات عبر البريد الإلكتروني',
+    pushNotifications: 'الإشعارات الفورية',
+    pushNotificationsDesc: 'استقبال الإشعارات الفورية في متصفحك',
+    smsNotifications: 'إشعارات الرسائل النصية',
+    smsNotificationsDesc: 'استقبال التحديثات المهمة عبر الرسائل النصية',
+    security: 'الأمان',
+    securityDescription: 'إدارة إعدادات أمان حسابك',
+    changePassword: 'تغيير كلمة المرور',
+    enableTwoFactor: 'تفعيل المصادقة الثنائية',
+    profileCompletion: 'اكتمال الملف الشخصي',
+    activeNotifications: 'الإشعارات النشطة',
+    enabledNotificationTypes: 'أنواع الإشعارات المفعلة',
+    securityScore: 'درجة الأمان',
+    lastUpdated: 'آخر تحديث',
+    profileUpdated: 'تم تحديث الملف الشخصي',
+    profileUpdatedDesc: 'تم تحديث ملفك الشخصي بنجاح',
+    settingsSaved: 'تم حفظ الإعدادات',
+    notificationPrefsUpdated: 'تم تحديث تفضيلات الإشعارات بنجاح',
+    updateError: 'فشل في تحديث الملف الشخصي. يرجى المحاولة مرة أخرى.',
+    notificationError: 'فشل في حفظ إعدادات الإشعارات.',
+    languageContextError: 'خطأ في سياق اللغة',
+    languageContextErrorDesc: 'حدث خطأ في تهيئة نظام اللغة. يرجى تحديث الصفحة.',
+    refreshPage: 'تحديث الصفحة'
+  },
   support: {
     title: "إدارة الدعم",
     description: "إدارة والرد على تذاكر دعم العملاء",
@@ -357,6 +398,108 @@ export const arSA = {
     webhookRetries: "إعادة محاولة Webhook",
     timeoutSeconds: "المهلة الزمنية (بالثواني)",
     saveIntegrationSettings: "حفظ إعدادات التكامل"
+  },
+  
+  platformSettings: {
+    // Page Headers
+    title: "إعدادات المنصة",
+    description: "تكوين الإعدادات العامة للمنصة وتفضيلات النظام",
+    
+    // Tab Navigation
+    general: "عام",
+    security: "الأمان", 
+    system: "النظام",
+    communication: "التواصل",
+    advanced: "متقدم",
+    
+    // General Settings Section
+    platformInformation: "معلومات المنصة",
+    platformInfoDescription: "التكوين الأساسي للمنصة والعلامة التجارية",
+    platformName: "اسم المنصة",
+    platformDescription: "وصف المنصة", 
+    defaultCurrency: "العملة الافتراضية",
+    defaultTimezone: "المنطقة الزمنية الافتراضية",
+    defaultUserRole: "دور المستخدم الافتراضي",
+    userRegistration: "تسجيل المستخدمين",
+    userRegistrationDesc: "السماح للمستخدمين الجدد بالتسجيل في المنصة",
+    saveGeneralSettings: "حفظ الإعدادات العامة",
+    
+    // Security Settings Section  
+    securityConfiguration: "تكوين الأمان",
+    securityConfigDesc: "إعدادات المصادقة وسياسات الأمان",
+    sessionTimeout: "انتهاء صلاحية الجلسة (بالدقائق)",
+    sessionTimeoutDesc: "مدة بقاء المستخدمين متصلين",
+    maxLoginAttempts: "عدد محاولات تسجيل الدخول الأقصى",
+    maxLoginAttemptsDesc: "المحاولات الفاشلة قبل قفل الحساب",
+    passwordMinLength: "الحد الأدنى لطول كلمة المرور",
+    requirePasswordSymbols: "يتطلب رموز في كلمة المرور",
+    requirePasswordSymbolsDesc: "يتطلب أحرف خاصة في كلمات المرور",
+    emailVerificationRequired: "يتطلب التحقق من البريد الإلكتروني",
+    emailVerificationDesc: "يتطلب التحقق من البريد الإلكتروني للحسابات الجديدة",
+    twoFactorAuth: "المصادقة الثنائية", 
+    twoFactorAuthDesc: "يتطلب 2FA لجميع حسابات المشرفين",
+    saveSecuritySettings: "حفظ إعدادات الأمان",
+    
+    // System Settings Section
+    systemConfiguration: "تكوين النظام", 
+    systemConfigDesc: "إعدادات الأداء والحدود وسلوك النظام",
+    apiRateLimit: "حد معدل API (طلبات/ساعة)",
+    apiRateLimitDesc: "الحد الأقصى لطلبات API لكل مستخدم في الساعة",
+    fileUploadMaxSize: "الحد الأقصى لحجم رفع الملف (ميجابايت)",
+    fileUploadMaxSizeDesc: "الحد الأقصى لحجم الملف للرفع",
+    maintenanceMode: "وضع الصيانة",
+    maintenanceModeDesc: "تعطيل الوصول للمنصة مؤقتاً للصيانة",
+    maintenanceModeActive: "وضع الصيانة نشط",
+    maintenanceModeActiveDesc: "المنصة حالياً في وضع الصيانة. المشرفون فقط يمكنهم الوصول للنظام.",
+    enableLogging: "تفعيل تسجيل النظام",
+    enableLoggingDesc: "تسجيل أحداث النظام وأنشطة المستخدمين", 
+    saveSystemSettings: "حفظ إعدادات النظام",
+    
+    // Advanced Settings Section
+    advancedConfiguration: "التكوين المتقدم",
+    advancedConfigDesc: "إعدادات النظام المتقدمة وعمليات قاعدة البيانات",
+    apiKeyManagement: "مفاتيح API",
+    apiKeyManagementDesc: "إدارة مفاتيح API للخدمات الخارجية والتكامل",
+    manageApiKeys: "إدارة مفاتيح API",
+    databaseTools: "قاعدة البيانات",
+    databaseToolsDesc: "أدوات صيانة وتحسين قاعدة البيانات",
+    manageDatabaseTools: "أدوات قاعدة البيانات",
+    dangerZone: "المنطقة الخطيرة",
+    resetPlatformSettings: "إعادة تعيين إعدادات المنصة",
+    resetPlatformSettingsDesc: "إعادة تعيين جميع إعدادات المنصة إلى القيم الافتراضية",
+    resetSettings: "إعادة تعيين الإعدادات",
+    exportPlatformData: "تصدير بيانات المنصة",
+    exportDataDesc: "تحميل نسخة احتياطية كاملة من بيانات المنصة",
+    exportData: "تصدير البيانات",
+    
+    // Actions & Messages
+    unsavedChanges: "تغييرات غير محفوظة",
+    refresh: "تحديث", 
+    settingsRefreshed: "تم تحديث الإعدادات",
+    settingsRefreshedDesc: "تم تحديث إعدادات المنصة من قاعدة البيانات",
+    settingsSaved: "تم حفظ الإعدادات",
+    settingsSavedDesc: "تم تحديث إعدادات المنصة بنجاح",
+    settingsReset: "تم إعادة تعيين الإعدادات",
+    settingsResetDesc: "تم إعادة تعيين الإعدادات إلى الافتراضي. انقر حفظ لتطبيق التغييرات",
+    loadSettingsError: "فشل في تحميل إعدادات المنصة",
+    updateSettingsError: "فشل في تحديث {settingKey}",
+    
+    // Currency Options
+    currencySAR: "ريال سعودي (SAR)",
+    currencyUSD: "دولار أمريكي (USD)", 
+    currencyEUR: "يورو (EUR)",
+    currencyAED: "درهم إماراتي (AED)",
+    
+    // Timezone Options  
+    timezoneRiyadh: "آسيا/الرياض",
+    timezoneUTC: "UTC",
+    timezoneNewYork: "أمريكا/نيويورك",
+    timezoneLondon: "أوروبا/لندن", 
+    timezoneDubai: "آسيا/دبي",
+    
+    // User Roles
+    roleClient: "عميل",
+    roleVendor: "مورد"
   },
   
   // Analytics Section

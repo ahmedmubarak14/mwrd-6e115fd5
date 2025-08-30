@@ -41,7 +41,7 @@ export const AdminSettings = () => {
   const { toast } = useToast();
   const { user } = useAuth();
   const languageContext = useOptionalLanguage();
-  const { t } = languageContext || { t: (key: string) => key };
+  const { t, isRTL } = languageContext || { t: (key: string) => key, isRTL: false };
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -62,8 +62,8 @@ export const AdminSettings = () => {
       if (error) {
         console.error('Error loading platform settings:', error);
         toast({
-          title: "Error",
-          description: "Failed to load platform settings.",
+          title: t('common.error'),
+          description: t('platformSettings.loadSettingsError'),
           variant: "destructive"
         });
         return;
@@ -79,15 +79,15 @@ export const AdminSettings = () => {
       
       if (showRefreshToast) {
         toast({
-          title: "Settings Refreshed",
-          description: "Platform settings have been refreshed from the database."
+          title: t('platformSettings.settingsRefreshed'),
+          description: t('platformSettings.settingsRefreshedDesc')
         });
       }
     } catch (error) {
       console.error('Error loading platform settings:', error);
       toast({
-        title: "Error",
-        description: "Failed to load platform settings.",
+        title: t('common.error'),
+        description: t('platformSettings.loadSettingsError'),
         variant: "destructive"
       });
     } finally {
@@ -111,8 +111,8 @@ export const AdminSettings = () => {
       if (error) {
         console.error('Error updating setting:', error);
         toast({
-          title: "Error",
-          description: `Failed to update ${settingKey}.`,
+          title: t('common.error'),
+          description: t('platformSettings.updateSettingsError').replace('{settingKey}', settingKey),
           variant: "destructive"
         });
         return false;
@@ -139,8 +139,8 @@ export const AdminSettings = () => {
     if (allSuccessful) {
       setHasUnsavedChanges(false);
       toast({
-        title: "Settings Saved",
-        description: "Platform settings have been updated successfully."
+        title: t('platformSettings.settingsSaved'),
+        description: t('platformSettings.settingsSavedDesc')
       });
       // Refresh to get latest values
       await loadPlatformSettings();
@@ -177,8 +177,8 @@ export const AdminSettings = () => {
     setHasUnsavedChanges(true);
     
     toast({
-      title: "Settings Reset",
-      description: "Settings have been reset to defaults. Click save to apply changes."
+      title: t('platformSettings.settingsReset'),
+      description: t('platformSettings.settingsResetDesc')
     });
   };
 
@@ -199,10 +199,10 @@ export const AdminSettings = () => {
   }
 
   const headerActions = (
-    <div className="flex items-center gap-2">
+    <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
       {hasUnsavedChanges && (
         <Badge variant="outline" className="text-amber-600 border-amber-600">
-          Unsaved Changes
+          {t('platformSettings.unsavedChanges')}
         </Badge>
       )}
       <Button 
@@ -212,11 +212,11 @@ export const AdminSettings = () => {
         disabled={isRefreshing}
       >
         {isRefreshing ? (
-          <LoadingSpinner size="sm" className="mr-2" />
+          <LoadingSpinner size="sm" className={`${isRTL ? 'ml-2' : 'mr-2'}`} />
         ) : (
-          <RefreshCw className="h-4 w-4 mr-2" />
+          <RefreshCw className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
         )}
-        Refresh
+        {t('platformSettings.refresh')}
       </Button>
     </div>
   );
@@ -227,25 +227,26 @@ export const AdminSettings = () => {
       description={t('platformSettings.description')}
       headerActions={headerActions}
     >
-      <Tabs defaultValue="general" className="space-y-6">
+      <div dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'text-right' : 'text-left'}>
+        <Tabs defaultValue="general" className="space-y-6">
           <TabsList className="grid grid-cols-5 w-full">
-            <TabsTrigger value="general" className="flex items-center gap-2">
+            <TabsTrigger value="general" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Globe className="h-4 w-4" />
               {t('platformSettings.general')}
             </TabsTrigger>
-            <TabsTrigger value="security" className="flex items-center gap-2">
+            <TabsTrigger value="security" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Shield className="h-4 w-4" />
               {t('platformSettings.security')}
             </TabsTrigger>
-            <TabsTrigger value="system" className="flex items-center gap-2">
+            <TabsTrigger value="system" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Server className="h-4 w-4" />
               {t('platformSettings.system')}
             </TabsTrigger>
-            <TabsTrigger value="communication" className="flex items-center gap-2">
+            <TabsTrigger value="communication" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Mail className="h-4 w-4" />
               {t('platformSettings.communication')}
             </TabsTrigger>
-            <TabsTrigger value="advanced" className="flex items-center gap-2">
+            <TabsTrigger value="advanced" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Database className="h-4 w-4" />
               {t('platformSettings.advanced')}
             </TabsTrigger>
@@ -254,7 +255,7 @@ export const AdminSettings = () => {
         <TabsContent value="general" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Globe className="h-5 w-5" />
                 {t('platformSettings.platformInformation')}
               </CardTitle>
@@ -265,9 +266,10 @@ export const AdminSettings = () => {
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="siteName">Platform Name</Label>
+                  <Label htmlFor="siteName">{t('platformSettings.platformName')}</Label>
                   <Input
                     id="siteName"
+                    dir={isRTL ? 'rtl' : 'ltr'}
                     value={settings.site_name || ''}
                     onChange={(e) => handleSettingChange('site_name', e.target.value)}
                     placeholder="MWRD Platform"
@@ -275,7 +277,7 @@ export const AdminSettings = () => {
                 </div>
                 
                 <div>
-                  <Label htmlFor="defaultCurrency">Default Currency</Label>
+                  <Label htmlFor="defaultCurrency">{t('platformSettings.defaultCurrency')}</Label>
                   <Select 
                     value={settings.default_currency || 'SAR'} 
                     onValueChange={(value) => handleSettingChange('default_currency', value)}
@@ -283,20 +285,21 @@ export const AdminSettings = () => {
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="SAR">SAR (Saudi Riyal)</SelectItem>
-                      <SelectItem value="USD">USD (US Dollar)</SelectItem>
-                      <SelectItem value="EUR">EUR (Euro)</SelectItem>
-                      <SelectItem value="AED">AED (UAE Dirham)</SelectItem>
+                    <SelectContent align={isRTL ? 'end' : 'start'}>
+                      <SelectItem value="SAR">{t('platformSettings.currencySAR')}</SelectItem>
+                      <SelectItem value="USD">{t('platformSettings.currencyUSD')}</SelectItem>
+                      <SelectItem value="EUR">{t('platformSettings.currencyEUR')}</SelectItem>
+                      <SelectItem value="AED">{t('platformSettings.currencyAED')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="siteDescription">Platform Description</Label>
+                <Label htmlFor="siteDescription">{t('platformSettings.platformDescription')}</Label>
                 <Textarea
                   id="siteDescription"
+                  dir={isRTL ? 'rtl' : 'ltr'}
                   value={settings.site_description || ''}
                   onChange={(e) => handleSettingChange('site_description', e.target.value)}
                   placeholder="Professional procurement and vendor management platform"
@@ -306,7 +309,7 @@ export const AdminSettings = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="defaultTimezone">Default Timezone</Label>
+                  <Label htmlFor="defaultTimezone">{t('platformSettings.defaultTimezone')}</Label>
                   <Select 
                     value={settings.default_timezone || 'Asia/Riyadh'} 
                     onValueChange={(value) => handleSettingChange('default_timezone', value)}
@@ -314,18 +317,18 @@ export const AdminSettings = () => {
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Asia/Riyadh">Asia/Riyadh</SelectItem>
-                      <SelectItem value="UTC">UTC</SelectItem>
-                      <SelectItem value="America/New_York">America/New_York</SelectItem>
-                      <SelectItem value="Europe/London">Europe/London</SelectItem>
-                      <SelectItem value="Asia/Dubai">Asia/Dubai</SelectItem>
+                    <SelectContent align={isRTL ? 'end' : 'start'}>
+                      <SelectItem value="Asia/Riyadh">{t('platformSettings.timezoneRiyadh')}</SelectItem>
+                      <SelectItem value="UTC">{t('platformSettings.timezoneUTC')}</SelectItem>
+                      <SelectItem value="America/New_York">{t('platformSettings.timezoneNewYork')}</SelectItem>
+                      <SelectItem value="Europe/London">{t('platformSettings.timezoneLondon')}</SelectItem>
+                      <SelectItem value="Asia/Dubai">{t('platformSettings.timezoneDubai')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
-                  <Label htmlFor="defaultUserRole">Default User Role</Label>
+                  <Label htmlFor="defaultUserRole">{t('platformSettings.defaultUserRole')}</Label>
                   <Select 
                     value={settings.default_user_role || 'client'} 
                     onValueChange={(value) => handleSettingChange('default_user_role', value)}
@@ -333,9 +336,9 @@ export const AdminSettings = () => {
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="client">Client</SelectItem>
-                      <SelectItem value="vendor">Vendor</SelectItem>
+                    <SelectContent align={isRTL ? 'end' : 'start'}>
+                      <SelectItem value="client">{t('platformSettings.roleClient')}</SelectItem>
+                      <SelectItem value="vendor">{t('platformSettings.roleVendor')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -343,8 +346,8 @@ export const AdminSettings = () => {
 
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>User Registration</Label>
-                  <p className="text-sm text-muted-foreground">Allow new users to register on the platform</p>
+                  <Label>{t('platformSettings.userRegistration')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('platformSettings.userRegistrationDesc')}</p>
                 </div>
                 <Switch
                   checked={settings.registration_open || false}
@@ -352,14 +355,14 @@ export const AdminSettings = () => {
                 />
               </div>
 
-              <div className="flex items-center gap-2 pt-4 border-t">
+              <div className={`flex items-center gap-2 pt-4 border-t ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Button 
                   onClick={() => handleSaveSection(['site_name', 'site_description', 'default_currency', 'default_timezone', 'default_user_role', 'registration_open'])}
                   disabled={isSaving}
                   className="flex-1"
                 >
-                  {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
-                  Save General Settings
+                  {isSaving ? <LoadingSpinner size="sm" className={`${isRTL ? 'ml-2' : 'mr-2'}`} /> : <Save className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />}
+                  {t('platformSettings.saveGeneralSettings')}
                 </Button>
               </div>
             </CardContent>
@@ -369,48 +372,51 @@ export const AdminSettings = () => {
         <TabsContent value="security" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Shield className="h-5 w-5" />
-                Security Configuration
+                {t('platformSettings.securityConfiguration')}
               </CardTitle>
               <CardDescription>
-                Authentication and security policy settings
+                {t('platformSettings.securityConfigDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="sessionTimeout">Session Timeout (minutes)</Label>
+                  <Label htmlFor="sessionTimeout">{t('platformSettings.sessionTimeout')}</Label>
                   <Input
                     id="sessionTimeout"
+                    dir={isRTL ? 'rtl' : 'ltr'}
                     type="number"
                     value={settings.session_timeout || 480}
                     onChange={(e) => handleSettingChange('session_timeout', parseInt(e.target.value) || 480)}
                     min="30"
                     max="1440"
                   />
-                  <p className="text-xs text-muted-foreground mt-1">How long users stay logged in</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t('platformSettings.sessionTimeoutDesc')}</p>
                 </div>
 
                 <div>
-                  <Label htmlFor="maxLoginAttempts">Max Login Attempts</Label>
+                  <Label htmlFor="maxLoginAttempts">{t('platformSettings.maxLoginAttempts')}</Label>
                   <Input
                     id="maxLoginAttempts"
+                    dir={isRTL ? 'rtl' : 'ltr'}
                     type="number"
                     value={settings.max_login_attempts || 5}
                     onChange={(e) => handleSettingChange('max_login_attempts', parseInt(e.target.value) || 5)}
                     min="3"
                     max="10"
                   />
-                  <p className="text-xs text-muted-foreground mt-1">Failed attempts before account lockout</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t('platformSettings.maxLoginAttemptsDesc')}</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="passwordMinLength">Password Minimum Length</Label>
+                  <Label htmlFor="passwordMinLength">{t('platformSettings.passwordMinLength')}</Label>
                   <Input
                     id="passwordMinLength"
+                    dir={isRTL ? 'rtl' : 'ltr'}
                     type="number"
                     value={settings.password_min_length || 8}
                     onChange={(e) => handleSettingChange('password_min_length', parseInt(e.target.value) || 8)}
@@ -421,8 +427,8 @@ export const AdminSettings = () => {
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label>Require Password Symbols</Label>
-                    <p className="text-xs text-muted-foreground">Require special characters in passwords</p>
+                    <Label>{t('platformSettings.requirePasswordSymbols')}</Label>
+                    <p className="text-xs text-muted-foreground">{t('platformSettings.requirePasswordSymbolsDesc')}</p>
                   </div>
                   <Switch
                     checked={settings.require_password_symbols || false}
@@ -434,8 +440,8 @@ export const AdminSettings = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label>Email Verification Required</Label>
-                    <p className="text-xs text-muted-foreground">Require email verification for new accounts</p>
+                    <Label>{t('platformSettings.emailVerificationRequired')}</Label>
+                    <p className="text-xs text-muted-foreground">{t('platformSettings.emailVerificationDesc')}</p>
                   </div>
                   <Switch
                     checked={settings.email_verification_required || false}
@@ -445,8 +451,8 @@ export const AdminSettings = () => {
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label>Two-Factor Authentication</Label>
-                    <p className="text-xs text-muted-foreground">Require 2FA for all admin accounts</p>
+                    <Label>{t('platformSettings.twoFactorAuth')}</Label>
+                    <p className="text-xs text-muted-foreground">{t('platformSettings.twoFactorAuthDesc')}</p>
                   </div>
                   <Switch
                     checked={settings.enable_two_factor || false}
@@ -455,14 +461,14 @@ export const AdminSettings = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 pt-4 border-t">
+              <div className={`flex items-center gap-2 pt-4 border-t ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Button 
                   onClick={() => handleSaveSection(['session_timeout', 'max_login_attempts', 'password_min_length', 'require_password_symbols', 'email_verification_required', 'enable_two_factor'])}
                   disabled={isSaving}
                   className="flex-1"
                 >
-                  {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
-                  Save Security Settings
+                  {isSaving ? <LoadingSpinner size="sm" className={`${isRTL ? 'ml-2' : 'mr-2'}`} /> : <Save className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />}
+                  {t('platformSettings.saveSecuritySettings')}
                 </Button>
               </div>
             </CardContent>
@@ -472,49 +478,51 @@ export const AdminSettings = () => {
         <TabsContent value="system" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Server className="h-5 w-5" />
-                System Configuration
+                {t('platformSettings.systemConfiguration')}
               </CardTitle>
               <CardDescription>
-                Performance, limits, and system behavior settings
+                {t('platformSettings.systemConfigDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="apiRateLimit">API Rate Limit (requests/hour)</Label>
+                  <Label htmlFor="apiRateLimit">{t('platformSettings.apiRateLimit')}</Label>
                   <Input
                     id="apiRateLimit"
+                    dir={isRTL ? 'rtl' : 'ltr'}
                     type="number"
                     value={settings.api_rate_limit || 1000}
                     onChange={(e) => handleSettingChange('api_rate_limit', parseInt(e.target.value) || 1000)}
                     min="100"
                     max="10000"
                   />
-                  <p className="text-xs text-muted-foreground mt-1">Maximum API requests per user per hour</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t('platformSettings.apiRateLimitDesc')}</p>
                 </div>
 
                 <div>
-                  <Label htmlFor="fileUploadMaxSize">Max File Upload Size (MB)</Label>
+                  <Label htmlFor="fileUploadMaxSize">{t('platformSettings.fileUploadMaxSize')}</Label>
                   <Input
                     id="fileUploadMaxSize"
+                    dir={isRTL ? 'rtl' : 'ltr'}
                     type="number"
                     value={settings.file_upload_max_size || 10}
                     onChange={(e) => handleSettingChange('file_upload_max_size', parseInt(e.target.value) || 10)}
                     min="1"
                     max="100"
                   />
-                  <p className="text-xs text-muted-foreground mt-1">Maximum file size for uploads</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t('platformSettings.fileUploadMaxSizeDesc')}</p>
                 </div>
               </div>
 
               <div className="flex items-center justify-between p-4 border rounded-lg bg-muted/50">
-                <div className="flex items-center gap-3">
+                <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                   <AlertTriangle className="h-5 w-5 text-amber-500" />
                   <div>
-                    <Label className="text-base">Maintenance Mode</Label>
-                    <p className="text-sm text-muted-foreground">Temporarily disable platform access for maintenance</p>
+                    <Label className="text-base">{t('platformSettings.maintenanceMode')}</Label>
+                    <p className="text-sm text-muted-foreground">{t('platformSettings.maintenanceModeDesc')}</p>
                   </div>
                 </div>
                 <Switch
@@ -525,24 +533,24 @@ export const AdminSettings = () => {
 
               {settings.maintenance_mode && (
                 <div className="p-4 border rounded-lg bg-amber-50 dark:bg-amber-950/20">
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className={`flex items-center gap-2 mb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <Info className="h-4 w-4 text-amber-600" />
-                    <span className="text-sm font-medium text-amber-800 dark:text-amber-200">Maintenance Mode Active</span>
+                    <span className="text-sm font-medium text-amber-800 dark:text-amber-200">{t('platformSettings.maintenanceModeActive')}</span>
                   </div>
                   <p className="text-sm text-amber-700 dark:text-amber-300">
-                    The platform is currently in maintenance mode. Only administrators can access the system.
+                    {t('platformSettings.maintenanceModeActiveDesc')}
                   </p>
                 </div>
               )}
 
-              <div className="flex items-center gap-2 pt-4 border-t">
+              <div className={`flex items-center gap-2 pt-4 border-t ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Button 
                   onClick={() => handleSaveSection(['api_rate_limit', 'file_upload_max_size', 'maintenance_mode'])}
                   disabled={isSaving}
                   className="flex-1"
                 >
-                  {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
-                  Save System Settings
+                  {isSaving ? <LoadingSpinner size="sm" className={`${isRTL ? 'ml-2' : 'mr-2'}`} /> : <Save className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />}
+                  {t('platformSettings.saveSystemSettings')}
                 </Button>
               </div>
             </CardContent>
@@ -556,63 +564,63 @@ export const AdminSettings = () => {
         <TabsContent value="advanced" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Database className="h-5 w-5" />
-                Advanced Configuration
+                {t('platformSettings.advancedConfiguration')}
               </CardTitle>
               <CardDescription>
-                Advanced system settings and database operations
+                {t('platformSettings.advancedConfigDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card className="p-4">
-                  <div className="flex items-center gap-3 mb-3">
+                  <div className={`flex items-center gap-3 mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <Key className="h-5 w-5 text-blue-500" />
-                    <h4 className="font-medium">API Keys</h4>
+                    <h4 className="font-medium">{t('platformSettings.apiKeyManagement')}</h4>
                   </div>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Manage external service API keys and integrations
+                    {t('platformSettings.apiKeyManagementDesc')}
                   </p>
                   <Button variant="outline" size="sm" disabled>
-                    Manage API Keys
+                    {t('platformSettings.manageApiKeys')}
                   </Button>
                 </Card>
 
                 <Card className="p-4">
-                  <div className="flex items-center gap-3 mb-3">
+                  <div className={`flex items-center gap-3 mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <Database className="h-5 w-5 text-green-500" />
-                    <h4 className="font-medium">Database</h4>
+                    <h4 className="font-medium">{t('platformSettings.databaseTools')}</h4>
                   </div>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Database maintenance and optimization tools
+                    {t('platformSettings.databaseToolsDesc')}
                   </p>
                   <Button variant="outline" size="sm" disabled>
-                    Database Tools
+                    {t('platformSettings.manageDatabaseTools')}
                   </Button>
                 </Card>
               </div>
 
               <div className="border-t pt-6">
-                <h4 className="font-medium mb-4 text-destructive">Danger Zone</h4>
+                <h4 className="font-medium mb-4 text-destructive">{t('platformSettings.dangerZone')}</h4>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between p-4 border border-destructive/20 rounded-lg">
                     <div>
-                      <h5 className="font-medium text-destructive">Reset Platform Settings</h5>
-                      <p className="text-sm text-muted-foreground">Reset all platform settings to default values</p>
+                      <h5 className="font-medium text-destructive">{t('platformSettings.resetPlatformSettings')}</h5>
+                      <p className="text-sm text-muted-foreground">{t('platformSettings.resetPlatformSettingsDesc')}</p>
                     </div>
                     <Button variant="destructive" size="sm" onClick={resetToDefaults}>
-                      Reset Settings
+                      {t('platformSettings.resetSettings')}
                     </Button>
                   </div>
 
                   <div className="flex items-center justify-between p-4 border border-destructive/20 rounded-lg">
                     <div>
-                      <h5 className="font-medium text-destructive">Export Platform Data</h5>
-                      <p className="text-sm text-muted-foreground">Download a complete backup of platform data</p>
+                      <h5 className="font-medium text-destructive">{t('platformSettings.exportPlatformData')}</h5>
+                      <p className="text-sm text-muted-foreground">{t('platformSettings.exportDataDesc')}</p>
                     </div>
                     <Button variant="outline" size="sm" disabled>
-                      Export Data
+                      {t('platformSettings.exportData')}
                     </Button>
                   </div>
                 </div>
@@ -621,6 +629,7 @@ export const AdminSettings = () => {
           </Card>
         </TabsContent>
       </Tabs>
+      </div>
     </AdminPageContainer>
   );
 };
