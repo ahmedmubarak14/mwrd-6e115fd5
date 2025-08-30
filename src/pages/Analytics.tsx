@@ -36,13 +36,13 @@ export const Analytics = () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       toast({
-        title: isRTL ? "تم تصدير التحليلات" : "Analytics Exported",
-        description: isRTL ? "تم تصدير بيانات التحليلات بنجاح" : "Analytics data exported successfully",
+        title: t('analytics.exportAnalyticsTitle'),
+        description: t('analytics.exportAnalyticsDesc'),
       });
     } catch (error) {
       toast({
-        title: isRTL ? "خطأ في التصدير" : "Export Error",
-        description: isRTL ? "حدث خطأ أثناء تصدير البيانات" : "Error exporting analytics data",
+        title: t('analytics.exportError'),
+        description: t('analytics.exportErrorDesc'),
         variant: "destructive"
       });
     } finally {
@@ -55,13 +55,13 @@ export const Analytics = () => {
       await fetchAnalytics();
       
       toast({
-        title: isRTL ? "تم تحديث البيانات" : "Data Refreshed",
-        description: isRTL ? "تم تحديث بيانات التحليلات بنجاح" : "Analytics data refreshed successfully",
+        title: t('analytics.dataRefreshed'),
+        description: t('analytics.dataRefreshedDesc'),
       });
     } catch (error) {
       toast({
-        title: isRTL ? "خطأ في التحديث" : "Refresh Error",
-        description: isRTL ? "حدث خطأ أثناء تحديث البيانات" : "Error refreshing data",
+        title: t('analytics.refreshError'),
+        description: t('analytics.refreshErrorDesc'),
         variant: "destructive"
       });
     }
@@ -69,9 +69,9 @@ export const Analytics = () => {
 
   if (loading) {
     return (
-      <ClientPageContainer
-        title={isRTL ? "التحليلات والإحصائيات" : "My Analytics & Insights"}
-        description={isRTL ? "عرض شامل لأداء حسابك وإحصائيات النشاط" : "Comprehensive view of your account performance and activity statistics"}
+    <ClientPageContainer
+      title={t('analytics.title')}
+      description={t('analytics.description')}
       >
         <div className="flex items-center justify-center h-48">
           <LoadingSpinner />
@@ -82,9 +82,9 @@ export const Analytics = () => {
 
   if (error) {
     return (
-      <ClientPageContainer
-        title={isRTL ? "التحليلات والإحصائيات" : "My Analytics & Insights"}
-        description={isRTL ? "عرض شامل لأداء حسابك وإحصائيات النشاط" : "Comprehensive view of your account performance and activity statistics"}
+    <ClientPageContainer
+      title={t('analytics.title')}
+      description={t('analytics.description')}
       >
         <div className="text-center text-destructive py-8">
           <p>{error}</p>
@@ -95,8 +95,8 @@ export const Analytics = () => {
 
   return (
     <ClientPageContainer
-      title={isRTL ? "التحليلات والإحصائيات" : "My Analytics & Insights"}
-      description={isRTL ? "عرض شامل لأداء حسابك وإحصائيات النشاط" : "Comprehensive view of your account performance and activity statistics"}
+      title={t('analytics.title')}
+      description={t('analytics.description')}
       headerActions={
         <div className="flex gap-2">
           <Select value={dateRange} onValueChange={setDateRange}>
@@ -104,10 +104,10 @@ export const Analytics = () => {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="7">{t('analytics.last7Days') || '7 Days'}</SelectItem>
-              <SelectItem value="30">{t('analytics.last30Days') || '30 Days'}</SelectItem>
-              <SelectItem value="90">{t('analytics.last90Days') || '90 Days'}</SelectItem>
-              <SelectItem value="365">{t('analytics.lastYear') || '1 Year'}</SelectItem>
+              <SelectItem value="7">{t('analytics.last7Days')}</SelectItem>
+              <SelectItem value="30">{t('analytics.last30Days')}</SelectItem>
+              <SelectItem value="90">{t('analytics.last90Days')}</SelectItem>
+              <SelectItem value="365">{t('analytics.lastYear')}</SelectItem>
             </SelectContent>
           </Select>
           
@@ -117,7 +117,7 @@ export const Analytics = () => {
             disabled={loading}
           >
             <RefreshCw className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
-            {t('common.update') || 'Refresh'}
+            {t('common.refresh')}
           </Button>
           
           <Button
@@ -130,7 +130,7 @@ export const Analytics = () => {
             ) : (
               <Download className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
             )}
-            {t('analytics.export') || 'Export'}
+            {t('analytics.export')}
           </Button>
         </div>
       }
@@ -139,52 +139,52 @@ export const Analytics = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{isRTL ? 'طلباتي' : 'My Requests'}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('analytics.myRequests')}</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(analytics?.totalRequests || 0)}</div>
             <p className="text-xs text-muted-foreground">
-              {analytics?.requestGrowth && analytics.requestGrowth > 0 ? '+' : ''}{analytics?.requestGrowth || 0}% {t('analytics.fromLastMonth') || 'from last month'}
+              {analytics?.requestGrowth && analytics.requestGrowth > 0 ? '+' : ''}{analytics?.requestGrowth || 0}% {t('analytics.fromLastMonth')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{isRTL ? 'طلبات نشطة' : 'Active Orders'}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('analytics.activeOrders')}</CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(analytics?.activeOrders || 0)}</div>
             <p className="text-xs text-muted-foreground">
-              {isRTL ? 'طلبات قيد التنفيذ' : 'Currently in progress'}
+              {t('analytics.currentlyInProgress')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{isRTL ? 'إجمالي الإنفاق' : 'Total Spending'}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('analytics.totalSpending')}</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(analytics?.totalSpent || 0)}</div>
             <p className="text-xs text-muted-foreground">
-              {analytics?.spendingGrowth && analytics.spendingGrowth > 0 ? '+' : ''}{analytics?.spendingGrowth || 0}% {t('analytics.fromLastMonth') || 'from last month'}
+              {analytics?.spendingGrowth && analytics.spendingGrowth > 0 ? '+' : ''}{analytics?.spendingGrowth || 0}% {t('analytics.fromLastMonth')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{isRTL ? 'معدل الإنجاز' : 'Completion Rate'}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('analytics.completionRate')}</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{analytics?.completionRate || 0}%</div>
             <p className="text-xs text-muted-foreground">
-              {isRTL ? 'من إجمالي الطلبات' : 'of total requests'}
+              {t('analytics.ofTotalRequests')}
             </p>
           </CardContent>
         </Card>
@@ -194,39 +194,39 @@ export const Analytics = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{isRTL ? 'عروض معلقة' : 'Pending Offers'}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('analytics.pendingOffers')}</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(analytics?.pendingOffers || 0)}</div>
             <p className="text-xs text-muted-foreground">
-              {isRTL ? 'في انتظار المراجعة' : 'Awaiting your review'}
+              {t('analytics.awaitingReview')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{isRTL ? 'متوسط قيمة الطلب' : 'Avg Order Value'}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('analytics.avgOrderValue')}</CardTitle>
             <ShoppingCart className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatCurrency(analytics?.averageOrderValue || 0)}</div>
             <p className="text-xs text-muted-foreground">
-              {isRTL ? 'لكل طلب مكتمل' : 'per completed order'}
+              {t('analytics.perCompletedOrder')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
-            <CardTitle className="text-sm font-medium">{isRTL ? 'موردين تم التعامل معهم' : 'Vendors Worked With'}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('analytics.vendorsWorkedWith')}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(analytics?.totalVendorsWorkedWith || 0)}</div>
             <p className="text-xs text-muted-foreground">
-              {isRTL ? 'موردين مختلفين' : 'unique vendors'}
+              {t('analytics.uniqueVendors')}
             </p>
           </CardContent>
         </Card>
@@ -237,19 +237,19 @@ export const Analytics = () => {
         <TabsList>
           <TabsTrigger value="overview" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <BarChart3 className="h-4 w-4" />
-            {isRTL ? 'نظرة عامة' : 'Overview'}
+            {t('analytics.overview')}
           </TabsTrigger>
           <TabsTrigger value="spending" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <DollarSign className="h-4 w-4" />
-            {isRTL ? 'الإنفاق' : 'Spending'}
+            {t('analytics.spending')}
           </TabsTrigger>
           <TabsTrigger value="requests" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <FileText className="h-4 w-4" />
-            {isRTL ? 'الطلبات' : 'Requests'}
+            {t('analytics.requests')}
           </TabsTrigger>
           <TabsTrigger value="performance" className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
             <TrendingUp className="h-4 w-4" />
-            {isRTL ? 'الأداء' : 'Performance'}
+            {t('analytics.performance')}
           </TabsTrigger>
         </TabsList>
 
@@ -257,9 +257,9 @@ export const Analytics = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <Card>
               <CardHeader>
-                <CardTitle>{isRTL ? 'الإنفاق الشهري' : 'Monthly Spending'}</CardTitle>
+                <CardTitle>{t('analytics.monthlySpending')}</CardTitle>
                 <CardDescription>
-                  {isRTL ? 'مسار الإنفاق خلال الأشهر الستة الماضية' : 'Your spending trend over the last 6 months'}
+                  {t('analytics.spendingTrend')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -268,7 +268,7 @@ export const Analytics = () => {
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="month" />
                     <YAxis />
-                    <Tooltip formatter={(value) => [formatCurrency(Number(value)), isRTL ? 'الإنفاق' : 'Spending']} />
+                    <Tooltip formatter={(value) => [formatCurrency(Number(value)), t('analytics.spending')]} />
                     <Area 
                       type="monotone" 
                       dataKey="amount" 
@@ -283,9 +283,9 @@ export const Analytics = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>{isRTL ? 'الطلبات حسب الفئة' : 'Requests by Category'}</CardTitle>
+                <CardTitle>{t('analytics.requestsByCategory')}</CardTitle>
                 <CardDescription>
-                  {isRTL ? 'توزيع طلباتك حسب فئات الخدمة' : 'Distribution of your requests by service category'}
+                  {t('analytics.categoryDistribution')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -314,9 +314,9 @@ export const Analytics = () => {
         <TabsContent value="spending" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>{isRTL ? 'نشاط الطلبات والإنفاق' : 'Orders & Spending Activity'}</CardTitle>
+              <CardTitle>{t('analytics.ordersSpendingActivity')}</CardTitle>
               <CardDescription>
-                {isRTL ? 'نشاط طلباتك وإنفاقك اليومي خلال الـ30 يوماً الماضية' : 'Daily orders and spending activity over the last 30 days'}
+                {t('analytics.dailyActivity')}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -356,24 +356,24 @@ export const Analytics = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <Card>
               <CardHeader>
-                <CardTitle>{isRTL ? 'ملخص الطلبات' : 'Requests Summary'}</CardTitle>
+                <CardTitle>{t('analytics.requestsSummary')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">
-                    {isRTL ? 'إجمالي الطلبات' : 'Total Requests'}
+                    {t('analytics.totalRequests')}
                   </span>
                   <Badge variant="secondary">{analytics?.totalRequests || 0}</Badge>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">
-                    {isRTL ? 'طلبات نشطة' : 'Active Requests'}
+                    {t('analytics.activeRequests')}
                   </span>
                   <Badge variant="secondary">{analytics?.activeRequests || 0}</Badge>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-muted-foreground">
-                    {isRTL ? 'طلبات مكتملة' : 'Completed Requests'}
+                    {t('analytics.completedRequests')}
                   </span>
                   <Badge variant="secondary">{analytics?.completedRequests || 0}</Badge>
                 </div>
@@ -382,7 +382,7 @@ export const Analytics = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>{isRTL ? 'ملخص العروض' : 'Offers Summary'}</CardTitle>
+                <CardTitle>{t('analytics.offersSummary')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
