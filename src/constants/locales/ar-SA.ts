@@ -930,9 +930,6 @@ export const arSA = {
     uptime: "وقت التشغيل",
     
     projects: "المشاريع",
-    verificationQueue: "قائمة التحقق", 
-    workflowAutomation: "أتمتة سير العمل",
-    categoryManagement: "إدارة الفئات",
     
     // Navigation Accessibility  
     navigateTo: "الانتقال إلى",

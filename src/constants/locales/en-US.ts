@@ -1122,9 +1122,6 @@ export const enUS = {
     uptime: "Uptime",
     
     projects: "Projects",
-    verificationQueue: "Verification Queue",
-    workflowAutomation: "Workflow Automation", 
-    categoryManagement: "Category Management",
     
     // Navigation Accessibility
     navigateTo: "Navigate to",

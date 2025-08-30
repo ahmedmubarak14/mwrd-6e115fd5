@@ -17,8 +17,6 @@ export const getTranslation = (key: string, locale: 'en' | 'ar' = 'en'): string 
   const translationKey = locale === 'ar' ? 'ar-SA' : 'en-US';
   const translationObj = translations[translationKey];
   
-  console.log(`Translation request - Key: ${key}, Locale: ${locale}, Translation Key: ${translationKey}`);
-  
   // Split the key by dots to access nested properties
   const keys = key.split('.');
   let value: any = translationObj;
@@ -28,12 +26,9 @@ export const getTranslation = (key: string, locale: 'en' | 'ar' = 'en'): string 
       value = value[k];
     } else {
       // Return the original key if translation not found (fallback behavior)
-      console.warn(`Translation not found for key: ${key}, missing path: ${k}`);
       return key;
     }
   }
   
-  const result = typeof value === 'string' ? value : key;
-  console.log(`Translation result: ${result}`);
-  return result;
+  return typeof value === 'string' ? value : key;
 };
