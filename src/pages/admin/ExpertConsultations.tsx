@@ -398,7 +398,7 @@ export const ExpertConsultations = () => {
         {/* Analytics Dashboard */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
               <CardTitle className="text-sm font-medium">{t('admin.expertConsultations.totalConsultations')}</CardTitle>
               <MessageSquare className="h-4 w-4 text-primary" />
             </CardHeader>
@@ -409,7 +409,7 @@ export const ExpertConsultations = () => {
           </Card>
           
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
               <CardTitle className="text-sm font-medium">{t('common.pending')}</CardTitle>
               <Clock className="h-4 w-4 text-warning" />
             </CardHeader>
@@ -420,7 +420,7 @@ export const ExpertConsultations = () => {
           </Card>
           
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
               <CardTitle className="text-sm font-medium">{t('common.scheduled')}</CardTitle>
               <Calendar className="h-4 w-4 text-blue-500" />
             </CardHeader>
@@ -431,7 +431,7 @@ export const ExpertConsultations = () => {
           </Card>
           
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
               <CardTitle className="text-sm font-medium">{t('common.completed')}</CardTitle>
               <CheckCircle className="h-4 w-4 text-success" />
             </CardHeader>
@@ -442,7 +442,7 @@ export const ExpertConsultations = () => {
           </Card>
           
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
               <CardTitle className="text-sm font-medium">{t('admin.expertConsultations.avgResponseTime')}</CardTitle>
               <Timer className="h-4 w-4 text-orange-500" />
             </CardHeader>
@@ -453,7 +453,7 @@ export const ExpertConsultations = () => {
           </Card>
           
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
               <CardTitle className="text-sm font-medium">{t('admin.expertConsultations.conversionRate')}</CardTitle>
               <Target className="h-4 w-4 text-green-500" />
             </CardHeader>
@@ -503,7 +503,8 @@ export const ExpertConsultations = () => {
                   placeholder={t('admin.expertConsultations.searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className={cn(isRTL ? "pr-10" : "pl-10")}
+                  className={cn(isRTL ? "pr-10 text-right" : "pl-10 text-left")}
+                  dir={isRTL ? 'rtl' : 'ltr'}
                 />
               </div>
               
@@ -511,7 +512,7 @@ export const ExpertConsultations = () => {
                   <SelectTrigger>
                     <SelectValue placeholder={t('admin.expertConsultations.status')} />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent align={isRTL ? "start" : "end"}>
                     <SelectItem value="all">{t('admin.expertConsultations.allStatus')}</SelectItem>
                     <SelectItem value="pending">{t('admin.expertConsultations.pending')}</SelectItem>
                     <SelectItem value="scheduled">{t('admin.expertConsultations.scheduled')}</SelectItem>
@@ -524,7 +525,7 @@ export const ExpertConsultations = () => {
                   <SelectTrigger>
                     <SelectValue placeholder={t('admin.expertConsultations.eventType')} />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent align={isRTL ? "start" : "end"}>
                     <SelectItem value="all">{t('admin.expertConsultations.allEvents')}</SelectItem>
                     <SelectItem value="consultation">{t('admin.expertConsultations.consultation')}</SelectItem>
                     <SelectItem value="meeting">{t('admin.expertConsultations.meeting')}</SelectItem>
@@ -537,7 +538,7 @@ export const ExpertConsultations = () => {
                   <SelectTrigger>
                     <SelectValue placeholder={t('admin.expertConsultations.sortBy')} />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent align={isRTL ? "start" : "end"}>
                     <SelectItem value="created_at">{t('admin.expertConsultations.dateCreated')}</SelectItem>
                     <SelectItem value="full_name">{t('admin.expertConsultations.name')}</SelectItem>
                     <SelectItem value="status">{t('admin.expertConsultations.status')}</SelectItem>
