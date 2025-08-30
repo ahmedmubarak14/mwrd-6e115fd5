@@ -1667,6 +1667,47 @@ export const enUS = {
         slug: "Slug",
         status: "Status",
         level: "Level"
+      },
+      
+      // Form labels (additional)
+      form: {
+        parentCategory: "Parent Category (Optional)",
+        selectParent: "Select parent category (optional)",
+        noParent: "No Parent (Top Level)",
+        activeStatus: "Active Status",
+        cancel: "Cancel",
+        updateCategory: "Update Category",
+        createCategory: "Create Category"
+      },
+      
+      // Search (additional)
+      search: {
+        placeholder: "Search categories...",
+        allStatus: "All Status",
+        activeOnly: "Active Only", 
+        inactiveOnly: "Inactive Only"
+      },
+      
+      // Bulk actions (additional)
+      bulkActions: {
+        activate: "Activate",
+        deactivate: "Deactivate",
+        delete: "Delete"
+      },
+      
+      // Empty states (additional)
+      emptyStates: {
+        loading: "Loading categories...",
+        noCategoriesFound: "No Categories Found",
+        noMatchingFilters: "No categories match your current filters.",
+        createFirst: "Start by creating your first category.",
+        clearFilters: "Clear Filters"
+      },
+      
+      // Labels (additional)
+      labels: {
+        children: "sub",
+        childrenPlural: "subs"
       }
     },
     projectsManagement: {

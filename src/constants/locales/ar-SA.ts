@@ -1455,6 +1455,47 @@ export const arSA = {
         slug: "المعرف",
         status: "الحالة",
         level: "المستوى"
+      },
+      
+      // Form labels (additional)
+      form: {
+        parentCategory: "الفئة الرئيسية (اختيارية)",
+        selectParent: "اختر الفئة الرئيسية (اختيارية)",
+        noParent: "بدون رئيسية (المستوى الأعلى)",
+        activeStatus: "حالة النشاط",
+        cancel: "إلغاء",
+        updateCategory: "تحديث الفئة",
+        createCategory: "إنشاء فئة"
+      },
+      
+      // Search (additional)
+      search: {
+        placeholder: "البحث في الفئات...",
+        allStatus: "جميع الحالات",
+        activeOnly: "النشطة فقط",
+        inactiveOnly: "غير النشطة فقط"
+      },
+      
+      // Bulk actions (additional)
+      bulkActions: {
+        activate: "تفعيل",
+        deactivate: "إلغاء التفعيل",
+        delete: "حذف"
+      },
+      
+      // Empty states (additional)
+      emptyStates: {
+        loading: "جارٍ تحميل الفئات...",
+        noCategoriesFound: "لم يتم العثور على فئات",
+        noMatchingFilters: "لا توجد فئات تطابق المرشحات الحالية.",
+        createFirst: "ابدأ بإنشاء فئتك الأولى.",
+        clearFilters: "مسح المرشحات"
+      },
+      
+      // Labels (additional)
+      labels: {
+        children: "فرعية",
+        childrenPlural: "فرعية"
       }
     },
     projectsManagement: {

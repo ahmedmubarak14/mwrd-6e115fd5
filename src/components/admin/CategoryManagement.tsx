@@ -410,9 +410,9 @@ export const CategoryManagement: React.FC = () => {
                            {category.is_active ? t('admin.categoryManagement.active') : t('admin.categoryManagement.inactive')}
                          </Badge>
                         {hasChildren && (
-                          <Badge variant="outline" className="text-xs shrink-0">
-                            {childrenCount} sub{childrenCount !== 1 ? 's' : ''}
-                          </Badge>
+                           <Badge variant="outline" className="text-xs shrink-0">
+                             {childrenCount} {childrenCount !== 1 ? t('admin.categoryManagement.labels.childrenPlural') : t('admin.categoryManagement.labels.children')}
+                           </Badge>
                         )}
                       </div>
                       
@@ -797,16 +797,16 @@ export const CategoryManagement: React.FC = () => {
               </div>
 
               <div>
-                <Label htmlFor="parent_id">Parent Category (Optional)</Label>
+                <Label htmlFor="parent_id">{t('admin.categoryManagement.form.parentCategory')}</Label>
                 <Select
                   value={formData.parent_id}
                   onValueChange={(value) => setFormData(prev => ({ ...prev, parent_id: value }))}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select parent category (optional)" />
+                    <SelectValue placeholder={t('admin.categoryManagement.form.selectParent')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">No Parent (Top Level)</SelectItem>
+                    <SelectItem value="">{t('admin.categoryManagement.form.noParent')}</SelectItem>
                     {categories?.filter(cat => cat.id !== editingCategory?.id).map(category => (
                       <SelectItem key={category.id} value={category.id}>
                         {category.name_en}
@@ -822,15 +822,15 @@ export const CategoryManagement: React.FC = () => {
                   checked={formData.is_active}
                   onCheckedChange={(checked) => setFormData(prev => ({ ...prev, is_active: checked }))}
                 />
-                <Label htmlFor="is_active">Active Status</Label>
+                <Label htmlFor="is_active">{t('admin.categoryManagement.form.activeStatus')}</Label>
               </div>
               
               <div className="flex justify-end space-x-2 pt-4">
                 <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  Cancel
+                  {t('admin.categoryManagement.form.cancel')}
                 </Button>
                 <Button type="submit">
-                  {editingCategory ? 'Update Category' : 'Create Category'}
+                  {editingCategory ? t('admin.categoryManagement.form.updateCategory') : t('admin.categoryManagement.form.createCategory')}
                 </Button>
               </div>
             </form>
@@ -879,7 +879,7 @@ export const CategoryManagement: React.FC = () => {
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search categories..."
+            placeholder={t('admin.categoryManagement.search.placeholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
@@ -891,9 +891,9 @@ export const CategoryManagement: React.FC = () => {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Status</SelectItem>
-            <SelectItem value="active">Active Only</SelectItem>
-            <SelectItem value="inactive">Inactive Only</SelectItem>
+            <SelectItem value="all">{t('admin.categoryManagement.search.allStatus')}</SelectItem>
+            <SelectItem value="active">{t('admin.categoryManagement.search.activeOnly')}</SelectItem>
+            <SelectItem value="inactive">{t('admin.categoryManagement.search.inactiveOnly')}</SelectItem>
           </SelectContent>
         </Select>
 
@@ -952,21 +952,21 @@ export const CategoryManagement: React.FC = () => {
                   variant="outline"
                   onClick={() => handleBulkAction('activate')}
                 >
-                  Activate
+                  {t('admin.categoryManagement.bulkActions.activate')}
                 </Button>
                 <Button 
                   size="sm" 
                   variant="outline"
                   onClick={() => handleBulkAction('deactivate')}
                 >
-                  Deactivate
+                  {t('admin.categoryManagement.bulkActions.deactivate')}
                 </Button>
                 <Button 
                   size="sm" 
                   variant="destructive"
                   onClick={() => handleBulkAction('delete')}
                 >
-                  Delete
+                  {t('admin.categoryManagement.bulkActions.delete')}
                 </Button>
               </div>
             </div>
@@ -979,18 +979,18 @@ export const CategoryManagement: React.FC = () => {
         <Card>
           <CardContent className="p-12 text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading categories...</p>
+            <p className="text-muted-foreground">{t('admin.categoryManagement.emptyStates.loading')}</p>
           </CardContent>
         </Card>
       ) : filteredCategories.length === 0 ? (
         <Card>
           <CardContent className="p-12 text-center">
             <Folder className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium mb-2">No Categories Found</h3>
+            <h3 className="text-lg font-medium mb-2">{t('admin.categoryManagement.emptyStates.noCategoriesFound')}</h3>
             <p className="text-muted-foreground mb-4">
               {searchQuery || statusFilter !== 'all' 
-                ? 'No categories match your current filters.' 
-                : 'Start by creating your first category.'}
+                ? t('admin.categoryManagement.emptyStates.noMatchingFilters')
+                : t('admin.categoryManagement.emptyStates.createFirst')}
             </p>
             {searchQuery || statusFilter !== 'all' ? (
               <Button 
@@ -1000,7 +1000,7 @@ export const CategoryManagement: React.FC = () => {
                   setStatusFilter('all');
                 }}
               >
-                Clear Filters
+                {t('admin.categoryManagement.emptyStates.clearFilters')}
               </Button>
             ) : null}
           </CardContent>
