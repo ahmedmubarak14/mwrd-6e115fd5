@@ -624,20 +624,20 @@ export default function AdminUsers() {
                             disabled={!bulkRole || bulkLoading}
                           >
                             <UserCog className="h-4 w-4 mr-2" />
-                            Update Role
+                            {t('admin.updateRoleAction')}
                           </Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Confirm Bulk Action</AlertDialogTitle>
+                            <AlertDialogTitle>{t('admin.bulkActionConfirm')}</AlertDialogTitle>
                             <AlertDialogDescription>
-                              Update role to "{bulkRole}" for {selectedCount} selected users?
+                              {t('admin.bulkRoleConfirm').replace('{role}', bulkRole).replace('{count}', selectedCount.toString())}
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
                             <AlertDialogAction onClick={handleBulkRoleUpdate}>
-                              Confirm
+                              {t('common.confirm')}
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
@@ -645,17 +645,17 @@ export default function AdminUsers() {
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-2">
-                      <Select value={bulkStatus} onValueChange={setBulkStatus}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="pending">Pending</SelectItem>
-                          <SelectItem value="approved">Approved</SelectItem>
-                          <SelectItem value="blocked">Blocked</SelectItem>
-                          <SelectItem value="rejected">Rejected</SelectItem>
-                        </SelectContent>
-                      </Select>
+                        <Select value={bulkStatus} onValueChange={setBulkStatus}>
+                          <SelectTrigger>
+                            <SelectValue placeholder={t('admin.selectStatus')} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="pending">{t('admin.pendingStatus')}</SelectItem>
+                            <SelectItem value="approved">{t('admin.approvedStatus')}</SelectItem>
+                            <SelectItem value="blocked">{t('admin.blockedStatus')}</SelectItem>
+                            <SelectItem value="rejected">{t('admin.rejectedStatus')}</SelectItem>
+                          </SelectContent>
+                        </Select>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button 
@@ -664,20 +664,20 @@ export default function AdminUsers() {
                             disabled={!bulkStatus || bulkLoading}
                           >
                             <Shield className="h-4 w-4 mr-2" />
-                            Update Status
+                            {t('admin.updateStatusAction')}
                           </Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
-                            <AlertDialogTitle>Confirm Bulk Action</AlertDialogTitle>
+                            <AlertDialogTitle>{t('admin.bulkActionConfirm')}</AlertDialogTitle>
                             <AlertDialogDescription>
-                              Update status to "{bulkStatus}" for {selectedCount} selected users?
+                              {t('admin.bulkStatusConfirm').replace('{status}', bulkStatus).replace('{count}', selectedCount.toString())}
                             </AlertDialogDescription>
                           </AlertDialogHeader>
                           <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
                             <AlertDialogAction onClick={handleBulkStatusUpdate}>
-                              Confirm
+                              {t('common.confirm')}
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>
@@ -690,7 +690,7 @@ export default function AdminUsers() {
                       onClick={handleExportSelected}
                     >
                       <Download className="h-4 w-4 mr-2" />
-                      Export Selected
+                      {t('admin.exportSelectedAction')}
                     </Button>
                   </div>
                 )}
@@ -704,7 +704,7 @@ export default function AdminUsers() {
           <TabsList>
             <TabsTrigger value="users" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
-              Users
+              {t('admin.users')}
             </TabsTrigger>
             <TabsTrigger value="verification" className="flex items-center gap-2">
               <FileCheck className="h-4 w-4" />
@@ -723,8 +723,8 @@ export default function AdminUsers() {
                 <Card>
                   <CardContent className="py-12 text-center">
                     <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold mb-2">No users found</h3>
-                    <p className="text-muted-foreground">No users match your current filters</p>
+                    <h3 className="text-lg font-semibold mb-2">{t('admin.noUsersFound')}</h3>
+                    <p className="text-muted-foreground">{t('admin.noUsersMatchFilters')}</p>
                   </CardContent>
                 </Card>
               ) : (
@@ -760,7 +760,7 @@ export default function AdminUsers() {
                                className="h-8 w-8 p-0 sm:h-auto sm:w-auto sm:px-3"
                              >
                                <Edit className="h-4 w-4" />
-                               <span className="sr-only sm:not-sr-only sm:ml-2">Edit</span>
+                               <span className="sr-only sm:not-sr-only sm:ml-2">{t('common.edit')}</span>
                              </Button>
                              <AlertDialog>
                                <AlertDialogTrigger asChild>
@@ -770,25 +770,25 @@ export default function AdminUsers() {
                                    className="h-8 w-8 p-0 sm:h-auto sm:w-auto sm:px-3"
                                  >
                                    <Trash2 className="h-4 w-4" />
-                                   <span className="sr-only sm:not-sr-only sm:ml-2">Delete</span>
+                                   <span className="sr-only sm:not-sr-only sm:ml-2">{t('common.delete')}</span>
                                  </Button>
                                </AlertDialogTrigger>
                             <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>Delete User</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  Are you sure you want to delete {user.full_name}? This action cannot be undone.
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction
-                                  onClick={() => handleDeleteUser(user.id, user.full_name)}
-                                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                                >
-                                  Delete
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
+                               <AlertDialogHeader>
+                                 <AlertDialogTitle>{t('admin.deleteUserTitle')}</AlertDialogTitle>
+                                 <AlertDialogDescription>
+                                   {t('admin.deleteUserConfirm').replace('{name}', user.full_name)}
+                                 </AlertDialogDescription>
+                               </AlertDialogHeader>
+                               <AlertDialogFooter>
+                                 <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+                                 <AlertDialogAction
+                                   onClick={() => handleDeleteUser(user.id, user.full_name)}
+                                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                 >
+                                   {t('common.delete')}
+                                 </AlertDialogAction>
+                               </AlertDialogFooter>
                             </AlertDialogContent>
                           </AlertDialog>
                            </div>
@@ -805,14 +805,14 @@ export default function AdminUsers() {
                            )}
                            <div className="flex items-center gap-2">
                              <Mail className="h-4 w-4 text-blue-500" />
-                             <span className="font-medium">
-                               Verification: {user.verification_status}
-                             </span>
+                              <span className="font-medium">
+                                {t('admin.verificationText').replace('{status}', user.verification_status)}
+                              </span>
                            </div>
                          </div>
-                         <span className="text-foreground opacity-75 text-xs sm:text-sm">
-                           Joined: {format(new Date(user.created_at), 'MMM dd, yyyy')}
-                         </span>
+                          <span className="text-foreground opacity-75 text-xs sm:text-sm">
+                            {t('admin.joinedText').replace('{date}', format(new Date(user.created_at), 'MMM dd, yyyy'))}
+                          </span>
                        </div>
                      </CardContent>
                   </Card>

@@ -529,6 +529,47 @@ export const enUS = {
     enterPhoneOptional: 'Enter phone number (optional)',
     updateUser: 'Update User',
     
+    // Bulk Actions Dialog
+    bulkActionConfirm: 'Confirm Bulk Action',
+    updateRoleAction: 'Update Role',
+    updateStatusAction: 'Update Status',
+    exportSelectedAction: 'Export Selected',
+    
+    // Status Values for SelectItems
+    pendingStatus: 'Pending',
+    approvedStatus: 'Approved', 
+    blockedStatus: 'Blocked',
+    rejectedStatus: 'Rejected',
+    
+    // Role Values for SelectItems
+    clientRole: 'Client',
+    vendorRole: 'Vendor',
+    adminRole: 'Admin',
+    
+    // Form Labels  
+    roleLabel: 'Role',
+    statusLabel: 'Status',
+    editFullName: 'Full Name',
+    editEmail: 'Email',
+    editRole: 'Role',
+    editStatus: 'Status',
+    editCompanyName: 'Company Name',
+    editPhone: 'Phone',
+    
+    // Verification text
+    verificationText: 'Verification: {status}',
+    joinedText: 'Joined: {date}',
+    
+    // Analytics tab translations
+    newThisMonthAnalytics: 'New This Month',
+    activeThisWeekAnalytics: 'Active This Week', 
+    growthRateAnalytics: 'Growth Rate',
+    totalUsersAnalytics: 'Total Users',
+    usersRegisteredAnalytics: 'Users registered',
+    usersWithActivityAnalytics: 'Users with activity',
+    vsLastMonthAnalytics: 'vs last month',
+    allTimeAnalytics: 'All time',
+    
     // Tabs
     users: 'Users',
     verificationQueue: 'Verification Queue'

@@ -559,6 +559,47 @@ export const arSA = {
     enterPhoneOptional: 'أدخل رقم الهاتف (اختياري)',
     updateUser: 'تحديث المستخدم',
     
+    // حوار الإجراءات المجمعة
+    bulkActionConfirm: 'تأكيد الإجراء الجماعي',
+    updateRoleAction: 'تحديث الدور',
+    updateStatusAction: 'تحديث الحالة',
+    exportSelectedAction: 'تصدير المحدد',
+    
+    // قيم الحالة لعناصر التحديد
+    pendingStatus: 'معلق',
+    approvedStatus: 'موافق عليه',
+    blockedStatus: 'محظور',
+    rejectedStatus: 'مرفوض',
+    
+    // قيم الأدوار لعناصر التحديد
+    clientRole: 'عميل',
+    vendorRole: 'مورد',
+    adminRole: 'مدير',
+    
+    // تسميات النماذج
+    roleLabel: 'الدور',
+    statusLabel: 'الحالة',
+    editFullName: 'الاسم الكامل',
+    editEmail: 'البريد الإلكتروني',
+    editRole: 'الدور',
+    editStatus: 'الحالة',
+    editCompanyName: 'اسم الشركة',
+    editPhone: 'الهاتف',
+    
+    // نص التحقق
+    verificationText: 'التحقق: {status}',
+    joinedText: 'انضم: {date}',
+    
+    // ترجمات تبويب التحليلات
+    newThisMonthAnalytics: 'جديد هذا الشهر',
+    activeThisWeekAnalytics: 'نشط هذا الأسبوع',
+    growthRateAnalytics: 'معدل النمو',
+    totalUsersAnalytics: 'إجمالي المستخدمين',
+    usersRegisteredAnalytics: 'المستخدمون المسجلون',
+    usersWithActivityAnalytics: 'المستخدمون النشطون',
+    vsLastMonthAnalytics: 'مقارنة بالشهر الماضي',
+    allTimeAnalytics: 'كل الأوقات',
+    
     // التبويبات
     users: 'المستخدمون',
     verificationQueue: 'قائمة التحقق'
