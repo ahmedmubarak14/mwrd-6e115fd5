@@ -83,8 +83,8 @@ export default function AdminFinancialTransactions() {
               type: 'payment',
               status: 'completed',
               amount: 15000,
-              currency: 'SAR',
-              description: 'Payment for construction services',
+              currency: t('financial.currency'),
+              description: t('financial.demoData.paymentForConstruction'),
               reference_id: 'PAY-001',
               user_id: 'demo-user-1',
               order_id: 'order-1',
@@ -102,8 +102,8 @@ export default function AdminFinancialTransactions() {
               type: 'commission',
               status: 'completed',
               amount: 750,
-              currency: 'SAR',
-              description: 'Platform commission (5%)',
+              currency: t('financial.currency'),
+              description: t('financial.demoData.platformCommission'),
               reference_id: 'COM-001',
               user_id: 'demo-user-2',
               order_id: 'order-1',
@@ -121,8 +121,8 @@ export default function AdminFinancialTransactions() {
               type: 'refund',
               status: 'pending',
               amount: 2500,
-              currency: 'SAR',
-              description: 'Refund for cancelled order',
+              currency: t('financial.currency'),
+              description: t('financial.demoData.refundForCancelledOrder'),
               reference_id: 'REF-001',
               user_id: 'demo-user-3',
               order_id: 'order-3',
@@ -255,7 +255,7 @@ export default function AdminFinancialTransactions() {
     const csvContent = [
       t('financial.transactionCsvHeaders'),
       ...filteredTransactions.map(transaction => 
-        `${transaction.id},${transaction.type},${transaction.status},${transaction.amount},${transaction.currency},"${transaction.description}",${transaction.reference_id || 'N/A'},${format(new Date(transaction.created_at), 'yyyy-MM-dd HH:mm')},${transaction.user_profile?.full_name || 'N/A'}`
+        `${transaction.id},${transaction.type},${transaction.status},${transaction.amount},${transaction.currency},"${transaction.description}",${transaction.reference_id || t('financial.notAvailable')},${format(new Date(transaction.created_at), 'yyyy-MM-dd HH:mm')},${transaction.user_profile?.full_name || t('financial.notAvailable')}`
       )
     ].join('\n');
     
@@ -468,7 +468,9 @@ export default function AdminFinancialTransactions() {
                           {getTypeBadge(transaction.type)}
                           {getStatusBadge(transaction.status)}
                           {transaction.payment_method && (
-                            <Badge variant="outline">{transaction.payment_method.replace('_', ' ')}</Badge>
+                            <Badge variant="outline">
+                              {t(`financial.paymentMethods.${transaction.payment_method}`) || transaction.payment_method.replace('_', ' ')}
+                            </Badge>
                           )}
                         </div>
                       </div>

@@ -532,6 +532,17 @@ export const arSA = {
     ref: "رقم المرجع",
     currency: "ريال سعودي",
     transactionCsvHeaders: "المعرف,النوع,الحالة,المبلغ,العملة,الوصف,المرجع,التاريخ,المستخدم",
+    notAvailable: "غير متوفر",
+    demoData: {
+      paymentForConstruction: "دفعة مقابل خدمات البناء",
+      platformCommission: "عمولة المنصة (5%)",
+      refundForCancelledOrder: "استرداد للطلب الملغى"
+    },
+    paymentMethods: {
+      credit_card: "بطاقة ائتمان",
+      bank_transfer: "حوالة بنكية", 
+      platform: "المنصة"
+    },
     
     // Expert Consultations
     expertConsultations: {

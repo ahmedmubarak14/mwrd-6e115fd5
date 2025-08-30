@@ -532,6 +532,17 @@ export const enUS = {
     ref: "Ref",
     currency: "SAR",
     transactionCsvHeaders: "ID,Type,Status,Amount,Currency,Description,Reference,Date,User",
+    notAvailable: "N/A",
+    demoData: {
+      paymentForConstruction: "Payment for construction services",
+      platformCommission: "Platform commission (5%)",
+      refundForCancelledOrder: "Refund for cancelled order"
+    },
+    paymentMethods: {
+      credit_card: "Credit Card",
+      bank_transfer: "Bank Transfer",
+      platform: "Platform"
+    },
     
     // Expert Consultations  
     expertConsultations: {
