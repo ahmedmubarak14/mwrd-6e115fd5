@@ -54,13 +54,7 @@ interface FinancialStats {
 
 export const EnhancedFinancialDashboard = () => {
   const { toast } = useToast();
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL, formatNumber, formatCurrency } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false,
-    formatNumber: (num: number) => num.toString(),
-    formatCurrency: (amount: number) => `$${amount}`
-  };
+  const { t, isRTL, formatNumber, formatCurrency } = useOptionalLanguage();
 
   const [transactions, setTransactions] = useState<FinancialTransaction[]>([]);
   const [filteredTransactions, setFilteredTransactions] = useState<FinancialTransaction[]>([]);

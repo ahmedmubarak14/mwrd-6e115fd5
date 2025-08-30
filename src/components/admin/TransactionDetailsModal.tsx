@@ -38,12 +38,7 @@ interface TransactionDetailsModalProps {
 }
 
 export const TransactionDetailsModal = ({ isOpen, onClose, transaction }: TransactionDetailsModalProps) => {
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL, formatCurrency } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false,
-    formatCurrency: (amount: number) => `$${amount}`
-  };
+  const { t, isRTL, formatCurrency } = useOptionalLanguage();
 
   const formatDateTime = (date: string) => new Date(date).toLocaleString();
 
