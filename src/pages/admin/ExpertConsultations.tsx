@@ -723,21 +723,21 @@ export const ExpertConsultations = () => {
                             <DropdownMenuSeparator />
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
-                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                  <Trash2 className="h-4 w-4 mr-2" />
-                                  Delete
-                                </DropdownMenuItem>
-                              </AlertDialogTrigger>
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>Delete Consultation</AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    Are you sure you want to delete this consultation? This action cannot be undone.
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction onClick={() => handleBulkDelete()}>Delete</AlertDialogAction>
+                               <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                   <Trash2 className="h-4 w-4 mr-2" />
+                                   {t('expertConsultations.delete')}
+                                 </DropdownMenuItem>
+                               </AlertDialogTrigger>
+                               <AlertDialogContent>
+                                 <AlertDialogHeader>
+                                   <AlertDialogTitle>{t('expertConsultations.deleteConsultationTitle')}</AlertDialogTitle>
+                                   <AlertDialogDescription>
+                                     {t('expertConsultations.deleteConsultationMessage')}
+                                   </AlertDialogDescription>
+                                 </AlertDialogHeader>
+                                 <AlertDialogFooter>
+                                   <AlertDialogCancel>{t('expertConsultations.cancel')}</AlertDialogCancel>
+                                   <AlertDialogAction onClick={() => handleBulkDelete()}>{t('expertConsultations.delete')}</AlertDialogAction>
                                 </AlertDialogFooter>
                               </AlertDialogContent>
                             </AlertDialog>
@@ -942,7 +942,7 @@ export const ExpertConsultations = () => {
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">
-                Created: {formatDateString(consultation.created_at)}
+                {t('expertConsultations.created')} {formatDateString(consultation.created_at)}
               </span>
             </div>
             
@@ -950,18 +950,18 @@ export const ExpertConsultations = () => {
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm">
-                  Scheduled: {formatDateString(consultation.scheduled_date)}
+                  {t('expertConsultations.scheduledCard')} {formatDateString(consultation.scheduled_date)}
                 </span>
               </div>
             )}
             
             <div className="bg-muted p-2 rounded text-sm">
-              <strong>Message:</strong> {consultation.message}
+              <strong>{t('expertConsultations.messageLabel')}</strong> {consultation.message}
             </div>
             
             {consultation.notes && (
               <div className="bg-blue-50 p-2 rounded text-sm">
-                <strong>Admin Notes:</strong> {consultation.notes}
+                <strong>{t('expertConsultations.adminNotesLabel')}</strong> {consultation.notes}
               </div>
             )}
           </div>
@@ -972,7 +972,7 @@ export const ExpertConsultations = () => {
               onClick={() => setSelectedConsultation(consultation)}
             >
               <Eye className="h-4 w-4 mr-1" />
-              View
+              {t('expertConsultations.view')}
             </Button>
             {consultation.status === 'pending' && (
               <>
@@ -981,14 +981,14 @@ export const ExpertConsultations = () => {
                   variant="outline"
                   onClick={() => updateConsultationStatus(consultation.id, 'scheduled')}
                 >
-                  Schedule
+                  {t('expertConsultations.schedule')}
                 </Button>
                 <Button 
                   size="sm" 
                   variant="outline"
                   onClick={() => updateConsultationStatus(consultation.id, 'cancelled')}
                 >
-                  Cancel
+                  {t('expertConsultations.cancel')}
                 </Button>
               </>
             )}
@@ -998,7 +998,7 @@ export const ExpertConsultations = () => {
                 variant="outline"
                 onClick={() => updateConsultationStatus(consultation.id, 'completed')}
               >
-                Complete
+                {t('expertConsultations.complete')}
               </Button>
             )}
           </div>
