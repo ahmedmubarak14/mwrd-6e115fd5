@@ -675,7 +675,44 @@ export const arSA = {
       
       // Error Messages
       failedToUpdate: "فشل في تحديث الاستشارات",
-      failedToDelete: "فشل في حذف الاستشارات"
+      failedToDelete: "فشل في حذف الاستشارات",
+      
+      // Additional Success Messages
+      deletedConsultationsCount: "تم حذف {count} استشارة",
+      deleteFailed: "فشل في حذف الاستشارات",
+      scheduleSuccess: "تم جدولة الاستشارة بنجاح",
+      
+      // CSV headers
+      csvName: "الاسم",
+      csvEmail: "البريد الإلكتروني",
+      csvCompany: "الشركة",
+      csvEventType: "نوع الحدث",
+      csvStatus: "الحالة",
+      csvCreatedDate: "تاريخ الإنشاء",
+      csvMessage: "الرسالة",
+      
+      // Delete confirmation
+      deleteConsultationTitle: "حذف الاستشارة",
+      deleteConsultationMessage: "هل أنت متأكد من حذف هذه الاستشارة؟ لا يمكن التراجع عن هذا الإجراء.",
+      
+      // Modal
+      consultationDetailsTitle: "تفاصيل الاستشارة",
+      consultationDetailsDescription: "معلومات كاملة حول طلب الاستشارة",
+      clientPhone: "الهاتف",
+      clientCompany: "الشركة", 
+      consultationMessage: "الرسالة",
+      modalAdminNotes: "ملاحظات المدير",
+      
+      // Card labels
+      scheduledCard: "مجدولة:",
+      messageLabel: "الرسالة:",
+      adminNotesLabel: "ملاحظات المدير:",
+      
+      // Tab labels
+      allTab: "الكل",
+      
+      // Empty states
+      noConsultationsFoundCard: "لم يتم العثور على استشارات"
     }
   },
   

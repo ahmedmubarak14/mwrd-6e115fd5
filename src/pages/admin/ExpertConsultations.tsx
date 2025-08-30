@@ -214,11 +214,11 @@ export const ExpertConsultations = () => {
       
       if (error) throw error;
       
-      showSuccess(`Deleted ${selectedConsultations.length} consultation(s)`);
+      showSuccess(`${t('expertConsultations.deletedConsultationsCount').replace('{count}', selectedConsultations.length.toString())}`);
       setSelectedConsultations([]);
       await fetchConsultations();
     } catch (error) {
-      showError('Failed to delete consultations');
+      showError(t('expertConsultations.deleteFailed'));
     }
   };
 
@@ -239,7 +239,7 @@ export const ExpertConsultations = () => {
         return;
       }
 
-      showSuccess('Consultation scheduled successfully');
+      showSuccess(t('expertConsultations.scheduleSuccess'));
       await fetchConsultations();
     } catch (error) {
       showError(t('error.general'));
@@ -264,7 +264,7 @@ export const ExpertConsultations = () => {
 
   const handleExportConsultations = () => {
     const csvContent = [
-      ['Name', 'Email', 'Company', 'Event Type', 'Status', 'Created Date', 'Message'],
+      [t('expertConsultations.csvName'), t('expertConsultations.csvEmail'), t('expertConsultations.csvCompany'), t('expertConsultations.csvEventType'), t('expertConsultations.csvStatus'), t('expertConsultations.csvCreatedDate'), t('expertConsultations.csvMessage')],
       ...filteredConsultations.map(c => [
         c.full_name,
         c.email,
@@ -760,11 +760,11 @@ export const ExpertConsultations = () => {
         ) : (
           <Tabs defaultValue="all" className="space-y-4">
             <TabsList>
-              <TabsTrigger value="all">All ({filteredConsultations.length})</TabsTrigger>
-              <TabsTrigger value="pending">Pending ({pendingConsultations.length})</TabsTrigger>
-              <TabsTrigger value="scheduled">Scheduled ({scheduledConsultations.length})</TabsTrigger>
-              <TabsTrigger value="completed">Completed ({completedConsultations.length})</TabsTrigger>
-              <TabsTrigger value="cancelled">Cancelled ({cancelledConsultations.length})</TabsTrigger>
+              <TabsTrigger value="all">{t('expertConsultations.allTab')} ({filteredConsultations.length})</TabsTrigger>
+              <TabsTrigger value="pending">{t('expertConsultations.pending')} ({pendingConsultations.length})</TabsTrigger>
+              <TabsTrigger value="scheduled">{t('expertConsultations.scheduled')} ({scheduledConsultations.length})</TabsTrigger>
+              <TabsTrigger value="completed">{t('expertConsultations.completed')} ({completedConsultations.length})</TabsTrigger>
+              <TabsTrigger value="cancelled">{t('expertConsultations.cancelled')} ({cancelledConsultations.length})</TabsTrigger>
             </TabsList>
 
             <TabsContent value="all" className="space-y-4">
@@ -772,7 +772,7 @@ export const ExpertConsultations = () => {
                 <Card>
                   <CardContent className="py-8 text-center">
                     <MessageSquare className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                    <p className="text-muted-foreground">No consultations found</p>
+                    <p className="text-muted-foreground">{t('expertConsultations.noConsultationsFoundCard')}</p>
                   </CardContent>
                 </Card>
               ) : (
@@ -822,36 +822,36 @@ export const ExpertConsultations = () => {
         <Dialog open={!!selectedConsultation} onOpenChange={() => setSelectedConsultation(null)}>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle>Consultation Details</DialogTitle>
+              <DialogTitle>{t('expertConsultations.consultationDetailsTitle')}</DialogTitle>
               <DialogDescription>
-                Complete information about the consultation request
+                {t('expertConsultations.consultationDetailsDescription')}
               </DialogDescription>
             </DialogHeader>
             {selectedConsultation && (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label>Client Name</Label>
+                    <Label>{t('expertConsultations.clientName')}</Label>
                     <p className="text-sm font-medium">{selectedConsultation.full_name}</p>
                   </div>
                   <div>
-                    <Label>Email</Label>
+                    <Label>{t('expertConsultations.email')}</Label>
                     <p className="text-sm">{selectedConsultation.email}</p>
                   </div>
                   <div>
-                    <Label>Phone</Label>
-                    <p className="text-sm">{selectedConsultation.phone || 'Not provided'}</p>
+                    <Label>{t('expertConsultations.clientPhone')}</Label>
+                    <p className="text-sm">{selectedConsultation.phone || t('expertConsultations.notProvided')}</p>
                   </div>
                   <div>
-                    <Label>Company</Label>
-                    <p className="text-sm">{selectedConsultation.company || 'Not provided'}</p>
+                    <Label>{t('expertConsultations.clientCompany')}</Label>
+                    <p className="text-sm">{selectedConsultation.company || t('expertConsultations.notProvided')}</p>
                   </div>
                   <div>
-                    <Label>Event Type</Label>
+                    <Label>{t('expertConsultations.eventType')}</Label>
                     <Badge variant="outline">{selectedConsultation.event_type}</Badge>
                   </div>
                   <div>
-                    <Label>Status</Label>
+                    <Label>{t('expertConsultations.status')}</Label>
                     <Badge variant={getStatusBadgeVariant(selectedConsultation.status)}>
                       {selectedConsultation.status}
                     </Badge>
@@ -860,32 +860,32 @@ export const ExpertConsultations = () => {
                 
                 {selectedConsultation.event_description && (
                   <div>
-                    <Label>Event Description</Label>
+                    <Label>{t('expertConsultations.eventDescription')}</Label>
                     <p className="text-sm bg-muted p-2 rounded">{selectedConsultation.event_description}</p>
                   </div>
                 )}
                 
                 <div>
-                  <Label>Message</Label>
+                  <Label>{t('expertConsultations.consultationMessage')}</Label>
                   <p className="text-sm bg-muted p-2 rounded">{selectedConsultation.message}</p>
                 </div>
                 
                 {selectedConsultation.notes && (
                   <div>
-                    <Label>Admin Notes</Label>
+                    <Label>{t('expertConsultations.modalAdminNotes')}</Label>
                     <p className="text-sm bg-muted p-2 rounded">{selectedConsultation.notes}</p>
                   </div>
                 )}
                 
                 <div className="flex gap-2 pt-4">
                   <Button onClick={() => updateConsultationStatus(selectedConsultation.id, 'scheduled')}>
-                    Schedule
+                    {t('expertConsultations.schedule')}
                   </Button>
                   <Button variant="outline" onClick={() => updateConsultationStatus(selectedConsultation.id, 'completed')}>
-                    Complete
+                    {t('expertConsultations.complete')}
                   </Button>
                   <Button variant="destructive" onClick={() => updateConsultationStatus(selectedConsultation.id, 'cancelled')}>
-                    Cancel
+                    {t('expertConsultations.cancel')}
                   </Button>
                 </div>
               </div>

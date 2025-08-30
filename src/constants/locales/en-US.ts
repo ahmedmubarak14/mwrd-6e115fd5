@@ -866,7 +866,44 @@ export const enUS = {
       
       // Error Messages
       failedToUpdate: "Failed to update consultations",
-      failedToDelete: "Failed to delete consultations"
+      failedToDelete: "Failed to delete consultations",
+      
+      // Additional Success Messages
+      deletedConsultationsCount: "Deleted {count} consultation(s)",
+      deleteFailed: "Failed to delete consultations",
+      scheduleSuccess: "Consultation scheduled successfully",
+      
+      // CSV headers
+      csvName: "Name",
+      csvEmail: "Email", 
+      csvCompany: "Company",
+      csvEventType: "Event Type",
+      csvStatus: "Status",
+      csvCreatedDate: "Created Date", 
+      csvMessage: "Message",
+      
+      // Delete confirmation
+      deleteConsultationTitle: "Delete Consultation",
+      deleteConsultationMessage: "Are you sure you want to delete this consultation? This action cannot be undone.",
+      
+      // Modal
+      consultationDetailsTitle: "Consultation Details",
+      consultationDetailsDescription: "Complete information about the consultation request",
+      clientPhone: "Phone",
+      clientCompany: "Company",
+      consultationMessage: "Message",
+      modalAdminNotes: "Admin Notes",
+      
+      // Card labels
+      scheduledCard: "Scheduled:",
+      messageLabel: "Message:",
+      adminNotesLabel: "Admin Notes:",
+      
+      // Tab labels
+      allTab: "All",
+      
+      // Empty states
+      noConsultationsFoundCard: "No consultations found"
     },
     
     // Analytics missing keys
