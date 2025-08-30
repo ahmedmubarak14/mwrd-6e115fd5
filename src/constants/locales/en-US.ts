@@ -113,7 +113,14 @@ export const enUS = {
     contact: 'Contact',
     scheduledDate: 'Scheduled Date',
     notScheduled: 'Not Scheduled',
-    emailOnly: 'Email Only'
+    emailOnly: 'Email Only',
+    role: 'Role',
+    saveProfile: 'Save Profile',
+    securityDescription: 'Manage your security settings and preferences',
+    twoFactorAuth: 'Two-Factor Authentication',
+    adminSettings: 'Admin Settings',
+    activity: 'Activity',
+    permissions: 'Permissions'
   },
   error: {
     general: 'An error occurred'

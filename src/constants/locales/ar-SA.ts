@@ -113,7 +113,14 @@ export const arSA = {
     contact: 'التواصل',
     scheduledDate: 'التاريخ المجدول',
     notScheduled: 'غير مجدول',
-    emailOnly: 'البريد الإلكتروني فقط'
+    emailOnly: 'البريد الإلكتروني فقط',
+    role: 'الدور',
+    saveProfile: 'حفظ الملف الشخصي',
+    securityDescription: 'إدارة إعدادات الأمان والتفضيلات',
+    twoFactorAuth: 'المصادقة الثنائية',
+    adminSettings: 'إعدادات المشرف',
+    activity: 'النشاط',
+    permissions: 'الصلاحيات'
   },
   error: {
     general: 'حدث خطأ'
