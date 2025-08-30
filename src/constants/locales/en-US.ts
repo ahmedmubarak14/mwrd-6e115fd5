@@ -959,7 +959,81 @@ export const enUS = {
       noRequestsMatch: "No requests match your search criteria.",
       noVerificationRequestsFound: "No verification requests found.",
       noStatusRequestsFound: "No {status} verification requests found.",
-      clearSearch: "Clear Search"
+      clearSearch: "Clear Search",
+      
+      // Document and User Info
+      documentStatus: "Document Status:",
+      email: "Email:",
+      unknownUser: "Unknown User",
+      unknown: "Unknown",
+      
+      // Actions
+      viewDocument: "View Document",
+      download: "Download",
+      approve: "Approve",
+      reject: "Reject",
+      processing: "Processing...",
+      
+      // Review Notes  
+      addReviewNotesPlaceholder: "Add review notes (required for rejection)...",
+      reviewNotes: "Review Notes:",
+      reviewNotesRequired: "Note: Review notes are required for rejection.",
+      
+      // View Modes
+      tableView: "Table View",
+      cardView: "Card View",
+      refresh: "Refresh",
+      comprehensiveView: "Comprehensive view of all verification requests",
+      
+      // Status Labels
+      approved: "Approved",
+      rejected: "Rejected",
+      underReview: "Under Review",
+      pendingReview: "Pending Review",
+      
+      // Bulk Actions
+      bulkApprove: "Bulk Approve",
+      bulkReject: "Bulk Reject",
+      bulkApproveTitle: "Bulk Approve Requests",
+      bulkRejectTitle: "Bulk Reject Requests",
+      confirmApproval: "Confirm Approval",
+      confirmRejection: "Confirm Rejection",
+      
+      // Warning Messages
+      warning: "Warning:",
+      documentMissing: "Document file is missing from storage. Cannot approve without valid document.",
+      cannotApproveMessage: "Cannot approve request with missing documentation.",
+      
+      // Table Headers
+      verificationRequestsTable: "Verification Requests Table",
+      vendorInformation: "Vendor Information",
+      document: "Document",
+      status: "Status",
+      submitted: "Submitted",
+      actions: "Actions",
+      
+      // Loading and States
+      loadingRequests: "Loading verification requests...",
+      totalRequests: "Total Requests",
+      
+      // Search and Sort
+      searchPlaceholder: "Search by name, company, email, or document type...",
+      sortByDate: "Sort by Date",
+      sortByName: "Sort by Name", 
+      sortByStatus: "Sort by Status",
+      
+      // Selection and Bulk Operations
+      requestsSelected: "{count} requests selected",
+      bulkActionDescription: "This will {action} {count} selected verification requests.",
+      bulkNotesPlaceholder: "Notes for {action} action...",
+      
+      // Tab Labels
+      all: "All",
+      pending: "Pending",
+      
+      // Metrics
+      approvalRate: "Approval Rate",
+      avgProcessing: "Avg. Processing"
     },
     
     // Offers Management
@@ -984,12 +1058,11 @@ export const enUS = {
       compliance: "Compliance"
     },
     
-    // User Management Details
+    // User Management Details  
     userDetails: {
       user: "User",
       company: "Company",
       role: "Role",
-      status: "Status",
       joinedDate: "Joined Date",
       addUser: "Add User",
       addUserDescription: "Create a new user account",

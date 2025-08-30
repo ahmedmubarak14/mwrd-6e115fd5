@@ -853,7 +853,81 @@ export const arSA = {
       noRequestsMatch: "لا توجد طلبات تطابق معايير البحث.",
       noVerificationRequestsFound: "لم يتم العثور على طلبات تحقق.",
       noStatusRequestsFound: "لم يتم العثور على طلبات تحقق {status}.",
-      clearSearch: "مسح البحث"
+      clearSearch: "مسح البحث",
+      
+      // Document and User Info
+      documentStatus: "حالة الوثيقة:",
+      email: "البريد الإلكتروني:",
+      unknownUser: "مستخدم غير معروف",
+      unknown: "غير معروف",
+      
+      // Actions
+      viewDocument: "عرض الوثيقة",
+      download: "تحميل",
+      approve: "موافقة",
+      reject: "رفض",
+      processing: "جارٍ المعالجة...",
+      
+      // Review Notes
+      addReviewNotesPlaceholder: "إضافة ملاحظات المراجعة (مطلوبة للرفض)...",
+      reviewNotes: "ملاحظات المراجعة:",
+      reviewNotesRequired: "ملاحظة: ملاحظات المراجعة مطلوبة للرفض.",
+      
+      // View Modes
+      tableView: "عرض الجدول",
+      cardView: "عرض البطاقات",
+      refresh: "تحديث",
+      comprehensiveView: "عرض شامل لجميع طلبات التحقق",
+      
+      // Status Labels
+      approved: "معتمد",
+      rejected: "مرفوض",
+      underReview: "قيد المراجعة",
+      pendingReview: "في انتظار المراجعة",
+      
+      // Bulk Actions
+      bulkApprove: "موافقة جماعية",
+      bulkReject: "رفض جماعي",
+      bulkApproveTitle: "موافقة جماعية على الطلبات",
+      bulkRejectTitle: "رفض جماعي للطلبات",
+      confirmApproval: "تأكيد الموافقة",
+      confirmRejection: "تأكيد الرفض",
+      
+      // Warning Messages
+      warning: "تحذير:",
+      documentMissing: "ملف الوثيقة مفقود من التخزين. لا يمكن الموافقة بدون وثيقة صالحة.",
+      cannotApproveMessage: "لا يمكن الموافقة على الطلب مع وثائق مفقودة.",
+      
+      // Table Headers
+      verificationRequestsTable: "جدول طلبات التحقق",
+      vendorInformation: "معلومات البائع",
+      document: "الوثيقة",
+      status: "الحالة",
+      submitted: "تم التقديم",
+      actions: "الإجراءات",
+      
+      // Loading and States
+      loadingRequests: "تحميل طلبات التحقق...",
+      totalRequests: "إجمالي الطلبات",
+      
+      // Search and Sort
+      searchPlaceholder: "البحث بالاسم أو الشركة أو البريد الإلكتروني أو نوع الوثيقة...",
+      sortByDate: "ترتيب حسب التاريخ",
+      sortByName: "ترتيب حسب الاسم",
+      sortByStatus: "ترتيب حسب الحالة",
+      
+      // Selection and Bulk Operations
+      requestsSelected: "{count} طلب محدد",
+      bulkActionDescription: "سيتم {action} {count} طلب تحقق محدد.",
+      bulkNotesPlaceholder: "ملاحظات لإجراء {action}...",
+      
+      // Tab Labels
+      all: "الكل",
+      pending: "معلق",
+      
+      // Metrics
+      approvalRate: "معدل الموافقة",
+      avgProcessing: "متوسط المعالجة"
     },
     
     // Offers Management
@@ -882,8 +956,7 @@ export const arSA = {
     userDetails: {
       user: "المستخدم",
       company: "الشركة",
-      role: "الدور",
-      status: "الحالة",
+      role: "الدور", 
       joinedDate: "تاريخ الانضمام",
       addUser: "إضافة مستخدم",
       addUserDescription: "إنشاء حساب مستخدم جديد",
@@ -904,7 +977,7 @@ export const arSA = {
       bulkUpdateRole: "تحديث الدور",
       bulkUpdateStatus: "تحديث الحالة",
       confirmBulkAction: "تأكيد الإجراء المجمع",
-      selectStatus: "اختيار الحالة", 
+      selectStatus: "اختيار الحالة",
       pending: "معلق",
       exportUsers: "تصدير المستخدمين"
     },

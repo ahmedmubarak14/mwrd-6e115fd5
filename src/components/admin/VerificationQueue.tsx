@@ -388,7 +388,7 @@ export const VerificationQueue = () => {
               <User className="h-5 w-5 text-primary" />
               <div className="flex items-center gap-2">
                 <span className="font-semibold text-foreground">
-                  {request.user_profiles?.full_name || 'Unknown User'}
+                  {request.user_profiles?.full_name || t('admin.verificationQueue.unknownUser')}
                 </span>
                 {getStatusBadge(request.status)}
               </div>
@@ -403,16 +403,16 @@ export const VerificationQueue = () => {
             
             <div className="ml-8 space-y-1">
               <div className="text-sm text-muted-foreground">
-                <strong>Email:</strong> {request.user_profiles?.email}
+                <strong>{t('admin.verificationQueue.email')}</strong> {request.user_profiles?.email}
               </div>
               
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Clock className="h-4 w-4" />
-                <span>Submitted: {formatDate(new Date(request.submitted_at))}</span>
+                <span>{t('admin.verificationQueue.submitted')} {formatDate(new Date(request.submitted_at))}</span>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">Document Status:</span>
+                <span className="text-sm font-medium">{t('admin.verificationQueue.documentStatus')}</span>
                 {getDocumentStatusIndicator(request.id)}
               </div>
             </div>
@@ -423,7 +423,7 @@ export const VerificationQueue = () => {
           <Alert variant="destructive" className="mb-4">
             <AlertTriangle className="h-4 w-4" />
             <AlertDescription>
-              <strong>Warning:</strong> Document file is missing from storage. Cannot approve without valid document.
+              <strong>{t('admin.verificationQueue.warning')}</strong> {t('admin.verificationQueue.documentMissing')}
             </AlertDescription>
           </Alert>
         )}
@@ -438,7 +438,7 @@ export const VerificationQueue = () => {
               className="flex-1"
             >
               <Eye className="h-4 w-4 mr-2" />
-              View Document
+              {t('admin.verificationQueue.viewDocument')}
             </Button>
             
             <Button
@@ -453,14 +453,14 @@ export const VerificationQueue = () => {
               className="flex-1"
             >
               <Download className="h-4 w-4 mr-2" />
-              Download
+              {t('admin.verificationQueue.download')}
             </Button>
           </div>
 
           {request.status === 'pending' && (
             <>
               <Textarea
-                placeholder="Add review notes (required for rejection)..."
+                placeholder={t('admin.verificationQueue.addReviewNotesPlaceholder')}
                 value={reviewNotes[request.id] || ''}
                 onChange={(e) => setReviewNotes(prev => ({ ...prev, [request.id]: e.target.value }))}
                 rows={3}
@@ -475,7 +475,7 @@ export const VerificationQueue = () => {
                   className="flex-1 bg-green-600 hover:bg-green-700"
                 >
                   <Check className="h-4 w-4 mr-2" />
-                  {processing === request.id ? 'Processing...' : 'Approve'}
+                  {processing === request.id ? t('admin.verificationQueue.processing') : t('admin.verificationQueue.approve')}
                 </Button>
                 
                 <Button
@@ -486,19 +486,19 @@ export const VerificationQueue = () => {
                   className="flex-1"
                 >
                   <X className="h-4 w-4 mr-2" />
-                  {processing === request.id ? 'Processing...' : 'Reject'}
+                  {processing === request.id ? t('admin.verificationQueue.processing') : t('admin.verificationQueue.reject')}
                 </Button>
               </div>
               
               {documentStatus[request.id] === 'missing' && (
                 <p className="text-sm text-destructive">
-                  Cannot approve request with missing documentation.
+                  {t('admin.verificationQueue.cannotApproveMessage')}
                 </p>
               )}
               
               {!reviewNotes[request.id]?.trim() && documentStatus[request.id] !== 'missing' && (
                 <p className="text-sm text-muted-foreground">
-                  Note: Review notes are required for rejection.
+                  {t('admin.verificationQueue.reviewNotesRequired')}
                 </p>
               )}
             </>
@@ -507,7 +507,7 @@ export const VerificationQueue = () => {
           {request.reviewer_notes && (
             <Alert>
               <AlertDescription>
-                <strong>Review Notes:</strong><br />
+                <strong>{t('admin.verificationQueue.reviewNotes')}</strong><br />
                 {request.reviewer_notes}
               </AlertDescription>
             </Alert>
@@ -524,9 +524,9 @@ export const VerificationQueue = () => {
           <List className="h-5 w-5" />
           Verification Requests Table
         </CardTitle>
-        <CardDescription>
-          Comprehensive view of all verification requests
-        </CardDescription>
+          <CardDescription>
+            {t('admin.verificationQueue.comprehensiveView')}
+          </CardDescription>
       </CardHeader>
       <CardContent className="p-0">
         <Table>
@@ -568,7 +568,7 @@ export const VerificationQueue = () => {
                 </TableCell>
                 <TableCell>
                   <div>
-                    <div className="font-medium">{request.user_profiles?.full_name || 'Unknown'}</div>
+                    <div className="font-medium">{request.user_profiles?.full_name || t('admin.verificationQueue.unknown')}</div>
                     <div className="text-sm text-muted-foreground">{request.user_profiles?.company_name}</div>
                     <div className="text-xs text-muted-foreground">{request.user_profiles?.email}</div>
                   </div>
@@ -670,7 +670,7 @@ export const VerificationQueue = () => {
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <FileCheck className="h-4 w-4" />
-              Approved
+              {t('admin.verificationQueue.approved')}
             </CardDescription>
             <CardTitle className="text-2xl text-green-600">{analytics.approved}</CardTitle>
           </CardHeader>
@@ -680,7 +680,7 @@ export const VerificationQueue = () => {
           <CardHeader className="pb-2">
             <CardDescription className="flex items-center gap-2">
               <FileX className="h-4 w-4" />
-              Rejected
+              {t('admin.verificationQueue.rejected')}
             </CardDescription>
             <CardTitle className="text-2xl text-red-600">{analytics.rejected}</CardTitle>
           </CardHeader>
@@ -747,11 +747,11 @@ export const VerificationQueue = () => {
             onClick={() => setViewMode(viewMode === 'cards' ? 'table' : 'cards')}
           >
             {viewMode === 'cards' ? <List className="h-4 w-4" /> : <Grid className="h-4 w-4" />}
-            {viewMode === 'cards' ? 'Table View' : 'Card View'}
+            {viewMode === 'cards' ? t('admin.verificationQueue.tableView') : t('admin.verificationQueue.cardView')}
           </Button>
           
           <Button variant="outline" size="sm" onClick={fetchVerificationRequests}>
-            Refresh
+            {t('admin.verificationQueue.refresh')}
           </Button>
         </div>
       </div>
@@ -772,13 +772,13 @@ export const VerificationQueue = () => {
                       variant="outline"
                       onClick={() => setBulkAction('approve')}
                     >
-                      <CheckSquare className="h-4 w-4 mr-2" />
-                      Bulk Approve
+                  <CheckSquare className="h-4 w-4 mr-2" />
+                  {t('admin.verificationQueue.bulkApprove')}
                     </Button>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader>
-                      <DialogTitle>Bulk {bulkAction === 'approve' ? 'Approve' : 'Reject'} Requests</DialogTitle>
+                      <DialogTitle>{bulkAction === 'approve' ? t('admin.verificationQueue.bulkApproveTitle') : t('admin.verificationQueue.bulkRejectTitle')}</DialogTitle>
                       <DialogDescription>
                         This will {bulkAction} {selectedRequests.length} selected verification requests.
                       </DialogDescription>
@@ -802,7 +802,7 @@ export const VerificationQueue = () => {
                             setSelectedRequests([]);
                           }}
                         >
-                          Confirm {bulkAction === 'approve' ? 'Approval' : 'Rejection'}
+                          {bulkAction === 'approve' ? t('admin.verificationQueue.confirmApproval') : t('admin.verificationQueue.confirmRejection')}
                         </Button>
                       </div>
                     </div>
@@ -836,13 +836,13 @@ export const VerificationQueue = () => {
             Pending ({statusCounts.pending})
           </TabsTrigger>
           <TabsTrigger value="approved">
-            Approved ({statusCounts.approved})
+            {t('admin.verificationQueue.approved')} ({statusCounts.approved})
           </TabsTrigger>
           <TabsTrigger value="rejected">
-            Rejected ({statusCounts.rejected})
+            {t('admin.verificationQueue.rejected')} ({statusCounts.rejected})
           </TabsTrigger>
           <TabsTrigger value="under_review">
-            Under Review ({statusCounts.under_review})
+            {t('admin.verificationQueue.underReview')} ({statusCounts.under_review})
           </TabsTrigger>
         </TabsList>
 
