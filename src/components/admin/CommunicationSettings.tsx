@@ -557,35 +557,35 @@ export const CommunicationSettings = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Globe className="h-5 w-5" />
-                Third-party Integrations
+                {t('communication.thirdPartyIntegrations')}
               </CardTitle>
               <CardDescription>
-                Configure webhooks and external service integrations
+                {t('communication.integrationsConfigDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium">Slack Webhook URL</label>
+                  <label className="text-sm font-medium">{t('communication.slackWebhookUrl')}</label>
                   <Input
                     value={integrationSettings.slack_webhook}
                     onChange={(e) => setIntegrationSettings({...integrationSettings, slack_webhook: e.target.value})}
-                    placeholder="https://hooks.slack.com/services/..."
+                    placeholder={t('communication.slackWebhookPlaceholder')}
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium">Discord Webhook URL</label>
+                  <label className="text-sm font-medium">{t('communication.discordWebhookUrl')}</label>
                   <Input
                     value={integrationSettings.discord_webhook}
                     onChange={(e) => setIntegrationSettings({...integrationSettings, discord_webhook: e.target.value})}
-                    placeholder="https://discord.com/api/webhooks/..."
+                    placeholder={t('communication.discordWebhookPlaceholder')}
                   />
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <div>
-                    <label className="text-sm font-medium">Enable Webhook Notifications</label>
-                    <p className="text-xs text-muted-foreground">Send notifications to configured webhooks</p>
+                    <label className="text-sm font-medium">{t('communication.enableWebhookNotifications')}</label>
+                    <p className="text-xs text-muted-foreground">{t('communication.enableWebhookNotificationsDesc')}</p>
                   </div>
                   <Switch
                     checked={integrationSettings.webhook_notifications}
@@ -595,10 +595,10 @@ export const CommunicationSettings = () => {
               </div>
 
               <div className="border-t pt-6">
-                <h4 className="font-medium mb-4">API Configuration</h4>
+                <h4 className="font-medium mb-4">{t('communication.apiConfiguration')}</h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <label className="text-sm font-medium">API Rate Limit</label>
+                    <label className="text-sm font-medium">{t('communication.apiRateLimit')}</label>
                     <Input
                       type="number"
                       value={integrationSettings.api_rate_limit}
@@ -606,7 +606,7 @@ export const CommunicationSettings = () => {
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium">Webhook Retries</label>
+                    <label className="text-sm font-medium">{t('communication.webhookRetries')}</label>
                     <Input
                       type="number"
                       value={integrationSettings.webhook_retries}
@@ -614,7 +614,7 @@ export const CommunicationSettings = () => {
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium">Timeout (seconds)</label>
+                    <label className="text-sm font-medium">{t('communication.timeoutSeconds')}</label>
                     <Input
                       type="number"
                       value={integrationSettings.webhook_timeout}
@@ -626,7 +626,7 @@ export const CommunicationSettings = () => {
 
               <Button onClick={() => handleSaveSettings("Integrations")} className="w-full" disabled={isSaving}>
                 {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
-                Save Integration Settings
+                {t('communication.saveIntegrationSettings')}
               </Button>
             </CardContent>
           </Card>
