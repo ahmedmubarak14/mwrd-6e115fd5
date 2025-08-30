@@ -57,7 +57,7 @@ export const ExpertConsultations = () => {
   const getTranslatedStatus = (status: string) => {
     // Ensure status is lowercase and handle potential undefined/null values
     const normalizedStatus = status?.toLowerCase() || 'pending';
-    return t(`expertConsultations.${normalizedStatus}`);
+    return t(`admin.expertConsultations.${normalizedStatus}`);
   };
   const { showSuccess, showError } = useToastFeedback();
   const [consultations, setConsultations] = useState<Consultation[]>([]);
@@ -197,11 +197,11 @@ export const ExpertConsultations = () => {
         )
       );
       
-        showSuccess(`${t('success.updated')} ${selectedConsultations.length} ${t('expertConsultations.updatedConsultations')}`);
+        showSuccess(`${t('success.updated')} ${selectedConsultations.length} ${t('admin.expertConsultations.updatedConsultations')}`);
         setSelectedConsultations([]);
         await fetchConsultations();
       } catch (error) {
-        showError(t('expertConsultations.failedToUpdate'));
+        showError(t('admin.expertConsultations.failedToUpdate'));
     }
   };
 
@@ -216,11 +216,11 @@ export const ExpertConsultations = () => {
       
       if (error) throw error;
       
-      showSuccess(`${t('expertConsultations.deletedConsultationsCount').replace('{count}', selectedConsultations.length.toString())}`);
+      showSuccess(`${t('admin.expertConsultations.deletedConsultationsCount').replace('{count}', selectedConsultations.length.toString())}`);
       setSelectedConsultations([]);
       await fetchConsultations();
     } catch (error) {
-      showError(t('expertConsultations.deleteFailed'));
+      showError(t('admin.expertConsultations.deleteFailed'));
     }
   };
 
@@ -241,7 +241,7 @@ export const ExpertConsultations = () => {
         return;
       }
 
-      showSuccess(t('expertConsultations.scheduleSuccess'));
+      showSuccess(t('admin.expertConsultations.scheduleSuccess'));
       await fetchConsultations();
     } catch (error) {
       showError(t('error.general'));
@@ -266,7 +266,7 @@ export const ExpertConsultations = () => {
 
   const handleExportConsultations = () => {
     const csvContent = [
-      [t('expertConsultations.csvName'), t('expertConsultations.csvEmail'), t('expertConsultations.csvCompany'), t('expertConsultations.csvEventType'), t('expertConsultations.csvStatus'), t('expertConsultations.csvCreatedDate'), t('expertConsultations.csvMessage')],
+      [t('admin.expertConsultations.csvName'), t('admin.expertConsultations.csvEmail'), t('admin.expertConsultations.csvCompany'), t('admin.expertConsultations.csvEventType'), t('admin.expertConsultations.csvStatus'), t('admin.expertConsultations.csvCreatedDate'), t('admin.expertConsultations.csvMessage')],
       ...filteredConsultations.map(c => [
         c.full_name,
         c.email,
@@ -368,9 +368,9 @@ export const ExpertConsultations = () => {
         {/* Header */}
         <div className={cn("flex items-start justify-between", isRTL && "flex-row-reverse")}>
           <div className={cn(isRTL ? "text-right" : "text-left")}>
-            <h1 className="text-3xl font-bold">{t('expertConsultations.title')}</h1>
+            <h1 className="text-3xl font-bold">{t('admin.expertConsultations.title')}</h1>
             <p className="text-muted-foreground mt-2">
-              {t('expertConsultations.description')}
+              {t('admin.expertConsultations.description')}
             </p>
           </div>
           <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
@@ -380,7 +380,7 @@ export const ExpertConsultations = () => {
               onClick={() => setViewMode('table')}
             >
               <FileText className="h-4 w-4 mr-2" />
-              {t('expertConsultations.table')}
+              {t('admin.expertConsultations.table')}
             </Button>
             <Button 
               variant={viewMode === 'cards' ? 'default' : 'outline'}
@@ -388,7 +388,7 @@ export const ExpertConsultations = () => {
               onClick={() => setViewMode('cards')}
             >
               <BookOpen className="h-4 w-4 mr-2" />
-              {t('expertConsultations.cards')}
+              {t('admin.expertConsultations.cards')}
             </Button>
           </div>
         </div>
@@ -397,12 +397,12 @@ export const ExpertConsultations = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t('expertConsultations.totalConsultations')}</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('admin.expertConsultations.totalConsultations')}</CardTitle>
               <MessageSquare className="h-4 w-4 text-primary" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{analyticsData.totalConsultations}</div>
-              <p className="text-xs text-muted-foreground">{t('expertConsultations.allTime')}</p>
+              <p className="text-xs text-muted-foreground">{t('admin.expertConsultations.allTime')}</p>
             </CardContent>
           </Card>
           
@@ -413,7 +413,7 @@ export const ExpertConsultations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-warning">{analyticsData.pendingConsultations}</div>
-              <p className="text-xs text-muted-foreground">{t('expertConsultations.awaitingResponse')}</p>
+              <p className="text-xs text-muted-foreground">{t('admin.expertConsultations.awaitingResponse')}</p>
             </CardContent>
           </Card>
           
@@ -424,7 +424,7 @@ export const ExpertConsultations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-blue-500">{analyticsData.scheduledConsultations}</div>
-              <p className="text-xs text-muted-foreground">{t('expertConsultations.activeBookings')}</p>
+              <p className="text-xs text-muted-foreground">{t('admin.expertConsultations.activeBookings')}</p>
             </CardContent>
           </Card>
           
@@ -435,29 +435,29 @@ export const ExpertConsultations = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-success">{analyticsData.completedConsultations}</div>
-              <p className="text-xs text-muted-foreground">{t('expertConsultations.successfullyFinished')}</p>
+              <p className="text-xs text-muted-foreground">{t('admin.expertConsultations.successfullyFinished')}</p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t('expertConsultations.avgResponseTime')}</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('admin.expertConsultations.avgResponseTime')}</CardTitle>
               <Timer className="h-4 w-4 text-orange-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{analyticsData.avgResponseTime}{t('expertConsultations.hoursUnit')}</div>
-              <p className="text-xs text-muted-foreground">{t('expertConsultations.responseTime')}</p>
+              <div className="text-2xl font-bold">{analyticsData.avgResponseTime}{t('admin.expertConsultations.hoursUnit')}</div>
+              <p className="text-xs text-muted-foreground">{t('admin.expertConsultations.responseTime')}</p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t('expertConsultations.conversionRate')}</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('admin.expertConsultations.conversionRate')}</CardTitle>
               <Target className="h-4 w-4 text-green-500" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{analyticsData.conversionRate}%</div>
-              <p className="text-xs text-muted-foreground">{t('expertConsultations.completionRate')}</p>
+              <p className="text-xs text-muted-foreground">{t('admin.expertConsultations.completionRate')}</p>
             </CardContent>
           </Card>
         </div>
@@ -468,7 +468,7 @@ export const ExpertConsultations = () => {
             <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
               <CardTitle className="flex items-center gap-2">
                 <Activity className="h-5 w-5" />
-                {t('expertConsultations.consultationManagement')}
+                {t('admin.expertConsultations.consultationManagement')}
               </CardTitle>
               <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
                 <Button 
@@ -478,7 +478,7 @@ export const ExpertConsultations = () => {
                   className="flex items-center gap-2"
                 >
                   <Download className="h-4 w-4" />
-                  {t('expertConsultations.export')}
+                  {t('admin.expertConsultations.export')}
                 </Button>
                 <Button 
                   variant="outline" 
@@ -487,7 +487,7 @@ export const ExpertConsultations = () => {
                   className="flex items-center gap-2"
                 >
                   <RefreshCw className="h-4 w-4" />
-                  {t('expertConsultations.refresh')}
+                  {t('admin.expertConsultations.refresh')}
                 </Button>
               </div>
             </div>
@@ -498,7 +498,7 @@ export const ExpertConsultations = () => {
               <div className="relative">
                 <Search className={cn("absolute top-3 h-4 w-4 text-muted-foreground", isRTL ? "right-3" : "left-3")} />
                 <Input
-                  placeholder={t('expertConsultations.searchPlaceholder')}
+                  placeholder={t('admin.expertConsultations.searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className={cn(isRTL ? "pr-10" : "pl-10")}
@@ -507,39 +507,39 @@ export const ExpertConsultations = () => {
               
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                   <SelectTrigger>
-                    <SelectValue placeholder={t('expertConsultations.status')} />
+                    <SelectValue placeholder={t('admin.expertConsultations.status')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">{t('expertConsultations.allStatus')}</SelectItem>
-                    <SelectItem value="pending">{t('expertConsultations.pending')}</SelectItem>
-                    <SelectItem value="scheduled">{t('expertConsultations.scheduled')}</SelectItem>
-                    <SelectItem value="completed">{t('expertConsultations.completed')}</SelectItem>
-                    <SelectItem value="cancelled">{t('expertConsultations.cancelled')}</SelectItem>
+                    <SelectItem value="all">{t('admin.expertConsultations.allStatus')}</SelectItem>
+                    <SelectItem value="pending">{t('admin.expertConsultations.pending')}</SelectItem>
+                    <SelectItem value="scheduled">{t('admin.expertConsultations.scheduled')}</SelectItem>
+                    <SelectItem value="completed">{t('admin.expertConsultations.completed')}</SelectItem>
+                    <SelectItem value="cancelled">{t('admin.expertConsultations.cancelled')}</SelectItem>
                   </SelectContent>
               </Select>
               
               <Select value={eventTypeFilter} onValueChange={setEventTypeFilter}>
                   <SelectTrigger>
-                    <SelectValue placeholder={t('expertConsultations.eventType')} />
+                    <SelectValue placeholder={t('admin.expertConsultations.eventType')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">{t('expertConsultations.allEvents')}</SelectItem>
-                    <SelectItem value="consultation">{t('expertConsultations.consultation')}</SelectItem>
-                    <SelectItem value="meeting">{t('expertConsultations.meeting')}</SelectItem>
-                    <SelectItem value="presentation">{t('expertConsultations.presentation')}</SelectItem>
-                    <SelectItem value="workshop">{t('expertConsultations.workshop')}</SelectItem>
+                    <SelectItem value="all">{t('admin.expertConsultations.allEvents')}</SelectItem>
+                    <SelectItem value="consultation">{t('admin.expertConsultations.consultation')}</SelectItem>
+                    <SelectItem value="meeting">{t('admin.expertConsultations.meeting')}</SelectItem>
+                    <SelectItem value="presentation">{t('admin.expertConsultations.presentation')}</SelectItem>
+                    <SelectItem value="workshop">{t('admin.expertConsultations.workshop')}</SelectItem>
                   </SelectContent>
               </Select>
               
               <Select value={sortBy} onValueChange={setSortBy}>
                   <SelectTrigger>
-                    <SelectValue placeholder={t('expertConsultations.sortBy')} />
+                    <SelectValue placeholder={t('admin.expertConsultations.sortBy')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="created_at">{t('expertConsultations.dateCreated')}</SelectItem>
-                    <SelectItem value="full_name">{t('expertConsultations.name')}</SelectItem>
-                    <SelectItem value="status">{t('expertConsultations.status')}</SelectItem>
-                    <SelectItem value="event_type">{t('expertConsultations.eventType')}</SelectItem>
+                    <SelectItem value="created_at">{t('admin.expertConsultations.dateCreated')}</SelectItem>
+                    <SelectItem value="full_name">{t('admin.expertConsultations.name')}</SelectItem>
+                    <SelectItem value="status">{t('admin.expertConsultations.status')}</SelectItem>
+                    <SelectItem value="event_type">{t('admin.expertConsultations.eventType')}</SelectItem>
                   </SelectContent>
               </Select>
               
@@ -549,7 +549,7 @@ export const ExpertConsultations = () => {
                 className="flex items-center gap-2"
               >
                 <ArrowUpDown className="h-4 w-4" />
-                {sortOrder === 'asc' ? t('expertConsultations.asc') : t('expertConsultations.desc')}
+                {sortOrder === 'asc' ? t('admin.expertConsultations.asc') : t('admin.expertConsultations.desc')}
               </Button>
             </div>
 
@@ -557,28 +557,28 @@ export const ExpertConsultations = () => {
             {selectedConsultations.length > 0 && (
               <div className="flex items-center gap-2 mb-4 p-3 bg-muted rounded-lg">
                 <span className="text-sm font-medium">
-                  {selectedConsultations.length} {selectedConsultations.length > 1 ? t('expertConsultations.consultationsSelected') : t('expertConsultations.consultationSelected')}
+                  {selectedConsultations.length} {selectedConsultations.length > 1 ? t('admin.expertConsultations.consultationsSelected') : t('admin.expertConsultations.consultationSelected')}
                 </span>
                 <div className="flex gap-2 ml-auto">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm">
                         <CheckCircle className="h-4 w-4 mr-2" />
-                        {t('expertConsultations.changeStatus')}
+                        {t('admin.expertConsultations.changeStatus')}
                       </Button>
                     </DropdownMenuTrigger>
                       <DropdownMenuContent>
                         <DropdownMenuItem onClick={() => handleBulkStatusChange('pending')}>
-                          {t('expertConsultations.pending')}
+                          {t('admin.expertConsultations.pending')}
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleBulkStatusChange('scheduled')}>
-                          {t('expertConsultations.scheduled')}
+                          {t('admin.expertConsultations.scheduled')}
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleBulkStatusChange('completed')}>
-                          {t('expertConsultations.completed')}
+                          {t('admin.expertConsultations.completed')}
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleBulkStatusChange('cancelled')}>
-                          {t('expertConsultations.cancelled')}
+                          {t('admin.expertConsultations.cancelled')}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                   </DropdownMenu>
@@ -587,20 +587,20 @@ export const ExpertConsultations = () => {
                     <AlertDialogTrigger asChild>
                       <Button variant="destructive" size="sm">
                         <Trash2 className="h-4 w-4 mr-2" />
-                        {t('expertConsultations.delete')}
+                        {t('admin.expertConsultations.delete')}
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>{t('expertConsultations.deleteConsultations')}</AlertDialogTitle>
+                        <AlertDialogTitle>{t('admin.expertConsultations.deleteConsultations')}</AlertDialogTitle>
                         <AlertDialogDescription>
-                          {t('expertConsultations.deleteConsultationConfirm')} {selectedConsultations.length} {selectedConsultations.length > 1 ? t('expertConsultations.consultationsSelected') : t('expertConsultations.consultationSelected')}? 
-                          {t('expertConsultations.cannotUndo')}
+                          {t('admin.expertConsultations.deleteConsultationConfirm')} {selectedConsultations.length} {selectedConsultations.length > 1 ? t('admin.expertConsultations.consultationsSelected') : t('admin.expertConsultations.consultationSelected')}? 
+                          {t('admin.expertConsultations.cannotUndo')}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>{t('expertConsultations.cancel')}</AlertDialogCancel>
-                        <AlertDialogAction onClick={handleBulkDelete}>{t('expertConsultations.delete')}</AlertDialogAction>
+                        <AlertDialogCancel>{t('admin.expertConsultations.cancel')}</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleBulkDelete}>{t('admin.expertConsultations.delete')}</AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
@@ -623,14 +623,14 @@ export const ExpertConsultations = () => {
                         onCheckedChange={toggleSelectAll}
                       />
                     </TableHead>
-                    <TableHead>{t('expertConsultations.fullName')}</TableHead>
-                    <TableHead>{t('expertConsultations.eventType')}</TableHead>
-                    <TableHead>{t('expertConsultations.status')}</TableHead>
-                    <TableHead>{t('expertConsultations.company')}</TableHead>
+                    <TableHead>{t('admin.expertConsultations.fullName')}</TableHead>
+                    <TableHead>{t('admin.expertConsultations.eventType')}</TableHead>
+                    <TableHead>{t('admin.expertConsultations.status')}</TableHead>
+                    <TableHead>{t('admin.expertConsultations.company')}</TableHead>
                     <TableHead>{t('common.contact')}</TableHead>
                     <TableHead>{t('common.scheduledDate')}</TableHead>
-                    <TableHead>{t('expertConsultations.createdAt')}</TableHead>
-                    <TableHead className="w-12">{t('expertConsultations.actions')}</TableHead>
+                    <TableHead>{t('admin.expertConsultations.createdAt')}</TableHead>
+                    <TableHead className="w-12">{t('admin.expertConsultations.actions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -666,7 +666,7 @@ export const ExpertConsultations = () => {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <span className="text-sm">{consultation.company || t('expertConsultations.notProvided')}</span>
+                        <span className="text-sm">{consultation.company || t('admin.expertConsultations.notProvided')}</span>
                       </TableCell>
                       <TableCell>
                         <div className="text-sm">
@@ -704,42 +704,42 @@ export const ExpertConsultations = () => {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>{t('expertConsultations.actions')}</DropdownMenuLabel>
+                            <DropdownMenuLabel>{t('admin.expertConsultations.actions')}</DropdownMenuLabel>
                             <DropdownMenuItem onClick={() => setSelectedConsultation(consultation)}>
                               <Eye className="h-4 w-4 mr-2" />
-                              {t('expertConsultations.viewDetails')}
+                              {t('admin.expertConsultations.viewDetails')}
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => updateConsultationStatus(consultation.id, 'scheduled')}>
                               <Calendar className="h-4 w-4 mr-2" />
-                              {t('expertConsultations.schedule')}
+                              {t('admin.expertConsultations.schedule')}
                             </DropdownMenuItem>
                             <DropdownMenuItem onClick={() => updateConsultationStatus(consultation.id, 'completed')}>
                               <CheckCircle className="h-4 w-4 mr-2" />
-                              {t('expertConsultations.complete')}
+                              {t('admin.expertConsultations.complete')}
                             </DropdownMenuItem>
                             <DropdownMenuItem onClick={() => updateConsultationStatus(consultation.id, 'cancelled')}>
                               <AlertCircle className="h-4 w-4 mr-2" />
-                              {t('expertConsultations.cancel')}
+                              {t('admin.expertConsultations.cancel')}
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                                    <Trash2 className="h-4 w-4 mr-2" />
-                                   {t('expertConsultations.delete')}
+                                   {t('admin.expertConsultations.delete')}
                                  </DropdownMenuItem>
                                </AlertDialogTrigger>
                                <AlertDialogContent>
                                  <AlertDialogHeader>
-                                   <AlertDialogTitle>{t('expertConsultations.deleteConsultationTitle')}</AlertDialogTitle>
+                                   <AlertDialogTitle>{t('admin.expertConsultations.deleteConsultationTitle')}</AlertDialogTitle>
                                    <AlertDialogDescription>
-                                     {t('expertConsultations.deleteConsultationMessage')}
+                                     {t('admin.expertConsultations.deleteConsultationMessage')}
                                    </AlertDialogDescription>
                                  </AlertDialogHeader>
                                  <AlertDialogFooter>
-                                   <AlertDialogCancel>{t('expertConsultations.cancel')}</AlertDialogCancel>
-                                   <AlertDialogAction onClick={() => handleBulkDelete()}>{t('expertConsultations.delete')}</AlertDialogAction>
+                                   <AlertDialogCancel>{t('admin.expertConsultations.cancel')}</AlertDialogCancel>
+                                   <AlertDialogAction onClick={() => handleBulkDelete()}>{t('admin.expertConsultations.delete')}</AlertDialogAction>
                                 </AlertDialogFooter>
                               </AlertDialogContent>
                             </AlertDialog>
@@ -754,7 +754,7 @@ export const ExpertConsultations = () => {
               {filteredConsultations.length === 0 && (
                 <div className="text-center py-12">
                   <MessageSquare className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <p className="text-muted-foreground">{t('expertConsultations.noConsultationsFoundMessage')}</p>
+                  <p className="text-muted-foreground">{t('admin.expertConsultations.noConsultationsFoundMessage')}</p>
                 </div>
               )}
             </CardContent>
@@ -762,11 +762,11 @@ export const ExpertConsultations = () => {
         ) : (
           <Tabs defaultValue="all" className="space-y-4">
             <TabsList>
-              <TabsTrigger value="all">{t('expertConsultations.allTab')} ({filteredConsultations.length})</TabsTrigger>
-              <TabsTrigger value="pending">{t('expertConsultations.pending')} ({pendingConsultations.length})</TabsTrigger>
-              <TabsTrigger value="scheduled">{t('expertConsultations.scheduled')} ({scheduledConsultations.length})</TabsTrigger>
-              <TabsTrigger value="completed">{t('expertConsultations.completed')} ({completedConsultations.length})</TabsTrigger>
-              <TabsTrigger value="cancelled">{t('expertConsultations.cancelled')} ({cancelledConsultations.length})</TabsTrigger>
+              <TabsTrigger value="all">{t('admin.expertConsultations.allTab')} ({filteredConsultations.length})</TabsTrigger>
+              <TabsTrigger value="pending">{t('admin.expertConsultations.pending')} ({pendingConsultations.length})</TabsTrigger>
+              <TabsTrigger value="scheduled">{t('admin.expertConsultations.scheduled')} ({scheduledConsultations.length})</TabsTrigger>
+              <TabsTrigger value="completed">{t('admin.expertConsultations.completed')} ({completedConsultations.length})</TabsTrigger>
+              <TabsTrigger value="cancelled">{t('admin.expertConsultations.cancelled')} ({cancelledConsultations.length})</TabsTrigger>
             </TabsList>
 
             <TabsContent value="all" className="space-y-4">
@@ -774,7 +774,7 @@ export const ExpertConsultations = () => {
                 <Card>
                   <CardContent className="py-8 text-center">
                     <MessageSquare className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                    <p className="text-muted-foreground">{t('expertConsultations.noConsultationsFoundCard')}</p>
+                    <p className="text-muted-foreground">{t('admin.expertConsultations.noConsultationsFoundCard')}</p>
                   </CardContent>
                 </Card>
               ) : (

@@ -764,6 +764,119 @@ export const arSA = {
     communicationCenter: "مركز الاتصالات",
     communicationCenterDescription: "إدارة التواصل والتفاعل مع المستخدمين",
     
+    // Expert Consultations
+    expertConsultations: {
+      // Page Structure
+      title: "الاستشارات الخبيرة",
+      description: "إدارة طلبات الاستشارة والتفاعل مع العملاء",
+      table: "عرض الجدول",
+      cards: "عرض البطاقات",
+
+      // Analytics
+      totalConsultations: "إجمالي الاستشارات",
+      avgResponseTime: "متوسط وقت الاستجابة",
+      conversionRate: "معدل التحويل",
+      allTime: "جميع الأوقات",
+      awaitingResponse: "في انتظار الرد",
+      activeBookings: "الحجوزات النشطة",
+      successfullyFinished: "اكتملت بنجاح",
+      hoursUnit: "س",
+      responseTime: "وقت الاستجابة",
+      completionRate: "معدل الإنجاز",
+
+      // Management
+      consultationManagement: "إدارة الاستشارات",
+      
+      // Actions
+      export: "تصدير",
+      refresh: "تحديث",
+      schedule: "جدولة",
+      complete: "إكمال",
+      cancel: "إلغاء",
+      delete: "حذف",
+      view: "عرض",
+      viewDetails: "عرض التفاصيل",
+      actions: "الإجراءات",
+      changeStatus: "تغيير الحالة",
+
+      // Status
+      pending: "قيد الانتظار",
+      scheduled: "مجدولة",
+      completed: "مكتملة",
+      cancelled: "ملغية",
+      allStatus: "جميع الحالات",
+      status: "الحالة",
+
+      // Forms & Search
+      searchPlaceholder: "البحث في الاستشارات، الأسماء، البريد الإلكتروني...",
+      sortBy: "ترتيب حسب",
+      eventType: "نوع الحدث",
+      allEvents: "جميع الأحداث",
+      consultation: "استشارة",
+      meeting: "اجتماع",
+      presentation: "عرض تقديمي",
+      workshop: "ورشة عمل",
+      dateCreated: "تاريخ الإنشاء",
+      name: "الاسم",
+      asc: "تصاعدي",
+      desc: "تنازلي",
+
+      // Table Headers & Labels
+      fullName: "الاسم الكامل",
+      company: "الشركة",
+      createdAt: "تاريخ الإنشاء",
+      notProvided: "غير محدد",
+
+      // Bulk Actions
+      consultationsSelected: "استشارات محددة",
+      consultationSelected: "استشارة محددة",
+      updatedConsultations: "استشارات محدثة",
+      failedToUpdate: "فشل في تحديث الاستشارات",
+      deletedConsultationsCount: "تم حذف {count} استشارات بنجاح",
+      deleteFailed: "فشل في حذف الاستشارات",
+      deleteConsultations: "حذف الاستشارات",
+      deleteConsultationConfirm: "هل أنت متأكد من رغبتك في حذف",
+      cannotUndo: "لا يمكن التراجع عن هذا الإجراء.",
+
+      // Individual Actions
+      deleteConsultationTitle: "حذف الاستشارة",
+      deleteConsultationMessage: "هل أنت متأكد من رغبتك في حذف هذه الاستشارة؟ لا يمكن التراجع عن هذا الإجراء.",
+      scheduleSuccess: "تم جدولة الاستشارة بنجاح",
+
+      // Empty States
+      noConsultationsFoundMessage: "لم يتم العثور على استشارات تطابق معاييرك.",
+      noConsultationsFoundCard: "لم يتم العثور على استشارات تطابق معاييرك.",
+
+      // Tabs
+      allTab: "الكل",
+
+      // Modal Details
+      consultationDetailsTitle: "تفاصيل الاستشارة",
+      consultationDetailsDescription: "عرض وإدارة معلومات الاستشارة",
+      clientName: "اسم العميل",
+      email: "البريد الإلكتروني",
+      clientPhone: "الهاتف",
+      clientCompany: "الشركة",
+      eventDescription: "وصف الحدث",
+      consultationMessage: "رسالة الاستشارة",
+      modalAdminNotes: "ملاحظات المدير",
+
+      // Card View
+      created: "تم الإنشاء:",
+      scheduledCard: "مجدولة:",
+      messageLabel: "الرسالة:",
+      adminNotesLabel: "ملاحظات المدير:",
+
+      // CSV Export
+      csvName: "الاسم",
+      csvEmail: "البريد الإلكتروني",
+      csvCompany: "الشركة",
+      csvEventType: "نوع الحدث",
+      csvStatus: "الحالة",
+      csvCreatedDate: "تاريخ الإنشاء",
+      csvMessage: "الرسالة"
+    },
+    
     // User Management
     userManagement: "إدارة المستخدمين",
     userManagementDescription: "إدارة حسابات المستخدمين والأدوار والصلاحيات",

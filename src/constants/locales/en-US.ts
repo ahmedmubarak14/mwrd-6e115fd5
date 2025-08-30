@@ -617,6 +617,119 @@ export const enUS = {
     communicationCenter: "Communication Center",
     communicationCenterDescription: "Manage platform communications and user interactions",
     
+    // Expert Consultations
+    expertConsultations: {
+      // Page Structure
+      title: "Expert Consultations",
+      description: "Manage consultation requests and client interactions",
+      table: "Table View",
+      cards: "Card View",
+
+      // Analytics
+      totalConsultations: "Total Consultations",
+      avgResponseTime: "Avg Response Time",
+      conversionRate: "Conversion Rate",
+      allTime: "All Time",
+      awaitingResponse: "Awaiting Response",
+      activeBookings: "Active Bookings", 
+      successfullyFinished: "Successfully Finished",
+      hoursUnit: "h",
+      responseTime: "Response Time",
+      completionRate: "Completion Rate",
+
+      // Management
+      consultationManagement: "Consultation Management",
+      
+      // Actions
+      export: "Export",
+      refresh: "Refresh",
+      schedule: "Schedule",
+      complete: "Complete",
+      cancel: "Cancel",
+      delete: "Delete",
+      view: "View",
+      viewDetails: "View Details",
+      actions: "Actions",
+      changeStatus: "Change Status",
+
+      // Status
+      pending: "Pending",
+      scheduled: "Scheduled",
+      completed: "Completed",
+      cancelled: "Cancelled",
+      allStatus: "All Status",
+      status: "Status",
+
+      // Forms & Search
+      searchPlaceholder: "Search consultations, names, emails...",
+      sortBy: "Sort By",
+      eventType: "Event Type",
+      allEvents: "All Events",
+      consultation: "Consultation",
+      meeting: "Meeting", 
+      presentation: "Presentation",
+      workshop: "Workshop",
+      dateCreated: "Date Created",
+      name: "Name",
+      asc: "Ascending",
+      desc: "Descending",
+
+      // Table Headers & Labels
+      fullName: "Full Name",
+      company: "Company",
+      createdAt: "Created At",
+      notProvided: "Not Provided",
+
+      // Bulk Actions
+      consultationsSelected: "consultations selected",
+      consultationSelected: "consultation selected",
+      updatedConsultations: "consultations updated",
+      failedToUpdate: "Failed to update consultations",
+      deletedConsultationsCount: "Deleted {count} consultations successfully",
+      deleteFailed: "Failed to delete consultations",
+      deleteConsultations: "Delete Consultations",
+      deleteConsultationConfirm: "Are you sure you want to delete",
+      cannotUndo: "This action cannot be undone.",
+
+      // Individual Actions
+      deleteConsultationTitle: "Delete Consultation",
+      deleteConsultationMessage: "Are you sure you want to delete this consultation? This action cannot be undone.",
+      scheduleSuccess: "Consultation scheduled successfully",
+
+      // Empty States
+      noConsultationsFoundMessage: "No consultations found matching your criteria.",
+      noConsultationsFoundCard: "No consultations found matching your criteria.",
+
+      // Tabs
+      allTab: "All",
+
+      // Modal Details
+      consultationDetailsTitle: "Consultation Details",
+      consultationDetailsDescription: "View and manage consultation information",
+      clientName: "Client Name",
+      email: "Email",
+      clientPhone: "Phone",
+      clientCompany: "Company",
+      eventDescription: "Event Description",
+      consultationMessage: "Consultation Message",
+      modalAdminNotes: "Admin Notes",
+
+      // Card View
+      created: "Created:",
+      scheduledCard: "Scheduled:",
+      messageLabel: "Message:",
+      adminNotesLabel: "Admin Notes:",
+
+      // CSV Export
+      csvName: "Name",
+      csvEmail: "Email", 
+      csvCompany: "Company",
+      csvEventType: "Event Type",
+      csvStatus: "Status",
+      csvCreatedDate: "Created Date",
+      csvMessage: "Message"
+    },
+    
     // User Management
     userManagement: "User Management",
     userManagementDescription: "Manage user accounts, roles, and permissions",
@@ -747,175 +860,6 @@ export const enUS = {
       credit_card: "Credit Card",
       bank_transfer: "Bank Transfer",
       platform: "Platform"
-    },
-    
-    // Expert Consultations  
-    expertConsultations: {
-      title: "Expert Consultations",
-      description: "Manage consultation requests and client interactions",
-      totalConsultations: "Total Consultations",
-      allTime: "All time",
-      pendingConsultations: "Pending Consultations", 
-      scheduledConsultations: "Scheduled Consultations",
-      completedConsultations: "Completed Consultations",
-      avgResponseTime: "Avg Response Time",
-      conversionRate: "Conversion Rate",
-      awaitingResponse: "Awaiting response",
-      activeBookings: "Active bookings", 
-      successfullyFinished: "Successfully finished",
-      responseTime: "Response time",
-      completionRate: "Completion rate",
-      searchConsultations: "Search consultations...",
-      eventType: "Event Type",
-      sortBy: "Sort By",
-      fullName: "Full Name",
-      createdAt: "Created At",
-      assignTo: "Assign To",
-      selectAdmin: "Select Admin",
-      assign: "Assign",
-      bulkActions: "Bulk Actions",
-      markAsScheduled: "Mark as Scheduled", 
-      markAsCompleted: "Mark as Completed",
-      deleteSelected: "Delete Selected",
-      exportConsultations: "Export Consultations",
-      noConsultationsFound: "No Consultations Found",
-      consultationDetails: "Consultation Details",
-      contactInformation: "Contact Information",
-      consultationRequest: "Consultation Request",
-      adminNotes: "Admin Notes",
-      addNotes: "Add notes...",
-      consultationHistory: "Consultation History", 
-      updateStatus: "Update Status",
-      scheduleConsultation: "Schedule Consultation",
-      selectDateTime: "Select Date & Time",
-      schedulingNotes: "Scheduling Notes",
-      schedule: "Schedule",
-      viewDetails: "View Details",
-      editConsultation: "Edit Consultation",
-      deleteConsultation: "Delete Consultation",
-      consultationScheduled: "Consultation Scheduled",
-      statusUpdated: "Status Updated",
-      consultationDeleted: "Consultation Deleted",
-      
-      // View modes
-      table: "Table",
-      cards: "Cards",
-      
-      // Management
-      consultationManagement: "Consultation Management",
-      export: "Export",
-      refresh: "Refresh",
-      
-      // Search and Filters
-      searchPlaceholder: "Search consultations, names, emails...",
-      status: "Status",
-      allStatus: "All Status",
-      allEvents: "All Events",
-      dateCreated: "Date Created",
-      name: "Name",
-      asc: "Asc",
-      desc: "Desc",
-      
-      // Event Types
-      consultation: "Consultation",
-      meeting: "Meeting",
-      presentation: "Presentation",
-      workshop: "Workshop",
-      
-      // Status Types
-      pending: "Pending",
-      scheduled: "Scheduled",
-      completed: "Completed",
-      cancelled: "Cancelled",
-      
-      // Time Units
-      hoursUnit: "h",
-      
-      // Bulk Actions
-      consultationsSelected: "consultation(s) selected",
-      consultationSelected: "consultation selected",
-      changeStatus: "Change Status",
-      delete: "Delete",
-      
-      // Action Menu
-      actions: "Actions",
-      complete: "Complete",
-      cancel: "Cancel",
-      
-      // Confirmation Dialogs
-      deleteConsultations: "Delete Consultations",
-      deleteConsultationConfirm: "Are you sure you want to delete",
-      deleteConsultationConfirmSingle: "Are you sure you want to delete this consultation?",
-      cannotUndo: "This action cannot be undone.",
-      
-      // Table Headers
-      email: "Email",
-      phone: "Phone",
-      company: "Company",
-      
-      // Tab Labels
-      all: "All",
-      
-      // Empty States
-      noConsultationsFoundMessage: "No consultations found matching your criteria",
-      
-      // Modal Labels
-      completeInformation: "Complete information about the consultation request",
-      clientName: "Client Name",
-      eventDescription: "Event Description",
-      message: "Message",
-      notProvided: "Not provided",
-      
-      // Card View Labels
-      created: "Created:",
-      scheduledLabel: "Scheduled:",
-      view: "View",
-      
-      // Success Messages  
-      updatedConsultations: "consultation(s)",
-      deletedConsultations: "consultation(s)",
-      consultationScheduledSuccess: "Consultation scheduled successfully",
-      
-      // Error Messages
-      failedToUpdate: "Failed to update consultations",
-      failedToDelete: "Failed to delete consultations",
-      
-      // Additional Success Messages
-      deletedConsultationsCount: "Deleted {count} consultation(s)",
-      deleteFailed: "Failed to delete consultations",
-      scheduleSuccess: "Consultation scheduled successfully",
-      
-      // CSV headers
-      csvName: "Name",
-      csvEmail: "Email", 
-      csvCompany: "Company",
-      csvEventType: "Event Type",
-      csvStatus: "Status",
-      csvCreatedDate: "Created Date", 
-      csvMessage: "Message",
-      
-      // Delete confirmation
-      deleteConsultationTitle: "Delete Consultation",
-      deleteConsultationMessage: "Are you sure you want to delete this consultation? This action cannot be undone.",
-      
-      // Modal
-      consultationDetailsTitle: "Consultation Details",
-      consultationDetailsDescription: "Complete information about the consultation request",
-      clientPhone: "Phone",
-      clientCompany: "Company",
-      consultationMessage: "Message",
-      modalAdminNotes: "Admin Notes",
-      
-      // Card labels
-      scheduledCard: "Scheduled:",
-      messageLabel: "Message:",
-      adminNotesLabel: "Admin Notes:",
-      
-      // Tab labels
-      allTab: "All",
-      
-      // Empty states
-      noConsultationsFoundCard: "No consultations found"
     },
     
     // Analytics missing keys
