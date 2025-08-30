@@ -195,11 +195,11 @@ export const ExpertConsultations = () => {
         )
       );
       
-      showSuccess(`Updated ${selectedConsultations.length} consultation(s)`);
-      setSelectedConsultations([]);
-      await fetchConsultations();
-    } catch (error) {
-      showError('Failed to update consultations');
+        showSuccess(`${t('success.updated')} ${selectedConsultations.length} ${t('expertConsultations.updatedConsultations')}`);
+        setSelectedConsultations([]);
+        await fetchConsultations();
+      } catch (error) {
+        showError(t('expertConsultations.failedToUpdate'));
     }
   };
 
@@ -378,7 +378,7 @@ export const ExpertConsultations = () => {
               onClick={() => setViewMode('table')}
             >
               <FileText className="h-4 w-4 mr-2" />
-              Table
+              {t('expertConsultations.table')}
             </Button>
             <Button 
               variant={viewMode === 'cards' ? 'default' : 'outline'}
@@ -386,7 +386,7 @@ export const ExpertConsultations = () => {
               onClick={() => setViewMode('cards')}
             >
               <BookOpen className="h-4 w-4 mr-2" />
-              Cards
+              {t('expertConsultations.cards')}
             </Button>
           </div>
         </div>
@@ -466,7 +466,7 @@ export const ExpertConsultations = () => {
             <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
               <CardTitle className="flex items-center gap-2">
                 <Activity className="h-5 w-5" />
-                Consultation Management
+                {t('expertConsultations.consultationManagement')}
               </CardTitle>
               <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
                 <Button 
@@ -476,7 +476,7 @@ export const ExpertConsultations = () => {
                   className="flex items-center gap-2"
                 >
                   <Download className="h-4 w-4" />
-                  Export
+                  {t('expertConsultations.export')}
                 </Button>
                 <Button 
                   variant="outline" 
@@ -485,7 +485,7 @@ export const ExpertConsultations = () => {
                   className="flex items-center gap-2"
                 >
                   <RefreshCw className="h-4 w-4" />
-                  Refresh
+                  {t('expertConsultations.refresh')}
                 </Button>
               </div>
             </div>
@@ -496,7 +496,7 @@ export const ExpertConsultations = () => {
               <div className="relative">
                 <Search className={cn("absolute top-3 h-4 w-4 text-muted-foreground", isRTL ? "right-3" : "left-3")} />
                 <Input
-                  placeholder="Search consultations, names, emails..."
+                  placeholder={t('expertConsultations.searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className={cn(isRTL ? "pr-10" : "pl-10")}
@@ -504,41 +504,41 @@ export const ExpertConsultations = () => {
               </div>
               
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="scheduled">Scheduled</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="cancelled">Cancelled</SelectItem>
-                </SelectContent>
+                  <SelectTrigger>
+                    <SelectValue placeholder={t('expertConsultations.status')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">{t('expertConsultations.allStatus')}</SelectItem>
+                    <SelectItem value="pending">{t('expertConsultations.pending')}</SelectItem>
+                    <SelectItem value="scheduled">{t('expertConsultations.scheduled')}</SelectItem>
+                    <SelectItem value="completed">{t('expertConsultations.completed')}</SelectItem>
+                    <SelectItem value="cancelled">{t('expertConsultations.cancelled')}</SelectItem>
+                  </SelectContent>
               </Select>
               
               <Select value={eventTypeFilter} onValueChange={setEventTypeFilter}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Event Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Events</SelectItem>
-                  <SelectItem value="consultation">Consultation</SelectItem>
-                  <SelectItem value="meeting">Meeting</SelectItem>
-                  <SelectItem value="presentation">Presentation</SelectItem>
-                  <SelectItem value="workshop">Workshop</SelectItem>
-                </SelectContent>
+                  <SelectTrigger>
+                    <SelectValue placeholder={t('expertConsultations.eventType')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">{t('expertConsultations.allEvents')}</SelectItem>
+                    <SelectItem value="consultation">{t('expertConsultations.consultation')}</SelectItem>
+                    <SelectItem value="meeting">{t('expertConsultations.meeting')}</SelectItem>
+                    <SelectItem value="presentation">{t('expertConsultations.presentation')}</SelectItem>
+                    <SelectItem value="workshop">{t('expertConsultations.workshop')}</SelectItem>
+                  </SelectContent>
               </Select>
               
               <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="created_at">Date Created</SelectItem>
-                  <SelectItem value="full_name">Name</SelectItem>
-                  <SelectItem value="status">Status</SelectItem>
-                  <SelectItem value="event_type">Event Type</SelectItem>
-                </SelectContent>
+                  <SelectTrigger>
+                    <SelectValue placeholder={t('expertConsultations.sortBy')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="created_at">{t('expertConsultations.dateCreated')}</SelectItem>
+                    <SelectItem value="full_name">{t('expertConsultations.name')}</SelectItem>
+                    <SelectItem value="status">{t('expertConsultations.status')}</SelectItem>
+                    <SelectItem value="event_type">{t('expertConsultations.eventType')}</SelectItem>
+                  </SelectContent>
               </Select>
               
               <Button 
@@ -547,7 +547,7 @@ export const ExpertConsultations = () => {
                 className="flex items-center gap-2"
               >
                 <ArrowUpDown className="h-4 w-4" />
-                {sortOrder === 'asc' ? 'Asc' : 'Desc'}
+                {sortOrder === 'asc' ? t('expertConsultations.asc') : t('expertConsultations.desc')}
               </Button>
             </div>
 
@@ -555,50 +555,50 @@ export const ExpertConsultations = () => {
             {selectedConsultations.length > 0 && (
               <div className="flex items-center gap-2 mb-4 p-3 bg-muted rounded-lg">
                 <span className="text-sm font-medium">
-                  {selectedConsultations.length} consultation{selectedConsultations.length > 1 ? 's' : ''} selected
+                  {selectedConsultations.length} {selectedConsultations.length > 1 ? t('expertConsultations.consultationsSelected') : t('expertConsultations.consultationSelected')}
                 </span>
                 <div className="flex gap-2 ml-auto">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm">
                         <CheckCircle className="h-4 w-4 mr-2" />
-                        Change Status
+                        {t('expertConsultations.changeStatus')}
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuItem onClick={() => handleBulkStatusChange('pending')}>
-                        Pending
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleBulkStatusChange('scheduled')}>
-                        Scheduled
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleBulkStatusChange('completed')}>
-                        Completed
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleBulkStatusChange('cancelled')}>
-                        Cancelled
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem onClick={() => handleBulkStatusChange('pending')}>
+                          {t('expertConsultations.pending')}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleBulkStatusChange('scheduled')}>
+                          {t('expertConsultations.scheduled')}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleBulkStatusChange('completed')}>
+                          {t('expertConsultations.completed')}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleBulkStatusChange('cancelled')}>
+                          {t('expertConsultations.cancelled')}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
                   </DropdownMenu>
                   
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button variant="destructive" size="sm">
                         <Trash2 className="h-4 w-4 mr-2" />
-                        Delete
+                        {t('expertConsultations.delete')}
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                        <AlertDialogTitle>Delete Consultations</AlertDialogTitle>
+                        <AlertDialogTitle>{t('expertConsultations.deleteConsultations')}</AlertDialogTitle>
                         <AlertDialogDescription>
-                          Are you sure you want to delete {selectedConsultations.length} selected consultation{selectedConsultations.length > 1 ? 's' : ''}? 
-                          This action cannot be undone.
+                          {t('expertConsultations.deleteConsultationConfirm')} {selectedConsultations.length} {selectedConsultations.length > 1 ? t('expertConsultations.consultationsSelected') : t('expertConsultations.consultationSelected')}? 
+                          {t('expertConsultations.cannotUndo')}
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={handleBulkDelete}>Delete</AlertDialogAction>
+                        <AlertDialogCancel>{t('expertConsultations.cancel')}</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleBulkDelete}>{t('expertConsultations.delete')}</AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
@@ -621,14 +621,14 @@ export const ExpertConsultations = () => {
                         onCheckedChange={toggleSelectAll}
                       />
                     </TableHead>
-                    <TableHead>Client</TableHead>
-                    <TableHead>Event Type</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Company</TableHead>
-                    <TableHead>Contact</TableHead>
-                    <TableHead>Scheduled Date</TableHead>
-                    <TableHead>Created</TableHead>
-                    <TableHead className="w-12">Actions</TableHead>
+                    <TableHead>{t('expertConsultations.fullName')}</TableHead>
+                    <TableHead>{t('expertConsultations.eventType')}</TableHead>
+                    <TableHead>{t('expertConsultations.status')}</TableHead>
+                    <TableHead>{t('expertConsultations.company')}</TableHead>
+                    <TableHead>{t('common.contact')}</TableHead>
+                    <TableHead>{t('common.scheduledDate')}</TableHead>
+                    <TableHead>{t('expertConsultations.createdAt')}</TableHead>
+                    <TableHead className="w-12">{t('expertConsultations.actions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -664,7 +664,7 @@ export const ExpertConsultations = () => {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <span className="text-sm">{consultation.company || 'N/A'}</span>
+                        <span className="text-sm">{consultation.company || t('expertConsultations.notProvided')}</span>
                       </TableCell>
                       <TableCell>
                         <div className="text-sm">
@@ -676,7 +676,7 @@ export const ExpertConsultations = () => {
                           ) : (
                             <div className="flex items-center gap-1">
                               <Mail className="h-3 w-3" />
-                              Email only
+                              {t('common.emailOnly')}
                             </div>
                           )}
                         </div>
@@ -685,7 +685,7 @@ export const ExpertConsultations = () => {
                         <div className="text-sm">
                           {consultation.scheduled_date ? 
                             formatDateString(consultation.scheduled_date) : 
-                            'Not scheduled'
+                            t('common.notScheduled')
                           }
                         </div>
                       </TableCell>
@@ -702,23 +702,23 @@ export const ExpertConsultations = () => {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuLabel>{t('expertConsultations.actions')}</DropdownMenuLabel>
                             <DropdownMenuItem onClick={() => setSelectedConsultation(consultation)}>
                               <Eye className="h-4 w-4 mr-2" />
-                              View Details
+                              {t('expertConsultations.viewDetails')}
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => updateConsultationStatus(consultation.id, 'scheduled')}>
                               <Calendar className="h-4 w-4 mr-2" />
-                              Schedule
+                              {t('expertConsultations.schedule')}
                             </DropdownMenuItem>
                             <DropdownMenuItem onClick={() => updateConsultationStatus(consultation.id, 'completed')}>
                               <CheckCircle className="h-4 w-4 mr-2" />
-                              Complete
+                              {t('expertConsultations.complete')}
                             </DropdownMenuItem>
                             <DropdownMenuItem onClick={() => updateConsultationStatus(consultation.id, 'cancelled')}>
                               <AlertCircle className="h-4 w-4 mr-2" />
-                              Cancel
+                              {t('expertConsultations.cancel')}
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <AlertDialog>
@@ -752,7 +752,7 @@ export const ExpertConsultations = () => {
               {filteredConsultations.length === 0 && (
                 <div className="text-center py-12">
                   <MessageSquare className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <p className="text-muted-foreground">No consultations found matching your criteria</p>
+                  <p className="text-muted-foreground">{t('expertConsultations.noConsultationsFoundMessage')}</p>
                 </div>
               )}
             </CardContent>

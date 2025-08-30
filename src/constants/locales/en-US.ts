@@ -786,7 +786,87 @@ export const enUS = {
       deleteConsultation: "Delete Consultation",
       consultationScheduled: "Consultation Scheduled",
       statusUpdated: "Status Updated",
-      consultationDeleted: "Consultation Deleted"
+      consultationDeleted: "Consultation Deleted",
+      
+      // View modes
+      table: "Table",
+      cards: "Cards",
+      
+      // Management
+      consultationManagement: "Consultation Management",
+      export: "Export",
+      refresh: "Refresh",
+      
+      // Search and Filters
+      searchPlaceholder: "Search consultations, names, emails...",
+      status: "Status",
+      allStatus: "All Status",
+      allEvents: "All Events",
+      dateCreated: "Date Created",
+      name: "Name",
+      asc: "Asc",
+      desc: "Desc",
+      
+      // Event Types
+      consultation: "Consultation",
+      meeting: "Meeting",
+      presentation: "Presentation",
+      workshop: "Workshop",
+      
+      // Status Types
+      pending: "Pending",
+      scheduled: "Scheduled",
+      completed: "Completed",
+      cancelled: "Cancelled",
+      
+      // Bulk Actions
+      consultationsSelected: "consultation(s) selected",
+      consultationSelected: "consultation selected",
+      changeStatus: "Change Status",
+      delete: "Delete",
+      
+      // Action Menu
+      actions: "Actions",
+      complete: "Complete",
+      cancel: "Cancel",
+      
+      // Confirmation Dialogs
+      deleteConsultations: "Delete Consultations",
+      deleteConsultationConfirm: "Are you sure you want to delete",
+      deleteConsultationConfirmSingle: "Are you sure you want to delete this consultation?",
+      cannotUndo: "This action cannot be undone.",
+      
+      // Table Headers
+      email: "Email",
+      phone: "Phone",
+      company: "Company",
+      
+      // Tab Labels
+      all: "All",
+      
+      // Empty States
+      noConsultationsFoundMessage: "No consultations found matching your criteria",
+      
+      // Modal Labels
+      completeInformation: "Complete information about the consultation request",
+      clientName: "Client Name",
+      eventDescription: "Event Description",
+      message: "Message",
+      notProvided: "Not provided",
+      
+      // Card View Labels
+      created: "Created:",
+      scheduledLabel: "Scheduled:",
+      view: "View",
+      
+      // Success Messages  
+      updatedConsultations: "consultation(s)",
+      deletedConsultations: "consultation(s)",
+      consultationScheduledSuccess: "Consultation scheduled successfully",
+      
+      // Error Messages
+      failedToUpdate: "Failed to update consultations",
+      failedToDelete: "Failed to delete consultations"
     },
     
     // Analytics missing keys
@@ -1540,7 +1620,7 @@ export const enUS = {
       supportCenter: "Support Center",
       verificationQueue: "Verification Queue",
       communicationCenter: "Communication Center",
-      categoryManagement: "Category Management",
+      expertConsultations: "Expert Consultations",
       financialTransactions: "Financial Transactions",
       securityMonitoring: "Security Monitoring"
     },

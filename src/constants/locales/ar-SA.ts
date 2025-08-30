@@ -569,6 +569,113 @@ export const arSA = {
       credit_card: "بطاقة ائتمان",
       bank_transfer: "حوالة بنكية", 
       platform: "المنصة"
+    },
+    
+    // Expert Consultations  
+    expertConsultations: {
+      title: "الاستشارات الخبيرة",
+      description: "إدارة طلبات الاستشارة والتفاعل مع العملاء",
+      totalConsultations: "إجمالي الاستشارات",
+      allTime: "كل الأوقات",
+      pendingConsultations: "الاستشارات المعلقة", 
+      scheduledConsultations: "الاستشارات المجدولة",
+      completedConsultations: "الاستشارات المكتملة",
+      avgResponseTime: "متوسط وقت الاستجابة",
+      conversionRate: "معدل التحويل",
+      awaitingResponse: "في انتظار الاستجابة",
+      activeBookings: "الحجوزات النشطة", 
+      successfullyFinished: "اكتملت بنجاح",
+      responseTime: "وقت الاستجابة",
+      completionRate: "معدل الإكمال",
+      
+      // View modes
+      table: "جدول",
+      cards: "بطاقات",
+      
+      // Management
+      consultationManagement: "إدارة الاستشارات",
+      export: "تصدير",
+      refresh: "تحديث",
+      
+      // Search and Filters
+      searchPlaceholder: "البحث في الاستشارات والأسماء والإيميلات...",
+      status: "الحالة",
+      allStatus: "جميع الحالات",
+      allEvents: "جميع الأحداث",
+      eventType: "نوع الحدث",
+      sortBy: "ترتيب بواسطة",
+      dateCreated: "تاريخ الإنشاء",
+      name: "الاسم",
+      asc: "تصاعدي",
+      desc: "تنازلي",
+      
+      // Event Types
+      consultation: "استشارة",
+      meeting: "اجتماع",
+      presentation: "عرض تقديمي",
+      workshop: "ورشة عمل",
+      
+      // Status Types
+      pending: "معلق",
+      scheduled: "مجدول",
+      completed: "مكتمل",
+      cancelled: "ملغى",
+      
+      // Bulk Actions
+      consultationsSelected: "استشارة محددة",
+      consultationSelected: "استشارة محددة",
+      changeStatus: "تغيير الحالة",
+      delete: "حذف",
+      
+      // Action Menu
+      actions: "الإجراءات",
+      viewDetails: "عرض التفاصيل",
+      schedule: "جدولة",
+      complete: "إكمال",
+      cancel: "إلغاء",
+      
+      // Confirmation Dialogs
+      deleteConsultations: "حذف الاستشارات",
+      deleteConsultationConfirm: "هل أنت متأكد أنك تريد حذف",
+      deleteConsultationConfirmSingle: "هل أنت متأكد أنك تريد حذف هذه الاستشارة؟",
+      cannotUndo: "لا يمكن التراجع عن هذا الإجراء.",
+      
+      // Table Headers
+      fullName: "الاسم الكامل",
+      email: "البريد الإلكتروني",
+      phone: "الهاتف",
+      company: "الشركة",
+      createdAt: "تاريخ الإنشاء",
+      
+      // Tab Labels
+      all: "الكل", 
+      
+      // Empty States
+      noConsultationsFoundMessage: "لم يتم العثور على استشارات تطابق معاييرك",
+      noConsultationsFound: "لم يتم العثور على استشارات",
+      
+      // Modal Labels
+      consultationDetails: "تفاصيل الاستشارة",
+      completeInformation: "معلومات كاملة عن طلب الاستشارة",
+      clientName: "اسم العميل",
+      eventDescription: "وصف الحدث",
+      message: "الرسالة",
+      adminNotes: "ملاحظات المدير",
+      notProvided: "غير مقدم",
+      
+      // Card View Labels
+      created: "أُنشئ في:",
+      scheduledLabel: "مجدول في:",
+      view: "عرض",
+      
+      // Success Messages  
+      updatedConsultations: "تم تحديث الاستشارات",
+      deletedConsultations: "تم حذف الاستشارات",
+      consultationScheduledSuccess: "تم جدولة الاستشارة بنجاح",
+      
+      // Error Messages
+      failedToUpdate: "فشل في تحديث الاستشارات",
+      failedToDelete: "فشل في حذف الاستشارات"
     }
   },
   
@@ -1328,7 +1435,7 @@ export const arSA = {
       supportCenter: "مركز الدعم",
       verificationQueue: "قائمة التحقق",
       communicationCenter: "مركز الاتصالات",
-      categoryManagement: "إدارة الفئات",
+      expertConsultations: "الاستشارات الخبيرة",
       financialTransactions: "المعاملات المالية",
       securityMonitoring: "مراقبة الأمان"
     },
