@@ -47,7 +47,7 @@ export const AdminHeader = ({ onMobileMenuOpen, onSidebarToggle, sidebarOpen }: 
                 size="icon"
                 onClick={onMobileMenuOpen}
                 className="h-9 w-9 hover:bg-accent/50 transition-all duration-200 shrink-0"
-                aria-label="Open mobile menu"
+                aria-label={t('admin.openMobileMenu')}
               >
                 <Menu className="h-4 w-4" />
               </Button>
@@ -59,7 +59,7 @@ export const AdminHeader = ({ onMobileMenuOpen, onSidebarToggle, sidebarOpen }: 
                 size="icon"
                 onClick={onSidebarToggle}
                 className="h-9 w-9 hover:bg-accent/50 transition-all duration-200 shrink-0"
-                aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+                aria-label={sidebarOpen ? t('admin.collapseSidebar') : t('admin.expandSidebar')}
               >
                 <Menu className="h-4 w-4" />
               </Button>
@@ -68,7 +68,7 @@ export const AdminHeader = ({ onMobileMenuOpen, onSidebarToggle, sidebarOpen }: 
             <button
               onClick={() => navigate('/admin/dashboard')}
               className="flex items-center gap-3 hover:opacity-80 transition-all duration-200 min-w-0"
-              aria-label="Go to admin dashboard"
+              aria-label={t('admin.goToAdminDashboard')}
             >
               <img 
                 src="/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png" 
@@ -95,7 +95,7 @@ export const AdminHeader = ({ onMobileMenuOpen, onSidebarToggle, sidebarOpen }: 
                 variant="ghost" 
                 size="icon" 
                 className="relative h-9 w-9 hover:bg-accent/50 transition-all duration-200"
-                aria-label="View notifications"
+                aria-label={t('admin.viewNotifications')}
               >
                 <Bell className="h-4 w-4" />
                 {unreadCount > 0 && (

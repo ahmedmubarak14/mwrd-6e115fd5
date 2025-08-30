@@ -801,6 +801,13 @@ export const enUS = {
     // Search & Actions
     searchPlaceholder: "Search admin panel...",
     
+    // Header Accessibility Labels
+    openMobileMenu: "Open mobile menu",
+    collapseSidebar: "Collapse sidebar", 
+    expandSidebar: "Expand sidebar",
+    goToAdminDashboard: "Go to admin dashboard",
+    viewNotifications: "View notifications",
+    
      // Recent Activity
      recentActivityDesc: "Latest administrative actions and system events",
      activeConnections: "Active Connections",

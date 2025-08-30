@@ -693,6 +693,13 @@ export const arSA = {
     // Search & Actions
     searchPlaceholder: "البحث في لوحة الإدارة...",
     
+    // Header Accessibility Labels  
+    openMobileMenu: "فتح القائمة المحمولة",
+    collapseSidebar: "طي الشريط الجانبي", 
+    expandSidebar: "توسيع الشريط الجانبي",
+    goToAdminDashboard: "الذهاب إلى لوحة الإدارة",
+    viewNotifications: "عرض الإشعارات",
+    
     // Recent Activity
     recentActivity: "النشاط الحديث",
     recentActivityDesc: "أحدث الإجراءات الإدارية وأحداث النظام",
