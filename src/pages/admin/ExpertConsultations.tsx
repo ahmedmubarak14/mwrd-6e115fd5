@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from "@/integrations/supabase/client";
 import { 
   Search, Filter, MessageSquare, Calendar, User, Phone, Clock, CheckCircle, 
@@ -51,12 +51,7 @@ interface Consultation {
 }
 
 export const ExpertConsultations = () => {
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL, formatDate } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false,
-    formatDate: (date: Date) => date.toLocaleDateString()
-  };
+  const { t, isRTL, formatDate } = useLanguage();
   
   // Helper function to translate status
   const getTranslatedStatus = (status: string) => {

@@ -18,10 +18,14 @@ export const useOptionalLanguage = (): LanguageContextType => {
   
   // Return fallback object with all required properties if context is not available
   if (!context) {
+    console.warn('LanguageContext not available, falling back to defaults');
     return {
       language: 'en' as const,
       setLanguage: () => {},
-      t: (key: string) => key,
+      t: (key: string) => {
+        console.log('Fallback t() called with key:', key);
+        return key;
+      },
       isRTL: false,
       formatNumber: (num: number) => num.toLocaleString(),
       formatDate: (date: Date) => date.toLocaleDateString(),
