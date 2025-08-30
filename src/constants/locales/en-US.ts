@@ -1160,6 +1160,67 @@ export const enUS = {
       delete: "Delete"
     },
 
+    // Requests Management
+    requestsManagement: {
+      title: "Requests Management",
+      description: "Review, approve, and manage client procurement requests across the platform.",
+      
+      // Overview Cards
+      totalRequests: "Total Requests",
+      pendingApproval: "Pending Approval",
+      approved: "Approved",
+      rejected: "Rejected",
+      
+      // Filters
+      filtersAndSearch: "Filters & Search",
+      searchPlaceholder: "Search requests...",
+      allStatuses: "All Statuses",
+      allApprovals: "All Approvals", 
+      allUrgencies: "All Urgencies",
+      refresh: "Refresh",
+      
+      // Status Options
+      new: "New",
+      inProgress: "In Progress",
+      completed: "Completed",
+      cancelled: "Cancelled",
+      pending: "Pending",
+      
+      // Urgency Options
+      urgent: "Urgent",
+      high: "High",
+      medium: "Medium",
+      low: "Low",
+      
+      // Tabs
+      allRequests: "All Requests",
+      
+      // Request Details
+      unknownClient: "Unknown Client",
+      budgetRange: "Budget Range",
+      notSpecified: "Not specified",
+      deadline: "Deadline",
+      offersReceived: "Offers Received",
+      offers: "offers",
+      created: "Created",
+      
+      // Actions
+      viewDetails: "View Details",
+      contactClient: "Contact Client",
+      approve: "Approve",
+      reject: "Reject",
+      
+      // Messages
+      loading: "Loading requests...",
+      noRequestsFound: "No requests found matching your filters.",
+      
+      // Toast Messages
+      fetchError: "Failed to fetch requests",
+      approveSuccess: "Request approved successfully",
+      rejectSuccess: "Request rejected successfully",
+      updateError: "Failed to update request status"
+    },
+
     // User Management Details
     userManagementDetails: {
       user: "User",

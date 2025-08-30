@@ -1057,6 +1057,67 @@ export const arSA = {
       delete: "حذف"
     },
 
+    // Requests Management
+    requestsManagement: {
+      title: "إدارة الطلبات",
+      description: "مراجعة والموافقة على وإدارة طلبات الشراء من العملاء عبر المنصة.",
+      
+      // Overview Cards
+      totalRequests: "إجمالي الطلبات",
+      pendingApproval: "قيد الموافقة",
+      approved: "معتمد",
+      rejected: "مرفوض",
+      
+      // Filters
+      filtersAndSearch: "المرشحات والبحث",
+      searchPlaceholder: "البحث في الطلبات...",
+      allStatuses: "جميع الحالات",
+      allApprovals: "جميع الموافقات",
+      allUrgencies: "جميع الأولويات",
+      refresh: "تحديث",
+      
+      // Status Options
+      new: "جديد",
+      inProgress: "قيد التنفيذ",
+      completed: "مكتمل",
+      cancelled: "ملغى",
+      pending: "قيد الانتظار",
+      
+      // Urgency Options
+      urgent: "عاجل",
+      high: "عالي",
+      medium: "متوسط",
+      low: "منخفض",
+      
+      // Tabs
+      allRequests: "جميع الطلبات",
+      
+      // Request Details
+      unknownClient: "عميل غير معروف",
+      budgetRange: "نطاق الميزانية",
+      notSpecified: "غير محدد",
+      deadline: "الموعد النهائي",
+      offersReceived: "العروض المستلمة",
+      offers: "عروض",
+      created: "تاريخ الإنشاء",
+      
+      // Actions
+      viewDetails: "عرض التفاصيل",
+      contactClient: "اتصال بالعميل",
+      approve: "موافقة",
+      reject: "رفض",
+      
+      // Messages
+      loading: "جاري تحميل الطلبات...",
+      noRequestsFound: "لا توجد طلبات تطابق المرشحات المحددة.",
+      
+      // Toast Messages
+      fetchError: "فشل في جلب الطلبات",
+      approveSuccess: "تم اعتماد الطلب بنجاح", 
+      rejectSuccess: "تم رفض الطلب بنجاح",
+      updateError: "فشل في تحديث حالة الطلب"
+    },
+
     // User Management Details
     userManagementDetails: {
       user: "المستخدم",

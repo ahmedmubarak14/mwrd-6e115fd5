@@ -84,8 +84,8 @@ const AdminRequests = () => {
     } catch (error) {
       console.error('Error fetching requests:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to fetch requests',
+        title: t('common.error'),
+        description: t('admin.requestsManagement.fetchError'),
         variant: 'destructive'
       });
     } finally {
@@ -106,16 +106,16 @@ const AdminRequests = () => {
       if (error) throw error;
 
       toast({
-        title: 'Success',
-        description: `Request ${status} successfully`,
+        title: t('common.success'),
+        description: status === 'approved' ? t('admin.requestsManagement.approveSuccess') : t('admin.requestsManagement.rejectSuccess'),
       });
 
       fetchRequests();
     } catch (error) {
       console.error('Error updating request status:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to update request status',
+        title: t('common.error'),
+        description: t('admin.requestsManagement.updateError'),
         variant: 'destructive'
       });
     }
@@ -188,10 +188,10 @@ const AdminRequests = () => {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
-          {t('admin.requestManagement')}
+          {t('admin.requestsManagement.title')}
         </h1>
         <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
-          {t('admin.requestManagementDescription')}
+          {t('admin.requestsManagement.description')}
         </p>
       </div>
 
@@ -199,7 +199,7 @@ const AdminRequests = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('admin.totalRequests')}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.requestsManagement.totalRequests')}</CardTitle>
             <Clock className="h-4 w-4 text-foreground opacity-75" />
           </CardHeader>
           <CardContent>
@@ -209,7 +209,7 @@ const AdminRequests = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('admin.pendingApproval')}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.requestsManagement.pendingApproval')}</CardTitle>
             <AlertCircle className="h-4 w-4 text-warning" />
           </CardHeader>
           <CardContent>
@@ -219,7 +219,7 @@ const AdminRequests = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('admin.approved')}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.requestsManagement.approved')}</CardTitle>
             <CheckCircle className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
@@ -229,7 +229,7 @@ const AdminRequests = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('admin.rejected')}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.requestsManagement.rejected')}</CardTitle>
             <XCircle className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent>
@@ -241,14 +241,14 @@ const AdminRequests = () => {
       {/* Filters */}
       <Card className="mb-6">
           <CardHeader>
-            <CardTitle className="text-lg">{t('admin.filtersAndSearch')}</CardTitle>
+            <CardTitle className="text-lg">{t('admin.requestsManagement.filtersAndSearch')}</CardTitle>
           </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-foreground opacity-75" />
               <Input
-                placeholder="Search requests..."
+                placeholder={t('admin.requestsManagement.searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -260,11 +260,11 @@ const AdminRequests = () => {
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="new">New</SelectItem>
-                <SelectItem value="in_progress">In Progress</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
+                <SelectItem value="all">{t('admin.requestsManagement.allStatuses')}</SelectItem>
+                <SelectItem value="new">{t('admin.requestsManagement.new')}</SelectItem>
+                <SelectItem value="in_progress">{t('admin.requestsManagement.inProgress')}</SelectItem>
+                <SelectItem value="completed">{t('admin.requestsManagement.completed')}</SelectItem>
+                <SelectItem value="cancelled">{t('admin.requestsManagement.cancelled')}</SelectItem>
               </SelectContent>
             </Select>
 
@@ -273,10 +273,10 @@ const AdminRequests = () => {
                 <SelectValue placeholder="Approval Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Approvals</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
+                <SelectItem value="all">{t('admin.requestsManagement.allApprovals')}</SelectItem>
+                <SelectItem value="pending">{t('admin.requestsManagement.pending')}</SelectItem>
+                <SelectItem value="approved">{t('admin.requestsManagement.approved')}</SelectItem>
+                <SelectItem value="rejected">{t('admin.requestsManagement.rejected')}</SelectItem>
               </SelectContent>
             </Select>
 
@@ -285,17 +285,17 @@ const AdminRequests = () => {
                 <SelectValue placeholder="Urgency" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Urgencies</SelectItem>
-                <SelectItem value="urgent">Urgent</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
+                <SelectItem value="all">{t('admin.requestsManagement.allUrgencies')}</SelectItem>
+                <SelectItem value="urgent">{t('admin.requestsManagement.urgent')}</SelectItem>
+                <SelectItem value="high">{t('admin.requestsManagement.high')}</SelectItem>
+                <SelectItem value="medium">{t('admin.requestsManagement.medium')}</SelectItem>
+                <SelectItem value="low">{t('admin.requestsManagement.low')}</SelectItem>
               </SelectContent>
             </Select>
 
             <Button onClick={fetchRequests} variant="outline" className="flex items-center gap-2">
               <Filter className="h-4 w-4" />
-              Refresh
+              {t('admin.requestsManagement.refresh')}
             </Button>
           </div>
         </CardContent>
@@ -314,19 +314,19 @@ const AdminRequests = () => {
       {/* Requests List */}
       <Tabs value="all" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="all">All Requests ({filteredRequests.length})</TabsTrigger>
-          <TabsTrigger value="pending">Pending ({pendingRequests.length})</TabsTrigger>
-          <TabsTrigger value="approved">Approved ({approvedRequests.length})</TabsTrigger>
-          <TabsTrigger value="rejected">Rejected ({rejectedRequests.length})</TabsTrigger>
+          <TabsTrigger value="all">{t('admin.requestsManagement.allRequests')} ({filteredRequests.length})</TabsTrigger>
+          <TabsTrigger value="pending">{t('admin.requestsManagement.pending')} ({pendingRequests.length})</TabsTrigger>
+          <TabsTrigger value="approved">{t('admin.requestsManagement.approved')} ({approvedRequests.length})</TabsTrigger>
+          <TabsTrigger value="rejected">{t('admin.requestsManagement.rejected')} ({rejectedRequests.length})</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="space-y-4">
           {loading ? (
-            <div className="text-center py-8">Loading requests...</div>
+            <div className="text-center py-8">{t('admin.requestsManagement.loading')}</div>
           ) : filteredRequests.length === 0 ? (
             <Card>
               <CardContent className="text-center py-8">
-                <p className="text-foreground opacity-75">No requests found matching your filters.</p>
+                <p className="text-foreground opacity-75">{t('admin.requestsManagement.noRequestsFound')}</p>
               </CardContent>
             </Card>
           ) : (
@@ -346,7 +346,7 @@ const AdminRequests = () => {
                         </CardDescription>
                         <div className="flex items-center gap-2 text-sm text-foreground opacity-75">
                           <User className="h-4 w-4" />
-                          {request.user_profiles?.company_name || request.user_profiles?.full_name || 'Unknown Client'}
+                          {request.user_profiles?.company_name || request.user_profiles?.full_name || t('admin.requestsManagement.unknownClient')}
                           <span>•</span>
                           <span>{request.category}</span>
                           {request.location && (
@@ -375,26 +375,26 @@ const AdminRequests = () => {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                     <div>
-                      <p className="text-sm font-medium text-foreground opacity-75">Budget Range</p>
+                      <p className="text-sm font-medium text-foreground opacity-75">{t('admin.requestsManagement.budgetRange')}</p>
                       <p className="text-sm">
                         {request.budget_min && request.budget_max 
                           ? `${request.budget_min.toLocaleString()} - ${request.budget_max.toLocaleString()} ${request.currency || 'SAR'}`
-                          : 'Not specified'
+                          : t('admin.requestsManagement.notSpecified')
                         }
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-foreground opacity-75">Deadline</p>
+                      <p className="text-sm font-medium text-foreground opacity-75">{t('admin.requestsManagement.deadline')}</p>
                       <p className="text-sm">
-                        {request.deadline ? format(new Date(request.deadline), 'MMM dd, yyyy') : 'Not specified'}
+                        {request.deadline ? format(new Date(request.deadline), 'MMM dd, yyyy') : t('admin.requestsManagement.notSpecified')}
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-foreground opacity-75">Offers Received</p>
-                      <p className="text-sm font-bold text-primary">{request._count?.offers || 0} offers</p>
+                      <p className="text-sm font-medium text-foreground opacity-75">{t('admin.requestsManagement.offersReceived')}</p>
+                      <p className="text-sm font-bold text-primary">{request._count?.offers || 0} {t('admin.requestsManagement.offers')}</p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-foreground opacity-75">Created</p>
+                      <p className="text-sm font-medium text-foreground opacity-75">{t('admin.requestsManagement.created')}</p>
                       <p className="text-sm">{format(new Date(request.created_at), 'MMM dd, yyyy HH:mm')}</p>
                     </div>
                   </div>
@@ -402,11 +402,11 @@ const AdminRequests = () => {
                   <div className="flex flex-wrap gap-2">
                     <Button variant="outline" size="sm" className="flex items-center gap-1">
                       <Eye className="h-4 w-4" />
-                      View Details
+                      {t('admin.requestsManagement.viewDetails')}
                     </Button>
                     <Button variant="outline" size="sm" className="flex items-center gap-1">
                       <MessageSquare className="h-4 w-4" />
-                      Contact Client
+                      {t('admin.requestsManagement.contactClient')}
                     </Button>
                     
                     {request.admin_approval_status === 'pending' && (
@@ -417,7 +417,7 @@ const AdminRequests = () => {
                           onClick={() => updateApprovalStatus(request.id, 'approved')}
                         >
                           <CheckCircle className="h-4 w-4" />
-                          Approve
+                          {t('admin.requestsManagement.approve')}
                         </Button>
                         <Button 
                           variant="destructive" 
@@ -426,7 +426,7 @@ const AdminRequests = () => {
                           onClick={() => updateApprovalStatus(request.id, 'rejected')}
                         >
                           <XCircle className="h-4 w-4" />
-                          Reject
+                          {t('admin.requestsManagement.reject')}
                         </Button>
                       </>
                     )}
