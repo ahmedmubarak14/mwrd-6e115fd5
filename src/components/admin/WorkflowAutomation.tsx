@@ -469,7 +469,7 @@ export const WorkflowAutomation = () => {
                       <div>
                         <p className="font-medium text-sm">{task.title}</p>
                         <p className="text-xs text-destructive">
-                          Overdue by {task.due_date ? Math.ceil((Date.now() - new Date(task.due_date).getTime()) / (1000 * 60 * 60 * 24)) : 0} days
+                          {t('admin.workflowAutomation.tasks.overdueBy')} {task.due_date ? Math.ceil((Date.now() - new Date(task.due_date).getTime()) / (1000 * 60 * 60 * 24)) : 0} {t('admin.workflowAutomation.tasks.days')}
                         </p>
                       </div>
                       <div className="flex gap-2">

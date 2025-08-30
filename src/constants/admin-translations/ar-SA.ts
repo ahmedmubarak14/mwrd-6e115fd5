@@ -439,6 +439,94 @@ export const adminTranslationsAR = {
     generateReport: "إنشاء تقرير أمني"
   },
 
+  // Workflow Automation
+  workflowAutomation: {
+    title: 'أتمتة سير العمل',
+    description: 'أتمتة المهام المتكررة وتبسيط العمليات',
+    automationCenter: 'مركز الأتمتة',
+    automationDescription: 'إنشاء وإدارة ومراقبة سير العمل المؤتمت',
+    createWorkflow: 'إنشاء سير عمل',
+    overview: {
+      activeWorkflows: 'سير العمل النشطة',
+      totalExecutions: 'إجمالي التنفيذات',
+      pendingTasks: 'المهام المعلقة',
+      successRate: 'معدل النجاح'
+    },
+    tabs: {
+      workflows: 'سير العمل',
+      executionHistory: 'تاريخ التنفيذ',
+      tasks: 'المهام'
+    },
+    workflowForm: {
+      createTitle: 'إنشاء سير عمل جديد',
+      workflowName: 'اسم سير العمل',
+      workflowNamePlaceholder: 'أدخل اسم سير العمل',
+      description: 'الوصف',
+      descriptionPlaceholder: 'صف ما يفعله هذا سير العمل',
+      triggerType: 'نوع المشغل',
+      triggerPlaceholder: 'يدوي، مجدول، حدث',
+      priority: 'الأولوية (1-10)',
+      cancel: 'إلغاء',
+      createButton: 'إنشاء سير عمل'
+    },
+    workflowCard: {
+      trigger: 'المشغل',
+      priority: 'الأولوية',
+      created: 'تم الإنشاء',
+      execute: 'تنفيذ'
+    },
+    executions: {
+      title: 'التنفيذات الأخيرة',
+      workflowId: 'معرف سير العمل: ',
+      duration: 'المدة:',
+      noExecutions: 'لا توجد تنفيذات'
+    },
+    tasks: {
+      pendingTitle: 'المهام المعلقة',
+      overdueTitle: 'المهام المتأخرة',
+      complete: 'إكمال',
+      priorityLabel: 'الأولوية:',
+      dueLabel: 'الاستحقاق:',
+      noDueDate: 'لا يوجد تاريخ استحقاق',
+      noPendingTasks: 'لا توجد مهام معلقة',
+      noOverdueTasks: 'لا توجد مهام متأخرة',
+      overdueBy: 'متأخرة بـ',
+      days: 'أيام'
+    },
+    messages: {
+      loading: 'جاري تحميل بيانات الأتمتة...',
+      nameRequired: 'اسم سير العمل مطلوب',
+      created: 'تم إنشاء سير العمل بنجاح',
+      createError: 'فشل في إنشاء سير العمل',
+      enabled: 'تم التفعيل',
+      disabled: 'تم التعطيل',
+      toggleError: 'فشل في تبديل حالة سير العمل',
+      deleted: 'تم حذف سير العمل بنجاح',
+      deleteError: 'فشل في حذف سير العمل'
+    }
+  },
+  
+  // Data Tables
+  table: {
+    searchPlaceholder: 'بحث...',
+    clearSearch: 'مسح البحث',
+    filters: 'المرشحات',
+    filterBy: 'تصفية حسب',
+    allItems: 'الكل',
+    exportData: 'تصدير',
+    bulkActions: 'العمليات المجمعة',
+    refreshData: 'تحديث',
+    actions: 'الإجراءات',
+    noResults: 'لا توجد نتائج',
+    showingResults: 'عرض النتائج',
+    showing: 'عرض',
+    to: 'إلى',
+    of: 'من',
+    results: 'نتيجة',
+    previous: 'السابق',
+    next: 'التالي'
+  },
+
   // Common Actions & Messages
   actions: {
     create: "إنشاء",

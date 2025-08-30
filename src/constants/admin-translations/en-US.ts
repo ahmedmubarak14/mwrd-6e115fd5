@@ -439,6 +439,94 @@ export const adminTranslationsEN = {
     generateReport: "Generate Security Report"
   },
 
+  // Workflow Automation 
+  workflowAutomation: {
+    title: 'Workflow Automation',
+    description: 'Automate repetitive tasks and streamline processes',
+    automationCenter: 'Automation Center',
+    automationDescription: 'Create, manage, and monitor automated workflows',
+    createWorkflow: 'Create Workflow',
+    overview: {
+      activeWorkflows: 'Active Workflows',
+      totalExecutions: 'Total Executions',
+      pendingTasks: 'Pending Tasks',
+      successRate: 'Success Rate'
+    },
+    tabs: {
+      workflows: 'Workflows',
+      executionHistory: 'Execution History',
+      tasks: 'Tasks'
+    },
+    workflowForm: {
+      createTitle: 'Create New Workflow',
+      workflowName: 'Workflow Name',
+      workflowNamePlaceholder: 'Enter workflow name',
+      description: 'Description',
+      descriptionPlaceholder: 'Describe what this workflow does',
+      triggerType: 'Trigger Type',
+      triggerPlaceholder: 'manual, scheduled, event',
+      priority: 'Priority (1-10)',
+      cancel: 'Cancel',
+      createButton: 'Create Workflow'
+    },
+    workflowCard: {
+      trigger: 'Trigger',
+      priority: 'Priority',
+      created: 'Created',
+      execute: 'Execute'
+    },
+    executions: {
+      title: 'Recent Executions',
+      workflowId: 'Workflow ID: ',
+      duration: 'Duration:',
+      noExecutions: 'No executions found'
+    },
+    tasks: {
+      pendingTitle: 'Pending Tasks',
+      overdueTitle: 'Overdue Tasks',
+      complete: 'Complete',
+      priorityLabel: 'Priority:',
+      dueLabel: 'Due:',
+      noDueDate: 'No due date',
+      noPendingTasks: 'No pending tasks',
+      noOverdueTasks: 'No overdue tasks',
+      overdueBy: 'Overdue by',
+      days: 'days'
+    },
+    messages: {
+      loading: 'Loading automation data...',
+      nameRequired: 'Workflow name is required',
+      created: 'Workflow created successfully',
+      createError: 'Failed to create workflow',
+      enabled: 'enabled',
+      disabled: 'disabled',
+      toggleError: 'Failed to toggle workflow status',
+      deleted: 'Workflow deleted successfully',
+      deleteError: 'Failed to delete workflow'
+    }
+  },
+  
+  // Data Tables
+  table: {
+    searchPlaceholder: 'Search...',
+    clearSearch: 'Clear search',
+    filters: 'Filters',
+    filterBy: 'Filter by',
+    allItems: 'All',
+    exportData: 'Export',
+    bulkActions: 'Bulk Actions',
+    refreshData: 'Refresh',
+    actions: 'Actions',
+    noResults: 'No results found',
+    showingResults: 'Showing results',
+    showing: 'Showing',
+    to: 'to',
+    of: 'of',
+    results: 'results',
+    previous: 'Previous',
+    next: 'Next'
+  },
+
   // Common Actions & Messages
   actions: {
     create: "Create",

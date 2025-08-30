@@ -220,10 +220,10 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
             <p className="admin-body">{error}</p>
           </div>
           {onRefresh && (
-            <Button onClick={onRefresh} variant="outline" size="sm">
-              <RefreshCw className="h-4 w-4 mr-2" />
-              {t('common.retry')}
-            </Button>
+                    <Button onClick={onRefresh} variant="outline" size="sm">
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                      {t('admin.table.refreshData')}
+                    </Button>
           )}
         </CardContent>
       </Card>
@@ -253,7 +253,7 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                           setLocalSearchValue(e.target.value);
                           onSearch(e.target.value);
                         }}
-                        placeholder={searchPlaceholder || t('admin.searchPlaceholder')}
+                        placeholder={searchPlaceholder || t('admin.table.searchPlaceholder')}
                         className="pl-10 w-full sm:w-64 admin-body text-foreground bg-input"
                       />
                     {localSearchValue && (
@@ -265,6 +265,7 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                           setLocalSearchValue('');
                           onSearch('');
                         }}
+                        aria-label={t('admin.table.clearSearch')}
                       >
                         <X className="h-3 w-3" />
                       </Button>
@@ -278,11 +279,11 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm" className="admin-button">
                         <Filter className="h-4 w-4 mr-2" />
-                        {t('common.filter')}
+                        {t('admin.table.filters')}
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56 bg-popover text-popover-foreground border border-border shadow-lg z-[100] backdrop-blur-sm">
-                      <DropdownMenuLabel className="admin-caption text-foreground">{t('admin.filterBy')}</DropdownMenuLabel>
+                      <DropdownMenuLabel className="admin-caption text-foreground">{t('admin.table.filterBy')}</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       {filterableColumns.map(column => (
                         <DropdownMenuItem key={column.key} asChild>
@@ -300,7 +301,7 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent className="bg-popover text-popover-foreground border border-border shadow-lg z-[100] backdrop-blur-sm">
-                                <SelectItem value="all" className="text-foreground">{t('common.all')}</SelectItem>
+                                <SelectItem value="all" className="text-foreground">{t('admin.table.allItems')}</SelectItem>
                                 {/* Add dynamic filter options based on data */}
                               </SelectContent>
                             </Select>
@@ -315,7 +316,7 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                 {exportable && onExport && (
                   <Button onClick={onExport} variant="outline" size="sm" className="admin-button">
                     <Download className="h-4 w-4 mr-2" />
-                    {t('common.export')}
+                    {t('admin.table.exportData')}
                   </Button>
                 )}
 
@@ -324,7 +325,7 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm" className="admin-button">
-                        {t('admin.bulkActions')} ({selectedRows.length})
+                        {t('admin.table.bulkActions')} ({selectedRows.length})
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="bg-popover text-popover-foreground border border-border shadow-lg z-[100] backdrop-blur-sm">
@@ -400,8 +401,8 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                   ))}
                    {actions.length > 0 && (
                     <TableHead className="w-16 admin-caption font-semibold text-foreground">
-                      {t('common.actions')}
-                    </TableHead>
+                       {t('admin.table.actions')}
+                     </TableHead>
                   )}
                 </TableRow>
               </TableHeader>
@@ -413,7 +414,7 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                       className="text-center py-8"
                     >
                       <div className="admin-body text-foreground">
-                        {emptyMessage || t('common.noResults')}
+                        {emptyMessage || t('admin.table.noResults')}
                       </div>
                     </TableCell>
                   </TableRow>
@@ -488,7 +489,12 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
           {paginated && totalPages > 1 && (
             <div className="flex items-center justify-between p-4 border-t">
               <div className="admin-caption text-foreground opacity-75">
-                {t('admin.showingResults') || `Showing ${(currentPage - 1) * pageSize + 1} to ${Math.min(currentPage * pageSize, totalItems || data.length)} of ${totalItems || data.length} results`}
+                {(() => {
+                  const start = (currentPage - 1) * pageSize + 1;
+                  const end = Math.min(currentPage * pageSize, totalItems || data.length);
+                  const total = totalItems || data.length;
+                  return t('admin.table.showingResults') || `${t('admin.table.showing')} ${start} ${t('admin.table.to')} ${end} ${t('admin.table.of')} ${total} ${t('admin.table.results')}`;
+                })()}
               </div>
               <div className="flex items-center gap-2">
                 <Button
@@ -499,7 +505,7 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                   className="admin-button"
                 >
                   <ChevronLeft className="h-4 w-4" />
-                  {!isMobile && t('common.previous')}
+                  {!isMobile && t('admin.table.previous')}
                 </Button>
                 <div className="flex items-center gap-1">
                   {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
@@ -524,7 +530,7 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
                   disabled={currentPage === totalPages}
                   className="admin-button"
                 >
-                  {!isMobile && t('common.next')}
+                  {!isMobile && t('admin.table.next')}
                   <ChevronRight className="h-4 w-4" />
                 </Button>
               </div>
