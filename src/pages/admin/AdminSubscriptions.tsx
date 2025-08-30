@@ -452,94 +452,93 @@ export default function AdminSubscriptions() {
             <CardContent>
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                  <Input
-                    placeholder="Search users..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                  
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Filter by status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Status</SelectItem>
-                      <SelectItem value="active">Active</SelectItem>
-                      <SelectItem value="cancelled">Cancelled</SelectItem>
-                      <SelectItem value="expired">Expired</SelectItem>
-                      <SelectItem value="suspended">Suspended</SelectItem>
-                    </SelectContent>
-                  </Select>
+                   <Input
+                     placeholder={t('admin.searchUsers')}
+                     value={searchTerm}
+                     onChange={(e) => setSearchTerm(e.target.value)}
+                   />
+                   
+                   <Select value={statusFilter} onValueChange={setStatusFilter}>
+                     <SelectTrigger>
+                       <SelectValue placeholder={t('admin.filterByStatus')} />
+                     </SelectTrigger>
+                     <SelectContent>
+                       <SelectItem value="all">{t('admin.allStatus')}</SelectItem>
+                       <SelectItem value="active">{t('common.active')}</SelectItem>
+                       <SelectItem value="cancelled">{t('admin.cancelled')}</SelectItem>
+                       <SelectItem value="expired">{t('admin.expired')}</SelectItem>
+                       <SelectItem value="suspended">{t('admin.suspended')}</SelectItem>
+                     </SelectContent>
+                   </Select>
 
-                  <Select value={planFilter} onValueChange={setPlanFilter}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Filter by plan" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Plans</SelectItem>
-                      {SUBSCRIPTION_PLANS.map((plan) => (
-                        <SelectItem key={plan.value} value={plan.value}>
-                          {plan.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                   <Select value={planFilter} onValueChange={setPlanFilter}>
+                     <SelectTrigger>
+                       <SelectValue placeholder={t('admin.filterByPlan')} />
+                     </SelectTrigger>
+                     <SelectContent>
+                       <SelectItem value="all">{t('admin.allPlans')}</SelectItem>
+                       {SUBSCRIPTION_PLANS.map((plan) => (
+                         <SelectItem key={plan.value} value={plan.value}>
+                           {plan.label}
+                         </SelectItem>
+                       ))}
+                     </SelectContent>
+                   </Select>
 
-                  <div className="flex gap-2">
-                    <Button variant="outline" onClick={handleRefresh}>
-                      <RefreshCw className="h-4 w-4 mr-2" />
-                      Refresh
-                    </Button>
-                    <Button variant="outline" onClick={handleExportSelected}>
-                      <Download className="h-4 w-4 mr-2" />
-                      Export
+                   <div className="flex gap-2">
+                     <Button variant="outline" onClick={handleRefresh}>
+                       <RefreshCw className="h-4 w-4 mr-2" />
+                       {t('admin.refresh')}
+                     </Button>
+                     <Button variant="outline" onClick={handleExportSelected}>
+                       <Download className="h-4 w-4 mr-2" />
+                       {t('admin.export')}
                     </Button>
                   </div>
                 </div>
 
                 {/* Bulk Actions */}
                 {selectedSubscriptions.length > 0 && (
-                  <div className="flex items-center gap-4 p-3 bg-muted rounded-lg">
-                    <span className="text-sm font-medium">
-                      {selectedSubscriptions.length} subscription(s) selected
-                    </span>
-                    <Select value={bulkAction} onValueChange={setBulkAction}>
-                      <SelectTrigger className="w-48">
-                        <SelectValue placeholder="Bulk action..." />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="activate">Activate Subscriptions</SelectItem>
-                        <SelectItem value="cancel">Cancel Subscriptions</SelectItem>
-                        {SUBSCRIPTION_PLANS.map((plan) => (
-                          <SelectItem key={plan.value} value={plan.value}>
-                            Change to {plan.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="destructive" size="sm" disabled={!bulkAction}>
-                          Apply Action
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Confirm Bulk Action</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Are you sure you want to apply this action to {selectedSubscriptions.length} subscription(s)?
-                            This action cannot be undone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction onClick={handleBulkAction}>
-                            Confirm
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
+                   <div className="flex items-center gap-4 p-3 bg-muted rounded-lg">
+                     <span className="text-sm font-medium">
+                       {selectedSubscriptions.length} {t('admin.subscriptionsSelected')}
+                     </span>
+                     <Select value={bulkAction} onValueChange={setBulkAction}>
+                       <SelectTrigger className="w-48">
+                         <SelectValue placeholder={t('admin.bulkAction')} />
+                       </SelectTrigger>
+                       <SelectContent>
+                         <SelectItem value="activate">{t('admin.activateSubscriptions')}</SelectItem>
+                         <SelectItem value="cancel">{t('admin.cancelSubscriptions')}</SelectItem>
+                         {SUBSCRIPTION_PLANS.map((plan) => (
+                           <SelectItem key={plan.value} value={plan.value}>
+                             {t('admin.changeTo')} {plan.label}
+                           </SelectItem>
+                         ))}
+                       </SelectContent>
+                     </Select>
+                     <AlertDialog>
+                       <AlertDialogTrigger asChild>
+                         <Button variant="destructive" size="sm" disabled={!bulkAction}>
+                           {t('admin.applyAction')}
+                         </Button>
+                       </AlertDialogTrigger>
+                       <AlertDialogContent>
+                         <AlertDialogHeader>
+                           <AlertDialogTitle>{t('admin.confirmBulkAction')}</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              {t('admin.bulkActionWarning')}
+                            </AlertDialogDescription>
+                         </AlertDialogHeader>
+                         <AlertDialogFooter>
+                           <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+                           <AlertDialogAction onClick={handleBulkAction}>
+                             {t('common.confirm')}
+                           </AlertDialogAction>
+                         </AlertDialogFooter>
+                       </AlertDialogContent>
+                     </AlertDialog>
+                   </div>
                 )}
               </div>
             </CardContent>
@@ -550,26 +549,26 @@ export default function AdminSubscriptions() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle>
-                  Subscriptions ({filteredSubscriptions.length})
+                  {t('admin.subscriptionsList')} ({filteredSubscriptions.length})
                 </CardTitle>
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     checked={selectedSubscriptions.length === filteredSubscriptions.length && filteredSubscriptions.length > 0}
                     onCheckedChange={selectAllSubscriptions}
                   />
-                  <span className="text-sm">Select All</span>
+                  <span className="text-sm">{t('admin.selectAll')}</span>
                 </div>
               </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {filteredSubscriptions.length === 0 ? (
-                  <div className="py-12 text-center">
-                    <CreditCard className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold mb-2">No subscriptions found</h3>
-                    <p className="text-muted-foreground">No subscriptions match your current filters</p>
-                  </div>
-                ) : (
+                 {filteredSubscriptions.length === 0 ? (
+                   <div className="py-12 text-center">
+                     <CreditCard className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                     <h3 className="text-lg font-semibold mb-2">{t('admin.noSubscriptionsFound')}</h3>
+                     <p className="text-muted-foreground">{t('admin.noSubscriptionsMatch')}</p>
+                   </div>
+                 ) : (
                   filteredSubscriptions.map((subscription) => (
                     <div key={subscription.id} className="flex items-center space-x-4 p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                       <Checkbox
@@ -617,12 +616,12 @@ export default function AdminSubscriptions() {
                         
                         <div className="text-center">
                           {getStatusBadge(subscription.subscription_status)}
-                          {isExpiringSoon(subscription.subscription_expires_at) && (
-                            <div className="flex items-center gap-1 text-xs text-orange-500 mt-1">
-                              <AlertTriangle className="h-3 w-3" />
-                              Expiring soon
-                            </div>
-                          )}
+                           {isExpiringSoon(subscription.subscription_expires_at) && (
+                             <div className="flex items-center gap-1 text-xs text-orange-500 mt-1">
+                               <AlertTriangle className="h-3 w-3" />
+                               {t('admin.expiringSoon')}
+                             </div>
+                           )}
                         </div>
                         
                         <div className="text-center text-sm">
@@ -631,13 +630,13 @@ export default function AdminSubscriptions() {
                               <div className="font-medium">
                                 {format(new Date(subscription.subscription_expires_at), 'MMM dd, yyyy')}
                               </div>
-                              <div className="text-xs text-muted-foreground">
-                                {isExpired(subscription.subscription_expires_at) ? 'Expired' : 'Expires'}
-                              </div>
-                            </div>
-                          ) : (
-                            <span className="text-muted-foreground">No expiry</span>
-                          )}
+                               <div className="text-xs text-muted-foreground">
+                                 {isExpired(subscription.subscription_expires_at) ? t('admin.expired') : t('admin.expires')}
+                               </div>
+                             </div>
+                           ) : (
+                             <span className="text-muted-foreground">{t('admin.noExpiry')}</span>
+                           )}
                         </div>
                         
                         <div className="flex items-center justify-end gap-2">
@@ -654,52 +653,52 @@ export default function AdminSubscriptions() {
                                 <Edit className="h-4 w-4" />
                               </Button>
                             </DialogTrigger>
-                            <DialogContent>
-                              <DialogHeader>
-                                <DialogTitle>Change Subscription Plan</DialogTitle>
-                                <DialogDescription>
-                                  Update subscription for {subscription.full_name || subscription.email}
-                                </DialogDescription>
-                              </DialogHeader>
-                              <div className="space-y-4">
-                                <div>
-                                  <Label htmlFor="plan">Subscription Plan</Label>
-                                  <Select value={newPlan} onValueChange={setNewPlan}>
-                                    <SelectTrigger>
-                                      <SelectValue placeholder="Select plan" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      {SUBSCRIPTION_PLANS.map((plan) => (
-                                        <SelectItem key={plan.value} value={plan.value}>
-                                          {plan.label} - {plan.price} SAR/month
-                                        </SelectItem>
-                                      ))}
-                                    </SelectContent>
-                                  </Select>
-                                </div>
-                                <div>
-                                  <Label htmlFor="expiry">Extend by (days)</Label>
-                                  <Input
-                                    type="number"
-                                    value={newExpiryDays}
-                                    onChange={(e) => setNewExpiryDays(Number(e.target.value))}
-                                    min="1"
-                                    max="365"
-                                  />
-                                </div>
-                                <div className="text-sm text-muted-foreground">
-                                  New expiry date: {format(addDays(new Date(), newExpiryDays), 'MMM dd, yyyy')}
-                                </div>
-                              </div>
-                              <DialogFooter>
-                                <Button 
-                                  onClick={() => editingSubscription && handlePlanChange(editingSubscription)}
-                                  disabled={!newPlan}
-                                >
-                                  Update Subscription
-                                </Button>
-                              </DialogFooter>
-                            </DialogContent>
+                             <DialogContent>
+                               <DialogHeader>
+                                 <DialogTitle>{t('admin.changeSubscriptionPlan')}</DialogTitle>
+                                  <DialogDescription>
+                                    {t('admin.updateSubscriptionFor')}: {subscription.full_name || subscription.email}
+                                  </DialogDescription>
+                               </DialogHeader>
+                               <div className="space-y-4">
+                                 <div>
+                                   <Label htmlFor="plan">{t('admin.subscriptionPlan')}</Label>
+                                   <Select value={newPlan} onValueChange={setNewPlan}>
+                                     <SelectTrigger>
+                                       <SelectValue placeholder={t('admin.selectPlan')} />
+                                     </SelectTrigger>
+                                     <SelectContent>
+                                       {SUBSCRIPTION_PLANS.map((plan) => (
+                                         <SelectItem key={plan.value} value={plan.value}>
+                                           {plan.label} - {plan.price} SAR/month
+                                         </SelectItem>
+                                       ))}
+                                     </SelectContent>
+                                   </Select>
+                                 </div>
+                                 <div>
+                                   <Label htmlFor="expiry">{t('admin.extendBy')}</Label>
+                                   <Input
+                                     type="number"
+                                     value={newExpiryDays}
+                                     onChange={(e) => setNewExpiryDays(Number(e.target.value))}
+                                     min="1"
+                                     max="365"
+                                   />
+                                 </div>
+                                  <div className="text-sm text-muted-foreground">
+                                    {t('admin.newExpiryDate')}: {format(addDays(new Date(), newExpiryDays), 'MMM dd, yyyy')}
+                                  </div>
+                               </div>
+                               <DialogFooter>
+                                 <Button 
+                                   onClick={() => editingSubscription && handlePlanChange(editingSubscription)}
+                                   disabled={!newPlan}
+                                 >
+                                   {t('admin.updateSubscription')}
+                                 </Button>
+                               </DialogFooter>
+                             </DialogContent>
                           </Dialog>
                           
                           <AlertDialog>
@@ -708,23 +707,23 @@ export default function AdminSubscriptions() {
                                 <Trash2 className="h-4 w-4 text-destructive" />
                               </Button>
                             </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>Cancel Subscription</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  Are you sure you want to cancel this subscription? This will immediately terminate their access.
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction 
-                                  onClick={() => cancelSubscription(subscription.user_id)}
-                                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                                >
-                                  Cancel Subscription
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
+                             <AlertDialogContent>
+                               <AlertDialogHeader>
+                                 <AlertDialogTitle>{t('admin.cancelSubscription')}</AlertDialogTitle>
+                                 <AlertDialogDescription>
+                                   {t('admin.cancelSubscriptionWarning')}
+                                 </AlertDialogDescription>
+                               </AlertDialogHeader>
+                               <AlertDialogFooter>
+                                 <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
+                                 <AlertDialogAction 
+                                   onClick={() => cancelSubscription(subscription.user_id)}
+                                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                 >
+                                   {t('admin.cancelSubscription')}
+                                 </AlertDialogAction>
+                               </AlertDialogFooter>
+                             </AlertDialogContent>
                           </AlertDialog>
                         </div>
                       </div>
