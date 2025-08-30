@@ -104,7 +104,10 @@ export const arSA = {
     liveChat: 'دردشة مباشرة',
     email: 'بريد إلكتروني',
     push: 'إشعار',
-    settings: 'إعدادات'
+    settings: 'إعدادات',
+    profile: 'الملف الشخصي',
+    signOut: 'تسجيل الخروج',
+    notSpecified: 'غير محدد'
   },
   support: {
     title: "إدارة الدعم",
@@ -460,7 +463,21 @@ export const arSA = {
     
     // Breadcrumbs
     breadcrumbs: {
-      admin: "الإدارة"
+      admin: "الإدارة",
+      dashboardOverview: "نظرة عامة على لوحة التحكم",
+      userManagement: "إدارة المستخدمين",
+      requestsManagement: "إدارة الطلبات",
+      offersManagement: "إدارة العروض",
+      ordersManagement: "إدارة الطلبات",
+      projectsManagement: "إدارة المشاريع",
+      platformAnalytics: "تحليلات المنصة",
+      subscriptionManagement: "إدارة الاشتراكات",
+      supportCenter: "مركز الدعم",
+      verificationQueue: "قائمة التحقق",
+      categoryManagement: "إدارة الفئات",
+      expertConsultations: "الاستشارات الخبيرة",
+      financialTransactions: "المعاملات المالية",
+      securityMonitoring: "مراقبة الأمان"
     }
   }
 };

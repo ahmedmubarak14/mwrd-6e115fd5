@@ -104,7 +104,10 @@ export const enUS = {
     liveChat: 'Live Chat',
     email: 'Email',
     push: 'Push',
-    settings: 'Settings'
+    settings: 'Settings',
+    profile: 'Profile',
+    signOut: 'Sign Out',
+    notSpecified: 'Not Specified'
   },
   support: {
     title: "Support Management",
@@ -460,7 +463,21 @@ export const enUS = {
     
     // Breadcrumbs
     breadcrumbs: {
-      admin: "Admin"
+      admin: "Admin",
+      dashboardOverview: "Dashboard Overview",
+      userManagement: "User Management",
+      requestsManagement: "Requests Management",
+      offersManagement: "Offers Management",
+      ordersManagement: "Orders Management",
+      projectsManagement: "Projects Management",
+      platformAnalytics: "Platform Analytics",
+      subscriptionManagement: "Subscription Management",
+      supportCenter: "Support Center",
+      verificationQueue: "Verification Queue",
+      categoryManagement: "Category Management",
+      expertConsultations: "Expert Consultations",
+      financialTransactions: "Financial Transactions",
+      securityMonitoring: "Security Monitoring"
     }
   }
 };
