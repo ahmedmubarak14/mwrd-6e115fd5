@@ -12,10 +12,11 @@ import { cn } from "@/lib/utils";
 
 export const AdminHeaderLanguageToggle = () => {
   const languageContext = useOptionalLanguage();
-  const { language, setLanguage, isRTL } = languageContext || { 
+  const { language, setLanguage, isRTL, t } = languageContext || { 
     language: 'en' as const, 
     setLanguage: () => {},
-    isRTL: false 
+    isRTL: false,
+    t: (key: string) => key
   };
   const isMobile = useIsMobile();
 
@@ -35,13 +36,13 @@ export const AdminHeaderLanguageToggle = () => {
           onClick={() => setLanguage('en')} 
           className={cn("flex items-center", isRTL && "flex-row-reverse", language === 'en' && "bg-accent")}
         >
-          English
+          {t('admin.languageEnglish')}
         </DropdownMenuItem>
         <DropdownMenuItem 
           onClick={() => setLanguage('ar')} 
           className={cn("flex items-center", isRTL && "flex-row-reverse", language === 'ar' && "bg-accent")}
         >
-          العربية
+          {t('admin.languageArabic')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -200,7 +200,7 @@ export const EnhancedAdminHeaderSearch = () => {
       // Don't show error for aborted requests
       if (error.name !== 'AbortError') {
         console.error('Search error:', error);
-        setError('Search failed. Please try again.');
+        setError(t('admin.searchFailed'));
         setResults([]);
       }
     } finally {
@@ -241,7 +241,7 @@ export const EnhancedAdminHeaderSearch = () => {
         handleResultClick(results[selectedIndex]);
       } else if (query.trim()) {
         saveRecentSearch(query);
-        toast.info(`Searching for: ${query}`);
+        toast.info(`${t('admin.searchingFor') || 'Searching for'}: ${query}`);
       }
     } else if (e.key === 'Escape') {
       setIsOpen(false);
@@ -333,7 +333,7 @@ export const EnhancedAdminHeaderSearch = () => {
                   onClick={() => performSearch(query)}
                   className="text-xs"
                 >
-                  Try Again
+                  {t('admin.tryAgain')}
                 </Button>
               </div>
             )}
@@ -372,8 +372,8 @@ export const EnhancedAdminHeaderSearch = () => {
             {!error && !loading && query && results.length === 0 && (
               <div className="text-center py-4">
                 <Search className="h-6 w-6 text-muted-foreground mx-auto mb-2" />
-                <p className="text-sm">No results found</p>
-                <p className="text-xs text-muted-foreground">Try a different search term</p>
+                <p className="text-sm">{t('admin.noSearchResults')}</p>
+                <p className="text-xs text-muted-foreground">{t('admin.tryDifferentSearch')}</p>
               </div>
             )}
           </div>
@@ -469,7 +469,7 @@ export const EnhancedAdminHeaderSearch = () => {
                 onClick={() => performSearch(query)}
                 className="text-xs"
               >
-                Try Again
+                {t('admin.tryAgain')}
               </Button>
             </div>
           )}

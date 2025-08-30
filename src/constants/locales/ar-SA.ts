@@ -700,6 +700,23 @@ export const arSA = {
     goToAdminDashboard: "الذهاب إلى لوحة الإدارة",
     viewNotifications: "عرض الإشعارات",
     
+    // Language Names
+    languageEnglish: "English",
+    languageArabic: "العربية",
+    
+    // Search Enhanced
+    search: "البحث",
+    searchingFor: "البحث عن",
+    searchAdvancedPlaceholder: "البحث في المستخدمين والطلبات والعروض...",
+    searchResults: "نتائج البحث",
+    noSearchResults: "لا توجد نتائج",
+    tryDifferentSearch: "جرب مصطلح بحث مختلف",
+    recentSearches: "عمليات البحث الأخيرة",
+    searchTips: "استخدم ↑↓ للتنقل، Enter للاختيار",
+    advancedFilters: "المرشحات",
+    tryAgain: "حاول مرة أخرى",
+    searchFailed: "فشل البحث. يرجى المحاولة مرة أخرى.",
+    
     // Recent Activity
     recentActivity: "النشاط الحديث",
     recentActivityDesc: "أحدث الإجراءات الإدارية وأحداث النظام",

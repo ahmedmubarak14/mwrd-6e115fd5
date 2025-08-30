@@ -808,6 +808,23 @@ export const enUS = {
     goToAdminDashboard: "Go to admin dashboard",
     viewNotifications: "View notifications",
     
+    // Language Names
+    languageEnglish: "English",
+    languageArabic: "العربية",
+    
+    // Search Enhanced
+    search: "Search",
+    searchingFor: "Searching for",
+    searchAdvancedPlaceholder: "Search users, requests, offers...",
+    searchResults: "Search Results",
+    noSearchResults: "No results found",
+    tryDifferentSearch: "Try a different search term",
+    recentSearches: "Recent Searches", 
+    searchTips: "Use ↑↓ to navigate, Enter to select",
+    advancedFilters: "Filters",
+    tryAgain: "Try Again",
+    searchFailed: "Search failed. Please try again.",
+    
      // Recent Activity
      recentActivityDesc: "Latest administrative actions and system events",
      activeConnections: "Active Connections",
