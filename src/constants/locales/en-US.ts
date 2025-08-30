@@ -34,6 +34,8 @@ export const enUS = {
     approve: 'Approve',
     reject: 'Reject',
     pending: 'Pending',
+    scheduled: 'Scheduled',
+    completed: 'Completed',
     approved: 'Approved',
     rejected: 'Rejected',
     active: 'Active',
@@ -111,6 +113,12 @@ export const enUS = {
     phone: 'Phone',
     exportCompleted: 'Export Completed',
     dataRefreshed: 'Data Refreshed'
+  },
+  error: {
+    general: 'An error occurred'
+  },
+  success: {
+    updated: 'Successfully updated'
   },
   support: {
     title: "Support Management",

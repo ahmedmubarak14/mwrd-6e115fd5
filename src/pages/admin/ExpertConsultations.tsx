@@ -55,7 +55,9 @@ export const ExpertConsultations = () => {
   
   // Helper function to translate status
   const getTranslatedStatus = (status: string) => {
-    return t(`expertConsultations.${status}`);
+    // Ensure status is lowercase and handle potential undefined/null values
+    const normalizedStatus = status?.toLowerCase() || 'pending';
+    return t(`expertConsultations.${normalizedStatus}`);
   };
   const { showSuccess, showError } = useToastFeedback();
   const [consultations, setConsultations] = useState<Consultation[]>([]);

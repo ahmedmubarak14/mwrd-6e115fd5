@@ -34,6 +34,8 @@ export const arSA = {
     approve: 'موافقة',
     reject: 'رفض',
     pending: 'معلق',
+    scheduled: 'مجدول',
+    completed: 'مكتمل',
     approved: 'موافق عليه',
     rejected: 'مرفوض',
     active: 'نشط',
@@ -111,6 +113,12 @@ export const arSA = {
     phone: 'هاتف',
     exportCompleted: 'تم التصدير',
     dataRefreshed: 'تم تحديث البيانات'
+  },
+  error: {
+    general: 'حدث خطأ'
+  },
+  success: {
+    updated: 'تم التحديث بنجاح'
   },
   support: {
     title: "إدارة الدعم",
