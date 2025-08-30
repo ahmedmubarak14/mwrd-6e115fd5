@@ -231,7 +231,6 @@ export const arSA = {
     recommendations: "التوصيات",
     recentActivity: "النشاط الأخير",
     systemActivity: "نشاط النظام",
-    system: "النظام",
     usageTrends: "اتجاهات الاستخدام",
     performanceMetrics: "مقاييس الأداء",
     // تحليلات العميل
@@ -276,7 +275,31 @@ export const arSA = {
     dataRefreshed: "تم تحديث البيانات",
     dataRefreshedDesc: "تم تحديث بيانات التحليلات بنجاح",
     refreshError: "خطأ في التحديث",
-    refreshErrorDesc: "حدث خطأ أثناء تحديث البيانات"
+    refreshErrorDesc: "حدث خطأ أثناء تحديث البيانات",
+    // تحليلات المنصة
+    currentlyActive: "نشطة حالياً",
+    monthlyRevenue: "الإيرادات الشهرية",
+    thisMonth: "هذا الشهر",
+    serviceRequests: "طلبات الخدمة",
+    offersSubmitted: "عروض مقدمة",
+    totalTransactions: "إجمالي المعاملات", 
+    transactionsProcessed: "معاملات معالجة",
+    activityLogs: "سجلات النشاط",
+    system: "النظام",
+    noEmail: "لا يوجد بريد إلكتروني",
+    noActivityLogs: "لم يتم العثور على سجلات نشاط حديثة",
+    performanceDescription: "مؤشرات الأداء الرئيسية ومقاييس النظام",
+    performanceContent: "سيتم عرض مقاييس الأداء هنا",
+    trendsDescription: "أنماط استخدام المنصة واتجاهات النمو", 
+    trendsContent: "تحليل اتجاهات الاستخدام قادم قريباً"
+  },
+  
+  // الفترات الزمنية
+  time: {
+    last24hours: "آخر 24 ساعة",
+    last7days: "آخر 7 أيام",
+    last30days: "آخر 30 يوم", 
+    last3months: "آخر 3 أشهر"
   },
   
   // Performance Section

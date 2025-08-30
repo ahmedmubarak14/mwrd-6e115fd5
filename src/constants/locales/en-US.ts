@@ -231,7 +231,6 @@ export const enUS = {
     recommendations: "Recommendations",
     recentActivity: "Recent Activity",
     systemActivity: "System Activity",
-    system: "System",
     usageTrends: "Usage Trends",
     performanceMetrics: "Performance Metrics",
     // Client Analytics
@@ -276,7 +275,31 @@ export const enUS = {
     dataRefreshed: "Data Refreshed",
     dataRefreshedDesc: "Analytics data refreshed successfully",
     refreshError: "Refresh Error",
-    refreshErrorDesc: "Error refreshing data"
+    refreshErrorDesc: "Error refreshing data",
+    // Platform Analytics  
+    currentlyActive: "Currently active",
+    monthlyRevenue: "Monthly Revenue",
+    thisMonth: "This month",
+    serviceRequests: "Service requests",
+    offersSubmitted: "Offers submitted", 
+    totalTransactions: "Total Transactions",
+    transactionsProcessed: "Transactions processed",
+    activityLogs: "Activity Logs",
+    system: "System",
+    noEmail: "No email",
+    noActivityLogs: "No recent activity logs found",
+    performanceDescription: "Key performance indicators and system metrics",
+    performanceContent: "Performance metrics will be displayed here",
+    trendsDescription: "Platform usage patterns and growth trends",
+    trendsContent: "Usage trend analysis coming soon"
+  },
+  
+  // Time periods
+  time: {
+    last24hours: "Last 24 Hours",
+    last7days: "Last 7 Days", 
+    last30days: "Last 30 Days",
+    last3months: "Last 3 Months"
   },
   
   // Performance Section
