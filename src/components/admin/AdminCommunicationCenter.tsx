@@ -73,18 +73,18 @@ export const AdminCommunicationCenter = () => {
   });
 
   const audienceTypes = [
-    { value: 'all_users', label: 'All Users' },
-    { value: 'clients', label: 'Clients Only' },
-    { value: 'vendors', label: 'Vendors Only' },
-    { value: 'pending_verification', label: 'Pending Verification' },
-    { value: 'inactive_users', label: 'Inactive Users' }
+    { value: 'all_users', label: t('communication.allUsers') },
+    { value: 'clients', label: t('communication.clientsOnly') },
+    { value: 'vendors', label: t('communication.vendorsOnly') },
+    { value: 'pending_verification', label: t('communication.pendingVerification') },
+    { value: 'inactive_users', label: t('communication.inactiveUsers') }
   ];
 
   const priorityTypes = [
-    { value: 'low', label: 'Low Priority' },
-    { value: 'medium', label: 'Medium Priority' },
-    { value: 'high', label: 'High Priority' },
-    { value: 'urgent', label: 'Urgent' }
+    { value: 'low', label: t('communication.lowPriority') },
+    { value: 'medium', label: t('communication.mediumPriority') },
+    { value: 'high', label: t('communication.highPriority') },
+    { value: 'urgent', label: t('communication.urgentPriority') }
   ];
 
   const fetchNotifications = async () => {
@@ -167,15 +167,15 @@ export const AdminCommunicationCenter = () => {
       await fetchBroadcasts();
 
       toast({
-        title: 'Success',
-        description: 'Broadcast message created successfully',
+        title: t('communication.success'),
+        description: t('communication.broadcastCreated'),
         variant: 'default'
       });
     } catch (error) {
       console.error('Error sending broadcast:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to create broadcast message',
+        title: t('communication.error'),
+        description: t('communication.broadcastFailed'),
         variant: 'destructive'
       });
     }
@@ -193,8 +193,8 @@ export const AdminCommunicationCenter = () => {
       setNotifications(prev => prev.map(notif => ({ ...notif, read: true })));
 
       toast({
-        title: 'Success',
-        description: 'All notifications marked as read',
+        title: t('communication.success'),
+        description: t('communication.allMarkedRead'),
         variant: 'default'
       });
     } catch (error) {
@@ -221,13 +221,13 @@ export const AdminCommunicationCenter = () => {
   const getPriorityBadge = (priority: string) => {
     switch (priority) {
       case 'urgent':
-        return <Badge variant="destructive">Urgent</Badge>;
+        return <Badge variant="destructive">{t('communication.urgent')}</Badge>;
       case 'high':
-        return <Badge variant="secondary" className="bg-orange-100 text-orange-800">High</Badge>;
+        return <Badge variant="secondary" className="bg-orange-100 text-orange-800">{t('communication.high')}</Badge>;
       case 'medium':
-        return <Badge variant="outline">Medium</Badge>;
+        return <Badge variant="outline">{t('communication.medium')}</Badge>;
       case 'low':
-        return <Badge variant="secondary">Low</Badge>;
+        return <Badge variant="secondary">{t('communication.low')}</Badge>;
       default:
         return <Badge variant="secondary">{priority}</Badge>;
     }
@@ -236,13 +236,13 @@ export const AdminCommunicationCenter = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'sent':
-        return <Badge variant="default" className="bg-success text-success-foreground">Sent</Badge>;
+        return <Badge variant="default" className="bg-success text-success-foreground">{t('communication.sent')}</Badge>;
       case 'draft':
-        return <Badge variant="secondary">Draft</Badge>;
+        return <Badge variant="secondary">{t('communication.draft')}</Badge>;
       case 'scheduled':
-        return <Badge variant="outline" className="border-blue-200 text-blue-800">Scheduled</Badge>;
+        return <Badge variant="outline" className="border-blue-200 text-blue-800">{t('communication.scheduled')}</Badge>;
       case 'failed':
-        return <Badge variant="destructive">Failed</Badge>;
+        return <Badge variant="destructive">{t('communication.failed')}</Badge>;
       default:
         return <Badge variant="secondary">{status}</Badge>;
     }
@@ -503,7 +503,7 @@ export const AdminCommunicationCenter = () => {
 
               <Button onClick={sendBroadcastMessage}>
                 <Send className="h-4 w-4 mr-2" />
-                {t('communication.sendBroadcast')}
+                {t('communication.sendMessage')}
               </Button>
             </CardContent>
           </Card>
@@ -511,16 +511,16 @@ export const AdminCommunicationCenter = () => {
           {/* Broadcast History */}
           <Card>
             <CardHeader>
-              <CardTitle>{t('communication.broadcastHistory')}</CardTitle>
+              <CardTitle>{t('communication.recentBroadcasts')}</CardTitle>
               <CardDescription>
-                {t('communication.previouslyBroadcast')}
+                {t('communication.recentBroadcasts')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               {broadcasts.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">
                   <Megaphone className="h-8 w-8 mx-auto mb-2" />
-                  <p>{t('communication.noBroadcastMessages')}</p>
+                  <p>{t('communication.noBroadcastsYet')}</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -553,15 +553,15 @@ export const AdminCommunicationCenter = () => {
         <TabsContent value="templates">
           <Card>
             <CardHeader>
-              <CardTitle>Email Templates</CardTitle>
+              <CardTitle>{t('communication.templateLibrary')}</CardTitle>
               <CardDescription>
-                Manage reusable email templates for communications
+                {t('communication.manageEmailTemplates')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="text-center py-12 text-muted-foreground">
                 <Mail className="h-12 w-12 mx-auto mb-4" />
-                <p>Email template management coming soon...</p>
+                <p>{t('communication.noTemplatesYet')}</p>
               </div>
             </CardContent>
           </Card>
