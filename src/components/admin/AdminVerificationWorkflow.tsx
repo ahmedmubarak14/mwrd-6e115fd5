@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 import { cn } from '@/lib/utils';
 
 interface PendingVerification {
@@ -48,6 +49,7 @@ interface VerificationDocument {
 
 export const AdminVerificationWorkflow = () => {
   const { toast } = useToast();
+  const { t } = useOptionalLanguage();
   const [pendingVerifications, setPendingVerifications] = useState<PendingVerification[]>([]);
   const [selectedUser, setSelectedUser] = useState<PendingVerification | null>(null);
   const [reviewNotes, setReviewNotes] = useState('');
@@ -199,13 +201,13 @@ export const AdminVerificationWorkflow = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Verification Workflow</h2>
+          <h2 className="text-2xl font-bold">{t('admin.verification.title')}</h2>
           <p className="text-muted-foreground">
-            {pendingVerifications.length} users awaiting verification
+            {pendingVerifications.length} {t('admin.verification.usersAwaiting')}
           </p>
         </div>
         <Button onClick={fetchPendingVerifications} variant="outline">
-          Refresh
+          {t('admin.verification.refresh')}
         </Button>
       </div>
 
@@ -213,15 +215,15 @@ export const AdminVerificationWorkflow = () => {
         <Card>
           <CardContent className="py-12 text-center">
             <CheckCircle className="h-12 w-12 mx-auto mb-4 text-success" />
-            <h3 className="text-lg font-semibold mb-2">All caught up!</h3>
-            <p className="text-muted-foreground">No pending verifications at this time.</p>
+            <h3 className="text-lg font-semibold mb-2">{t('admin.verification.allCaughtUp')}</h3>
+            <p className="text-muted-foreground">{t('admin.verification.noPendingVerifications')}</p>
           </CardContent>
         </Card>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Verification Queue */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Verification Queue</h3>
+            <h3 className="text-lg font-semibold">{t('admin.verification.verificationQueue')}</h3>
             {pendingVerifications.map((user) => (
               <Card 
                 key={user.id} 

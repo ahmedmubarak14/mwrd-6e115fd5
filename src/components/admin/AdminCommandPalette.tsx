@@ -118,35 +118,35 @@ export const AdminCommandPalette = () => {
     () => [
       {
         icon: <Users className="h-4 w-4" />,
-        label: "Go to Users",
+        label: t('admin.commandPalette.goToUsers'),
         action: () => navigate("/admin/users"),
       },
       {
         icon: <UserPlus className="h-4 w-4" />,
-        label: "Create new user",
+        label: t('admin.commandPalette.createNewUser'),
         action: () => navigate("/admin/users?action=create"),
       },
       {
         icon: <FileText className="h-4 w-4" />,
-        label: "Review Requests",
+        label: t('admin.commandPalette.reviewRequests'),
         action: () => navigate("/admin/requests"),
       },
       {
         icon: <Tag className="h-4 w-4" />,
-        label: "Manage Offers",
+        label: t('admin.commandPalette.manageOffers'),
         action: () => navigate("/admin/offers"),
       },
       {
         icon: <BarChart3 className="h-4 w-4" />,
-        label: "View Analytics",
+        label: t('admin.commandPalette.viewAnalytics'),
         action: () => navigate("/admin/analytics"),
       },
       {
         icon: <CreditCard className="h-4 w-4" />,
-        label: "Financial Transactions",
+        label: t('admin.commandPalette.financialTransactions'),
         action: () => navigate("/admin/financial-transactions"),
       },
-    ], [navigate]
+    ], [navigate, t]
   );
 
   return (

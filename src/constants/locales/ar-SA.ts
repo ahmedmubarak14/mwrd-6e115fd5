@@ -945,6 +945,105 @@ export const arSA = {
     requests: "الطلبات",
     notifications: "الإشعارات",
     offers: "العروض",
+    projects: "المشاريع",
+    settings: "الإعدادات",
+    profile: "الملف الشخصي",
+    communications: "الاتصالات",
+    financialTransactions: "المعاملات المالية",
+    subscriptions: "الاشتراكات",
+    supportTickets: "تذاكر الدعم",
+    expertConsultations: "الاستشارات الخبيرة",
+    verification: "التحقق",
+    orders: "الطلبات",
+    analytics: "التحليلات",
+    approvals: "الموافقات",
+    categories: "الفئات",
+    categoryManagement: "إدارة الفئات",
+    userManagement: "إدارة المستخدمين",
+    requestManagement: "إدارة الطلبات",
+    offerManagement: "إدارة العروض",
+    systemHealth: "صحة النظام",
+    securityCenter: "مركز الأمان",
+    workflowAutomation: "أتمتة سير العمل",
+    auditLogs: "سجلات التدقيق",
+    dataExport: "تصدير البيانات",
+    backupRestore: "النسخ الاحتياطي والاستعادة",
+    integrationHub: "مركز التكامل",
+    apiManagement: "إدارة واجهة برمجة التطبيقات",
+    languageEnglish: "English",
+    languageArabic: "العربية",
+    badgeMax: "99+",
+    navigateTo: "الانتقال إلى",
+    quickActions: "الإجراءات السريعة",
+    searchUsersRequestsOffers: "البحث عن المستخدمين والطلبات والعروض...",
+    notFound: "لم يتم العثور على نتائج.",
+    
+    // Command Palette
+    commandPalette: {
+      goToUsers: "الذهاب إلى المستخدمين",
+      createNewUser: "إنشاء مستخدم جديد",
+      reviewRequests: "مراجعة الطلبات",
+      manageOffers: "إدارة العروض",
+      viewAnalytics: "عرض التحليلات",
+      financialTransactions: "المعاملات المالية"
+    },
+    
+    // Navigation items
+    navigation: {
+      projects: "المشاريع",
+      verificationQueue: "قائمة التحقق",
+      workflowAutomation: "أتمتة سير العمل",
+      categoryManagement: "إدارة الفئات"
+    },
+    
+    // Verification
+    verification: {
+      title: "سير عمل التحقق",
+      allCaughtUp: "تم الانتهاء من كل شيء!",
+      noPendingVerifications: "لا توجد تحقيقات معلقة في الوقت الحالي.",
+      verificationQueue: "قائمة التحقق",
+      verificationDetails: "تفاصيل التحقق",
+      reviewAndApprove: "مراجعة والموافقة على تحقق المستخدم",
+      selectUser: "اختر مستخدم",
+      chooseUserFromQueue: "اختر مستخدماً من القائمة لمراجعة تحققه.",
+      reviewNotes: "ملاحظات المراجعة",
+      addNotes: "أضف ملاحظات حول هذا التحقق...",
+      markUnderReview: "وضع علامة قيد المراجعة",
+      approve: "موافقة",
+      reject: "رفض",
+      refresh: "تحديث",
+      usersAwaiting: "المستخدمون في انتظار التحقق",
+      submitted: "تم الإرسال",
+      documents: "المستندات",
+      verificationDocuments: "مستندات التحقق",
+      noDocumentsUploaded: "لم يتم رفع مستندات",
+      view: "عرض",
+      registered: "مسجل",
+      statusUpdated: "تم تحديث الحالة",
+      markedUnderReview: "تم وضع علامة التحقق قيد المراجعة",
+      approvedSuccessfully: "تم الموافقة على تحقق المستخدم بنجاح",
+      rejectedSuccessfully: "تم رفض تحقق المستخدم بنجاح",
+      errorUpdatingStatus: "فشل في تحديث حالة التحقق",
+      errorFetchingVerifications: "فشل في جلب التحقيقات المعلقة",
+      status: {
+        pending: "معلق",
+        underReview: "قيد المراجعة",
+        approved: "موافق عليه",
+        rejected: "مرفوض"
+      },
+      roles: {
+        vendor: "بائع",
+        client: "عميل"
+      }
+    },
+    
+    // Groups
+    groups: {
+      overview: "نظرة عامة",
+      management: "الإدارة",
+      business: "الأعمال",
+      system: "النظام"
+    },
     
     // Communication Center
     communicationCenter: "مركز الاتصالات",
