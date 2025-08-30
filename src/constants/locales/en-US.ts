@@ -470,8 +470,8 @@ export const enUS = {
     securityCenterDesc: "Manage platform security and compliance",
     communications: "Communications",
     communicationsDesc: "Manage notifications and user communications",
-    workflowAutomation: "Workflow Automation",
-    workflowAutomationDesc: "Manage automated workflows and processes",
+    automation: "Automation",
+    automationDesc: "Manage automated workflows and processes",
     
     // Command Palette
     commandPalette: {
@@ -887,8 +887,7 @@ export const enUS = {
     roleLabel: "Role",
     companyName: "Company Name",
     
-     // Menu Items
-     workflowAutomation: "Workflow Automation",
+     // Menu Items  
      subscriptions: "Subscriptions", 
      supportTickets: "Support Tickets",
      categoryManagement: "Category Management",

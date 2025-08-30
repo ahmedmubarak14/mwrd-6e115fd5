@@ -470,8 +470,8 @@ export const arSA = {
     securityCenterDesc: "إدارة أمان المنصة والامتثال",
     communications: "الاتصالات",
     communicationsDesc: "إدارة الإشعارات وتواصل المستخدمين",
-    workflowAutomationNav: "الأتمتة",
-    workflowAutomationDesc: "إدارة سير العمل والعمليات المؤتمتة",
+    automation: "الأتمتة",
+    automationDesc: "إدارة سير العمل والعمليات المؤتمتة",
     
     // Command Palette
     commandPalette: {
@@ -779,8 +779,6 @@ export const arSA = {
     companyName: "اسم الشركة",
     
     // Menu Items
-    analytics: "التحليلات",
-    workflowAutomationNav: "أتمتة سير العمل",
     subscriptions: "الاشتراكات",
     supportTickets: "تذاكر الدعم",
     categoryManagement: "إدارة الفئات",
