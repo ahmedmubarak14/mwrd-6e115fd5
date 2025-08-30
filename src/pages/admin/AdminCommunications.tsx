@@ -25,10 +25,10 @@ const AdminCommunications = () => {
         <div className={cn(isRTL ? "text-right" : "text-left")}>
           <h1 className="text-3xl font-bold flex items-center gap-2">
             <MessageSquare className="h-8 w-8 text-primary" />
-            {t('common.communicationCenter')}
+            {t('admin.communicationCenter')}
           </h1>
           <p className="text-muted-foreground">
-            {t('common.communicationCenterDescription')}
+            {t('admin.communicationCenterDescription')}
           </p>
         </div>
 
@@ -40,7 +40,7 @@ const AdminCommunications = () => {
             </TabsTrigger>
             <TabsTrigger value="notifications" className="flex items-center gap-1 md:gap-2">
               <Bell className="h-4 w-4" />
-              <span className="hidden sm:inline">{t('nav.notifications')}</span>
+              <span className="hidden sm:inline">{t('admin.notifications')}</span>
             </TabsTrigger>
             <TabsTrigger value="chat" className="flex items-center gap-1 md:gap-2">
               <MessageSquare className="h-4 w-4" />
