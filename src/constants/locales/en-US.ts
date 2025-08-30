@@ -204,6 +204,68 @@ export const enUS = {
     highPriority: "High Priority",
     urgentPriority: "Urgent"
   },
+  
+  // Analytics Section
+  analytics: {
+    platformAnalytics: "Platform Analytics",
+    monitorDescription: "Monitor platform performance and user engagement metrics",
+    basicDashboard: "Basic Analytics Dashboard",
+    viewAnalytics: "View Analytics",
+    userEngagement: "User Engagement",
+    totalPageViews: "Total Page Views",
+    averageSessionDuration: "Average Session Duration",
+    bounceRate: "Bounce Rate",
+    conversionRate: "Conversion Rate"
+  },
+  
+  // Financial Section  
+  financial: {
+    transactions: "Financial Transactions",
+    description: "Monitor and manage platform financial transactions",
+    totalTransactions: "Total Transactions",
+    completed: "Completed",
+    pending: "Pending", 
+    totalVolume: "Total Volume",
+    platformRevenue: "Platform Revenue",
+    searchPlaceholder: "Search transactions by ID, amount, or user...",
+    status: "Status",
+    allStatus: "All Status",
+    failed: "Failed",
+    cancelled: "Cancelled",
+    type: "Type",
+    allTypes: "All Types",
+    payment: "Payment",
+    refund: "Refund",
+    fee: "Fee",
+    commission: "Commission",
+    withdrawal: "Withdrawal",
+    refresh: "Refresh",
+    export: "Export",
+    all: "All",
+    noTransactionsFound: "No Transactions Found",
+    noTransactionsMatch: "No transactions match your search criteria",
+    noTransactionsAvailable: "No transactions available yet",
+    demoMode: "Demo Mode",
+    demoDescription: "Showing sample transaction data for demonstration",
+    error: "Error",
+    fetchError: "Failed to fetch transactions data"
+  },
+  
+  // Navigation Section
+  nav: {
+    notifications: "Notifications",
+    dashboard: "Dashboard",
+    analytics: "Analytics",
+    users: "Users",
+    requests: "Requests",
+    offers: "Offers",
+    orders: "Orders",
+    communications: "Communications",
+    settings: "Settings",
+    profile: "Profile",
+    logout: "Logout"
+  },
+  
   admin: {
     // Core Dashboard
     dashboard: "Admin Dashboard",

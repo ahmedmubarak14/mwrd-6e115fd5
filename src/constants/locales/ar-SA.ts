@@ -204,6 +204,68 @@ export const arSA = {
     highPriority: "أولوية عالية",
     urgentPriority: "أولوية عاجلة"
   },
+  
+  // Analytics Section
+  analytics: {
+    platformAnalytics: "تحليلات المنصة",
+    monitorDescription: "مراقبة أداء المنصة ومقاييس مشاركة المستخدمين",
+    basicDashboard: "لوحة التحليلات الأساسية",
+    viewAnalytics: "عرض التحليلات",
+    userEngagement: "مشاركة المستخدم",
+    totalPageViews: "إجمالي مشاهدات الصفحة",
+    averageSessionDuration: "متوسط مدة الجلسة",
+    bounceRate: "معدل الارتداد",
+    conversionRate: "معدل التحويل"
+  },
+  
+  // Financial Section
+  financial: {
+    transactions: "المعاملات المالية",
+    description: "مراقبة وإدارة المعاملات المالية للمنصة",
+    totalTransactions: "إجمالي المعاملات",
+    completed: "مكتمل",
+    pending: "معلق",
+    totalVolume: "الحجم الإجمالي",
+    platformRevenue: "إيرادات المنصة",
+    searchPlaceholder: "البحث في المعاملات بالمعرف أو المبلغ أو المستخدم...",
+    status: "الحالة",
+    allStatus: "جميع الحالات",
+    failed: "فاشل",
+    cancelled: "ملغى",
+    type: "النوع",
+    allTypes: "جميع الأنواع",
+    payment: "دفع",
+    refund: "استرداد",
+    fee: "رسوم",
+    commission: "عمولة",
+    withdrawal: "سحب",
+    refresh: "تحديث",
+    export: "تصدير",
+    all: "الكل",
+    noTransactionsFound: "لم يتم العثور على معاملات",
+    noTransactionsMatch: "لا توجد معاملات تطابق معايير البحث",
+    noTransactionsAvailable: "لا توجد معاملات متاحة بعد",
+    demoMode: "وضع العرض التوضيحي",
+    demoDescription: "عرض بيانات معاملات نموذجية للتوضيح",
+    error: "خطأ",
+    fetchError: "فشل في جلب بيانات المعاملات"
+  },
+  
+  // Navigation Section
+  nav: {
+    notifications: "الإشعارات",
+    dashboard: "لوحة التحكم",
+    analytics: "التحليلات",
+    users: "المستخدمين",
+    requests: "الطلبات",
+    offers: "العروض",
+    orders: "الطلبات",
+    communications: "الاتصالات",
+    settings: "الإعدادات",
+    profile: "الملف الشخصي",
+    logout: "تسجيل الخروج"
+  },
+  
   admin: {
     // Core Dashboard
     dashboard: "لوحة تحكم الإدارة",
