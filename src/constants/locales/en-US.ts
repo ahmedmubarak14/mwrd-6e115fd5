@@ -936,8 +936,14 @@ export const enUS = {
      activeConnections: "Active Connections",
     activityOn: "on",
     
-    // Errors & Messages
-    metricsError: "Failed to load admin metrics",
+    // User Details
+    userDetails: {
+      noName: "No Name",
+      profile: "User Profile",
+      basicInfo: "Basic Information", 
+      accountSettings: "Account Settings",
+      preferences: "Preferences"
+    },
     fetchUsersError: "Failed to fetch users data",
     exportDescription: "Users data has been exported to CSV", 
     dataUpdated: "Users data has been updated",
@@ -1064,11 +1070,11 @@ export const enUS = {
       compliance: "Compliance"
     },
     
-    // User Management Details  
-    userDetails: {
+    // User Management Details
+    userManagementDetails: {
       user: "User",
       company: "Company",
-      role: "Role",
+      role: "Role", 
       joinedDate: "Joined Date",
       addUser: "Add User",
       addUserDescription: "Create a new user account",

@@ -830,6 +830,15 @@ export const arSA = {
     activeConnections: "الاتصالات النشطة",
     activityOn: "على",
     
+    // User Details
+    userDetails: {
+      noName: "بلا اسم",
+      profile: "ملف المستخدم",
+      basicInfo: "المعلومات الأساسية",
+      accountSettings: "إعدادات الحساب", 
+      preferences: "التفضيلات"
+    },
+    
     // Errors & Messages
     metricsError: "فشل في تحميل مقاييس الإدارة",
     fetchUsersError: "فشل في جلب بيانات المستخدمين",
@@ -959,7 +968,7 @@ export const arSA = {
     },
     
     // User Management Details
-    userDetails: {
+    userManagementDetails: {
       user: "المستخدم",
       company: "الشركة",
       role: "الدور", 
