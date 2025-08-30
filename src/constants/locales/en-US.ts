@@ -203,5 +203,9 @@ export const enUS = {
     mediumPriority: "Medium Priority",
     highPriority: "High Priority",
     urgentPriority: "Urgent"
+  },
+  admin: {
+    performanceMonitor: "Performance Monitor",
+    performanceMonitorDescription: "Monitor system performance and resource usage in real-time"
   }
 };

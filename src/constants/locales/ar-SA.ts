@@ -203,5 +203,9 @@ export const arSA = {
     mediumPriority: "أولوية متوسطة",
     highPriority: "أولوية عالية",
     urgentPriority: "أولوية عاجلة"
+  },
+  admin: {
+    performanceMonitor: "مراقب الأداء",
+    performanceMonitorDescription: "مراقبة أداء النظام واستخدام الموارد في الوقت الفعلي"
   }
 };
