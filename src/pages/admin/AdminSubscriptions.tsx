@@ -52,11 +52,7 @@ export default function AdminSubscriptions() {
   const [newPlan, setNewPlan] = useState<string>("");
   const [newExpiryDays, setNewExpiryDays] = useState<number>(30);
   
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useOptionalLanguage();
 
   const { toast } = useToast();
 
