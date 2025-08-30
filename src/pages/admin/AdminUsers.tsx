@@ -164,7 +164,7 @@ export default function AdminUsers() {
 
   const handleExport = () => {
     const csvContent = [
-      'User ID,Name,Email,Role,Status,Verification,Company,Phone,Created Date',
+      t('admin.csvHeaders'),
       ...filteredUsers.map(user => 
         `${user.id},${user.full_name},${user.email},${user.role},${user.status},${user.verification_status},${user.company_name || ''},${user.phone || ''},${format(new Date(user.created_at), 'yyyy-MM-dd')}`
       )
@@ -221,8 +221,8 @@ export default function AdminUsers() {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: `Updated role for ${selectedUsers.length} users`,
+        title: t('common.success'),
+        description: t('admin.bulkRoleUpdateSuccess').replace('{count}', selectedUsers.length.toString()),
       });
 
       fetchUsers();
@@ -252,8 +252,8 @@ export default function AdminUsers() {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: `Updated status for ${selectedUsers.length} users`,
+        title: t('common.success'),
+        description: t('admin.bulkStatusUpdateSuccess').replace('{count}', selectedUsers.length.toString()),
       });
 
       fetchUsers();
@@ -273,7 +273,7 @@ export default function AdminUsers() {
   const handleExportSelected = () => {
     const exportUsers = filteredUsers.filter(user => selectedUsers.includes(user.id));
     const csvContent = [
-      'User ID,Name,Email,Role,Status,Verification,Company,Phone,Created Date',
+      t('admin.csvHeaders'),
       ...exportUsers.map(user => 
         `${user.id},${user.full_name},${user.email},${user.role},${user.status},${user.verification_status},${user.company_name || ''},${user.phone || ''},${format(new Date(user.created_at), 'yyyy-MM-dd')}`
       )
@@ -288,8 +288,8 @@ export default function AdminUsers() {
     window.URL.revokeObjectURL(url);
     
     toast({
-      title: "Export completed",
-      description: `Exported ${selectedUsers.length} selected users`,
+      title: t('common.exportCompleted'),
+      description: t('admin.exportSelectedSuccess').replace('{count}', selectedUsers.length.toString()),
     });
   };
 
@@ -314,7 +314,7 @@ export default function AdminUsers() {
       if (existingUser) {
         toast({
           title: t('common.error'),
-          description: t('common.userExists') || 'User with this email already exists',
+          description: 'User with this email already exists',
           variant: "destructive",
         });
         return;
@@ -338,7 +338,7 @@ export default function AdminUsers() {
 
       toast({
         title: t('common.success'),
-        description: t('common.userAddedSuccess') || 'User added successfully',
+        description: 'User added successfully',
       });
 
       setIsAddUserOpen(false);
@@ -550,42 +550,42 @@ export default function AdminUsers() {
               
               <Select value={roleFilter} onValueChange={setRoleFilter}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Filter by role" />
+                  <SelectValue placeholder={t('admin.filterByRole')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Roles</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="vendor">Vendor</SelectItem>
-                  <SelectItem value="client">Client</SelectItem>
+                  <SelectItem value="all">{t('admin.allRoles')}</SelectItem>
+                  <SelectItem value="admin">{t('admin.admin')}</SelectItem>
+                  <SelectItem value="vendor">{t('admin.vendor')}</SelectItem>
+                  <SelectItem value="client">{t('admin.client')}</SelectItem>
                 </SelectContent>
               </Select>
               
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Filter by status" />
+                  <SelectValue placeholder={t('admin.filterByStatus')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="approved">Approved</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="blocked">Blocked</SelectItem>
-                  <SelectItem value="rejected">Rejected</SelectItem>
+                  <SelectItem value="all">{t('admin.allStatus')}</SelectItem>
+                  <SelectItem value="approved">{t('admin.approved')}</SelectItem>
+                  <SelectItem value="pending">{t('admin.pending')}</SelectItem>
+                  <SelectItem value="blocked">{t('admin.blocked')}</SelectItem>
+                  <SelectItem value="rejected">{t('admin.rejected')}</SelectItem>
                 </SelectContent>
               </Select>
               
               <Button variant="outline" onClick={handleRefresh}>
                 <RefreshCw className="h-4 w-4 mr-2" />
-                Refresh
+                {t('admin.refresh')}
               </Button>
               
               <Button variant="outline" onClick={handleExport}>
                 <Download className="h-4 w-4 mr-2" />
-                Export CSV
+                {t('admin.exportUsers')}
               </Button>
               
               <Button variant="outline" onClick={() => setIsAddUserOpen(true)}>
                 <UserPlus className="h-4 w-4 mr-2" />
-                Add User
+                {t('admin.addUser')}
               </Button>
             </div>
 
@@ -599,23 +599,23 @@ export default function AdminUsers() {
                     onCheckedChange={handleSelectAll}
                   />
                   <label htmlFor="select-all" className="text-sm font-medium">
-                    Select All ({selectedCount} selected)
+                    {t('admin.selectAllUsers').replace('{count}', selectedCount.toString())}
                   </label>
                 </div>
 
                 {selectedCount > 0 && (
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4">
                      <div className="flex flex-col sm:flex-row gap-2">
-                      <Select value={bulkRole} onValueChange={setBulkRole}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select role" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="client">Client</SelectItem>
-                          <SelectItem value="vendor">Vendor</SelectItem>
-                          <SelectItem value="admin">Admin</SelectItem>
-                        </SelectContent>
-                      </Select>
+                        <Select value={bulkRole} onValueChange={setBulkRole}>
+                          <SelectTrigger>
+                            <SelectValue placeholder={t('admin.selectRole')} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="client">{t('admin.client')}</SelectItem>
+                            <SelectItem value="vendor">{t('admin.vendor')}</SelectItem>
+                            <SelectItem value="admin">{t('admin.admin')}</SelectItem>
+                          </SelectContent>
+                        </Select>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button 
