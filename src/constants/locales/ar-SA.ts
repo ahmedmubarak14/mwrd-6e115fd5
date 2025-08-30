@@ -717,6 +717,12 @@ export const arSA = {
     tryAgain: "حاول مرة أخرى",
     searchFailed: "فشل البحث. يرجى المحاولة مرة أخرى.",
     
+    // Theme Toggle
+    themeToggle: "المظهر",
+    themeLight: "فاتح",
+    themeDark: "داكن", 
+    themeSystem: "النظام",
+    
     // Recent Activity
     recentActivity: "النشاط الحديث",
     recentActivityDesc: "أحدث الإجراءات الإدارية وأحداث النظام",

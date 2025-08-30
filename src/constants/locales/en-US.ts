@@ -825,6 +825,12 @@ export const enUS = {
     tryAgain: "Try Again",
     searchFailed: "Search failed. Please try again.",
     
+    // Theme Toggle
+    themeToggle: "Theme",
+    themeLight: "Light", 
+    themeDark: "Dark",
+    themeSystem: "System",
+    
      // Recent Activity
      recentActivityDesc: "Latest administrative actions and system events",
      activeConnections: "Active Connections",
