@@ -110,9 +110,10 @@ export const enUS = {
     profile: 'Profile',
     signOut: 'Sign Out',
     notSpecified: 'Not Specified',
-    phone: 'Phone',
-    exportCompleted: 'Export Completed',
-    dataRefreshed: 'Data Refreshed'
+    contact: 'Contact',
+    scheduledDate: 'Scheduled Date',
+    notScheduled: 'Not Scheduled',
+    emailOnly: 'Email Only'
   },
   error: {
     general: 'An error occurred'

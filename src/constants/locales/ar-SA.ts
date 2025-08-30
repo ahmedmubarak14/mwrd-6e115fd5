@@ -110,9 +110,10 @@ export const arSA = {
     profile: 'الملف الشخصي',
     signOut: 'تسجيل الخروج',
     notSpecified: 'غير محدد',
-    phone: 'هاتف',
-    exportCompleted: 'تم التصدير',
-    dataRefreshed: 'تم تحديث البيانات'
+    contact: 'التواصل',
+    scheduledDate: 'التاريخ المجدول',
+    notScheduled: 'غير مجدول',
+    emailOnly: 'البريد الإلكتروني فقط'
   },
   error: {
     general: 'حدث خطأ'
