@@ -37,7 +37,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
     e.preventDefault();
     
     if (!formData.email || !formData.fullName) {
-      showError(t('admin.userDetails.fillRequiredFields') || 'Please fill in all required fields');
+      showError(t('users.fillRequiredFields'));
       return;
     }
 
@@ -59,7 +59,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
 
       if (profileError) throw profileError;
 
-      showSuccess(t('admin.userDetails.userAddedSuccess') || 'User added successfully');
+      showSuccess(t('users.userCreated'));
       onUserAdded();
       handleClose();
     } catch (error: any) {
@@ -84,24 +84,24 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
       <DialogContent className={cn("sm:max-w-md", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
         <DialogHeader>
           <DialogTitle className={cn(isRTL ? "text-right" : "text-left")}>
-            {t('admin.userDetails.addUser')}
+            {t('users.addUser')}
           </DialogTitle>
           <DialogDescription className={cn(isRTL ? "text-right" : "text-left")}>
-            {t('admin.userDetails.addUserDescription')}
+            {t('users.addUserDescription')}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email" className={cn(isRTL ? "text-right" : "text-left")}>
-              {t('common.email')} *
+              {t('users.email')} *
             </Label>
             <Input
               id="email"
               type="email"
               value={formData.email}
               onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-              placeholder={t('common.email')}
+              placeholder={t('forms.placeholders.email')}
               required
               disabled={loading}
             />

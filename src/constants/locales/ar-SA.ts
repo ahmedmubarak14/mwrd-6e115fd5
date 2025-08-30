@@ -1,4 +1,8 @@
+import { adminTranslationsEN } from '@/constants/admin-translations/en-US';
+import { adminTranslationsAR } from '@/constants/admin-translations/ar-SA';
+
 export const arSA = {
+  ...adminTranslationsAR,
     common: {
       // ... existing translations
       errors: {
