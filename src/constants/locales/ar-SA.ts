@@ -120,7 +120,20 @@ export const arSA = {
     twoFactorAuth: 'المصادقة الثنائية',
     adminSettings: 'إعدادات المشرف',
     activity: 'النشاط',
-    permissions: 'الصلاحيات'
+    permissions: 'الصلاحيات',
+    security: 'الأمان',
+    twoFactorDescription: 'إضافة طبقة أمان إضافية لحسابك',
+    securityAlerts: 'تنبيهات الأمان',
+    securityAlertsDescription: 'احصل على إشعارات حول أحداث الأمان',
+    sessionTimeout: 'انتهاء مهلة الجلسة (بالدقائق)',
+    sessionTimeoutDescription: 'تسجيل الخروج تلقائياً بعد فترة عدم النشاط',
+    resetPassword: 'إعادة تعيين كلمة المرور',
+    saveSecuritySettings: 'حفظ إعدادات الأمان',
+    adminSettingsDescription: 'تكوين تفضيلات المشرف المحددة',
+    emailNotifications: 'إشعارات البريد الإلكتروني',
+    emailNotificationsDescription: 'تلقي إشعارات البريد الإلكتروني لأنشطة المشرف',
+    auditLogRetention: 'الاحتفاظ بسجل التدقيق (بالأيام)',
+    auditLogRetentionDescription: 'مدة الاحتفاظ بسجلات التدقيق'
   },
   error: {
     general: 'حدث خطأ'

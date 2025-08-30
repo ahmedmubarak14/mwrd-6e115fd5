@@ -120,7 +120,20 @@ export const enUS = {
     twoFactorAuth: 'Two-Factor Authentication',
     adminSettings: 'Admin Settings',
     activity: 'Activity',
-    permissions: 'Permissions'
+    permissions: 'Permissions',
+    security: 'Security',
+    twoFactorDescription: 'Add an extra layer of security to your account',
+    securityAlerts: 'Security Alerts',
+    securityAlertsDescription: 'Get notified about security events',
+    sessionTimeout: 'Session Timeout (minutes)',
+    sessionTimeoutDescription: 'Automatically log out after period of inactivity',
+    resetPassword: 'Reset Password',
+    saveSecuritySettings: 'Save Security Settings',
+    adminSettingsDescription: 'Configure admin-specific preferences',
+    emailNotifications: 'Email Notifications',
+    emailNotificationsDescription: 'Receive email notifications for admin activities',
+    auditLogRetention: 'Audit Log Retention (days)',
+    auditLogRetentionDescription: 'How long to keep audit logs'
   },
   error: {
     general: 'An error occurred'
