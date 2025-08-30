@@ -169,7 +169,7 @@ const Profile = () => {
               className="w-full md:w-auto"
             >
               <Edit className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {t('profile.editProfile')}
+              {t('settings.editProfile')}
             </Button>
           )}
         </div>
@@ -209,7 +209,7 @@ const Profile = () => {
                   </CardDescription>
                    <div className={`flex items-center gap-2 text-sm text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
                      <Calendar className="h-4 w-4" />
-                     {t('profile.memberSince')} {new Date(userProfile.created_at || '').toLocaleDateString()}
+                     {t('settings.memberSince')} {new Date(userProfile.created_at || '').toLocaleDateString()}
                    </div>
                 </div>
               </CardHeader>
@@ -221,9 +221,9 @@ const Profile = () => {
             <CardHeader>
               <div className="flex items-center justify-between">
                  <div>
-                   <CardTitle>{t('profile.profileInformation')}</CardTitle>
+                   <CardTitle>{t('settings.personalInformation')}</CardTitle>
                    <CardDescription>
-                     {t('profile.profileInfoDescription')}
+                     {t('settings.personalInfoDescription')}
                    </CardDescription>
                  </div>
                 
@@ -235,7 +235,7 @@ const Profile = () => {
                        onClick={handleCancel}
                      >
                        <X className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                       {t('profile.cancel')}
+                       {t('common.cancel')}
                      </Button>
                      <Button
                        size="sm"
@@ -247,7 +247,7 @@ const Profile = () => {
                        ) : (
                          <Save className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                        )}
-                       {t('profile.saveChanges')}
+                       {t('settings.saveChanges')}
                      </Button>
                    </div>
                  )}
@@ -258,7 +258,7 @@ const Profile = () => {
                  <div className="space-y-2">
                    <Label htmlFor="full_name" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                      <User className="h-4 w-4" />
-                     {t('profile.fullName')}
+                     {t('settings.fullName')}
                    </Label>
                    {isEditing ? (
                      <Input
@@ -268,14 +268,14 @@ const Profile = () => {
                        className={isRTL ? 'text-right' : ''}
                      />
                    ) : (
-                     <p className={`text-sm py-2 ${isRTL ? 'text-right' : ''}`}>{userProfile.full_name || t('profile.notProvided')}</p>
+                     <p className={`text-sm py-2 ${isRTL ? 'text-right' : ''}`}>{userProfile.full_name || t('settings.notProvided')}</p>
                    )}
                  </div>
 
                  <div className="space-y-2">
                    <Label htmlFor="email" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                      <Mail className="h-4 w-4" />
-                     {t('profile.email')}
+                     {t('settings.email')}
                    </Label>
                    <p className={`text-sm py-2 ${isRTL ? 'text-right' : ''}`}>{userProfile.email}</p>
                  </div>
@@ -283,7 +283,7 @@ const Profile = () => {
                  <div className="space-y-2">
                    <Label htmlFor="phone" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                      <Phone className="h-4 w-4" />
-                     {t('profile.phone')}
+                     {t('settings.phone')}
                    </Label>
                    {isEditing ? (
                      <Input
@@ -293,14 +293,14 @@ const Profile = () => {
                        className={isRTL ? 'text-right' : ''}
                      />
                    ) : (
-                     <p className={`text-sm py-2 ${isRTL ? 'text-right' : ''}`}>{userProfile.phone || t('profile.notProvided')}</p>
+                     <p className={`text-sm py-2 ${isRTL ? 'text-right' : ''}`}>{userProfile.phone || t('settings.notProvided')}</p>
                    )}
                  </div>
 
                  <div className="space-y-2">
                    <Label htmlFor="company_name" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                      <Building className="h-4 w-4" />
-                     {t('profile.companyName')}
+                     {t('settings.companyName')}
                    </Label>
                    {isEditing ? (
                      <Input
@@ -310,14 +310,14 @@ const Profile = () => {
                        className={isRTL ? 'text-right' : ''}
                      />
                    ) : (
-                     <p className={`text-sm py-2 ${isRTL ? 'text-right' : ''}`}>{userProfile.company_name || t('profile.notProvided')}</p>
+                     <p className={`text-sm py-2 ${isRTL ? 'text-right' : ''}`}>{userProfile.company_name || t('settings.notProvided')}</p>
                    )}
                  </div>
 
                  <div className="space-y-2">
                    <Label htmlFor="address" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                      <MapPin className="h-4 w-4" />
-                     {t('profile.address')}
+                     {t('settings.address')}
                    </Label>
                    {isEditing ? (
                      <Input
@@ -327,25 +327,25 @@ const Profile = () => {
                        className={isRTL ? 'text-right' : ''}
                      />
                    ) : (
-                     <p className={`text-sm py-2 ${isRTL ? 'text-right' : ''}`}>{userProfile.address || t('profile.notProvided')}</p>
+                     <p className={`text-sm py-2 ${isRTL ? 'text-right' : ''}`}>{userProfile.address || t('settings.notProvided')}</p>
                    )}
                  </div>
               </div>
 
                <div className="space-y-2">
-                 <Label htmlFor="bio">{t('profile.bio')}</Label>
+                 <Label htmlFor="bio">{t('settings.bio')}</Label>
                  {isEditing ? (
                    <Textarea
                      id="bio"
                      value={formData.bio}
                      onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                     placeholder={t('profile.bioPlaceholder')}
+                     placeholder={t('settings.bioPlaceholder')}
                      rows={4}
                      className={isRTL ? 'text-right' : ''}
                    />
                  ) : (
                    <p className={`text-sm py-2 min-h-[80px] bg-muted/50 rounded-md p-3 ${isRTL ? 'text-right' : ''}`}>
-                     {userProfile.bio || t('profile.noBioProvided')}
+                     {userProfile.bio || t('settings.noBioProvided')}
                    </p>
                  )}
                </div>
@@ -358,10 +358,10 @@ const Profile = () => {
              <CardHeader>
                <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                  <Shield className="h-5 w-5" />
-                 {t('profile.accountVerification')}
+                 {t('settings.accountVerification')}
                </CardTitle>
                <CardDescription>
-                 {t('profile.verificationDescription')}
+                 {t('settings.verificationDescription')}
                </CardDescription>
              </CardHeader>
             <CardContent>

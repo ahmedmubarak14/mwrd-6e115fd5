@@ -149,9 +149,9 @@ const AdminProfile = () => {
     try {
       const success = await updateProfile(formData);
       if (success) {
-        showSuccess(t('profile.profileUpdated'));
+        showSuccess(t('settings.profileUpdated'));
       } else {
-        showError(t('profile.profileUpdateFailed'));
+        showError(t('common.error'));
       }
     } finally {
       setLoading(false);
@@ -175,10 +175,10 @@ const AdminProfile = () => {
         });
 
       if (error) throw error;
-      showSuccess(t('profile.settingsSaved'));
+      showSuccess(t('platformSettings.settingsSaved'));
     } catch (error) {
       console.error('Error saving admin settings:', error);
-      showError(t('profile.settingsFailed'));
+      showError(t('common.error'));
     }
   };
 
@@ -191,9 +191,9 @@ const AdminProfile = () => {
       });
       
       if (error) throw error;
-      showSuccess(t('profile.passwordResetSent'));
+      showSuccess(t('common.success'));
     } catch (error) {
-      showError(t('profile.passwordResetFailed'));
+      showError(t('common.error'));
     }
   };
 
@@ -201,7 +201,7 @@ const AdminProfile = () => {
     return (
       <AdminPageContainer>
         <div className="flex items-center justify-center py-12">
-          <p className="text-muted-foreground">{t('profile.accessDenied')}</p>
+          <p className="text-muted-foreground">{t('common.accessDenied')}</p>
         </div>
       </AdminPageContainer>
     );
@@ -212,15 +212,15 @@ const AdminProfile = () => {
       <div className="space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
         <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
           <div>
-            <h1 className="text-3xl font-bold">{t('profile.adminProfile')}</h1>
+            <h1 className="text-3xl font-bold">{t('settings.adminProfile')}</h1>
             <p className="text-muted-foreground">
-              {t('profile.adminProfileDescription')}
+              {t('settings.adminProfileDescription')}
             </p>
           </div>
           <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <Badge variant="default" className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Shield className="h-3 w-3" />
-              {t('profile.administrator')}
+              {t('settings.administrator')}
             </Badge>
           </div>
         </div>
@@ -229,23 +229,23 @@ const AdminProfile = () => {
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="profile" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <User className="h-4 w-4" />
-              {t('profile.profile')}
+              {t('settings.profile')}
             </TabsTrigger>
             <TabsTrigger value="security" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Shield className="h-4 w-4" />
-              {t('profile.security')}
+              {t('settings.security')}
             </TabsTrigger>
             <TabsTrigger value="settings" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Settings className="h-4 w-4" />
-              {t('profile.settings')}
+              {t('common.settings')}
             </TabsTrigger>
             <TabsTrigger value="activity" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Activity className="h-4 w-4" />
-              {t('profile.activity')}
+              {t('common.activity')}
             </TabsTrigger>
             <TabsTrigger value="permissions" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Key className="h-4 w-4" />
-              {t('profile.permissions')}
+              {t('common.permissions')}
             </TabsTrigger>
           </TabsList>
 
@@ -255,16 +255,16 @@ const AdminProfile = () => {
                 <CardHeader>
                    <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                      <User className="h-5 w-5" />
-                     {t('profile.personalInformation')}
+                     {t('settings.personalInformation')}
                    </CardTitle>
                   <CardDescription>
-                    {t('profile.personalInfoDescription')}
+                    {t('settings.personalInfoDescription')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="full_name">{t('profile.fullName')}</Label>
+                      <Label htmlFor="full_name">{t('settings.fullName')}</Label>
                       <Input
                         id="full_name"
                         value={formData.full_name}
@@ -275,7 +275,7 @@ const AdminProfile = () => {
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="email">{t('profile.email')}</Label>
+                      <Label htmlFor="email">{t('settings.email')}</Label>
                       <Input
                         id="email"
                         value={userProfile.email}
@@ -287,7 +287,7 @@ const AdminProfile = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="phone">{t('profile.phone')}</Label>
+                      <Label htmlFor="phone">{t('settings.phone')}</Label>
                       <Input
                         id="phone"
                         value={formData.phone}
@@ -298,10 +298,10 @@ const AdminProfile = () => {
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="role">{t('profile.role')}</Label>
+                      <Label htmlFor="role">{t('common.role')}</Label>
                       <Input
                         id="role"
-                        value={t('profile.administrator')}
+                        value={t('settings.administrator')}
                         disabled
                         className="bg-muted"
                       />
@@ -309,14 +309,14 @@ const AdminProfile = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="bio">{t('profile.bio')}</Label>
+                    <Label htmlFor="bio">{t('settings.bio')}</Label>
                     <Textarea
                       id="bio"
                       value={formData.bio}
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, bio: e.target.value }))
                       }
-                      placeholder={t('profile.bioPlaceholder')}
+                      placeholder={t('settings.bioPlaceholder')}
                       rows={4}
                     />
                   </div>
@@ -324,7 +324,7 @@ const AdminProfile = () => {
                    <div className={`flex ${isRTL ? 'justify-start' : 'justify-end'}`}>
                      <Button onClick={handleSaveProfile} disabled={loading}>
                        {loading ? <LoadingSpinner size="sm" className={`${isRTL ? 'ml-2' : 'mr-2'}`} /> : <Save className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />}
-                       {t('profile.saveProfile')}
+                       {t('common.saveProfile')}
                      </Button>
                    </div>
                 </CardContent>
@@ -338,18 +338,18 @@ const AdminProfile = () => {
                  <CardHeader>
                    <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                      <Shield className="h-5 w-5" />
-                     {t('profile.securitySettings')}
+                     {t('common.security')}
                    </CardTitle>
                    <CardDescription>
-                     {t('profile.securityDescription')}
+                     {t('common.securityDescription')}
                    </CardDescription>
                  </CardHeader>
                 <CardContent className="space-y-6">
                    <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
                      <div>
-                       <Label>{t('profile.twoFactorAuth')}</Label>
+                       <Label>{t('common.twoFactorAuth')}</Label>
                        <p className="text-sm text-muted-foreground">
-                         {t('profile.twoFactorDescription')}
+                         {t('common.twoFactorDescription')}
                        </p>
                      </div>
                     <Switch
@@ -362,9 +362,9 @@ const AdminProfile = () => {
 
                    <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
                      <div>
-                       <Label>{t('profile.securityAlerts')}</Label>
+                       <Label>{t('common.securityAlerts')}</Label>
                        <p className="text-sm text-muted-foreground">
-                         {t('profile.securityAlertsDescription')}
+                         {t('common.securityAlertsDescription')}
                        </p>
                      </div>
                     <Switch
@@ -376,7 +376,7 @@ const AdminProfile = () => {
                   </div>
 
                    <div className="space-y-2">
-                     <Label>{t('profile.sessionTimeout')}</Label>
+                     <Label>{t('common.sessionTimeout')}</Label>
                      <Input
                        type="number"
                        value={adminSettings.session_timeout}
@@ -388,21 +388,21 @@ const AdminProfile = () => {
                        className={isRTL ? 'text-right' : ''}
                      />
                      <p className="text-sm text-muted-foreground">
-                       {t('profile.sessionTimeoutDescription')}
+                       {t('common.sessionTimeoutDescription')}
                      </p>
                    </div>
 
                    <div className="border-t pt-4">
                      <Button onClick={handlePasswordReset} variant="outline">
                        <Key className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                       {t('profile.resetPassword')}
+                       {t('common.resetPassword')}
                      </Button>
                    </div>
 
                    <div className={`flex ${isRTL ? 'justify-start' : 'justify-end'}`}>
                      <Button onClick={handleSaveSettings}>
                        <Save className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                       {t('profile.saveSecuritySettings')}
+                       {t('common.saveSecuritySettings')}
                      </Button>
                    </div>
                 </CardContent>
@@ -416,18 +416,18 @@ const AdminProfile = () => {
                  <CardHeader>
                    <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                      <Settings className="h-5 w-5" />
-                     {t('profile.adminSettings')}
+                     {t('common.adminSettings')}
                    </CardTitle>
                    <CardDescription>
-                     {t('profile.adminSettingsDescription')}
+                     {t('common.adminSettingsDescription')}
                    </CardDescription>
                  </CardHeader>
                 <CardContent className="space-y-6">
                    <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
                      <div>
-                       <Label>{t('profile.emailNotifications')}</Label>
+                       <Label>{t('common.emailNotifications')}</Label>
                        <p className="text-sm text-muted-foreground">
-                         {t('profile.emailNotificationsDescription')}
+                         {t('common.emailNotificationsDescription')}
                        </p>
                      </div>
                     <Switch
@@ -439,7 +439,7 @@ const AdminProfile = () => {
                   </div>
 
                    <div className="space-y-2">
-                     <Label>{t('profile.auditLogRetention')}</Label>
+                     <Label>{t('common.auditLogRetention')}</Label>
                      <Input
                        type="number"
                        value={adminSettings.audit_log_retention}
@@ -451,14 +451,14 @@ const AdminProfile = () => {
                        className={isRTL ? 'text-right' : ''}
                      />
                      <p className="text-sm text-muted-foreground">
-                       {t('profile.auditLogRetentionDescription')}
+                       {t('common.auditLogRetentionDescription')}
                      </p>
                    </div>
 
                    <div className={`flex ${isRTL ? 'justify-start' : 'justify-end'}`}>
                      <Button onClick={handleSaveSettings}>
                        <Save className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                       {t('profile.settingsSaved')}
+                       {t('settings.saveChanges')}
                      </Button>
                    </div>
                 </CardContent>
@@ -470,7 +470,7 @@ const AdminProfile = () => {
             <div className="grid gap-6">
                {statsLoading ? (
                  <div className="flex items-center justify-center py-8">
-                   <LoadingSpinner label={t('profile.loadingActivity')} />
+                   <LoadingSpinner label={t('common.loading')} />
                  </div>
                ) : (
                 <>
