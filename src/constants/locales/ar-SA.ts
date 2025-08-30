@@ -205,7 +205,67 @@ export const arSA = {
     urgentPriority: "أولوية عاجلة"
   },
   admin: {
+    dashboard: "لوحة تحكم الإدارة",
+    dashboardDescription: "نظرة شاملة على عمليات المنصة وأدوات الإدارة",
     performanceMonitor: "مراقب الأداء",
-    performanceMonitorDescription: "مراقبة أداء النظام واستخدام الموارد في الوقت الفعلي"
+    performanceMonitorDescription: "مراقبة أداء النظام واستخدام الموارد في الوقت الفعلي",
+    
+    // Communication Center
+    communicationCenter: "مركز الاتصالات",
+    communicationCenterDescription: "إدارة التواصل والتفاعل مع المستخدمين",
+    
+    // User Management
+    userManagement: "إدارة المستخدمين",
+    userManagementDescription: "إدارة حسابات المستخدمين والأدوار والصلاحيات",
+    totalUsers: "إجمالي المستخدمين",
+    activeUsers: "المستخدمون النشطون",
+    allRegisteredUsers: "جميع المستخدمين المسجلين",
+    approvedUsers: "المستخدمون المعتمدون",
+    pending: "معلق",
+    fetchUsersError: "فشل في جلب بيانات المستخدمين",
+    exportDescription: "تم تصدير بيانات المستخدمين إلى CSV",
+    dataUpdated: "تم تحديث بيانات المستخدمين",
+    bulkRoleUpdateSuccess: "تم تحديث أدوار {count} مستخدم بنجاح",
+    bulkRoleUpdateError: "فشل في تحديث أدوار المستخدمين",
+    bulkStatusUpdateSuccess: "تم تحديث حالة {count} مستخدم بنجاح",
+    bulkStatusUpdateError: "فشل في تحديث حالات المستخدمين",
+    csvHeaders: "المعرف,الاسم,البريد الإلكتروني,الدور,الحالة,الشركة,الهاتف,تاريخ الإنشاء",
+    exportSelectedSuccess: "تم تصدير {count} مستخدم محدد إلى CSV",
+    fillRequiredFields: "يرجى ملء جميع الحقول المطلوبة",
+    userExistsError: "يوجد مستخدم بهذا البريد الإلكتروني بالفعل",
+    userAddedSuccess: "تم إضافة المستخدم بنجاح",
+    userUpdatedSuccess: "تم تحديث المستخدم بنجاح",
+    userDeletedSuccess: "تم حذف المستخدم {name} بنجاح",
+    
+    // Request Management
+    requestManagement: "إدارة الطلبات",
+    requestManagementDescription: "إدارة واعتماد طلبات المشتريات",
+    totalRequests: "إجمالي الطلبات",
+    pendingApproval: "في انتظار الموافقة",
+    approved: "معتمد",
+    rejected: "مرفوض",
+    filtersAndSearch: "المرشحات والبحث",
+    
+    // Offers Management
+    offersManagement: {
+      title: "إدارة العروض",
+      description: "إدارة واعتماد عروض البائعين",
+      loadingOffers: "تحميل العروض...",
+      approveOffer: "اعتماد هذا العرض",
+      totalOffers: "إجمالي العروض",
+      pendingApproval: "في انتظار الموافقة"
+    },
+    
+    // Security
+    security: {
+      title: "مركز الأمان",
+      description: "مراقبة وإدارة أمان المنصة",
+      liveMonitor: "المراقبة المباشرة",
+      overview: "نظرة عامة",
+      incidents: "الحوادث",
+      auditTrail: "سجل التدقيق",
+      systemHealth: "صحة النظام",
+      compliance: "الامتثال"
+    }
   }
 };

@@ -205,7 +205,67 @@ export const enUS = {
     urgentPriority: "Urgent"
   },
   admin: {
+    dashboard: "Admin Dashboard",
+    dashboardDescription: "Comprehensive overview of platform operations and management tools",
     performanceMonitor: "Performance Monitor",
-    performanceMonitorDescription: "Monitor system performance and resource usage in real-time"
+    performanceMonitorDescription: "Monitor system performance and resource usage in real-time",
+    
+    // Communication Center
+    communicationCenter: "Communication Center", 
+    communicationCenterDescription: "Manage platform communications and user interactions",
+    
+    // User Management
+    userManagement: "User Management",
+    userManagementDescription: "Manage user accounts, roles, and permissions",
+    totalUsers: "Total Users",
+    activeUsers: "Active Users", 
+    allRegisteredUsers: "All registered users",
+    approvedUsers: "Approved users",
+    pending: "Pending",
+    fetchUsersError: "Failed to fetch users data",
+    exportDescription: "Users data has been exported to CSV",
+    dataUpdated: "Users data has been updated",
+    bulkRoleUpdateSuccess: "Successfully updated {count} user roles",
+    bulkRoleUpdateError: "Failed to update user roles",
+    bulkStatusUpdateSuccess: "Successfully updated {count} user statuses", 
+    bulkStatusUpdateError: "Failed to update user statuses",
+    csvHeaders: "ID,Name,Email,Role,Status,Company,Phone,Created",
+    exportSelectedSuccess: "Exported {count} selected users to CSV",
+    fillRequiredFields: "Please fill in all required fields",
+    userExistsError: "A user with this email already exists",
+    userAddedSuccess: "User added successfully",
+    userUpdatedSuccess: "User updated successfully",
+    userDeletedSuccess: "User {name} deleted successfully",
+    
+    // Request Management
+    requestManagement: "Request Management",
+    requestManagementDescription: "Manage and approve procurement requests",
+    totalRequests: "Total Requests",
+    pendingApproval: "Pending Approval", 
+    approved: "Approved",
+    rejected: "Rejected",
+    filtersAndSearch: "Filters & Search",
+    
+    // Offers Management
+    offersManagement: {
+      title: "Offers Management",
+      description: "Manage and approve vendor offers",
+      loadingOffers: "Loading offers...",
+      approveOffer: "Approve this offer",
+      totalOffers: "Total Offers",
+      pendingApproval: "Pending Approval"
+    },
+    
+    // Security
+    security: {
+      title: "Security Center",
+      description: "Monitor and manage platform security",
+      liveMonitor: "Live Monitor", 
+      overview: "Overview",
+      incidents: "Incidents",
+      auditTrail: "Audit Trail",
+      systemHealth: "System Health",
+      compliance: "Compliance"
+    }
   }
 };
