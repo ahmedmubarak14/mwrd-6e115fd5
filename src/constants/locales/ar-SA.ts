@@ -211,14 +211,53 @@ export const arSA = {
   // Analytics Section
   analytics: {
     platformAnalytics: "تحليلات المنصة",
-    monitorDescription: "مراقبة أداء المنصة ومقاييس مشاركة المستخدمين",
+    monitorDescription: "مراقبة أداء المنصة ومقاييس تفاعل المستخدمين",
     basicDashboard: "لوحة التحليلات الأساسية",
     viewAnalytics: "عرض التحليلات",
-    userEngagement: "مشاركة المستخدم",
+    userEngagement: "تفاعل المستخدمين",
     totalPageViews: "إجمالي مشاهدات الصفحة",
     averageSessionDuration: "متوسط مدة الجلسة",
     bounceRate: "معدل الارتداد",
-    conversionRate: "معدل التحويل"
+    conversionRate: "معدل التحويل",
+    comprehensiveInsights: "رؤى تحليلية شاملة",
+    totalOffers: "إجمالي العروض",
+    totalRequests: "إجمالي الطلبات",
+    registeredUsers: "المستخدمون المسجلون",
+    activeSubscriptions: "الاشتراكات النشطة",
+    checkSystemHealth: "فحص صحة النظام",
+    systemHealth: "صحة النظام",
+    bundleAnalysis: "تحليل الحزم",
+    network: "الشبكة",
+    recommendations: "التوصيات",
+    recentActivity: "النشاط الأخير",
+    systemActivity: "نشاط النظام",
+    system: "النظام",
+    usageTrends: "اتجاهات الاستخدام",
+    performanceMetrics: "مقاييس الأداء"
+  },
+  
+  // Performance Section
+  performance: {
+    performanceMonitor: "مراقب الأداء",
+    realTimeMetrics: "مقاييس الأداء في الوقت الفعلي",
+    checkSystemHealth: "فحص صحة النظام",
+    systemHealth: "صحة النظام",
+    bundleAnalysis: "تحليل الحزم",
+    network: "الشبكة",
+    recommendations: "التوصيات",
+    performanceScore: "نقاط الأداء",
+    overallAssessment: "التقييم العام",
+    accessibility: "إمكانية الوصول",
+    bestPractices: "أفضل الممارسات",
+    seo: "تحسين محركات البحث",
+    firstContentfulPaint: "أول رسم محتوى",
+    largestContentfulPaint: "أكبر رسم محتوى",
+    firstInputDelay: "تأخير الإدخال الأول",
+    cumulativeLayoutShift: "تحول التخطيط التراكمي",
+    speedIndex: "فهرس السرعة",
+    jobDescription: "وصف الوظيفة",
+    memoryUsage: "استخدام الذاكرة",
+    memoryDescription: "وصف الذاكرة"
   },
   
   // Financial Section

@@ -218,7 +218,46 @@ export const enUS = {
     totalPageViews: "Total Page Views",
     averageSessionDuration: "Average Session Duration",
     bounceRate: "Bounce Rate",
-    conversionRate: "Conversion Rate"
+    conversionRate: "Conversion Rate",
+    comprehensiveInsights: "Comprehensive Analytics Insights",
+    totalOffers: "Total Offers",
+    totalRequests: "Total Requests", 
+    registeredUsers: "Registered Users",
+    activeSubscriptions: "Active Subscriptions",
+    checkSystemHealth: "Check System Health",
+    systemHealth: "System Health",
+    bundleAnalysis: "Bundle Analysis",
+    network: "Network",
+    recommendations: "Recommendations",
+    recentActivity: "Recent Activity",
+    systemActivity: "System Activity",
+    system: "System",
+    usageTrends: "Usage Trends",
+    performanceMetrics: "Performance Metrics"
+  },
+  
+  // Performance Section
+  performance: {
+    performanceMonitor: "Performance Monitor",
+    realTimeMetrics: "Real-time Performance Metrics",
+    checkSystemHealth: "Check System Health",
+    systemHealth: "System Health", 
+    bundleAnalysis: "Bundle Analysis",
+    network: "Network",
+    recommendations: "Recommendations",
+    performanceScore: "Performance Score",
+    overallAssessment: "Overall Assessment",
+    accessibility: "Accessibility",
+    bestPractices: "Best Practices",
+    seo: "SEO",
+    firstContentfulPaint: "First Contentful Paint",
+    largestContentfulPaint: "Largest Contentful Paint", 
+    firstInputDelay: "First Input Delay",
+    cumulativeLayoutShift: "Cumulative Layout Shift",
+    speedIndex: "Speed Index",
+    jobDescription: "Job Description",
+    memoryUsage: "Memory Usage",
+    memoryDescription: "Memory Description"
   },
   
   // Financial Section  
