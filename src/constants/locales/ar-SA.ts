@@ -107,7 +107,10 @@ export const arSA = {
     settings: 'إعدادات',
     profile: 'الملف الشخصي',
     signOut: 'تسجيل الخروج',
-    notSpecified: 'غير محدد'
+    notSpecified: 'غير محدد',
+    phone: 'هاتف',
+    exportCompleted: 'تم التصدير',
+    dataRefreshed: 'تم تحديث البيانات'
   },
   support: {
     title: "إدارة الدعم",
@@ -837,7 +840,7 @@ export const arSA = {
     bulkRoleUpdateError: "فشل في تحديث أدوار المستخدمين", 
     bulkStatusUpdateSuccess: "تم تحديث حالة {count} مستخدم بنجاح",
     bulkStatusUpdateError: "فشل في تحديث حالات المستخدمين",
-    csvHeaders: "المعرف,الاسم,البريد الإلكتروني,الدور,الحالة,الشركة,الهاتف,تاريخ الإنشاء",
+    csvHeaders: "المعرف,الاسم الكامل,البريد الإلكتروني,الدور,الحالة,حالة التحقق,اسم الشركة,الهاتف,تاريخ الإنشاء",
     exportSelectedSuccess: "تم تصدير {count} مستخدم محدد إلى CSV",
     fillRequiredFields: "يرجى ملء جميع الحقول المطلوبة",
     userExistsError: "يوجد مستخدم بهذا البريد الإلكتروني بالفعل",

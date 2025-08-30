@@ -107,7 +107,10 @@ export const enUS = {
     settings: 'Settings',
     profile: 'Profile',
     signOut: 'Sign Out',
-    notSpecified: 'Not Specified'
+    notSpecified: 'Not Specified',
+    phone: 'Phone',
+    exportCompleted: 'Export Completed',
+    dataRefreshed: 'Data Refreshed'
   },
   support: {
     title: "Support Management",
@@ -943,7 +946,7 @@ export const enUS = {
     bulkRoleUpdateError: "Failed to update user roles",
     bulkStatusUpdateSuccess: "Successfully updated {count} user statuses",
     bulkStatusUpdateError: "Failed to update user statuses",
-    csvHeaders: "ID,Name,Email,Role,Status,Company,Phone,Created",
+    csvHeaders: "ID,Full Name,Email,Role,Status,Verification Status,Company Name,Phone,Created At",
     exportSelectedSuccess: "Exported {count} selected users to CSV",
     fillRequiredFields: "Please fill in all required fields",
     userExistsError: "A user with this email already exists",
