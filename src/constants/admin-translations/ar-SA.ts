@@ -527,6 +527,49 @@ export const adminTranslationsAR = {
     next: 'التالي'
   },
 
+  // Error Messages
+  errors: {
+    title: 'حدث خطأ ما',
+    description: 'حدث خطأ في لوحة إدارة النظام. يرجى محاولة تحديث الصفحة.',
+    details: 'تفاصيل الخطأ:',
+    stackTrace: 'تتبع الخطأ:',
+    tryAgain: 'حاول مرة أخرى',
+    refreshPage: 'تحديث الصفحة'
+  },
+
+  // Approval Dashboard
+  approvals: {
+    title: 'مركز الموافقات',
+    description: 'إدارة الموافقات المركزية مع سير العمل الآلي',
+    loading: 'جاري تحميل لوحة الموافقات...',
+    exportReport: 'تصدير التقرير',
+    advancedFilters: 'مرشحات متقدمة',
+    pendingItems: 'العناصر المعلقة',
+    approvalRate: 'معدل الموافقة',
+    avgProcessing: 'متوسط المعالجة',
+    avgResponseTime: 'متوسط وقت الاستجابة',
+    totalProcessed: 'إجمالي المعالج',
+    totalProcessedDesc: 'جميع الموافقات/الرفض على الإطلاق',
+    progressTitle: 'تقدم الموافقة',
+    requests: 'الطلبات',
+    offers: 'العروض',
+    requestsLabel: 'طلبات',
+    offersLabel: 'عروض',
+    thisWeek: 'هذا الأسبوع',
+    pending: 'معلقة',
+    approved: 'موافق عليها',
+    rejected: 'مرفوضة'
+  },
+
+  // Audit Trail
+  auditTrail: {
+    noLogsFound: 'لا توجد سجلات تدقيق',
+    adjustFilters: 'حاول تعديل المرشحات',
+    noActivities: 'لا توجد أنشطة تدقيق للعرض',
+    on: 'على',
+    id: 'المعرف:'
+  },
+
   // Common Actions & Messages
   actions: {
     create: "إنشاء",

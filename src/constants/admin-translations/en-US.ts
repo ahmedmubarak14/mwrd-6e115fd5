@@ -527,6 +527,93 @@ export const adminTranslationsEN = {
     next: 'Next'
   },
 
+  // Error Messages
+  errors: {
+    title: 'Something went wrong',
+    description: 'An error occurred in the admin dashboard. Please try refreshing the page.',
+    details: 'Error Details:',
+    stackTrace: 'Stack Trace:',
+    tryAgain: 'Try Again',
+    refreshPage: 'Refresh Page'
+  },
+
+  // Approval Dashboard
+  approvals: {
+    title: 'Approval Center',
+    description: 'Centralized approval management with automated workflows',
+    loading: 'Loading approval dashboard...',
+    exportReport: 'Export Report',
+    advancedFilters: 'Advanced Filters',
+    pendingItems: 'Pending Items',
+    approvalRate: 'Approval Rate',
+    avgProcessing: 'Avg Processing',
+    avgResponseTime: 'Average response time',
+    totalProcessed: 'Total Processed',
+    totalProcessedDesc: 'All time approvals/rejections',
+    progressTitle: 'Approval Progress',
+    requests: 'Requests',
+    offers: 'Offers',
+    requestsLabel: 'requests',
+    offersLabel: 'offers',
+    thisWeek: 'this week',
+    pending: 'pending',
+    approved: 'approved',
+    rejected: 'rejected'
+  },
+
+  // Audit Trail
+  auditTrail: {
+    noLogsFound: 'No audit logs found',
+    adjustFilters: 'Try adjusting your filters',
+    noActivities: 'No audit activities to display',
+    on: 'on',
+    id: 'ID:'
+  },
+
+  // i18n Compliance Dashboard
+  i18nCompliance: {
+    title: 'i18n Compliance Dashboard',
+    description: 'Monitor and validate internationalization compliance across admin components',
+    runCheck: 'Run Check',
+    score: 'Compliance Score',
+    totalIssues: 'Total Issues',
+    errors: 'errors',
+    compliantComponents: 'Compliant Components',
+    outOf: 'out of',
+    warnings: 'Warnings',
+    needsAttention: 'Need attention',
+    tabs: {
+      issues: 'Issues',
+      coverage: 'Coverage',
+      components: 'Components',
+      testing: 'Testing'
+    },
+    line: 'Line',
+    error: 'Error',
+    warning: 'Warning',
+    info: 'Info',
+    suggestedFix: 'Suggested Fix',
+    allClear: 'All Clear!',
+    noIssuesFound: 'No i18n compliance issues found',
+    missingTranslations: 'Missing Translations',
+    extraTranslations: 'Extra Translations',
+    allKeysTranslated: 'All translation keys are properly covered',
+    noExtraKeys: 'No unused translation keys found',
+    componentStatus: 'Component Status',
+    nonCompliantComponents: 'Non-Compliant Components',
+    compliantComponentsList: 'Compliant Components',
+    compliantComponentsDesc: 'These components follow i18n best practices',
+    manualTests: 'Manual Tests',
+    languageSwitching: 'Language Switching',
+    testSwitchLanguages: 'Switch between English and Arabic',
+    testRTLLayout: 'Verify RTL layout changes',
+    testTextAlignment: 'Check text alignment and direction',
+    testNumberFormat: 'Test number and date formatting',
+    automatedChecks: 'Automated Checks',
+    lastChecked: 'Last checked',
+    runFullCheck: 'Run Full Compliance Check'
+  },
+
   // Common Actions & Messages
   actions: {
     create: "Create",

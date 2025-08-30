@@ -23,6 +23,7 @@ import { BulkApprovalActions } from './BulkApprovalActions';
 import { WorkflowAutomation } from './WorkflowAutomation';
 import { RequestApprovalCard } from './RequestApprovalCard';
 import { OfferApprovalCard } from './OfferApprovalCard';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 
 interface ApprovalMetrics {
   totalRequests: number;
@@ -52,6 +53,7 @@ interface PendingItem {
 
 export const ApprovalDashboard = () => {
   const { toast } = useToast();
+  const { t } = useOptionalLanguage();
   const [metrics, setMetrics] = useState<ApprovalMetrics>({
     totalRequests: 0,
     pendingRequests: 0,
@@ -292,7 +294,7 @@ export const ApprovalDashboard = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-foreground opacity-75">Loading approval dashboard...</p>
+          <p className="text-foreground opacity-75">{t('admin.approvals.loading')}</p>
         </div>
       </div>
     );
@@ -303,19 +305,19 @@ export const ApprovalDashboard = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Approval Center</h1>
+          <h1 className="text-3xl font-bold">{t('admin.approvals.title')}</h1>
           <p className="text-foreground opacity-75">
-            Centralized approval management with automated workflows
+            {t('admin.approvals.description')}
           </p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" className="flex items-center gap-2">
             <Download className="h-4 w-4" />
-            Export Report
+            {t('admin.approvals.exportReport')}
           </Button>
           <Button variant="outline" className="flex items-center gap-2">
             <Filter className="h-4 w-4" />
-            Advanced Filters
+            {t('admin.approvals.advancedFilters')}
           </Button>
         </div>
       </div>
@@ -326,12 +328,12 @@ export const ApprovalDashboard = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-foreground opacity-75">Pending Items</p>
+                <p className="text-sm text-foreground opacity-75">{t('admin.approvals.pendingItems')}</p>
                 <p className="text-3xl font-bold text-warning">
                   {metrics.pendingRequests + metrics.pendingOffers}
                 </p>
                 <p className="text-xs text-foreground opacity-75 mt-1">
-                  {metrics.pendingRequests} requests, {metrics.pendingOffers} offers
+                  {metrics.pendingRequests} {t('admin.approvals.requestsLabel')}, {metrics.pendingOffers} {t('admin.approvals.offersLabel')}
                 </p>
               </div>
               <Clock className="h-8 w-8 text-warning/20" />
@@ -343,7 +345,7 @@ export const ApprovalDashboard = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-foreground opacity-75">Approval Rate</p>
+                <p className="text-sm text-foreground opacity-75">{t('admin.approvals.approvalRate')}</p>
                 <p className="text-3xl font-bold text-success">
                   {metrics.approvalRate.toFixed(1)}%
                 </p>
@@ -354,7 +356,7 @@ export const ApprovalDashboard = () => {
                     <TrendingDown className="h-3 w-3 text-destructive" />
                   )}
                   <span className="text-xs text-foreground opacity-75">
-                    {Math.abs(metrics.weeklyTrend)}% this week
+                    {Math.abs(metrics.weeklyTrend)}% {t('admin.approvals.thisWeek')}
                   </span>
                 </div>
               </div>
@@ -367,10 +369,10 @@ export const ApprovalDashboard = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-foreground opacity-75">Avg Processing</p>
+                <p className="text-sm text-foreground opacity-75">{t('admin.approvals.avgProcessing')}</p>
                 <p className="text-3xl font-bold">{metrics.avgProcessingTime}h</p>
                 <p className="text-xs text-foreground opacity-75 mt-1">
-                  Average response time
+                  {t('admin.approvals.avgResponseTime')}
                 </p>
               </div>
               <AlertTriangle className="h-8 w-8 text-primary/20" />
@@ -382,12 +384,12 @@ export const ApprovalDashboard = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-foreground opacity-75">Total Processed</p>
+                <p className="text-sm text-foreground opacity-75">{t('admin.approvals.totalProcessed')}</p>
                 <p className="text-3xl font-bold">
                   {metrics.approvedRequests + metrics.approvedOffers + metrics.rejectedRequests + metrics.rejectedOffers}
                 </p>
                 <p className="text-xs text-foreground opacity-75 mt-1">
-                  All time approvals/rejections
+                  {t('admin.approvals.totalProcessedDesc')}
                 </p>
               </div>
               <TrendingUp className="h-8 w-8 text-primary/20" />
@@ -399,13 +401,13 @@ export const ApprovalDashboard = () => {
       {/* Progress Overview */}
       <Card>
         <CardHeader>
-          <CardTitle>Approval Progress</CardTitle>
+          <CardTitle>{t('admin.approvals.progressTitle')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">Requests</span>
+                <span className="text-sm font-medium">{t('admin.approvals.requests')}</span>
                 <span className="text-sm text-foreground opacity-75">
                   {metrics.approvedRequests + metrics.rejectedRequests} / {metrics.totalRequests}
                 </span>
@@ -415,15 +417,15 @@ export const ApprovalDashboard = () => {
                 className="h-2"
               />
               <div className="flex justify-between text-xs text-foreground opacity-75">
-                <span>{metrics.pendingRequests} pending</span>
-                <span>{metrics.approvedRequests} approved</span>
-                <span>{metrics.rejectedRequests} rejected</span>
+                <span>{metrics.pendingRequests} {t('admin.approvals.pending')}</span>
+                <span>{metrics.approvedRequests} {t('admin.approvals.approved')}</span>
+                <span>{metrics.rejectedRequests} {t('admin.approvals.rejected')}</span>
               </div>
             </div>
 
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">Offers</span>
+                <span className="text-sm font-medium">{t('admin.approvals.offers')}</span>
                 <span className="text-sm text-foreground opacity-75">
                   {metrics.approvedOffers + metrics.rejectedOffers} / {metrics.totalOffers}
                 </span>
@@ -433,9 +435,9 @@ export const ApprovalDashboard = () => {
                 className="h-2"
               />
               <div className="flex justify-between text-xs text-foreground opacity-75">
-                <span>{metrics.pendingOffers} pending</span>
-                <span>{metrics.approvedOffers} approved</span>
-                <span>{metrics.rejectedOffers} rejected</span>
+                <span>{metrics.pendingOffers} {t('admin.approvals.pending')}</span>
+                <span>{metrics.approvedOffers} {t('admin.approvals.approved')}</span>
+                <span>{metrics.rejectedOffers} {t('admin.approvals.rejected')}</span>
               </div>
             </div>
           </div>

@@ -213,11 +213,11 @@ export const AuditTrailDashboard = () => {
           ) : filteredLogs.length === 0 ? (
             <div className="text-center py-12">
               <Activity className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-lg font-medium mb-2">No audit logs found</p>
+              <p className="text-lg font-medium mb-2">{t('admin.auditTrail.noLogsFound')}</p>
               <p className="text-muted-foreground">
                 {searchTerm || filterAction !== "all" || filterEntity !== "all" || dateRange.from
-                  ? "Try adjusting your filters"
-                  : "No audit activities to display"
+                  ? t('admin.auditTrail.adjustFilters')
+                  : t('admin.auditTrail.noActivities')
                 }
               </p>
             </div>
@@ -233,11 +233,11 @@ export const AuditTrailDashboard = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2 mb-1">
                       <span className="font-medium">{log.action}</span>
-                      <span className="text-muted-foreground">on</span>
+                      <span className="text-muted-foreground">{t('admin.auditTrail.on')}</span>
                       <span className="font-medium">{log.entity_type}</span>
                       {log.entity_id && (
                         <>
-                          <span className="text-muted-foreground">ID:</span>
+                          <span className="text-muted-foreground">{t('admin.auditTrail.id')}</span>
                           <code className="text-xs bg-muted px-1 rounded">
                             {log.entity_id.substring(0, 8)}...
                           </code>
