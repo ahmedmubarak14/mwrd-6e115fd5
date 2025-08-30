@@ -929,13 +929,10 @@ export const arSA = {
     responseTime: "وقت الاستجابة",
     uptime: "وقت التشغيل",
     
-    // Navigation & Groups
-    groups: {
-      overview: "نظرة عامة",
-      management: "الإدارة",
-      business: "الأعمال والدعم",
-      system: "النظام والإعدادات"
-    },
+    projects: "المشاريع",
+    verificationQueue: "قائمة التحقق", 
+    workflowAutomation: "أتمتة سير العمل",
+    categoryManagement: "إدارة الفئات",
     
     // Navigation Accessibility  
     navigateTo: "الانتقال إلى",

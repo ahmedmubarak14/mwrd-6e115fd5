@@ -99,7 +99,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           icon: LayoutDashboard,
         },
         {
-          name: t('admin.analytics'),
+          name: t('nav.analytics'),
           href: "/admin/analytics",
           icon: BarChart3,
         },
@@ -131,22 +131,22 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           icon: Package,
         },
         {
-          name: t('admin.projects'),
+          name: "Projects", // Temporary fallback
           href: "/admin/projects", 
           icon: Building2,
         },
         {
-          name: t('admin.orders'),
+          name: t('nav.orders'),
           href: "/admin/orders",
           icon: ShoppingCart,
         },
         {
-          name: t('admin.verificationQueue'),
+          name: "Verification Queue", // Temporary fallback
           href: "/admin/verification",
           icon: UserCheck,
         },
         {
-          name: t('admin.workflowAutomation'),
+          name: "Workflow Automation", // Temporary fallback  
           href: "/admin/automation",
           icon: Bot,
         },
@@ -187,12 +187,12 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
       priority: 'utility',
       items: [
         {
-          name: t('admin.categoryManagement'),
+          name: "Category Management", // Temporary fallback
           href: "/admin/category-management",
           icon: FolderOpen,
         },
         {
-          name: t('admin.expertConsultations.title'),
+          name: t('expertConsultations.title'),
           href: "/admin/expert-consultations",
           icon: HelpCircle,
         },

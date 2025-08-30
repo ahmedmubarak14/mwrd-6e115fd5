@@ -1121,13 +1121,10 @@ export const enUS = {
     responseTime: "Response Time",
     uptime: "Uptime",
     
-    // Navigation & Groups
-    groups: {
-      overview: "Overview",
-      management: "Management", 
-      business: "Business & Support",
-      system: "System & Settings"
-    },
+    projects: "Projects",
+    verificationQueue: "Verification Queue",
+    workflowAutomation: "Workflow Automation", 
+    categoryManagement: "Category Management",
     
     // Navigation Accessibility
     navigateTo: "Navigate to",
