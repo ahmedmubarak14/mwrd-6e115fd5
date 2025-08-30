@@ -1096,12 +1096,12 @@ export const enUS = {
     roleLabel: "Role",
     companyName: "Company Name",
     
-     // Menu Items  
-     subscriptions: "Subscriptions", 
-     supportTickets: "Support Tickets",
-     categoryManagement: "Category Management",
-     settings: "Settings",
-     profile: "Profile",
+    // Menu Items
+    subscriptions: "Subscriptions", 
+    supportTickets: "Support Tickets",
+    categoryManagementMenu: "Category Management",
+    settings: "Settings",
+    profile: "Profile",
     
     // Search & Actions
     searchPlaceholder: "Search admin panel...",
@@ -1543,6 +1543,131 @@ export const enUS = {
       categoryManagement: "Category Management",
       financialTransactions: "Financial Transactions",
       securityMonitoring: "Security Monitoring"
+    },
+
+    // Category Management
+    categoryManagement: {
+      title: "Category Management",
+      description: "Manage and organize service categories and subcategories",
+      accessRestricted: "Access Restricted",
+      accessRestrictedDescription: "You need admin privileges to access category management.",
+      currentRole: "Your current role is:",
+      loginRequired: "Please ensure you are logged in with an admin account.",
+      
+      // Status labels
+      active: "Active",
+      inactive: "Inactive",
+      parent: "Parent",
+      subcategory: "Subcategory",
+      
+      // Form labels
+      englishName: "English Name",
+      arabicName: "Arabic Name",
+      urlSlug: "URL Slug",
+      parentCategory: "Parent Category",
+      activeStatus: "Active Status",
+      sortOrder: "Sort Order",
+      
+      // Placeholders
+      enterEnglishName: "Enter English name",
+      enterArabicName: "Enter Arabic name",
+      categorySlugPlaceholder: "category-slug",
+      selectParentCategory: "Select parent category (optional)",
+      noParentTopLevel: "No Parent (Top Level)",
+      urlFriendlyIdentifier: "URL-friendly identifier (lowercase, hyphens allowed)",
+      
+      // Action buttons
+      addCategory: "Add Category",
+      editCategory: "Edit Category",
+      createCategory: "Create Category",
+      updateCategory: "Update Category",
+      createNewCategory: "Create New Category",
+      cancel: "Cancel",
+      
+      // Dialog titles and descriptions
+      editCategoryTitle: "Edit Category",
+      createCategoryTitle: "Create New Category",
+      updateCategoryDescription: "Update category information",
+      addCategoryDescription: "Add a new category to the system",
+      
+      // Table headers
+      categoryHierarchy: "Category Hierarchy",
+      slug: "Slug",
+      type: "Type",
+      status: "Status",
+      actions: "Actions",
+      
+      // Analytics cards
+      totalCategories: "Total Categories",
+      parentCategories: "Parent Categories",
+      subcategories: "Subcategories",
+      
+      // Search and filter
+      searchCategories: "Search categories...",
+      allStatus: "All Status",
+      activeOnly: "Active Only",
+      inactiveOnly: "Inactive Only",
+      
+      // View controls
+      expandAll: "Expand All",
+      collapseAll: "Collapse All",
+      tableView: "Table View",
+      treeView: "Tree View",
+      export: "Export",
+      
+      // Table view
+      categoriesTable: "Categories Table",
+      comprehensiveView: "Comprehensive view of all categories with hierarchy indicators",
+      total: "total",
+      subcategoryOfParent: "Subcategory of parent",
+      subs: "subs",
+      sub: "sub",
+      
+      // Bulk actions
+      categoriesSelected: "categories selected",
+      activate: "Activate",
+      deactivate: "Deactivate",
+      delete: "Delete",
+      
+      // Empty states
+      noCategoriesFound: "No Categories Found",
+      noCategoriesInTable: "No Categories in Table",
+      noMatchingCategories: "No categories match your current filters.",
+      startByCreating: "Start by creating your first category.",
+      switchToTreeView: "Switch to tree view or adjust your filters to see categories.",
+      clearFilters: "Clear Filters",
+      
+      // Loading states
+      loadingCategories: "Loading categories...",
+      
+      // Footer summary
+      showingCategories: "Showing",
+      selected: "selected",
+      
+      // Success messages
+      categoryCreated: "Category created successfully",
+      categoryUpdated: "Category updated successfully",
+      categoryDeleted: "Category deleted successfully",
+      bulkActionSuccess: "categories {action}d successfully",
+      
+      // Error messages
+      accessDenied: "Access Denied",
+      needAdminPrivileges: "You need admin privileges to manage categories.",
+      needAdminPrivilegesEdit: "You need admin privileges to edit categories.",
+      needAdminPrivilegesDelete: "You need admin privileges to delete categories.",
+      
+      // Confirmation messages
+      deleteCategoryConfirm: "Are you sure you want to delete this category?",
+      
+      // CSV Export headers
+      csvHeaders: {
+        id: "ID",
+        englishName: "English Name",
+        arabicName: "Arabic Name",
+        slug: "Slug",
+        status: "Status",
+        level: "Level"
+      }
     },
     projectsManagement: {
       title: "Project Management",

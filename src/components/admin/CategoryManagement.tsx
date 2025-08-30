@@ -130,8 +130,8 @@ export const CategoryManagement: React.FC = () => {
     
     if (!isAdmin) {
       toast({
-        title: "Access Denied",
-        description: "You need admin privileges to manage categories.",
+        title: t('admin.categoryManagement.accessDenied'),
+        description: t('admin.categoryManagement.needAdminPrivileges'),
         variant: "destructive"
       });
       return;
@@ -145,13 +145,13 @@ export const CategoryManagement: React.FC = () => {
         await updateCategory(editingCategory.id, formData);
         toast({
           title: t('common.success'),
-          description: t('category.categoryUpdated')
+          description: t('admin.categoryManagement.categoryUpdated')
         });
       } else {
         await createCategory(formData);
         toast({
           title: t('common.success'), 
-          description: t('category.categoryCreated')
+          description: t('admin.categoryManagement.categoryCreated')
         });
       }
       
@@ -167,19 +167,19 @@ export const CategoryManagement: React.FC = () => {
   const handleDelete = async (id: string) => {
     if (!isAdmin) {
       toast({
-        title: "Access Denied",
-        description: "You need admin privileges to delete categories.",
+        title: t('admin.categoryManagement.accessDenied'),
+        description: t('admin.categoryManagement.needAdminPrivilegesDelete'),
         variant: "destructive"
       });
       return;
     }
 
-    if (window.confirm(t('category.deleteCategoryConfirm'))) {
+    if (window.confirm(t('admin.categoryManagement.deleteCategoryConfirm'))) {
       try {
         await deleteCategory(id);
         toast({
           title: t('common.success'),
-          description: t('category.categoryDeleted')
+          description: t('admin.categoryManagement.categoryDeleted')
         });
         refetch();
       } catch (error) {
@@ -204,8 +204,8 @@ export const CategoryManagement: React.FC = () => {
   const openEditDialog = (category: Category) => {
     if (!isAdmin) {
       toast({
-        title: "Access Denied",
-        description: "You need admin privileges to edit categories.",
+        title: t('admin.categoryManagement.accessDenied'),
+        description: t('admin.categoryManagement.needAdminPrivilegesEdit'),
         variant: "destructive"
       });
       return;
@@ -238,8 +238,8 @@ export const CategoryManagement: React.FC = () => {
       await Promise.all(promises);
       
       toast({
-        title: "Success",
-        description: `${selectedCategories.length} categories ${action}d successfully.`
+        title: t('common.success'),
+        description: `${selectedCategories.length} ${t('admin.categoryManagement.bulkActionSuccess').replace('{action}', action)}`
       });
       
       setSelectedCategories([]);
@@ -251,14 +251,21 @@ export const CategoryManagement: React.FC = () => {
 
   const exportCategories = () => {
     const csvContent = [
-      ['ID', 'English Name', 'Arabic Name', 'Slug', 'Status', 'Level'],
+      [
+        t('admin.categoryManagement.csvHeaders.id'),
+        t('admin.categoryManagement.csvHeaders.englishName'),
+        t('admin.categoryManagement.csvHeaders.arabicName'),
+        t('admin.categoryManagement.csvHeaders.slug'),
+        t('admin.categoryManagement.csvHeaders.status'),
+        t('admin.categoryManagement.csvHeaders.level')
+      ],
       ...flatCategories.map(cat => [
         cat.id,
         cat.name_en,
         cat.name_ar,
         cat.slug,
-        cat.is_active ? 'Active' : 'Inactive',
-        cat.level === 0 ? 'Parent' : 'Subcategory'
+        cat.is_active ? t('admin.categoryManagement.active') : t('admin.categoryManagement.inactive'),
+        cat.level === 0 ? t('admin.categoryManagement.parent') : t('admin.categoryManagement.subcategory')
       ])
     ];
 
@@ -399,9 +406,9 @@ export const CategoryManagement: React.FC = () => {
                         <Badge 
                           variant={category.is_active ? "default" : "secondary"} 
                           className="text-xs shrink-0"
-                        >
-                          {category.is_active ? 'Active' : 'Inactive'}
-                        </Badge>
+                         >
+                           {category.is_active ? t('admin.categoryManagement.active') : t('admin.categoryManagement.inactive')}
+                         </Badge>
                         {hasChildren && (
                           <Badge variant="outline" className="text-xs shrink-0">
                             {childrenCount} sub{childrenCount !== 1 ? 's' : ''}
@@ -416,11 +423,11 @@ export const CategoryManagement: React.FC = () => {
                           <code className="text-xs bg-muted px-2 py-1 rounded font-mono">
                             {category.slug}
                           </code>
-                          {level > 0 && (
-                            <span className="text-xs text-muted-foreground">
-                              Subcategory
-                            </span>
-                          )}
+                           {level > 0 && (
+                             <span className="text-xs text-muted-foreground">
+                               {t('admin.categoryManagement.subcategory')}
+                             </span>
+                           )}
                         </div>
                       </div>
                     </div>
@@ -481,14 +488,14 @@ export const CategoryManagement: React.FC = () => {
           <div>
             <CardTitle className="flex items-center gap-2">
               <List className="h-5 w-5" />
-              Categories Table
+              {t('admin.categoryManagement.categoriesTable')}
             </CardTitle>
             <CardDescription>
-              Comprehensive view of all categories with hierarchy indicators
+              {t('admin.categoryManagement.comprehensiveView')}
             </CardDescription>
           </div>
           <Badge variant="outline" className="font-mono">
-            {flatCategories.length} total
+            {flatCategories.length} {t('admin.categoryManagement.total')}
           </Badge>
         </div>
       </CardHeader>
@@ -510,12 +517,12 @@ export const CategoryManagement: React.FC = () => {
                     className="transition-colors"
                   />
                 </TableHead>
-                <TableHead className="font-semibold">Category Hierarchy</TableHead>
-                <TableHead className="font-semibold">Arabic Name</TableHead>
-                <TableHead className="font-semibold">Slug</TableHead>
-                <TableHead className="font-semibold text-center">Type</TableHead>
-                <TableHead className="font-semibold text-center">Status</TableHead>
-                <TableHead className="font-semibold text-center">Actions</TableHead>
+                <TableHead className="font-semibold">{t('admin.categoryManagement.categoryHierarchy')}</TableHead>
+                <TableHead className="font-semibold">{t('admin.categoryManagement.arabicName')}</TableHead>
+                <TableHead className="font-semibold">{t('admin.categoryManagement.slug')}</TableHead>
+                <TableHead className="font-semibold text-center">{t('admin.categoryManagement.type')}</TableHead>
+                <TableHead className="font-semibold text-center">{t('admin.categoryManagement.status')}</TableHead>
+                <TableHead className="font-semibold text-center">{t('admin.categoryManagement.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -615,9 +622,9 @@ export const CategoryManagement: React.FC = () => {
                       <Badge 
                         variant={isParent ? "default" : "secondary"}
                         className="font-medium"
-                      >
-                        {isParent ? 'Parent' : 'Subcategory'}
-                      </Badge>
+                       >
+                         {isParent ? t('admin.categoryManagement.parent') : t('admin.categoryManagement.subcategory')}
+                       </Badge>
                     </TableCell>
                     
                     <TableCell className="py-4 text-center">
@@ -634,8 +641,8 @@ export const CategoryManagement: React.FC = () => {
                           "w-2 h-2 rounded-full mr-1.5",
                           isActive ? "bg-green-500" : "bg-gray-400"
                         )}></div>
-                        {isActive ? 'Active' : 'Inactive'}
-                      </Badge>
+                         {isActive ? t('admin.categoryManagement.active') : t('admin.categoryManagement.inactive')}
+                       </Badge>
                     </TableCell>
                     
                     <TableCell className="py-4">
@@ -670,9 +677,9 @@ export const CategoryManagement: React.FC = () => {
         {flatCategories.length === 0 && (
           <div className="p-12 text-center border-t">
             <List className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium mb-2">No Categories in Table</h3>
+            <h3 className="text-lg font-medium mb-2">{t('admin.categoryManagement.noCategoriesInTable')}</h3>
             <p className="text-muted-foreground">
-              Switch to tree view or adjust your filters to see categories.
+              {t('admin.categoryManagement.switchToTreeView')}
             </p>
           </div>
         )}
@@ -683,15 +690,15 @@ export const CategoryManagement: React.FC = () => {
         <div className="border-t bg-muted/20 px-6 py-3">
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <div className="flex items-center gap-4">
-              <span>Showing {flatCategories.length} categories</span>
+              <span>{t('admin.categoryManagement.showingCategories')} {flatCategories.length} {t('admin.categoryManagement.categoriesSelected').split(' ')[0]}</span>
               <span>•</span>
-              <span>{analytics?.parentCategories || 0} parent categories</span>
+              <span>{analytics?.parentCategories || 0} {t('admin.categoryManagement.parentCategories').toLowerCase()}</span>
               <span>•</span>
-              <span>{analytics?.subcategories || 0} subcategories</span>
+              <span>{analytics?.subcategories || 0} {t('admin.categoryManagement.subcategories').toLowerCase()}</span>
             </div>
             {selectedCategories.length > 0 && (
               <span className="font-medium text-primary">
-                {selectedCategories.length} selected
+                {selectedCategories.length} {t('admin.categoryManagement.selected')}
               </span>
             )}
           </div>
@@ -703,7 +710,7 @@ export const CategoryManagement: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        {t('category.loadingCategories')}
+        {t('admin.categoryManagement.loadingCategories')}
       </div>
     );
   }
@@ -729,24 +736,24 @@ export const CategoryManagement: React.FC = () => {
 
   return (
     <AdminPageContainer
-      title="Category Management"
-      description="Manage and organize service categories and subcategories"
+      title={t('admin.categoryManagement.title')}
+      description={t('admin.categoryManagement.description')}
       headerActions={
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={resetForm}>
               <Plus className="h-4 w-4 mr-2" />
-              Add Category
+              {t('admin.categoryManagement.addCategory')}
             </Button>
           </DialogTrigger>
           
           <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle>
-                {editingCategory ? 'Edit Category' : 'Create New Category'}
+                {editingCategory ? t('admin.categoryManagement.editCategoryTitle') : t('admin.categoryManagement.createCategoryTitle')}
               </DialogTitle>
               <DialogDescription>
-                {editingCategory ? 'Update category information' : 'Add a new category to the system'}
+                {editingCategory ? t('admin.categoryManagement.updateCategoryDescription') : t('admin.categoryManagement.addCategoryDescription')}
               </DialogDescription>
             </DialogHeader>
             
@@ -836,31 +843,31 @@ export const CategoryManagement: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>Total Categories</CardDescription>
+              <CardDescription>{t('admin.categoryManagement.totalCategories')}</CardDescription>
               <CardTitle className="text-2xl">{analytics.total}</CardTitle>
             </CardHeader>
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>Parent Categories</CardDescription>
+              <CardDescription>{t('admin.categoryManagement.parentCategories')}</CardDescription>
               <CardTitle className="text-2xl">{analytics.parentCategories}</CardTitle>
             </CardHeader>
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>Subcategories</CardDescription>
+              <CardDescription>{t('admin.categoryManagement.subcategories')}</CardDescription>
               <CardTitle className="text-2xl">{analytics.subcategories}</CardTitle>
             </CardHeader>
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>Active</CardDescription>
+              <CardDescription>{t('admin.categoryManagement.active')}</CardDescription>
               <CardTitle className="text-2xl text-green-600">{analytics.active}</CardTitle>
             </CardHeader>
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>Inactive</CardDescription>
+              <CardDescription>{t('admin.categoryManagement.inactive')}</CardDescription>
               <CardTitle className="text-2xl text-red-600">{analytics.inactive}</CardTitle>
             </CardHeader>
           </Card>

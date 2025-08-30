@@ -882,7 +882,7 @@ export const arSA = {
     // Menu Items
     subscriptions: "الاشتراكات",
     supportTickets: "تذاكر الدعم",
-    categoryManagement: "إدارة الفئات",
+    categoryManagementMenu: "إدارة الفئات",
     settings: "الإعدادات",
     profile: "الملف الشخصي",
     
@@ -1331,6 +1331,131 @@ export const arSA = {
       categoryManagement: "إدارة الفئات",
       financialTransactions: "المعاملات المالية",
       securityMonitoring: "مراقبة الأمان"
+    },
+
+    // Category Management
+    categoryManagement: {
+      title: "إدارة الفئات",
+      description: "إدارة وتنظيم فئات الخدمات والفئات الفرعية",
+      accessRestricted: "وصول مقيد",
+      accessRestrictedDescription: "تحتاج إلى امتيازات المدير للوصول إلى إدارة الفئات.",
+      currentRole: "دورك الحالي:",
+      loginRequired: "يرجى التأكد من تسجيل الدخول بحساب مدير.",
+      
+      // Status labels
+      active: "نشط",
+      inactive: "غير نشط",
+      parent: "رئيسي",
+      subcategory: "فرعي",
+      
+      // Form labels
+      englishName: "الاسم الإنجليزي",
+      arabicName: "الاسم العربي",
+      urlSlug: "معرف الرابط",
+      parentCategory: "الفئة الرئيسية",
+      activeStatus: "حالة النشاط",
+      sortOrder: "ترتيب الفرز",
+      
+      // Placeholders
+      enterEnglishName: "أدخل الاسم الإنجليزي",
+      enterArabicName: "أدخل الاسم العربي",
+      categorySlugPlaceholder: "معرف-الفئة",
+      selectParentCategory: "اختر الفئة الرئيسية (اختياري)",
+      noParentTopLevel: "بدون رئيسي (المستوى الأعلى)",
+      urlFriendlyIdentifier: "معرف مناسب للرابط (أحرف صغيرة، شرطات مسموحة)",
+      
+      // Action buttons
+      addCategory: "إضافة فئة",
+      editCategory: "تعديل الفئة",
+      createCategory: "إنشاء فئة",
+      updateCategory: "تحديث الفئة",
+      createNewCategory: "إنشاء فئة جديدة",
+      cancel: "إلغاء",
+      
+      // Dialog titles and descriptions
+      editCategoryTitle: "تعديل الفئة",
+      createCategoryTitle: "إنشاء فئة جديدة",
+      updateCategoryDescription: "تحديث معلومات الفئة",
+      addCategoryDescription: "إضافة فئة جديدة إلى النظام",
+      
+      // Table headers
+      categoryHierarchy: "تسلسل الفئات",
+      slug: "المعرف",
+      type: "النوع",
+      status: "الحالة",
+      actions: "الإجراءات",
+      
+      // Analytics cards
+      totalCategories: "إجمالي الفئات",
+      parentCategories: "الفئات الرئيسية",
+      subcategories: "الفئات الفرعية",
+      
+      // Search and filter
+      searchCategories: "البحث في الفئات...",
+      allStatus: "جميع الحالات",
+      activeOnly: "النشطة فقط",
+      inactiveOnly: "غير النشطة فقط",
+      
+      // View controls
+      expandAll: "توسيع الكل",
+      collapseAll: "طي الكل",
+      tableView: "عرض الجدول",
+      treeView: "عرض الشجرة",
+      export: "تصدير",
+      
+      // Table view
+      categoriesTable: "جدول الفئات",
+      comprehensiveView: "عرض شامل لجميع الفئات مع مؤشرات التسلسل الهرمي",
+      total: "إجمالي",
+      subcategoryOfParent: "فئة فرعية من الرئيسي",
+      subs: "فرعية",
+      sub: "فرعي",
+      
+      // Bulk actions
+      categoriesSelected: "فئات محددة",
+      activate: "تنشيط",
+      deactivate: "إلغاء التنشيط",
+      delete: "حذف",
+      
+      // Empty states
+      noCategoriesFound: "لم يتم العثور على فئات",
+      noCategoriesInTable: "لا توجد فئات في الجدول",
+      noMatchingCategories: "لا توجد فئات تطابق المرشحات الحالية.",
+      startByCreating: "ابدأ بإنشاء أول فئة لك.",
+      switchToTreeView: "انتقل إلى عرض الشجرة أو اضبط المرشحات لرؤية الفئات.",
+      clearFilters: "مسح المرشحات",
+      
+      // Loading states
+      loadingCategories: "جارٍ تحميل الفئات...",
+      
+      // Footer summary
+      showingCategories: "عرض",
+      selected: "محددة",
+      
+      // Success messages
+      categoryCreated: "تم إنشاء الفئة بنجاح",
+      categoryUpdated: "تم تحديث الفئة بنجاح",
+      categoryDeleted: "تم حذف الفئة بنجاح",
+      bulkActionSuccess: "فئة تم {action}ها بنجاح",
+      
+      // Error messages
+      accessDenied: "وصول مرفوض",
+      needAdminPrivileges: "تحتاج إلى امتيازات المدير لإدارة الفئات.",
+      needAdminPrivilegesEdit: "تحتاج إلى امتيازات المدير لتعديل الفئات.",
+      needAdminPrivilegesDelete: "تحتاج إلى امتيازات المدير لحذف الفئات.",
+      
+      // Confirmation messages
+      deleteCategoryConfirm: "هل أنت متأكد من أنك تريد حذف هذه الفئة؟",
+      
+      // CSV Export headers
+      csvHeaders: {
+        id: "المعرف",
+        englishName: "الاسم الإنجليزي",
+        arabicName: "الاسم العربي",
+        slug: "المعرف",
+        status: "الحالة",
+        level: "المستوى"
+      }
     },
     projectsManagement: {
       title: "إدارة المشاريع",
