@@ -261,7 +261,78 @@ export const adminTranslationsAR = {
     automationDescription: "أتمتة سير العمل والقواعد",
     projects: "المشاريع",
     verificationQueue: "قائمة التحقق",
-    workflowAutomation: "أتمتة سير العمل",
+    workflowAutomation: {
+      title: "أتمتة سير العمل",
+      description: "إدارة ومراقبة تدفق العمل المؤتمت",
+      automationCenter: "مركز الأتمتة",
+      automationDescription: "إنشاء وإدارة سير العمل المؤتمت لتبسيط العمليات التجارية",
+      createWorkflow: "إنشاء سير عمل",
+      
+      overview: {
+        activeWorkflows: "سير العمل النشط",
+        totalExecutions: "إجمالي التنفيذات", 
+        pendingTasks: "المهام المعلقة",
+        successRate: "معدل النجاح"
+      },
+
+      workflowForm: {
+        createTitle: "إنشاء سير عمل جديد",
+        workflowName: "اسم سير العمل",
+        workflowNamePlaceholder: "أدخل اسم سير العمل...",
+        description: "الوصف",
+        descriptionPlaceholder: "وصف ما يفعله سير العمل هذا...",
+        triggerType: "نوع المشغل",
+        triggerPlaceholder: "مثل: يدوي، مجدول، حدث",
+        priority: "الأولوية",
+        cancel: "إلغاء",
+        createButton: "إنشاء سير العمل"
+      },
+
+      workflowCard: {
+        trigger: "المشغل",
+        priority: "الأولوية", 
+        created: "تم الإنشاء",
+        execute: "تنفيذ"
+      },
+
+      tabs: {
+        workflows: "سير العمل",
+        executionHistory: "سجل التنفيذ",
+        tasks: "المهام"
+      },
+
+      executions: {
+        title: "التنفيذات الأخيرة",
+        workflowId: "سير العمل #",
+        duration: "المدة:",
+        noExecutions: "لم يتم العثور على تنفيذات سير العمل"
+      },
+
+      tasks: {
+        pendingTitle: "المهام المعلقة",
+        overdueTitle: "المهام المتأخرة",
+        priorityLabel: "الأولوية",
+        dueLabel: "موعد الاستحقاق",
+        noDueDate: "لا يوجد تاريخ استحقاق",
+        complete: "مكتمل",
+        overdueBy: "متأخر بـ",
+        days: "أيام",
+        noPendingTasks: "لا توجد مهام معلقة",
+        noOverdueTasks: "لا توجد مهام متأخرة"
+      },
+
+      messages: {
+        loading: "تحميل سير العمل...",
+        nameRequired: "اسم سير العمل مطلوب",
+        created: "تم إنشاء سير العمل بنجاح",
+        createError: "فشل في إنشاء سير العمل",
+        enabled: "مفعل",
+        disabled: "معطل", 
+        toggleError: "فشل في تبديل حالة سير العمل",
+        deleted: "تم حذف سير العمل بنجاح",
+        deleteError: "فشل في حذف سير العمل"
+      }
+    },
     categoryManagement: "إدارة الفئات"
   },
 

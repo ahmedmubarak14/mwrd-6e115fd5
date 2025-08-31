@@ -1,10 +1,10 @@
 import React from 'react';
 import { AdminPageContainer } from '@/components/admin/AdminPageContainer';
 import { WorkflowAutomation as WorkflowAutomationComponent } from '@/components/admin/WorkflowAutomation';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function WorkflowAutomation() {
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
   return (
     <AdminPageContainer
       title={t('admin.workflowAutomation.title')}

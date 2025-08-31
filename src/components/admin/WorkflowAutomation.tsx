@@ -13,11 +13,11 @@ import { Settings, Clock, Zap, Bell, AlertTriangle, CheckCircle, Plus, Activity,
 import { useToast } from '@/hooks/use-toast';
 import { useWorkflowAutomation, useAutomatedTasks } from '@/hooks/useWorkflowAutomation';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const WorkflowAutomation = () => {
   const { toast } = useToast();
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
   
   const {
     workflows,
