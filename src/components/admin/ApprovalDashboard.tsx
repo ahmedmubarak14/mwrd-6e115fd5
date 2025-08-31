@@ -447,10 +447,10 @@ export const ApprovalDashboard = () => {
       {/* Main Content Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Queue ({pendingItems.length})</TabsTrigger>
-          <TabsTrigger value="requests">Requests ({metrics.pendingRequests})</TabsTrigger>
-          <TabsTrigger value="offers">Offers ({metrics.pendingOffers})</TabsTrigger>
-          <TabsTrigger value="automation">Automation</TabsTrigger>
+          <TabsTrigger value="overview">{t('admin.approvals.queue')} ({pendingItems.length})</TabsTrigger>
+          <TabsTrigger value="requests">{t('admin.approvals.requests')} ({metrics.pendingRequests})</TabsTrigger>
+          <TabsTrigger value="offers">{t('admin.approvals.offers')} ({metrics.pendingOffers})</TabsTrigger>
+          <TabsTrigger value="automation">{t('admin.approvals.automation')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -468,9 +468,9 @@ export const ApprovalDashboard = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle>Priority Queue</CardTitle>
+              <CardTitle>{t('admin.approvals.priorityQueue')}</CardTitle>
               <p className="text-sm text-foreground opacity-75">
-                Items sorted by urgency score (time + priority)
+                {t('admin.approvals.sortedByUrgency')}
               </p>
             </CardHeader>
             <CardContent>
@@ -529,7 +529,7 @@ export const ApprovalDashboard = () => {
                 {pendingItems.length === 0 && (
                   <div className="text-center py-8 text-foreground opacity-75">
                     <CheckCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>All caught up! No pending items require approval.</p>
+                    <p>{t('admin.approvals.allCaughtUp')}</p>
                   </div>
                 )}
               </div>
@@ -537,17 +537,17 @@ export const ApprovalDashboard = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="requests">
-          {/* Request-specific content */}
-          <div className="text-center py-8 text-foreground opacity-75">
-            Request approval interface will be loaded here
+        <TabsContent value="requests" className="space-y-6">
+          <div className="text-center py-12">
+            <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <p className="text-lg font-medium mb-2">{t('admin.approvals.requestInterface')}</p>
           </div>
         </TabsContent>
 
-        <TabsContent value="offers">
-          {/* Offer-specific content */}
-          <div className="text-center py-8 text-foreground opacity-75">
-            Offer approval interface will be loaded here
+        <TabsContent value="offers" className="space-y-6">
+          <div className="text-center py-12">
+            <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <p className="text-lg font-medium mb-2">{t('admin.approvals.offerInterface')}</p>
           </div>
         </TabsContent>
 

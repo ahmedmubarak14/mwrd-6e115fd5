@@ -79,10 +79,11 @@ export const adminTranslationsEN = {
 
   // Audit Trail
   auditTrail: {
-    auditTrailControls: "Audit Trail Controls",
-    filterAndExport: "Filter and export audit log data for compliance and investigation",
-    auditLogEntries: "Audit Log Entries",
-    completeAuditTrail: "Complete audit trail of system activities",
+    title: "Audit Trail",
+    controls: "Audit Trail Controls",
+    controlsDesc: "Filter and export audit log data for compliance and investigation",
+    entries: "Audit Log Entries",
+    entriesDesc: "Complete audit trail of system activities",
     allActions: "All Actions",
     createAction: "Create",
     updateAction: "Update",
@@ -90,19 +91,19 @@ export const adminTranslationsEN = {
     loginAction: "Login",
     logoutAction: "Logout",
     allEntities: "All Entities",
-    users: "Users",
-    requests: "Requests",
-    offers: "Offers",
-    orders: "Orders",
-    transactions: "Transactions",
+    usersEntity: "Users",
+    requestsEntity: "Requests",
+    offersEntity: "Offers",
+    ordersEntity: "Orders",
+    transactionsEntity: "Transactions",
     exportLogs: "Export Logs",
     pickDateRange: "Pick a date range",
     showingEntries: "Showing {count} of {total} audit entries",
     exportSuccess: "Audit logs exported successfully",
     exportError: "Failed to export audit logs",
-    noLogsFound: "No audit logs found",
-    adjustFilters: "Try adjusting your search filters or date range",
-    noActivities: "No system activities recorded yet",
+    noLogsFound: "No logs found",
+    adjustFilters: "Try adjusting your filters or search terms",
+    noActivities: "No activities to show yet",
     on: "on",
     id: "ID"
   },
@@ -230,6 +231,46 @@ export const adminTranslationsEN = {
   deleteUserTitle: "Delete User",
   deleteUserConfirm: "Are you sure you want to delete {name}? This action cannot be undone.",
   
+  // Approval workflows
+  approvals: {
+    title: "Approval Dashboard",
+    loading: "Loading approval data...",
+    description: "Manage pending approvals and workflows",
+    exportReport: "Export Report",
+    advancedFilters: "Advanced Filters",
+    
+    // Metrics
+    pendingItems: "Pending Items",
+    approvalRate: "Approval Rate", 
+    avgProcessing: "Avg Processing",
+    totalProcessed: "Total Processed",
+    thisWeek: "this week",
+    avgResponseTime: "Average response time",
+    totalProcessedDesc: "All time processed",
+    
+    // Status labels
+    requestsLabel: "requests",
+    offersLabel: "offers",
+    requests: "Requests",
+    offers: "Offers",
+    pending: "pending",
+    approved: "approved", 
+    rejected: "rejected",
+    
+    // Progress and queue
+    progressTitle: "Progress Overview",
+    priorityQueue: "Priority Queue",
+    sortedByUrgency: "Items sorted by urgency score (time + priority)",
+    allCaughtUp: "All caught up!",
+    noPendingItems: "No pending items require approval",
+    requestInterface: "Request approval interface will be loaded here",
+    offerInterface: "Offer approval interface will be loaded here",
+    
+    // Tab labels
+    queue: "Queue",
+    automation: "Automation"
+  },
+
   // Core Navigation & Layout
   dashboard: {
     title: "Admin Dashboard",
@@ -837,29 +878,6 @@ export const adminTranslationsEN = {
     refreshPage: 'Refresh Page'
   },
 
-  // Approval Dashboard
-  approvals: {
-    title: 'Approval Center',
-    description: 'Centralized approval management with automated workflows',
-    loading: 'Loading approval dashboard...',
-    exportReport: 'Export Report',
-    advancedFilters: 'Advanced Filters',
-    pendingItems: 'Pending Items',
-    approvalRate: 'Approval Rate',
-    avgProcessing: 'Avg Processing',
-    avgResponseTime: 'Average response time',
-    totalProcessed: 'Total Processed',
-    totalProcessedDesc: 'All time approvals/rejections',
-    progressTitle: 'Approval Progress',
-    requests: 'Requests',
-    offers: 'Offers',
-    requestsLabel: 'requests',
-    offersLabel: 'offers',
-    thisWeek: 'this week',
-    pending: 'pending',
-    approved: 'approved',
-    rejected: 'rejected'
-  },
 
   // i18n Compliance Dashboard
   i18nCompliance: {

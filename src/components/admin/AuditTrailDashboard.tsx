@@ -99,10 +99,10 @@ export const AuditTrailDashboard = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Database className="h-5 w-5" />
-            Audit Trail Controls
+            {t('admin.auditTrail.controls')}
           </CardTitle>
           <CardDescription>
-            Filter and export audit log data for compliance and investigation
+            {t('admin.auditTrail.controlsDesc')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -122,12 +122,12 @@ export const AuditTrailDashboard = () => {
                 <SelectValue placeholder={t('common.placeholders.filterByAction')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Actions</SelectItem>
-                <SelectItem value="INSERT">Create</SelectItem>
-                <SelectItem value="UPDATE">Update</SelectItem>
-                <SelectItem value="DELETE">Delete</SelectItem>
-                <SelectItem value="LOGIN">Login</SelectItem>
-                <SelectItem value="LOGOUT">Logout</SelectItem>
+                <SelectItem value="all">{t('admin.auditTrail.allActions')}</SelectItem>
+                <SelectItem value="INSERT">{t('admin.auditTrail.createAction')}</SelectItem>
+                <SelectItem value="UPDATE">{t('admin.auditTrail.updateAction')}</SelectItem>
+                <SelectItem value="DELETE">{t('admin.auditTrail.deleteAction')}</SelectItem>
+                <SelectItem value="LOGIN">{t('admin.auditTrail.loginAction')}</SelectItem>
+                <SelectItem value="LOGOUT">{t('admin.auditTrail.logoutAction')}</SelectItem>
               </SelectContent>
             </Select>
             
@@ -136,12 +136,12 @@ export const AuditTrailDashboard = () => {
                 <SelectValue placeholder={t('common.placeholders.filterByEntity')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Entities</SelectItem>
-                <SelectItem value="user_profiles">Users</SelectItem>
-                <SelectItem value="requests">Requests</SelectItem>
-                <SelectItem value="offers">Offers</SelectItem>
-                <SelectItem value="orders">Orders</SelectItem>
-                <SelectItem value="financial_transactions">Transactions</SelectItem>
+                <SelectItem value="all">{t('admin.auditTrail.allEntities')}</SelectItem>
+                <SelectItem value="user_profiles">{t('admin.auditTrail.usersEntity')}</SelectItem>
+                <SelectItem value="requests">{t('admin.auditTrail.requestsEntity')}</SelectItem>
+                <SelectItem value="offers">{t('admin.auditTrail.offersEntity')}</SelectItem>
+                <SelectItem value="orders">{t('admin.auditTrail.ordersEntity')}</SelectItem>
+                <SelectItem value="financial_transactions">{t('admin.auditTrail.transactionsEntity')}</SelectItem>
               </SelectContent>
             </Select>
             
@@ -159,7 +159,7 @@ export const AuditTrailDashboard = () => {
                       format(dateRange.from, "LLL dd, y")
                     )
                   ) : (
-                    <span>Pick a date range</span>
+                    <span>{t('admin.auditTrail.pickDateRange')}</span>
                   )}
                 </Button>
               </PopoverTrigger>
@@ -182,7 +182,7 @@ export const AuditTrailDashboard = () => {
             </div>
             <Button onClick={handleExportLogs} variant="outline">
               <Download className="h-4 w-4 mr-2" />
-              Export Logs
+              {t('admin.auditTrail.exportLogs')}
             </Button>
           </div>
         </CardContent>
@@ -191,8 +191,8 @@ export const AuditTrailDashboard = () => {
       {/* Audit Logs Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Audit Log Entries</CardTitle>
-          <CardDescription>Complete audit trail of system activities</CardDescription>
+          <CardTitle>{t('admin.auditTrail.entries')}</CardTitle>
+          <CardDescription>{t('admin.auditTrail.entriesDesc')}</CardDescription>
         </CardHeader>
         <CardContent>
           {isLoading ? (

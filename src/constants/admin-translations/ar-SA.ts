@@ -79,10 +79,11 @@ export const adminTranslationsAR = {
 
   // Audit Trail
   auditTrail: {
-    auditTrailControls: "عناصر تحكم سجل التدقيق",
-    filterAndExport: "فلترة وتصدير بيانات سجل التدقيق للامتثال والتحقيق",
-    auditLogEntries: "إدخالات سجل التدقيق",
-    completeAuditTrail: "سجل تدقيق كامل لأنشطة النظام",
+    title: "سجل التدقيق",
+    controls: "عناصر تحكم سجل التدقيق",
+    controlsDesc: "فلترة وتصدير بيانات سجل التدقيق للامتثال والتحقيق",
+    entries: "إدخالات سجل التدقيق",
+    entriesDesc: "سجل تدقيق كامل لأنشطة النظام",
     allActions: "جميع الإجراءات",
     createAction: "إنشاء",
     updateAction: "تحديث",
@@ -90,19 +91,19 @@ export const adminTranslationsAR = {
     loginAction: "تسجيل دخول",
     logoutAction: "تسجيل خروج",
     allEntities: "جميع الكيانات",
-    users: "المستخدمون",
-    requests: "الطلبات",
-    offers: "العروض",
-    orders: "الطلبيات",
-    transactions: "المعاملات",
+    usersEntity: "المستخدمون",
+    requestsEntity: "الطلبات",
+    offersEntity: "العروض",
+    ordersEntity: "الطلبيات",
+    transactionsEntity: "المعاملات",
     exportLogs: "تصدير السجلات",
     pickDateRange: "اختر نطاق تاريخي",
     showingEntries: "عرض {count} من {total} إدخال تدقيق",
     exportSuccess: "تم تصدير سجلات التدقيق بنجاح",
     exportError: "فشل في تصدير سجلات التدقيق",
-    noLogsFound: "لم يتم العثور على سجلات تدقيق",
-    adjustFilters: "جرب تعديل مرشحات البحث أو النطاق التاريخي",
-    noActivities: "لم يتم تسجيل أنشطة النظام بعد",
+    noLogsFound: "لم يتم العثور على سجلات",
+    adjustFilters: "جرب تعديل مرشحاتك أو مصطلحات البحث",
+    noActivities: "لا توجد أنشطة لعرضها بعد",
     on: "على",
     id: "المعرف"
   },
@@ -230,6 +231,46 @@ export const adminTranslationsAR = {
   deleteUserTitle: "حذف المستخدم",
   deleteUserConfirm: "هل أنت متأكد من رغبتك في حذف {name}؟ لا يمكن التراجع عن هذا الإجراء.",
   
+  // Approval workflows
+  approvals: {
+    title: "لوحة الموافقات",
+    loading: "جاري تحميل بيانات الموافقة...",
+    description: "إدارة الموافقات المعلقة وسير العمل",
+    exportReport: "تصدير التقرير",
+    advancedFilters: "المرشحات المتقدمة",
+    
+    // Metrics
+    pendingItems: "العناصر المعلقة",
+    approvalRate: "معدل الموافقة", 
+    avgProcessing: "متوسط المعالجة",
+    totalProcessed: "إجمالي المعالج",
+    thisWeek: "هذا الأسبوع",
+    avgResponseTime: "متوسط وقت الاستجابة",
+    totalProcessedDesc: "إجمالي المعالج على الإطلاق",
+    
+    // Status labels
+    requestsLabel: "طلبات",
+    offersLabel: "عروض",
+    requests: "الطلبات",
+    offers: "العروض",
+    pending: "معلق",
+    approved: "موافق عليه", 
+    rejected: "مرفوض",
+    
+    // Progress and queue
+    progressTitle: "نظرة عامة على التقدم",
+    priorityQueue: "قائمة الأولوية",
+    sortedByUrgency: "العناصر مرتبة حسب درجة الإلحاح (الوقت + الأولوية)",
+    allCaughtUp: "كل شيء محدث!",
+    noPendingItems: "لا توجد عناصر معلقة تتطلب موافقة",
+    requestInterface: "سيتم تحميل واجهة موافقة الطلب هنا",
+    offerInterface: "سيتم تحميل واجهة موافقة العرض هنا",
+    
+    // Tab labels
+    queue: "القائمة",
+    automation: "الأتمتة"
+  },
+
   // Core Navigation & Layout
   dashboard: {
     title: "لوحة تحكم المشرف",
@@ -838,29 +879,6 @@ export const adminTranslationsAR = {
     refreshPage: 'تحديث الصفحة'
   },
 
-  // Approval Dashboard
-  approvals: {
-    title: 'مركز الموافقات',
-    description: 'إدارة الموافقات المركزية مع سير العمل الآلي',
-    loading: 'جاري تحميل لوحة الموافقات...',
-    exportReport: 'تصدير التقرير',
-    advancedFilters: 'مرشحات متقدمة',
-    pendingItems: 'العناصر المعلقة',
-    approvalRate: 'معدل الموافقة',
-    avgProcessing: 'متوسط المعالجة',
-    avgResponseTime: 'متوسط وقت الاستجابة',
-    totalProcessed: 'إجمالي المعالج',
-    totalProcessedDesc: 'جميع الموافقات/الرفض على الإطلاق',
-    progressTitle: 'تقدم الموافقة',
-    requests: 'الطلبات',
-    offers: 'العروض',
-    requestsLabel: 'طلبات',
-    offersLabel: 'عروض',
-    thisWeek: 'هذا الأسبوع',
-    pending: 'معلقة',
-    approved: 'موافق عليها',
-    rejected: 'مرفوضة'
-  },
 
   // Common Actions & Messages
   actions: {
