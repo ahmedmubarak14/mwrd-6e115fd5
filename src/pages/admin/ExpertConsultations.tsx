@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 import { supabase } from "@/integrations/supabase/client";
 import { 
   Search, Filter, MessageSquare, Calendar, User, Phone, Clock, CheckCircle, 
@@ -51,7 +51,12 @@ interface Consultation {
 }
 
 export const ExpertConsultations = () => {
-  const { t, isRTL, formatDate } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL, formatDate } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false,
+    formatDate: (date: Date) => date.toLocaleDateString()
+  };
   
   // Helper function to translate status
   const getTranslatedStatus = (status: string) => {
@@ -197,11 +202,11 @@ export const ExpertConsultations = () => {
         )
       );
       
-        showSuccess(`${t('success.updated')} ${selectedConsultations.length} ${t('admin.expertConsultations.updatedConsultations')}`);
+        showSuccess(t('admin.expertConsultations.bulkUpdateSuccess').replace('{count}', selectedConsultations.length.toString()));
         setSelectedConsultations([]);
         await fetchConsultations();
       } catch (error) {
-        showError(t('admin.expertConsultations.failedToUpdate'));
+        showError(t('admin.expertConsultations.bulkUpdateFailed'));
     }
   };
 
@@ -216,11 +221,11 @@ export const ExpertConsultations = () => {
       
       if (error) throw error;
       
-      showSuccess(`${t('admin.expertConsultations.deletedConsultationsCount').replace('{count}', selectedConsultations.length.toString())}`);
+      showSuccess(t('admin.expertConsultations.bulkDeleteSuccess').replace('{count}', selectedConsultations.length.toString()));
       setSelectedConsultations([]);
       await fetchConsultations();
     } catch (error) {
-      showError(t('admin.expertConsultations.deleteFailed'));
+      showError(t('admin.expertConsultations.bulkDeleteFailed'));
     }
   };
 
@@ -241,7 +246,7 @@ export const ExpertConsultations = () => {
         return;
       }
 
-      showSuccess(t('admin.expertConsultations.scheduleSuccess'));
+      showSuccess(t('admin.expertConsultations.consultationScheduled'));
       await fetchConsultations();
     } catch (error) {
       showError(t('error.general'));

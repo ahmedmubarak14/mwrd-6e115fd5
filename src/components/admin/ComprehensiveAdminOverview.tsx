@@ -33,7 +33,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useSystemHealth } from '@/hooks/useSystemHealth';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 
@@ -62,7 +62,11 @@ interface QuickAction {
 export const ComprehensiveAdminOverview = () => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const { t, isRTL } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false 
+  };
   const { systemMetrics, alerts, isLoading: healthLoading } = useSystemHealth();
   
   const [metrics, setMetrics] = useState<PlatformMetrics>({

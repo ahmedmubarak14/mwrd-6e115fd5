@@ -63,7 +63,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
       onUserAdded();
       handleClose();
     } catch (error: any) {
-      showError(error.message || t('admin.userDetails.addUserError'));
+      showError(error.message || t('users.createUserError'));
     } finally {
       setLoading(false);
     }
