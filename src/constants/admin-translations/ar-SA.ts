@@ -409,7 +409,53 @@ export const adminTranslationsAR = {
     underReviewCount: "قيد المراجعة",
     avgProcessingTime: "متوسط وقت المعالجة",
     approvalRate: "معدل الموافقة",
-    addReviewNotesPlaceholder: "إضافة ملاحظات المراجعة (اختياري)..."
+    addReviewNotesPlaceholder: "إضافة ملاحظات المراجعة (اختياري)...",
+    // بطاقات التحليلات
+    totalRequests: "إجمالي الطلبات",
+    pendingReview: "قيد المراجعة",
+    avgProcessing: "متوسط وقت المعالجة",
+    // عناصر التحكم والإجراءات
+    searchPlaceholder: "البحث في طلبات التحقق...",
+    sortByDate: "ترتيب حسب التاريخ",
+    sortByName: "ترتيب حسب الاسم",
+    sortByStatus: "ترتيب حسب الحالة",
+    tableView: "عرض جدولي",
+    cardView: "عرض بطاقات",
+    refresh: "تحديث",
+    // أزرار الإجراءات
+    processing: "جاري المعالجة...",
+    approve: "موافقة",
+    reject: "رفض",
+    cannotApproveMessage: "لا يمكن الموافقة على الطلبات التي تحتوي على مستندات مفقودة",
+    reviewNotesRequired: "ملاحظات المراجعة مطلوبة للرفض",
+    reviewNotes: "ملاحظات المراجعة:",
+    // عناوين الجدول
+    verificationRequestsTable: "طلبات التحقق",
+    comprehensiveView: "عرض شامل لجميع طلبات التحقق",
+    vendorInformation: "معلومات المورد",
+    document: "الوثيقة",
+    status: "الحالة", 
+    actions: "الإجراءات",
+    // الإجراءات المجمعة
+    requestsSelected: "{count} طلبات محددة",
+    bulkApprove: "موافقة مجمعة",
+    bulkReject: "رفض مجمع",
+    bulkApproveTitle: "موافقة مجمعة على الطلبات",
+    bulkRejectTitle: "رفض مجمع للطلبات", 
+    bulkActionDescription: "أنت على وشك {action} {count} طلبات. يرجى إضافة ملاحظات:",
+    bulkNotesPlaceholder: "إضافة ملاحظات لإجراء {action}...",
+    cancel: "إلغاء",
+    confirmApproval: "تأكيد الموافقة",
+    confirmRejection: "تأكيد الرفض",
+    // حالات التحميل والفراغ
+    loadingRequests: "جاري تحميل طلبات التحقق...",
+    noVerificationRequests: "لا توجد طلبات تحقق",
+    noRequestsMatch: "لا توجد طلبات تطابق معايير البحث",
+    noVerificationRequestsFound: "لم يتم العثور على طلبات تحقق",
+    noStatusRequestsFound: "لم يتم العثور على طلبات {status}",
+    clearSearch: "مسح البحث",
+    // التبويبات
+    all: "الكل"
   },
 
   // إدارة النظام

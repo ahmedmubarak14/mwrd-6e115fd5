@@ -409,7 +409,53 @@ export const adminTranslationsEN = {
     underReviewCount: "Under Review",
     avgProcessingTime: "Avg Processing Time",
     approvalRate: "Approval Rate",
-    addReviewNotesPlaceholder: "Add review notes (optional)..."
+    addReviewNotesPlaceholder: "Add review notes (optional)...",
+    // Analytics cards
+    totalRequests: "Total Requests",
+    pendingReview: "Pending Review",
+    avgProcessing: "Avg Processing Time",
+    // Controls and actions
+    searchPlaceholder: "Search verification requests...",
+    sortByDate: "Sort by Date",
+    sortByName: "Sort by Name", 
+    sortByStatus: "Sort by Status",
+    tableView: "Table View",
+    cardView: "Card View",
+    refresh: "Refresh",
+    // Action buttons
+    processing: "Processing...",
+    approve: "Approve",
+    reject: "Reject",
+    cannotApproveMessage: "Cannot approve requests with missing documents",
+    reviewNotesRequired: "Review notes are required for rejection", 
+    reviewNotes: "Review Notes:",
+    // Table headers
+    verificationRequestsTable: "Verification Requests",
+    comprehensiveView: "Comprehensive view of all verification requests",
+    vendorInformation: "Vendor Information",
+    document: "Document",
+    status: "Status",
+    actions: "Actions",
+    // Bulk actions
+    requestsSelected: "{count} requests selected",
+    bulkApprove: "Bulk Approve",
+    bulkReject: "Bulk Reject", 
+    bulkApproveTitle: "Bulk Approve Requests",
+    bulkRejectTitle: "Bulk Reject Requests",
+    bulkActionDescription: "You are about to {action} {count} requests. Please add notes:",
+    bulkNotesPlaceholder: "Add notes for {action} action...",
+    cancel: "Cancel",
+    confirmApproval: "Confirm Approval",
+    confirmRejection: "Confirm Rejection",
+    // Loading and empty states
+    loadingRequests: "Loading verification requests...",
+    noVerificationRequests: "No Verification Requests",
+    noRequestsMatch: "No requests match your search criteria",
+    noVerificationRequestsFound: "No verification requests found",
+    noStatusRequestsFound: "No {status} requests found",
+    clearSearch: "Clear Search",
+    // Tabs
+    all: "All"
   },
 
   // System Management
