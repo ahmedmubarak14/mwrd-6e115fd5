@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { format } from "date-fns";
 import { DollarSign, Download, RefreshCw, TrendingUp, Clock, CheckCircle, Edit, Trash2, Eye, Users, BarChart3, Calendar, Building, CreditCard, AlertTriangle, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -53,11 +53,7 @@ export default function AdminFinancialTransactions() {
   const [editingTransaction, setEditingTransaction] = useState<AdminFinancialTransaction | null>(null);
   const [bulkAction, setBulkAction] = useState<string>("");
   
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useLanguage();
 
   const { toast } = useToast();
 
@@ -104,7 +100,7 @@ export default function AdminFinancialTransactions() {
     } catch (error: any) {
       console.error('Error fetching transactions:', error);
       toast({
-        title: t('common.error'),
+        title: t('admin.financial.error'),
         description: t('admin.financial.fetchError'),
         variant: "destructive"
       });
@@ -127,13 +123,13 @@ export default function AdminFinancialTransactions() {
       
       await fetchTransactions();
       toast({
-        title: t('common.success'),
-        description: `Transaction status updated to ${newStatus}`,
+        title: t('admin.financial.completed'),
+        description: t('admin.financial.dataUpdated'),
       });
     } catch (error: any) {
       console.error('Error updating transaction status:', error);
       toast({
-        title: t('common.error'),
+        title: t('admin.financial.error'),
         description: t('admin.financial.updateError'),
         variant: "destructive"
       });
@@ -151,13 +147,13 @@ export default function AdminFinancialTransactions() {
       
       await fetchTransactions();
       toast({
-        title: t('common.success'),
+        title: t('admin.financial.completed'),
         description: t('admin.financial.transactionDeleted'),
       });
     } catch (error: any) {
       console.error('Error deleting transaction:', error);
       toast({
-        title: t('common.error'),
+        title: t('admin.financial.error'),
         description: t('admin.financial.deleteError'),
         variant: "destructive"
       });
@@ -177,8 +173,8 @@ export default function AdminFinancialTransactions() {
         if (error) throw error;
         
         toast({
-          title: t('common.success'),
-          description: `${selectedTransactions.length} transactions deleted`,
+          title: t('admin.financial.completed'),
+          description: t('admin.financial.exportDescription').replace('{count}', selectedTransactions.length.toString()),
         });
       } else {
         const { error } = await supabase
@@ -189,8 +185,8 @@ export default function AdminFinancialTransactions() {
         if (error) throw error;
         
         toast({
-          title: t('common.success'),
-          description: `${selectedTransactions.length} transactions updated`,
+          title: t('admin.financial.completed'),
+          description: t('admin.financial.dataUpdated'),
         });
       }
 
@@ -200,7 +196,7 @@ export default function AdminFinancialTransactions() {
     } catch (error: any) {
       console.error('Error with bulk action:', error);
       toast({
-        title: t('common.error'),
+        title: t('admin.financial.error'),
         description: t('admin.financial.bulkActionFailed'),
         variant: "destructive"
       });
@@ -212,10 +208,22 @@ export default function AdminFinancialTransactions() {
       ? filteredTransactions.filter(transaction => selectedTransactions.includes(transaction.id))
       : filteredTransactions;
 
+    const csvHeaders = [
+      t('admin.financial.csvHeaders.transactionId'),
+      t('admin.financial.csvHeaders.user'),
+      t('admin.financial.csvHeaders.type'),
+      t('admin.financial.csvHeaders.amount'),
+      t('admin.financial.csvHeaders.currency'),
+      t('admin.financial.csvHeaders.status'),
+      t('admin.financial.csvHeaders.description'),
+      t('admin.financial.csvHeaders.paymentMethod'),
+      t('admin.financial.csvHeaders.created')
+    ].join(',');
+
     const csvContent = [
-      'Transaction ID,User,Type,Amount,Currency,Status,Description,Payment Method,Created Date',
+      csvHeaders,
       ...transactionsToExport.map(transaction => 
-        `${transaction.id},"${transaction.user_profile?.full_name || transaction.user_profile?.email || 'Unknown'}",${transaction.type},${transaction.amount},${transaction.currency || 'SAR'},${transaction.status},"${transaction.description || ''}","${transaction.payment_method || ''}",${format(new Date(transaction.created_at), 'yyyy-MM-dd')}`
+        `${transaction.id},"${transaction.user_profile?.full_name || transaction.user_profile?.email || t('admin.financial.notSpecified')}",${transaction.type},${transaction.amount},${transaction.currency || t('admin.financial.currency')},${transaction.status},"${transaction.description || t('admin.financial.noDescription')}","${transaction.payment_method || t('admin.financial.notSpecified')}",${format(new Date(transaction.created_at), 'yyyy-MM-dd')}`
       )
     ].join('\n');
     
@@ -229,7 +237,7 @@ export default function AdminFinancialTransactions() {
     
     toast({
       title: t('admin.financial.exportCompleted'),
-      description: `${transactionsToExport.length} transactions exported to CSV`,
+      description: t('admin.financial.exportDescription').replace('{count}', transactionsToExport.length.toString()),
     });
   };
 
@@ -331,8 +339,8 @@ export default function AdminFinancialTransactions() {
 
 return (
     <AdminPageContainer
-      title={t('admin.financial.transactions')}
-      description={t('admin.financial.description')}
+      title={t('admin.financialTransactionsTitle')}
+      description={t('admin.financialTransactionsDesc')}
     >
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-4">
@@ -353,7 +361,7 @@ return (
               <CardContent>
                 <div className="text-2xl font-bold">{totalRevenue.toLocaleString()} {t('admin.financial.currency')}</div>
                 <p className="text-xs text-muted-foreground">
-                  From {completedTransactions} completed transactions
+                  {t('admin.financial.completed')} {completedTransactions} {t('admin.financial.transaction')}
                 </p>
               </CardContent>
             </Card>
@@ -379,7 +387,7 @@ return (
               <CardContent>
                 <div className="text-2xl font-bold">{pendingAmount.toLocaleString()} {t('admin.financial.currency')}</div>
                 <p className="text-xs text-muted-foreground">
-                  {pendingTransactions} pending transactions
+                  {pendingTransactions} {t('admin.financial.pending')} {t('admin.financial.transaction')}
                 </p>
               </CardContent>
             </Card>
@@ -392,7 +400,7 @@ return (
               <CardContent>
                 <div className="text-2xl font-bold">{avgTransactionValue.toLocaleString()} {t('admin.financial.currency')}</div>
                 <p className="text-xs text-muted-foreground">
-                  {failedTransactions} failed transactions
+                  {failedTransactions} {t('admin.financial.failed')} {t('admin.financial.transaction')}
                 </p>
               </CardContent>
             </Card>
@@ -434,20 +442,20 @@ return (
                        <SelectItem value="subscription">{t('admin.financial.subscription')}</SelectItem>
                        <SelectItem value="commission">{t('admin.financial.commission')}</SelectItem>
                        <SelectItem value="payment">{t('admin.financial.payment')}</SelectItem>
-                      <SelectItem value="refund">{t('financial.refund')}</SelectItem>
-                      <SelectItem value="order_payment">Order Payment</SelectItem>
-                      <SelectItem value="invoice_generated">Invoice</SelectItem>
+                       <SelectItem value="refund">{t('admin.financial.refund')}</SelectItem>
+                       <SelectItem value="order_payment">{t('admin.financial.orderPayment')}</SelectItem>
+                       <SelectItem value="invoice_generated">{t('admin.financial.invoice')}</SelectItem>
                     </SelectContent>
                   </Select>
 
                   <div className="flex gap-2">
                     <Button variant="outline" onClick={handleRefresh}>
                       <RefreshCw className="h-4 w-4 mr-2" />
-                      {t('financial.refresh')}
+                      {t('admin.financial.refresh')}
                     </Button>
                      <Button variant="outline" onClick={handleExportSelected}>
                        <Download className="h-4 w-4 mr-2" />
-                       {t('financial.export')}
+                       {t('admin.financial.export')}
                     </Button>
                   </div>
                 </div>
@@ -456,37 +464,38 @@ return (
                 {selectedTransactions.length > 0 && (
                   <div className="flex items-center gap-4 p-3 bg-muted rounded-lg">
                     <span className="text-sm font-medium">
-                      {selectedTransactions.length} transaction(s) selected
+                      {selectedTransactions.length} {t('admin.financial.selectedTransactions')}
                     </span>
                     <Select value={bulkAction} onValueChange={setBulkAction}>
                       <SelectTrigger className="w-48">
-                        <SelectValue placeholder="Bulk action..." />
+                        <SelectValue placeholder={t('admin.financial.bulkActions')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="completed">Mark as Completed</SelectItem>
-                        <SelectItem value="failed">Mark as Failed</SelectItem>
-                        <SelectItem value="cancelled">Mark as Cancelled</SelectItem>
-                        <SelectItem value="delete">Delete Transactions</SelectItem>
+                        <SelectItem value="completed">{t('admin.financial.markCompleted')}</SelectItem>
+                        <SelectItem value="failed">{t('admin.financial.markFailed')}</SelectItem>
+                        <SelectItem value="cancelled">{t('admin.financial.markCancelled')}</SelectItem>
+                        <SelectItem value="delete">{t('admin.financial.deleteTransactions')}</SelectItem>
                       </SelectContent>
                     </Select>
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
                         <Button variant="destructive" size="sm" disabled={!bulkAction}>
-                          Apply Action
+                          {t('admin.financial.applyAction')}
                         </Button>
                       </AlertDialogTrigger>
                       <AlertDialogContent>
                         <AlertDialogHeader>
-                          <AlertDialogTitle>Confirm Bulk Action</AlertDialogTitle>
+                          <AlertDialogTitle>{t('admin.financial.confirmBulkAction')}</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Are you sure you want to {bulkAction === 'delete' ? 'delete' : 'update'} {selectedTransactions.length} transaction(s)?
-                            This action cannot be undone.
+                            {t('admin.financial.bulkActionConfirm')
+                              .replace('{action}', bulkAction === 'delete' ? t('admin.financial.deleteTransactions') : t('admin.financial.dataUpdated'))
+                              .replace('{count}', selectedTransactions.length.toString())}
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogCancel>{t('admin.workflowAutomation.workflowForm.cancel')}</AlertDialogCancel>
                           <AlertDialogAction onClick={handleBulkAction}>
-                            Confirm
+                            {t('admin.financial.applyAction')}
                           </AlertDialogAction>
                         </AlertDialogFooter>
                       </AlertDialogContent>
@@ -502,14 +511,14 @@ return (
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle>
-                  Transactions ({filteredTransactions.length})
+                  {t('admin.financial.transactionList').replace('{count}', filteredTransactions.length.toString())}
                 </CardTitle>
                 <div className="flex items-center space-x-2">
                   <Checkbox
                     checked={selectedTransactions.length === filteredTransactions.length && filteredTransactions.length > 0}
                     onCheckedChange={selectAllTransactions}
                   />
-                  <span className="text-sm">Select All</span>
+                  <span className="text-sm">{t('admin.financial.selectAll')}</span>
                 </div>
               </div>
             </CardHeader>
@@ -518,8 +527,8 @@ return (
                 {filteredTransactions.length === 0 ? (
                   <div className="py-12 text-center">
                     <DollarSign className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold mb-2">No transactions found</h3>
-                    <p className="text-muted-foreground">No transactions match your current filters</p>
+                    <h3 className="text-lg font-semibold mb-2">{t('admin.financial.noTransactions')}</h3>
+                    <p className="text-muted-foreground">{t('admin.financial.noTransactionsDesc')}</p>
                   </div>
                 ) : (
                   filteredTransactions.map((transaction) => {
@@ -550,13 +559,13 @@ return (
                           
                           <div>
                             <p className="text-sm font-medium">
-                              {transaction.user_profile?.full_name || transaction.user_profile?.company_name || 'Unknown User'}
+                              {transaction.user_profile?.full_name || transaction.user_profile?.company_name || t('admin.financial.user')}
                             </p>
                             <p className="text-xs text-muted-foreground">{transaction.user_profile?.email}</p>
                           </div>
                           
                           <div>
-                            <p className="text-sm">{transaction.description || 'No description'}</p>
+                            <p className="text-sm">{transaction.description || t('admin.financial.noDescription')}</p>
                             {transaction.transaction_ref && (
                               <p className="text-xs text-muted-foreground">Ref: {transaction.transaction_ref}</p>
                             )}
@@ -580,19 +589,19 @@ return (
                                 </DialogTrigger>
                                 <DialogContent className="max-w-2xl">
                                   <DialogHeader>
-                                    <DialogTitle>Transaction Details</DialogTitle>
-                                    <DialogDescription>
-                                      View and manage transaction #{transaction.id.slice(0, 8)}
-                                    </DialogDescription>
+                                   <DialogTitle>{t('admin.financial.transactionDetails')}</DialogTitle>
+                                   <DialogDescription>
+                                     {t('admin.financial.viewTransaction').replace('{id}', transaction.id.slice(0, 8))}
+                                   </DialogDescription>
                                   </DialogHeader>
                                   <div className="space-y-4">
                                     <div className="grid grid-cols-2 gap-4">
-                                      <div>
-                                        <label className="text-sm font-medium">Transaction ID</label>
-                                        <p className="text-sm text-muted-foreground">{transaction.id}</p>
-                                      </div>
-                                      <div>
-                                        <label className="text-sm font-medium">Status</label>
+                                       <div>
+                                         <label className="text-sm font-medium">{t('admin.financial.transactionId')}</label>
+                                         <p className="text-sm text-muted-foreground">{transaction.id}</p>
+                                       </div>
+                                       <div>
+                                         <label className="text-sm font-medium">{t('admin.financial.status')}</label>
                                         <div className="mt-1">
                                           <Select 
                                             value={transaction.status} 
@@ -602,62 +611,62 @@ return (
                                               <SelectValue />
                                             </SelectTrigger>
                                             <SelectContent>
-                                              <SelectItem value="pending">Pending</SelectItem>
-                                              <SelectItem value="completed">Completed</SelectItem>
-                                              <SelectItem value="failed">Failed</SelectItem>
-                                              <SelectItem value="cancelled">Cancelled</SelectItem>
+                                               <SelectItem value="pending">{t('admin.financial.pending')}</SelectItem>
+                                               <SelectItem value="completed">{t('admin.financial.completed')}</SelectItem>
+                                               <SelectItem value="failed">{t('admin.financial.failed')}</SelectItem>
+                                               <SelectItem value="cancelled">{t('admin.financial.cancelled')}</SelectItem>
                                             </SelectContent>
                                           </Select>
                                         </div>
                                       </div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-4">
-                                      <div>
-                                        <label className="text-sm font-medium">User</label>
-                                        <p className="text-sm text-muted-foreground">
-                                          {transaction.user_profile?.full_name || transaction.user_profile?.company_name}
-                                        </p>
-                                        <p className="text-xs text-muted-foreground">{transaction.user_profile?.email}</p>
-                                      </div>
-                                      <div>
-                                        <label className="text-sm font-medium">Type</label>
-                                        <p className="text-sm text-muted-foreground">{transaction.type}</p>
-                                      </div>
+                                       <div>
+                                         <label className="text-sm font-medium">{t('admin.financial.user')}</label>
+                                         <p className="text-sm text-muted-foreground">
+                                           {transaction.user_profile?.full_name || transaction.user_profile?.company_name}
+                                         </p>
+                                         <p className="text-xs text-muted-foreground">{transaction.user_profile?.email}</p>
+                                       </div>
+                                       <div>
+                                         <label className="text-sm font-medium">{t('admin.financial.type')}</label>
+                                         <p className="text-sm text-muted-foreground">{transaction.type}</p>
+                                       </div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-4">
-                                      <div>
-                                        <label className="text-sm font-medium">Amount</label>
-                                        <p className="text-sm text-muted-foreground">
-                                          {transaction.amount.toLocaleString()} {transaction.currency || 'SAR'}
-                                        </p>
-                                      </div>
-                                      <div>
-                                        <label className="text-sm font-medium">Payment Method</label>
-                                        <p className="text-sm text-muted-foreground">
-                                          {transaction.payment_method || 'Not specified'}
-                                        </p>
-                                      </div>
+                                       <div>
+                                         <label className="text-sm font-medium">{t('admin.financial.amount')}</label>
+                                         <p className="text-sm text-muted-foreground">
+                                           {transaction.amount.toLocaleString()} {transaction.currency || t('admin.financial.currency')}
+                                         </p>
+                                       </div>
+                                       <div>
+                                         <label className="text-sm font-medium">{t('admin.financial.paymentMethod')}</label>
+                                         <p className="text-sm text-muted-foreground">
+                                           {transaction.payment_method || t('admin.financial.notSpecified')}
+                                         </p>
+                                       </div>
                                     </div>
                                     <div className="grid grid-cols-2 gap-4">
-                                      <div>
-                                        <label className="text-sm font-medium">Created</label>
-                                        <p className="text-sm text-muted-foreground">
-                                          {format(new Date(transaction.created_at), 'MMM dd, yyyy HH:mm')}
-                                        </p>
-                                      </div>
-                                      <div>
-                                        <label className="text-sm font-medium">Reference</label>
-                                        <p className="text-sm text-muted-foreground">
-                                          {transaction.transaction_ref || 'No reference'}
-                                        </p>
-                                      </div>
+                                       <div>
+                                         <label className="text-sm font-medium">{t('admin.financial.created')}</label>
+                                         <p className="text-sm text-muted-foreground">
+                                           {format(new Date(transaction.created_at), 'MMM dd, yyyy HH:mm')}
+                                         </p>
+                                       </div>
+                                       <div>
+                                         <label className="text-sm font-medium">{t('admin.financial.reference')}</label>
+                                         <p className="text-sm text-muted-foreground">
+                                           {transaction.transaction_ref || t('admin.financial.noReference')}
+                                         </p>
+                                       </div>
                                     </div>
-                                    {transaction.description && (
-                                      <div>
-                                        <label className="text-sm font-medium">Description</label>
-                                        <p className="text-sm text-muted-foreground">{transaction.description}</p>
-                                      </div>
-                                    )}
+                                     {transaction.description && (
+                                       <div>
+                                         <label className="text-sm font-medium">{t('admin.financial.description')}</label>
+                                         <p className="text-sm text-muted-foreground">{transaction.description}</p>
+                                       </div>
+                                     )}
                                   </div>
                                 </DialogContent>
                               </Dialog>
@@ -669,19 +678,21 @@ return (
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                   <AlertDialogHeader>
-                                    <AlertDialogTitle>Delete Transaction</AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                      Are you sure you want to delete this transaction? This action cannot be undone.
-                                    </AlertDialogDescription>
+                                   <AlertDialogTitle>{t('admin.financial.deleteTransactions')}</AlertDialogTitle>
+                                   <AlertDialogDescription>
+                                     {t('admin.financial.bulkActionConfirm')
+                                       .replace('{action}', t('admin.financial.deleteTransactions'))
+                                       .replace('{count}', '1')}
+                                   </AlertDialogDescription>
                                   </AlertDialogHeader>
                                   <AlertDialogFooter>
-                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction 
-                                      onClick={() => deleteTransaction(transaction.id)}
-                                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                                    >
-                                      Delete
-                                    </AlertDialogAction>
+                                   <AlertDialogCancel>{t('admin.workflowAutomation.workflowForm.cancel')}</AlertDialogCancel>
+                                   <AlertDialogAction 
+                                     onClick={() => deleteTransaction(transaction.id)}
+                                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                   >
+                                     {t('admin.financial.deleteTransactions')}
+                                   </AlertDialogAction>
                                   </AlertDialogFooter>
                                 </AlertDialogContent>
                               </AlertDialog>

@@ -21,6 +21,8 @@ export const adminTranslationsAR = {
   offers: "العروض",
   orders: "الطلبيات",
   financialTransactions: "المعاملات المالية",
+  financialTransactionsTitle: "المعاملات المالية",
+  financialTransactionsDesc: "إدارة ومراقبة جميع المعاملات المالية",
   subscriptions: "الاشتراكات",
   supportTickets: "تذاكر الدعم",
   communications: "الاتصالات",
@@ -870,34 +872,6 @@ export const adminTranslationsAR = {
     updateError: "فشل في تحديث حالة العرض",
     escalateError: "فشل في التصعيد للدعم",
     conversationError: "فشل في بدء المحادثة"
-  },
-
-  // عناصر النموذج
-  forms: {
-    placeholders: {
-      search: "بحث...",
-      email: "أدخل عنوان البريد الإلكتروني",
-      name: "أدخل الاسم الكامل",
-      company: "أدخل اسم الشركة",
-      phone: "أدخل رقم الهاتف",
-      message: "أدخل الرسالة"
-    },
-    labels: {
-      email: "عنوان البريد الإلكتروني",
-      name: "الاسم الكامل", 
-      company: "اسم الشركة",
-      phone: "رقم الهاتف",
-      role: "الدور",
-      status: "الحالة",
-      dateRange: "نطاق التاريخ"
-    },
-    validation: {
-      required: "هذا الحقل مطلوب",
-      invalidEmail: "يرجى إدخال بريد إلكتروني صحيح",
-      invalidPhone: "يرجى إدخال رقم هاتف صحيح",
-      minLength: "الحد الأدنى {count} أحرف مطلوب",
-      maxLength: "الحد الأقصى {count} حرف مسموح"
-    }
   },
 
   // أتمتة سير العمل

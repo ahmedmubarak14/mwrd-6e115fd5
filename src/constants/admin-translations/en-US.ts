@@ -21,6 +21,8 @@ export const adminTranslationsEN = {
   offers: "Offers",
   orders: "Orders",
   financialTransactions: "Financial Transactions",
+  financialTransactionsTitle: "Financial Transactions",
+  financialTransactionsDesc: "Manage and monitor all financial transactions",
   subscriptions: "Subscriptions",
   supportTickets: "Support Tickets",
   communications: "Communications",
@@ -870,34 +872,6 @@ export const adminTranslationsEN = {
     updateError: "Failed to update offer status",
     escalateError: "Failed to escalate to support",
     conversationError: "Failed to initiate conversation"
-  },
-
-  // Form Elements
-  forms: {
-    placeholders: {
-      search: "Search...",
-      email: "Enter email address",
-      name: "Enter full name",
-      company: "Enter company name",
-      phone: "Enter phone number",
-      message: "Enter message"
-    },
-    labels: {
-      email: "Email Address",
-      name: "Full Name", 
-      company: "Company Name",
-      phone: "Phone Number",
-      role: "Role",
-      status: "Status",
-      dateRange: "Date Range"
-    },
-    validation: {
-      required: "This field is required",
-      invalidEmail: "Please enter a valid email",
-      invalidPhone: "Please enter a valid phone number",
-      minLength: "Minimum {count} characters required",
-      maxLength: "Maximum {count} characters allowed"
-    }
   },
 
   // Workflow Automation
