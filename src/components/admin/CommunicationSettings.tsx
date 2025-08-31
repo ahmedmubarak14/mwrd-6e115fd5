@@ -159,14 +159,14 @@ export const CommunicationSettings = () => {
       if (error) throw error;
 
       toast({
-        title: t('communication.settingsSaved'),
-        description: `${settingsType} ${t('communication.settingsUpdated')}`
+        title: t('admin.communication.settingsSaved'),
+        description: `${settingsType} ${t('admin.communication.settingsUpdated')}`
       });
     } catch (error) {
       console.error('Error saving settings:', error);
       toast({
-        title: t('communication.settingsError'),
-        description: t('communication.settingsFailedSave'),
+        title: t('admin.communication.settingsError'),
+        description: t('admin.communication.settingsFailedSave'),
         variant: "destructive"
       });
     } finally {
@@ -186,19 +186,19 @@ export const CommunicationSettings = () => {
         <TabsList className="grid grid-cols-4 w-full">
           <TabsTrigger value="email" className="flex items-center gap-2">
             <Mail className="h-4 w-4" />
-            {t('communication.emailTab')}
+            {t('admin.communication.emailTab')}
           </TabsTrigger>
           <TabsTrigger value="sms" className="flex items-center gap-2">
             <Smartphone className="h-4 w-4" />
-            {t('communication.smsTab')}
+            {t('admin.communication.smsTab')}
           </TabsTrigger>
           <TabsTrigger value="notifications" className="flex items-center gap-2">
             <Bell className="h-4 w-4" />
-            {t('communication.notificationsTab')}
+            {t('admin.communication.notificationsTab')}
           </TabsTrigger>
           <TabsTrigger value="integrations" className="flex items-center gap-2">
             <Globe className="h-4 w-4" />
-            {t('communication.integrationsTab')}
+            {t('admin.communication.integrationsTab')}
           </TabsTrigger>
         </TabsList>
 
@@ -207,17 +207,17 @@ export const CommunicationSettings = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Mail className="h-5 w-5" />
-                {t('communication.emailConfiguration')}
+                {t('admin.communication.emailConfiguration')}
               </CardTitle>
               <CardDescription>
-                {t('communication.emailConfigDesc')}
+                {t('admin.communication.emailConfigDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium">{t('communication.smtpHost')}</label>
+                    <label className="text-sm font-medium">{t('admin.communication.smtpHost')}</label>
                     <Input
                       value={emailSettings.smtp_host}
                       onChange={(e) => setEmailSettings({...emailSettings, smtp_host: e.target.value})}
@@ -225,14 +225,14 @@ export const CommunicationSettings = () => {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-medium">{t('communication.smtpPort')}</label>
+                      <label className="text-sm font-medium">{t('admin.communication.smtpPort')}</label>
                       <Input
                         value={emailSettings.smtp_port}
                         onChange={(e) => setEmailSettings({...emailSettings, smtp_port: e.target.value})}
                       />
                     </div>
                     <div>
-                      <label className="text-sm font-medium">{t('communication.encryption')}</label>
+                      <label className="text-sm font-medium">{t('admin.communication.encryption')}</label>
                       <Select value={emailSettings.smtp_encryption} onValueChange={(value) => setEmailSettings({...emailSettings, smtp_encryption: value})}>
                         <SelectTrigger>
                           <SelectValue />
@@ -246,7 +246,7 @@ export const CommunicationSettings = () => {
                     </div>
                   </div>
                   <div>
-                    <label className="text-sm font-medium">{t('communication.smtpUsername')}</label>
+                    <label className="text-sm font-medium">{t('admin.communication.smtpUsername')}</label>
                     <Input
                       value={emailSettings.smtp_username}
                       onChange={(e) => setEmailSettings({...emailSettings, smtp_username: e.target.value})}
@@ -256,7 +256,7 @@ export const CommunicationSettings = () => {
 
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium">{t('communication.fromEmail')}</label>
+                    <label className="text-sm font-medium">{t('admin.communication.fromEmail')}</label>
                     <Input
                       type="email"
                       value={emailSettings.from_email}
@@ -264,14 +264,14 @@ export const CommunicationSettings = () => {
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium">{t('communication.fromName')}</label>
+                    <label className="text-sm font-medium">{t('admin.communication.fromName')}</label>
                     <Input
                       value={emailSettings.from_name}
                       onChange={(e) => setEmailSettings({...emailSettings, from_name: e.target.value})}
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium">{t('communication.replyToEmail')}</label>
+                    <label className="text-sm font-medium">{t('admin.communication.replyToEmail')}</label>
                     <Input
                       type="email"
                       value={emailSettings.reply_to}
@@ -282,12 +282,12 @@ export const CommunicationSettings = () => {
               </div>
 
               <div className="border-t pt-6">
-                <h4 className="font-medium mb-4">{t('communication.emailFeatures')}</h4>
+                <h4 className="font-medium mb-4">{t('admin.communication.emailFeatures')}</h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="text-sm font-medium">{t('communication.bounceHandling')}</label>
-                      <p className="text-xs text-muted-foreground">{t('communication.bounceHandlingDesc')}</p>
+                      <label className="text-sm font-medium">{t('admin.communication.bounceHandling')}</label>
+                      <p className="text-xs text-muted-foreground">{t('admin.communication.bounceHandlingDesc')}</p>
                     </div>
                     <Switch
                       checked={emailSettings.bounce_handling}
@@ -296,8 +296,8 @@ export const CommunicationSettings = () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="text-sm font-medium">{t('communication.emailTracking')}</label>
-                      <p className="text-xs text-muted-foreground">{t('communication.emailTrackingDesc')}</p>
+                      <label className="text-sm font-medium">{t('admin.communication.emailTracking')}</label>
+                      <p className="text-xs text-muted-foreground">{t('admin.communication.emailTrackingDesc')}</p>
                     </div>
                     <Switch
                       checked={emailSettings.email_tracking}
@@ -306,8 +306,8 @@ export const CommunicationSettings = () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="text-sm font-medium">{t('communication.unsubscribeLink')}</label>
-                      <p className="text-xs text-muted-foreground">{t('communication.unsubscribeLinkDesc')}</p>
+                      <label className="text-sm font-medium">{t('admin.communication.unsubscribeLink')}</label>
+                      <p className="text-xs text-muted-foreground">{t('admin.communication.unsubscribeLinkDesc')}</p>
                     </div>
                     <Switch
                       checked={emailSettings.unsubscribe_link}
@@ -327,7 +327,7 @@ export const CommunicationSettings = () => {
                 ) : (
                   <Save className="h-4 w-4 mr-2" />
                 )}
-                {t('communication.saveEmailSettings')}
+                {t('admin.communication.saveEmailSettings')}
               </Button>
             </CardContent>
           </Card>

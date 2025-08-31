@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { useSecurityCompliance } from "@/hooks/useSecurityCompliance";
 import { useToast } from "@/hooks/use-toast";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 
 export const SecurityComplianceCenter = () => {
   const { 
@@ -30,45 +31,46 @@ export const SecurityComplianceCenter = () => {
     isLoading 
   } = useSecurityCompliance();
   const { toast } = useToast();
+  const { t } = useOptionalLanguage();
 
   const complianceFrameworks = [
     {
-      name: "GDPR",
-      description: "General Data Protection Regulation",
+      name: t('admin.securityCompliance.gdpr'),
+      description: t('admin.securityCompliance.gdprDesc'),
       score: 92,
       status: "compliant",
       requirements: [
-        { name: "Data Processing Records", status: "complete" },
-        { name: "Privacy Policy", status: "complete" },
-        { name: "Data Subject Rights", status: "complete" },
-        { name: "Data Breach Procedures", status: "complete" },
-        { name: "Cookie Consent", status: "pending" }
+        { name: t('admin.securityCompliance.dataProcessingRecords'), status: "complete" },
+        { name: t('admin.securityCompliance.privacyPolicy'), status: "complete" },
+        { name: t('admin.securityCompliance.dataSubjectRights'), status: "complete" },
+        { name: t('admin.securityCompliance.dataBreachProcedures'), status: "complete" },
+        { name: t('admin.securityCompliance.cookieConsent'), status: "pending" }
       ]
     },
     {
-      name: "SOC 2",
-      description: "Service Organization Control 2",
+      name: t('admin.securityCompliance.soc2'),
+      description: t('admin.securityCompliance.soc2Desc'),
       score: 88,
       status: "in-progress",
       requirements: [
-        { name: "Security Controls", status: "complete" },
-        { name: "Availability Controls", status: "complete" },
-        { name: "Processing Integrity", status: "in-progress" },
-        { name: "Confidentiality", status: "complete" },
-        { name: "Privacy Controls", status: "pending" }
+        { name: t('admin.securityCompliance.securityControls'), status: "complete" },
+        { name: t('admin.securityCompliance.availabilityControls'), status: "complete" },
+        { name: t('admin.securityCompliance.processingIntegrity'), status: "in-progress" },
+        { name: t('admin.securityCompliance.confidentiality'), status: "complete" },
+        { name: t('admin.securityCompliance.privacyControls'), status: "pending" }
       ]
     },
     {
-      name: "PCI DSS",
-      description: "Payment Card Industry Data Security Standard",
+      name: t('admin.securityCompliance.pciDss'),
+      description: t('admin.securityCompliance.pciDssDesc'),
       score: 85,
       status: "compliant",
       requirements: [
-        { name: "Secure Network", status: "complete" },
-        { name: "Cardholder Data Protection", status: "complete" },
-        { name: "Vulnerability Management", status: "complete" },
-        { name: "Access Control", status: "complete" },
-        { name: "Network Monitoring", status: "in-progress" }
+        { name: t('admin.securityCompliance.secureNetwork'), status: "complete" },
+        { name: t('admin.securityCompliance.cardholderDataProtection'), status: "complete" },
+        { name: t('admin.securityCompliance.vulnerabilityManagement'), status: "complete" },
+        { name: t('admin.securityCompliance.accessControl'), status: "complete" },
+        { name: t('admin.securityCompliance.networkMonitoring'), status: "in-progress" }
       ]
     }
   ];
@@ -77,13 +79,13 @@ export const SecurityComplianceCenter = () => {
     try {
       await generateComplianceReport(framework);
       toast({
-        title: "Success",
-        description: `${framework} compliance report generated successfully`
+        title: t('admin.securityCompliance.success'),
+        description: `${framework} ${t('admin.securityCompliance.reportGenerated')}`
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to generate compliance report",
+        title: t('admin.securityCompliance.error'),
+        description: t('admin.securityCompliance.reportError'),
         variant: "destructive"
       });
     }
@@ -123,31 +125,31 @@ export const SecurityComplianceCenter = () => {
     <div className="space-y-6">
       <Tabs defaultValue="overview" className="space-y-6">
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="frameworks">Frameworks</TabsTrigger>
-          <TabsTrigger value="privacy">Privacy Controls</TabsTrigger>
-          <TabsTrigger value="retention">Data Retention</TabsTrigger>
+          <TabsTrigger value="overview">{t('admin.securityCompliance.overview')}</TabsTrigger>
+          <TabsTrigger value="frameworks">{t('admin.securityCompliance.frameworks')}</TabsTrigger>
+          <TabsTrigger value="privacy">{t('admin.securityCompliance.privacyControls')}</TabsTrigger>
+          <TabsTrigger value="retention">{t('admin.securityCompliance.dataRetention')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Overall Compliance Score</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.securityCompliance.overallComplianceScore')}</CardTitle>
                 <Shield className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-success">88%</div>
                 <Progress value={88} className="mt-2" />
                 <p className="text-xs text-muted-foreground mt-2">
-                  Above industry average
+                  {t('admin.securityCompliance.aboveIndustryAverage')}
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Active Frameworks</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.securityCompliance.activeFrameworks')}</CardTitle>
                 <FileText className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -160,13 +162,13 @@ export const SecurityComplianceCenter = () => {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Pending Actions</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.securityCompliance.pendingActions')}</CardTitle>
                 <AlertTriangle className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-warning">4</div>
                 <p className="text-xs text-muted-foreground">
-                  Requires attention
+                  {t('admin.securityCompliance.requiresAttention')}
                 </p>
               </CardContent>
             </Card>
@@ -175,8 +177,8 @@ export const SecurityComplianceCenter = () => {
           <div className="mt-6">
             <Card>
               <CardHeader>
-                <CardTitle>Compliance Status Summary</CardTitle>
-                <CardDescription>Current status across all compliance frameworks</CardDescription>
+                <CardTitle>{t('admin.securityCompliance.complianceStatusSummary')}</CardTitle>
+                <CardDescription>{t('admin.securityCompliance.currentStatusAllFrameworks')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -200,7 +202,7 @@ export const SecurityComplianceCenter = () => {
                         </div>
                         <Button size="sm" variant="outline" onClick={() => handleGenerateReport(framework.name)}>
                           <Download className="h-4 w-4 mr-1" />
-                          Report
+                          {t('admin.securityCompliance.report')}
                         </Button>
                       </div>
                     </div>
@@ -252,7 +254,7 @@ export const SecurityComplianceCenter = () => {
                   <div className="mt-4 flex justify-end">
                     <Button variant="outline" onClick={() => handleGenerateReport(framework.name)}>
                       <Download className="h-4 w-4 mr-2" />
-                      Generate {framework.name} Report
+                      Generate {t('admin.securityCompliance.generateReport')} {framework.name}
                     </Button>
                   </div>
                 </CardContent>
@@ -267,25 +269,25 @@ export const SecurityComplianceCenter = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Eye className="h-5 w-5" />
-                  Data Processing Activities
+                  {t('admin.securityCompliance.dataProcessingActivities')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center p-3 border rounded">
-                  <span>User Registration Data</span>
-                  <Badge variant="default">Lawful Basis: Consent</Badge>
+                  <span>{t('admin.securityCompliance.userRegistrationData')}</span>
+                  <Badge variant="default">{t('admin.securityCompliance.lawfulBasisConsent')}</Badge>
                 </div>
                 <div className="flex justify-between items-center p-3 border rounded">
-                  <span>Payment Processing</span>
-                  <Badge variant="default">Lawful Basis: Contract</Badge>
+                  <span>{t('admin.securityCompliance.paymentProcessing')}</span>
+                  <Badge variant="default">{t('admin.securityCompliance.lawfulBasisContract')}</Badge>
                 </div>
                 <div className="flex justify-between items-center p-3 border rounded">
-                  <span>Marketing Communications</span>
-                  <Badge variant="secondary">Lawful Basis: Consent</Badge>
+                  <span>{t('admin.securityCompliance.marketingCommunications')}</span>
+                  <Badge variant="secondary">{t('admin.securityCompliance.lawfulBasisConsent')}</Badge>
                 </div>
                 <div className="flex justify-between items-center p-3 border rounded">
-                  <span>Security Monitoring</span>
-                  <Badge variant="default">Lawful Basis: Legitimate Interest</Badge>
+                  <span>{t('admin.securityCompliance.securityMonitoring')}</span>
+                  <Badge variant="default">{t('admin.securityCompliance.lawfulBasisLegitimate')}</Badge>
                 </div>
               </CardContent>
             </Card>
@@ -294,25 +296,25 @@ export const SecurityComplianceCenter = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Users className="h-5 w-5" />
-                  Data Subject Rights
+                  {t('admin.securityCompliance.dataSubjectRights')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between items-center p-3 border rounded">
-                  <span>Right to Access</span>
-                  <Badge variant="default">Implemented</Badge>
+                  <span>{t('admin.securityCompliance.rightToAccess')}</span>
+                  <Badge variant="default">{t('admin.securityCompliance.implemented')}</Badge>
                 </div>
                 <div className="flex justify-between items-center p-3 border rounded">
-                  <span>Right to Rectification</span>
-                  <Badge variant="default">Implemented</Badge>
+                  <span>{t('admin.securityCompliance.rightToRectification')}</span>
+                  <Badge variant="default">{t('admin.securityCompliance.implemented')}</Badge>
                 </div>
                 <div className="flex justify-between items-center p-3 border rounded">
-                  <span>Right to Erasure</span>
-                  <Badge variant="default">Implemented</Badge>
+                  <span>{t('admin.securityCompliance.rightToErasure')}</span>
+                  <Badge variant="default">{t('admin.securityCompliance.implemented')}</Badge>
                 </div>
                 <div className="flex justify-between items-center p-3 border rounded">
-                  <span>Right to Portability</span>
-                  <Badge variant="secondary">In Progress</Badge>
+                  <span>{t('admin.securityCompliance.rightToPortability')}</span>
+                  <Badge variant="secondary">{t('admin.securityCompliance.inProgress')}</Badge>
                 </div>
               </CardContent>
             </Card>
@@ -324,46 +326,46 @@ export const SecurityComplianceCenter = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Clock className="h-5 w-5" />
-                Data Retention Policies
+                {t('admin.securityCompliance.dataRetentionPolicies')}
               </CardTitle>
               <CardDescription>
-                Automated data retention and deletion schedules
+                {t('admin.securityCompliance.automatedDataRetention')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">User Account Data</h4>
+                    <h4 className="font-medium mb-2">{t('admin.securityCompliance.userAccountData')}</h4>
                     <p className="text-sm text-muted-foreground mb-2">
-                      Retained for 7 years after account closure
+                      {t('admin.securityCompliance.retained7Years')}
                     </p>
-                    <Badge variant="default">Active</Badge>
+                    <Badge variant="default">{t('admin.securityCompliance.active')}</Badge>
                   </div>
                   <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Transaction Records</h4>
+                    <h4 className="font-medium mb-2">{t('admin.securityCompliance.transactionRecords')}</h4>
                     <p className="text-sm text-muted-foreground mb-2">
-                      Retained for 10 years for compliance
+                      {t('admin.securityCompliance.retained10Years')}
                     </p>
-                    <Badge variant="default">Active</Badge>
+                    <Badge variant="default">{t('admin.securityCompliance.active')}</Badge>
                   </div>
                   <div className="p-4 border rounded-lg">
-                    <h4 className="font-medium mb-2">Audit Logs</h4>
+                    <h4 className="font-medium mb-2">{t('admin.securityCompliance.auditLogs')}</h4>
                     <p className="text-sm text-muted-foreground mb-2">
-                      Retained for 3 years from creation
+                      {t('admin.securityCompliance.retained3Years')}
                     </p>
-                    <Badge variant="default">Active</Badge>
+                    <Badge variant="default">{t('admin.securityCompliance.active')}</Badge>
                   </div>
                 </div>
 
                 <div className="mt-6 p-4 bg-muted/50 rounded-lg">
-                  <h4 className="font-medium mb-2">Next Scheduled Cleanup</h4>
+                  <h4 className="font-medium mb-2">{t('admin.securityCompliance.nextScheduledCleanup')}</h4>
                   <p className="text-sm text-muted-foreground">
-                    Automatic data cleanup will run on March 15, 2025 at 2:00 AM UTC
+                    {t('admin.securityCompliance.automaticDataCleanup')}
                   </p>
                   <div className="flex justify-between items-center mt-3">
-                    <span className="text-sm">Estimated records to be processed: 1,247</span>
-                    <Button size="sm" variant="outline">Configure Schedule</Button>
+                    <span className="text-sm">{t('admin.securityCompliance.estimatedRecords')}: 1,247</span>
+                    <Button size="sm" variant="outline">{t('admin.securityCompliance.configureSchedule')}</Button>
                   </div>
                 </div>
               </div>

@@ -273,21 +273,21 @@ export const AdvancedUserManagement = () => {
     {
       label: t('common.edit'),
       onClick: (user: UserProfile) => {
-        toast({
-          title: "Edit User",
-          description: `Editing ${user.full_name || user.email}`
-        });
+      toast({
+        title: t('admin.users.editUser'),
+        description: `${t('admin.users.editing')} ${user.full_name || user.email}`
+      });
       }
     },
     {
       label: t('common.delete'),
       variant: 'destructive' as const,
       onClick: (user: UserProfile) => {
-        toast({
-          title: "Delete User",
-          description: `Deleting ${user.full_name || user.email}`,
-          variant: 'destructive'
-        });
+      toast({
+        title: t('admin.users.deleteUser'),
+        description: `${t('admin.users.deleting')} ${user.full_name || user.email}`,
+        variant: 'destructive'
+      });
       }
     }
   ];
@@ -327,8 +327,8 @@ export const AdvancedUserManagement = () => {
           exportable={true}
           onExport={() => {
             toast({
-              title: "Export Users",
-              description: "User data exported successfully"
+              title: t('admin.users.exportUsers'),
+              description: t('admin.users.exportSuccess')
             });
           }}
           title={t('admin.userDetails.title')}

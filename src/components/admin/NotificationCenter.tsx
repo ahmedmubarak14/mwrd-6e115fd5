@@ -76,13 +76,13 @@ export const NotificationCenter = () => {
       });
       setIsCreateDialogOpen(false);
       toast({
-        title: "Success",
-        description: "Notification created successfully"
+        title: t('admin.notifications.success'),
+        description: t('admin.notifications.createSuccess')
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to create notification",
+        title: t('admin.notifications.error'),
+        description: t('admin.notifications.createError'),
         variant: "destructive"
       });
     }
@@ -92,13 +92,13 @@ export const NotificationCenter = () => {
     try {
       await updateNotification(notificationId, { status: 'sent', sent_at: new Date().toISOString() });
       toast({
-        title: "Success",
-        description: "Notification sent successfully"
+        title: t('admin.notifications.success'),
+        description: t('admin.notifications.sendSuccess')
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to send notification",
+        title: t('admin.notifications.error'),
+        description: t('admin.notifications.sendError'),
         variant: "destructive"
       });
     }
@@ -118,7 +118,7 @@ export const NotificationCenter = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Notifications</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.notifications.totalNotifications')}</CardTitle>
             <Bell className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -129,7 +129,7 @@ export const NotificationCenter = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Sent Today</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.notifications.sentToday')}</CardTitle>
             <Send className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -140,7 +140,7 @@ export const NotificationCenter = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.notifications.pending')}</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -151,7 +151,7 @@ export const NotificationCenter = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Open Rate</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.notifications.openRate')}</CardTitle>
             <CheckCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -167,7 +167,7 @@ export const NotificationCenter = () => {
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder={t('common.placeholders.searchNotifications')}
+              placeholder={t('admin.notifications.searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 w-full lg:w-64"
@@ -176,25 +176,25 @@ export const NotificationCenter = () => {
           <div className="flex space-x-2">
             <Select value={filterStatus} onValueChange={setFilterStatus}>
               <SelectTrigger className="w-full sm:w-40">
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={t('admin.notifications.statusFilter')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="draft">Draft</SelectItem>
-                <SelectItem value="scheduled">Scheduled</SelectItem>
-                <SelectItem value="sent">Sent</SelectItem>
+                <SelectItem value="all">{t('admin.notifications.allStatus')}</SelectItem>
+                <SelectItem value="draft">{t('admin.notifications.draft')}</SelectItem>
+                <SelectItem value="scheduled">{t('admin.notifications.scheduled')}</SelectItem>
+                <SelectItem value="sent">{t('admin.notifications.sent')}</SelectItem>
               </SelectContent>
             </Select>
             <Select value={filterPriority} onValueChange={setFilterPriority}>
               <SelectTrigger className="w-full sm:w-40">
-                <SelectValue placeholder="Priority" />
+                <SelectValue placeholder={t('admin.notifications.priorityFilter')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Priority</SelectItem>
-                <SelectItem value="low">Low</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="critical">Critical</SelectItem>
+                <SelectItem value="all">{t('admin.notifications.allPriority')}</SelectItem>
+                <SelectItem value="low">{t('admin.notifications.low')}</SelectItem>
+                <SelectItem value="medium">{t('admin.notifications.medium')}</SelectItem>
+                <SelectItem value="high">{t('admin.notifications.high')}</SelectItem>
+                <SelectItem value="critical">{t('admin.notifications.critical')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -204,83 +204,83 @@ export const NotificationCenter = () => {
           <DialogTrigger asChild>
             <Button className="w-full lg:w-auto">
               <Plus className="h-4 w-4 mr-2" />
-              <span className="hidden sm:inline">Create Notification</span>
-              <span className="sm:hidden">Create</span>
+              <span className="hidden sm:inline">{t('admin.notifications.createNotification')}</span>
+              <span className="sm:hidden">{t('admin.notifications.create')}</span>
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Create New Notification</DialogTitle>
+              <DialogTitle>{t('admin.notifications.createNewNotification')}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium">Title</label>
+                  <label className="text-sm font-medium">{t('admin.notifications.title')}</label>
                   <Input
                     value={newNotification.title}
                     onChange={(e) => setNewNotification({...newNotification, title: e.target.value})}
-                    placeholder="Notification title"
+                    placeholder={t('admin.notifications.titlePlaceholder')}
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium">Type</label>
+                  <label className="text-sm font-medium">{t('admin.notifications.type')}</label>
                   <Select value={newNotification.type} onValueChange={(value) => setNewNotification({...newNotification, type: value})}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="announcement">Announcement</SelectItem>
-                      <SelectItem value="alert">Alert</SelectItem>
-                      <SelectItem value="promotion">Promotion</SelectItem>
-                      <SelectItem value="system">System</SelectItem>
+                      <SelectItem value="announcement">{t('admin.notifications.announcement')}</SelectItem>
+                      <SelectItem value="alert">{t('admin.notifications.alert')}</SelectItem>
+                      <SelectItem value="promotion">{t('admin.notifications.promotion')}</SelectItem>
+                      <SelectItem value="system">{t('admin.notifications.system')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
               
               <div>
-                <label className="text-sm font-medium">Message</label>
+                <label className="text-sm font-medium">{t('admin.notifications.message')}</label>
                 <Textarea
                   value={newNotification.message}
                   onChange={(e) => setNewNotification({...newNotification, message: e.target.value})}
-                  placeholder="Notification message"
+                  placeholder={t('admin.notifications.messagePlaceholder')}
                   rows={4}
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium">Priority</label>
+                  <label className="text-sm font-medium">{t('admin.notifications.priority')}</label>
                   <Select value={newNotification.priority} onValueChange={(value) => setNewNotification({...newNotification, priority: value})}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="low">Low</SelectItem>
-                      <SelectItem value="medium">Medium</SelectItem>
-                      <SelectItem value="high">High</SelectItem>
-                      <SelectItem value="critical">Critical</SelectItem>
+                      <SelectItem value="low">{t('admin.notifications.low')}</SelectItem>
+                      <SelectItem value="medium">{t('admin.notifications.medium')}</SelectItem>
+                      <SelectItem value="high">{t('admin.notifications.high')}</SelectItem>
+                      <SelectItem value="critical">{t('admin.notifications.critical')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <label className="text-sm font-medium">Target Audience</label>
+                  <label className="text-sm font-medium">{t('admin.notifications.targetAudience')}</label>
                   <Select value={newNotification.targetAudience} onValueChange={(value) => setNewNotification({...newNotification, targetAudience: value})}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all_users">All Users</SelectItem>
-                      <SelectItem value="clients">Clients Only</SelectItem>
-                      <SelectItem value="vendors">Vendors Only</SelectItem>
-                      <SelectItem value="admins">Admins Only</SelectItem>
+                      <SelectItem value="all_users">{t('admin.notifications.allUsers')}</SelectItem>
+                      <SelectItem value="clients">{t('admin.notifications.clientsOnly')}</SelectItem>
+                      <SelectItem value="vendors">{t('admin.notifications.vendorsOnly')}</SelectItem>
+                      <SelectItem value="admins">{t('admin.notifications.adminsOnly')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
               <div>
-                <label className="text-sm font-medium">Schedule (Optional)</label>
+                <label className="text-sm font-medium">{t('admin.notifications.schedule')}</label>
                 <Input
                   type="datetime-local"
                   value={newNotification.scheduledFor}
@@ -290,10 +290,10 @@ export const NotificationCenter = () => {
 
               <div className="flex justify-end space-x-2">
                 <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
-                  Cancel
+                  {t('common.cancel')}
                 </Button>
                 <Button onClick={handleCreateNotification}>
-                  Create Notification
+                  {t('admin.notifications.createNotification')}
                 </Button>
               </div>
             </div>
@@ -319,11 +319,11 @@ export const NotificationCenter = () => {
           <Card>
             <CardContent className="p-12 text-center">
               <Bell className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-lg font-medium mb-2">No notifications found</p>
+              <p className="text-lg font-medium mb-2">{t('admin.notifications.noNotificationsFound')}</p>
               <p className="text-muted-foreground">
                 {searchTerm || filterStatus !== "all" || filterPriority !== "all" 
-                  ? "Try adjusting your filters"
-                  : "Create your first notification to get started"
+                  ? t('admin.notifications.tryAdjustingFilters')
+                  : t('admin.notifications.createFirstNotification')
                 }
               </p>
             </CardContent>

@@ -23,6 +23,7 @@ import {
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
 import { useToast } from "@/hooks/use-toast";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 
 export const PushNotificationManager = () => {
   const { 
@@ -34,6 +35,7 @@ export const PushNotificationManager = () => {
     isLoading 
   } = usePushNotifications();
   const { toast } = useToast();
+  const { t } = useOptionalLanguage();
 
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false);
@@ -73,13 +75,13 @@ export const PushNotificationManager = () => {
       });
       setIsCreateDialogOpen(false);
       toast({
-        title: "Success",
-        description: "Push notification created successfully"
+        title: t('admin.pushNotifications.success'),
+        description: t('admin.pushNotifications.createSuccess')
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to create push notification",
+        title: t('admin.pushNotifications.error'),
+        description: t('admin.pushNotifications.createError'),
         variant: "destructive"
       });
     }
@@ -90,13 +92,13 @@ export const PushNotificationManager = () => {
       await updateSettings(settings);
       setIsSettingsDialogOpen(false);
       toast({
-        title: "Success",
-        description: "Push notification settings updated"
+        title: t('admin.pushNotifications.success'),
+        description: t('admin.pushNotifications.settingsUpdated')
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to update settings",
+        title: t('admin.pushNotifications.error'),
+        description: t('admin.pushNotifications.settingsError'),
         variant: "destructive"
       });
     }
@@ -119,10 +121,10 @@ export const PushNotificationManager = () => {
       <Tabs defaultValue="overview">
         <div className="flex justify-between items-center">
           <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="notifications">Notifications</TabsTrigger>
-            <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="overview">{t('admin.pushNotifications.overview')}</TabsTrigger>
+            <TabsTrigger value="notifications">{t('admin.pushNotifications.notifications')}</TabsTrigger>
+            <TabsTrigger value="analytics">{t('admin.pushNotifications.analytics')}</TabsTrigger>
+            <TabsTrigger value="settings">{t('admin.pushNotifications.settings')}</TabsTrigger>
           </TabsList>
           
           <div className="flex space-x-2">
@@ -130,20 +132,20 @@ export const PushNotificationManager = () => {
               <DialogTrigger asChild>
                 <Button>
                   <Plus className="h-4 w-4 mr-2" />
-                  New Push Notification
+                  {t('admin.pushNotifications.newPushNotification')}
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-2xl">
                 <DialogHeader>
-                  <DialogTitle>Create Push Notification</DialogTitle>
+                  <DialogTitle>{t('admin.pushNotifications.createPushNotification')}</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium">Title</label>
+                    <label className="text-sm font-medium">{t('admin.pushNotifications.title')}</label>
                     <Input
                       value={newNotification.title}
                       onChange={(e) => setNewNotification({...newNotification, title: e.target.value})}
-                      placeholder="Important Update Available"
+                      placeholder={t('admin.pushNotifications.titlePlaceholder')}
                       maxLength={50}
                     />
                     <p className="text-xs text-muted-foreground mt-1">
@@ -152,11 +154,11 @@ export const PushNotificationManager = () => {
                   </div>
                   
                   <div>
-                    <label className="text-sm font-medium">Message</label>
+                    <label className="text-sm font-medium">{t('admin.pushNotifications.message')}</label>
                     <Textarea
                       value={newNotification.body}
                       onChange={(e) => setNewNotification({...newNotification, body: e.target.value})}
-                      placeholder="Check out the latest features and improvements we've made for you."
+                      placeholder={t('admin.pushNotifications.messagePlaceholder')}
                       rows={3}
                       maxLength={200}
                     />
@@ -167,46 +169,46 @@ export const PushNotificationManager = () => {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="text-sm font-medium">Target Platform</label>
+                      <label className="text-sm font-medium">{t('admin.pushNotifications.targetPlatform')}</label>
                       <Select value={newNotification.target_platform} onValueChange={(value: "all" | "android" | "ios" | "web") => setNewNotification({...newNotification, target_platform: value})}>
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="all">All Platforms</SelectItem>
-                          <SelectItem value="android">Android</SelectItem>
-                          <SelectItem value="ios">iOS</SelectItem>
-                          <SelectItem value="web">Web</SelectItem>
+                          <SelectItem value="all">{t('admin.pushNotifications.allPlatforms')}</SelectItem>
+                          <SelectItem value="android">{t('admin.pushNotifications.android')}</SelectItem>
+                          <SelectItem value="ios">{t('admin.pushNotifications.ios')}</SelectItem>
+                          <SelectItem value="web">{t('admin.pushNotifications.web')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                     <div>
-                      <label className="text-sm font-medium">Target Audience</label>
+                      <label className="text-sm font-medium">{t('admin.pushNotifications.targetAudience')}</label>
                       <Select value={newNotification.target_audience} onValueChange={(value) => setNewNotification({...newNotification, target_audience: value})}>
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="all_users">All Users</SelectItem>
-                          <SelectItem value="clients">Clients</SelectItem>
-                          <SelectItem value="vendors">Vendors</SelectItem>
-                          <SelectItem value="active_users">Active Users</SelectItem>
+                          <SelectItem value="all_users">{t('admin.pushNotifications.allUsers')}</SelectItem>
+                          <SelectItem value="clients">{t('admin.pushNotifications.clients')}</SelectItem>
+                          <SelectItem value="vendors">{t('admin.pushNotifications.vendors')}</SelectItem>
+                          <SelectItem value="active_users">{t('admin.pushNotifications.activeUsers')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium">Action URL (Optional)</label>
+                    <label className="text-sm font-medium">{t('admin.pushNotifications.actionUrl')}</label>
                     <Input
                       value={newNotification.action_url}
                       onChange={(e) => setNewNotification({...newNotification, action_url: e.target.value})}
-                      placeholder="https://yourapp.com/feature"
+                      placeholder={t('admin.pushNotifications.actionUrlPlaceholder')}
                     />
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium">Schedule (Optional)</label>
+                    <label className="text-sm font-medium">{t('admin.pushNotifications.schedule')}</label>
                     <Input
                       type="datetime-local"
                       value={newNotification.scheduled_for}
@@ -216,10 +218,10 @@ export const PushNotificationManager = () => {
 
                   <div className="flex justify-end space-x-2">
                     <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
-                      Cancel
+                      {t('common.cancel')}
                     </Button>
                     <Button onClick={handleCreateNotification}>
-                      Create & Send
+                      {t('admin.pushNotifications.createAndSend')}
                     </Button>
                   </div>
                 </div>
@@ -235,13 +237,13 @@ export const PushNotificationManager = () => {
               </DialogTrigger>
               <DialogContent className="max-w-lg">
                 <DialogHeader>
-                  <DialogTitle>Push Notification Settings</DialogTitle>
+                  <DialogTitle>{t('admin.pushNotifications.pushNotificationSettings')}</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="text-sm font-medium">Enable Push Notifications</label>
-                      <p className="text-xs text-muted-foreground">Allow sending push notifications to users</p>
+                      <label className="text-sm font-medium">{t('admin.pushNotifications.enablePushNotifications')}</label>
+                      <p className="text-xs text-muted-foreground">{t('admin.pushNotifications.enablePushNotificationsDesc')}</p>
                     </div>
                     <Switch
                       checked={settings.enabled}
