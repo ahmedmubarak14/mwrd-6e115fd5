@@ -5,8 +5,25 @@
 
 export const adminTranslationsAR = {
   admin: {
-    // لوحة التحكم والنظرة العامة
-    dashboard: {
+    // مفاتيح الإدارة الجذرية للتنقل
+    dashboard: "لوحة تحكم الإدارة",
+    analytics: "التحليلات", 
+    performanceMonitor: "مراقب الأداء",
+    users: "المستخدمون",
+    requests: "الطلبات",
+    offers: "العروض",
+    orders: "الطلبيات",
+    financialTransactions: "المعاملات المالية",
+    subscriptions: "الاشتراكات",
+    supportTickets: "تذاكر الدعم",
+    communications: "الاتصالات",
+    settings: "الإعدادات",
+    profile: "الملف الشخصي",
+    navigateTo: "الانتقال إلى",
+    badgeMax: "99+",
+
+    // لوحة التحكم والنظرة العامة (كائن متداخل)
+    dashboardData: {
       title: "لوحة تحكم الإدارة",
       description: "إدارة ومراقبة المنصة الشاملة",
       welcome: "مرحباً بك في لوحة تحكم الإدارة",
@@ -40,7 +57,11 @@ export const adminTranslationsAR = {
       analytics: "التحليلات",
       analyticsDescription: "عرض رؤى ومقاييس المنصة",
       automation: "الأتمتة",
-      automationDescription: "أتمتة سير العمل والقواعد"
+      automationDescription: "أتمتة سير العمل والقواعد",
+      projects: "المشاريع",
+      verificationQueue: "قائمة التحقق",
+      workflowAutomation: "أتمتة سير العمل",
+      categoryManagement: "إدارة الفئات"
     },
 
     // مسار التنقل
@@ -68,8 +89,8 @@ export const adminTranslationsAR = {
       suggestions: "اقتراحات"
     },
 
-    // إدارة المستخدمين
-    users: {
+    // إدارة المستخدمين (كائن مفصل)
+    usersManagement: {
       title: "إدارة المستخدمين",
       description: "إدارة مستخدمي المنصة وصلاحياتهم",
       searchPlaceholder: "البحث في المستخدمين...",
@@ -97,8 +118,8 @@ export const adminTranslationsAR = {
       }
     },
 
-    // إدارة الطلبات  
-    requests: {
+    // إدارة الطلبات (كائن مفصل)  
+    requestsManagement: {
       title: "إدارة الطلبات",
       description: "مراقبة وإدارة طلبات المشتريات",
       searchPlaceholder: "البحث في الطلبات...",
@@ -106,29 +127,6 @@ export const adminTranslationsAR = {
     },
 
     // إدارة العروض
-    offersManagement: {
-      title: "إدارة العروض", 
-      description: "مراجعة وإدارة عروض الموردين",
-      searchPlaceholder: "البحث في العروض...",
-      exportOffers: "تصدير العروض",
-      pendingApprovalSince: "في انتظار موافقة الإدارة منذ",
-      requiresAttention: "يتطلب اهتماماً", 
-      approvedAndActive: "موافق عليه ونشط",
-      supplier: "المورد",
-      request: "الطلب",
-      price: "السعر",
-      daysDelivery: "أيام التسليم",
-      created: "تم الإنشاء",
-      noOffersFound: "لم يتم العثور على عروض",
-      noOffersDesc: "لا توجد عروض تطابق معايير البحث الحالية."
-    },
-
-    // إدارة الطلبات المحددة
-    requestsManagement: {
-      statusPlaceholder: "الحالة",
-      approvalStatusPlaceholder: "حالة الموافقة", 
-      urgencyPlaceholder: "الأولوية"
-    },
 
     // إدارة الطلبيات
     ordersManagement: {
@@ -203,22 +201,7 @@ export const adminTranslationsAR = {
       verificationStatus: "حالة التحقق"
     },
 
-    // التحليلات
-    analytics: {
-      title: "تحليلات المنصة",
-      description: "رؤى ومقاييس الأداء",
-      totalUsers: "إجمالي المستخدمين",
-      totalRevenue: "إجمالي الإيرادات", 
-      pendingApprovals: "الموافقات المعلقة",
-      platformActivity: "نشاط المنصة",
-      platformActivityDesc: "مقاييس النشاط اليومي عبر المنصة",
-      recentActivity: "النشاط الحديث",
-      recentActivityDescription: "أحدث أنشطة النظام وإجراءات المستخدمين",
-      activityOn: "في",
-      noRecentActivity: "لا يوجد نشاط حديث"
-    },
-
-    // إدارة النظام
+    // إدارة التحقق
     system: {
       title: "إدارة النظام",
       description: "صحة النظام والتكوين",

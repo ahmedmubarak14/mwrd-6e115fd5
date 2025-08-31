@@ -99,7 +99,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           icon: LayoutDashboard,
         },
         {
-          name: t('nav.analytics'),
+          name: t('admin.analytics'),
           href: "/admin/analytics",
           icon: BarChart3,
         },
@@ -136,7 +136,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           icon: Building2,
         },
         {
-          name: t('nav.orders'),
+          name: t('admin.orders'),
           href: "/admin/orders",
           icon: ShoppingCart,
         },
@@ -192,7 +192,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           icon: FolderOpen,
         },
         {
-          name: t('expertConsultations.title'),
+          name: t('admin.expertConsultations.title'),
           href: "/admin/expert-consultations",
           icon: HelpCircle,
         },

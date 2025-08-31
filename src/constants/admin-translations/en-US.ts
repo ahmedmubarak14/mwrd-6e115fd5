@@ -5,8 +5,25 @@
 
 export const adminTranslationsEN = {
   admin: {
-    // Dashboard and Overview
-    dashboard: {
+    // Root level admin keys for navigation
+    dashboard: "Admin Dashboard",
+    analytics: "Analytics",
+    performanceMonitor: "Performance Monitor",
+    users: "Users",
+    requests: "Requests",
+    offers: "Offers",
+    orders: "Orders",
+    financialTransactions: "Financial Transactions",
+    subscriptions: "Subscriptions",
+    supportTickets: "Support Tickets",
+    communications: "Communications",
+    settings: "Settings",
+    profile: "Profile",
+    navigateTo: "Navigate to",
+    badgeMax: "99+",
+
+    // Dashboard and Overview (nested object)
+    dashboardData: {
       title: "Admin Dashboard",
       description: "Comprehensive platform management and monitoring",
       welcome: "Welcome to Admin Dashboard",
@@ -40,7 +57,11 @@ export const adminTranslationsEN = {
       analytics: "Analytics",
       analyticsDescription: "View platform insights and metrics",
       automation: "Automation",
-      automationDescription: "Workflow automation and rules"
+      automationDescription: "Workflow automation and rules",
+      projects: "Projects",
+      verificationQueue: "Verification Queue",
+      workflowAutomation: "Workflow Automation",
+      categoryManagement: "Category Management"
     },
 
     // Breadcrumbs
@@ -68,8 +89,8 @@ export const adminTranslationsEN = {
       suggestions: "Suggestions"
     },
 
-    // User Management
-    users: {
+    // User Management (detailed object)
+    usersManagement: {
       title: "User Management",
       description: "Manage platform users and their permissions",
       searchPlaceholder: "Search users...",
@@ -97,8 +118,8 @@ export const adminTranslationsEN = {
       }
     },
 
-    // Request Management  
-    requests: {
+    // Request Management (detailed object)  
+    requestsManagement: {
       title: "Request Management",
       description: "Monitor and manage procurement requests",
       searchPlaceholder: "Search requests...",
@@ -106,29 +127,6 @@ export const adminTranslationsEN = {
     },
 
     // Offers Management
-    offersManagement: {
-      title: "Offers Management", 
-      description: "Review and manage supplier offers",
-      searchPlaceholder: "Search offers...",
-      exportOffers: "Export Offers",
-      pendingApprovalSince: "Pending admin approval since",
-      requiresAttention: "Requires Attention", 
-      approvedAndActive: "Approved and active",
-      supplier: "Supplier",
-      request: "Request",
-      price: "Price",
-      daysDelivery: "days delivery",
-      created: "Created",
-      noOffersFound: "No offers found",
-      noOffersDesc: "No offers match your current search criteria."
-    },
-
-    // Request Management Specific
-    requestsManagement: {
-      statusPlaceholder: "Status",
-      approvalStatusPlaceholder: "Approval Status", 
-      urgencyPlaceholder: "Urgency"
-    },
 
     // Orders Management
     ordersManagement: {
@@ -203,22 +201,7 @@ export const adminTranslationsEN = {
       verificationStatus: "Verification Status"
     },
 
-    // Analytics
-    analytics: {
-      title: "Platform Analytics",
-      description: "Insights and performance metrics",
-      totalUsers: "Total Users",
-      totalRevenue: "Total Revenue", 
-      pendingApprovals: "Pending Approvals",
-      platformActivity: "Platform Activity",
-      platformActivityDesc: "Daily activity metrics across the platform",
-      recentActivity: "Recent Activity",
-      recentActivityDescription: "Latest system activities and events",
-      activityOn: "on",
-      noRecentActivity: "No recent activity"
-    },
-
-    // System Management
+    // Verification Management
     system: {
       title: "System Management",
       description: "System health and configuration",

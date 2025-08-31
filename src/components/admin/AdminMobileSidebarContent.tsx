@@ -75,7 +75,7 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
           icon: Package,
         },
         {
-          name: t('admin.projects'),
+          name: t('admin.navigation.projects'),
           href: "/admin/projects", 
           icon: Building2,
         },
@@ -85,7 +85,7 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
           icon: ShoppingCart,
         },
         {
-          name: t('admin.verificationQueue'),
+          name: t('admin.navigation.verificationQueue'),
           href: "/admin/verification",
           icon: UserCheck,
         },
@@ -124,7 +124,7 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
       label: t('admin.groups.system'),
       items: [
         {
-          name: t('admin.categoryManagement'),
+          name: t('admin.navigation.categoryManagement'),
           href: "/admin/category-management",
           icon: FolderOpen,
         },
