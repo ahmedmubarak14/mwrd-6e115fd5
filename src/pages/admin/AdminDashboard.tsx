@@ -1,8 +1,8 @@
 import { ComprehensiveAdminOverview } from '@/components/admin/ComprehensiveAdminOverview';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const AdminDashboard = () => {
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
   
   return (
     <div className="space-y-6">
