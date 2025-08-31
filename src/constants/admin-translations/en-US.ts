@@ -19,7 +19,7 @@ export const adminTranslationsEN = {
     transactionId: "Transaction ID",
     status: "Status",
     amount: "Amount",
-    description: "Description",
+    descriptionField: "Description",
     paymentMethod: "Payment Method",
     created: "Created",
     reference: "Reference",
@@ -859,15 +859,6 @@ export const adminTranslationsEN = {
     pending: 'pending',
     approved: 'approved',
     rejected: 'rejected'
-  },
-
-  // Audit Trail
-  auditTrail: {
-    noLogsFound: 'No audit logs found',
-    adjustFilters: 'Try adjusting your filters',
-    noActivities: 'No audit activities to display',
-    on: 'on',
-    id: 'ID:'
   },
 
   // i18n Compliance Dashboard

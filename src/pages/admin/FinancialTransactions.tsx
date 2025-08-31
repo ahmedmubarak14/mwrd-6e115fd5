@@ -347,11 +347,11 @@ return (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t('financial.totalRevenue')}</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.financial.totalRevenue')}</CardTitle>
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{totalRevenue.toLocaleString()} {t('financial.currency')}</div>
+                <div className="text-2xl font-bold">{totalRevenue.toLocaleString()} {t('admin.financial.currency')}</div>
                 <p className="text-xs text-muted-foreground">
                   From {completedTransactions} completed transactions
                 </p>
@@ -360,24 +360,24 @@ return (
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t('financial.thisMonth')}</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.financial.thisMonth')}</CardTitle>
                 <TrendingUp className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{thisMonthRevenue.toLocaleString()} {t('financial.currency')}</div>
+                <div className="text-2xl font-bold">{thisMonthRevenue.toLocaleString()} {t('admin.financial.currency')}</div>
                 <p className="text-xs text-muted-foreground">
-                  {t('financial.currentMonthRevenue')}
+                  {t('admin.financial.currentMonthRevenue')}
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t('financial.pendingAmount')}</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.financial.pendingAmount')}</CardTitle>
                 <Clock className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{pendingAmount.toLocaleString()} {t('financial.currency')}</div>
+                <div className="text-2xl font-bold">{pendingAmount.toLocaleString()} {t('admin.financial.currency')}</div>
                 <p className="text-xs text-muted-foreground">
                   {pendingTransactions} pending transactions
                 </p>
@@ -386,11 +386,11 @@ return (
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">{t('financial.avgTransaction')}</CardTitle>
+                <CardTitle className="text-sm font-medium">{t('admin.financial.avgTransaction')}</CardTitle>
                 <CheckCircle className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{avgTransactionValue.toLocaleString()} {t('financial.currency')}</div>
+                <div className="text-2xl font-bold">{avgTransactionValue.toLocaleString()} {t('admin.financial.currency')}</div>
                 <p className="text-xs text-muted-foreground">
                   {failedTransactions} failed transactions
                 </p>
@@ -401,13 +401,13 @@ return (
           {/* Filters and Bulk Actions */}
           <Card>
             <CardHeader>
-              <CardTitle>{t('financial.filtersActions')}</CardTitle>
+              <CardTitle>{t('admin.financial.filtersActions')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <Input
-                    placeholder={t('financial.searchPlaceholder')}
+                    placeholder={t('admin.financial.searchPlaceholder')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />

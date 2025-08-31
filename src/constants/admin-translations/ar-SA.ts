@@ -19,7 +19,7 @@ export const adminTranslationsAR = {
     transactionId: "معرف المعاملة",
     status: "الحالة",
     amount: "المبلغ",
-    description: "الوصف",
+    descriptionField: "الوصف",
     paymentMethod: "طريقة الدفع",
     created: "تاريخ الإنشاء",
     reference: "المرجع",
@@ -860,15 +860,6 @@ export const adminTranslationsAR = {
     pending: 'معلقة',
     approved: 'موافق عليها',
     rejected: 'مرفوضة'
-  },
-
-  // Audit Trail
-  auditTrail: {
-    noLogsFound: 'لا توجد سجلات تدقيق',
-    adjustFilters: 'حاول تعديل المرشحات',
-    noActivities: 'لا توجد أنشطة تدقيق للعرض',
-    on: 'على',
-    id: 'المعرف:'
   },
 
   // Common Actions & Messages
