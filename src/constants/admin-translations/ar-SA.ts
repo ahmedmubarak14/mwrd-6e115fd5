@@ -28,6 +28,12 @@ export const adminTranslationsAR = {
   profile: "الملف الشخصي",
   navigateTo: "الانتقال إلى",
   badgeMax: "99+",
+  
+  // مفاتيح التنقل المباشرة للشريط الجانبي (تجنب التضارب)
+  sidebarAnalytics: "التحليلات",
+  sidebarUsers: "المستخدمون", 
+  sidebarRequests: "الطلبات",
+  sidebarExpertConsultations: "الاستشارات المتخصصة",
 
   // لوحة التحكم والنظرة العامة (كائن متداخل)
   dashboardData: {

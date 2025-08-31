@@ -95,7 +95,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           icon: LayoutDashboard,
         },
         {
-          name: t('admin.analytics'),
+          name: t('admin.sidebarAnalytics'),
           href: "/admin/analytics",
           icon: BarChart3,
         },
@@ -112,12 +112,12 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
       priority: 'primary',
       items: [
         {
-          name: t('admin.users'),
+          name: t('admin.sidebarUsers'),
           href: "/admin/users",
           icon: Users,
         },
         {
-          name: t('admin.requests'),
+          name: t('admin.sidebarRequests'),
           href: "/admin/requests",
           icon: FileText,
         },
@@ -188,7 +188,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           icon: FolderOpen,
         },
         {
-          name: t('admin.expertConsultations.title'),
+          name: t('admin.sidebarExpertConsultations'),
           href: "/admin/expert-consultations",
           icon: HelpCircle,
         },

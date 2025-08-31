@@ -28,6 +28,12 @@ export const adminTranslationsEN = {
   profile: "Profile",
   navigateTo: "Navigate to",
   badgeMax: "99+",
+  
+  // Direct sidebar navigation keys (avoiding conflicts)
+  sidebarAnalytics: "Analytics",
+  sidebarUsers: "Users",
+  sidebarRequests: "Requests",
+  sidebarExpertConsultations: "Expert Consultations",
 
   // Dashboard and Overview (nested object)
   dashboardData: {
