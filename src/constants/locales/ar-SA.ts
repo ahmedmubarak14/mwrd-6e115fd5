@@ -389,12 +389,31 @@ export const arSA = {
     }
   },
   
+  // Analytics translations
+  analytics: {
+    pendingApprovals: "الموافقات المعلقة",
+    totalUsers: "إجمالي المستخدمين",
+    totalRevenue: "إجمالي الإيرادات"
+  },
+
   // System translations
   system: {
+    allSystemsOperational: "جميع الأنظمة تعمل بشكل طبيعي",
+    database: "قاعدة البيانات",
+    cpuUsage: "استخدام المعالج",
+    memoryUsage: "استخدام الذاكرة",
+    activeConnections: "الاتصالات النشطة",
+    healthy: "سليم",
+    health: "صحة النظام",
     statusDescription: "حالة مكونات النظام في الوقت الفعلي",
     alerts: "تنبيهات النظام",
     activeSystemAlerts: "تنبيهات النظام النشطة",
     requireAttention: "تتطلب الانتباه"
+  },
+
+  // Requests translations
+  requests: {
+    requiresAdminReview: "يتطلب مراجعة المدير"
   },
   
   // Actions translations

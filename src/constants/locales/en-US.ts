@@ -389,12 +389,31 @@ export const enUS = {
     }
   },
   
+  // Analytics translations
+  analytics: {
+    pendingApprovals: "Pending Approvals",
+    totalUsers: "Total Users",
+    totalRevenue: "Total Revenue"
+  },
+
   // System translations
   system: {
+    allSystemsOperational: "All systems operational",
+    database: "Database",
+    cpuUsage: "CPU Usage",
+    memoryUsage: "Memory Usage",
+    activeConnections: "Active Connections",
+    healthy: "Healthy",
+    health: "System Health",
     statusDescription: "Real-time system component status",
     alerts: "System Alerts",
     activeSystemAlerts: "active system alerts",
     requireAttention: "require attention"
+  },
+
+  // Requests translations
+  requests: {
+    requiresAdminReview: "Requires admin review"
   },
   
   // Actions translations 
