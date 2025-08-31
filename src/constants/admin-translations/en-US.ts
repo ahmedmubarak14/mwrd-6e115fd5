@@ -99,6 +99,48 @@ export const adminTranslationsEN = {
     userActivity: "User Activity",
     userPermissions: "User Permissions",
     
+    // Core Admin User Management
+    userManagement: "User Management",
+    userManagementDescription: "Manage user accounts, roles, permissions, and access control",
+    totalUsers: "Total Users", 
+    allRegisteredUsers: "All registered users on the platform",
+    activeUsers: "Active Users",
+    approvedUsers: "Approved Users",
+    pendingUsers: "Pending Users",
+    awaitingApproval: "Awaiting Approval",
+    adminUsers: "Admin Users",
+    systemAdministrators: "System Administrators",
+    filtersAndSearch: "Filters & Search",
+    searchUsers: "Search users...",
+    refresh: "Refresh",
+    exportUsers: "Export Users",
+    selectAllUsers: "Select All Users",
+    usersSelected: "users selected",
+    selectRole: "Select Role",
+    selectStatus: "Select Status",
+    bulkUpdateRole: "Bulk Update Role", 
+    bulkUpdateStatus: "Bulk Update Status",
+    updateRoleAction: "Update Role",
+    updateStatusAction: "Update Status",
+    confirmBulkAction: "Confirm Bulk Action",
+    
+    // Status and Messages
+    fetchUsersError: "Failed to fetch users",
+    noName: "No Name",
+    bulkRoleUpdateSuccess: "Successfully updated role for {count} users",
+    bulkRoleUpdateError: "Failed to update user roles",
+    bulkStatusUpdateSuccess: "Successfully updated status for {count} users", 
+    bulkStatusUpdateError: "Failed to update user status",
+    fillRequiredFields: "Please fill in all required fields",
+    userExistsError: "User with this email already exists",
+    userAddedSuccess: "User added successfully",
+    userUpdatedSuccess: "User updated successfully",
+    userDeletedSuccess: "User {name} deleted successfully", 
+    exportSelectedSuccess: "Exported {count} selected users",
+    
+    // CSV Headers
+    csvHeaders: "ID,Full Name,Email,Role,Status,Verification,Company,Phone,Created Date",
+    
     // User Fields
     fullName: "Full Name", 
     email: "Email Address",
@@ -122,20 +164,15 @@ export const adminTranslationsEN = {
     userSuspended: "Suspended",
     userBlocked: "Blocked",
     
-    // Actions
-    selectRole: "Select Role",
-    selectStatus: "Select Status",
-    searchUsers: "Search users...",
+    // Actions (removed duplicates)
     filterByRole: "Filter by Role",
     filterByStatus: "Filter by Status",
-    exportUsers: "Export Users",
     bulkActions: "Bulk Actions",
     
-    // Messages
+    // Messages (removed duplicates)
     userCreated: "User created successfully",
     userUpdated: "User updated successfully", 
     userDeleted: "User deleted successfully",
-    fillRequiredFields: "Please fill in all required fields",
     deleteConfirmation: "Are you sure you want to delete this user?",
     noUsersFound: "No users found",
     loadingUsers: "Loading users...",

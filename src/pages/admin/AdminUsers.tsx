@@ -17,7 +17,7 @@ import { Users, UserCheck, Clock, TrendingUp, Download, RefreshCw, UserPlus, Mai
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { VerificationQueue } from "@/components/admin/VerificationQueue";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
 interface User {
@@ -35,12 +35,7 @@ interface User {
 }
 
 export default function AdminUsers() {
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL, formatDate } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false,
-    formatDate: (date: Date) => date.toLocaleDateString()
-  };
+  const { t, isRTL, formatDate } = useLanguage();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");

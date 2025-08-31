@@ -99,6 +99,48 @@ export const adminTranslationsAR = {
     userActivity: "نشاط المستخدم",
     userPermissions: "صلاحيات المستخدم",
     
+    // Core Admin User Management
+    userManagement: "إدارة المستخدمين",
+    userManagementDescription: "إدارة حسابات المستخدمين والأدوار والصلاحيات والتحكم في الوصول",
+    totalUsers: "إجمالي المستخدمين",
+    allRegisteredUsers: "جميع المستخدمين المسجلين على المنصة",
+    activeUsers: "المستخدمون النشطون",
+    approvedUsers: "المستخدمون المعتمدون",
+    pendingUsers: "المستخدمون المعلقون",
+    awaitingApproval: "في انتظار الموافقة",
+    adminUsers: "مستخدمو المشرف",
+    systemAdministrators: "مديرو النظام",
+    filtersAndSearch: "التصفية والبحث",
+    searchUsers: "البحث في المستخدمين...",
+    refresh: "تحديث",
+    exportUsers: "تصدير المستخدمين",
+    selectAllUsers: "تحديد جميع المستخدمين",
+    usersSelected: "مستخدم محدد",
+    selectRole: "تحديد الدور",
+    selectStatus: "تحديد الحالة",
+    bulkUpdateRole: "تحديث الدور بالجملة",
+    bulkUpdateStatus: "تحديث الحالة بالجملة",
+    updateRoleAction: "تحديث الدور",
+    updateStatusAction: "تحديث الحالة",
+    confirmBulkAction: "تأكيد الإجراء الجماعي",
+    
+    // Status and Messages
+    fetchUsersError: "فشل في جلب المستخدمين",
+    noName: "بدون اسم",
+    bulkRoleUpdateSuccess: "تم تحديث الدور بنجاح لـ {count} مستخدم",
+    bulkRoleUpdateError: "فشل في تحديث أدوار المستخدمين",
+    bulkStatusUpdateSuccess: "تم تحديث الحالة بنجاح لـ {count} مستخدم",
+    bulkStatusUpdateError: "فشل في تحديث حالة المستخدم",
+    fillRequiredFields: "يرجى ملء جميع الحقول المطلوبة",
+    userExistsError: "المستخدم بهذا البريد الإلكتروني موجود بالفعل",
+    userAddedSuccess: "تم إضافة المستخدم بنجاح",
+    userUpdatedSuccess: "تم تحديث المستخدم بنجاح",
+    userDeletedSuccess: "تم حذف المستخدم {name} بنجاح",
+    exportSelectedSuccess: "تم تصدير {count} مستخدم محدد",
+    
+    // CSV Headers
+    csvHeaders: "المعرف,الاسم الكامل,البريد الإلكتروني,الدور,الحالة,التحقق,الشركة,الهاتف,تاريخ الإنشاء",
+    
     // User Fields
     fullName: "الاسم الكامل", 
     email: "عنوان البريد الإلكتروني",
@@ -123,19 +165,14 @@ export const adminTranslationsAR = {
     userBlocked: "محظور",
     
     // Actions
-    selectRole: "اختيار الدور",
-    selectStatus: "اختيار الحالة",
-    searchUsers: "البحث في المستخدمين...",
     filterByRole: "تصفية حسب الدور",
     filterByStatus: "تصفية حسب الحالة",
-    exportUsers: "تصدير المستخدمين",
     bulkActions: "الإجراءات المجمعة",
     
     // Messages
     userCreated: "تم إنشاء المستخدم بنجاح",
     userUpdated: "تم تحديث المستخدم بنجاح", 
     userDeleted: "تم حذف المستخدم بنجاح",
-    fillRequiredFields: "يرجى ملء جميع الحقول المطلوبة",
     deleteConfirmation: "هل أنت متأكد من رغبتك في حذف هذا المستخدم؟",
     noUsersFound: "لم يتم العثور على مستخدمين",
     loadingUsers: "جاري تحميل المستخدمين...",
