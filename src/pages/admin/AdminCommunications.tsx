@@ -36,7 +36,7 @@ const AdminCommunications = () => {
             </TabsTrigger>
             <TabsTrigger value="notifications" className="flex items-center gap-1 md:gap-2">
               <Bell className="h-4 w-4" />
-              <span className="hidden sm:inline">{t('admin.notifications')}</span>
+              <span className="hidden sm:inline">{t('admin.notifications.title')}</span>
             </TabsTrigger>
             <TabsTrigger value="chat" className="flex items-center gap-1 md:gap-2">
               <MessageSquare className="h-4 w-4" />
