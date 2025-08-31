@@ -76,7 +76,7 @@ export default function AdminUsers() {
         console.error('Error fetching users:', error);
         toast({
           title: t('common.error'),
-          description: t('admin.fetchUsersError'),
+        description: t('admin.users.fetchUsersError'),
           variant: "destructive",
         });
         return;
@@ -86,7 +86,7 @@ export default function AdminUsers() {
       const transformedUsers: User[] = (data || []).map(user => ({
         id: user.id,
         user_id: user.user_id,
-        full_name: user.full_name || t('admin.userDetails.noName'),
+        full_name: user.full_name || t('admin.users.noName'),
         email: user.email,
         role: user.role,
         status: user.status,
@@ -102,7 +102,7 @@ export default function AdminUsers() {
       console.error('Error fetching users:', error);
       toast({
         title: t('common.error'),
-        description: t('admin.fetchUsersError'),
+        description: t('admin.users.fetchUsersError'),
         variant: "destructive",
       });
     } finally {
@@ -159,7 +159,7 @@ export default function AdminUsers() {
 
   const handleExport = () => {
     const csvContent = [
-      t('admin.csvHeaders'),
+      t('admin.users.csvHeaders'),
       ...filteredUsers.map(user => 
         `${user.id},${user.full_name},${user.email},${user.role},${user.status},${user.verification_status},${user.company_name || ''},${user.phone || ''},${format(new Date(user.created_at), 'yyyy-MM-dd')}`
       )
@@ -217,7 +217,7 @@ export default function AdminUsers() {
 
       toast({
         title: t('common.success'),
-        description: t('admin.bulkRoleUpdateSuccess').replace('{count}', selectedUsers.length.toString()),
+        description: t('admin.users.bulkRoleUpdateSuccess').replace('{count}', selectedUsers.length.toString()),
       });
 
       fetchUsers();
@@ -226,7 +226,7 @@ export default function AdminUsers() {
     } catch (error) {
       toast({
         title: t('common.error'),
-        description: t('admin.bulkRoleUpdateError'),
+        description: t('admin.users.bulkRoleUpdateError'),
         variant: "destructive",
       });
     } finally {
@@ -248,7 +248,7 @@ export default function AdminUsers() {
 
       toast({
         title: t('common.success'),
-        description: t('admin.bulkStatusUpdateSuccess').replace('{count}', selectedUsers.length.toString()),
+        description: t('admin.users.bulkStatusUpdateSuccess').replace('{count}', selectedUsers.length.toString()),
       });
 
       fetchUsers();
@@ -257,7 +257,7 @@ export default function AdminUsers() {
     } catch (error) {
       toast({
         title: t('common.error'),
-        description: t('admin.bulkStatusUpdateError'),
+        description: t('admin.users.bulkStatusUpdateError'),
         variant: "destructive",
       });
     } finally {
@@ -268,7 +268,7 @@ export default function AdminUsers() {
   const handleExportSelected = () => {
     const exportUsers = filteredUsers.filter(user => selectedUsers.includes(user.id));
     const csvContent = [
-      t('admin.csvHeaders'),
+      t('admin.users.csvHeaders'),
       ...exportUsers.map(user => 
         `${user.id},${user.full_name},${user.email},${user.role},${user.status},${user.verification_status},${user.company_name || ''},${user.phone || ''},${format(new Date(user.created_at), 'yyyy-MM-dd')}`
       )
@@ -284,7 +284,7 @@ export default function AdminUsers() {
     
     toast({
       title: t('common.exportCompleted'),
-      description: t('admin.exportSelectedSuccess').replace('{count}', selectedUsers.length.toString()),
+      description: t('admin.users.exportSelectedSuccess').replace('{count}', selectedUsers.length.toString()),
     });
   };
 
@@ -292,7 +292,7 @@ export default function AdminUsers() {
     if (!newUser.email || !newUser.full_name) {
         toast({
           title: t('common.error'),
-          description: t('admin.fillRequiredFields'),
+          description: t('admin.users.fillRequiredFields'),
           variant: "destructive",
         });
       return;
@@ -309,7 +309,7 @@ export default function AdminUsers() {
       if (existingUser) {
         toast({
           title: t('common.error'),
-          description: t('admin.userExistsError'),
+          description: t('admin.users.userExistsError'),
           variant: "destructive",
         });
         return;
@@ -333,7 +333,7 @@ export default function AdminUsers() {
 
       toast({
         title: t('common.success'),
-        description: t('admin.userAddedSuccess'),
+        description: t('admin.users.userAddedSuccess'),
       });
 
       setIsAddUserOpen(false);
@@ -374,7 +374,7 @@ export default function AdminUsers() {
 
       toast({
         title: t('common.success'),
-        description: t('admin.userUpdatedSuccess'),
+        description: t('admin.users.userUpdatedSuccess'),
       });
 
       setEditingUser(null);
@@ -399,7 +399,7 @@ export default function AdminUsers() {
 
       toast({
         title: t('common.success'),
-        description: t('admin.userDeletedSuccess').replace('{name}', userName),
+        description: t('admin.users.userDeletedSuccess').replace('{name}', userName),
       });
 
       fetchUsers();
@@ -421,10 +421,10 @@ export default function AdminUsers() {
     } as const;
 
     const statusLabels = {
-      pending: t('admin.statusPending'),
-      approved: t('admin.statusApproved'),
-      blocked: t('admin.statusBlocked'),
-      rejected: t('admin.statusRejected')
+      pending: t('admin.users.userPending'),
+      approved: t('admin.users.userActive'),
+      blocked: t('admin.users.userBlocked'),
+      rejected: t('admin.users.userInactive')
     };
 
     return (
@@ -442,9 +442,9 @@ export default function AdminUsers() {
     } as const;
 
     const roleLabels = {
-      admin: t('admin.roleAdmin'),
-      vendor: t('admin.roleVendor'),
-      client: t('admin.roleClient')
+      admin: t('admin.users.admin'),
+      vendor: t('admin.users.vendor'),
+      client: t('admin.users.client')
     };
 
     return (
@@ -488,10 +488,10 @@ export default function AdminUsers() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
-          {t('admin.userManagement')}
+          {t('admin.users.userManagement')}
         </h1>
         <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
-          {t('admin.userManagementDescription')}
+          {t('admin.users.userManagementDescription')}
         </p>
       </div>
       
@@ -500,45 +500,45 @@ export default function AdminUsers() {
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t('admin.totalUsers')}</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('admin.users.totalUsers')}</CardTitle>
               <Users className="h-4 w-4 text-foreground opacity-75" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{totalUsers.toLocaleString()}</div>
-              <p className="text-xs text-foreground opacity-75">{t('admin.allRegisteredUsers')}</p>
+              <p className="text-xs text-foreground opacity-75">{t('admin.users.allRegisteredUsers')}</p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t('admin.activeUsers')}</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('admin.users.activeUsers')}</CardTitle>
               <UserCheck className="h-4 w-4 text-foreground opacity-75" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{activeUsers.toLocaleString()}</div>
-              <p className="text-xs text-foreground opacity-75">{t('admin.approvedUsers')}</p>
+              <p className="text-xs text-foreground opacity-75">{t('admin.users.approvedUsers')}</p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t('admin.pending')}</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('admin.users.pendingUsers')}</CardTitle>
               <Clock className="h-4 w-4 text-foreground opacity-75" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{pendingUsers.toLocaleString()}</div>
-              <p className="text-xs text-foreground opacity-75">{t('admin.awaitingApproval')}</p>
+              <p className="text-xs text-foreground opacity-75">{t('admin.users.awaitingApproval')}</p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{t('admin.adminUsers')}</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('admin.users.adminUsers')}</CardTitle>
               <Shield className="h-4 w-4 text-foreground opacity-75" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{adminUsers.toLocaleString()}</div>
-              <p className="text-xs text-foreground opacity-75">{t('admin.systemAdministrators')}</p>
+              <p className="text-xs text-foreground opacity-75">{t('admin.users.systemAdministrators')}</p>
             </CardContent>
           </Card>
         </div>
@@ -546,12 +546,12 @@ export default function AdminUsers() {
         {/* Filters & Bulk Actions */}
         <Card>
           <CardHeader>
-            <CardTitle>{t('admin.filtersAndSearch')}</CardTitle>
+            <CardTitle>{t('admin.users.filtersAndSearch')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4 mb-4">
               <Input
-                placeholder={t('admin.searchUsers')}
+                placeholder={t('admin.users.searchUsers')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -583,17 +583,17 @@ export default function AdminUsers() {
               
               <Button variant="outline" onClick={handleRefresh}>
                 <RefreshCw className="h-4 w-4 mr-2" />
-                {t('admin.refresh')}
+                {t('admin.users.refresh')}
               </Button>
               
               <Button variant="outline" onClick={handleExport}>
                 <Download className="h-4 w-4 mr-2" />
-                {t('admin.exportUsers')}
+                {t('admin.users.exportUsers')}
               </Button>
               
               <Button variant="outline" onClick={() => setIsAddUserOpen(true)}>
                 <UserPlus className="h-4 w-4 mr-2" />
-                {t('admin.addUser')}
+                {t('admin.users.addUser')}
               </Button>
             </div>
 
@@ -607,7 +607,7 @@ export default function AdminUsers() {
                     onCheckedChange={handleSelectAll}
                   />
                   <label htmlFor="select-all" className="text-sm font-medium">
-                    {t('admin.selectAllUsers').replace('{count}', selectedCount.toString())}
+                    {t('admin.users.selectAllUsers').replace('{count}', selectedCount.toString())}
                   </label>
                 </div>
 

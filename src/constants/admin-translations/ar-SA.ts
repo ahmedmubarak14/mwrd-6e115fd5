@@ -138,6 +138,18 @@ export const adminTranslationsAR = {
     userDeletedSuccess: "تم حذف المستخدم {name} بنجاح",
     exportSelectedSuccess: "تم تصدير {count} مستخدم محدد",
     
+    // Additional missing keys
+    bulkActionConfirm: "تأكيد الإجراء الجماعي",
+    bulkRoleConfirm: "هل أنت متأكد من تحديث الدور إلى {role} لـ {count} مستخدم؟",
+    bulkStatusConfirm: "هل أنت متأكد من تحديث الحالة إلى {status} لـ {count} مستخدم؟",
+    exportSelectedAction: "تصدير المحدد",
+    users: "المستخدمون",
+    verificationQueueTab: "قائمة التحقق",
+    analyticsTab: "التحليلات",
+    noUsersMatchFilters: "لا يوجد مستخدمون يطابقون المرشحات الحالية",
+    deleteUserTitle: "حذف المستخدم",
+    deleteUserConfirm: "هل أنت متأكد من رغبتك في حذف {name}؟ لا يمكن التراجع عن هذا الإجراء.",
+    
     // CSV Headers
     csvHeaders: "المعرف,الاسم الكامل,البريد الإلكتروني,الدور,الحالة,التحقق,الشركة,الهاتف,تاريخ الإنشاء",
     
@@ -437,14 +449,14 @@ export const adminTranslationsAR = {
     last90Days: "آخر ٩٠ يوماً",
     lastYear: "السنة الماضية",
     
-    // Metrics
-    totalUsers: "إجمالي المستخدمين",
-    activeUsers: "المستخدمون النشطون",
-    newRegistrations: "التسجيلات الجديدة",
-    totalRequests: "إجمالي الطلبات", 
-    completedRequests: "الطلبات المُكتملة",
-    totalRevenue: "إجمالي الإيرادات",
-    conversionRate: "معدل التحويل",
+     // Metrics
+     analyticsUsers: "إجمالي المستخدمين",
+     analyticsActiveUsers: "المستخدمون النشطون",
+     newRegistrations: "التسجيلات الجديدة",
+     analyticsRequests: "إجمالي الطلبات", 
+     completedRequests: "الطلبات المُكتملة",
+     analyticsRevenue: "إجمالي الإيرادات",
+     conversionRate: "معدل التحويل",
     
     // Actions
     exportData: "تصدير البيانات",
