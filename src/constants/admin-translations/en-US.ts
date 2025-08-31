@@ -543,11 +543,15 @@ export const adminTranslationsEN = {
     allTransactions: "All Transactions",
     revenue: "Revenue",
     totalRevenue: "Total Revenue",
+    totalTransactions: "Total Transactions",
+    platformRevenue: "Platform Revenue",
     pendingAmount: "Pending Amount",
     avgTransaction: "Avg Transaction",
     thisMonth: "This Month",
     currentMonthRevenue: "Current month revenue",
     currency: "SAR",
+    user: "User",
+    company: "Company",
     
     // Filters and actions
     searchPlaceholder: "Search transactions, users, or reference IDs...",

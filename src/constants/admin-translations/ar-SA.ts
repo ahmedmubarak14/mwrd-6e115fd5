@@ -543,11 +543,15 @@ export const adminTranslationsAR = {
     allTransactions: "جميع المعاملات",
     revenue: "الإيرادات",
     totalRevenue: "إجمالي الإيرادات",
+    totalTransactions: "إجمالي المعاملات",
+    platformRevenue: "إيرادات المنصة",
     pendingAmount: "المبلغ المعلق",
     avgTransaction: "متوسط المعاملة",
     thisMonth: "هذا الشهر",
     currentMonthRevenue: "إيرادات الشهر الحالي",
     currency: "ريال",
+    user: "المستخدم",
+    company: "الشركة",
     
     // الفلاتر والإجراءات
     searchPlaceholder: "البحث في المعاملات أو المستخدمين أو أرقام المرجع...",
