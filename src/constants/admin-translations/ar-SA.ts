@@ -26,6 +26,86 @@ export const adminTranslationsAR = {
   subscriptions: "الاشتراكات",
   supportTickets: "تذاكر الدعم",
   communications: "الاتصالات",
+  communication: {
+    center: "مركز الاتصالات",
+    centerDescription: "إدارة جميع قنوات الاتصال والرسائل المرسلة",
+    notifications: "الإشعارات",
+    broadcastMessages: "الرسائل المرسلة",
+    emailTemplates: "قوالب البريد الإلكتروني",
+    loadingCenter: "جاري تحميل مركز الاتصالات...",
+    
+    // User Audience Types
+    allUsers: "جميع المستخدمين",
+    clientsOnly: "العملاء فقط",
+    vendorsOnly: "الموردون فقط",
+    pendingVerification: "بانتظار التحقق",
+    inactiveUsers: "المستخدمون غير النشطون",
+    
+    // Priority Levels
+    lowPriority: "أولوية منخفضة",
+    mediumPriority: "أولوية متوسطة",
+    highPriority: "أولوية عالية",
+    urgentPriority: "أولوية عاجلة",
+    urgent: "عاجل",
+    high: "عالي",
+    medium: "متوسط",
+    low: "منخفض",
+    
+    // Status Types
+    sent: "مُرسل",
+    draft: "مسودة",
+    scheduled: "مجدول",
+    failed: "فشل",
+    
+    // Actions
+    markAllRead: "تحديد الكل كمقروء",
+    sendBroadcastMessage: "إرسال رسالة مرسلة",
+    sendMessage: "إرسال رسالة",
+    
+    // Form Elements
+    messageTitle: "عنوان الرسالة",
+    titlePlaceholder: "أدخل عنوان الرسالة...",
+    targetAudience: "الجمهور المستهدف",
+    messageContent: "محتوى الرسالة",
+    messagePlaceholder: "أدخل رسالتك المرسلة هنا...",
+    priorityLevel: "مستوى الأولوية",
+    
+    // Search and Filters
+    searchNotifications: "البحث في الإشعارات...",
+    allTypes: "جميع الأنواع",
+    offerReceived: "تم استلام عرض",
+    requestCreated: "تم إنشاء طلب",
+    orderUpdate: "تحديث طلب",
+    system: "النظام",
+    
+    // Messages and Toasts
+    success: "نجح",
+    error: "خطأ",
+    broadcastCreated: "تم إنشاء الرسالة المرسلة بنجاح",
+    broadcastFailed: "فشل في إنشاء الرسالة المرسلة",
+    allMarkedRead: "تم تحديد جميع الإشعارات كمقروءة",
+    
+    // Metrics
+    totalSent: "إجمالي المُرسل",
+    unread: "غير مقروء",
+    activeUsers: "المستخدمون النشطون",
+    readRate: "معدل القراءة",
+    
+    // Empty States
+    noNotificationsFound: "لم يتم العثور على إشعارات",
+    adjustSearchCriteria: "حاول تعديل معايير البحث",
+    notificationsWillAppear: "ستظهر جميع الإشعارات هنا",
+    noBroadcastsYet: "لم يتم إرسال أي رسائل مرسلة بعد",
+    noTemplatesYet: "لم يتم إنشاء أي قوالب بريد إلكتروني بعد",
+    
+    // Miscellaneous
+    unknownUser: "مستخدم غير معروف",
+    sendMessageToGroups: "إرسال رسالة إلى مجموعات مستخدمين محددة",
+    recentBroadcasts: "الرسائل المرسلة الحديثة",
+    broadcastHistory: "عرض وإدارة تاريخ الرسائل المرسلة",
+    templateLibrary: "مكتبة القوالب",
+    manageEmailTemplates: "إدارة وتخصيص قوالب البريد الإلكتروني"
+  },
   settings: "الإعدادات",
   profile: "الملف الشخصي",
   navigateTo: "الانتقال إلى",
@@ -902,11 +982,11 @@ export const adminTranslationsAR = {
   },
 
   // إدارة الاتصالات
-  communication: {
+  communicationManagement: {
     title: "مركز الاتصالات",
     description: "إدارة اتصالات المنصة",
     emailCampaigns: "حملات البريد الإلكتروني",
-    notifications: "الإشعارات",
+    notifications: "الإشعارات", 
     messaging: "المراسلة"
   },
 

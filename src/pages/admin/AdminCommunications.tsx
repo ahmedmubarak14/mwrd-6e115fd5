@@ -8,16 +8,12 @@ import { RealTimeChatSystem } from "@/components/admin/RealTimeChatSystem";
 import { PushNotificationManager } from "@/components/admin/PushNotificationManager";
 import { CommunicationSettings } from "@/components/admin/CommunicationSettings";
 import { CommunicationOverview } from "@/components/admin/CommunicationOverview";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import { AdminPageContainer } from "@/components/admin/AdminPageContainer";
 
 const AdminCommunications = () => {
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useLanguage();
 
   return (
     <AdminPageContainer>

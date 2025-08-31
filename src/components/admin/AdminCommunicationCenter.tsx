@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
 interface Notification {
@@ -59,7 +59,7 @@ interface BroadcastMessage {
 
 export const AdminCommunicationCenter = () => {
   const { toast } = useToast();
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [broadcasts, setBroadcasts] = useState<BroadcastMessage[]>([]);
   const [loading, setLoading] = useState(true);
@@ -73,18 +73,18 @@ export const AdminCommunicationCenter = () => {
   });
 
   const audienceTypes = [
-    { value: 'all_users', label: t('communication.allUsers') },
-    { value: 'clients', label: t('communication.clientsOnly') },
-    { value: 'vendors', label: t('communication.vendorsOnly') },
-    { value: 'pending_verification', label: t('communication.pendingVerification') },
-    { value: 'inactive_users', label: t('communication.inactiveUsers') }
+    { value: 'all_users', label: t('admin.communication.allUsers') },
+    { value: 'clients', label: t('admin.communication.clientsOnly') },
+    { value: 'vendors', label: t('admin.communication.vendorsOnly') },
+    { value: 'pending_verification', label: t('admin.communication.pendingVerification') },
+    { value: 'inactive_users', label: t('admin.communication.inactiveUsers') }
   ];
 
   const priorityTypes = [
-    { value: 'low', label: t('communication.lowPriority') },
-    { value: 'medium', label: t('communication.mediumPriority') },
-    { value: 'high', label: t('communication.highPriority') },
-    { value: 'urgent', label: t('communication.urgentPriority') }
+    { value: 'low', label: t('admin.communication.lowPriority') },
+    { value: 'medium', label: t('admin.communication.mediumPriority') },
+    { value: 'high', label: t('admin.communication.highPriority') },
+    { value: 'urgent', label: t('admin.communication.urgentPriority') }
   ];
 
   const fetchNotifications = async () => {
@@ -167,15 +167,15 @@ export const AdminCommunicationCenter = () => {
       await fetchBroadcasts();
 
       toast({
-        title: t('communication.success'),
-        description: t('communication.broadcastCreated'),
+        title: t('admin.communication.success'),
+        description: t('admin.communication.broadcastCreated'),
         variant: 'default'
       });
     } catch (error) {
       console.error('Error sending broadcast:', error);
       toast({
-        title: t('communication.error'),
-        description: t('communication.broadcastFailed'),
+        title: t('admin.communication.error'),
+        description: t('admin.communication.broadcastFailed'),
         variant: 'destructive'
       });
     }
@@ -193,8 +193,8 @@ export const AdminCommunicationCenter = () => {
       setNotifications(prev => prev.map(notif => ({ ...notif, read: true })));
 
       toast({
-        title: t('communication.success'),
-        description: t('communication.allMarkedRead'),
+        title: t('admin.communication.success'),
+        description: t('admin.communication.allMarkedRead'),
         variant: 'default'
       });
     } catch (error) {
@@ -221,13 +221,13 @@ export const AdminCommunicationCenter = () => {
   const getPriorityBadge = (priority: string) => {
     switch (priority) {
       case 'urgent':
-        return <Badge variant="destructive">{t('communication.urgent')}</Badge>;
+        return <Badge variant="destructive">{t('admin.communication.urgent')}</Badge>;
       case 'high':
-        return <Badge variant="secondary" className="bg-orange-100 text-orange-800">{t('communication.high')}</Badge>;
+        return <Badge variant="secondary" className="bg-orange-100 text-orange-800">{t('admin.communication.high')}</Badge>;
       case 'medium':
-        return <Badge variant="outline">{t('communication.medium')}</Badge>;
+        return <Badge variant="outline">{t('admin.communication.medium')}</Badge>;
       case 'low':
-        return <Badge variant="secondary">{t('communication.low')}</Badge>;
+        return <Badge variant="secondary">{t('admin.communication.low')}</Badge>;
       default:
         return <Badge variant="secondary">{priority}</Badge>;
     }
@@ -236,20 +236,20 @@ export const AdminCommunicationCenter = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'sent':
-        return <Badge variant="default" className="bg-success text-success-foreground">{t('communication.sent')}</Badge>;
+        return <Badge variant="default" className="bg-success text-success-foreground">{t('admin.communication.sent')}</Badge>;
       case 'draft':
-        return <Badge variant="secondary">{t('communication.draft')}</Badge>;
+        return <Badge variant="secondary">{t('admin.communication.draft')}</Badge>;
       case 'scheduled':
-        return <Badge variant="outline" className="border-blue-200 text-blue-800">{t('communication.scheduled')}</Badge>;
+        return <Badge variant="outline" className="border-blue-200 text-blue-800">{t('admin.communication.scheduled')}</Badge>;
       case 'failed':
-        return <Badge variant="destructive">{t('communication.failed')}</Badge>;
+        return <Badge variant="destructive">{t('admin.communication.failed')}</Badge>;
       default:
         return <Badge variant="secondary">{status}</Badge>;
     }
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center py-12">{t('communication.loadingCenter')}</div>;
+    return <div className="flex items-center justify-center py-12">{t('admin.communication.loadingCenter')}</div>;
   }
 
   return (
@@ -258,19 +258,19 @@ export const AdminCommunicationCenter = () => {
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <MessageSquare className="h-6 w-6" />
-            {t('communication.center')}
+            {t('admin.communication.center')}
           </h2>
           <p className="text-muted-foreground">
-            {t('communication.centerDescription')}
+            {t('admin.communication.centerDescription')}
           </p>
         </div>
       </div>
 
       <Tabs defaultValue="notifications" className="space-y-6">
         <TabsList>
-          <TabsTrigger value="notifications">{t('communication.notifications')}</TabsTrigger>
-          <TabsTrigger value="broadcast">{t('communication.broadcastMessages')}</TabsTrigger>
-          <TabsTrigger value="templates">{t('communication.emailTemplates')}</TabsTrigger>
+          <TabsTrigger value="notifications">{t('admin.communication.notifications')}</TabsTrigger>
+          <TabsTrigger value="broadcast">{t('admin.communication.broadcastMessages')}</TabsTrigger>
+          <TabsTrigger value="templates">{t('admin.communication.emailTemplates')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="notifications" className="space-y-4">
@@ -280,7 +280,7 @@ export const AdminCommunicationCenter = () => {
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
                   <Bell className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-medium">{t('communication.totalSent')}</span>
+                  <span className="text-sm font-medium">{t('admin.communication.totalSent')}</span>
                 </div>
                 <p className="text-2xl font-bold mt-1">{notifications.length}</p>
               </CardContent>
@@ -289,7 +289,7 @@ export const AdminCommunicationCenter = () => {
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
                   <AlertCircle className="h-4 w-4 text-warning" />
-                  <span className="text-sm font-medium">{t('communication.unread')}</span>
+                  <span className="text-sm font-medium">{t('admin.communication.unread')}</span>
                 </div>
                 <p className="text-2xl font-bold mt-1">
                   {notifications.filter(n => !n.read).length}
@@ -300,7 +300,7 @@ export const AdminCommunicationCenter = () => {
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
                   <Users className="h-4 w-4 text-success" />
-                  <span className="text-sm font-medium">{t('communication.activeUsers')}</span>
+                  <span className="text-sm font-medium">{t('admin.communication.activeUsers')}</span>
                 </div>
                 <p className="text-2xl font-bold mt-1">
                   {new Set(notifications.map(n => n.user_id)).size}
@@ -311,7 +311,7 @@ export const AdminCommunicationCenter = () => {
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm font-medium">{t('communication.readRate')}</span>
+                  <span className="text-sm font-medium">{t('admin.communication.readRate')}</span>
                 </div>
                 <p className="text-2xl font-bold mt-1">
                   {notifications.length > 0 ? 
@@ -330,7 +330,7 @@ export const AdminCommunicationCenter = () => {
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
-                      placeholder={t('communication.searchNotifications')}
+                      placeholder={t('admin.communication.searchNotifications')}
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-10"
@@ -342,16 +342,16 @@ export const AdminCommunicationCenter = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">{t('communication.allTypes')}</SelectItem>
-                    <SelectItem value="offer_received">{t('communication.offerReceived')}</SelectItem>
-                    <SelectItem value="request_created">{t('communication.requestCreated')}</SelectItem>
-                    <SelectItem value="order_update">{t('communication.orderUpdate')}</SelectItem>
-                    <SelectItem value="system">{t('communication.system')}</SelectItem>
+                    <SelectItem value="all">{t('admin.communication.allTypes')}</SelectItem>
+                    <SelectItem value="offer_received">{t('admin.communication.offerReceived')}</SelectItem>
+                    <SelectItem value="request_created">{t('admin.communication.requestCreated')}</SelectItem>
+                    <SelectItem value="order_update">{t('admin.communication.orderUpdate')}</SelectItem>
+                    <SelectItem value="system">{t('admin.communication.system')}</SelectItem>
                   </SelectContent>
                 </Select>
                 <Button onClick={markAllAsRead} variant="outline">
                   <CheckCircle className="h-4 w-4 mr-2" />
-                  {t('communication.markAllRead')}
+                  {t('admin.communication.markAllRead')}
                 </Button>
               </div>
             </CardContent>
@@ -391,7 +391,7 @@ export const AdminCommunicationCenter = () => {
                       <div className="flex items-center gap-4 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <User className="h-3 w-3" />
-                          {notification.user_profiles?.full_name || t('communication.unknownUser')}
+                          {notification.user_profiles?.full_name || t('admin.communication.unknownUser')}
                         </span>
                         <span className="flex items-center gap-1">
                           <Mail className="h-3 w-3" />
@@ -415,11 +415,11 @@ export const AdminCommunicationCenter = () => {
               <Card>
                 <CardContent className="py-12 text-center">
                   <Bell className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="text-lg font-semibold mb-2">{t('communication.noNotificationsFound')}</h3>
+                  <h3 className="text-lg font-semibold mb-2">{t('admin.communication.noNotificationsFound')}</h3>
                   <p className="text-muted-foreground">
                     {searchTerm || filterType !== 'all' ? 
-                      t('communication.adjustSearchCriteria') : 
-                      t('communication.notificationsWillAppear')
+                      t('admin.communication.adjustSearchCriteria') : 
+                      t('admin.communication.notificationsWillAppear')
                     }
                   </p>
                 </CardContent>
@@ -434,25 +434,25 @@ export const AdminCommunicationCenter = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Megaphone className="h-5 w-5" />
-                {t('communication.sendBroadcastMessage')}
+                {t('admin.communication.sendBroadcastMessage')}
               </CardTitle>
               <CardDescription>
-                {t('communication.sendMessageToGroups')}
+                {t('admin.communication.sendMessageToGroups')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="title">{t('communication.messageTitle')}</Label>
+                  <Label htmlFor="title">{t('admin.communication.messageTitle')}</Label>
                   <Input
                     id="title"
                     value={newBroadcast.title}
                     onChange={(e) => setNewBroadcast(prev => ({ ...prev, title: e.target.value }))}
-                    placeholder={t('communication.titlePlaceholder')}
+                    placeholder={t('admin.communication.titlePlaceholder')}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="audience">{t('communication.targetAudience')}</Label>
+                  <Label htmlFor="audience">{t('admin.communication.targetAudience')}</Label>
                   <Select
                     value={newBroadcast.target_audience}
                     onValueChange={(value) => setNewBroadcast(prev => ({ ...prev, target_audience: value }))}
@@ -472,18 +472,18 @@ export const AdminCommunicationCenter = () => {
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="message">{t('communication.messageContent')}</Label>
+                <Label htmlFor="message">{t('admin.communication.messageContent')}</Label>
                 <Textarea
                   id="message"
                   value={newBroadcast.message}
                   onChange={(e) => setNewBroadcast(prev => ({ ...prev, message: e.target.value }))}
-                  placeholder={t('communication.messagePlaceholder')}
+                  placeholder={t('admin.communication.messagePlaceholder')}
                   rows={4}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="priority">{t('communication.priorityLevel')}</Label>
+                <Label htmlFor="priority">{t('admin.communication.priorityLevel')}</Label>
                 <Select
                   value={newBroadcast.priority}
                   onValueChange={(value) => setNewBroadcast(prev => ({ ...prev, priority: value }))}
@@ -503,7 +503,7 @@ export const AdminCommunicationCenter = () => {
 
               <Button onClick={sendBroadcastMessage}>
                 <Send className="h-4 w-4 mr-2" />
-                {t('communication.sendMessage')}
+                {t('admin.communication.sendMessage')}
               </Button>
             </CardContent>
           </Card>
@@ -511,16 +511,16 @@ export const AdminCommunicationCenter = () => {
           {/* Broadcast History */}
           <Card>
             <CardHeader>
-              <CardTitle>{t('communication.recentBroadcasts')}</CardTitle>
+              <CardTitle>{t('admin.communication.recentBroadcasts')}</CardTitle>
               <CardDescription>
-                {t('communication.recentBroadcasts')}
+                {t('admin.communication.broadcastHistory')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               {broadcasts.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">
                   <Megaphone className="h-8 w-8 mx-auto mb-2" />
-                  <p>{t('communication.noBroadcastsYet')}</p>
+                  <p>{t('admin.communication.noBroadcastsYet')}</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -553,15 +553,15 @@ export const AdminCommunicationCenter = () => {
         <TabsContent value="templates">
           <Card>
             <CardHeader>
-              <CardTitle>{t('communication.templateLibrary')}</CardTitle>
+              <CardTitle>{t('admin.communication.templateLibrary')}</CardTitle>
               <CardDescription>
-                {t('communication.manageEmailTemplates')}
+                {t('admin.communication.manageEmailTemplates')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="text-center py-12 text-muted-foreground">
                 <Mail className="h-12 w-12 mx-auto mb-4" />
-                <p>{t('communication.noTemplatesYet')}</p>
+                <p>{t('admin.communication.noTemplatesYet')}</p>
               </div>
             </CardContent>
           </Card>

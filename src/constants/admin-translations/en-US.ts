@@ -26,6 +26,86 @@ export const adminTranslationsEN = {
   subscriptions: "Subscriptions",
   supportTickets: "Support Tickets",
   communications: "Communications",
+  communication: {
+    center: "Communication Center",
+    centerDescription: "Manage all communication channels and broadcast messages",
+    notifications: "Notifications",
+    broadcastMessages: "Broadcast Messages", 
+    emailTemplates: "Email Templates",
+    loadingCenter: "Loading communication center...",
+    
+    // User Audience Types
+    allUsers: "All Users",
+    clientsOnly: "Clients Only",
+    vendorsOnly: "Vendors Only", 
+    pendingVerification: "Pending Verification",
+    inactiveUsers: "Inactive Users",
+    
+    // Priority Levels
+    lowPriority: "Low Priority",
+    mediumPriority: "Medium Priority",
+    highPriority: "High Priority",
+    urgentPriority: "Urgent Priority",
+    urgent: "Urgent",
+    high: "High",
+    medium: "Medium", 
+    low: "Low",
+    
+    // Status Types
+    sent: "Sent",
+    draft: "Draft",
+    scheduled: "Scheduled",
+    failed: "Failed",
+    
+    // Actions
+    markAllRead: "Mark All as Read",
+    sendBroadcastMessage: "Send Broadcast Message",
+    sendMessage: "Send Message",
+    
+    // Form Elements
+    messageTitle: "Message Title",
+    titlePlaceholder: "Enter message title...",
+    targetAudience: "Target Audience",
+    messageContent: "Message Content",
+    messagePlaceholder: "Enter your broadcast message here...",
+    priorityLevel: "Priority Level",
+    
+    // Search and Filters
+    searchNotifications: "Search notifications...",
+    allTypes: "All Types",
+    offerReceived: "Offer Received", 
+    requestCreated: "Request Created",
+    orderUpdate: "Order Update",
+    system: "System",
+    
+    // Messages and Toasts
+    success: "Success",
+    error: "Error",
+    broadcastCreated: "Broadcast message created successfully",
+    broadcastFailed: "Failed to create broadcast message",
+    allMarkedRead: "All notifications marked as read",
+    
+    // Metrics
+    totalSent: "Total Sent",
+    unread: "Unread",
+    activeUsers: "Active Users",
+    readRate: "Read Rate",
+    
+    // Empty States
+    noNotificationsFound: "No notifications found",
+    adjustSearchCriteria: "Try adjusting your search criteria",
+    notificationsWillAppear: "All notifications will appear here",
+    noBroadcastsYet: "No broadcast messages sent yet",
+    noTemplatesYet: "No email templates created yet",
+    
+    // Miscellaneous
+    unknownUser: "Unknown User",
+    sendMessageToGroups: "Send message to specific user groups",
+    recentBroadcasts: "Recent Broadcasts",
+    broadcastHistory: "View and manage broadcast message history",
+    templateLibrary: "Template Library",
+    manageEmailTemplates: "Manage and customize email templates"
+  },
   settings: "Settings",
   profile: "Profile",
   navigateTo: "Navigate to",
@@ -902,7 +982,7 @@ export const adminTranslationsEN = {
   },
 
   // Communication Management
-  communication: {
+  communicationManagement: {
     title: "Communication Center",
     description: "Manage platform communications",
     emailCampaigns: "Email Campaigns",
