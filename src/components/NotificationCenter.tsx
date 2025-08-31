@@ -5,10 +5,12 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { useRealTimeNotifications } from '@/hooks/useRealTimeNotifications';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { formatDistanceToNow } from 'date-fns';
 
 export const NotificationCenter = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useLanguage();
   const {
     notifications,
     unreadCount,
@@ -65,7 +67,7 @@ export const NotificationCenter = () => {
           <div className="flex items-center justify-between">
             <SheetTitle className="flex items-center gap-2">
               <Bell className="h-5 w-5" />
-              Notifications
+              {t('admin.notifications.title')}
             </SheetTitle>
             {unreadCount > 0 && (
               <Button 
@@ -75,7 +77,7 @@ export const NotificationCenter = () => {
                 className="text-xs"
               >
                 <Check className="h-3 w-3 mr-1" />
-                Mark all read
+                {t('admin.notifications.markAllRead')}
               </Button>
             )}
           </div>
@@ -89,8 +91,8 @@ export const NotificationCenter = () => {
           ) : notifications.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
               <Bell className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p>No notifications yet</p>
-              <p className="text-sm">We'll notify you when something happens!</p>
+              <p>{t('admin.notifications.noNotifications')}</p>
+              <p className="text-sm">{t('admin.notifications.notifyWhenHappen')}</p>
             </div>
           ) : (
             <ScrollArea className="h-[calc(100vh-140px)]">

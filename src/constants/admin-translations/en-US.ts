@@ -26,6 +26,76 @@ export const adminTranslationsEN = {
   subscriptions: "Subscriptions",
   supportTickets: "Support Tickets",
   communications: "Communications",
+  communicationCenter: "Communication Center",
+  communicationCenterDescription: "Manage all communication channels and broadcast messages",
+
+  // Notifications Center
+  notifications: {
+    title: "Notifications",
+    markAllRead: "Mark all read",
+    noNotifications: "No notifications yet",
+    notifyWhenHappen: "We'll notify you when something happens!",
+    totalNotifications: "Total Notifications",
+    sentToday: "Sent Today",
+    pending: "Pending",
+    openRate: "Open Rate",
+    allTime: "All Time",
+    lastDay: "Last Day",
+    scheduled: "Scheduled",
+    average: "Average",
+    searchPlaceholder: "Search notifications...",
+    statusFilter: "Filter by status",
+    priorityFilter: "Filter by priority",
+    createNotification: "Create Notification",
+    create: "Create",
+    sendNow: "Send Now",
+    editSchedule: "Edit Schedule",
+    
+    // Form fields
+    titleLabel: "Title",
+    titlePlaceholder: "Enter notification title",
+    typeLabel: "Type",
+    messageLabel: "Message",
+    messagePlaceholder: "Enter notification message",
+    priorityLabel: "Priority",
+    targetAudienceLabel: "Target Audience",
+    scheduleLabel: "Schedule",
+    
+    // Types
+    announcement: "Announcement",
+    alert: "Alert",
+    promotion: "Promotion",
+    system: "System",
+    
+    // Status
+    draft: "Draft",
+    sent: "Sent",
+    
+    // Priority
+    low: "Low",
+    medium: "Medium",
+    high: "High",
+    critical: "Critical",
+    
+    // Audiences
+    allUsers: "All Users",
+    clientsOnly: "Clients Only",
+    vendorsOnly: "Vendors Only",
+    adminsOnly: "Admins Only",
+    
+    // Messages
+    success: "Success",
+    error: "Error",
+    createSuccess: "Notification created successfully",
+    createError: "Failed to create notification",
+    sendSuccess: "Notification sent successfully",
+    sendError: "Failed to send notification",
+    
+    // Empty states
+    noNotificationsFound: "No notifications found",
+    tryAdjustingFilters: "Try adjusting your filters",
+    createFirstNotification: "Create your first notification"
+  },
   communication: {
     center: "Communication Center",
     centerDescription: "Manage all communication channels and broadcast messages",

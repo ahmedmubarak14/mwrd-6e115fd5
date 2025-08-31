@@ -26,6 +26,76 @@ export const adminTranslationsAR = {
   subscriptions: "الاشتراكات",
   supportTickets: "تذاكر الدعم",
   communications: "الاتصالات",
+  communicationCenter: "مركز الاتصالات",
+  communicationCenterDescription: "إدارة جميع قنوات الاتصال والرسائل الجماعية",
+
+  // مركز الإشعارات
+  notifications: {
+    title: "الإشعارات",
+    markAllRead: "تحديد الكل كمقروء",
+    noNotifications: "لا توجد إشعارات بعد",
+    notifyWhenHappen: "سنقوم بإشعارك عند حدوث شيء!",
+    totalNotifications: "إجمالي الإشعارات",
+    sentToday: "تم الإرسال اليوم",
+    pending: "معلق",
+    openRate: "معدل الفتح",
+    allTime: "جميع الأوقات",
+    lastDay: "اليوم الماضي",
+    scheduled: "مجدول",
+    average: "متوسط",
+    searchPlaceholder: "البحث في الإشعارات...",
+    statusFilter: "تصفية حسب الحالة",
+    priorityFilter: "تصفية حسب الأولوية",
+    createNotification: "إنشاء إشعار",
+    create: "إنشاء",
+    sendNow: "إرسال الآن",
+    editSchedule: "تعديل الجدولة",
+    
+    // حقول النموذج
+    titleLabel: "العنوان",
+    titlePlaceholder: "أدخل عنوان الإشعار",
+    typeLabel: "النوع",
+    messageLabel: "الرسالة",
+    messagePlaceholder: "أدخل رسالة الإشعار",
+    priorityLabel: "الأولوية",
+    targetAudienceLabel: "الجمهور المستهدف",
+    scheduleLabel: "الجدولة",
+    
+    // الأنواع
+    announcement: "إعلان",
+    alert: "تنبيه",
+    promotion: "ترويج",
+    system: "نظام",
+    
+    // الحالة
+    draft: "مسودة",
+    sent: "تم الإرسال",
+    
+    // الأولوية
+    low: "منخفض",
+    medium: "متوسط",
+    high: "عالي",
+    critical: "حرج",
+    
+    // الجماهير
+    allUsers: "جميع المستخدمين",
+    clientsOnly: "العملاء فقط",
+    vendorsOnly: "الموردون فقط",
+    adminsOnly: "المديرون فقط",
+    
+    // الرسائل
+    success: "نجح",
+    error: "خطأ",
+    createSuccess: "تم إنشاء الإشعار بنجاح",
+    createError: "فشل في إنشاء الإشعار",
+    sendSuccess: "تم إرسال الإشعار بنجاح",
+    sendError: "فشل في إرسال الإشعار",
+    
+    // الحالات الفارغة
+    noNotificationsFound: "لم يتم العثور على إشعارات",
+    tryAdjustingFilters: "حاول تعديل المرشحات",
+    createFirstNotification: "أنشئ أول إشعار لك"
+  },
   communication: {
     center: "مركز الاتصالات",
     centerDescription: "إدارة جميع قنوات الاتصال والرسائل المرسلة",
