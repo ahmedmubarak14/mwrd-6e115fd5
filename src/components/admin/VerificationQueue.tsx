@@ -37,7 +37,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
 import { generateDocumentSignedUrl, verifyFileExists, extractFilePath } from '@/utils/documentStorage';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
 interface VerificationRequest {
@@ -75,12 +75,7 @@ export const VerificationQueue = () => {
   const [bulkAction, setBulkAction] = useState<'approve' | 'reject' | null>(null);
   const [bulkNotes, setBulkNotes] = useState('');
   const { showSuccess, showError } = useToastFeedback();
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL, formatDate } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false,
-    formatDate: (date: Date) => date.toLocaleDateString()
-  };
+  const { t, isRTL, formatDate } = useLanguage();
 
   // Memoized filtered and sorted requests
   const filteredAndSortedRequests = useMemo(() => {
