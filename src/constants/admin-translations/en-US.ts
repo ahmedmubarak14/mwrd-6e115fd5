@@ -1523,4 +1523,160 @@ export const adminTranslationsEN = {
     campaignSendFailed: "Failed to send campaign"
   },
 
+  // Category Management
+  categoryManagement: {
+    // Page title and description
+    title: "Category Management",
+    description: "Manage product categories, subcategories, and their hierarchical relationships",
+    
+    // Access control
+    accessDenied: "Access Denied",
+    adminOnly: "This page is only accessible to administrators.",
+    
+    // Loading states
+    loading: "Loading categories...",
+    loadError: "Failed to load categories",
+    
+    // View modes
+    viewMode: "View Mode",
+    treeView: "Tree View",
+    tableView: "Table View",
+    
+    // Search and filters
+    searchPlaceholder: "Search categories...",
+    filterStatus: "Filter by Status",
+    allStatuses: "All Statuses",
+    active: "Active",
+    inactive: "Inactive",
+    filterParent: "Filter by Parent",
+    allCategories: "All Categories",
+    rootCategories: "Root Categories Only",
+    clearFilters: "Clear Filters",
+    
+    // Category actions
+    addCategory: "Add Category",
+    addSubcategory: "Add Subcategory",
+    editCategory: "Edit Category",
+    deleteCategory: "Delete Category",
+    activateCategory: "Activate Category",
+    deactivateCategory: "Deactivate Category",
+    
+    // Bulk actions
+    bulkActions: "Bulk Actions",
+    selectedItems: "selected items",
+    selectAll: "Select All",
+    deselectAll: "Deselect All",
+    bulkActivate: "Activate Selected",
+    bulkDeactivate: "Deactivate Selected",
+    bulkDelete: "Delete Selected",
+    
+    // Table headers
+    category: "Category",
+    nameEn: "Name (EN)",
+    nameAr: "Name (AR)",
+    slug: "Slug",
+    parent: "Parent Category",
+    status: "Status",
+    subcategories: "Subcategories",
+    sortOrder: "Sort Order",
+    actions: "Actions",
+    
+    // Analytics and stats
+    analytics: "Analytics",
+    totalCategories: "Total Categories",
+    parentCategories: "Parent Categories",
+    subcategoriesCount: "Subcategories",
+    activeCategories: "Active Categories",
+    inactiveCategories: "Inactive Categories",
+    
+    // Form fields
+    categoryNameEn: "Category Name (English)",
+    categoryNameEnPlaceholder: "Enter category name in English",
+    categoryNameAr: "Category Name (Arabic)",
+    categoryNameArPlaceholder: "Enter category name in Arabic",
+    categorySlug: "Category Slug",
+    categorySlugPlaceholder: "category-slug-example",
+    parentCategory: "Parent Category",
+    selectParent: "Select parent category",
+    noParent: "No Parent (Root Category)",
+    categoryStatus: "Status",
+    categoryActive: "Active",
+    categoryInactive: "Inactive",
+    sortOrderLabel: "Sort Order",
+    sortOrderPlaceholder: "0",
+    
+    // Validation messages
+    nameEnRequired: "English name is required",
+    nameArRequired: "Arabic name is required",
+    slugRequired: "Slug is required",
+    slugInvalid: "Slug must contain only lowercase letters, numbers, and hyphens",
+    slugExists: "This slug already exists",
+    sortOrderNumber: "Sort order must be a number",
+    
+    // CRUD operations
+    createCategory: "Create Category",
+    updateCategory: "Update Category",
+    deleteConfirmTitle: "Delete Category",
+    deleteConfirmMessage: "Are you sure you want to delete this category? This action cannot be undone.",
+    deleteWithSubcategories: "This category has subcategories. Deleting it will also delete all subcategories.",
+    
+    // Success messages
+    categoryCreated: "Category created successfully",
+    categoryUpdated: "Category updated successfully",
+    categoryDeleted: "Category deleted successfully",
+    categoryActivated: "Category activated successfully",
+    categoryDeactivated: "Category deactivated successfully",
+    bulkActionSuccess: "Bulk action completed successfully",
+    
+    // Error messages
+    createError: "Failed to create category",
+    updateError: "Failed to update category",
+    deleteError: "Failed to delete category",
+    fetchError: "Failed to fetch categories",
+    bulkActionError: "Failed to perform bulk action",
+    
+    // Export functionality
+    exportCategories: "Export Categories",
+    exportToCsv: "Export to CSV",
+    exportSuccess: "Categories exported successfully",
+    exportError: "Failed to export categories",
+    
+    // Tree view specific
+    expandAll: "Expand All",
+    collapseAll: "Collapse All",
+    expand: "Expand",
+    collapse: "Collapse",
+    
+    // Empty states
+    noCategories: "No categories found",
+    noCategoriesMatch: "No categories match your search criteria",
+    createFirstCategory: "Create your first category to get started",
+    
+    // Modal actions
+    save: "Save",
+    cancel: "Cancel",
+    close: "Close",
+    
+    // Confirmation dialogs
+    confirmBulkDelete: "Are you sure you want to delete the selected categories?",
+    confirmBulkActivate: "Are you sure you want to activate the selected categories?",
+    confirmBulkDeactivate: "Are you sure you want to deactivate the selected categories?",
+    bulkDeleteWarning: "This will permanently delete {count} categories and their subcategories.",
+    
+    // Status indicators
+    statusActive: "Active",
+    statusInactive: "Inactive",
+    
+    // Navigation breadcrumbs
+    home: "Home",
+    admin: "Admin",
+    
+    // Miscellaneous
+    refresh: "Refresh",
+    reset: "Reset",
+    apply: "Apply",
+    showMore: "Show More",
+    showLess: "Show Less"
+  }
+
 };

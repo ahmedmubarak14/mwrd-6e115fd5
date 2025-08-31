@@ -1404,4 +1404,160 @@ export const adminTranslationsAR = {
     campaignSendFailed: "فشل في إرسال الحملة"
   },
 
+  // إدارة الفئات
+  categoryManagement: {
+    // عنوان الصفحة والوصف
+    title: "إدارة الفئات",
+    description: "إدارة فئات المنتجات والفئات الفرعية والعلاقات الهرمية بينها",
+    
+    // التحكم في الوصول
+    accessDenied: "تم رفض الوصول",
+    adminOnly: "هذه الصفحة متاحة فقط للمديرين.",
+    
+    // حالات التحميل
+    loading: "جاري تحميل الفئات...",
+    loadError: "فشل في تحميل الفئات",
+    
+    // أوضاع العرض
+    viewMode: "وضع العرض",
+    treeView: "عرض شجري",
+    tableView: "عرض جدولي",
+    
+    // البحث والمرشحات
+    searchPlaceholder: "البحث في الفئات...",
+    filterStatus: "تصفية حسب الحالة",
+    allStatuses: "جميع الحالات",
+    active: "نشط",
+    inactive: "غير نشط",
+    filterParent: "تصفية حسب الفئة الأساسية",
+    allCategories: "جميع الفئات",
+    rootCategories: "الفئات الجذرية فقط",
+    clearFilters: "مسح المرشحات",
+    
+    // إجراءات الفئات
+    addCategory: "إضافة فئة",
+    addSubcategory: "إضافة فئة فرعية",
+    editCategory: "تحرير الفئة",
+    deleteCategory: "حذف الفئة",
+    activateCategory: "تفعيل الفئة",
+    deactivateCategory: "إلغاء تفعيل الفئة",
+    
+    // الإجراءات المجمعة
+    bulkActions: "الإجراءات المجمعة",
+    selectedItems: "عناصر محددة",
+    selectAll: "تحديد الكل",
+    deselectAll: "إلغاء تحديد الكل",
+    bulkActivate: "تفعيل المحدد",
+    bulkDeactivate: "إلغاء تفعيل المحدد",
+    bulkDelete: "حذف المحدد",
+    
+    // رؤوس الجدول
+    category: "الفئة",
+    nameEn: "الاسم (إنجليزي)",
+    nameAr: "الاسم (عربي)",
+    slug: "الرابط المختصر",
+    parent: "الفئة الأساسية",
+    status: "الحالة",
+    subcategories: "الفئات الفرعية",
+    sortOrder: "ترتيب الفرز",
+    actions: "الإجراءات",
+    
+    // التحليلات والإحصائيات
+    analytics: "التحليلات",
+    totalCategories: "إجمالي الفئات",
+    parentCategories: "الفئات الأساسية",
+    subcategoriesCount: "الفئات الفرعية",
+    activeCategories: "الفئات النشطة",
+    inactiveCategories: "الفئات غير النشطة",
+    
+    // حقول النموذج
+    categoryNameEn: "اسم الفئة (إنجليزي)",
+    categoryNameEnPlaceholder: "أدخل اسم الفئة بالإنجليزية",
+    categoryNameAr: "اسم الفئة (عربي)",
+    categoryNameArPlaceholder: "أدخل اسم الفئة بالعربية",
+    categorySlug: "الرابط المختصر للفئة",
+    categorySlugPlaceholder: "مثال-رابط-الفئة",
+    parentCategory: "الفئة الأساسية",
+    selectParent: "اختر الفئة الأساسية",
+    noParent: "بدون فئة أساسية (فئة جذرية)",
+    categoryStatus: "الحالة",
+    categoryActive: "نشط",
+    categoryInactive: "غير نشط",
+    sortOrderLabel: "ترتيب الفرز",
+    sortOrderPlaceholder: "0",
+    
+    // رسائل التحقق
+    nameEnRequired: "الاسم الإنجليزي مطلوب",
+    nameArRequired: "الاسم العربي مطلوب",
+    slugRequired: "الرابط المختصر مطلوب",
+    slugInvalid: "يجب أن يحتوي الرابط المختصر على أحرف صغيرة وأرقام وشرطات فقط",
+    slugExists: "هذا الرابط المختصر موجود بالفعل",
+    sortOrderNumber: "ترتيب الفرز يجب أن يكون رقمًا",
+    
+    // عمليات CRUD
+    createCategory: "إنشاء فئة",
+    updateCategory: "تحديث الفئة",
+    deleteConfirmTitle: "حذف الفئة",
+    deleteConfirmMessage: "هل أنت متأكد من رغبتك في حذف هذه الفئة؟ لا يمكن التراجع عن هذا الإجراء.",
+    deleteWithSubcategories: "هذه الفئة تحتوي على فئات فرعية. حذفها سيؤدي أيضًا إلى حذف جميع الفئات الفرعية.",
+    
+    // رسائل النجاح
+    categoryCreated: "تم إنشاء الفئة بنجاح",
+    categoryUpdated: "تم تحديث الفئة بنجاح",
+    categoryDeleted: "تم حذف الفئة بنجاح",
+    categoryActivated: "تم تفعيل الفئة بنجاح",
+    categoryDeactivated: "تم إلغاء تفعيل الفئة بنجاح",
+    bulkActionSuccess: "تم تنفيذ الإجراء المجمع بنجاح",
+    
+    // رسائل الخطأ
+    createError: "فشل في إنشاء الفئة",
+    updateError: "فشل في تحديث الفئة",
+    deleteError: "فشل في حذف الفئة",
+    fetchError: "فشل في جلب الفئات",
+    bulkActionError: "فشل في تنفيذ الإجراء المجمع",
+    
+    // وظيفة التصدير
+    exportCategories: "تصدير الفئات",
+    exportToCsv: "تصدير إلى CSV",
+    exportSuccess: "تم تصدير الفئات بنجاح",
+    exportError: "فشل في تصدير الفئات",
+    
+    // خاص بالعرض الشجري
+    expandAll: "توسيع الكل",
+    collapseAll: "طي الكل",
+    expand: "توسيع",
+    collapse: "طي",
+    
+    // الحالات الفارغة
+    noCategories: "لم يتم العثور على فئات",
+    noCategoriesMatch: "لا توجد فئات تطابق معايير البحث",
+    createFirstCategory: "أنشئ أول فئة لك للبدء",
+    
+    // إجراءات النافذة المنبثقة
+    save: "حفظ",
+    cancel: "إلغاء",
+    close: "إغلاق",
+    
+    // نوافذ التأكيد
+    confirmBulkDelete: "هل أنت متأكد من رغبتك في حذف الفئات المحددة؟",
+    confirmBulkActivate: "هل أنت متأكد من رغبتك في تفعيل الفئات المحددة؟",
+    confirmBulkDeactivate: "هل أنت متأكد من رغبتك في إلغاء تفعيل الفئات المحددة؟",
+    bulkDeleteWarning: "سيؤدي هذا إلى حذف {count} فئة وفئاتها الفرعية نهائيًا.",
+    
+    // مؤشرات الحالة
+    statusActive: "نشط",
+    statusInactive: "غير نشط",
+    
+    // مسار التنقل
+    home: "الرئيسية",
+    admin: "الإدارة",
+    
+    // متنوع
+    refresh: "تحديث",
+    reset: "إعادة تعيين",
+    apply: "تطبيق",
+    showMore: "إظهار المزيد",
+    showLess: "إظهار أقل"
+  }
+
 };
