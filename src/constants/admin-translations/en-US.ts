@@ -338,16 +338,98 @@ export const adminTranslationsEN = {
 
   // Orders Management
   ordersManagement: {
+    // Page headers
     title: "Orders Management",
-    description: "Track and manage customer orders",
-    searchPlaceholder: "Search orders...",
-    exportOrders: "Export Orders",
-    csvOrderId: "Order ID",
-    csvClient: "Client",
-    csvSupplier: "Supplier", 
-    csvAmount: "Amount",
-    csvStatus: "Status",
-    csvDate: "Date"
+    description: "Track and manage customer orders across the entire platform",
+    
+    // Tab navigation
+    allOrders: "All Orders",
+    pending: "Pending",
+    active: "Active",
+    completed: "Completed",
+    
+    // Analytics cards
+    totalOrders: "Total Orders",
+    completedOrders: "Completed Orders",
+    totalRevenue: "Total Revenue",
+    inProgress: "In Progress",
+    thisMonth: "this month",
+    thisWeek: "this week",
+    average: "Average",
+    pendingCount: "pending",
+    
+    // Filters and search
+    filtersActions: "Filters & Actions",
+    searchPlaceholder: "Search orders by ID, title, client, or vendor...",
+    filterByStatus: "Filter by status",
+    refresh: "Refresh",
+    export: "Export",
+    
+    // Status options
+    allStatus: "All Status",
+    confirmed: "Confirmed",
+    inProgressStatus: "In Progress",
+    cancelled: "Cancelled",
+    disputed: "Disputed",
+    
+    // Bulk operations
+    orderSelected: "order(s) selected",
+    bulkActionPlaceholder: "Choose bulk action...",
+    markAsConfirmed: "Mark as Confirmed",
+    markAsInProgress: "Mark as In Progress",
+    markAsCompleted: "Mark as Completed",
+    markAsCancelled: "Mark as Cancelled",
+    markAsDisputed: "Mark as Disputed",
+    deleteOrders: "Delete Orders",
+    applyAction: "Apply Action",
+    
+    // Bulk confirmations
+    confirmBulkAction: "Confirm Bulk Action",
+    bulkActionConfirm: "Are you sure you want to",
+    bulkActionDelete: "delete",
+    bulkActionUpdate: "update the status of",
+    bulkActionCannotUndo: "This action cannot be undone.",
+    confirm: "Confirm",
+    cancel: "Cancel",
+    
+    // Order details
+    ordersCount: "Orders",
+    selectAll: "Select all",
+    orderDetails: "Order Details",
+    viewAndManage: "View and manage order",
+    orderTitle: "Order Title",
+    status: "Status",
+    client: "Client",
+    vendor: "Vendor",
+    amount: "Amount",
+    created: "Created",
+    notes: "Notes",
+    unknownClient: "Unknown Client",
+    unknownVendor: "Unknown Vendor",
+    
+    // Success/Error messages
+    fetchError: "Failed to load orders. Please try again.",
+    statusUpdated: "Order status updated to",
+    statusUpdateError: "Failed to update order status",
+    deleteSuccess: "Order deleted successfully",
+    deleteError: "Failed to delete order",
+    bulkDeleteSuccess: "orders deleted successfully",
+    bulkUpdateSuccess: "orders updated successfully",
+    bulkActionError: "Failed to perform bulk action",
+    exportSuccess: "orders exported to CSV",
+    dataRefreshed: "Orders data refreshed",
+    
+    // CSV export
+    csvHeaders: "ID,Title,Client,Vendor,Status,Amount,Currency,Date",
+    
+    // Empty states
+    noOrdersFound: "No Orders Found",
+    noOrdersMatch: "No orders match your current filters.",
+    
+    // Actions
+    deleteOrder: "Delete Order",
+    deleteConfirmation: "Are you sure you want to delete this order? This action cannot be undone.",
+    delete: "Delete"
   },
 
   // Projects Management translations

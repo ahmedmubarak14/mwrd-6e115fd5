@@ -338,16 +338,98 @@ export const adminTranslationsAR = {
 
   // إدارة الطلبيات
   ordersManagement: {
-    title: "إدارة الطلبيات",
-    description: "تتبع وإدارة طلبيات العملاء",
-    searchPlaceholder: "البحث في الطلبيات...",
-    exportOrders: "تصدير الطلبيات",
-    csvOrderId: "رقم الطلبية",
-    csvClient: "العميل",
-    csvSupplier: "المورد", 
-    csvAmount: "المبلغ",
-    csvStatus: "الحالة",
-    csvDate: "التاريخ"
+    // Page headers
+    title: "إدارة الطلبات",
+    description: "تتبع وإدارة طلبات العملاء عبر المنصة بأكملها",
+    
+    // Tab navigation
+    allOrders: "جميع الطلبات",
+    pending: "معلق",
+    active: "نشط",
+    completed: "مكتمل",
+    
+    // Analytics cards
+    totalOrders: "إجمالي الطلبات",
+    completedOrders: "الطلبات المكتملة",
+    totalRevenue: "إجمالي الإيرادات",
+    inProgress: "قيد التنفيذ",
+    thisMonth: "هذا الشهر",
+    thisWeek: "هذا الأسبوع",
+    average: "متوسط",
+    pendingCount: "معلق",
+    
+    // Filters and search
+    filtersActions: "المرشحات والإجراءات",
+    searchPlaceholder: "البحث في الطلبات بالمعرف أو العنوان أو العميل أو المورد...",
+    filterByStatus: "تصفية حسب الحالة",
+    refresh: "تحديث",
+    export: "تصدير",
+    
+    // Status options
+    allStatus: "جميع الحالات",
+    confirmed: "مؤكد",
+    inProgressStatus: "قيد التنفيذ",
+    cancelled: "ملغي",
+    disputed: "متنازع عليه",
+    
+    // Bulk operations
+    orderSelected: "طلب محدد",
+    bulkActionPlaceholder: "اختر إجراء جماعي...",
+    markAsConfirmed: "وضع علامة كمؤكد",
+    markAsInProgress: "وضع علامة كقيد التنفيذ",
+    markAsCompleted: "وضع علامة كمكتمل",
+    markAsCancelled: "وضع علامة كملغي",
+    markAsDisputed: "وضع علامة كمتنازع عليه",
+    deleteOrders: "حذف الطلبات",
+    applyAction: "تطبيق الإجراء",
+    
+    // Bulk confirmations
+    confirmBulkAction: "تأكيد الإجراء الجماعي",
+    bulkActionConfirm: "هل أنت متأكد من أنك تريد",
+    bulkActionDelete: "حذف",
+    bulkActionUpdate: "تحديث حالة",
+    bulkActionCannotUndo: "لا يمكن التراجع عن هذا الإجراء.",
+    confirm: "تأكيد",
+    cancel: "إلغاء",
+    
+    // Order details
+    ordersCount: "الطلبات",
+    selectAll: "تحديد الكل",
+    orderDetails: "تفاصيل الطلب",
+    viewAndManage: "عرض وإدارة الطلب",
+    orderTitle: "عنوان الطلب",
+    status: "الحالة",
+    client: "العميل",
+    vendor: "المورد",
+    amount: "المبلغ",
+    created: "تاريخ الإنشاء",
+    notes: "الملاحظات",
+    unknownClient: "عميل غير معروف",
+    unknownVendor: "مورد غير معروف",
+    
+    // Success/Error messages
+    fetchError: "فشل في تحميل الطلبات. يرجى المحاولة مرة أخرى.",
+    statusUpdated: "تم تحديث حالة الطلب إلى",
+    statusUpdateError: "فشل في تحديث حالة الطلب",
+    deleteSuccess: "تم حذف الطلب بنجاح",
+    deleteError: "فشل في حذف الطلب",
+    bulkDeleteSuccess: "تم حذف الطلبات بنجاح",
+    bulkUpdateSuccess: "تم تحديث الطلبات بنجاح",
+    bulkActionError: "فشل في تنفيذ الإجراء الجماعي",
+    exportSuccess: "تم تصدير الطلبات إلى CSV",
+    dataRefreshed: "تم تحديث بيانات الطلبات",
+    
+    // CSV export
+    csvHeaders: "المعرف,العنوان,العميل,المورد,الحالة,المبلغ,العملة,التاريخ",
+    
+    // Empty states
+    noOrdersFound: "لم يتم العثور على طلبات",
+    noOrdersMatch: "لا توجد طلبات تطابق المرشحات الحالية.",
+    
+    // Actions
+    deleteOrder: "حذف الطلب",
+    deleteConfirmation: "هل أنت متأكد من أنك تريد حذف هذا الطلب؟ لا يمكن التراجع عن هذا الإجراء.",
+    delete: "حذف"
   },
 
   // Projects Management translations
