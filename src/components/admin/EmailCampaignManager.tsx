@@ -246,62 +246,62 @@ export const EmailCampaignManager = () => {
                 <DialogTrigger asChild>
                   <Button>
                     <Plus className="h-4 w-4 mr-2" />
-                    New Template
+                    {t('admin.email.newTemplate')}
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
                   <DialogHeader>
-                    <DialogTitle>Create Email Template</DialogTitle>
+                    <DialogTitle>{t('admin.email.createEmailTemplate')}</DialogTitle>
                   </DialogHeader>
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="text-sm font-medium">Template Name</label>
+                        <label className="text-sm font-medium">{t('admin.email.templateName')}</label>
                         <Input
                           value={newTemplate.name}
                           onChange={(e) => setNewTemplate({...newTemplate, name: e.target.value})}
-                          placeholder="Newsletter Template"
+                          placeholder={t('admin.email.templateNamePlaceholder')}
                         />
                       </div>
                       <div>
-                        <label className="text-sm font-medium">Category</label>
+                        <label className="text-sm font-medium">{t('admin.email.category')}</label>
                         <Select value={newTemplate.category} onValueChange={(value) => setNewTemplate({...newTemplate, category: value})}>
                           <SelectTrigger>
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="announcement">Announcement</SelectItem>
-                            <SelectItem value="newsletter">Newsletter</SelectItem>
-                            <SelectItem value="promotion">Promotion</SelectItem>
-                            <SelectItem value="welcome">Welcome</SelectItem>
+                            <SelectItem value="announcement">{t('admin.email.announcement')}</SelectItem>
+                            <SelectItem value="newsletter">{t('admin.email.newsletter')}</SelectItem>
+                            <SelectItem value="promotion">{t('admin.email.promotion')}</SelectItem>
+                            <SelectItem value="welcome">{t('admin.email.welcome')}</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
                     </div>
                     <div>
-                      <label className="text-sm font-medium">Default Subject</label>
+                      <label className="text-sm font-medium">{t('admin.email.defaultSubject')}</label>
                       <Input
                         value={newTemplate.subject}
                         onChange={(e) => setNewTemplate({...newTemplate, subject: e.target.value})}
-                        placeholder="{{company_name}} Weekly Update"
+                        placeholder={t('admin.email.defaultSubjectPlaceholder')}
                       />
                     </div>
                     <div>
-                      <label className="text-sm font-medium">HTML Content</label>
+                      <label className="text-sm font-medium">{t('admin.email.htmlContent')}</label>
                       <Textarea
                         value={newTemplate.html_content}
                         onChange={(e) => setNewTemplate({...newTemplate, html_content: e.target.value})}
-                        placeholder="<!DOCTYPE html><html><body>...</body></html>"
+                        placeholder={t('admin.email.htmlContentPlaceholder')}
                         rows={15}
                         className="font-mono text-sm"
                       />
                     </div>
                     <div className="flex justify-end space-x-2">
                       <Button variant="outline" onClick={() => setIsTemplateDialogOpen(false)}>
-                        Cancel
+                        {t('common.cancel')}
                       </Button>
                       <Button onClick={handleCreateTemplate}>
-                        Create Template
+                        {t('admin.email.createTemplate')}
                       </Button>
                     </div>
                   </div>
