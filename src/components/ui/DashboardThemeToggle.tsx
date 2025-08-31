@@ -25,22 +25,22 @@ export function DashboardThemeToggle() {
         <Button variant="outline" size="sm" className="gap-2">
           <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="hidden sm:inline-block">{t('admin.theme.toggle')}</span>
-          <span className="sr-only">{t('admin.theme.toggleAccessibility')}</span>
+          <span className="hidden sm:inline-block">{t('theme.selectTheme')}</span>
+          <span className="sr-only">{t('theme.selectTheme')}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align={isRTL ? "start" : "end"}>
         <DropdownMenuItem onClick={() => setTheme("light")} className={isRTL ? 'flex-row-reverse' : ''}>
           <Sun className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-          <span>{t('admin.theme.light')}</span>
+          <span>{t('theme.light')}</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")} className={isRTL ? 'flex-row-reverse' : ''}>
           <Moon className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-          <span>{t('admin.theme.dark')}</span>
+          <span>{t('theme.dark')}</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")} className={isRTL ? 'flex-row-reverse' : ''}>
           <Monitor className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-          <span>{t('admin.theme.system')}</span>
+          <span>{t('theme.system')}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

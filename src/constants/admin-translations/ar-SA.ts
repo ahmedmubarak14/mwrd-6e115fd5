@@ -385,16 +385,7 @@ export const adminTranslationsAR = {
     searchFilter: "البحث والتصفية",
     searchByTitle: "البحث بالعنوان أو المورد أو الطلب...",
     allStatuses: "جميع الحالات",
-    filterByStatus: "تصفية حسب الحالة",
-    
-    // إعدادات المظهر
-    theme: {
-      toggle: "المظهر",
-      toggleAccessibility: "تبديل المظهر",
-      light: "فاتح",
-      dark: "داكن",
-      system: "النظام"
-    }
+    filterByStatus: "تصفية حسب الحالة"
   },
 
   // Header and Navigation - الرأسية والتنقل
