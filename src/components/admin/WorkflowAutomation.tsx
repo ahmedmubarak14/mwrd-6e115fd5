@@ -151,6 +151,16 @@ export const WorkflowAutomation = () => {
     );
   }
 
+  // Debug info
+  console.log('Workflow Automation Debug:', {
+    workflows: workflows.length,
+    executions: executions.length,
+    tasks: tasks.length,
+    workflowLoading,
+    tasksLoading,
+    loading
+  });
+
   const activeTasks = getTasksByStatus('pending');
   const overdueTasks = getOverdueTasks();
   const activeWorkflows = workflows.filter(w => w.status === 'active');

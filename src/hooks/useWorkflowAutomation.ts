@@ -60,25 +60,40 @@ export const useWorkflowAutomation = () => {
   const { user } = useAuth();
 
   const fetchWorkflows = async () => {
-    if (!user) return;
+    if (!user) {
+      console.log('No user found, skipping workflow fetch');
+      setLoading(false);
+      return;
+    }
 
     try {
+      console.log('Fetching workflows for user:', user.id);
       const { data, error } = await supabase
         .from('workflow_rules')
         .select('*')
         .order('priority', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error fetching workflows:', error);
+        throw error;
+      }
+      console.log('Fetched workflows:', data?.length || 0);
       setWorkflows((data as WorkflowRule[]) || []);
     } catch (error) {
       console.error('Error fetching workflows:', error);
+      setWorkflows([]);
     }
   };
 
   const fetchExecutions = async () => {
-    if (!user) return;
+    if (!user) {
+      console.log('No user found, skipping executions fetch');
+      setLoading(false);
+      return;
+    }
 
     try {
+      console.log('Fetching workflow executions for user:', user.id);
       const { data, error } = await supabase
         .from('workflow_executions')
         .select(`
@@ -91,10 +106,15 @@ export const useWorkflowAutomation = () => {
         .order('created_at', { ascending: false })
         .limit(50);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error fetching executions:', error);
+        throw error;
+      }
+      console.log('Fetched executions:', data?.length || 0);
       setExecutions((data as WorkflowExecution[]) || []);
     } catch (error) {
       console.error('Error fetching workflow executions:', error);
+      setExecutions([]);
     } finally {
       setLoading(false);
     }
@@ -256,18 +276,28 @@ export const useAutomatedTasks = () => {
   const { user } = useAuth();
 
   const fetchTasks = async () => {
-    if (!user) return;
+    if (!user) {
+      console.log('No user found, skipping tasks fetch');
+      setLoading(false);
+      return;
+    }
 
     try {
+      console.log('Fetching automated tasks for user:', user.id);
       const { data, error } = await supabase
         .from('automated_tasks')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error fetching tasks:', error);
+        throw error;
+      }
+      console.log('Fetched tasks:', data?.length || 0);
       setTasks((data as AutomatedTask[]) || []);
     } catch (error) {
       console.error('Error fetching automated tasks:', error);
+      setTasks([]);
     } finally {
       setLoading(false);
     }
