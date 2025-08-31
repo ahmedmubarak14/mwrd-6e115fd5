@@ -194,7 +194,13 @@ export const adminTranslationsAR = {
     conversationsWillAppear: "ستظهر المحادثات هنا",
     noConversationsMatch: "لا توجد محادثات تطابق البحث",
     noMessagesYet: "لا توجد رسائل بعد",
-    noMessagesInConversation: "لا توجد رسائل في هذه المحادثة"
+    noMessagesInConversation: "لا توجد رسائل في هذه المحادثة",
+    
+    // Announcement keys
+    announcement: "إعلان مهم",
+    announcementMessage: "تحديث جديد للنظام متاح. يرجى التحقق من لوحة التحكم للمزيد من التفاصيل.",
+    announcementSent: "تم إرسال الإعلان بنجاح",
+    announcementError: "فشل في إرسال الإعلان"
   },
   settings: "الإعدادات",
   profile: "الملف الشخصي",
