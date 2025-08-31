@@ -1543,9 +1543,13 @@ export const adminTranslationsEN = {
     tableView: "Table View",
     
     // Search and filters
-    searchPlaceholder: "Search categories...",
+    search: {
+      placeholder: "Search categories...",
+      allStatus: "All Statuses",
+      activeOnly: "Active Only",
+      inactiveOnly: "Inactive Only"
+    },
     filterStatus: "Filter by Status",
-    allStatuses: "All Statuses",
     active: "Active",
     inactive: "Inactive",
     filterParent: "Filter by Parent",
@@ -1569,6 +1573,12 @@ export const adminTranslationsEN = {
     bulkActivate: "Activate Selected",
     bulkDeactivate: "Deactivate Selected",
     bulkDelete: "Delete Selected",
+    
+    // Labels
+    labels: {
+      children: "subcategory",
+      childrenPlural: "subcategories"
+    },
     
     // Table headers
     category: "Category",

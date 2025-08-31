@@ -1424,9 +1424,13 @@ export const adminTranslationsAR = {
     tableView: "عرض جدولي",
     
     // البحث والمرشحات
-    searchPlaceholder: "البحث في الفئات...",
+    search: {
+      placeholder: "البحث في الفئات...",
+      allStatus: "جميع الحالات",
+      activeOnly: "النشط فقط",
+      inactiveOnly: "غير النشط فقط"
+    },
     filterStatus: "تصفية حسب الحالة",
-    allStatuses: "جميع الحالات",
     active: "نشط",
     inactive: "غير نشط",
     filterParent: "تصفية حسب الفئة الأساسية",
@@ -1450,6 +1454,12 @@ export const adminTranslationsAR = {
     bulkActivate: "تفعيل المحدد",
     bulkDeactivate: "إلغاء تفعيل المحدد",
     bulkDelete: "حذف المحدد",
+    
+    // التسميات
+    labels: {
+      children: "فئة فرعية",
+      childrenPlural: "فئات فرعية"
+    },
     
     // رؤوس الجدول
     category: "الفئة",
