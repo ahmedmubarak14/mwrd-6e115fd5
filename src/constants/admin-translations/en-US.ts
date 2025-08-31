@@ -5,6 +5,7 @@
 
 export const adminTranslationsEN = {
   // Header interface
+  searchPlaceholder: "Search admin panel...",
   openMobileMenu: "Open mobile menu",
   collapseSidebar: "Collapse sidebar",
   expandSidebar: "Expand sidebar", 

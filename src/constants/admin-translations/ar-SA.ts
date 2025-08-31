@@ -5,6 +5,7 @@
 
 export const adminTranslationsAR = {
   // Header interface (Arabic)
+  searchPlaceholder: "البحث في لوحة الإدارة...",
   openMobileMenu: "فتح القائمة المحمولة",
   collapseSidebar: "طي الشريط الجانبي",
   expandSidebar: "توسيع الشريط الجانبي",
