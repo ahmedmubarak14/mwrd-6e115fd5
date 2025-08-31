@@ -185,7 +185,15 @@ export const adminTranslationsAR = {
     conversationStartMessage: "ابدأ محادثة جديدة مع فريقك",
     noConversationSelected: "اختر محادثة لعرض الرسائل",
     chooseConversation: "اختر محادثة",
-    inAppChat: "الدردشة داخل التطبيق"
+    inAppChat: "الدردشة داخل التطبيق",
+    
+    // مفاتيح واجهة الدردشة
+    searchConversations: "البحث في المحادثات...",
+    noConversations: "لم يتم العثور على محادثات",
+    conversationsWillAppear: "ستظهر المحادثات هنا",
+    noConversationsMatch: "لا توجد محادثات تطابق البحث",
+    noMessagesYet: "لا توجد رسائل بعد",
+    noMessagesInConversation: "لا توجد رسائل في هذه المحادثة"
   },
   settings: "الإعدادات",
   profile: "الملف الشخصي",

@@ -309,7 +309,15 @@ export const adminTranslationsEN = {
     conversationStartMessage: "Start a new conversation with your team",
     noConversationSelected: "Select a conversation to view messages",
     chooseConversation: "Choose a conversation",
-    inAppChat: "In-App Chat"
+    inAppChat: "In-App Chat",
+    
+    // Chat interface keys
+    searchConversations: "Search conversations...",
+    noConversations: "No conversations found",
+    conversationsWillAppear: "Conversations will appear here",
+    noConversationsMatch: "No conversations match your search",
+    noMessagesYet: "No messages yet",
+    noMessagesInConversation: "No messages in this conversation"
   },
 
 
