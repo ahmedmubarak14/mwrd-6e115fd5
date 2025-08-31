@@ -571,6 +571,15 @@ export const adminTranslationsEN = {
       good: "Good",
       needsImprovement: "Needs Improvement",
       poor: "Poor"
+    },
+    
+    // Theme Settings
+    theme: {
+      toggle: "Theme",
+      toggleAccessibility: "Toggle theme",
+      light: "Light",
+      dark: "Dark",
+      system: "System"
     }
   },
 
