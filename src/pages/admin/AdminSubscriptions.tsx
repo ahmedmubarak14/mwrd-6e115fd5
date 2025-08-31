@@ -89,8 +89,8 @@ export default function AdminSubscriptions() {
     } catch (error: any) {
       console.error('Error fetching subscriptions:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch subscriptions",
+        title: t('common.error'),
+        description: t('admin.subscriptions.fetchError'),
         variant: "destructive"
       });
     } finally {
@@ -114,14 +114,14 @@ export default function AdminSubscriptions() {
       
       await fetchSubscriptions();
       toast({
-        title: "Success",
-        description: "Subscription updated successfully",
+        title: t('common.success'),
+        description: t('admin.subscriptions.updateSuccess'),
       });
     } catch (error: any) {
       console.error('Error updating subscription:', error);
       toast({
-        title: "Error",
-        description: "Failed to update subscription",
+        title: t('common.error'),
+        description: t('admin.subscriptions.updateError'),
         variant: "destructive"
       });
     }
@@ -142,14 +142,14 @@ export default function AdminSubscriptions() {
       
       await fetchSubscriptions();
       toast({
-        title: "Success",
-        description: "Subscription cancelled successfully",
+        title: t('common.success'),
+        description: t('admin.subscriptions.cancelSuccess'),
       });
     } catch (error: any) {
       console.error('Error cancelling subscription:', error);
       toast({
-        title: "Error",
-        description: "Failed to cancel subscription",
+        title: t('common.error'),
+        description: t('admin.subscriptions.cancelError'),
         variant: "destructive"
       });
     }
@@ -181,8 +181,8 @@ export default function AdminSubscriptions() {
       if (error) throw error;
       
       toast({
-        title: "Success",
-        description: `${selectedSubscriptions.length} subscriptions updated`,
+        title: t('common.success'),
+        description: `${selectedSubscriptions.length} ${t('admin.subscriptions.bulkUpdateSuccess')}`,
       });
 
       setSelectedSubscriptions([]);
@@ -191,8 +191,8 @@ export default function AdminSubscriptions() {
     } catch (error: any) {
       console.error('Error with bulk action:', error);
       toast({
-        title: "Error",
-        description: "Bulk action failed",
+        title: t('common.error'),
+        description: t('admin.subscriptions.bulkActionError'),
         variant: "destructive"
       });
     }
@@ -219,16 +219,16 @@ export default function AdminSubscriptions() {
     window.URL.revokeObjectURL(url);
     
     toast({
-      title: "Export completed",
-      description: `${subscriptionsToExport.length} subscriptions exported to CSV`,
+      title: t('admin.subscriptions.exportCompleted'),
+      description: `${subscriptionsToExport.length} ${t('admin.subscriptions.exportDescription')}`,
     });
   };
 
   const handleRefresh = () => {
     fetchSubscriptions();
     toast({
-      title: "Data refreshed",
-      description: "Subscriptions data has been updated",
+      title: t('admin.subscriptions.dataRefreshed'),
+      description: t('admin.subscriptions.dataUpdated'),
     });
   };
 
