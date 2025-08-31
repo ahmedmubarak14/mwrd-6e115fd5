@@ -1,9 +1,8 @@
-import { adminTranslationsEN } from '@/constants/admin-translations/en-US';
 import { adminTranslationsAR } from '@/constants/admin-translations/ar-SA';
 
 export const arSA = {
   ...adminTranslationsAR,
-    common: {
+  common: {
       // ... existing translations
       errors: {
         networkConnection: 'مشكلة في الاتصال بالشبكة. يرجى التحقق من اتصال الإنترنت.',
@@ -168,27 +167,9 @@ export const arSA = {
     emailNotificationsDescription: 'تلقي إشعارات البريد الإلكتروني لأنشطة المشرف',
     auditLogRetention: 'الاحتفاظ بسجل التدقيق (بالأيام)',
     auditLogRetentionDescription: 'مدة الاحتفاظ بسجلات التدقيق',
-    accessDenied: 'تم رفض الوصول'
-  },
-  admin: {
-    ...adminTranslationsAR,
-    // User Management
-    userManagement: "إدارة المستخدمين",
-    userManagementDescription: "إدارة مستخدمي النظام والأدوار والصلاحيات",
-    totalUsers: "إجمالي المستخدمين",
-    activeUsers: "المستخدمون النشطون",
-    pendingUsers: "المستخدمون المعلقون",
-    adminUsers: "المدراء",
-    awaitingApproval: "في انتظار الموافقة",
-    userDistribution: "توزيع المستخدمين",
+    accessDenied: 'تم رفض الوصول',
     
-    // User Status
-    statusPending: "معلق",
-    statusActive: "نشط",
-    statusInactive: "غير نشط",
-    statusBlocked: "محظور",
-    statusApproved: "مُوافق عليه",
-    statusRejected: "مرفوض",
+    // User Status Extensions
     statusSuspended: "معلق",
     
     // User Roles
@@ -200,7 +181,6 @@ export const arSA = {
     
     // Bulk Operations
     bulkActions: "العمليات المجمعة",
-    selectAll: "تحديد الكل",
     selectAllUsers: "تحديد جميع المستخدمين",
     selectedUsersCount: "مستخدم محدد",
     bulkRoleUpdate: "تحديث الدور",
@@ -215,7 +195,6 @@ export const arSA = {
     editUser: "تحرير المستخدم",
     deleteUser: "حذف المستخدم",
     viewProfile: "عرض الملف الشخصي",
-    resetPassword: "إعادة تعيين كلمة المرور",
     sendWelcomeEmail: "إرسال بريد ترحيبي",
     verifyUser: "التحقق من المستخدم",
     blockUser: "حظر المستخدم",
@@ -276,14 +255,14 @@ export const arSA = {
     systemAdministrators: "مديرو النظام",
     filtersAndSearch: "التصفية والبحث",
     allStatus: "جميع الحالات",
-    admin: "مدير",
-    vendor: "مورد",
-    client: "عميل",
-    approved: "معتمد",
-    pending: "معلق",
-    blocked: "محظور",
-    rejected: "مرفوض",
-    refresh: "تحديث",
+    adminRole: "مدير",
+    vendorRole: "مورد",
+    clientRole: "عميل",
+    approvedStatus: "معتمد",
+    pendingStatus: "معلق",
+    blockedStatus: "محظور",
+    rejectedStatus: "مرفوض",
+    refreshData: "تحديث",
     users: "المستخدمون",
     verificationQueueTab: "قائمة انتظار التحقق",
     noUsersMatchFilters: "لا يوجد مستخدمون يطابقون المرشحات الحالية",
@@ -295,11 +274,8 @@ export const arSA = {
     fullNameRequired: "الاسم الكامل *",
     emailRequired: "عنوان البريد الإلكتروني *",
     roleLabel: "الدور",
-    enterFullName: "أدخل الاسم الكامل",
+    enterFullName: "أدخ الاسم الكامل",
     enterEmailAddress: "أدخل عنوان البريد الإلكتروني",
-    clientRole: "عميل",
-    vendorRole: "مورد",
-    adminRole: "مدير",
     enterCompanyNameOptional: "أدخل اسم الشركة (اختياري)",
     enterPhoneOptional: "أدخل رقم الهاتف (اختياري)",
     editUserDescription: "تحديث معلومات المستخدم والإعدادات",
@@ -318,10 +294,6 @@ export const arSA = {
     bulkActionConfirm: "تأكيد العملية المجمعة",
     bulkRoleConfirm: "تحديث الدور إلى '{role}' لـ {count} مستخدم محدد؟",
     bulkStatusConfirm: "تحديث الحالة إلى '{status}' لـ {count} مستخدم محدد؟",
-    pendingStatus: "معلق",
-    approvedStatus: "معتمد",
-    blockedStatus: "محظور",
-    rejectedStatus: "مرفوض",
     newThisMonthAnalytics: "جديد هذا الشهر",
     usersRegisteredAnalytics: "المستخدمون المسجلون",
     activeThisWeekAnalytics: "نشط هذا الأسبوع",
@@ -336,7 +308,7 @@ export const arSA = {
     admins: "المدراء",
     userStatusOverview: "نظرة عامة على حالة المستخدم",
     fetchUsersError: "فشل في جلب المستخدمين",
-    bulkRoleUpdateError: "فشل في تحديث الأدوار",
+    bulkRoleUpdateError: "فشل في تحديث الأدوار"
   },
   error: {
     general: 'حدث خطأ'

@@ -392,6 +392,10 @@ export const adminTranslationsEN = {
   analytics: {
     title: "Platform Analytics",
     description: "Insights and metrics for platform performance",
+    platformAnalytics: "Platform Analytics",
+    monitorDescription: "Monitor platform performance and analytics",
+    performanceMonitor: "Performance Monitor",
+    performanceMonitorDescription: "Monitor system performance and resource usage",
     
     // Time Periods
     last7Days: "Last 7 Days",

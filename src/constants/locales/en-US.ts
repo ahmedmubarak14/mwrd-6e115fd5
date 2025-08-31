@@ -1,9 +1,8 @@
 import { adminTranslationsEN } from '@/constants/admin-translations/en-US';
-import { adminTranslationsAR } from '@/constants/admin-translations/ar-SA';
 
 export const enUS = {
   ...adminTranslationsEN,
-    common: {
+  common: {
       // ... existing translations
       errors: {
         networkConnection: 'Network connection issue. Please check your internet connection.',
@@ -168,27 +167,9 @@ export const enUS = {
     emailNotificationsDescription: 'Receive email notifications for admin activities',
     auditLogRetention: 'Audit Log Retention (days)',
     auditLogRetentionDescription: 'How long to keep audit logs',
-    accessDenied: 'Access Denied'
-  },
-  admin: {
-    ...adminTranslationsEN,
-    // User Management
-    userManagement: "User Management",
-    userManagementDescription: "Manage system users, roles, and permissions",
-    totalUsers: "Total Users",
-    activeUsers: "Active Users",
-    pendingUsers: "Pending Users",
-    adminUsers: "Admin Users",
-    awaitingApproval: "Awaiting Approval",
-    userDistribution: "User Distribution",
+    accessDenied: 'Access Denied',
     
-    // User Status
-    statusPending: "Pending",
-    statusActive: "Active",
-    statusInactive: "Inactive",
-    statusBlocked: "Blocked",
-    statusApproved: "Approved",
-    statusRejected: "Rejected",
+    // User Status Extensions
     statusSuspended: "Suspended",
     
     // User Roles
@@ -200,7 +181,6 @@ export const enUS = {
     
     // Bulk Operations
     bulkActions: "Bulk Actions",
-    selectAll: "Select All",
     selectAllUsers: "Select All Users",
     selectedUsersCount: "users selected",
     bulkRoleUpdate: "Update Role",
@@ -215,7 +195,6 @@ export const enUS = {
     editUser: "Edit User",
     deleteUser: "Delete User",
     viewProfile: "View Profile",
-    resetPassword: "Reset Password",
     sendWelcomeEmail: "Send Welcome Email",
     verifyUser: "Verify User",
     blockUser: "Block User",
@@ -276,14 +255,14 @@ export const enUS = {
     systemAdministrators: "System administrators",
     filtersAndSearch: "Filters & Search",
     allStatus: "All Status",
-    admin: "Admin",
-    vendor: "Vendor",
-    client: "Client",
-    approved: "Approved",
-    pending: "Pending",
-    blocked: "Blocked",
-    rejected: "Rejected",
-    refresh: "Refresh",
+    adminRole: "Admin",
+    vendorRole: "Vendor",
+    clientRole: "Client",
+    approvedStatus: "Approved",
+    pendingStatus: "Pending",
+    blockedStatus: "Blocked",
+    rejectedStatus: "Rejected",
+    refreshData: "Refresh",
     users: "Users",
     verificationQueueTab: "Verification Queue",
     noUsersMatchFilters: "No users match your current filters",
@@ -297,9 +276,6 @@ export const enUS = {
     roleLabel: "Role",
     enterFullName: "Enter full name",
     enterEmailAddress: "Enter email address",
-    clientRole: "Client",
-    vendorRole: "Vendor",
-    adminRole: "Admin",
     enterCompanyNameOptional: "Enter company name (optional)",
     enterPhoneOptional: "Enter phone number (optional)",
     editUserDescription: "Update user information and settings",
@@ -318,10 +294,6 @@ export const enUS = {
     bulkActionConfirm: "Confirm Bulk Action",
     bulkRoleConfirm: "Update role to '{role}' for {count} selected users?",
     bulkStatusConfirm: "Update status to '{status}' for {count} selected users?",
-    pendingStatus: "Pending",
-    approvedStatus: "Approved",
-    blockedStatus: "Blocked",
-    rejectedStatus: "Rejected",
     newThisMonthAnalytics: "New This Month",
     usersRegisteredAnalytics: "Users registered",
     activeThisWeekAnalytics: "Active This Week",
@@ -336,7 +308,7 @@ export const enUS = {
     admins: "Admins",
     userStatusOverview: "User Status Overview",
     fetchUsersError: "Failed to fetch users",
-    bulkRoleUpdateError: "Failed to update roles",
+    bulkRoleUpdateError: "Failed to update roles"
   },
   error: {
     general: 'An error occurred'

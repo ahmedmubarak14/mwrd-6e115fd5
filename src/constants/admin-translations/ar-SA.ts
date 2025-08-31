@@ -393,6 +393,10 @@ export const adminTranslationsAR = {
   analytics: {
     title: "تحليلات المنصة",
     description: "رؤى ومقاييس لأداء المنصة",
+    platformAnalytics: "تحليلات المنصة",
+    monitorDescription: "مراقبة أداء المنصة والتحليلات",
+    performanceMonitor: "مراقب الأداء",
+    performanceMonitorDescription: "مراقبة أداء النظام واستخدام الموارد",
     
     // Time Periods
     last7Days: "آخر ٧ أيام",
