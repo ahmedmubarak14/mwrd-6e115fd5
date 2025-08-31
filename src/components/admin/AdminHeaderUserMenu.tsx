@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
@@ -20,13 +20,7 @@ interface AdminHeaderUserMenuProps {
 export const AdminHeaderUserMenu = ({ userProfile }: AdminHeaderUserMenuProps) => {
   const navigate = useNavigate();
   const { signOut } = useAuth();
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL, language, setLanguage } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false,
-    language: 'en' as const,
-    setLanguage: () => {}
-  };
+  const { t, isRTL, language, setLanguage } = useLanguage();
   const isMobile = useIsMobile();
 
   return (

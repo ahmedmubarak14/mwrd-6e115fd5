@@ -23,7 +23,7 @@ import { BulkApprovalActions } from './BulkApprovalActions';
 import { WorkflowAutomation } from './WorkflowAutomation';
 import { RequestApprovalCard } from './RequestApprovalCard';
 import { OfferApprovalCard } from './OfferApprovalCard';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ApprovalMetrics {
   totalRequests: number;
@@ -53,7 +53,7 @@ interface PendingItem {
 
 export const ApprovalDashboard = () => {
   const { toast } = useToast();
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
   const [metrics, setMetrics] = useState<ApprovalMetrics>({
     totalRequests: 0,
     pendingRequests: 0,

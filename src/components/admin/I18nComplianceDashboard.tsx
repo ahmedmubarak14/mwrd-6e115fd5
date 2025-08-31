@@ -21,7 +21,7 @@ import {
   Languages,
   ShieldCheck
 } from 'lucide-react';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import { 
   ComplianceReport, 
@@ -31,7 +31,7 @@ import {
 } from '@/utils/i18nComplianceValidator';
 
 export const I18nComplianceDashboard = () => {
-  const { t, isRTL } = useOptionalLanguage();
+  const { t, isRTL } = useLanguage();
   const [complianceReport, setComplianceReport] = useState<ComplianceReport | null>(null);
   const [translationCoverage, setTranslationCoverage] = useState<{ missing: string[]; extra: string[] } | null>(null);
   const [loading, setLoading] = useState(false);

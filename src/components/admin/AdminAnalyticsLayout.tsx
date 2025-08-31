@@ -1,4 +1,4 @@
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -29,11 +29,7 @@ export const AdminAnalyticsLayout = ({
   isExporting = false,
   className
 }: AdminAnalyticsLayoutProps) => {
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useLanguage();
 
   return (
     <div className={cn("max-w-7xl mx-auto space-y-6 p-6", className)}>

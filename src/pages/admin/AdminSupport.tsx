@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { MessageSquare, Clock, User, AlertCircle, CheckCircle2, Search } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface SupportTicket {
   id: string;
@@ -37,8 +37,7 @@ export default function AdminSupport() {
   const [response, setResponse] = useState('');
   const { toast } = useToast();
   
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { t: (key: string) => key, isRTL: false };
+  const { t, isRTL } = useLanguage();
 
   useEffect(() => {
     fetchTickets();

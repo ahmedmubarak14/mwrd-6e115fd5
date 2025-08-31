@@ -2,7 +2,7 @@ import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
 interface AdminUserProfileProps {
@@ -15,7 +15,7 @@ export const AdminUserProfile: React.FC<AdminUserProfileProps> = ({
   collapsed = false 
 }) => {
   const { user, userProfile } = useAuth();
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
   
   const displayName = userProfile?.full_name || user?.email?.split('@')[0] || t('admin.users.unknownAdmin');
   const email = user?.email || '';

@@ -24,7 +24,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface FinancialTransaction {
   id: string;
@@ -56,7 +56,7 @@ export default function AdminFinancialTransactions() {
   const [typeFilter, setTypeFilter] = useState('all');
   const { toast } = useToast();
   
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
 
   const fetchTransactions = async () => {
     try {

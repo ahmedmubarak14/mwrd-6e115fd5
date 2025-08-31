@@ -22,7 +22,7 @@ import {
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { useEmailCampaigns } from "@/hooks/useEmailCampaigns";
 import { useToast } from "@/hooks/use-toast";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
 export const EmailCampaignManager = () => {
@@ -36,7 +36,7 @@ export const EmailCampaignManager = () => {
     isLoading 
   } = useEmailCampaigns();
   const { toast } = useToast();
-  const { t, isRTL } = useOptionalLanguage();
+  const { t, isRTL } = useLanguage();
 
   const [activeTab, setActiveTab] = useState("campaigns");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
