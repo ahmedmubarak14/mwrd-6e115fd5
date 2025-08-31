@@ -372,6 +372,8 @@ export const adminTranslationsAR = {
     verificationDocuments: "مستندات التحقق",
     noDocumentsUploaded: "لم يتم رفع مستندات",
     view: "عرض",
+    document: "مستند",
+    noDocuments: "لم يتم رفع أي مستندات",
     registered: "مسجل",
     
     // Messages
@@ -816,7 +818,9 @@ export const adminTranslationsAR = {
     nextScheduledCleanup: 'التنظيف المجدول التالي',
     automaticDataCleanup: 'سيتم تشغيل تنظيف البيانات التلقائي في 15 مارس 2025 الساعة 2:00 صباحاً UTC',
     estimatedRecords: 'السجلات المقدرة للمعالجة: 1,247',
-    configureSchedule: 'تكوين الجدولة'
+    configureSchedule: 'تكوين الجدولة',
+    criticalSecurityAlert: "تنبيه أمني خطير",
+    criticalAlertsDetected: "تنبيه(ات) أمنية خطيرة تم اكتشافها"
   },
 
   // إعدادات الاتصال (موحد)

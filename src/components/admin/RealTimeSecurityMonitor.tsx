@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 
 interface SecurityAlert {
   id: string;
@@ -41,6 +42,7 @@ interface RealTimeMetric {
 
 export const RealTimeSecurityMonitor = () => {
   const { toast } = useToast();
+  const { t } = useOptionalLanguage();
   const [alerts, setAlerts] = useState<SecurityAlert[]>([]);
   const [metrics, setMetrics] = useState<RealTimeMetric[]>([]);
   const [isMonitoring, setIsMonitoring] = useState(true);
@@ -133,8 +135,8 @@ export const RealTimeSecurityMonitor = () => {
       const criticalAlerts = securityAlerts.filter(a => a.severity === 'critical');
       if (criticalAlerts.length > 0) {
         toast({
-          title: 'Critical Security Alert',
-          description: `${criticalAlerts.length} critical security alert(s) detected`,
+          title: t('admin.security.criticalSecurityAlert'),
+          description: `${criticalAlerts.length} ${t('admin.security.criticalAlertsDetected')}`,
           variant: 'destructive'
         });
       }

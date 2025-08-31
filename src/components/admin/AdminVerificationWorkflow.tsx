@@ -342,7 +342,7 @@ export const AdminVerificationWorkflow = () => {
                           <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
                             <div className="flex items-center gap-2">
                               <FileText className="h-4 w-4 text-muted-foreground" />
-                              <span className="font-medium">{doc.name || `Document ${index + 1}`}</span>
+                              <span className="font-medium">{doc.name || `${t('admin.verification.document')} ${index + 1}`}</span>
                             </div>
                             <Button size="sm" variant="outline" asChild>
                               <a href={doc.url} target="_blank" rel="noopener noreferrer">

@@ -372,7 +372,8 @@ export const adminTranslationsEN = {
     verificationDocuments: "Verification Documents",
     noDocumentsUploaded: "No documents uploaded",
     view: "View",
-    registered: "Registered",
+    document: "Document",
+    noDocuments: "No documents uploaded",
     
     // Messages
     statusUpdated: "Status Updated",
@@ -860,7 +861,9 @@ export const adminTranslationsEN = {
     nextScheduledCleanup: 'Next Scheduled Cleanup',
     automaticDataCleanup: 'Automatic data cleanup will run on March 15, 2025 at 2:00 AM UTC',
     estimatedRecords: 'Estimated records to be processed: 1,247',
-    configureSchedule: 'Configure Schedule'
+    configureSchedule: 'Configure Schedule',
+    criticalSecurityAlert: "Critical Security Alert",
+    criticalAlertsDetected: "critical security alert(s) detected"
   },
 
   // Communication Settings (consolidated)
