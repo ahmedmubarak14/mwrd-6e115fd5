@@ -1,8 +1,8 @@
 import { ComprehensiveAdminOverview } from '@/components/admin/ComprehensiveAdminOverview';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const AdminDashboard = () => {
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
   
   return (
     <div className="space-y-6">
@@ -12,7 +12,7 @@ export const AdminDashboard = () => {
           {t('admin.dashboard')}
         </h1>
         <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
-          {t('admin.dashboardDescription')}
+          {t('admin.dashboardData.description')}
         </p>
       </div>
 

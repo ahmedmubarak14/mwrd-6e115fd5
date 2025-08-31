@@ -6,10 +6,7 @@
 export const adminTranslationsEN = {
   // Root level admin keys for navigation
   dashboard: "Admin Dashboard",
-  analytics: "Analytics",
-  performanceMonitor: "Performance Monitor",
-  users: "Users",
-  requests: "Requests",
+  performanceMonitor: "Performance Monitor", 
   offers: "Offers",
   orders: "Orders",
   financialTransactions: "Financial Transactions",
@@ -29,6 +26,32 @@ export const adminTranslationsEN = {
     overview: "Platform Overview",
     quickActions: "Quick Actions",
     quickActionsDesc: "Commonly used admin functions and shortcuts"
+  },
+
+  // Analytics Keys
+  analytics: {
+    title: "Analytics",
+    totalUsers: "Total Users",
+    totalRevenue: "Total Revenue", 
+    pendingApprovals: "Pending Approvals",
+    platformActivity: "Platform Activity",
+    platformActivityDesc: "Overview of platform usage and activity trends",
+    recentActivity: "Recent Activity",
+    recentActivityDescription: "Latest system activities and changes",
+    activityOn: "on",
+    noRecentActivity: "No recent activity"
+  },
+
+  // User Management Keys
+  users: {
+    title: "Users",
+    activeThisMonth: "active this month"
+  },
+
+  // Request Management Keys  
+  requests: {
+    title: "Requests",
+    requiresAdminReview: "Requires admin review"
   },
 
   // Navigation groups

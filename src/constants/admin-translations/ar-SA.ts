@@ -6,10 +6,7 @@
 export const adminTranslationsAR = {
   // مفاتيح الإدارة الجذرية للتنقل
   dashboard: "لوحة تحكم الإدارة",
-  analytics: "التحليلات", 
   performanceMonitor: "مراقب الأداء",
-  users: "المستخدمون",
-  requests: "الطلبات",
   offers: "العروض",
   orders: "الطلبيات",
   financialTransactions: "المعاملات المالية",
@@ -29,6 +26,32 @@ export const adminTranslationsAR = {
     overview: "نظرة عامة على المنصة",
     quickActions: "الإجراءات السريعة",
     quickActionsDesc: "وظائف الإدارة واختصارات الاستخدام الشائع"
+  },
+
+  // مفاتيح التحليلات
+  analytics: {
+    title: "التحليلات",
+    totalUsers: "إجمالي المستخدمين",
+    totalRevenue: "إجمالي الإيرادات", 
+    pendingApprovals: "الموافقات المعلقة",
+    platformActivity: "نشاط المنصة",
+    platformActivityDesc: "نظرة عامة على استخدام المنصة واتجاهات النشاط",
+    recentActivity: "النشاط الحديث",
+    recentActivityDescription: "أحدث أنشطة وتغييرات النظام",
+    activityOn: "على",
+    noRecentActivity: "لا يوجد نشاط حديث"
+  },
+
+  // مفاتيح إدارة المستخدمين
+  users: {
+    title: "المستخدمون",
+    activeThisMonth: "نشط هذا الشهر"
+  },
+
+  // مفاتيح إدارة الطلبات  
+  requests: {
+    title: "الطلبات",
+    requiresAdminReview: "يتطلب مراجعة المدير"
   },
 
   // مجموعات التنقل
