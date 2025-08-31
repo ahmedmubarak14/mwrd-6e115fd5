@@ -360,7 +360,114 @@ export const adminTranslationsAR = {
     updateError: "فشل في تحديث حالة الطلب"
   },
 
-  // مجموعات التنقل
+  // إضافة قسم admin.communication شامل  
+  communication: {
+    title: "الاتصالات",
+    description: "إدارة جميع قنوات الاتصال والمراسلة",
+    overview: "نظرة عامة على الاتصالات",
+    overviewDescription: "مراقبة وإدارة جميع أنشطة الاتصال",
+    
+    // قسم الإشعارات
+    notifications: {
+      title: "الإشعارات",
+      all: "جميع الإشعارات", 
+      unread: "غير مقروءة",
+      read: "مقروءة",
+      markAllAsRead: "تحديد الكل كمقروء",
+      searchNotifications: "البحث في الإشعارات...",
+      filterByType: "تصفية حسب النوع",
+      allTypes: "جميع الأنواع",
+      offerReceived: "تم استلام عرض",
+      requestCreated: "تم إنشاء طلب", 
+      orderUpdate: "تحديث الطلب",
+      system: "النظام",
+      success: "نجح",
+      error: "خطأ",
+      allMarkedRead: "تم تحديد جميع الإشعارات كمقروءة",
+      totalSent: "إجمالي المرسل",
+      unread: "غير مقروء",
+      activeUsers: "المستخدمون النشطون",
+      readRate: "معدل القراءة",
+      noNotificationsFound: "لم يتم العثور على إشعارات",
+      adjustSearchCriteria: "جرب تعديل معايير البحث",
+      notificationsWillAppear: "ستظهر جميع الإشعارات هنا",
+      unknownUser: "مستخدم غير معروف"
+    },
+    
+    // قسم الدردشة
+    chat: {
+      title: "الدردشة المباشرة",
+      conversations: "المحادثات",
+      searchConversations: "البحث في المحادثات...",
+      noConversations: "لا توجد محادثات",
+      noConversationsMatch: "لا توجد محادثات تطابق البحث",
+      conversationsWillAppear: "ستظهر المحادثات هنا",
+      chatPrefix: "دردشة",
+      noMessagesYet: "لا توجد رسائل بعد",
+      online: "متصل",
+      noMessagesInConversation: "لا توجد رسائل في هذه المحادثة",
+      typeMessage: "اكتب رسالة...",
+      noConversationSelected: "لم يتم تحديد محادثة",
+      chooseConversation: "اختر محادثة من الشريط الجانبي لبدء الدردشة"
+    },
+    
+    // قسم البث
+    broadcast: {
+      title: "رسائل البث",
+      createBroadcast: "إنشاء بث",
+      broadcastMessage: "رسالة البث",
+      messageTitle: "عنوان الرسالة",
+      enterTitle: "أدخل عنوان الرسالة...",
+      targetAudience: "الجمهور المستهدف",
+      allUsers: "جميع المستخدمين",
+      clients: "العملاء فقط",
+      vendors: "الموردون فقط", 
+      admins: "المديرون فقط",
+      message: "الرسالة",
+      enterMessage: "أدخل رسالتك...",
+      priority: "الأولوية",
+      low: "منخفض",
+      normal: "عادي",
+      high: "عالي",
+      urgent: "عاجل",
+      sendBroadcast: "إرسال البث",
+      broadcastCreated: "تم إنشاء رسالة البث بنجاح",
+      broadcastFailed: "فشل في إنشاء رسالة البث",
+      recentBroadcasts: "البث الأخير",
+      broadcastHistory: "عرض وإدارة تاريخ رسائل البث",
+      noBroadcastsYet: "لم يتم إرسال رسائل بث بعد",
+      sendMessageToGroups: "إرسال رسالة إلى مجموعات مستخدمين محددة"
+    }
+  },
+
+  // إضافة قسم admin.pushNotifications شامل
+  pushNotifications: {
+    title: "إشعارات الدفع",
+    description: "إدارة إعدادات وحملات إشعارات الدفع",
+    notSupported: "إشعارات الدفع غير مدعومة في هذا المتصفح",
+    requestPermission: "تفعيل الإشعارات",
+    permissionDenied: "الإشعارات معطلة. يرجى تفعيلها في إعدادات المتصفح.",
+    settings: "إعدادات الإشعارات",
+    testNotification: "إرسال إشعار تجريبي",
+    
+    // الفئات
+    categories: {
+      messages: "الرسائل",
+      messagesDescription: "إشعارات للرسائل الجديدة وتحديثات الدردشة",
+      offers: "العروض",
+      offersDescription: "إشعارات للعروض الجديدة وتحديثات المناقصات",
+      requests: "الطلبات", 
+      requestsDescription: "إشعارات للطلبات الجديدة وتغييرات الحالة",
+      marketing: "التسويق",
+      marketingDescription: "الإشعارات الترويجية والتحديثات"
+    },
+    
+    // الإشعار التجريبي
+    testTitle: "إشعار تجريبي",
+    testMessage: "هذا إشعار دفع تجريبي من إدارة MWRD",
+    testSent: "تم إرسال الإشعار التجريبي بنجاح",
+    testFailed: "فشل في إرسال الإشعار التجريبي"
+  },
   groups: {
     overview: "نظرة عامة",
     management: "الإدارة",

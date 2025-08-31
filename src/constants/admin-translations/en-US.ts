@@ -53,7 +53,6 @@ export const adminTranslationsEN = {
     usageByMethod: "Usage by communication method",
     recentActivity: "Recent Activity",
     latestEvents: "Latest communication events",
-    inAppChat: "In-app Chat",
     email: "Email",
     pushNotifications: "Push Notifications",
     sms: "SMS",
@@ -231,7 +230,115 @@ export const adminTranslationsEN = {
     templateLibrary: "Template Library",
     manageEmailTemplates: "Manage and customize email templates"
   },
-  settings: "Settings",
+
+  // Add comprehensive admin.communication section
+  communication: {
+    title: "Communications",
+    description: "Manage all communication channels and messaging",
+    overview: "Communication Overview",
+    overviewDescription: "Monitor and manage all communication activities",
+    
+    // Notifications section
+    notifications: {
+      title: "Notifications",
+      all: "All Notifications",
+      unread: "Unread",
+      read: "Read",
+      markAllAsRead: "Mark All as Read",
+      searchNotifications: "Search notifications...",
+      filterByType: "Filter by type",
+      allTypes: "All Types",
+      offerReceived: "Offer Received", 
+      requestCreated: "Request Created",
+      orderUpdate: "Order Update",
+      system: "System",
+      success: "Success",
+      error: "Error",
+      allMarkedRead: "All notifications marked as read",
+      totalSent: "Total Sent",
+      unread: "Unread",
+      activeUsers: "Active Users",
+      readRate: "Read Rate",
+      noNotificationsFound: "No notifications found",
+      adjustSearchCriteria: "Try adjusting your search criteria",
+      notificationsWillAppear: "All notifications will appear here",
+      unknownUser: "Unknown User"
+    },
+    
+    // Chat section
+    chat: {
+      title: "Live Chat",
+      conversations: "Conversations",
+      searchConversations: "Search conversations...",
+      noConversations: "No conversations", 
+      noConversationsMatch: "No conversations match your search",
+      conversationsWillAppear: "Conversations will appear here",
+      chatPrefix: "Chat",
+      noMessagesYet: "No messages yet",
+      online: "Online",
+      noMessagesInConversation: "No messages in this conversation",
+      typeMessage: "Type a message...",
+      noConversationSelected: "No conversation selected",
+      chooseConversation: "Choose a conversation from the sidebar to start chatting"
+    },
+    
+    // Broadcast section
+    broadcast: {
+      title: "Broadcast Messages",
+      createBroadcast: "Create Broadcast",
+      broadcastMessage: "Broadcast Message",
+      messageTitle: "Message Title",
+      enterTitle: "Enter message title...",
+      targetAudience: "Target Audience", 
+      allUsers: "All Users",
+      clients: "Clients Only",
+      vendors: "Vendors Only",
+      admins: "Admins Only",
+      message: "Message",
+      enterMessage: "Enter your message...",
+      priority: "Priority",
+      low: "Low",
+      normal: "Normal",
+      high: "High",
+      urgent: "Urgent",
+      sendBroadcast: "Send Broadcast",
+      broadcastCreated: "Broadcast message created successfully",
+      broadcastFailed: "Failed to create broadcast message",
+      recentBroadcasts: "Recent Broadcasts",
+      broadcastHistory: "View and manage broadcast message history",
+      noBroadcastsYet: "No broadcast messages sent yet",
+      sendMessageToGroups: "Send message to specific user groups"
+    }
+  },
+
+  // Add comprehensive admin.pushNotifications section
+  pushNotifications: {
+    title: "Push Notifications",
+    description: "Manage push notification settings and campaigns",
+    notSupported: "Push notifications are not supported in this browser",
+    requestPermission: "Enable Notifications",
+    permissionDenied: "Notifications are disabled. Please enable them in your browser settings.",
+    settings: "Notification Settings",
+    testNotification: "Send Test Notification",
+    
+    // Categories
+    categories: {
+      messages: "Messages",
+      messagesDescription: "Notifications for new messages and chat updates",
+      offers: "Offers", 
+      offersDescription: "Notifications for new offers and bid updates",
+      requests: "Requests",
+      requestsDescription: "Notifications for new requests and status changes",
+      marketing: "Marketing",
+      marketingDescription: "Promotional notifications and updates"
+    },
+    
+    // Test notification
+    testTitle: "Test Notification",
+    testMessage: "This is a test push notification from MWRD Admin",
+    testSent: "Test notification sent successfully",
+    testFailed: "Failed to send test notification"
+  },
   profile: "Profile",
   navigateTo: "Navigate to",
   badgeMax: "99+",

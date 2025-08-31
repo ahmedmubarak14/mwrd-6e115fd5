@@ -20,8 +20,10 @@ import {
 import { useRealTimeChat } from "@/hooks/useRealTimeChat";
 import type { Conversation, Message } from "@/hooks/useRealTimeChat";
 import { EmojiPicker } from "@/components/chat/EmojiPicker";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const RealTimeChatSystem = () => {
+  const { t, isRTL } = useLanguage();
   const { 
     conversations, 
     messages, 
@@ -109,21 +111,21 @@ export const RealTimeChatSystem = () => {
   };
 
   return (
-    <div className="flex flex-col lg:grid lg:grid-cols-3 gap-6 h-[700px]">
+    <div className={`flex flex-col lg:grid lg:grid-cols-3 gap-6 h-[700px] ${isRTL ? 'rtl' : 'ltr'}`}>
       {/* Conversations Sidebar */}
       <Card className="lg:col-span-1 h-[300px] lg:h-auto">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg">Conversations</CardTitle>
+            <CardTitle className="text-lg">{t('admin.communication.broadcastMessages')}</CardTitle>
             <Badge variant="secondary">{filteredConversations.length}</Badge>
           </div>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground`} />
             <Input
-              placeholder="Search conversations..."
+              placeholder={t('admin.communication.searchConversations')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
+              className={isRTL ? 'pr-10' : 'pl-10'}
             />
           </div>
         </CardHeader>
@@ -146,9 +148,9 @@ export const RealTimeChatSystem = () => {
             ) : filteredConversations.length === 0 ? (
               <div className="p-8 text-center">
                 <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-lg font-medium mb-2">No conversations</p>
+                <p className="text-lg font-medium mb-2">{t('admin.communication.noConversations')}</p>
                 <p className="text-muted-foreground text-sm">
-                  {searchTerm ? "No conversations match your search" : "Conversations will appear here"}
+                  {searchTerm ? t('admin.communication.noConversationsMatch') : t('admin.communication.conversationsWillAppear')}
                 </p>
               </div>
             ) : (
@@ -174,7 +176,7 @@ export const RealTimeChatSystem = () => {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-1">
                           <h4 className="font-medium text-sm truncate">
-                            Chat {conversation.id.slice(0, 8)}
+                            {t('admin.communication.chatPrefix')} {conversation.id.slice(0, 8)}
                           </h4>
                           {conversation.created_at && (
                             <span className="text-xs text-muted-foreground">
@@ -183,7 +185,7 @@ export const RealTimeChatSystem = () => {
                           )}
                         </div>
                         <p className="text-sm text-muted-foreground truncate">
-                          {conversation.last_message || 'No messages yet'}
+                          {conversation.last_message || t('admin.communication.noMessagesYet')}
                         </p>
                         <Badge variant="secondary" className="mt-1 text-xs">
                           {conversation.status}
@@ -213,10 +215,10 @@ export const RealTimeChatSystem = () => {
                 </Avatar>
                 <div>
                   <h3 className="font-semibold">
-                    Chat {activeConversation?.slice(0, 8)}
+                    {t('admin.communication.chatPrefix')} {activeConversation?.slice(0, 8) || ''}
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    Online
+                    {t('admin.communication.online')}
                   </p>
                 </div>
               </div>
@@ -240,7 +242,7 @@ export const RealTimeChatSystem = () => {
                   {!activeConversation || !messages[activeConversation] || messages[activeConversation].length === 0 ? (
                     <div className="text-center text-muted-foreground py-8">
                       <MessageSquare className="h-8 w-8 mx-auto mb-2" />
-                      <p>No messages in this conversation</p>
+                      <p>{t('admin.communication.noMessagesInConversation')}</p>
                     </div>
                   ) : (
                     messages[activeConversation]?.map((message, index) => (
@@ -296,19 +298,19 @@ export const RealTimeChatSystem = () => {
                     value={messageInput}
                     onChange={(e) => setMessageInput(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Type a message..."
-                    className="pr-10"
+                    placeholder={t('admin.communication.typeMessage')}
+                    className={isRTL ? 'pl-10' : 'pr-10'}
                   />
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
+                    className={`absolute ${isRTL ? 'left-1' : 'right-1'} top-1/2 transform -translate-y-1/2 h-8 w-8 p-0`}
                     onClick={() => setShowEmojiPicker(!showEmojiPicker)}
                   >
                     <Smile className="h-4 w-4" />
                   </Button>
                   {showEmojiPicker && (
-                    <div className="absolute bottom-12 right-0 z-10">
+                    <div className={`absolute bottom-12 ${isRTL ? 'left-0' : 'right-0'} z-10`}>
                       <EmojiPicker onEmojiSelect={handleEmojiSelect} />
                     </div>
                   )}
@@ -323,8 +325,8 @@ export const RealTimeChatSystem = () => {
           <CardContent className="flex-1 flex items-center justify-center">
             <div className="text-center text-muted-foreground">
               <MessageSquare className="h-16 w-16 mx-auto mb-4" />
-              <h3 className="text-lg font-medium mb-2">No conversation selected</h3>
-              <p>Choose a conversation from the sidebar to start chatting</p>
+              <h3 className="text-lg font-medium mb-2">{t('admin.communication.noConversationSelected')}</h3>
+              <p>{t('admin.communication.chooseConversation')}</p>
             </div>
           </CardContent>
         )}
