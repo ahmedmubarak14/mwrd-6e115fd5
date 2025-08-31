@@ -23,7 +23,7 @@ import {
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 import { usePushNotifications } from "@/hooks/usePushNotifications";
 import { useToast } from "@/hooks/use-toast";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const PushNotificationManager = () => {
   const { 
@@ -35,7 +35,7 @@ export const PushNotificationManager = () => {
     isLoading 
   } = usePushNotifications();
   const { toast } = useToast();
-  const { t } = useOptionalLanguage();
+  const { t, isRTL } = useLanguage();
 
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false);
