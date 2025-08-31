@@ -31,6 +31,51 @@ export const adminTranslationsEN = {
   navigateTo: "Navigate to",
   badgeMax: "99+",
   
+  // Subscription Management
+  subscriptionManagement: "Subscription Management",
+  subscriptionManagementDesc: "Manage user subscriptions, plans, and billing across the platform.",
+  allSubscriptions: "All Subscriptions",
+  expiringSoon: "Expiring Soon",
+  expired: "Expired",
+  totalSubscriptions: "Total Subscriptions",
+  thisMonth: "this month", 
+  activeSubscriptions: "Active Subscriptions",
+  monthlyRevenue: "Monthly Revenue",
+  fromActiveSubscriptions: "from active subscriptions",
+  expiredCancelled: "Expired/Cancelled",
+  needAttention: "need attention",
+  planDistribution: "Plan Distribution",
+  filtersActions: "Filters & Actions",
+  searchUsers: "Search users...",
+  allPlans: "All Plans",
+  cancelled: "Cancelled",
+  suspended: "Suspended", 
+  refresh: "Refresh",
+  export: "Export",
+  subscriptionsSelected: "subscriptions selected",
+  bulkAction: "Select bulk action",
+  activateSubscriptions: "Activate Subscriptions",
+  cancelSubscriptions: "Cancel Subscriptions", 
+  changeTo: "Change to",
+  applyAction: "Apply Action",
+  confirmBulkAction: "Confirm Bulk Action",
+  bulkActionWarning: "This action will be applied to all selected subscriptions. This cannot be undone.",
+  subscriptionsList: "Subscriptions List",
+  selectAll: "Select All",
+  noSubscriptionsFound: "No Subscriptions Found",
+  noSubscriptionsMatch: "No subscriptions match your current filters.",
+  expires: "Expires",
+  noExpiry: "No expiry",
+  changeSubscriptionPlan: "Change Subscription Plan", 
+  updateSubscriptionFor: "Update subscription for",
+  subscriptionPlan: "Subscription Plan",
+  selectPlan: "Select plan",
+  extendBy: "Extend by (days)",
+  newExpiryDate: "New expiry date",
+  updateSubscription: "Update Subscription",
+  cancelSubscription: "Cancel Subscription",
+  cancelSubscriptionWarning: "Are you sure you want to cancel this subscription? This action cannot be undone.",
+  
   // Direct sidebar navigation keys (avoiding conflicts)
   sidebarAnalytics: "Analytics",
   sidebarUsers: "Users", 
@@ -1005,5 +1050,20 @@ export const adminTranslationsEN = {
       deleted: "Workflow deleted successfully",
       deleteError: "Failed to delete workflow"
     }
+  },
+
+  // Subscriptions Management Messages
+  subscriptionsMessages: {
+    fetchError: "Failed to load subscriptions",
+    updateSuccess: "Subscription updated successfully",
+    updateError: "Failed to update subscription",
+    cancelSuccess: "Subscription cancelled successfully", 
+    cancelError: "Failed to cancel subscription",
+    bulkUpdateSuccess: "subscriptions updated successfully",
+    bulkActionError: "Failed to execute bulk action",
+    exportCompleted: "Export Completed",
+    exportDescription: "subscriptions exported to CSV",
+    dataRefreshed: "Data Refreshed",
+    dataUpdated: "All data has been updated"
   }
 };

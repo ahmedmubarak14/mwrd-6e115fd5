@@ -31,6 +31,51 @@ export const adminTranslationsAR = {
   navigateTo: "الانتقال إلى",
   badgeMax: "99+",
   
+  // إدارة الاشتراكات
+  subscriptionManagement: "إدارة الاشتراكات", 
+  subscriptionManagementDesc: "إدارة اشتراكات المستخدمين والخطط والفوترة عبر المنصة.",
+  allSubscriptions: "جميع الاشتراكات",
+  expiringSoon: "ينتهي قريباً",
+  expired: "منتهي الصلاحية",
+  totalSubscriptions: "إجمالي الاشتراكات",
+  thisMonth: "هذا الشهر",
+  activeSubscriptions: "الاشتراكات النشطة", 
+  monthlyRevenue: "الإيرادات الشهرية",
+  fromActiveSubscriptions: "من الاشتراكات النشطة",
+  expiredCancelled: "منتهية/ملغاة",
+  needAttention: "تحتاج انتباه",
+  planDistribution: "توزيع الخطط",
+  filtersActions: "المرشحات والإجراءات",
+  searchUsers: "البحث عن مستخدمين...",
+  allPlans: "جميع الخطط",
+  cancelled: "ملغي",
+  suspended: "معلق",
+  refresh: "تحديث",
+  export: "تصدير", 
+  subscriptionsSelected: "اشتراكات محددة",
+  bulkAction: "اختر إجراء مجمع",
+  activateSubscriptions: "تفعيل الاشتراكات",
+  cancelSubscriptions: "إلغاء الاشتراكات",
+  changeTo: "تغيير إلى",
+  applyAction: "تطبيق الإجراء",
+  confirmBulkAction: "تأكيد الإجراء المجمع",
+  bulkActionWarning: "سيتم تطبيق هذا الإجراء على جميع الاشتراكات المحددة. لا يمكن التراجع عن هذا الإجراء.",
+  subscriptionsList: "قائمة الاشتراكات",
+  selectAll: "تحديد الكل",
+  noSubscriptionsFound: "لم يتم العثور على اشتراكات",
+  noSubscriptionsMatch: "لا توجد اشتراكات تطابق المرشحات الحالية.",
+  expires: "ينتهي",
+  noExpiry: "بلا انتهاء",
+  changeSubscriptionPlan: "تغيير خطة الاشتراك",
+  updateSubscriptionFor: "تحديث الاشتراك لـ", 
+  subscriptionPlan: "خطة الاشتراك",
+  selectPlan: "اختر الخطة",
+  extendBy: "تمديد بـ (أيام)",
+  newExpiryDate: "تاريخ الانتهاء الجديد",
+  updateSubscription: "تحديث الاشتراك",
+  cancelSubscription: "إلغاء الاشتراك",
+  cancelSubscriptionWarning: "هل أنت متأكد من رغبتك في إلغاء هذا الاشتراك؟ لا يمكن التراجع عن هذا الإجراء.",
+  
   // مفاتيح التنقل المباشرة للشريط الجانبي (تجنب التضارب)
   sidebarAnalytics: "التحليلات",
   sidebarUsers: "المستخدمون", 
@@ -1005,5 +1050,20 @@ export const adminTranslationsAR = {
       deleted: "تم حذف سير العمل بنجاح",
       deleteError: "فشل في حذف سير العمل"
     }
+  },
+
+  // رسائل إدارة الاشتراكات
+  subscriptionsMessages: {
+    fetchError: "فشل في تحميل الاشتراكات",
+    updateSuccess: "تم تحديث الاشتراك بنجاح",
+    updateError: "فشل في تحديث الاشتراك", 
+    cancelSuccess: "تم إلغاء الاشتراك بنجاح",
+    cancelError: "فشل في إلغاء الاشتراك",
+    bulkUpdateSuccess: "اشتراكات تم تحديثها بنجاح",
+    bulkActionError: "فشل في تنفيذ الإجراء المجمع",
+    exportCompleted: "اكتمل التصدير",
+    exportDescription: "اشتراكات تم تصديرها إلى CSV",
+    dataRefreshed: "تم تحديث البيانات",
+    dataUpdated: "تم تحديث جميع البيانات"
   }
 };

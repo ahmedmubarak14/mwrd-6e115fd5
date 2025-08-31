@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { format, addDays, addMonths, isAfter, isBefore } from "date-fns";
 import { CreditCard, Download, RefreshCw, TrendingUp, Users, Edit, Trash2, Eye, Calendar, DollarSign, Crown, AlertTriangle, Plus, BarChart3, Building } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -52,7 +52,7 @@ export default function AdminSubscriptions() {
   const [newPlan, setNewPlan] = useState<string>("");
   const [newExpiryDays, setNewExpiryDays] = useState<number>(30);
   
-  const { t, isRTL } = useOptionalLanguage();
+  const { t, isRTL } = useLanguage();
 
   const { toast } = useToast();
 
@@ -90,7 +90,7 @@ export default function AdminSubscriptions() {
       console.error('Error fetching subscriptions:', error);
       toast({
         title: t('common.error'),
-        description: t('admin.subscriptions.fetchError'),
+        description: t('admin.subscriptionsMessages.fetchError'),
         variant: "destructive"
       });
     } finally {
@@ -115,13 +115,13 @@ export default function AdminSubscriptions() {
       await fetchSubscriptions();
       toast({
         title: t('common.success'),
-        description: t('admin.subscriptions.updateSuccess'),
+        description: t('admin.subscriptionsMessages.updateSuccess'),
       });
     } catch (error: any) {
       console.error('Error updating subscription:', error);
       toast({
         title: t('common.error'),
-        description: t('admin.subscriptions.updateError'),
+        description: t('admin.subscriptionsMessages.updateError'),
         variant: "destructive"
       });
     }
@@ -143,13 +143,13 @@ export default function AdminSubscriptions() {
       await fetchSubscriptions();
       toast({
         title: t('common.success'),
-        description: t('admin.subscriptions.cancelSuccess'),
+        description: t('admin.subscriptionsMessages.cancelSuccess'),
       });
     } catch (error: any) {
       console.error('Error cancelling subscription:', error);
       toast({
         title: t('common.error'),
-        description: t('admin.subscriptions.cancelError'),
+        description: t('admin.subscriptionsMessages.cancelError'),
         variant: "destructive"
       });
     }
@@ -182,7 +182,7 @@ export default function AdminSubscriptions() {
       
       toast({
         title: t('common.success'),
-        description: `${selectedSubscriptions.length} ${t('admin.subscriptions.bulkUpdateSuccess')}`,
+        description: `${selectedSubscriptions.length} ${t('admin.subscriptionsMessages.bulkUpdateSuccess')}`,
       });
 
       setSelectedSubscriptions([]);
@@ -192,7 +192,7 @@ export default function AdminSubscriptions() {
       console.error('Error with bulk action:', error);
       toast({
         title: t('common.error'),
-        description: t('admin.subscriptions.bulkActionError'),
+        description: t('admin.subscriptionsMessages.bulkActionError'),
         variant: "destructive"
       });
     }
@@ -219,16 +219,16 @@ export default function AdminSubscriptions() {
     window.URL.revokeObjectURL(url);
     
     toast({
-      title: t('admin.subscriptions.exportCompleted'),
-      description: `${subscriptionsToExport.length} ${t('admin.subscriptions.exportDescription')}`,
+      title: t('admin.subscriptionsMessages.exportCompleted'),
+      description: `${subscriptionsToExport.length} ${t('admin.subscriptionsMessages.exportDescription')}`,
     });
   };
 
   const handleRefresh = () => {
     fetchSubscriptions();
     toast({
-      title: t('admin.subscriptions.dataRefreshed'),
-      description: t('admin.subscriptions.dataUpdated'),
+      title: t('admin.subscriptionsMessages.dataRefreshed'),
+      description: t('admin.subscriptionsMessages.dataUpdated'),
     });
   };
 
