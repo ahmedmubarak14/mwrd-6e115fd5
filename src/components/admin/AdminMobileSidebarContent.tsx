@@ -30,11 +30,7 @@ interface AdminMobileSidebarContentProps {
 export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarContentProps) => {
   const location = useLocation();
   const { getPendingTicketsCount } = useSupportTickets();
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useOptionalLanguage();
   const pendingTickets = getPendingTicketsCount();
 
   // Use the same navigation structure as desktop sidebar
