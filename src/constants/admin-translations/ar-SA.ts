@@ -638,6 +638,86 @@ export const adminTranslationsAR = {
     created: "تم الإنشاء بنجاح"
   },
 
+  // إدارة العروض
+  offersManagement: {
+    // رؤوس الصفحات
+    title: "إدارة العروض",
+    description: "مراقبة وإدارة عروض الموردين لطلبات العملاء",
+    
+    // بطاقات المقاييس الرئيسية
+    totalOffers: "إجمالي العروض",
+    pendingApproval: "في انتظار الموافقة",
+    conversionRate: "معدل التحويل",
+    averagePrice: "متوسط السعر",
+    avgResponseTime: "متوسط وقت الاستجابة",
+    highPriority: "أولوية عالية",
+    requiresAttention: "يتطلب انتباه",
+    acrossAllOffers: "عبر جميع العروض",
+    offersAcceptedByClients: "العروض المقبولة من العملاء",
+    vendorResponseTime: "وقت استجابة المورد",
+    averageResponseTime: "2.3 أيام",
+    
+    // الفلاتر والبحث
+    filtersAndSearch: "الفلاتر والبحث",
+    searchPlaceholder: "البحث في العروض...",
+    clientStatus: "حالة العميل",
+    adminApproval: "موافقة المدير",
+    priceRange: "نطاق السعر",
+    refresh: "تحديث",
+    exportReport: "تصدير التقرير",
+    
+    // خيارات الفلتر
+    allClientStatuses: "جميع حالات العملاء",
+    allAdminApprovals: "جميع موافقات المدير",
+    allPrices: "جميع الأسعار",
+    lessThan10k: "أقل من 10,000 ريال",
+    between10k50k: "10k - 50k ريال",
+    greaterThan50k: "أكثر من 50,000 ريال",
+    
+    // خيارات الحالة
+    pending: "معلق",
+    approved: "موافق عليه",
+    rejected: "مرفوض",
+    
+    // تسميات التبويب
+    allOffers: "جميع العروض",
+    pendingReview: "في انتظار المراجعة",
+    urgent: "عاجل",
+    
+    // تفاصيل العرض
+    price: "السعر",
+    budgetRange: "نطاق الميزانية",
+    deliveryTime: "وقت التسليم",
+    days: "أيام",
+    created: "تم إنشاؤه",
+    status: "الحالة",
+    forRequest: "للطلب",
+    vendor: "المورد",
+    client: "العميل",
+    notSpecified: "غير محدد",
+    
+    // الإجراءات
+    viewDetails: "عرض التفاصيل",
+    initiateDiscussion: "بدء مناقشة",
+    escalateToSupport: "تصعيد للدعم",
+    
+    // الحالات
+    loading: "جارٍ تحميل العروض...",
+    noOffersFound: "لا توجد عروض تطابق معاييرك",
+    
+    // رسائل النجاح
+    approveOfferSuccess: "تم الموافقة على العرض بنجاح",
+    rejectOfferSuccess: "تم رفض العرض بنجاح",
+    escalateSuccess: "تم تصعيد المشكلة للدعم بنجاح",
+    conversationSuccess: "تم بدء المحادثة بنجاح",
+    
+    // رسائل الخطأ
+    loadingOffers: "فشل في تحميل العروض",
+    updateError: "فشل في تحديث حالة العرض",
+    escalateError: "فشل في التصعيد للدعم",
+    conversationError: "فشل في بدء المحادثة"
+  },
+
   // عناصر النموذج
   forms: {
     placeholders: {

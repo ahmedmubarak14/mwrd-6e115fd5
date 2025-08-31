@@ -638,6 +638,86 @@ export const adminTranslationsEN = {
     created: "Created successfully"
   },
 
+  // Offers management
+  offersManagement: {
+    // Page headers
+    title: "Offers Management",
+    description: "Monitor and manage vendor offers for client requests",
+    
+    // Key metrics cards
+    totalOffers: "Total Offers",
+    pendingApproval: "Pending Approval",
+    conversionRate: "Conversion Rate",
+    averagePrice: "Average Price",
+    avgResponseTime: "Avg Response Time",
+    highPriority: "High Priority",
+    requiresAttention: "Requires Attention",
+    acrossAllOffers: "across all offers",
+    offersAcceptedByClients: "offers accepted by clients",
+    vendorResponseTime: "vendor response time",
+    averageResponseTime: "2.3 days",
+    
+    // Filters and search
+    filtersAndSearch: "Filters & Search",
+    searchPlaceholder: "Search offers...",
+    clientStatus: "Client Status",
+    adminApproval: "Admin Approval",
+    priceRange: "Price Range",
+    refresh: "Refresh",
+    exportReport: "Export Report",
+    
+    // Filter options
+    allClientStatuses: "All Client Statuses",
+    allAdminApprovals: "All Admin Approvals",
+    allPrices: "All Prices",
+    lessThan10k: "< 10,000 SAR",
+    between10k50k: "10k - 50k SAR",
+    greaterThan50k: "> 50,000 SAR",
+    
+    // Status options
+    pending: "Pending",
+    approved: "Approved",
+    rejected: "Rejected",
+    
+    // Tab labels
+    allOffers: "All Offers",
+    pendingReview: "Pending Review",
+    urgent: "Urgent",
+    
+    // Offer details
+    price: "Price",
+    budgetRange: "Budget Range",
+    deliveryTime: "Delivery Time",
+    days: "days",
+    created: "Created",
+    status: "Status",
+    forRequest: "For Request",
+    vendor: "Vendor",
+    client: "Client",
+    notSpecified: "Not specified",
+    
+    // Actions
+    viewDetails: "View Details",
+    initiateDiscussion: "Initiate Discussion",
+    escalateToSupport: "Escalate to Support",
+    
+    // States
+    loading: "Loading offers...",
+    noOffersFound: "No offers found matching your criteria",
+    
+    // Success messages
+    approveOfferSuccess: "Offer approved successfully",
+    rejectOfferSuccess: "Offer rejected successfully",
+    escalateSuccess: "Issue escalated to support successfully",
+    conversationSuccess: "Conversation initiated successfully",
+    
+    // Error messages
+    loadingOffers: "Failed to load offers",
+    updateError: "Failed to update offer status",
+    escalateError: "Failed to escalate to support",
+    conversationError: "Failed to initiate conversation"
+  },
+
   // Form Elements
   forms: {
     placeholders: {

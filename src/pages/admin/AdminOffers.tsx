@@ -12,7 +12,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { AdminPageContainer } from '@/components/admin/AdminPageContainer';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
 interface AdminOffer {
@@ -51,11 +51,7 @@ interface AdminOffer {
 const AdminOffers = () => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useLanguage();
   const [offers, setOffers] = useState<AdminOffer[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -480,7 +476,7 @@ const AdminOffers = () => {
                       <p className="text-sm">
                         {offer.request?.budget_min && offer.request?.budget_max
                           ? `${offer.request.budget_min.toLocaleString()} - ${offer.request.budget_max.toLocaleString()}`
-                          : t('admin.requestsManagement.notSpecified')
+                          : t('admin.offersManagement.notSpecified')
                         }
                       </p>
                     </div>
