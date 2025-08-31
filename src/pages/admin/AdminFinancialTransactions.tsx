@@ -24,7 +24,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface FinancialTransaction {
   id: string;
@@ -56,7 +56,7 @@ export default function AdminFinancialTransactions() {
   const [typeFilter, setTypeFilter] = useState('all');
   const { toast } = useToast();
   
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
 
   const fetchTransactions = async () => {
     try {
@@ -83,8 +83,8 @@ export default function AdminFinancialTransactions() {
               type: 'payment',
               status: 'completed',
               amount: 15000,
-              currency: t('financial.currency'),
-              description: t('financial.demoData.paymentForConstruction'),
+              currency: t('admin.financial.currency'),
+              description: t('admin.financial.demoData.paymentForConstruction'),
               reference_id: 'PAY-001',
               user_id: 'demo-user-1',
               order_id: 'order-1',
@@ -102,8 +102,8 @@ export default function AdminFinancialTransactions() {
               type: 'commission',
               status: 'completed',
               amount: 750,
-              currency: t('financial.currency'),
-              description: t('financial.demoData.platformCommission'),
+              currency: t('admin.financial.currency'),
+              description: t('admin.financial.demoData.platformCommission'),
               reference_id: 'COM-001',
               user_id: 'demo-user-2',
               order_id: 'order-1',
@@ -121,8 +121,8 @@ export default function AdminFinancialTransactions() {
               type: 'refund',
               status: 'pending',
               amount: 2500,
-              currency: t('financial.currency'),
-              description: t('financial.demoData.refundForCancelledOrder'),
+              currency: t('admin.financial.currency'),
+              description: t('admin.financial.demoData.refundForCancelledOrder'),
               reference_id: 'REF-001',
               user_id: 'demo-user-3',
               order_id: 'order-3',
@@ -139,8 +139,8 @@ export default function AdminFinancialTransactions() {
           
           setTransactions(demoTransactions);
           toast({
-            title: t('financial.demoMode'),
-            description: t('financial.demoDescription'),
+            title: t('admin.financial.demoMode'),
+            description: t('admin.financial.demoDescription'),
             variant: "default",
           });
           return;
@@ -153,8 +153,8 @@ export default function AdminFinancialTransactions() {
         type: transaction.type as FinancialTransaction['type'],
         status: transaction.status as FinancialTransaction['status'],
         amount: Number(transaction.amount) || 0,
-        currency: t('financial.currency'), // Use translation instead of hardcoded 'SAR'
-        description: transaction.description || t('financial.transaction'), // Use translation
+        currency: t('admin.financial.currency'), // Use translation instead of hardcoded 'SAR'
+        description: transaction.description || t('admin.financial.transaction'), // Use translation
         reference_id: transaction.transaction_ref, // Map transaction_ref to reference_id
         user_id: transaction.user_id,
         order_id: transaction.order_id,
@@ -169,8 +169,8 @@ export default function AdminFinancialTransactions() {
     } catch (error) {
       console.error('Error fetching transactions:', error);
       toast({
-        title: t('financial.error'),
-        description: t('financial.fetchError'),
+        title: t('admin.financial.error'),
+        description: t('admin.financial.fetchError'),
         variant: "destructive",
       });
     } finally {
@@ -199,7 +199,7 @@ export default function AdminFinancialTransactions() {
 
     return (
       <Badge variant={variants[status]} className={colors[status]}>
-        {t(`financial.${status}`)}
+        {t(`admin.financial.${status}`)}
       </Badge>
     );
   };
@@ -215,7 +215,7 @@ export default function AdminFinancialTransactions() {
 
     return (
       <Badge variant="outline" className={colors[type]}>
-        {t(`financial.${type}`)}
+        {t(`admin.financial.${type}`)}
       </Badge>
     );
   };
@@ -253,9 +253,9 @@ export default function AdminFinancialTransactions() {
 
   const exportTransactions = () => {
     const csvContent = [
-      t('financial.transactionCsvHeaders'),
+      t('admin.financial.transactionCsvHeaders'),
       ...filteredTransactions.map(transaction => 
-        `${transaction.id},${transaction.type},${transaction.status},${transaction.amount},${transaction.currency},"${transaction.description}",${transaction.reference_id || t('financial.notAvailable')},${format(new Date(transaction.created_at), 'yyyy-MM-dd HH:mm')},${transaction.user_profile?.full_name || t('financial.notAvailable')}`
+        `${transaction.id},${transaction.type},${transaction.status},${transaction.amount},${transaction.currency},"${transaction.description}",${transaction.reference_id || t('admin.financial.notAvailable')},${format(new Date(transaction.created_at), 'yyyy-MM-dd HH:mm')},${transaction.user_profile?.full_name || t('admin.financial.notAvailable')}`
       )
     ].join('\n');
     
@@ -309,7 +309,7 @@ export default function AdminFinancialTransactions() {
               <Receipt className="h-8 w-8 text-primary" />
               <div>
                 <p className="text-2xl font-bold">{transactionStats.total}</p>
-                <p className="text-sm text-muted-foreground">{t('financial.totalTransactions')}</p>
+                <p className="text-sm text-muted-foreground">{t('admin.financial.totalTransactions')}</p>
               </div>
             </div>
           </CardContent>
@@ -321,7 +321,7 @@ export default function AdminFinancialTransactions() {
               <CheckCircle className="h-8 w-8 text-success" />
               <div>
                 <p className="text-2xl font-bold">{transactionStats.completed}</p>
-                <p className="text-sm text-muted-foreground">{t('financial.completed')}</p>
+                <p className="text-sm text-muted-foreground">{t('admin.financial.completed')}</p>
               </div>
             </div>
           </CardContent>
@@ -333,7 +333,7 @@ export default function AdminFinancialTransactions() {
               <Clock className="h-8 w-8 text-yellow-500" />
               <div>
                 <p className="text-2xl font-bold">{transactionStats.pending}</p>
-                <p className="text-sm text-muted-foreground">{t('financial.pending')}</p>
+                <p className="text-sm text-muted-foreground">{t('admin.financial.pending')}</p>
               </div>
             </div>
           </CardContent>
@@ -344,8 +344,8 @@ export default function AdminFinancialTransactions() {
             <div className="flex items-center gap-3">
               <DollarSign className="h-8 w-8 text-success" />
               <div>
-                <p className="text-2xl font-bold">{transactionStats.totalAmount.toLocaleString()} {t('financial.currency')}</p>
-                <p className="text-sm text-muted-foreground">{t('financial.totalVolume')}</p>
+                <p className="text-2xl font-bold">{transactionStats.totalAmount.toLocaleString()} {t('admin.financial.currency')}</p>
+                <p className="text-sm text-muted-foreground">{t('admin.financial.totalVolume')}</p>
               </div>
             </div>
           </CardContent>
@@ -356,8 +356,8 @@ export default function AdminFinancialTransactions() {
             <div className="flex items-center gap-3">
               <TrendingUp className="h-8 w-8 text-success" />
               <div>
-                <p className="text-2xl font-bold">{transactionStats.totalRevenue.toLocaleString()} {t('financial.currency')}</p>
-                <p className="text-sm text-muted-foreground">{t('financial.platformRevenue')}</p>
+                <p className="text-2xl font-bold">{transactionStats.totalRevenue.toLocaleString()} {t('admin.financial.currency')}</p>
+                <p className="text-sm text-muted-foreground">{t('admin.financial.platformRevenue')}</p>
               </div>
             </div>
           </CardContent>
@@ -369,7 +369,7 @@ export default function AdminFinancialTransactions() {
         <div className="relative flex-1">
           <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder={t('financial.searchTransactions')}
+            placeholder={t('admin.financial.searchTransactions')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-9"
@@ -379,39 +379,39 @@ export default function AdminFinancialTransactions() {
         <div className="flex gap-2">
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder={t('financial.status')} />
+              <SelectValue placeholder={t('admin.financial.status')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">{t('financial.allStatus')}</SelectItem>
-              <SelectItem value="pending">{t('financial.pending')}</SelectItem>
-              <SelectItem value="completed">{t('financial.completed')}</SelectItem>
-              <SelectItem value="failed">{t('financial.failed')}</SelectItem>
-              <SelectItem value="cancelled">{t('financial.cancelled')}</SelectItem>
+              <SelectItem value="all">{t('admin.financial.allStatus')}</SelectItem>
+              <SelectItem value="pending">{t('admin.financial.pending')}</SelectItem>
+              <SelectItem value="completed">{t('admin.financial.completed')}</SelectItem>
+              <SelectItem value="failed">{t('admin.financial.failed')}</SelectItem>
+              <SelectItem value="cancelled">{t('admin.financial.cancelled')}</SelectItem>
             </SelectContent>
           </Select>
 
           <Select value={typeFilter} onValueChange={setTypeFilter}>
             <SelectTrigger className="w-[140px]">
-              <SelectValue placeholder={t('financial.type')} />
+              <SelectValue placeholder={t('admin.financial.type')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">{t('financial.allTypes')}</SelectItem>
-              <SelectItem value="payment">{t('financial.payment')}</SelectItem>
-              <SelectItem value="refund">{t('financial.refund')}</SelectItem>
-              <SelectItem value="fee">{t('financial.fee')}</SelectItem>
-              <SelectItem value="commission">{t('financial.commission')}</SelectItem>
-              <SelectItem value="withdrawal">{t('financial.withdrawal')}</SelectItem>
+              <SelectItem value="all">{t('admin.financial.allTypes')}</SelectItem>
+              <SelectItem value="payment">{t('admin.financial.payment')}</SelectItem>
+              <SelectItem value="refund">{t('admin.financial.refund')}</SelectItem>
+              <SelectItem value="fee">{t('admin.financial.fee')}</SelectItem>
+              <SelectItem value="commission">{t('admin.financial.commission')}</SelectItem>
+              <SelectItem value="withdrawal">{t('admin.financial.withdrawal')}</SelectItem>
             </SelectContent>
           </Select>
 
           <Button variant="outline" onClick={fetchTransactions}>
             <RefreshCw className="h-4 w-4 mr-2" />
-            {t('financial.refresh')}
+            {t('admin.financial.refresh')}
           </Button>
 
           <Button variant="outline" onClick={exportTransactions}>
             <Download className="h-4 w-4 mr-2" />
-            {t('financial.export')}
+            {t('admin.financial.export')}
           </Button>
         </div>
       </div>
@@ -419,11 +419,11 @@ export default function AdminFinancialTransactions() {
       {/* Transactions Tabs */}
       <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6">
         <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="all">{t('financial.all')} ({transactionStats.total})</TabsTrigger>
-          <TabsTrigger value="pending">{t('financial.pending')} ({transactionStats.pending})</TabsTrigger>
-          <TabsTrigger value="completed">{t('financial.completed')} ({transactionStats.completed})</TabsTrigger>
-          <TabsTrigger value="failed">{t('financial.failed')} ({transactionStats.failed})</TabsTrigger>
-          <TabsTrigger value="cancelled">{t('financial.cancelled')}</TabsTrigger>
+          <TabsTrigger value="all">{t('admin.financial.all')} ({transactionStats.total})</TabsTrigger>
+          <TabsTrigger value="pending">{t('admin.financial.pending')} ({transactionStats.pending})</TabsTrigger>
+          <TabsTrigger value="completed">{t('admin.financial.completed')} ({transactionStats.completed})</TabsTrigger>
+          <TabsTrigger value="failed">{t('admin.financial.failed')} ({transactionStats.failed})</TabsTrigger>
+          <TabsTrigger value="cancelled">{t('admin.financial.cancelled')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value={selectedTab} className="space-y-4">
@@ -431,9 +431,9 @@ export default function AdminFinancialTransactions() {
             <Card>
               <CardContent className="py-12 text-center">
                 <Receipt className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-semibold mb-2">{t('financial.noTransactionsFound')}</h3>
+                <h3 className="text-lg font-semibold mb-2">{t('admin.financial.noTransactionsFound')}</h3>
                 <p className="text-muted-foreground">
-                  {searchTerm ? t('financial.noTransactionsMatch') : t('financial.noTransactionsAvailable')}
+                  {searchTerm ? t('admin.financial.noTransactionsMatch') : t('admin.financial.noTransactionsAvailable')}
                 </p>
               </CardContent>
             </Card>
@@ -449,7 +449,7 @@ export default function AdminFinancialTransactions() {
                           <div>
                             <p className="font-semibold">{transaction.description}</p>
                             <p className="text-sm text-muted-foreground">
-                              {transaction.reference_id && `${t('financial.ref')}: ${transaction.reference_id} • `}
+                              {transaction.reference_id && `${t('admin.financial.ref')}: ${transaction.reference_id} • `}
                               {format(new Date(transaction.created_at), 'MMM dd, yyyy HH:mm')}
                             </p>
                           </div>
@@ -457,9 +457,9 @@ export default function AdminFinancialTransactions() {
 
                         {transaction.user_profile && (
                           <div className="ml-7 text-sm text-muted-foreground">
-                            <p>{t('financial.user')}: {transaction.user_profile.full_name || transaction.user_profile.email}</p>
+                            <p>{t('admin.financial.user')}: {transaction.user_profile.full_name || transaction.user_profile.email}</p>
                             {transaction.user_profile.company_name && (
-                              <p>{t('financial.company')}: {transaction.user_profile.company_name}</p>
+                              <p>{t('admin.financial.company')}: {transaction.user_profile.company_name}</p>
                             )}
                           </div>
                         )}
@@ -469,7 +469,7 @@ export default function AdminFinancialTransactions() {
                           {getStatusBadge(transaction.status)}
                           {transaction.payment_method && (
                             <Badge variant="outline">
-                              {t(`financial.paymentMethods.${transaction.payment_method}`) || transaction.payment_method.replace('_', ' ')}
+                              {t(`admin.financial.paymentMethods.${transaction.payment_method}`) || transaction.payment_method.replace('_', ' ')}
                             </Badge>
                           )}
                         </div>
