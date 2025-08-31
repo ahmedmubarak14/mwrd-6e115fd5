@@ -4,6 +4,57 @@
  */
 
 export const adminTranslationsEN = {
+  // Common Admin Terms at Root Level
+  allRoles: "All Roles",
+  admin: "Admin",
+  vendor: "Vendor", 
+  client: "Client",
+  filterByRole: "Filter by Role",
+  filterByStatus: "Filter by Status",
+  allStatus: "All Status",
+  approved: "Approved",
+  pending: "Pending",
+  blocked: "Blocked",
+  rejected: "Rejected",
+  selectRole: "Select Role",
+  selectStatus: "Select Status",
+  pendingStatus: "Pending",
+  approvedStatus: "Approved",
+  blockedStatus: "Blocked",
+  rejectedStatus: "Rejected",
+  noUsersFound: "No Users Found",
+  clients: "Clients",
+  vendors: "Vendors",
+  admins: "Admins",
+  userDistributionByRole: "User Distribution by Role",
+  userStatusOverview: "User Status Overview",
+  verificationText: "Verification: {status}",
+  joinedText: "Joined {date}",
+  usersTab: "Users",
+  verificationQueueTab: "Verification Queue",
+  analyticsTab: "Analytics",
+  
+  // Analytics Keys
+  newThisMonthAnalytics: "New This Month",
+  usersRegisteredAnalytics: "Users registered this month",
+  activeThisWeekAnalytics: "Active This Week",
+  usersWithActivityAnalytics: "Users with recent activity",
+  growthRateAnalytics: "Growth Rate",
+  totalUsersAnalytics: "Total Users",
+  vsLastMonthAnalytics: "vs Last Month",
+  allTimeAnalytics: "All Time",
+  
+  // Bulk Actions
+  bulkActionConfirm: "Confirm Bulk Action",
+  bulkRoleConfirm: "Are you sure you want to update the role to {role} for {count} users?",
+  bulkStatusConfirm: "Are you sure you want to update the status to {status} for {count} users?",
+  exportSelectedAction: "Export Selected",
+  updateRoleAction: "Update Role",
+  updateStatusAction: "Update Status",
+  noUsersMatchFilters: "No users match the current filters",
+  deleteUserTitle: "Delete User",
+  deleteUserConfirm: "Are you sure you want to delete {name}? This action cannot be undone.",
+  
   // Core Navigation & Layout
   dashboard: {
     title: "Admin Dashboard",
@@ -143,21 +194,10 @@ export const adminTranslationsEN = {
     bulkRoleConfirm: "Are you sure you want to update the role to {role} for {count} users?",
     bulkStatusConfirm: "Are you sure you want to update the status to {status} for {count} users?",
     exportSelectedAction: "Export Selected",
-    users: "Users",
-    verificationQueueTab: "Verification Queue",
-    analyticsTab: "Analytics",
     noUsersMatchFilters: "No users match the current filters",
     deleteUserTitle: "Delete User",
     deleteUserConfirm: "Are you sure you want to delete {name}? This action cannot be undone.",
     userRoleOverview: "User Role Overview",
-    clients: "Clients",
-    vendors: "Vendors", 
-    admins: "Admins",
-    userStatusOverview: "User Status Overview",
-    approvedStatus: "Approved",
-    pendingStatus: "Pending",
-    blockedStatus: "Blocked",
-    rejectedStatus: "Rejected",
     addNewUser: "Add New User",
     addNewUserDescription: "Create a new user account with basic information",
     fullNameRequired: "Full Name *",
@@ -195,10 +235,7 @@ export const adminTranslationsEN = {
     createdAt: "Created Date",
     lastLogin: "Last Login",
     
-    // User Roles
-    admin: "Administrator",
-    client: "Client",
-    vendor: "Vendor", 
+    // User Roles (keeping only unique ones)
     moderator: "Moderator",
     
     // User Status
@@ -208,17 +245,14 @@ export const adminTranslationsEN = {
     userSuspended: "Suspended",
     userBlocked: "Blocked",
     
-    // Actions (removed duplicates)
-    filterByRole: "Filter by Role",
-    filterByStatus: "Filter by Status",
+    // Actions (keeping only unique ones to users section)
     bulkActions: "Bulk Actions",
     
-    // Messages (removed duplicates)
+    // Messages (keeping only unique ones to users section)
     userCreated: "User created successfully",
     userUpdated: "User updated successfully", 
     userDeleted: "User deleted successfully",
     deleteConfirmation: "Are you sure you want to delete this user?",
-    noUsersFound: "No users found",
     loadingUsers: "Loading users...",
     activeThisMonth: "active this month"
   },
@@ -468,43 +502,6 @@ export const adminTranslationsEN = {
     vendor: "Vendor", 
     client: "Client"
   },
-
-  // General Admin Terms  
-  filterByRole: "Filter by Role",
-  allRoles: "All Roles",
-  admin: "Admin",
-  vendor: "Vendor", 
-  client: "Client",
-  filterByStatus: "Filter by Status",
-  allStatus: "All Status",
-  approved: "Approved",
-  pending: "Pending",
-  blocked: "Blocked",
-  rejected: "Rejected",
-  selectRole: "Select Role",
-  selectStatus: "Select Status",
-  pendingStatus: "Pending",
-  approvedStatus: "Approved",
-  blockedStatus: "Blocked",
-  rejectedStatus: "Rejected",
-  noUsersFound: "No Users Found",
-  clients: "Clients",
-  vendors: "Vendors",
-  admins: "Admins",
-  userDistributionByRole: "User Distribution by Role",
-  userStatusOverview: "User Status Overview",
-  verificationText: "Verification: {status}",
-  joinedText: "Joined {date}",
-  
-  // Analytics Keys
-  newThisMonthAnalytics: "New This Month",
-  usersRegisteredAnalytics: "Users registered",
-  activeThisWeekAnalytics: "Active This Week", 
-  usersWithActivityAnalytics: "Users with activity",
-  growthRateAnalytics: "Growth Rate",
-  vsLastMonthAnalytics: "vs last month",
-  totalUsersAnalytics: "Total Users",
-  allTimeAnalytics: "All time",
   
   // Analytics
   analytics: {

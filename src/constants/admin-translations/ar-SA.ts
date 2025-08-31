@@ -4,6 +4,57 @@
  */
 
 export const adminTranslationsAR = {
+  // Common Admin Terms at Root Level
+  allRoles: "جميع الأدوار",
+  admin: "مدير",
+  vendor: "مورد", 
+  client: "عميل",
+  filterByRole: "تصفية حسب الدور",
+  filterByStatus: "تصفية حسب الحالة",
+  allStatus: "جميع الحالات",
+  approved: "موافق عليه",
+  pending: "في الانتظار",
+  blocked: "محظور",
+  rejected: "مرفوض",
+  selectRole: "تحديد الدور",
+  selectStatus: "تحديد الحالة",
+  pendingStatus: "في الانتظار",
+  approvedStatus: "موافق عليه",
+  blockedStatus: "محظور",
+  rejectedStatus: "مرفوض",
+  noUsersFound: "لم يتم العثور على مستخدمين",
+  clients: "العملاء",
+  vendors: "الموردون",
+  admins: "المديرون",
+  userDistributionByRole: "توزيع المستخدمين حسب الدور",
+  userStatusOverview: "نظرة عامة على حالة المستخدمين",
+  verificationText: "التحقق: {status}",
+  joinedText: "انضم في {date}",
+  usersTab: "المستخدمون",
+  verificationQueueTab: "قائمة التحقق",
+  analyticsTab: "التحليلات",
+  
+  // Analytics Keys
+  newThisMonthAnalytics: "جديد هذا الشهر",
+  usersRegisteredAnalytics: "المستخدمون المسجلون هذا الشهر",
+  activeThisWeekAnalytics: "نشط هذا الأسبوع",
+  usersWithActivityAnalytics: "المستخدمون ذوو النشاط الحديث",
+  growthRateAnalytics: "معدل النمو",
+  totalUsersAnalytics: "إجمالي المستخدمين",
+  vsLastMonthAnalytics: "مقابل الشهر الماضي",
+  allTimeAnalytics: "جميع الأوقات",
+  
+  // Bulk Actions
+  bulkActionConfirm: "تأكيد الإجراء الجماعي",
+  bulkRoleConfirm: "هل أنت متأكد من تحديث الدور إلى {role} لـ {count} مستخدم؟",
+  bulkStatusConfirm: "هل أنت متأكد من تحديث الحالة إلى {status} لـ {count} مستخدم؟",
+  exportSelectedAction: "تصدير المحدد",
+  updateRoleAction: "تحديث الدور",
+  updateStatusAction: "تحديث الحالة",
+  noUsersMatchFilters: "لا يوجد مستخدمون يطابقون المرشحات الحالية",
+  deleteUserTitle: "حذف المستخدم",
+  deleteUserConfirm: "هل أنت متأكد من رغبتك في حذف {name}؟ لا يمكن التراجع عن هذا الإجراء.",
+  
   // Core Navigation & Layout
   dashboard: {
     title: "لوحة تحكم المشرف",
@@ -143,21 +194,10 @@ export const adminTranslationsAR = {
     bulkRoleConfirm: "هل أنت متأكد من تحديث الدور إلى {role} لـ {count} مستخدم؟",
     bulkStatusConfirm: "هل أنت متأكد من تحديث الحالة إلى {status} لـ {count} مستخدم؟",
     exportSelectedAction: "تصدير المحدد",
-    users: "المستخدمون",
-    verificationQueueTab: "قائمة التحقق",
-    analyticsTab: "التحليلات",
     noUsersMatchFilters: "لا يوجد مستخدمون يطابقون المرشحات الحالية",
     deleteUserTitle: "حذف المستخدم",
     deleteUserConfirm: "هل أنت متأكد من رغبتك في حذف {name}؟ لا يمكن التراجع عن هذا الإجراء.",
     userRoleOverview: "نظرة عامة على أدوار المستخدمين",
-    clients: "العملاء",
-    vendors: "الموردون",
-    admins: "المديرون",
-    userStatusOverview: "نظرة عامة على حالة المستخدمين",
-    approvedStatus: "موافق عليه",
-    pendingStatus: "في الانتظار",
-    blockedStatus: "محظور",
-    rejectedStatus: "مرفوض",
     addNewUser: "إضافة مستخدم جديد",
     addNewUserDescription: "إنشاء حساب مستخدم جديد بالمعلومات الأساسية",
     fullNameRequired: "الاسم الكامل *",
@@ -193,7 +233,7 @@ export const adminTranslationsAR = {
     createdAt: "تاريخ الإنشاء",
     lastLogin: "آخر تسجيل دخول",
     
-    // User Roles (removed duplicates)
+    // User Roles (keeping only unique ones)
     moderator: "مشرف",
     
     // User Status
@@ -203,17 +243,14 @@ export const adminTranslationsAR = {
     userSuspended: "معلق",
     userBlocked: "محظور",
     
-    // Actions
-    filterByRole: "تصفية حسب الدور",
-    filterByStatus: "تصفية حسب الحالة",
+    // Actions (keeping only unique ones to users section)
     bulkActions: "الإجراءات المجمعة",
     
-    // Messages
+    // Messages (keeping only unique ones to users section)
     userCreated: "تم إنشاء المستخدم بنجاح",
     userUpdated: "تم تحديث المستخدم بنجاح", 
     userDeleted: "تم حذف المستخدم بنجاح",
     deleteConfirmation: "هل أنت متأكد من رغبتك في حذف هذا المستخدم؟",
-    noUsersFound: "لم يتم العثور على مستخدمين",
     loadingUsers: "جاري تحميل المستخدمين...",
     activeThisMonth: "نشط هذا الشهر"
   },
@@ -465,43 +502,6 @@ export const adminTranslationsAR = {
     client: "عميل"
   },
 
-  // General Admin Terms
-  filterByRole: "تصفية حسب الدور",
-  allRoles: "جميع الأدوار",
-  admin: "مدير",
-  vendor: "مورد",
-  client: "عميل",
-  filterByStatus: "تصفية حسب الحالة",
-  allStatus: "جميع الحالات",
-  approved: "موافق عليه",
-  pending: "في الانتظار",
-  blocked: "محظور",
-  rejected: "مرفوض",
-  selectRole: "اختر الدور",
-  selectStatus: "اختر الحالة",
-  pendingStatus: "في الانتظار",
-  approvedStatus: "موافق عليه",
-  blockedStatus: "محظور",
-  rejectedStatus: "مرفوض",
-  noUsersFound: "لم يتم العثور على مستخدمين",
-  clients: "العملاء",
-  vendors: "الموردون",
-  admins: "المديرون",
-  userDistributionByRole: "توزيع المستخدمين حسب الدور",
-  userStatusOverview: "نظرة عامة على حالة المستخدمين",
-  verificationText: "التحقق: {status}",
-  joinedText: "انضم في {date}",
-  
-  // Analytics Keys
-  newThisMonthAnalytics: "جديد هذا الشهر",
-  usersRegisteredAnalytics: "المستخدمون المسجلون",
-  activeThisWeekAnalytics: "نشط هذا الأسبوع",
-  usersWithActivityAnalytics: "مستخدمون لديهم نشاط",
-  growthRateAnalytics: "معدل النمو",
-  vsLastMonthAnalytics: "مقارنة بالشهر الماضي",
-  totalUsersAnalytics: "إجمالي المستخدمين",
-  allTimeAnalytics: "جميع الأوقات",
-  
   // Export & Data
   exportDescription: "تم تصدير البيانات بنجاح",
   dataUpdated: "تم تحديث البيانات",

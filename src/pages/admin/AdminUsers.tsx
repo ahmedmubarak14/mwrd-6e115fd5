@@ -712,7 +712,7 @@ export default function AdminUsers() {
           <TabsList>
             <TabsTrigger value="users" className="flex items-center gap-2">
               <Users className="h-4 w-4" />
-              {t('admin.users')}
+              {t('admin.usersTab')}
             </TabsTrigger>
             <TabsTrigger value="verification" className="flex items-center gap-2">
               <FileCheck className="h-4 w-4" />
