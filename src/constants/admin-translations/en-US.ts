@@ -350,6 +350,79 @@ export const adminTranslationsEN = {
     csvDate: "Date"
   },
 
+  // Projects Management translations
+  projectsManagement: {
+    title: "Projects Management",
+    description: "Monitor and manage client projects, track progress, and oversee deliverables across all active engagements",
+    
+    overview: {
+      totalProjects: "Total Projects",
+      activeProjects: "active projects",
+      completed: "Completed",
+      projectsDelivered: "projects delivered",
+      overdue: "Overdue",
+      requireAttention: "require attention",
+      totalValue: "Total Value",
+      combinedProjectValue: "combined project value"
+    },
+    
+    filters: {
+      title: "Filters & Search",
+      searchPlaceholder: "Search projects by title, description, or client...",
+      status: "Filter by status",
+      priority: "Filter by priority",
+      allStatuses: "All Statuses",
+      allPriorities: "All Priorities",
+      refresh: "Refresh"
+    },
+    
+    status: {
+      draft: "Draft",
+      active: "Active",
+      completed: "Completed",
+      onHold: "On Hold",
+      cancelled: "Cancelled"
+    },
+    
+    priority: {
+      urgent: "Urgent",
+      high: "High",
+      medium: "Medium",
+      low: "Low"
+    },
+    
+    details: {
+      client: "Client",
+      noDescription: "No description provided",
+      projectProgress: "Project Progress",
+      budget: "Budget",
+      boqItems: "BOQ Items",
+      items: "items",
+      timeline: "Timeline",
+      notSpecified: "Not specified",
+      requests: "Requests",
+      relatedRequests: "related requests"
+    },
+    
+    actions: {
+      viewDetails: "View Details",
+      viewBOQ: "View BOQ",
+      contactClient: "Contact Client",
+      putOnHold: "Put On Hold",
+      markCompleted: "Mark Completed",
+      reactivate: "Reactivate"
+    },
+    
+    messages: {
+      loading: "Loading projects...",
+      noProjectsFound: "No projects found matching your criteria",
+      fetchError: "Failed to load projects",
+      updateError: "Failed to update project status",
+      updateSuccess: "Project status updated successfully",
+      statusUpdated: "Project status updated to"
+    }
+  },
+
   // Financial Management
   financial: {
     title: "Financial Dashboard",

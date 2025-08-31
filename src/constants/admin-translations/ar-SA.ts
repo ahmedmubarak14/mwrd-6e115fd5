@@ -350,6 +350,79 @@ export const adminTranslationsAR = {
     csvDate: "التاريخ"
   },
 
+  // Projects Management translations
+  projectsManagement: {
+    title: "إدارة المشاريع",
+    description: "راقب وأدر مشاريع العملاء، وتتبع التقدم، وأشرف على التسليمات عبر جميع المشاريع النشطة",
+    
+    overview: {
+      totalProjects: "إجمالي المشاريع",
+      activeProjects: "المشاريع النشطة",
+      completed: "المكتملة",
+      projectsDelivered: "المشاريع المسلمة",
+      overdue: "المتأخرة",
+      requireAttention: "تحتاج اهتمام",
+      totalValue: "القيمة الإجمالية",
+      combinedProjectValue: "قيمة المشاريع المجمعة"
+    },
+    
+    filters: {
+      title: "المرشحات والبحث",
+      searchPlaceholder: "ابحث في المشاريع بالعنوان أو الوصف أو العميل...",
+      status: "تصفية حسب الحالة",
+      priority: "تصفية حسب الأولوية",
+      allStatuses: "جميع الحالات",
+      allPriorities: "جميع الأولويات",
+      refresh: "تحديث"
+    },
+    
+    status: {
+      draft: "مسودة",
+      active: "نشط",
+      completed: "مكتمل",
+      onHold: "معلق",
+      cancelled: "ملغي"
+    },
+    
+    priority: {
+      urgent: "عاجل",
+      high: "عالي",
+      medium: "متوسط",
+      low: "منخفض"
+    },
+    
+    details: {
+      client: "العميل",
+      noDescription: "لا يوجد وصف متوفر",
+      projectProgress: "تقدم المشروع",
+      budget: "الميزانية",
+      boqItems: "بنود الكميات",
+      items: "بنود",
+      timeline: "الجدول الزمني",
+      notSpecified: "غير محدد",
+      requests: "الطلبات",
+      relatedRequests: "الطلبات ذات الصلة"
+    },
+    
+    actions: {
+      viewDetails: "عرض التفاصيل",
+      viewBOQ: "عرض الكميات",
+      contactClient: "التواصل مع العميل",
+      putOnHold: "تعليق",
+      markCompleted: "تمييز كمكتمل",
+      reactivate: "إعادة تفعيل"
+    },
+    
+    messages: {
+      loading: "جاري تحميل المشاريع...",
+      noProjectsFound: "لم يتم العثور على مشاريع تطابق معاييرك",
+      fetchError: "فشل في تحميل المشاريع",
+      updateError: "فشل في تحديث حالة المشروع",
+      updateSuccess: "تم تحديث حالة المشروع بنجاح",
+      statusUpdated: "تم تحديث حالة المشروع إلى"
+    }
+  },
+
   // الإدارة المالية
   financial: {
     title: "لوحة التحكم المالية",
