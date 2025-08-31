@@ -15,6 +15,14 @@ export const adminTranslationsAR = {
       quickActionsDesc: "وظائف الإدارة واختصارات الاستخدام الشائع"
     },
 
+    // مجموعات التنقل
+    groups: {
+      overview: "نظرة عامة",
+      management: "الإدارة",
+      business: "الأعمال",
+      system: "النظام"
+    },
+
     // أوصاف التنقل للنظرة العامة الشاملة
     navigation: {
       userManagement: "إدارة المستخدمين",

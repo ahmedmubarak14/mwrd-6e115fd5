@@ -241,14 +241,34 @@ export const arSA = {
   nav: {
     notifications: "الإشعارات",
     dashboard: "لوحة التحكم",
-    users: "المستخدمين",
+    users: "المستخدمين", 
     requests: "الطلبات",
     offers: "العروض",
     orders: "الطلبات",
     communications: "الاتصالات",
     settings: "الإعدادات",
     profile: "الملف الشخصي",
-    logout: "تسجيل الخروج"
+    logout: "تسجيل الخروج",
+    menu: "القائمة",
+    analytics: "التحليلات",
+    projects: "المشاريع",
+    browseRequests: "تصفح الطلبات",
+    myOffers: "عروضي",
+    messages: "الرسائل",
+    support: "الدعم",
+    createRequest: "إنشاء طلب",
+    suppliers: "الموردين",
+    vendors: "البائعين",
+    manageSubscription: "الاشتراك",
+    navigateTo: "الانتقال إلى"
+  },
+
+  // Client navigation groups
+  clientGroups: {
+    overview: "نظرة عامة",
+    workspace: "مساحة العمل",
+    network: "الشبكة",
+    account: "الحساب والدعم"
   },
   
   admin: adminTranslationsAR,

@@ -15,6 +15,14 @@ export const adminTranslationsEN = {
       quickActionsDesc: "Commonly used admin functions and shortcuts"
     },
 
+    // Navigation groups
+    groups: {
+      overview: "Overview",
+      management: "Management",
+      business: "Business",
+      system: "System"
+    },
+
     // Navigation descriptions for comprehensive overview
     navigation: {
       userManagement: "User Management",

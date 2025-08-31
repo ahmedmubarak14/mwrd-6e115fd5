@@ -28,32 +28,32 @@ export const CleanSidebar = ({ userRole, onItemClick }: CleanSidebarProps) => {
     if (userRole === 'vendor') {
       return [
         {
-          label: t('nav.dashboard') || 'Dashboard',
+          label: t('nav.dashboard'),
           href: '/vendor-dashboard',
           icon: LayoutDashboard,
         },
         {
-          label: t('nav.browseRequests') || 'Browse Requests',
+          label: t('nav.browseRequests'),
           href: '/browse-requests',
           icon: Search,
         },
         {
-          label: t('nav.myOffers') || 'My Offers',
+          label: t('nav.myOffers'),
           href: '/my-offers',
           icon: Package,
         },
         {
-          label: t('nav.messages') || 'Messages',
+          label: t('nav.messages'),
           href: '/messages',
           icon: MessageSquare,
         },
         {
-          label: t('nav.orders') || 'Orders',
+          label: t('nav.orders'),
           href: '/orders',
           icon: ShoppingCart,
         },
         {
-          label: t('nav.support') || 'Support',
+          label: t('nav.support'),
           href: '/support',
           icon: HelpCircle,
         }
@@ -82,7 +82,7 @@ export const CleanSidebar = ({ userRole, onItemClick }: CleanSidebarProps) => {
           "text-sm font-medium text-gray-600 uppercase tracking-wide",
           isRTL && "text-right"
         )}>
-          {t('nav.menu') || 'Menu'}
+          {t('nav.menu')}
         </h2>
       </div>
       
@@ -125,7 +125,7 @@ export const CleanSidebar = ({ userRole, onItemClick }: CleanSidebarProps) => {
           )}
         >
           <Settings className="h-5 w-5 shrink-0" />
-          <span>{t('nav.settings') || 'Settings'}</span>
+          <span>{t('nav.settings')}</span>
         </Link>
       </div>
     </div>

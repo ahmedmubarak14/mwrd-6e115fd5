@@ -240,15 +240,35 @@ export const enUS = {
   // Navigation Section
   nav: {
     notifications: "Notifications",
-    dashboard: "Dashboard",
-    users: "Users", 
+    dashboard: "Dashboard", 
+    users: "Users",
     requests: "Requests",
     offers: "Offers",
     orders: "Orders",
     communications: "Communications",
     settings: "Settings",
     profile: "Profile",
-    logout: "Logout"
+    logout: "Logout",
+    menu: "Menu",
+    analytics: "Analytics",
+    projects: "Projects",
+    browseRequests: "Browse Requests",
+    myOffers: "My Offers",
+    messages: "Messages",
+    support: "Support",
+    createRequest: "Create Request",
+    suppliers: "Suppliers",
+    vendors: "Vendors",
+    manageSubscription: "Subscription",
+    navigateTo: "Navigate to"
+  },
+
+  // Client navigation groups
+  clientGroups: {
+    overview: "Overview",
+    workspace: "Workspace",
+    network: "Network", 
+    account: "Account & Support"
   },
   
   admin: adminTranslationsEN,

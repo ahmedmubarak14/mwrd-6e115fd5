@@ -82,16 +82,16 @@ export const ClientSidebar = ({ className, collapsed = false, onToggle }: Client
   const navigationGroups: NavigationGroup[] = [
     {
       id: 'overview',
-      label: 'Overview',
+      label: t('clientGroups.overview'),
       priority: 'primary',
       items: [
         {
-          name: 'Dashboard',
+          name: t('nav.dashboard'),
           href: "/dashboard",
           icon: LayoutDashboard,
         },
         {
-          name: 'Analytics',
+          name: t('nav.analytics'),
           href: "/analytics",
           icon: BarChart3,
         },
@@ -99,38 +99,38 @@ export const ClientSidebar = ({ className, collapsed = false, onToggle }: Client
     },
     {
       id: 'workspace',
-      label: 'Workspace',
+      label: t('clientGroups.workspace'),
       priority: 'primary',
       items: [
         {
-          name: 'Projects',
+          name: t('nav.projects'),
           href: "/projects",
           icon: Building2,
         },
         {
-          name: 'Requests',
+          name: t('nav.requests'),
           href: "/requests",
           icon: FileText,
         },
         ...((userProfile as any)?.role === 'supplier' ? [
           {
-            name: 'Browse Requests',
+            name: t('nav.browseRequests'),
             href: "/browse-requests",
             icon: FolderOpen,
           },
           {
-            name: 'My Offers',
+            name: t('nav.myOffers'),
             href: "/my-offers",
             icon: Package,
           },
         ] : []),
         {
-          name: 'Orders',
+          name: t('nav.orders'),
           href: "/orders",
           icon: ShoppingCart,
         },
         {
-          name: 'Messages',
+          name: t('nav.messages'),
           href: "/messages",
           icon: MessageSquare,
         },
@@ -138,11 +138,11 @@ export const ClientSidebar = ({ className, collapsed = false, onToggle }: Client
     },
     {
       id: 'network',
-      label: 'Network',
+      label: t('clientGroups.network'),
       priority: 'secondary',
       items: [
         {
-          name: 'Vendors',
+          name: t('nav.vendors'),
           href: "/vendors",
           icon: Users,
         },
@@ -150,26 +150,26 @@ export const ClientSidebar = ({ className, collapsed = false, onToggle }: Client
     },
     {
       id: 'account',
-      label: 'Account & Support',
+      label: t('clientGroups.account'),
       priority: 'utility',
       items: [
         {
-          name: 'Profile',
+          name: t('nav.profile'),
           href: "/profile",
           icon: User,
         },
         {
-          name: 'Subscription',
+          name: t('nav.manageSubscription'),
           href: "/manage-subscription",
           icon: CreditCard,
         },
         {
-          name: 'Settings',
+          name: t('nav.settings'),
           href: "/settings",
           icon: Settings,
         },
         {
-          name: 'Support',
+          name: t('nav.support'),
           href: "/support",
           icon: HelpCircle,
         },
@@ -276,7 +276,7 @@ export const ClientSidebar = ({ className, collapsed = false, onToggle }: Client
                             : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
                         )}
                         title={collapsed ? item.name : undefined}
-                        aria-label={`Navigate to ${item.name}`}
+                        aria-label={`${t('nav.navigateTo')} ${item.name}`}
                         aria-current={active ? 'page' : undefined}
                       >
                         <item.icon 

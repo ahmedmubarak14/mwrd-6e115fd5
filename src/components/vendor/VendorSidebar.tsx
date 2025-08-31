@@ -46,7 +46,7 @@ export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {
   const getNavigationItems = () => {
     const baseItems = [
       {
-        label: t('nav.dashboard') || 'Dashboard',
+        label: t('nav.dashboard'),
         href: userRole === 'vendor' ? '/vendor-dashboard' : '/dashboard',
         icon: LayoutDashboard,
       }
@@ -56,27 +56,27 @@ export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {
       return [
         ...baseItems,
         {
-          label: t('nav.browseRequests') || 'Browse Requests',
+          label: t('nav.browseRequests'),
           href: '/browse-requests',
           icon: Search,
         },
         {
-          label: t('nav.myOffers') || 'My Offers',
+          label: t('nav.myOffers'),
           href: '/my-offers',
           icon: Package,
         },
         {
-          label: t('nav.messages') || 'Messages',
+          label: t('nav.messages'),
           href: '/messages',
           icon: MessageSquare,
         },
         {
-          label: t('nav.orders') || 'Orders',
+          label: t('nav.orders'),
           href: '/orders',
           icon: ShoppingCart,
         },
         {
-          label: t('nav.support') || 'Support',
+          label: t('nav.support'),
           href: '/support',
           icon: HelpCircle,
         }
@@ -87,42 +87,42 @@ export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {
     return [
       ...baseItems,
       {
-        label: t('nav.projects') || 'Projects',
+        label: t('nav.projects'),
         href: '/projects',
         icon: FolderOpen,
       },
       {
-        label: t('nav.createRequest') || 'Create Request',
+        label: t('nav.createRequest'),
         href: '/requests',
         icon: PlusCircle,
       },
       {
-        label: t('nav.suppliers') || 'Browse Vendors',
+        label: t('nav.suppliers'),
         href: '/vendors',
         icon: Users,
       },
       {
-        label: t('nav.messages') || 'Messages',
+        label: t('nav.messages'),
         href: '/messages',
         icon: MessageSquare,
       },
       {
-        label: t('nav.analytics') || 'Analytics',
+        label: t('nav.analytics'),
         href: '/analytics',
         icon: BarChart3,
       },
       {
-        label: t('nav.orders') || 'Orders',
+        label: t('nav.orders'),
         href: '/orders',
         icon: ShoppingCart,
       },
       {
-        label: t('nav.manageSubscription') || 'Subscription',
+        label: t('nav.manageSubscription'),
         href: '/manage-subscription',
         icon: CreditCard,
       },
       {
-        label: t('nav.support') || 'Support',
+        label: t('nav.support'),
         href: '/support',
         icon: HelpCircle,
       }
@@ -157,7 +157,7 @@ export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {
             "px-2 py-2 text-sm font-medium",
             isRTL && "text-right"
           )}>
-            {t('nav.menu') || 'Menu'}
+            {t('nav.menu')}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -198,7 +198,7 @@ export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {
                 <SidebarMenuButton 
                   asChild
                   isActive={isActive('/settings')}
-                  tooltip={state === "collapsed" ? (t('nav.settings') || 'Settings') : undefined}
+                  tooltip={state === "collapsed" ? t('nav.settings') : undefined}
                   className={cn(
                     "w-full transition-colors",
                     isRTL && "flex-row-reverse text-right"
@@ -209,7 +209,7 @@ export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {
                     isRTL && "flex-row-reverse"
                   )}>
                     <Settings className="h-4 w-4 shrink-0" />
-                    <span className="truncate">{t('nav.settings') || 'Settings'}</span>
+                    <span className="truncate">{t('nav.settings')}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
