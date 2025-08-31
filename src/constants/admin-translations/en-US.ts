@@ -469,6 +469,43 @@ export const adminTranslationsEN = {
     client: "Client"
   },
 
+  // General Admin Terms  
+  filterByRole: "Filter by Role",
+  allRoles: "All Roles",
+  admin: "Admin",
+  vendor: "Vendor", 
+  client: "Client",
+  filterByStatus: "Filter by Status",
+  allStatus: "All Status",
+  approved: "Approved",
+  pending: "Pending",
+  blocked: "Blocked",
+  rejected: "Rejected",
+  selectRole: "Select Role",
+  selectStatus: "Select Status",
+  pendingStatus: "Pending",
+  approvedStatus: "Approved",
+  blockedStatus: "Blocked",
+  rejectedStatus: "Rejected",
+  noUsersFound: "No Users Found",
+  clients: "Clients",
+  vendors: "Vendors",
+  admins: "Admins",
+  userDistributionByRole: "User Distribution by Role",
+  userStatusOverview: "User Status Overview",
+  verificationText: "Verification: {status}",
+  joinedText: "Joined {date}",
+  
+  // Analytics Keys
+  newThisMonthAnalytics: "New This Month",
+  usersRegisteredAnalytics: "Users registered",
+  activeThisWeekAnalytics: "Active This Week", 
+  usersWithActivityAnalytics: "Users with activity",
+  growthRateAnalytics: "Growth Rate",
+  vsLastMonthAnalytics: "vs last month",
+  totalUsersAnalytics: "Total Users",
+  allTimeAnalytics: "All time",
+  
   // Analytics
   analytics: {
     title: "Platform Analytics",
