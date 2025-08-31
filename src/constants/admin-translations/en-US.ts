@@ -574,6 +574,54 @@ export const adminTranslationsEN = {
     }
   },
 
+  // Header and Navigation
+  openMobileMenu: "Open mobile menu",
+  collapseSidebar: "Collapse sidebar", 
+  expandSidebar: "Expand sidebar",
+  goToAdminDashboard: "Go to admin dashboard",
+  dashboard: "Admin Dashboard",
+  managementPortal: "Management Portal",
+  viewNotifications: "View notifications",
+  logoAlt: "MWRD Logo",
+  adminUser: "Admin User",
+  
+  // Language Selection
+  languageEnglish: "English",
+  languageArabic: "العربية",
+  
+  // Search functionality
+  search: "Search",
+  searchPlaceholder: "Search admin panel...",
+  searchAdvancedPlaceholder: "Search users, requests, offers...",
+  searchingFor: "Searching for",
+  searchResults: "Search Results",
+  noSearchResults: "No search results found",
+  tryDifferentSearch: "Try a different search term",
+  recentSearches: "Recent Searches",
+  tryAgain: "Try Again",
+  searchFailed: "Search failed. Please try again.",
+
+  // Breadcrumbs
+  breadcrumbs: {
+    admin: "Admin",
+    dashboardOverview: "Dashboard Overview",
+    userManagement: "User Management",
+    requestsManagement: "Requests Management",
+    offersManagement: "Offers Management",
+    ordersManagement: "Orders Management",
+    projectsManagement: "Projects Management",
+    platformAnalytics: "Platform Analytics",
+    subscriptionManagement: "Subscription Management",
+    supportCenter: "Support Center",
+    verificationQueue: "Verification Queue",
+    categoryManagement: "Category Management",
+    expertConsultations: "Expert Consultations",
+    financialTransactions: "Financial Transactions",
+    securityMonitoring: "Security Monitoring",
+    communicationCenter: "Communication Center",
+    unknown: "Unknown Page"
+  },
+
   // Common UI elements  
   users: {
     addUser: "Add User",

@@ -60,7 +60,7 @@ export const AdminHeaderUserMenu = ({ userProfile }: AdminHeaderUserMenuProps) =
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')} className={cn("flex items-center", isRTL && "flex-row-reverse")}>
               <Globe className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
-              <span>{language === 'en' ? 'العربية' : 'English'}</span>
+              <span>{language === 'en' ? t('admin.languageArabic') : t('admin.languageEnglish')}</span>
             </DropdownMenuItem>
           </>
         )}

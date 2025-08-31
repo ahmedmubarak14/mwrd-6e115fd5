@@ -72,7 +72,7 @@ export const AdminHeader = ({ onMobileMenuOpen, onSidebarToggle, sidebarOpen }: 
             >
               <img 
                 src="/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png" 
-                alt="MWRD Logo"
+                alt={t('admin.logoAlt')}
                 className="h-8 w-auto shrink-0"
               />
               <div className="hidden sm:flex flex-col items-start min-w-0">

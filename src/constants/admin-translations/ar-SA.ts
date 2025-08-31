@@ -388,6 +388,54 @@ export const adminTranslationsAR = {
     filterByStatus: "تصفية حسب الحالة"
   },
 
+  // Header and Navigation - الرأسية والتنقل
+  openMobileMenu: "فتح القائمة المحمولة",
+  collapseSidebar: "طي الشريط الجانبي",
+  expandSidebar: "توسيع الشريط الجانبي", 
+  goToAdminDashboard: "الذهاب إلى لوحة الإدارة",
+  dashboard: "لوحة الإدارة",
+  managementPortal: "بوابة الإدارة",
+  viewNotifications: "عرض الإشعارات",
+  logoAlt: "شعار MWRD",
+  adminUser: "مستخدم الإدارة",
+  
+  // Language Selection - اختيار اللغة
+  languageEnglish: "English",
+  languageArabic: "العربية",
+  
+  // Search functionality - وظائف البحث
+  search: "بحث",
+  searchPlaceholder: "البحث في لوحة الإدارة...",
+  searchAdvancedPlaceholder: "البحث في المستخدمين والطلبات والعروض...",
+  searchingFor: "البحث عن",
+  searchResults: "نتائج البحث",
+  noSearchResults: "لم يتم العثور على نتائج",
+  tryDifferentSearch: "جرب مصطلح بحث مختلف",
+  recentSearches: "عمليات البحث الأخيرة",
+  tryAgain: "حاول مرة أخرى",
+  searchFailed: "فشل البحث. يرجى المحاولة مرة أخرى.",
+
+  // Breadcrumbs - مسار التنقل
+  breadcrumbs: {
+    admin: "الإدارة",
+    dashboardOverview: "نظرة عامة على لوحة المعلومات",
+    userManagement: "إدارة المستخدمين",
+    requestsManagement: "إدارة الطلبات",
+    offersManagement: "إدارة العروض",
+    ordersManagement: "إدارة الطلبيات",
+    projectsManagement: "إدارة المشاريع",
+    platformAnalytics: "تحليلات المنصة",
+    subscriptionManagement: "إدارة الاشتراكات",
+    supportCenter: "مركز الدعم",
+    verificationQueue: "قائمة انتظار التحقق",
+    categoryManagement: "إدارة الفئات",
+    expertConsultations: "الاستشارات المتخصصة",
+    financialTransactions: "المعاملات المالية",
+    securityMonitoring: "مراقبة الأمان",
+    communicationCenter: "مركز الاتصالات",
+    unknown: "صفحة غير معروفة"
+  },
+
   // عناصر واجهة المستخدم الشائعة  
   users: {
     addUser: "إضافة مستخدم",
