@@ -380,20 +380,36 @@ export const arSA = {
       }
     },
     
-    // Groups
-    groups: {
-      overview: "نظرة عامة",
-      management: "الإدارة",
-      business: "الأعمال",
-      system: "النظام"
-    }
-  },
+     // Groups
+     groups: {
+       overview: "نظرة عامة",
+       management: "الإدارة",
+       business: "الأعمال",
+       system: "النظام"
+     },
+     
+     // System section
+     system: {
+       status: "حالة النظام"
+     },
+     
+     // Messages section
+     messages: {
+       error: "خطأ"
+     }
+   },
   
   // Analytics translations
   analytics: {
     pendingApprovals: "الموافقات المعلقة",
     totalUsers: "إجمالي المستخدمين",
-    totalRevenue: "إجمالي الإيرادات"
+    totalRevenue: "إجمالي الإيرادات",
+    platformActivity: "نشاط المنصة",
+    platformActivityDesc: "تتبع استخدام المنصة والاتجاهات اليومية",
+    recentActivity: "النشاط الأخير",
+    recentActivityDescription: "أحدث أنشطة وأحداث المنصة",
+    activityOn: "نشاط في",
+    noRecentActivity: "لا يوجد نشاط حديث"
   },
 
   // System translations
@@ -408,7 +424,34 @@ export const arSA = {
     statusDescription: "حالة مكونات النظام في الوقت الفعلي",
     alerts: "تنبيهات النظام",
     activeSystemAlerts: "تنبيهات النظام النشطة",
-    requireAttention: "تتطلب الانتباه"
+    requireAttention: "تتطلب الانتباه",
+    metricsError: "فشل في تحميل المقاييس. يرجى المحاولة مرة أخرى."
+  },
+
+  // Navigation translations
+  navigation: {
+    userManagement: "إدارة المستخدمين",
+    userManagementDescription: "إدارة المستخدمين والأدوار والصلاحيات",
+    approvalQueue: "قائمة الموافقات",
+    approvalQueueDescription: "مراجعة الطلبات والموافقات المعلقة",
+    financialOverview: "النظرة المالية العامة",
+    financialOverviewDescription: "مراقبة المعاملات والإيرادات",
+    systemHealth: "صحة النظام",
+    systemHealthDescription: "مراقبة أداء النظام وحالته",
+    securityCenter: "مركز الأمان",
+    securityCenterDescription: "مراقبة الأمان والامتثال",
+    communications: "الاتصالات",
+    communicationsDescription: "إدارة الإشعارات والرسائل",
+    analytics: "التحليلات",
+    analyticsDescription: "مقاييس استخدام المنصة والأداء",
+    automation: "الأتمتة",
+    automationDescription: "أتمتة سير العمل والقواعد"
+  },
+
+  // Dashboard translations
+  dashboard: {
+    quickActions: "الإجراءات السريعة",
+    quickActionsDesc: "المهام الإدارية الشائعة والاختصارات"
   },
 
   // Requests translations

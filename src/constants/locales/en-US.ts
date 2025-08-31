@@ -380,20 +380,36 @@ export const enUS = {
       }
     },
     
-    // Groups
-    groups: {
-      overview: "Overview",
-      management: "Management", 
-      business: "Business",
-      system: "System"
-    }
-  },
+     // Groups
+     groups: {
+       overview: "Overview",
+       management: "Management", 
+       business: "Business",
+       system: "System"
+     },
+     
+     // System section
+     system: {
+       status: "System Status"
+     },
+     
+     // Messages section
+     messages: {
+       error: "Error"
+     }
+   },
   
   // Analytics translations
   analytics: {
     pendingApprovals: "Pending Approvals",
     totalUsers: "Total Users",
-    totalRevenue: "Total Revenue"
+    totalRevenue: "Total Revenue",
+    platformActivity: "Platform Activity",
+    platformActivityDesc: "Track daily platform usage and trends",
+    recentActivity: "Recent Activity",
+    recentActivityDescription: "Latest platform activity and events",
+    activityOn: "activity on",
+    noRecentActivity: "No recent activity"
   },
 
   // System translations
@@ -408,7 +424,34 @@ export const enUS = {
     statusDescription: "Real-time system component status",
     alerts: "System Alerts",
     activeSystemAlerts: "active system alerts",
-    requireAttention: "require attention"
+    requireAttention: "require attention",
+    metricsError: "Failed to load metrics. Please try again."
+  },
+
+  // Navigation translations
+  navigation: {
+    userManagement: "User Management",
+    userManagementDescription: "Manage users, roles, and permissions",
+    approvalQueue: "Approval Queue",
+    approvalQueueDescription: "Review pending requests and approvals",
+    financialOverview: "Financial Overview",
+    financialOverviewDescription: "Monitor transactions and revenue",
+    systemHealth: "System Health",
+    systemHealthDescription: "Monitor system performance and status",
+    securityCenter: "Security Center",
+    securityCenterDescription: "Security monitoring and compliance",
+    communications: "Communications",
+    communicationsDescription: "Manage notifications and messaging",
+    analytics: "Analytics",
+    analyticsDescription: "Platform usage and performance metrics",
+    automation: "Automation",
+    automationDescription: "Workflow automation and rules"
+  },
+
+  // Dashboard translations
+  dashboard: {
+    quickActions: "Quick Actions",
+    quickActionsDesc: "Common administrative tasks and shortcuts"
   },
 
   // Requests translations
