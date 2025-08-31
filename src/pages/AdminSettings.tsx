@@ -62,7 +62,7 @@ export const AdminSettings = () => {
         console.error('Error loading platform settings:', error);
         toast({
           title: t('common.error'),
-          description: t('platformSettings.loadSettingsError'),
+          description: t('admin.platformSettings.loadSettingsError'),
           variant: "destructive"
         });
         return;
@@ -78,15 +78,15 @@ export const AdminSettings = () => {
       
       if (showRefreshToast) {
         toast({
-          title: t('platformSettings.settingsRefreshed'),
-          description: t('platformSettings.settingsRefreshedDesc')
+          title: t('admin.platformSettings.settingsRefreshed'),
+          description: t('admin.platformSettings.settingsRefreshedDesc')
         });
       }
     } catch (error) {
       console.error('Error loading platform settings:', error);
       toast({
         title: t('common.error'),
-        description: t('platformSettings.loadSettingsError'),
+        description: t('admin.platformSettings.loadSettingsError'),
         variant: "destructive"
       });
     } finally {
@@ -111,7 +111,7 @@ export const AdminSettings = () => {
         console.error('Error updating setting:', error);
         toast({
           title: t('common.error'),
-          description: t('platformSettings.updateSettingsError').replace('{settingKey}', settingKey),
+          description: t('admin.platformSettings.updateSettingsError').replace('{settingKey}', settingKey),
           variant: "destructive"
         });
         return false;
@@ -138,8 +138,8 @@ export const AdminSettings = () => {
     if (allSuccessful) {
       setHasUnsavedChanges(false);
       toast({
-        title: t('platformSettings.settingsSaved'),
-        description: t('platformSettings.settingsSavedDesc')
+        title: t('admin.platformSettings.settingsSaved'),
+        description: t('admin.platformSettings.settingsSavedDesc')
       });
       // Refresh to get latest values
       await loadPlatformSettings();
@@ -176,8 +176,8 @@ export const AdminSettings = () => {
     setHasUnsavedChanges(true);
     
     toast({
-      title: t('platformSettings.settingsReset'),
-      description: t('platformSettings.settingsResetDesc')
+      title: t('admin.platformSettings.settingsReset'),
+      description: t('admin.platformSettings.settingsResetDesc')
     });
   };
 
@@ -201,7 +201,7 @@ export const AdminSettings = () => {
     <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
       {hasUnsavedChanges && (
         <Badge variant="outline" className="text-amber-600 border-amber-600">
-          {t('platformSettings.unsavedChanges')}
+          {t('admin.platformSettings.unsavedChanges')}
         </Badge>
       )}
       <Button 
@@ -215,15 +215,15 @@ export const AdminSettings = () => {
         ) : (
           <RefreshCw className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
         )}
-        {t('platformSettings.refresh')}
+        {t('admin.platformSettings.refresh')}
       </Button>
     </div>
   );
 
   return (
     <AdminPageContainer
-      title={t('platformSettings.title')}
-      description={t('platformSettings.description')}
+      title={t('admin.platformSettings.title')}
+      description={t('admin.platformSettings.description')}
       headerActions={headerActions}
     >
       <div dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'text-right' : 'text-left'}>
@@ -231,23 +231,23 @@ export const AdminSettings = () => {
           <TabsList className="grid grid-cols-5 w-full">
             <TabsTrigger value="general" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Globe className="h-4 w-4" />
-              {t('platformSettings.general')}
+              {t('admin.platformSettings.general')}
             </TabsTrigger>
             <TabsTrigger value="security" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Shield className="h-4 w-4" />
-              {t('platformSettings.security')}
+              {t('admin.platformSettings.security')}
             </TabsTrigger>
             <TabsTrigger value="system" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Server className="h-4 w-4" />
-              {t('platformSettings.system')}
+              {t('admin.platformSettings.system')}
             </TabsTrigger>
             <TabsTrigger value="communication" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Mail className="h-4 w-4" />
-              {t('platformSettings.communication')}
+              {t('admin.platformSettings.communication')}
             </TabsTrigger>
             <TabsTrigger value="advanced" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Database className="h-4 w-4" />
-              {t('platformSettings.advanced')}
+              {t('admin.platformSettings.advanced')}
             </TabsTrigger>
           </TabsList>
 
@@ -256,16 +256,16 @@ export const AdminSettings = () => {
             <CardHeader>
               <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Globe className="h-5 w-5" />
-                {t('platformSettings.platformInformation')}
+                {t('admin.platformSettings.platformInformation')}
               </CardTitle>
               <CardDescription>
-                {t('platformSettings.platformInfoDescription')}
+                {t('admin.platformSettings.platformInfoDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="siteName">{t('platformSettings.platformName')}</Label>
+                  <Label htmlFor="siteName">{t('admin.platformSettings.platformName')}</Label>
                   <Input
                     id="siteName"
                     dir={isRTL ? 'rtl' : 'ltr'}
@@ -276,7 +276,7 @@ export const AdminSettings = () => {
                 </div>
                 
                 <div>
-                  <Label htmlFor="defaultCurrency">{t('platformSettings.defaultCurrency')}</Label>
+                  <Label htmlFor="defaultCurrency">{t('admin.platformSettings.defaultCurrency')}</Label>
                   <Select 
                     value={settings.default_currency || 'SAR'} 
                     onValueChange={(value) => handleSettingChange('default_currency', value)}
@@ -285,17 +285,17 @@ export const AdminSettings = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent align={isRTL ? 'end' : 'start'}>
-                      <SelectItem value="SAR">{t('platformSettings.currencySAR')}</SelectItem>
-                      <SelectItem value="USD">{t('platformSettings.currencyUSD')}</SelectItem>
-                      <SelectItem value="EUR">{t('platformSettings.currencyEUR')}</SelectItem>
-                      <SelectItem value="AED">{t('platformSettings.currencyAED')}</SelectItem>
+                      <SelectItem value="SAR">{t('admin.platformSettings.currencySAR')}</SelectItem>
+                      <SelectItem value="USD">{t('admin.platformSettings.currencyUSD')}</SelectItem>
+                      <SelectItem value="EUR">{t('admin.platformSettings.currencyEUR')}</SelectItem>
+                      <SelectItem value="AED">{t('admin.platformSettings.currencyAED')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="siteDescription">{t('platformSettings.platformDescription')}</Label>
+                <Label htmlFor="siteDescription">{t('admin.platformSettings.platformDescription')}</Label>
                 <Textarea
                   id="siteDescription"
                   dir={isRTL ? 'rtl' : 'ltr'}
@@ -308,7 +308,7 @@ export const AdminSettings = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="defaultTimezone">{t('platformSettings.defaultTimezone')}</Label>
+                  <Label htmlFor="defaultTimezone">{t('admin.platformSettings.defaultTimezone')}</Label>
                   <Select 
                     value={settings.default_timezone || 'Asia/Riyadh'} 
                     onValueChange={(value) => handleSettingChange('default_timezone', value)}
@@ -317,17 +317,17 @@ export const AdminSettings = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent align={isRTL ? 'end' : 'start'}>
-                      <SelectItem value="Asia/Riyadh">{t('platformSettings.timezoneRiyadh')}</SelectItem>
-                      <SelectItem value="UTC">{t('platformSettings.timezoneUTC')}</SelectItem>
-                      <SelectItem value="America/New_York">{t('platformSettings.timezoneNewYork')}</SelectItem>
-                      <SelectItem value="Europe/London">{t('platformSettings.timezoneLondon')}</SelectItem>
-                      <SelectItem value="Asia/Dubai">{t('platformSettings.timezoneDubai')}</SelectItem>
+                      <SelectItem value="Asia/Riyadh">{t('admin.platformSettings.timezoneRiyadh')}</SelectItem>
+                      <SelectItem value="UTC">{t('admin.platformSettings.timezoneUTC')}</SelectItem>
+                      <SelectItem value="America/New_York">{t('admin.platformSettings.timezoneNewYork')}</SelectItem>
+                      <SelectItem value="Europe/London">{t('admin.platformSettings.timezoneLondon')}</SelectItem>
+                      <SelectItem value="Asia/Dubai">{t('admin.platformSettings.timezoneDubai')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
-                  <Label htmlFor="defaultUserRole">{t('platformSettings.defaultUserRole')}</Label>
+                  <Label htmlFor="defaultUserRole">{t('admin.platformSettings.defaultUserRole')}</Label>
                   <Select 
                     value={settings.default_user_role || 'client'} 
                     onValueChange={(value) => handleSettingChange('default_user_role', value)}
@@ -336,8 +336,8 @@ export const AdminSettings = () => {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent align={isRTL ? 'end' : 'start'}>
-                      <SelectItem value="client">{t('platformSettings.roleClient')}</SelectItem>
-                      <SelectItem value="vendor">{t('platformSettings.roleVendor')}</SelectItem>
+                      <SelectItem value="client">{t('admin.platformSettings.roleClient')}</SelectItem>
+                      <SelectItem value="vendor">{t('admin.platformSettings.roleVendor')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -345,8 +345,8 @@ export const AdminSettings = () => {
 
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>{t('platformSettings.userRegistration')}</Label>
-                  <p className="text-sm text-muted-foreground">{t('platformSettings.userRegistrationDesc')}</p>
+                  <Label>{t('admin.platformSettings.userRegistration')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('admin.platformSettings.userRegistrationDesc')}</p>
                 </div>
                 <Switch
                   checked={settings.registration_open || false}
@@ -361,7 +361,7 @@ export const AdminSettings = () => {
                   className="flex-1"
                 >
                   {isSaving ? <LoadingSpinner size="sm" className={`${isRTL ? 'ml-2' : 'mr-2'}`} /> : <Save className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />}
-                  {t('platformSettings.saveGeneralSettings')}
+                  {t('admin.platformSettings.saveGeneralSettings')}
                 </Button>
               </div>
             </CardContent>
@@ -373,16 +373,16 @@ export const AdminSettings = () => {
             <CardHeader>
               <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Shield className="h-5 w-5" />
-                {t('platformSettings.securityConfiguration')}
+                {t('admin.platformSettings.securityConfiguration')}
               </CardTitle>
               <CardDescription>
-                {t('platformSettings.securityConfigDesc')}
+                {t('admin.platformSettings.securityConfigDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="sessionTimeout">{t('platformSettings.sessionTimeout')}</Label>
+                  <Label htmlFor="sessionTimeout">{t('admin.platformSettings.sessionTimeout')}</Label>
                   <Input
                     id="sessionTimeout"
                     dir={isRTL ? 'rtl' : 'ltr'}
@@ -392,11 +392,11 @@ export const AdminSettings = () => {
                     min="30"
                     max="1440"
                   />
-                  <p className="text-xs text-muted-foreground mt-1">{t('platformSettings.sessionTimeoutDesc')}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t('admin.platformSettings.sessionTimeoutDesc')}</p>
                 </div>
 
                 <div>
-                  <Label htmlFor="maxLoginAttempts">{t('platformSettings.maxLoginAttempts')}</Label>
+                  <Label htmlFor="maxLoginAttempts">{t('admin.platformSettings.maxLoginAttempts')}</Label>
                   <Input
                     id="maxLoginAttempts"
                     dir={isRTL ? 'rtl' : 'ltr'}
@@ -406,13 +406,13 @@ export const AdminSettings = () => {
                     min="3"
                     max="10"
                   />
-                  <p className="text-xs text-muted-foreground mt-1">{t('platformSettings.maxLoginAttemptsDesc')}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t('admin.platformSettings.maxLoginAttemptsDesc')}</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="passwordMinLength">{t('platformSettings.passwordMinLength')}</Label>
+                  <Label htmlFor="passwordMinLength">{t('admin.platformSettings.passwordMinLength')}</Label>
                   <Input
                     id="passwordMinLength"
                     dir={isRTL ? 'rtl' : 'ltr'}
@@ -426,8 +426,8 @@ export const AdminSettings = () => {
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label>{t('platformSettings.requirePasswordSymbols')}</Label>
-                    <p className="text-xs text-muted-foreground">{t('platformSettings.requirePasswordSymbolsDesc')}</p>
+                    <Label>{t('admin.platformSettings.requirePasswordSymbols')}</Label>
+                    <p className="text-xs text-muted-foreground">{t('admin.platformSettings.requirePasswordSymbolsDesc')}</p>
                   </div>
                   <Switch
                     checked={settings.require_password_symbols || false}
@@ -439,8 +439,8 @@ export const AdminSettings = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label>{t('platformSettings.emailVerificationRequired')}</Label>
-                    <p className="text-xs text-muted-foreground">{t('platformSettings.emailVerificationDesc')}</p>
+                    <Label>{t('admin.platformSettings.emailVerificationRequired')}</Label>
+                    <p className="text-xs text-muted-foreground">{t('admin.platformSettings.emailVerificationDesc')}</p>
                   </div>
                   <Switch
                     checked={settings.email_verification_required || false}
@@ -450,8 +450,8 @@ export const AdminSettings = () => {
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label>{t('platformSettings.twoFactorAuth')}</Label>
-                    <p className="text-xs text-muted-foreground">{t('platformSettings.twoFactorAuthDesc')}</p>
+                    <Label>{t('admin.platformSettings.twoFactorAuth')}</Label>
+                    <p className="text-xs text-muted-foreground">{t('admin.platformSettings.twoFactorAuthDesc')}</p>
                   </div>
                   <Switch
                     checked={settings.enable_two_factor || false}
@@ -467,7 +467,7 @@ export const AdminSettings = () => {
                   className="flex-1"
                 >
                   {isSaving ? <LoadingSpinner size="sm" className={`${isRTL ? 'ml-2' : 'mr-2'}`} /> : <Save className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />}
-                  {t('platformSettings.saveSecuritySettings')}
+                  {t('admin.platformSettings.saveSecuritySettings')}
                 </Button>
               </div>
             </CardContent>
@@ -479,16 +479,16 @@ export const AdminSettings = () => {
             <CardHeader>
               <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Server className="h-5 w-5" />
-                {t('platformSettings.systemConfiguration')}
+                {t('admin.platformSettings.systemConfiguration')}
               </CardTitle>
               <CardDescription>
-                {t('platformSettings.systemConfigDesc')}
+                {t('admin.platformSettings.systemConfigDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="apiRateLimit">{t('platformSettings.apiRateLimit')}</Label>
+                  <Label htmlFor="apiRateLimit">{t('admin.platformSettings.apiRateLimit')}</Label>
                   <Input
                     id="apiRateLimit"
                     dir={isRTL ? 'rtl' : 'ltr'}
@@ -498,11 +498,11 @@ export const AdminSettings = () => {
                     min="100"
                     max="10000"
                   />
-                  <p className="text-xs text-muted-foreground mt-1">{t('platformSettings.apiRateLimitDesc')}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t('admin.platformSettings.apiRateLimitDesc')}</p>
                 </div>
 
                 <div>
-                  <Label htmlFor="fileUploadMaxSize">{t('platformSettings.fileUploadMaxSize')}</Label>
+                  <Label htmlFor="fileUploadMaxSize">{t('admin.platformSettings.fileUploadMaxSize')}</Label>
                   <Input
                     id="fileUploadMaxSize"
                     dir={isRTL ? 'rtl' : 'ltr'}
@@ -512,7 +512,7 @@ export const AdminSettings = () => {
                     min="1"
                     max="100"
                   />
-                  <p className="text-xs text-muted-foreground mt-1">{t('platformSettings.fileUploadMaxSizeDesc')}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t('admin.platformSettings.fileUploadMaxSizeDesc')}</p>
                 </div>
               </div>
 
@@ -520,8 +520,8 @@ export const AdminSettings = () => {
                 <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                   <AlertTriangle className="h-5 w-5 text-amber-500" />
                   <div>
-                    <Label className="text-base">{t('platformSettings.maintenanceMode')}</Label>
-                    <p className="text-sm text-muted-foreground">{t('platformSettings.maintenanceModeDesc')}</p>
+                    <Label className="text-base">{t('admin.platformSettings.maintenanceMode')}</Label>
+                    <p className="text-sm text-muted-foreground">{t('admin.platformSettings.maintenanceModeDesc')}</p>
                   </div>
                 </div>
                 <Switch
@@ -534,10 +534,10 @@ export const AdminSettings = () => {
                 <div className="p-4 border rounded-lg bg-amber-50 dark:bg-amber-950/20">
                   <div className={`flex items-center gap-2 mb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <Info className="h-4 w-4 text-amber-600" />
-                    <span className="text-sm font-medium text-amber-800 dark:text-amber-200">{t('platformSettings.maintenanceModeActive')}</span>
+                    <span className="text-sm font-medium text-amber-800 dark:text-amber-200">{t('admin.platformSettings.maintenanceModeActive')}</span>
                   </div>
                   <p className="text-sm text-amber-700 dark:text-amber-300">
-                    {t('platformSettings.maintenanceModeActiveDesc')}
+                    {t('admin.platformSettings.maintenanceModeActiveDesc')}
                   </p>
                 </div>
               )}
@@ -549,7 +549,7 @@ export const AdminSettings = () => {
                   className="flex-1"
                 >
                   {isSaving ? <LoadingSpinner size="sm" className={`${isRTL ? 'ml-2' : 'mr-2'}`} /> : <Save className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />}
-                  {t('platformSettings.saveSystemSettings')}
+                  {t('admin.platformSettings.saveSystemSettings')}
                 </Button>
               </div>
             </CardContent>
@@ -565,10 +565,10 @@ export const AdminSettings = () => {
             <CardHeader>
               <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Database className="h-5 w-5" />
-                {t('platformSettings.advancedConfiguration')}
+                {t('admin.platformSettings.advancedConfiguration')}
               </CardTitle>
               <CardDescription>
-                {t('platformSettings.advancedConfigDesc')}
+                {t('admin.platformSettings.advancedConfigDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -576,50 +576,50 @@ export const AdminSettings = () => {
                 <Card className="p-4">
                   <div className={`flex items-center gap-3 mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <Key className="h-5 w-5 text-blue-500" />
-                    <h4 className="font-medium">{t('platformSettings.apiKeyManagement')}</h4>
+                    <h4 className="font-medium">{t('admin.platformSettings.apiKeyManagement')}</h4>
                   </div>
                   <p className="text-sm text-muted-foreground mb-4">
-                    {t('platformSettings.apiKeyManagementDesc')}
+                    {t('admin.platformSettings.apiKeyManagementDesc')}
                   </p>
                   <Button variant="outline" size="sm" disabled>
-                    {t('platformSettings.manageApiKeys')}
+                    {t('admin.platformSettings.manageApiKeys')}
                   </Button>
                 </Card>
 
                 <Card className="p-4">
                   <div className={`flex items-center gap-3 mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <Database className="h-5 w-5 text-green-500" />
-                    <h4 className="font-medium">{t('platformSettings.databaseTools')}</h4>
+                    <h4 className="font-medium">{t('admin.platformSettings.databaseTools')}</h4>
                   </div>
                   <p className="text-sm text-muted-foreground mb-4">
-                    {t('platformSettings.databaseToolsDesc')}
+                    {t('admin.platformSettings.databaseToolsDesc')}
                   </p>
                   <Button variant="outline" size="sm" disabled>
-                    {t('platformSettings.manageDatabaseTools')}
+                    {t('admin.platformSettings.manageDatabaseTools')}
                   </Button>
                 </Card>
               </div>
 
               <div className="border-t pt-6">
-                <h4 className="font-medium mb-4 text-destructive">{t('platformSettings.dangerZone')}</h4>
+                <h4 className="font-medium mb-4 text-destructive">{t('admin.platformSettings.dangerZone')}</h4>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between p-4 border border-destructive/20 rounded-lg">
                     <div>
-                      <h5 className="font-medium text-destructive">{t('platformSettings.resetPlatformSettings')}</h5>
-                      <p className="text-sm text-muted-foreground">{t('platformSettings.resetPlatformSettingsDesc')}</p>
+                      <h5 className="font-medium text-destructive">{t('admin.platformSettings.resetPlatformSettings')}</h5>
+                      <p className="text-sm text-muted-foreground">{t('admin.platformSettings.resetPlatformSettingsDesc')}</p>
                     </div>
                     <Button variant="destructive" size="sm" onClick={resetToDefaults}>
-                      {t('platformSettings.resetSettings')}
+                      {t('admin.platformSettings.resetSettings')}
                     </Button>
                   </div>
 
                   <div className="flex items-center justify-between p-4 border border-destructive/20 rounded-lg">
                     <div>
-                      <h5 className="font-medium text-destructive">{t('platformSettings.exportPlatformData')}</h5>
-                      <p className="text-sm text-muted-foreground">{t('platformSettings.exportDataDesc')}</p>
+                      <h5 className="font-medium text-destructive">{t('admin.platformSettings.exportPlatformData')}</h5>
+                      <p className="text-sm text-muted-foreground">{t('admin.platformSettings.exportDataDesc')}</p>
                     </div>
                     <Button variant="outline" size="sm" disabled>
-                      {t('platformSettings.exportData')}
+                      {t('admin.platformSettings.exportData')}
                     </Button>
                   </div>
                 </div>

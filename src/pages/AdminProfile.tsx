@@ -174,7 +174,7 @@ const AdminProfile = () => {
         });
 
       if (error) throw error;
-      showSuccess(t('platformSettings.settingsSaved'));
+      showSuccess(t('admin.platformSettings.settingsSaved'));
     } catch (error) {
       console.error('Error saving admin settings:', error);
       showError(t('common.error'));
