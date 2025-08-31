@@ -776,6 +776,47 @@ export const adminTranslationsEN = {
     metricsError: "Failed to load system metrics"
   },
 
+  // Support Management
+  support: {
+    title: "Support Management",
+    description: "Manage customer support tickets and inquiries",
+    totalTickets: "Total Tickets",
+    openTickets: "Open Tickets",
+    inProgress: "In Progress",
+    resolved: "Resolved",
+    searchPlaceholder: "Search tickets by subject or customer email...",
+    filterByStatus: "Filter by Status",
+    allStatus: "All Status",
+    open: "Open",
+    closed: "Closed",
+    category: "Category",
+    created: "Created",
+    viewDetails: "View Details",
+    ticketDetails: "Ticket Details",
+    manageTicket: "Manage and respond to this support ticket",
+    status: "Status",
+    priority: "Priority",
+    customer: "Customer",
+    addResponse: "Add Response",
+    responsePlaceholder: "Type your response to the customer...",
+    clear: "Clear",
+    sendResponse: "Send Response",
+    takeTicket: "Take Ticket",
+    noTicketsFound: "No support tickets found",
+    adjustSearchFilters: "Try adjusting your search terms or filters",
+    allTicketsAppearHere: "All support tickets will appear here",
+    low: "Low",
+    medium: "Medium",
+    high: "High",
+    error: "Error",
+    success: "Success",
+    fetchError: "Failed to load support tickets",
+    updateSuccess: "Ticket status updated successfully",
+    updateError: "Failed to update ticket status",
+    responseSent: "Response sent",
+    customerNotified: "Customer has been notified"
+  },
+
   // Security Center
   security: {
     title: "Security Center",

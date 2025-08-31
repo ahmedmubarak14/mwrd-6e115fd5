@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { MessageSquare, Clock, User, AlertCircle, CheckCircle2, Search } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface SupportTicket {
   id: string;
@@ -37,8 +37,7 @@ export default function AdminSupport() {
   const [response, setResponse] = useState('');
   const { toast } = useToast();
   
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { t: (key: string) => key, isRTL: false };
+  const { t, isRTL } = useLanguage();
 
   useEffect(() => {
     fetchTickets();
@@ -79,8 +78,8 @@ export default function AdminSupport() {
     } catch (error) {
       console.error('Error fetching tickets:', error);
       toast({
-        title: t('support.error'),
-        description: t('support.fetchError'),
+        title: t('admin.support.error'),
+        description: t('admin.support.fetchError'),
         variant: 'destructive'
       });
     } finally {
@@ -99,14 +98,14 @@ export default function AdminSupport() {
       
       await fetchTickets();
       toast({
-        title: t('support.success'),
-        description: t('support.updateSuccess')
+        title: t('admin.support.success'),
+        description: t('admin.support.updateSuccess')
       });
     } catch (error) {
       console.error('Error updating ticket:', error);
       toast({
-        title: t('support.error'),
-        description: t('support.updateError'),
+        title: t('admin.support.error'),
+        description: t('admin.support.updateError'),
         variant: 'destructive'
       });
     }
@@ -140,7 +139,7 @@ export default function AdminSupport() {
 
   if (loading) {
     return (
-      <AdminPageContainer title={t('support.title')} description={t('support.description')}>
+      <AdminPageContainer title={t('admin.support.title')} description={t('admin.support.description')}>
         <div className="space-y-4">
           {Array.from({ length: 5 }).map((_, i) => (
             <Card key={i} className="animate-pulse">
@@ -159,12 +158,12 @@ export default function AdminSupport() {
 
   return (
     <div dir={isRTL ? 'rtl' : 'ltr'}>
-      <AdminPageContainer title={t('support.title')} description={t('support.description')}>
+      <AdminPageContainer title={t('admin.support.title')} description={t('admin.support.description')}>
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('support.totalTickets')}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.support.totalTickets')}</CardTitle>
             <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -173,7 +172,7 @@ export default function AdminSupport() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('support.openTickets')}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.support.openTickets')}</CardTitle>
             <AlertCircle className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent>
@@ -184,7 +183,7 @@ export default function AdminSupport() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('support.inProgress')}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.support.inProgress')}</CardTitle>
             <Clock className="h-4 w-4 text-warning" />
           </CardHeader>
           <CardContent>
@@ -195,7 +194,7 @@ export default function AdminSupport() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('support.resolved')}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.support.resolved')}</CardTitle>
             <CheckCircle2 className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
@@ -213,7 +212,7 @@ export default function AdminSupport() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder={t('support.searchPlaceholder')}
+                placeholder={t('admin.support.searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-9"
@@ -221,14 +220,14 @@ export default function AdminSupport() {
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-full sm:w-48">
-                <SelectValue placeholder={t('support.filterByStatus')} />
+                <SelectValue placeholder={t('admin.support.filterByStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">{t('support.allStatus')}</SelectItem>
-                <SelectItem value="open">{t('support.open')}</SelectItem>
-                <SelectItem value="in_progress">{t('support.inProgress')}</SelectItem>
-                <SelectItem value="resolved">{t('support.resolved')}</SelectItem>
-                <SelectItem value="closed">{t('support.closed')}</SelectItem>
+                <SelectItem value="all">{t('admin.support.allStatus')}</SelectItem>
+                <SelectItem value="open">{t('admin.support.open')}</SelectItem>
+                <SelectItem value="in_progress">{t('admin.support.inProgress')}</SelectItem>
+                <SelectItem value="resolved">{t('admin.support.resolved')}</SelectItem>
+                <SelectItem value="closed">{t('admin.support.closed')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -241,11 +240,11 @@ export default function AdminSupport() {
           <Card>
             <CardContent className="p-12 text-center">
               <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-lg font-medium mb-2">{t('support.noTicketsFound')}</p>
+              <p className="text-lg font-medium mb-2">{t('admin.support.noTicketsFound')}</p>
               <p className="text-muted-foreground">
                 {searchTerm || statusFilter !== 'all' 
-                  ? t('support.adjustSearchFilters')
-                  : t('support.allTicketsAppearHere')
+                  ? t('admin.support.adjustSearchFilters')
+                  : t('admin.support.allTicketsAppearHere')
                 }
               </p>
             </CardContent>
@@ -272,10 +271,10 @@ export default function AdminSupport() {
                       </div>
                       <div className="flex items-center space-x-1">
                         <Clock className="h-4 w-4" />
-                        <span>{t('support.created')}: {new Date(ticket.created_at).toLocaleDateString()}</span>
+                        <span>{t('admin.support.created')}: {new Date(ticket.created_at).toLocaleDateString()}</span>
                       </div>
                     </div>
-                    <p className="text-sm">{t('support.category')}: {ticket.category}</p>
+                    <p className="text-sm">{t('admin.support.category')}: {ticket.category}</p>
                   </div>
                   <div className="flex space-x-2">
                     <Dialog>
@@ -285,21 +284,21 @@ export default function AdminSupport() {
                           variant="outline"
                           onClick={() => setSelectedTicket(ticket)}
                         >
-                          {t('support.viewDetails')}
+                          {t('admin.support.viewDetails')}
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="max-w-2xl">
                         <DialogHeader>
-                          <DialogTitle>{t('support.ticketDetails')}</DialogTitle>
+                          <DialogTitle>{t('admin.support.ticketDetails')}</DialogTitle>
                           <DialogDescription>
-                            {t('support.manageTicket')}
+                            {t('admin.support.manageTicket')}
                           </DialogDescription>
                         </DialogHeader>
                         {selectedTicket && (
                           <div className="space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                               <div>
-                                <label className="text-sm font-medium">{t('support.status')}</label>
+                                <label className="text-sm font-medium">{t('admin.support.status')}</label>
                                 <Select 
                                   value={selectedTicket.status} 
                                   onValueChange={(value) => updateTicketStatus(selectedTicket.id, value)}
@@ -308,30 +307,30 @@ export default function AdminSupport() {
                                     <SelectValue />
                                   </SelectTrigger>
                                   <SelectContent>
-                                    <SelectItem value="open">{t('support.open')}</SelectItem>
-                                    <SelectItem value="in_progress">{t('support.inProgress')}</SelectItem>
-                                    <SelectItem value="resolved">{t('support.resolved')}</SelectItem>
-                                    <SelectItem value="closed">{t('support.closed')}</SelectItem>
+                                    <SelectItem value="open">{t('admin.support.open')}</SelectItem>
+                                    <SelectItem value="in_progress">{t('admin.support.inProgress')}</SelectItem>
+                                    <SelectItem value="resolved">{t('admin.support.resolved')}</SelectItem>
+                                    <SelectItem value="closed">{t('admin.support.closed')}</SelectItem>
                                   </SelectContent>
                                 </Select>
                               </div>
                               <div>
-                                <label className="text-sm font-medium">{t('support.priority')}</label>
+                                <label className="text-sm font-medium">{t('admin.support.priority')}</label>
                                 <Badge variant={getPriorityBadgeVariant(selectedTicket.priority)} className="ml-2">
-                                  {t(`support.${selectedTicket.priority}`)}
+                                  {t(`admin.support.${selectedTicket.priority}`)}
                                 </Badge>
                               </div>
                             </div>
                             <div>
-                              <label className="text-sm font-medium">{t('support.customer')}</label>
+                              <label className="text-sm font-medium">{t('admin.support.customer')}</label>
                               <p className="text-sm text-muted-foreground">
                                 {selectedTicket.user_profiles?.full_name || selectedTicket.user_profiles?.email}
                               </p>
                             </div>
                             <div>
-                              <label className="text-sm font-medium">{t('support.addResponse')}</label>
+                              <label className="text-sm font-medium">{t('admin.support.addResponse')}</label>
                               <Textarea
-                                placeholder={t('support.responsePlaceholder')}
+                                placeholder={t('admin.support.responsePlaceholder')}
                                 value={response}
                                 onChange={(e) => setResponse(e.target.value)}
                                 rows={4}
@@ -339,16 +338,16 @@ export default function AdminSupport() {
                             </div>
                             <div className="flex justify-end space-x-2">
                               <Button variant="outline" onClick={() => setResponse('')}>
-                                {t('support.clear')}
+                                {t('admin.support.clear')}
                               </Button>
                               <Button onClick={() => {
                                 toast({
-                                  title: t('support.responseSent'),
-                                  description: t('support.customerNotified')
+                                  title: t('admin.support.responseSent'),
+                                  description: t('admin.support.customerNotified')
                                 });
                                 setResponse('');
                               }}>
-                                {t('support.sendResponse')}
+                                {t('admin.support.sendResponse')}
                               </Button>
                             </div>
                           </div>
@@ -360,7 +359,7 @@ export default function AdminSupport() {
                         size="sm" 
                         onClick={() => updateTicketStatus(ticket.id, 'in_progress')}
                       >
-                        {t('support.takeTicket')}
+                        {t('admin.support.takeTicket')}
                       </Button>
                     )}
                   </div>

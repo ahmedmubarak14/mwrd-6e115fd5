@@ -776,6 +776,47 @@ export const adminTranslationsAR = {
     metricsError: "فشل في تحميل مقاييس النظام"
   },
 
+  // إدارة الدعم الفني
+  support: {
+    title: "إدارة الدعم الفني",
+    description: "إدارة تذاكر الدعم الفني واستفسارات العملاء",
+    totalTickets: "إجمالي التذاكر",
+    openTickets: "التذاكر المفتوحة",
+    inProgress: "قيد المعالجة",
+    resolved: "محلولة",
+    searchPlaceholder: "البحث في التذاكر بالموضوع أو البريد الإلكتروني للعميل...",
+    filterByStatus: "تصفية حسب الحالة",
+    allStatus: "جميع الحالات",
+    open: "مفتوحة",
+    closed: "مغلقة",
+    category: "الفئة",
+    created: "تم الإنشاء",
+    viewDetails: "عرض التفاصيل",
+    ticketDetails: "تفاصيل التذكرة",
+    manageTicket: "إدارة والرد على تذكرة الدعم هذه",
+    status: "الحالة",
+    priority: "الأولوية",
+    customer: "العميل",
+    addResponse: "إضافة رد",
+    responsePlaceholder: "اكتب ردك للعميل...",
+    clear: "مسح",
+    sendResponse: "إرسال الرد",
+    takeTicket: "أخذ التذكرة",
+    noTicketsFound: "لم يتم العثور على تذاكر دعم",
+    adjustSearchFilters: "حاول تعديل مصطلحات البحث أو المرشحات",
+    allTicketsAppearHere: "ستظهر جميع تذاكر الدعم هنا",
+    low: "منخفضة",
+    medium: "متوسطة",
+    high: "عالية",
+    error: "خطأ",
+    success: "نجح",
+    fetchError: "فشل في تحميل تذاكر الدعم",
+    updateSuccess: "تم تحديث حالة التذكرة بنجاح",
+    updateError: "فشل في تحديث حالة التذكرة",
+    responseSent: "تم إرسال الرد",
+    customerNotified: "تم إشعار العميل"
+  },
+
   // مركز الأمان
   security: {
     title: "مركز الأمان",
