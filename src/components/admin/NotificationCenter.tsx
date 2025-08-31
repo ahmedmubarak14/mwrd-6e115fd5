@@ -123,7 +123,7 @@ export const NotificationCenter = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{notificationStats?.total || 0}</div>
-            <p className="text-xs text-muted-foreground">All time</p>
+            <p className="text-xs text-muted-foreground">{t('admin.notifications.allTime')}</p>
           </CardContent>
         </Card>
 
@@ -134,7 +134,7 @@ export const NotificationCenter = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-success">{notificationStats?.sentToday || 0}</div>
-            <p className="text-xs text-muted-foreground">Last 24 hours</p>
+            <p className="text-xs text-muted-foreground">{t('admin.notifications.lastDay')}</p>
           </CardContent>
         </Card>
 
@@ -145,7 +145,7 @@ export const NotificationCenter = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-warning">{notificationStats?.pending || 0}</div>
-            <p className="text-xs text-muted-foreground">Scheduled</p>
+            <p className="text-xs text-muted-foreground">{t('admin.notifications.scheduled')}</p>
           </CardContent>
         </Card>
 
@@ -156,7 +156,7 @@ export const NotificationCenter = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-info">{notificationStats?.openRate || 0}%</div>
-            <p className="text-xs text-muted-foreground">Average</p>
+            <p className="text-xs text-muted-foreground">{t('admin.notifications.average')}</p>
           </CardContent>
         </Card>
       </div>
@@ -370,14 +370,13 @@ export const NotificationCenter = () => {
                     {notification.status === 'draft' && (
                       <Button size="sm" onClick={() => handleSendNow(notification.id)} className="flex-1 lg:flex-none">
                         <Send className="h-4 w-4 lg:mr-1" />
-                        <span className="hidden lg:inline">Send Now</span>
+                        <span>{t('admin.notifications.sendNow')}</span>
                       </Button>
                     )}
                     {notification.status === 'scheduled' && (
-                      <Button size="sm" variant="outline" className="flex-1 lg:flex-none">
-                        <span className="hidden lg:inline">Edit Schedule</span>
-                        <span className="lg:hidden">Edit</span>
-                      </Button>
+                       <Button size="sm" variant="outline" className="flex-1 lg:flex-none">
+                         <span>{t('admin.notifications.editSchedule')}</span>
+                       </Button>
                     )}
                   </div>
                 </div>

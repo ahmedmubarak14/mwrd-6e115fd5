@@ -232,7 +232,7 @@ export const PushNotificationManager = () => {
               <DialogTrigger asChild>
                 <Button variant="outline">
                   <Settings className="h-4 w-4 mr-2" />
-                  Settings
+                  {t('admin.pushNotifications.settings')}
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-lg">
@@ -253,8 +253,8 @@ export const PushNotificationManager = () => {
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="text-sm font-medium">Allow Promotional Notifications</label>
-                      <p className="text-xs text-muted-foreground">Send marketing and promotional content</p>
+                      <label className="text-sm font-medium">{t('admin.pushNotifications.allowPromotional')}</label>
+                      <p className="text-xs text-muted-foreground">{t('admin.pushNotifications.allowPromotionalDesc')}</p>
                     </div>
                     <Switch
                       checked={settings.allow_promotional}
@@ -264,8 +264,8 @@ export const PushNotificationManager = () => {
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="text-sm font-medium">Enable Quiet Hours</label>
-                      <p className="text-xs text-muted-foreground">Don't send notifications during quiet hours</p>
+                      <label className="text-sm font-medium">{t('admin.pushNotifications.enableQuietHours')}</label>
+                      <p className="text-xs text-muted-foreground">{t('admin.pushNotifications.enableQuietHoursDesc')}</p>
                     </div>
                     <Switch
                       checked={settings.quiet_hours_enabled}
@@ -276,7 +276,7 @@ export const PushNotificationManager = () => {
                   {settings.quiet_hours_enabled && (
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="text-sm font-medium">Quiet Hours Start</label>
+                        <label className="text-sm font-medium">{t('admin.pushNotifications.quietHoursStart')}</label>
                         <Input
                           type="time"
                           value={settings.quiet_hours_start}
@@ -284,7 +284,7 @@ export const PushNotificationManager = () => {
                         />
                       </div>
                       <div>
-                        <label className="text-sm font-medium">Quiet Hours End</label>
+                        <label className="text-sm font-medium">{t('admin.pushNotifications.quietHoursEnd')}</label>
                         <Input
                           type="time"
                           value={settings.quiet_hours_end}
@@ -295,7 +295,7 @@ export const PushNotificationManager = () => {
                   )}
 
                   <div>
-                    <label className="text-sm font-medium">Max Daily Notifications per User</label>
+                    <label className="text-sm font-medium">{t('admin.pushNotifications.maxDailyNotifications')}</label>
                     <Input
                       type="number"
                       min="1"
@@ -307,10 +307,10 @@ export const PushNotificationManager = () => {
 
                   <div className="flex justify-end space-x-2">
                     <Button variant="outline" onClick={() => setIsSettingsDialogOpen(false)}>
-                      Cancel
+                      {t('common.cancel')}
                     </Button>
                     <Button onClick={handleUpdateSettings}>
-                      Save Settings
+                      {t('admin.pushNotifications.saveSettings')}
                     </Button>
                   </div>
                 </div>
@@ -329,7 +329,7 @@ export const PushNotificationManager = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{deviceStats?.total || 0}</div>
-                <p className="text-xs text-muted-foreground">Registered devices</p>
+                <p className="text-xs text-muted-foreground">{t('admin.pushNotifications.registeredDevices')}</p>
               </CardContent>
             </Card>
 
@@ -340,7 +340,7 @@ export const PushNotificationManager = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-info">{deviceStats?.sentToday || 0}</div>
-                <p className="text-xs text-muted-foreground">Push notifications</p>
+                <p className="text-xs text-muted-foreground">{t('admin.pushNotifications.notifications')}</p>
               </CardContent>
             </Card>
 
@@ -351,7 +351,7 @@ export const PushNotificationManager = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-success">{deviceStats?.deliveryRate || 0}%</div>
-                <p className="text-xs text-muted-foreground">Successfully delivered</p>
+                <p className="text-xs text-muted-foreground">{t('admin.pushNotifications.successfullyDelivered')}</p>
               </CardContent>
             </Card>
 
@@ -362,7 +362,7 @@ export const PushNotificationManager = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold text-accent">{deviceStats?.clickRate || 0}%</div>
-                <p className="text-xs text-muted-foreground">User engagement</p>
+                <p className="text-xs text-muted-foreground">{t('admin.pushNotifications.userEngagement')}</p>
               </CardContent>
             </Card>
           </div>
@@ -371,8 +371,8 @@ export const PushNotificationManager = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Platform Distribution</CardTitle>
-                <CardDescription>Active devices by platform</CardDescription>
+                <CardTitle>{t('admin.pushNotifications.platformDistribution')}</CardTitle>
+                <CardDescription>{t('admin.pushNotifications.activeDevicesByPlatform')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={250}>

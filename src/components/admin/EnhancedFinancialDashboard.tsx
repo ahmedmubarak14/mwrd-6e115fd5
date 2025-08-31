@@ -125,8 +125,8 @@ export const EnhancedFinancialDashboard = () => {
     } catch (error) {
       console.error('Error fetching transactions:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to fetch transactions',
+        title: t('common.error'),
+        description: t('admin.financial.fetchError'),
         variant: 'destructive'
       });
     } finally {
@@ -276,13 +276,13 @@ export const EnhancedFinancialDashboard = () => {
       URL.revokeObjectURL(url);
 
       toast({
-        title: 'Success',
-        description: 'Transactions exported successfully',
+        title: t('common.success'),
+        description: t('admin.financial.exportSuccess'),
       });
     } catch (error) {
       toast({
-        title: 'Error',
-        description: 'Failed to export transactions',
+        title: t('common.error'),
+        description: t('admin.financial.exportError'),
         variant: 'destructive'
       });
     }
@@ -291,10 +291,10 @@ export const EnhancedFinancialDashboard = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-foreground opacity-75">Loading financial dashboard...</p>
-        </div>
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+        <p className="text-foreground opacity-75">{t('admin.financial.loadingDashboard')}</p>
+      </div>
       </div>
     );
   }
@@ -304,19 +304,19 @@ export const EnhancedFinancialDashboard = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Financial Dashboard</h1>
+          <h1 className="text-3xl font-bold">{t('admin.financial.title')}</h1>
           <p className="text-foreground opacity-75">
-            Monitor transactions, revenue, and financial performance
+            {t('admin.financial.description')}
           </p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={exportTransactions}>
             <Download className="h-4 w-4 mr-2" />
-            Export
+            {t('admin.financial.export')}
           </Button>
           <Button onClick={() => { fetchTransactions(); fetchFinancialStats(); }}>
             <RefreshCw className="h-4 w-4 mr-2" />
-            Refresh
+            {t('admin.financial.refresh')}
           </Button>
         </div>
       </div>
@@ -328,13 +328,13 @@ export const EnhancedFinancialDashboard = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-foreground opacity-75">Total Revenue</p>
+                  <p className="text-sm text-foreground opacity-75">{t('admin.financial.totalRevenue')}</p>
                   <p className="text-3xl font-bold text-success">
                     {formatCurrency(stats.totalRevenue)}
                   </p>
                   <div className="flex items-center gap-1 mt-1">
                     <TrendingUp className="h-3 w-3 text-success" />
-                    <span className="text-xs text-success">+12.5% this month</span>
+                    <span className="text-xs text-success">{t('admin.financial.monthlyGrowth')}</span>
                   </div>
                 </div>
                 <DollarSign className="h-8 w-8 text-success/20" />
@@ -346,12 +346,12 @@ export const EnhancedFinancialDashboard = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-foreground opacity-75">Pending Amount</p>
+                  <p className="text-sm text-foreground opacity-75">{t('admin.financial.pendingAmount')}</p>
                   <p className="text-3xl font-bold text-warning">
                     {formatCurrency(stats.pendingAmount)}
                   </p>
                   <p className="text-xs text-foreground opacity-75 mt-1">
-                    Awaiting processing
+                    {t('admin.financial.awaitingProcessing')}
                   </p>
                 </div>
                 <CreditCard className="h-8 w-8 text-warning/20" />
@@ -363,13 +363,13 @@ export const EnhancedFinancialDashboard = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-foreground opacity-75">Failed Transactions</p>
+                  <p className="text-sm text-foreground opacity-75">{t('admin.financial.failedTransactions')}</p>
                   <p className="text-3xl font-bold text-destructive">
                     {formatNumber(stats.failedTransactions)}
                   </p>
                   <div className="flex items-center gap-1 mt-1">
                     <TrendingDown className="h-3 w-3 text-destructive" />
-                    <span className="text-xs text-destructive">Needs attention</span>
+                    <span className="text-xs text-destructive">{t('admin.financial.needsAttention')}</span>
                   </div>
                 </div>
                 <AlertCircle className="h-8 w-8 text-destructive/20" />
@@ -381,12 +381,12 @@ export const EnhancedFinancialDashboard = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-foreground opacity-75">Avg Transaction</p>
+                  <p className="text-sm text-foreground opacity-75">{t('admin.financial.avgTransaction')}</p>
                   <p className="text-3xl font-bold">
                     {formatCurrency(stats.avgTransactionValue)}
                   </p>
                   <p className="text-xs text-foreground opacity-75 mt-1">
-                    Per completed transaction
+                    {t('admin.financial.perCompletedTransaction')}
                   </p>
                 </div>
                 <BarChart3 className="h-8 w-8 text-primary/20" />
@@ -399,9 +399,9 @@ export const EnhancedFinancialDashboard = () => {
       {/* Chart */}
       <Card>
         <CardHeader>
-          <CardTitle>Revenue Trend</CardTitle>
+          <CardTitle>{t('admin.financial.revenueTrend')}</CardTitle>
           <CardDescription>
-            Financial performance over the selected period
+            {t('admin.financial.financialPerformance')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -412,9 +412,9 @@ export const EnhancedFinancialDashboard = () => {
       {/* Transactions Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Recent Transactions</CardTitle>
+          <CardTitle>{t('admin.financial.recentTransactions')}</CardTitle>
           <CardDescription>
-            View and manage financial transactions
+            {t('admin.financial.viewAndManage')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -422,7 +422,7 @@ export const EnhancedFinancialDashboard = () => {
           <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <div className="flex-1">
               <Input
-                placeholder="Search transactions..."
+                placeholder={t('admin.financial.searchTransactions')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full"
@@ -433,10 +433,10 @@ export const EnhancedFinancialDashboard = () => {
                 <SelectValue placeholder={t('admin.financial.filterByStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="failed">Failed</SelectItem>
+                <SelectItem value="all">{t('admin.financial.allStatus')}</SelectItem>
+                <SelectItem value="completed">{t('admin.financial.completed')}</SelectItem>
+                <SelectItem value="pending">{t('admin.financial.pending')}</SelectItem>
+                <SelectItem value="failed">{t('admin.financial.failed')}</SelectItem>
               </SelectContent>
             </Select>
             <Select value={typeFilter} onValueChange={setTypeFilter}>
@@ -444,9 +444,9 @@ export const EnhancedFinancialDashboard = () => {
                 <SelectValue placeholder={t('admin.financial.filterByType')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="payment">Payment</SelectItem>
-                <SelectItem value="refund">Refund</SelectItem>
+                <SelectItem value="all">{t('admin.financial.allTypes')}</SelectItem>
+                <SelectItem value="payment">{t('admin.financial.payment')}</SelectItem>
+                <SelectItem value="refund">{t('admin.financial.refund')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -492,7 +492,7 @@ export const EnhancedFinancialDashboard = () => {
 
           {filteredTransactions.length === 0 && (
             <div className="text-center py-8 text-foreground opacity-75">
-              No transactions found matching your criteria.
+              {t('admin.financial.noTransactionsFound')}
             </div>
           )}
         </CardContent>
