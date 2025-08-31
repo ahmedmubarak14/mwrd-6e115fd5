@@ -104,8 +104,8 @@ export default function AdminFinancialTransactions() {
     } catch (error: any) {
       console.error('Error fetching transactions:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch transactions",
+        title: t('common.error'),
+        description: t('admin.financial.fetchError'),
         variant: "destructive"
       });
     } finally {
@@ -127,14 +127,14 @@ export default function AdminFinancialTransactions() {
       
       await fetchTransactions();
       toast({
-        title: "Success",
+        title: t('common.success'),
         description: `Transaction status updated to ${newStatus}`,
       });
     } catch (error: any) {
       console.error('Error updating transaction status:', error);
       toast({
-        title: "Error",
-        description: "Failed to update transaction status",
+        title: t('common.error'),
+        description: t('admin.financial.updateError'),
         variant: "destructive"
       });
     }
@@ -151,14 +151,14 @@ export default function AdminFinancialTransactions() {
       
       await fetchTransactions();
       toast({
-        title: "Success",
-        description: "Transaction deleted successfully",
+        title: t('common.success'),
+        description: t('admin.financial.transactionDeleted'),
       });
     } catch (error: any) {
       console.error('Error deleting transaction:', error);
       toast({
-        title: "Error",
-        description: "Failed to delete transaction",
+        title: t('common.error'),
+        description: t('admin.financial.deleteError'),
         variant: "destructive"
       });
     }
@@ -177,7 +177,7 @@ export default function AdminFinancialTransactions() {
         if (error) throw error;
         
         toast({
-          title: "Success",
+          title: t('common.success'),
           description: `${selectedTransactions.length} transactions deleted`,
         });
       } else {
@@ -189,7 +189,7 @@ export default function AdminFinancialTransactions() {
         if (error) throw error;
         
         toast({
-          title: "Success",
+          title: t('common.success'),
           description: `${selectedTransactions.length} transactions updated`,
         });
       }
@@ -200,8 +200,8 @@ export default function AdminFinancialTransactions() {
     } catch (error: any) {
       console.error('Error with bulk action:', error);
       toast({
-        title: "Error",
-        description: "Bulk action failed",
+        title: t('common.error'),
+        description: t('admin.financial.bulkActionFailed'),
         variant: "destructive"
       });
     }
@@ -228,7 +228,7 @@ export default function AdminFinancialTransactions() {
     window.URL.revokeObjectURL(url);
     
     toast({
-      title: "Export completed",
+      title: t('admin.financial.exportCompleted'),
       description: `${transactionsToExport.length} transactions exported to CSV`,
     });
   };
@@ -236,8 +236,8 @@ export default function AdminFinancialTransactions() {
   const handleRefresh = () => {
     fetchTransactions();
     toast({
-      title: "Data refreshed",
-      description: "Financial transactions data has been updated",
+      title: t('admin.financial.dataRefreshed'),
+      description: t('admin.financial.dataUpdated'),
     });
   };
 
@@ -329,17 +329,17 @@ export default function AdminFinancialTransactions() {
     );
   }
 
-  return (
+return (
     <AdminPageContainer
-      title={t('financial.transactions')}
-      description={t('financial.description')}
+      title={t('admin.financial.transactions')}
+      description={t('admin.financial.description')}
     >
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="all">{t('financial.allTransactions')}</TabsTrigger>
-          <TabsTrigger value="revenue">{t('financial.revenue')}</TabsTrigger>
-          <TabsTrigger value="pending">{t('financial.pending')}</TabsTrigger>
-          <TabsTrigger value="failed">{t('financial.failed')}</TabsTrigger>
+          <TabsTrigger value="all">{t('admin.financial.allTransactions')}</TabsTrigger>
+          <TabsTrigger value="revenue">{t('admin.financial.revenue')}</TabsTrigger>
+          <TabsTrigger value="pending">{t('admin.financial.pending')}</TabsTrigger>
+          <TabsTrigger value="failed">{t('admin.financial.failed')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value={activeTab} className="space-y-6">
