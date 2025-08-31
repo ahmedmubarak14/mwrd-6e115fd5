@@ -863,7 +863,9 @@ export const adminTranslationsEN = {
     estimatedRecords: 'Estimated records to be processed: 1,247',
     configureSchedule: 'Configure Schedule',
     criticalSecurityAlert: "Critical Security Alert",
-    criticalAlertsDetected: "critical security alert(s) detected"
+    criticalAlertsDetected: "critical security alert(s) detected",
+    allSystemsOperational: "All systems operational",
+    metricsError: "Failed to load platform metrics"
   },
 
   // Communication Settings (consolidated)

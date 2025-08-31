@@ -820,7 +820,9 @@ export const adminTranslationsAR = {
     estimatedRecords: 'السجلات المقدرة للمعالجة: 1,247',
     configureSchedule: 'تكوين الجدولة',
     criticalSecurityAlert: "تنبيه أمني خطير",
-    criticalAlertsDetected: "تنبيه(ات) أمنية خطيرة تم اكتشافها"
+    criticalAlertsDetected: "تنبيه(ات) أمنية خطيرة تم اكتشافها",
+    allSystemsOperational: "جميع الأنظمة تعمل بشكل طبيعي",
+    metricsError: "فشل في تحميل مقاييس المنصة"
   },
 
   // إعدادات الاتصال (موحد)
