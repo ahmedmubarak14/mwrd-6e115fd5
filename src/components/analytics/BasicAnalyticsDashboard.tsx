@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
 interface AnalyticsStats {
@@ -40,13 +40,7 @@ interface ActivityLog {
 
 export const BasicAnalyticsDashboard: React.FC = () => {
   const { toast } = useToast();
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL, formatNumber, formatCurrency } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false,
-    formatNumber: (num: number) => num.toString(),
-    formatCurrency: (amount: number) => `$${amount}`
-  };
+  const { t, isRTL, formatNumber, formatCurrency } = useLanguage();
   const [stats, setStats] = useState<AnalyticsStats | null>(null);
   const [activityLogs, setActivityLogs] = useState<ActivityLog[]>([]);
   const [loading, setLoading] = useState(true);
