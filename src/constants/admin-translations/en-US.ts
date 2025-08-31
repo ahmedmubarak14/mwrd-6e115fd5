@@ -188,6 +188,50 @@ export const adminTranslationsEN = {
     title: "Requests",
     requiresAdminReview: "Requires admin review"
   },
+  requestsManagement: {
+    title: "Request Management",
+    description: "Monitor and manage procurement requests",
+    totalRequests: "Total Requests",
+    pendingApproval: "Pending Approval",
+    approved: "Approved",
+    rejected: "Rejected",
+    filtersAndSearch: "Filters & Search",
+    searchPlaceholder: "Search requests...",
+    statusPlaceholder: "Filter by status",
+    approvalStatusPlaceholder: "Filter by approval",
+    urgencyPlaceholder: "Filter by urgency",
+    refresh: "Refresh",
+    allStatuses: "All Statuses",
+    allApprovals: "All Approvals",
+    allUrgencies: "All Urgencies",
+    allRequests: "All Requests",
+    new: "New",
+    inProgress: "In Progress",
+    completed: "Completed",
+    cancelled: "Cancelled",
+    pending: "Pending",
+    urgent: "Urgent",
+    high: "High",
+    medium: "Medium",
+    low: "Low",
+    budgetRange: "Budget Range",
+    deadline: "Deadline",
+    offersReceived: "Offers Received",
+    offers: "offers",
+    created: "Created",
+    notSpecified: "Not specified",
+    unknownClient: "Unknown Client",
+    viewDetails: "View Details",
+    contactClient: "Contact Client",
+    approve: "Approve",
+    reject: "Reject",
+    loading: "Loading requests...",
+    noRequestsFound: "No requests found matching your criteria",
+    fetchError: "Failed to load requests",
+    approveSuccess: "Request approved successfully",
+    rejectSuccess: "Request rejected successfully",
+    updateError: "Failed to update request status"
+  },
 
   // Navigation groups
   groups: {
@@ -291,13 +335,6 @@ export const adminTranslationsEN = {
     }
   },
 
-  // Request Management (detailed object)  
-  requestsManagement: {
-    title: "Request Management",
-    description: "Monitor and manage procurement requests",
-    searchPlaceholder: "Search requests...",
-    exportRequests: "Export Requests"
-  },
 
   // Orders Management
   ordersManagement: {

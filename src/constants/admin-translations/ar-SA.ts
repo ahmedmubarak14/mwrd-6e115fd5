@@ -188,6 +188,50 @@ export const adminTranslationsAR = {
     title: "الطلبات",
     requiresAdminReview: "يتطلب مراجعة المدير"
   },
+  requestsManagement: {
+    title: "إدارة الطلبات",
+    description: "مراقبة وإدارة طلبات المشتريات",
+    totalRequests: "إجمالي الطلبات",
+    pendingApproval: "في انتظار الموافقة",
+    approved: "موافق عليها",
+    rejected: "مرفوضة",
+    filtersAndSearch: "البحث والفلاتر",
+    searchPlaceholder: "البحث في الطلبات...",
+    statusPlaceholder: "تصفية حسب الحالة",
+    approvalStatusPlaceholder: "تصفية حسب الموافقة",
+    urgencyPlaceholder: "تصفية حسب الأولوية",
+    refresh: "تحديث",
+    allStatuses: "جميع الحالات",
+    allApprovals: "جميع الموافقات",
+    allUrgencies: "جميع الأولويات",
+    allRequests: "جميع الطلبات",
+    new: "جديد",
+    inProgress: "قيد التنفيذ",
+    completed: "مكتمل",
+    cancelled: "ملغي",
+    pending: "معلق",
+    urgent: "عاجل",
+    high: "عالي",
+    medium: "متوسط",
+    low: "منخفض",
+    budgetRange: "نطاق الميزانية",
+    deadline: "الموعد النهائي",
+    offersReceived: "العروض المستلمة",
+    offers: "عروض",
+    created: "تم الإنشاء",
+    notSpecified: "غير محدد",
+    unknownClient: "عميل غير معروف",
+    viewDetails: "عرض التفاصيل",
+    contactClient: "الاتصال بالعميل",
+    approve: "موافقة",
+    reject: "رفض",
+    loading: "جاري تحميل الطلبات...",
+    noRequestsFound: "لم يتم العثور على طلبات تطابق معاييرك",
+    fetchError: "فشل في تحميل الطلبات",
+    approveSuccess: "تمت الموافقة على الطلب بنجاح",
+    rejectSuccess: "تم رفض الطلب بنجاح",
+    updateError: "فشل في تحديث حالة الطلب"
+  },
 
   // مجموعات التنقل
   groups: {
@@ -291,13 +335,6 @@ export const adminTranslationsAR = {
     }
   },
 
-  // إدارة الطلبات (كائن مفصل)  
-  requestsManagement: {
-    title: "إدارة الطلبات",
-    description: "مراقبة وإدارة طلبات المشتريات",
-    searchPlaceholder: "البحث في الطلبات...",
-    exportRequests: "تصدير الطلبات"
-  },
 
   // إدارة الطلبيات
   ordersManagement: {
