@@ -1573,6 +1573,7 @@ export const adminTranslationsEN = {
     bulkActivate: "Activate Selected",
     bulkDeactivate: "Deactivate Selected",
     bulkDelete: "Delete Selected",
+    export: "Export Categories",
     
     // Labels
     labels: {

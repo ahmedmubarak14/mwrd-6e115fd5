@@ -1454,6 +1454,7 @@ export const adminTranslationsAR = {
     bulkActivate: "تفعيل المحدد",
     bulkDeactivate: "إلغاء تفعيل المحدد",
     bulkDelete: "حذف المحدد",
+    export: "تصدير الفئات",
     
     // التسميات
     labels: {
