@@ -31,9 +31,133 @@ export const adminTranslationsEN = {
   
   // Direct sidebar navigation keys (avoiding conflicts)
   sidebarAnalytics: "Analytics",
-  sidebarUsers: "Users",
+  sidebarUsers: "Users", 
   sidebarRequests: "Requests",
   sidebarExpertConsultations: "Expert Consultations",
+
+  // Common admin filter and action keys
+  filterByRole: "Filter by role",
+  allRoles: "All roles", 
+  admin: "Admin",
+  vendor: "Vendor",
+  client: "Client",
+  filterByStatus: "Filter by status",
+  allStatus: "All status",
+  approved: "Approved",
+  pending: "Pending", 
+  blocked: "Blocked",
+  rejected: "Rejected",
+  selectRole: "Select role",
+  updateRoleAction: "Update Role",
+  bulkActionConfirm: "Confirm Bulk Action",
+  bulkRoleConfirm: "Are you sure you want to change the role of {count} users to {role}?",
+  selectStatus: "Select status", 
+  updateStatusAction: "Update Status",
+  bulkStatusConfirm: "Are you sure you want to change the status of {count} users to {status}?",
+  exportSelectedAction: "Export Selected",
+  usersTab: "Users",
+  verificationQueueTab: "Verification Queue",
+  analyticsTab: "Analytics",
+  noUsersFound: "No Users Found",
+  noUsersMatchFilters: "No users match your current filters.",
+  deleteUserTitle: "Delete User",
+  deleteUserConfirm: "Are you sure you want to delete {name}? This action cannot be undone.",
+  verificationText: "Verification: {status}",
+  joinedText: "Joined {date}",
+  approvedStatus: "Approved",
+  pendingStatus: "Pending", 
+  blockedStatus: "Blocked",
+  rejectedStatus: "Rejected",
+  newThisMonthAnalytics: "New This Month",
+  usersRegisteredAnalytics: "Users registered",
+  activeThisWeekAnalytics: "Active This Week", 
+  usersWithActivityAnalytics: "Users with activity",
+  growthRateAnalytics: "Growth Rate",
+  vsLastMonthAnalytics: "vs last month",
+  totalUsersAnalytics: "Total Users",
+  allTimeAnalytics: "All time",
+  userDistributionByRole: "User Distribution by Role",
+  clients: "Clients",
+  vendors: "Vendors", 
+  admins: "Admins",
+  userStatusOverview: "User Status Overview",
+
+  // User Management
+  users: {
+    // Page headers
+    userManagement: "User Management",
+    userManagementDescription: "Manage user accounts, roles, and access permissions across the platform.",
+    
+    // Metrics cards
+    totalUsers: "Total Users",
+    allRegisteredUsers: "All registered users",
+    activeUsers: "Active Users", 
+    approvedUsers: "Approved users",
+    pendingUsers: "Pending Users",
+    awaitingApproval: "Awaiting approval",
+    adminUsers: "Admin Users",
+    systemAdministrators: "System administrators",
+    
+    // Filters and actions
+    filtersAndSearch: "Filters & Search",
+    searchUsers: "Search users by name, email, or company...",
+    refresh: "Refresh",
+    exportUsers: "Export Users",
+    addUser: "Add User",
+    selectAllUsers: "Select All ({count} selected)",
+    
+    // User status labels
+    userPending: "Pending",
+    userActive: "Active", 
+    userBlocked: "Blocked",
+    userInactive: "Inactive",
+    
+    // User roles
+    admin: "Admin",
+    vendor: "Vendor", 
+    client: "Client",
+    
+    // Actions and messages
+    fetchUsersError: "Failed to fetch users",
+    noName: "No Name",
+    csvHeaders: "ID,Name,Email,Role,Status,Verification,Company,Phone,Created",
+    bulkRoleUpdateSuccess: "Successfully updated {count} users' roles",
+    bulkRoleUpdateError: "Failed to update user roles",
+    bulkStatusUpdateSuccess: "Successfully updated {count} users' status",
+    bulkStatusUpdateError: "Failed to update user status",
+    exportSelectedSuccess: "Exported {count} selected users successfully",
+    fillRequiredFields: "Please fill in all required fields",
+    userExistsError: "A user with this email already exists",
+    userAddedSuccess: "User added successfully",
+    userUpdatedSuccess: "User updated successfully", 
+    userDeletedSuccess: "User '{name}' deleted successfully",
+    
+    // Add user modal
+    addNewUser: "Add New User",
+    addNewUserDescription: "Create a new user account with the specified role and permissions.",
+    fullNameRequired: "Full Name *",
+    enterFullName: "Enter user's full name",
+    emailRequired: "Email *",
+    enterEmailAddress: "Enter email address",
+    roleLabel: "Role",
+    clientRole: "Client",
+    vendorRole: "Vendor", 
+    adminRole: "Admin",
+    companyName: "Company Name",
+    enterCompanyNameOptional: "Enter company name (optional)",
+    enterPhoneOptional: "Enter phone number (optional)",
+    
+    // Edit user modal
+    editUser: "Edit User",
+    editUserDescription: "Update user information, role, and status.",
+    editFullName: "Full Name",
+    editEmail: "Email", 
+    editRole: "Role",
+    editStatus: "Status",
+    editCompanyName: "Company Name",
+    editPhone: "Phone",
+    updateUser: "Update User"
+  },
 
   // Dashboard and Overview (nested object)
   dashboardData: {
@@ -57,12 +181,6 @@ export const adminTranslationsEN = {
     recentActivityDescription: "Latest system activities and changes",
     activityOn: "on",
     noRecentActivity: "No recent activity"
-  },
-
-  // User Management Keys
-  users: {
-    title: "Users",
-    activeThisMonth: "active this month"
   },
 
   // Request Management Keys  

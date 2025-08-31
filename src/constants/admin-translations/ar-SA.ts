@@ -35,6 +35,130 @@ export const adminTranslationsAR = {
   sidebarRequests: "الطلبات",
   sidebarExpertConsultations: "الاستشارات المتخصصة",
 
+  // مفاتيح المرشحات والإجراءات الشائعة للإدارة
+  filterByRole: "تصفية حسب الدور",
+  allRoles: "جميع الأدوار",
+  admin: "مدير",
+  vendor: "مورد", 
+  client: "عميل",
+  filterByStatus: "تصفية حسب الحالة",
+  allStatus: "جميع الحالات",
+  approved: "معتمد",
+  pending: "معلق",
+  blocked: "محظور",
+  rejected: "مرفوض",
+  selectRole: "اختر الدور",
+  updateRoleAction: "تحديث الدور",
+  bulkActionConfirm: "تأكيد الإجراء المجمع",
+  bulkRoleConfirm: "هل أنت متأكد من رغبتك في تغيير دور {count} مستخدم إلى {role}؟",
+  selectStatus: "اختر الحالة",
+  updateStatusAction: "تحديث الحالة", 
+  bulkStatusConfirm: "هل أنت متأكد من رغبتك في تغيير حالة {count} مستخدم إلى {status}؟",
+  exportSelectedAction: "تصدير المحدد",
+  usersTab: "المستخدمون",
+  verificationQueueTab: "قائمة التحقق",
+  analyticsTab: "التحليلات",
+  noUsersFound: "لم يتم العثور على مستخدمين",
+  noUsersMatchFilters: "لا يوجد مستخدمون يطابقون المرشحات الحالية.",
+  deleteUserTitle: "حذف المستخدم",
+  deleteUserConfirm: "هل أنت متأكد من رغبتك في حذف {name}؟ لا يمكن التراجع عن هذا الإجراء.",
+  verificationText: "التحقق: {status}",
+  joinedText: "انضم في {date}",
+  approvedStatus: "معتمد",
+  pendingStatus: "معلق",
+  blockedStatus: "محظور", 
+  rejectedStatus: "مرفوض",
+  newThisMonthAnalytics: "جديد هذا الشهر",
+  usersRegisteredAnalytics: "مستخدمون مسجلون",
+  activeThisWeekAnalytics: "نشط هذا الأسبوع",
+  usersWithActivityAnalytics: "مستخدمون بنشاط",
+  growthRateAnalytics: "معدل النمو",
+  vsLastMonthAnalytics: "مقارنة بالشهر الماضي",
+  totalUsersAnalytics: "إجمالي المستخدمين",
+  allTimeAnalytics: "جميع الأوقات",
+  userDistributionByRole: "توزيع المستخدمين حسب الدور",
+  clients: "العملاء",
+  vendors: "الموردون",
+  admins: "المديرون", 
+  userStatusOverview: "نظرة عامة على حالة المستخدمين",
+
+  // إدارة المستخدمين
+  users: {
+    // عناوين الصفحة
+    userManagement: "إدارة المستخدمين",
+    userManagementDescription: "إدارة حسابات المستخدمين والأدوار وأذونات الوصول عبر المنصة.",
+    
+    // بطاقات المقاييس
+    totalUsers: "إجمالي المستخدمين",
+    allRegisteredUsers: "جميع المستخدمين المسجلين",
+    activeUsers: "المستخدمون النشطون",
+    approvedUsers: "المستخدمون المعتمدون",
+    pendingUsers: "المستخدمون المعلقون",
+    awaitingApproval: "في انتظار الموافقة",
+    adminUsers: "مستخدمو الإدارة",
+    systemAdministrators: "مديرو النظام",
+    
+    // المرشحات والإجراءات
+    filtersAndSearch: "المرشحات والبحث",
+    searchUsers: "البحث في المستخدمين بالاسم أو البريد الإلكتروني أو الشركة...",
+    refresh: "تحديث",
+    exportUsers: "تصدير المستخدمين",
+    addUser: "إضافة مستخدم",
+    selectAllUsers: "تحديد الكل ({count} محدد)",
+    
+    // تسميات حالة المستخدم
+    userPending: "معلق",
+    userActive: "نشط",
+    userBlocked: "محظور",
+    userInactive: "غير نشط",
+    
+    // أدوار المستخدمين
+    admin: "مدير",
+    vendor: "مورد",
+    client: "عميل",
+    
+    // الإجراءات والرسائل
+    fetchUsersError: "فشل في جلب المستخدمين",
+    noName: "بلا اسم",
+    csvHeaders: "المعرف,الاسم,البريد الإلكتروني,الدور,الحالة,التحقق,الشركة,الهاتف,تاريخ الإنشاء",
+    bulkRoleUpdateSuccess: "تم تحديث أدوار {count} مستخدم بنجاح",
+    bulkRoleUpdateError: "فشل في تحديث أدوار المستخدمين",
+    bulkStatusUpdateSuccess: "تم تحديث حالة {count} مستخدم بنجاح", 
+    bulkStatusUpdateError: "فشل في تحديث حالة المستخدمين",
+    exportSelectedSuccess: "تم تصدير {count} مستخدم محدد بنجاح",
+    fillRequiredFields: "يرجى ملء جميع الحقول المطلوبة",
+    userExistsError: "مستخدم بهذا البريد الإلكتروني موجود بالفعل",
+    userAddedSuccess: "تمت إضافة المستخدم بنجاح",
+    userUpdatedSuccess: "تم تحديث المستخدم بنجاح",
+    userDeletedSuccess: "تم حذف المستخدم '{name}' بنجاح",
+    
+    // نافذة إضافة مستخدم
+    addNewUser: "إضافة مستخدم جديد",
+    addNewUserDescription: "إنشاء حساب مستخدم جديد بالدور والأذونات المحددة.",
+    fullNameRequired: "الاسم الكامل *",
+    enterFullName: "أدخل الاسم الكامل للمستخدم",
+    emailRequired: "البريد الإلكتروني *",
+    enterEmailAddress: "أدخل عنوان البريد الإلكتروني",
+    roleLabel: "الدور",
+    clientRole: "عميل",
+    vendorRole: "مورد",
+    adminRole: "مدير",
+    companyName: "اسم الشركة",
+    enterCompanyNameOptional: "أدخل اسم الشركة (اختياري)",
+    enterPhoneOptional: "أدخل رقم الهاتف (اختياري)",
+    
+    // نافذة تحرير المستخدم
+    editUser: "تحرير المستخدم",
+    editUserDescription: "تحديث معلومات المستخدم والدور والحالة.",
+    editFullName: "الاسم الكامل",
+    editEmail: "البريد الإلكتروني",
+    editRole: "الدور", 
+    editStatus: "الحالة",
+    editCompanyName: "اسم الشركة",
+    editPhone: "الهاتف",
+    updateUser: "تحديث المستخدم"
+  },
+
   // لوحة التحكم والنظرة العامة (كائن متداخل)
   dashboardData: {
     title: "لوحة تحكم الإدارة",
@@ -57,12 +181,6 @@ export const adminTranslationsAR = {
     recentActivityDescription: "أحدث أنشطة وتغييرات النظام",
     activityOn: "على",
     noRecentActivity: "لا يوجد نشاط حديث"
-  },
-
-  // مفاتيح إدارة المستخدمين
-  users: {
-    title: "المستخدمون",
-    activeThisMonth: "نشط هذا الشهر"
   },
 
   // مفاتيح إدارة الطلبات  
