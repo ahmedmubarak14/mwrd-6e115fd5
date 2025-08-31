@@ -26,6 +26,7 @@ export const adminTranslationsEN = {
   financialTransactionsTitle: "Financial Transactions",
   financialTransactionsDesc: "Manage and monitor all financial transactions",
   subscriptions: "Subscriptions",
+  settings: "Settings",
   supportTickets: "Support Tickets",
   communications: "Communications",
   communicationCenter: "Communication Center",
