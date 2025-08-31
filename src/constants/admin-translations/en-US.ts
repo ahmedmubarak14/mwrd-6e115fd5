@@ -53,14 +53,14 @@ export const adminTranslationsEN = {
     editSchedule: "Edit Schedule",
     
     // Form fields
-    title: "Title",
+    formTitle: "Title",
     titlePlaceholder: "Enter notification title",
-    type: "Type",
-    message: "Message",
+    formType: "Type",
+    formMessage: "Message",
     messagePlaceholder: "Enter notification message",
-    priority: "Priority",
-    targetAudience: "Target Audience",
-    schedule: "Schedule",
+    formPriority: "Priority",
+    formTargetAudience: "Target Audience",
+    formSchedule: "Schedule",
     
     // Types
     announcement: "Announcement",

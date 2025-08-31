@@ -53,14 +53,14 @@ export const adminTranslationsAR = {
     editSchedule: "تعديل الجدولة",
     
     // حقول النموذج
-    title: "العنوان",
+    formTitle: "العنوان",
     titlePlaceholder: "أدخل عنوان الإشعار",
-    type: "النوع",
-    message: "الرسالة",
+    formType: "النوع",
+    formMessage: "الرسالة",
     messagePlaceholder: "أدخل رسالة الإشعار",
-    priority: "الأولوية",
-    targetAudience: "الجمهور المستهدف",
-    schedule: "الجدولة",
+    formPriority: "الأولوية",
+    formTargetAudience: "الجمهور المستهدف",
+    formSchedule: "الجدولة",
     
     // الأنواع
     announcement: "إعلان",

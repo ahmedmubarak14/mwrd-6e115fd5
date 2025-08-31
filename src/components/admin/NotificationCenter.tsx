@@ -215,7 +215,7 @@ export const NotificationCenter = () => {
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium">{t('admin.notifications.title')}</label>
+                  <label className="text-sm font-medium">{t('admin.notifications.formTitle')}</label>
                   <Input
                     value={newNotification.title}
                     onChange={(e) => setNewNotification({...newNotification, title: e.target.value})}
@@ -223,7 +223,7 @@ export const NotificationCenter = () => {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium">{t('admin.notifications.type')}</label>
+                  <label className="text-sm font-medium">{t('admin.notifications.formType')}</label>
                   <Select value={newNotification.type} onValueChange={(value) => setNewNotification({...newNotification, type: value})}>
                     <SelectTrigger>
                       <SelectValue />
@@ -239,7 +239,7 @@ export const NotificationCenter = () => {
               </div>
               
               <div>
-                <label className="text-sm font-medium">{t('admin.notifications.message')}</label>
+                <label className="text-sm font-medium">{t('admin.notifications.formMessage')}</label>
                 <Textarea
                   value={newNotification.message}
                   onChange={(e) => setNewNotification({...newNotification, message: e.target.value})}
@@ -250,7 +250,7 @@ export const NotificationCenter = () => {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium">{t('admin.notifications.priority')}</label>
+                  <label className="text-sm font-medium">{t('admin.notifications.formPriority')}</label>
                   <Select value={newNotification.priority} onValueChange={(value) => setNewNotification({...newNotification, priority: value})}>
                     <SelectTrigger>
                       <SelectValue />
@@ -264,7 +264,7 @@ export const NotificationCenter = () => {
                   </Select>
                 </div>
                 <div>
-                  <label className="text-sm font-medium">{t('admin.notifications.targetAudience')}</label>
+                  <label className="text-sm font-medium">{t('admin.notifications.formTargetAudience')}</label>
                   <Select value={newNotification.targetAudience} onValueChange={(value) => setNewNotification({...newNotification, targetAudience: value})}>
                     <SelectTrigger>
                       <SelectValue />
@@ -280,7 +280,7 @@ export const NotificationCenter = () => {
               </div>
 
               <div>
-                <label className="text-sm font-medium">{t('admin.notifications.schedule')}</label>
+                <label className="text-sm font-medium">{t('admin.notifications.formSchedule')}</label>
                 <Input
                   type="datetime-local"
                   value={newNotification.scheduledFor}
