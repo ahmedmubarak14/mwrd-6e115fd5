@@ -91,6 +91,10 @@ export const adminTranslationsEN = {
     sendSuccess: "Notification sent successfully",
     sendError: "Failed to send notification",
     
+    // Filter options
+    allStatus: "All Status",
+    allPriority: "All Priority",
+    
     // Empty states
     noNotificationsFound: "No notifications found",
     tryAdjustingFilters: "Try adjusting your filters",
@@ -303,7 +307,9 @@ export const adminTranslationsEN = {
     // Missing keys from screenshots
     noBroadcastsFound: "No broadcast messages found",
     conversationStartMessage: "Start a new conversation with your team",
-    noConversationSelected: "Select a conversation to view messages"
+    noConversationSelected: "Select a conversation to view messages",
+    chooseConversation: "Choose a conversation",
+    inAppChat: "In-App Chat"
   },
 
 

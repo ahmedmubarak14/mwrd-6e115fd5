@@ -91,6 +91,10 @@ export const adminTranslationsAR = {
     sendSuccess: "تم إرسال الإشعار بنجاح",
     sendError: "فشل في إرسال الإشعار",
     
+    // خيارات التصفية
+    allStatus: "جميع الحالات",
+    allPriority: "جميع الأولويات",
+    
     // الحالات الفارغة
     noNotificationsFound: "لم يتم العثور على إشعارات",
     tryAdjustingFilters: "حاول تعديل المرشحات",
@@ -179,7 +183,9 @@ export const adminTranslationsAR = {
     // المفاتيح المفقودة من لقطات الشاشة
     noBroadcastsFound: "لم يتم العثور على رسائل جماعية",
     conversationStartMessage: "ابدأ محادثة جديدة مع فريقك",
-    noConversationSelected: "اختر محادثة لعرض الرسائل"
+    noConversationSelected: "اختر محادثة لعرض الرسائل",
+    chooseConversation: "اختر محادثة",
+    inAppChat: "الدردشة داخل التطبيق"
   },
   settings: "الإعدادات",
   profile: "الملف الشخصي",
