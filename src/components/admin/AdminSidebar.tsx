@@ -142,7 +142,7 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSi
           icon: UserCheck,
         },
         {
-          name: t('admin.navigation.workflowAutomation'),
+          name: t('admin.navigation.automation'),
           href: "/admin/automation",
           icon: Bot,
         },

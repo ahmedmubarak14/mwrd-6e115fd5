@@ -261,78 +261,6 @@ export const adminTranslationsEN = {
     automationDescription: "Workflow automation and rules",
     projects: "Projects",
     verificationQueue: "Verification Queue",
-    workflowAutomation: {
-      title: "Workflow Automation",
-      description: "Manage and monitor automated workflows",
-      automationCenter: "Automation Center",
-      automationDescription: "Create and manage automated workflows to streamline your business processes",
-      createWorkflow: "Create Workflow",
-      
-      overview: {
-        activeWorkflows: "Active Workflows",
-        totalExecutions: "Total Executions", 
-        pendingTasks: "Pending Tasks",
-        successRate: "Success Rate"
-      },
-
-      workflowForm: {
-        createTitle: "Create New Workflow",
-        workflowName: "Workflow Name",
-        workflowNamePlaceholder: "Enter workflow name...",
-        description: "Description",
-        descriptionPlaceholder: "Describe what this workflow does...",
-        triggerType: "Trigger Type",
-        triggerPlaceholder: "e.g., manual, scheduled, event",
-        priority: "Priority",
-        cancel: "Cancel",
-        createButton: "Create Workflow"
-      },
-
-      workflowCard: {
-        trigger: "Trigger",
-        priority: "Priority", 
-        created: "Created",
-        execute: "Execute"
-      },
-
-      tabs: {
-        workflows: "Workflows",
-        executionHistory: "Execution History",
-        tasks: "Tasks"
-      },
-
-      executions: {
-        title: "Recent Executions",
-        workflowId: "Workflow #",
-        duration: "Duration:",
-        noExecutions: "No workflow executions found"
-      },
-
-      tasks: {
-        pendingTitle: "Pending Tasks",
-        overdueTitle: "Overdue Tasks",
-        priorityLabel: "Priority",
-        dueLabel: "Due",
-        noDueDate: "No due date",
-        complete: "Complete",
-        overdueBy: "Overdue by",
-        days: "days",
-        noPendingTasks: "No pending tasks",
-        noOverdueTasks: "No overdue tasks"
-      },
-
-      messages: {
-        loading: "Loading workflows...",
-        nameRequired: "Workflow name is required",
-        created: "Workflow created successfully",
-        createError: "Failed to create workflow",
-        enabled: "enabled",
-        disabled: "disabled", 
-        toggleError: "Failed to toggle workflow status",
-        deleted: "Workflow deleted successfully",
-        deleteError: "Failed to delete workflow"
-      }
-    },
     categoryManagement: "Category Management"
   },
 
@@ -969,6 +897,80 @@ export const adminTranslationsEN = {
       invalidPhone: "Please enter a valid phone number",
       minLength: "Minimum {count} characters required",
       maxLength: "Maximum {count} characters allowed"
+    }
+  },
+
+  // Workflow Automation
+  workflowAutomation: {
+    title: "Workflow Automation",
+    description: "Manage and monitor automated workflows",
+    automationCenter: "Automation Center",
+    automationDescription: "Create and manage automated workflows to streamline your business processes",
+    createWorkflow: "Create Workflow",
+    
+    overview: {
+      activeWorkflows: "Active Workflows",
+      totalExecutions: "Total Executions", 
+      pendingTasks: "Pending Tasks",
+      successRate: "Success Rate"
+    },
+
+    workflowForm: {
+      createTitle: "Create New Workflow",
+      workflowName: "Workflow Name",
+      workflowNamePlaceholder: "Enter workflow name...",
+      description: "Description",
+      descriptionPlaceholder: "Describe what this workflow does...",
+      triggerType: "Trigger Type",
+      triggerPlaceholder: "e.g., manual, scheduled, event",
+      priority: "Priority",
+      cancel: "Cancel",
+      createButton: "Create Workflow"
+    },
+
+    workflowCard: {
+      trigger: "Trigger",
+      priority: "Priority", 
+      created: "Created",
+      execute: "Execute"
+    },
+
+    tabs: {
+      workflows: "Workflows",
+      executionHistory: "Execution History",
+      tasks: "Tasks"
+    },
+
+    executions: {
+      title: "Recent Executions",
+      workflowId: "Workflow #",
+      duration: "Duration:",
+      noExecutions: "No workflow executions found"
+    },
+
+    tasks: {
+      pendingTitle: "Pending Tasks",
+      overdueTitle: "Overdue Tasks",
+      priorityLabel: "Priority",
+      dueLabel: "Due",
+      noDueDate: "No due date",
+      complete: "Complete",
+      overdueBy: "Overdue by",
+      days: "days",
+      noPendingTasks: "No pending tasks",
+      noOverdueTasks: "No overdue tasks"
+    },
+
+    messages: {
+      loading: "Loading workflows...",
+      nameRequired: "Workflow name is required",
+      created: "Workflow created successfully",
+      createError: "Failed to create workflow",
+      enabled: "enabled",
+      disabled: "disabled", 
+      toggleError: "Failed to toggle workflow status",
+      deleted: "Workflow deleted successfully",
+      deleteError: "Failed to delete workflow"
     }
   }
 };
