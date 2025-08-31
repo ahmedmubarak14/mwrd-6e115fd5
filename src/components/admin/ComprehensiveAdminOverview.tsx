@@ -88,60 +88,60 @@ export const ComprehensiveAdminOverview = () => {
 
   const quickActions: QuickAction[] = [
     {
-      title: t('admin.navigation.userManagement'),
-      description: t('admin.navigation.userManagementDescription'),
+      title: t('navigation.userManagement'),
+      description: t('navigation.userManagementDescription'),
       icon: Users,
       link: '/admin/users',
       color: 'bg-blue-500',
       count: metrics.totalUsers
     },
     {
-      title: t('admin.navigation.approvalQueue'),
-      description: t('admin.navigation.approvalQueueDescription'),
+      title: t('navigation.approvalQueue'),
+      description: t('navigation.approvalQueueDescription'),
       icon: Clock,
       link: '/admin/requests',
       color: 'bg-orange-500',
       count: metrics.pendingApprovals
     },
     {
-      title: t('admin.navigation.financialOverview'),
-      description: t('admin.navigation.financialOverviewDescription'),
+      title: t('navigation.financialOverview'),
+      description: t('navigation.financialOverviewDescription'),
       icon: DollarSign,
       link: '/admin/financial-transactions',
       color: 'bg-green-500'
     },
     {
-      title: t('admin.navigation.systemHealth'),
-      description: t('admin.navigation.systemHealthDescription'),
+      title: t('navigation.systemHealth'),
+      description: t('navigation.systemHealthDescription'),
       icon: Server,
       link: '/admin/performance-monitor',
       color: systemMetrics?.overallStatus === 'healthy' ? 'bg-green-500' : 
              systemMetrics?.overallStatus === 'warning' ? 'bg-yellow-500' : 'bg-red-500'
     },
     {
-      title: t('admin.navigation.securityCenter'),
-      description: t('admin.navigation.securityCenterDescription'),
+      title: t('navigation.securityCenter'),
+      description: t('navigation.securityCenterDescription'),
       icon: Shield,
       link: '/admin/security',
       color: 'bg-purple-500'
     },
     {
-      title: t('admin.navigation.communications'),
-      description: t('admin.navigation.communicationsDescription'),
+      title: t('navigation.communications'),
+      description: t('navigation.communicationsDescription'),
       icon: MessageSquare,
       link: '/admin/communications',
       color: 'bg-indigo-500'
     },
     {
-      title: t('admin.navigation.analytics'),
-      description: t('admin.navigation.analyticsDescription'),
+      title: t('navigation.analytics'),
+      description: t('navigation.analyticsDescription'),
       icon: BarChart3,
       link: '/admin/analytics',
       color: 'bg-teal-500'
     },
     {
-      title: t('admin.navigation.automation'),
-      description: t('admin.navigation.automationDescription'),
+      title: t('navigation.automation'),
+      description: t('navigation.automationDescription'),
       icon: Zap,
       link: '/admin/automation',
       color: 'bg-yellow-500'
@@ -276,13 +276,13 @@ export const ComprehensiveAdminOverview = () => {
             <div className="flex items-center gap-2">
               <AlertCircle className="h-5 w-5 text-destructive" />
               <div>
-                <h3 className="font-semibold text-destructive">{t('admin.system.alerts')}</h3>
+                <h3 className="font-semibold text-destructive">{t('system.alerts')}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {alerts.length} {t('admin.system.activeSystemAlerts')} {t('admin.system.requireAttention')}
+                  {alerts.length} {t('system.activeSystemAlerts')} {t('system.requireAttention')}
                 </p>
               </div>
               <Button variant="outline" size="sm" asChild className="ml-auto">
-                <Link to="/admin/performance-monitor">{t('admin.actions.viewDetails')}</Link>
+                <Link to="/admin/performance-monitor">{t('actions.viewDetails')}</Link>
               </Button>
             </div>
           </CardContent>
@@ -477,19 +477,19 @@ export const ComprehensiveAdminOverview = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-          <CardTitle>{t('admin.system.status')}</CardTitle>
+            <CardTitle>{t('admin.system.status')}</CardTitle>
             <CardDescription>
-              {t('admin.system.statusDescription')}
+              {t('system.statusDescription')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Database className="h-4 w-4 text-primary" />
-                <span className="text-sm">{t('admin.system.database')}</span>
+                <span className="text-sm">{t('system.database')}</span>
               </div>
               <Badge variant={systemMetrics?.databaseStatus === 'healthy' ? 'default' : 'destructive'}>
-                {t(`admin.system.${systemMetrics?.databaseStatus || 'healthy'}`)}
+                {t(`system.${systemMetrics?.databaseStatus || 'healthy'}`)}
               </Badge>
             </div>
             

@@ -389,6 +389,19 @@ export const enUS = {
     }
   },
   
+  // System translations
+  system: {
+    statusDescription: "Real-time system component status",
+    alerts: "System Alerts",
+    activeSystemAlerts: "active system alerts",
+    requireAttention: "require attention"
+  },
+  
+  // Actions translations 
+  actions: {
+    viewDetails: "View Details"
+  },
+  
   theme: {
     light: 'Light',
     dark: 'Dark', 

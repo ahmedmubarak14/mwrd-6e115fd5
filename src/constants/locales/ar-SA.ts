@@ -389,6 +389,19 @@ export const arSA = {
     }
   },
   
+  // System translations
+  system: {
+    statusDescription: "حالة مكونات النظام في الوقت الفعلي",
+    alerts: "تنبيهات النظام",
+    activeSystemAlerts: "تنبيهات النظام النشطة",
+    requireAttention: "تتطلب الانتباه"
+  },
+  
+  // Actions translations
+  actions: {
+    viewDetails: "عرض التفاصيل"
+  },
+  
   theme: {
     light: 'فاتح',
     dark: 'داكن',
