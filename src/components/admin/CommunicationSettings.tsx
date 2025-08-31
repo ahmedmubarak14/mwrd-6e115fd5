@@ -23,12 +23,12 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const CommunicationSettings = () => {
   const { toast } = useToast();
   const { user } = useAuth();
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   
@@ -338,17 +338,17 @@ export const CommunicationSettings = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Smartphone className="h-5 w-5" />
-                {t('communication.smsConfiguration')}
+                {t('admin.communication.smsConfiguration')}
               </CardTitle>
               <CardDescription>
-                {t('communication.smsConfigDesc')}
+                {t('admin.communication.smsConfigDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium">{t('communication.smsProvider')}</label>
+                    <label className="text-sm font-medium">{t('admin.communication.smsProvider')}</label>
                     <Select value={smsSettings.provider} onValueChange={(value) => setSmsSettings({...smsSettings, provider: value})}>
                       <SelectTrigger>
                         <SelectValue />
@@ -362,36 +362,36 @@ export const CommunicationSettings = () => {
                     </Select>
                   </div>
                   <div>
-                    <label className="text-sm font-medium">{t('communication.apiKey')}</label>
+                    <label className="text-sm font-medium">{t('admin.communication.apiKey')}</label>
                     <Input
                       type="password"
                       value={smsSettings.api_key}
                       onChange={(e) => setSmsSettings({...smsSettings, api_key: e.target.value})}
-                      placeholder={t('communication.apiKeyPlaceholder')}
+                      placeholder={t('admin.communication.apiKeyPlaceholder')}
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium">{t('communication.apiSecret')}</label>
+                    <label className="text-sm font-medium">{t('admin.communication.apiSecret')}</label>
                     <Input
                       type="password"
                       value={smsSettings.api_secret}
                       onChange={(e) => setSmsSettings({...smsSettings, api_secret: e.target.value})}
-                      placeholder={t('communication.apiSecretPlaceholder')}
+                      placeholder={t('admin.communication.apiSecretPlaceholder')}
                     />
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium">{t('communication.fromNumber')}</label>
+                    <label className="text-sm font-medium">{t('admin.communication.fromNumber')}</label>
                     <Input
                       value={smsSettings.from_number}
                       onChange={(e) => setSmsSettings({...smsSettings, from_number: e.target.value})}
-                      placeholder={t('communication.fromNumberPlaceholder')}
+                      placeholder={t('admin.communication.fromNumberPlaceholder')}
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium">{t('communication.rateLimitPerMinute')}</label>
+                    <label className="text-sm font-medium">{t('admin.communication.rateLimitPerMinute')}</label>
                     <Input
                       type="number"
                       value={smsSettings.rate_limit}
@@ -400,8 +400,8 @@ export const CommunicationSettings = () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="text-sm font-medium">{t('communication.deliveryReports')}</label>
-                      <p className="text-xs text-muted-foreground">{t('communication.deliveryReportsDesc')}</p>
+                      <label className="text-sm font-medium">{t('admin.communication.deliveryReports')}</label>
+                      <p className="text-xs text-muted-foreground">{t('admin.communication.deliveryReportsDesc')}</p>
                     </div>
                     <Switch
                       checked={smsSettings.delivery_reports}
@@ -412,20 +412,20 @@ export const CommunicationSettings = () => {
               </div>
 
               <div className="border-t pt-6">
-                <h4 className="font-medium mb-4">{t('communication.optOutKeywords')}</h4>
+                <h4 className="font-medium mb-4">{t('admin.communication.optOutKeywords')}</h4>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {smsSettings.opt_out_keywords.map((keyword, index) => (
                     <Badge key={index} variant="outline">{keyword}</Badge>
                   ))}
                 </div>
                 <p className="text-sm text-muted-foreground mb-4">
-                  {t('communication.optOutKeywordsDesc')}
+                  {t('admin.communication.optOutKeywordsDesc')}
                 </p>
               </div>
 
               <Button onClick={() => handleSaveSettings("SMS")} className="w-full" disabled={isSaving}>
                 {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
-                {t('communication.saveSmsSettings')}
+                {t('admin.communication.saveSmsSettings')}
               </Button>
             </CardContent>
           </Card>
@@ -436,10 +436,10 @@ export const CommunicationSettings = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Bell className="h-5 w-5" />
-                {t('communication.notificationPreferences')}
+                {t('admin.communication.notificationPreferences')}
               </CardTitle>
               <CardDescription>
-                {t('communication.notificationConfigDesc')}
+                {t('admin.communication.notificationConfigDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -447,8 +447,8 @@ export const CommunicationSettings = () => {
                 <div className="space-y-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="text-sm font-medium">{t('communication.realTimeNotifications')}</label>
-                      <p className="text-xs text-muted-foreground">{t('communication.realTimeNotificationsDesc')}</p>
+                      <label className="text-sm font-medium">{t('admin.communication.realTimeNotifications')}</label>
+                      <p className="text-xs text-muted-foreground">{t('admin.communication.realTimeNotificationsDesc')}</p>
                     </div>
                     <Switch
                       checked={notificationSettings.real_time_enabled}
@@ -458,8 +458,8 @@ export const CommunicationSettings = () => {
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="text-sm font-medium">{t('communication.emailNotifications')}</label>
-                      <p className="text-xs text-muted-foreground">{t('communication.emailNotificationsDesc')}</p>
+                      <label className="text-sm font-medium">{t('admin.communication.emailNotifications')}</label>
+                      <p className="text-xs text-muted-foreground">{t('admin.communication.emailNotificationsDesc')}</p>
                     </div>
                     <Switch
                       checked={notificationSettings.email_notifications}
@@ -469,8 +469,8 @@ export const CommunicationSettings = () => {
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="text-sm font-medium">{t('communication.smsNotifications')}</label>
-                      <p className="text-xs text-muted-foreground">{t('communication.smsNotificationsDesc')}</p>
+                      <label className="text-sm font-medium">{t('admin.communication.smsNotifications')}</label>
+                      <p className="text-xs text-muted-foreground">{t('admin.communication.smsNotificationsDesc')}</p>
                     </div>
                     <Switch
                       checked={notificationSettings.sms_notifications}
@@ -480,8 +480,8 @@ export const CommunicationSettings = () => {
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="text-sm font-medium">{t('communication.pushNotificationsLabel')}</label>
-                      <p className="text-xs text-muted-foreground">{t('communication.pushNotificationsDesc')}</p>
+                      <label className="text-sm font-medium">{t('admin.communication.pushNotificationsLabel')}</label>
+                      <p className="text-xs text-muted-foreground">{t('admin.communication.pushNotificationsDesc')}</p>
                     </div>
                     <Switch
                       checked={notificationSettings.push_notifications}
@@ -492,7 +492,7 @@ export const CommunicationSettings = () => {
 
                 <div className="space-y-6">
                   <div>
-                    <label className="text-sm font-medium">{t('communication.digestFrequency')}</label>
+                    <label className="text-sm font-medium">{t('admin.communication.digestFrequency')}</label>
                     <Select 
                       value={notificationSettings.digest_frequency} 
                       onValueChange={(value) => setNotificationSettings({...notificationSettings, digest_frequency: value})}
@@ -501,19 +501,19 @@ export const CommunicationSettings = () => {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="real-time">{t('communication.realTime')}</SelectItem>
-                        <SelectItem value="hourly">{t('communication.hourly')}</SelectItem>
-                        <SelectItem value="daily">{t('communication.daily')}</SelectItem>
-                        <SelectItem value="weekly">{t('communication.weekly')}</SelectItem>
-                        <SelectItem value="never">{t('communication.never')}</SelectItem>
+                        <SelectItem value="real-time">{t('admin.communication.realTime')}</SelectItem>
+                        <SelectItem value="hourly">{t('admin.communication.hourly')}</SelectItem>
+                        <SelectItem value="daily">{t('admin.communication.daily')}</SelectItem>
+                        <SelectItem value="weekly">{t('admin.communication.weekly')}</SelectItem>
+                        <SelectItem value="never">{t('admin.communication.never')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="text-sm font-medium">{t('communication.quietHours')}</label>
-                      <p className="text-xs text-muted-foreground">{t('communication.quietHoursDesc')}</p>
+                      <label className="text-sm font-medium">{t('admin.communication.quietHours')}</label>
+                      <p className="text-xs text-muted-foreground">{t('admin.communication.quietHoursDesc')}</p>
                     </div>
                     <Switch
                       checked={notificationSettings.quiet_hours_enabled}
@@ -524,7 +524,7 @@ export const CommunicationSettings = () => {
                   {notificationSettings.quiet_hours_enabled && (
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="text-sm font-medium">{t('communication.startTime')}</label>
+                        <label className="text-sm font-medium">{t('admin.communication.startTime')}</label>
                         <Input
                           type="time"
                           value={notificationSettings.quiet_hours_start}
@@ -532,7 +532,7 @@ export const CommunicationSettings = () => {
                         />
                       </div>
                       <div>
-                        <label className="text-sm font-medium">{t('communication.endTime')}</label>
+                        <label className="text-sm font-medium">{t('admin.communication.endTime')}</label>
                         <Input
                           type="time"
                           value={notificationSettings.quiet_hours_end}
@@ -546,7 +546,7 @@ export const CommunicationSettings = () => {
 
               <Button onClick={() => handleSaveSettings("Notifications")} className="w-full" disabled={isSaving}>
                 {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
-                {t('communication.saveNotificationSettings')}
+                {t('admin.communication.saveNotificationSettings')}
               </Button>
             </CardContent>
           </Card>
@@ -557,35 +557,35 @@ export const CommunicationSettings = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Globe className="h-5 w-5" />
-                {t('communication.thirdPartyIntegrations')}
+                {t('admin.communication.thirdPartyIntegrations')}
               </CardTitle>
               <CardDescription>
-                {t('communication.integrationsConfigDesc')}
+                {t('admin.communication.integrationsConfigDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm font-medium">{t('communication.slackWebhookUrl')}</label>
+                  <label className="text-sm font-medium">{t('admin.communication.slackWebhookUrl')}</label>
                   <Input
                     value={integrationSettings.slack_webhook}
                     onChange={(e) => setIntegrationSettings({...integrationSettings, slack_webhook: e.target.value})}
-                    placeholder={t('communication.slackWebhookPlaceholder')}
+                    placeholder={t('admin.communication.slackWebhookPlaceholder')}
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-medium">{t('communication.discordWebhookUrl')}</label>
+                  <label className="text-sm font-medium">{t('admin.communication.discordWebhookUrl')}</label>
                   <Input
                     value={integrationSettings.discord_webhook}
                     onChange={(e) => setIntegrationSettings({...integrationSettings, discord_webhook: e.target.value})}
-                    placeholder={t('communication.discordWebhookPlaceholder')}
+                    placeholder={t('admin.communication.discordWebhookPlaceholder')}
                   />
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <div>
-                    <label className="text-sm font-medium">{t('communication.enableWebhookNotifications')}</label>
-                    <p className="text-xs text-muted-foreground">{t('communication.enableWebhookNotificationsDesc')}</p>
+                    <label className="text-sm font-medium">{t('admin.communication.enableWebhookNotifications')}</label>
+                    <p className="text-xs text-muted-foreground">{t('admin.communication.enableWebhookNotificationsDesc')}</p>
                   </div>
                   <Switch
                     checked={integrationSettings.webhook_notifications}
@@ -595,10 +595,10 @@ export const CommunicationSettings = () => {
               </div>
 
               <div className="border-t pt-6">
-                <h4 className="font-medium mb-4">{t('communication.apiConfiguration')}</h4>
+                <h4 className="font-medium mb-4">{t('admin.communication.apiConfiguration')}</h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <label className="text-sm font-medium">{t('communication.apiRateLimit')}</label>
+                    <label className="text-sm font-medium">{t('admin.communication.apiRateLimit')}</label>
                     <Input
                       type="number"
                       value={integrationSettings.api_rate_limit}
@@ -606,7 +606,7 @@ export const CommunicationSettings = () => {
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium">{t('communication.webhookRetries')}</label>
+                    <label className="text-sm font-medium">{t('admin.communication.webhookRetries')}</label>
                     <Input
                       type="number"
                       value={integrationSettings.webhook_retries}
@@ -614,7 +614,7 @@ export const CommunicationSettings = () => {
                     />
                   </div>
                   <div>
-                    <label className="text-sm font-medium">{t('communication.timeoutSeconds')}</label>
+                    <label className="text-sm font-medium">{t('admin.communication.timeoutSeconds')}</label>
                     <Input
                       type="number"
                       value={integrationSettings.webhook_timeout}
@@ -626,7 +626,7 @@ export const CommunicationSettings = () => {
 
               <Button onClick={() => handleSaveSettings("Integrations")} className="w-full" disabled={isSaving}>
                 {isSaving ? <LoadingSpinner size="sm" className="mr-2" /> : <Save className="h-4 w-4 mr-2" />}
-                {t('communication.saveIntegrationSettings')}
+                {t('admin.communication.saveIntegrationSettings')}
               </Button>
             </CardContent>
           </Card>

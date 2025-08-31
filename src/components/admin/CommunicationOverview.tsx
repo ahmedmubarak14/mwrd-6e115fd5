@@ -20,7 +20,7 @@ import { useRealTimeChat } from "@/hooks/useRealTimeChat";
 import { useNotifications } from "@/hooks/useNotifications";
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
@@ -37,7 +37,7 @@ export const CommunicationOverview = () => {
   const { conversations, loading: chatLoading } = useRealTimeChat();
   const { notifications, loading: notificationLoading } = useNotifications();
   const { user } = useAuth();
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [metrics, setMetrics] = useState<CommunicationMetrics>({
     totalMessages: 0,
@@ -56,8 +56,8 @@ export const CommunicationOverview = () => {
       const { error } = await supabase
         .from('push_notifications')
         .insert({
-          title: t('communication.announcement'),
-          message: t('communication.announcementMessage'),
+          title: t('admin.communication.announcement'),
+          message: t('admin.communication.announcementMessage'),
           target_audience: 'all_users',
           created_by: user?.id,
           status: 'sent',
@@ -66,9 +66,9 @@ export const CommunicationOverview = () => {
 
       if (error) throw error;
       
-      toast.success(t('communication.announcementSent'));
+      toast.success(t('admin.communication.announcementSent'));
     } catch (error) {
-      toast.error(t('communication.announcementError'));
+      toast.error(t('admin.communication.announcementError'));
     }
   };
 
@@ -92,11 +92,11 @@ export const CommunicationOverview = () => {
       };
       
       // Create a simple CSV download
-      const csvContent = `${t('communication.userEngagementReportTitle')}
-${t('communication.generated')}: ${new Date().toLocaleString()}
-${t('communication.totalActiveUsers')}: ${reportData.totalUsers}
-${t('communication.totalMessagesLabel')}: ${reportData.totalMessages}
-${t('communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${t('communication.minutes')}`;
+      const csvContent = `${t('admin.communication.userEngagementReportTitle')}
+${t('admin.communication.generated')}: ${new Date().toLocaleString()}
+${t('admin.communication.totalActiveUsers')}: ${reportData.totalUsers}
+${t('admin.communication.totalMessagesLabel')}: ${reportData.totalMessages}
+${t('admin.communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${t('admin.communication.minutes')}`;
       
       const blob = new Blob([csvContent], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);
@@ -106,9 +106,9 @@ ${t('communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${
       a.click();
       window.URL.revokeObjectURL(url);
       
-      toast.success(t('communication.reportGenerated'));
+      toast.success(t('admin.communication.reportGenerated'));
     } catch (error) {
-      toast.error(t('communication.reportError'));
+      toast.error(t('admin.communication.reportError'));
     }
   };
 
@@ -167,10 +167,10 @@ ${t('communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${
       const smsNotifications = notifications?.filter(n => n.type === 'sms').length || 0;
 
       const channelUsageData = [
-        { channel: t('communication.inAppChat'), count: chatMessages, color: '#8B5CF6' },
-        { channel: t('communication.email'), count: emailNotifications, color: '#06B6D4' },
-        { channel: t('communication.pushNotifications'), count: pushNotifications, color: '#10B981' },
-        { channel: t('communication.sms'), count: smsNotifications, color: '#F59E0B' }
+        { channel: t('admin.communication.inAppChat'), count: chatMessages, color: '#8B5CF6' },
+        { channel: t('admin.communication.email'), count: emailNotifications, color: '#06B6D4' },
+        { channel: t('admin.communication.pushNotifications'), count: pushNotifications, color: '#10B981' },
+        { channel: t('admin.communication.sms'), count: smsNotifications, color: '#F59E0B' }
       ];
 
       setMessageActivityData(messageActivityData);
@@ -229,7 +229,7 @@ ${t('communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${
   if (isLoading || chatLoading || notificationLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <LoadingSpinner label={t('communication.loadingOverview')} />
+        <LoadingSpinner label={t('admin.communication.loadingOverview')} />
       </div>
     );
   }
@@ -239,13 +239,13 @@ ${t('communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">{t('communication.overview')}</h2>
-          <p className="text-muted-foreground">{t('communication.overviewDescription')}</p>
+          <h2 className="text-2xl font-bold">{t('admin.communication.overview')}</h2>
+          <p className="text-muted-foreground">{t('admin.communication.overviewDescription')}</p>
         </div>
         <div className="flex items-center space-x-2">
           <Badge variant="outline" className="flex items-center space-x-1">
             <Activity className="h-3 w-3" />
-            <span>{t('communication.liveData')}</span>
+            <span>{t('admin.communication.liveData')}</span>
           </Badge>
         </div>
       </div>
@@ -254,45 +254,45 @@ ${t('communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('communication.totalMessages')}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.communication.totalMessages')}</CardTitle>
             <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-primary">{metrics.totalMessages.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">{t('communication.allTime')}</p>
+            <p className="text-xs text-muted-foreground">{t('admin.communication.allTime')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('communication.activeConversations')}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.communication.activeConversations')}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-success">{metrics.activeConversations}</div>
-            <p className="text-xs text-muted-foreground">{t('communication.lastSevenDays')}</p>
+            <p className="text-xs text-muted-foreground">{t('admin.communication.lastSevenDays')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('communication.notificationsToday')}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.communication.notificationsToday')}</CardTitle>
             <Bell className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-info">{metrics.notificationsSentToday}</div>
-            <p className="text-xs text-muted-foreground">{t('communication.todaysTotal')}</p>
+            <p className="text-xs text-muted-foreground">{t('admin.communication.todaysTotal')}</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('communication.avgResponseTime')}</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('admin.communication.avgResponseTime')}</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-warning">{metrics.averageResponseTime}m</div>
-            <p className="text-xs text-muted-foreground">{t('communication.averageResponse')}</p>
+            <p className="text-xs text-muted-foreground">{t('admin.communication.averageResponse')}</p>
           </CardContent>
         </Card>
       </div>
@@ -303,9 +303,9 @@ ${t('communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <TrendingUp className="h-5 w-5" />
-              <span>{t('communication.messageActivity')}</span>
+              <span>{t('admin.communication.messageActivity')}</span>
             </CardTitle>
-            <CardDescription>{t('communication.messageActivityDesc')}</CardDescription>
+            <CardDescription>{t('admin.communication.messageActivityDesc')}</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
@@ -325,9 +325,9 @@ ${t('communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <MessageSquare className="h-5 w-5" />
-              <span>{t('communication.communicationChannels')}</span>
+              <span>{t('admin.communication.communicationChannels')}</span>
             </CardTitle>
-            <CardDescription>{t('communication.usageByMethod')}</CardDescription>
+            <CardDescription>{t('admin.communication.usageByMethod')}</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
@@ -348,9 +348,9 @@ ${t('communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <Activity className="h-5 w-5" />
-            <span>{t('communication.recentActivity')}</span>
+            <span>{t('admin.communication.recentActivity')}</span>
           </CardTitle>
-          <CardDescription>{t('communication.latestEvents')}</CardDescription>
+          <CardDescription>{t('admin.communication.latestEvents')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
@@ -361,10 +361,10 @@ ${t('communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium">
-                    {t('communication.conversation')} {conv.conversation_type === 'support' ? t('communication.support') : t('communication.business')}
+                    {t('admin.communication.conversation')} {conv.conversation_type === 'support' ? t('admin.communication.support') : t('admin.communication.business')}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    {conv.last_message ? conv.last_message.slice(0, 60) + '...' : t('communication.noRecentMessage')}
+                    {conv.last_message ? conv.last_message.slice(0, 60) + '...' : t('admin.communication.noRecentMessage')}
                   </p>
                 </div>
                 <div className="text-xs text-muted-foreground flex items-center space-x-1">
@@ -372,7 +372,7 @@ ${t('communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${
                   <span>
                      {conv.last_message_at 
                        ? new Date(conv.last_message_at).toLocaleString()
-                       : t('communication.noActivity')
+                       : t('admin.communication.noActivity')
                      }
                   </span>
                 </div>
@@ -381,7 +381,7 @@ ${t('communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${
             {(!conversations || conversations.length === 0) && (
               <div className="text-center py-8 text-muted-foreground">
                 <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>{t('communication.noRecentActivity')}</p>
+                <p>{t('admin.communication.noRecentActivity')}</p>
               </div>
             )}
           </div>
@@ -396,8 +396,8 @@ ${t('communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${
           onClick={handleSendAnnouncement}
         >
           <Bell className="h-4 w-4 mr-2" />
-          <span className="hidden sm:inline">{t('communication.sendAnnouncement')}</span>
-          <span className="sm:hidden">{t('communication.announce')}</span>
+          <span className="hidden sm:inline">{t('admin.communication.sendAnnouncement')}</span>
+          <span className="sm:hidden">{t('admin.communication.announce')}</span>
         </Button>
         <Button 
           variant="outline" 
@@ -405,8 +405,8 @@ ${t('communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${
           onClick={handleCreateEmailCampaign}
         >
           <Mail className="h-4 w-4 mr-2" />
-          <span className="hidden sm:inline">{t('communication.createEmailCampaign')}</span>
-          <span className="sm:hidden">{t('communication.email')}</span>
+          <span className="hidden sm:inline">{t('admin.communication.createEmailCampaign')}</span>
+          <span className="sm:hidden">{t('admin.communication.email')}</span>
         </Button>
         <Button 
           variant="outline" 
@@ -414,8 +414,8 @@ ${t('communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${
           onClick={handleViewAllChats}
         >
           <MessageSquare className="h-4 w-4 mr-2" />
-          <span className="hidden sm:inline">{t('communication.viewAllChats')}</span>
-          <span className="sm:hidden">{t('communication.chats')}</span>
+          <span className="hidden sm:inline">{t('admin.communication.viewAllChats')}</span>
+          <span className="sm:hidden">{t('admin.communication.chats')}</span>
         </Button>
         <Button 
           variant="outline" 
@@ -423,8 +423,8 @@ ${t('communication.averageResponseTimeLabel')}: ${reportData.avgResponseTime} ${
           onClick={handleUserEngagementReport}
         >
           <Users className="h-4 w-4 mr-2" />
-          <span className="hidden sm:inline">{t('communication.userEngagementReport')}</span>
-          <span className="sm:hidden">{t('communication.report')}</span>
+          <span className="hidden sm:inline">{t('admin.communication.userEngagementReport')}</span>
+          <span className="sm:hidden">{t('admin.communication.report')}</span>
         </Button>
       </div>
     </div>
