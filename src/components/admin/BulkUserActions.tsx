@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Users, Download, UserCog, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { UserProfile } from "@/types/database";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -28,11 +28,7 @@ export const BulkUserActions = ({
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useLanguage();
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
