@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { format, addDays, addMonths, isAfter, isBefore } from "date-fns";
 import { CreditCard, Download, RefreshCw, TrendingUp, Users, Edit, Trash2, Eye, Calendar, DollarSign, Crown, AlertTriangle, Plus, BarChart3, Building } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -52,7 +52,7 @@ export default function AdminSubscriptions() {
   const [newPlan, setNewPlan] = useState<string>("");
   const [newExpiryDays, setNewExpiryDays] = useState<number>(30);
   
-  const { t, isRTL } = useLanguage();
+  const { t, isRTL } = useOptionalLanguage();
 
   const { toast } = useToast();
 

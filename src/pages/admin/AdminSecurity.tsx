@@ -8,12 +8,16 @@ import { SystemHealthMonitor } from "@/components/admin/SystemHealthMonitor";
 import { SecurityIncidentManager } from "@/components/admin/SecurityIncidentManager";
 import { SecurityComplianceCenter } from "@/components/admin/SecurityComplianceCenter";
 import { RealTimeSecurityMonitor } from "@/components/admin/RealTimeSecurityMonitor";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { cn } from "@/lib/utils";
 import { AdminPageContainer } from "@/components/admin/AdminPageContainer";
 
 const AdminSecurity = () => {
-  const { t, isRTL } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false 
+  };
 
   return (
     <div dir={isRTL ? 'rtl' : 'ltr'}>

@@ -18,7 +18,7 @@ import {
   User
 } from "lucide-react";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { AdminUserProfile } from "./AdminUserProfile";
 import { cn } from "@/lib/utils";
 import { useLocation, Link } from "react-router-dom";
@@ -30,7 +30,11 @@ interface AdminMobileSidebarContentProps {
 export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarContentProps) => {
   const location = useLocation();
   const { getPendingTicketsCount } = useSupportTickets();
-  const { t, isRTL } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false 
+  };
   const pendingTickets = getPendingTicketsCount();
 
   // Use the same navigation structure as desktop sidebar

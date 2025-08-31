@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import {
   CommandDialog,
   CommandEmpty,
@@ -43,7 +43,7 @@ export const AdminCommandPalette = () => {
   const [requests, setRequests] = useState<SearchRequest[]>([]);
   const [offers, setOffers] = useState<SearchOffer[]>([]);
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t } = useOptionalLanguage();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {

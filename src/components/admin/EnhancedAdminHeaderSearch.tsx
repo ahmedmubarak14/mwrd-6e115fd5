@@ -26,7 +26,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
@@ -55,7 +55,11 @@ export const EnhancedAdminHeaderSearch = () => {
   const abortControllerRef = useRef<AbortController | null>(null);
   const cacheRef = useRef<Map<string, SearchResult[]>>(new Map());
   const navigate = useNavigate();
-  const { t, isRTL } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false 
+  };
   const isMobile = useIsMobile();
 
   // Load recent searches from localStorage

@@ -23,12 +23,12 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 
 export const CommunicationSettings = () => {
   const { toast } = useToast();
   const { user } = useAuth();
-  const { t } = useLanguage();
+  const { t } = useOptionalLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   

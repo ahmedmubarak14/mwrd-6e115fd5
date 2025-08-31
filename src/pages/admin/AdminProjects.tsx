@@ -9,7 +9,7 @@ import { Building2, Calendar, DollarSign, Package, Search, Eye, MessageSquare, F
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 import { format } from 'date-fns';
 
 interface AdminProject {
@@ -43,7 +43,7 @@ interface AdminProject {
 const AdminProjects = () => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const { t } = useOptionalLanguage();
   const [projects, setProjects] = useState<AdminProject[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');

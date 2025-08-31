@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 import { cn } from '@/lib/utils';
 
 interface Notification {
@@ -59,7 +59,7 @@ interface BroadcastMessage {
 
 export const AdminCommunicationCenter = () => {
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const { t } = useOptionalLanguage();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [broadcasts, setBroadcasts] = useState<BroadcastMessage[]>([]);
   const [loading, setLoading] = useState(true);

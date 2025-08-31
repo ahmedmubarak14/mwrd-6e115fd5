@@ -12,7 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { BulkApprovalActions } from '@/components/admin/BulkApprovalActions';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 import { cn } from '@/lib/utils';
 
 interface AdminRequest {
@@ -45,7 +45,12 @@ interface AdminRequest {
 const AdminRequests = () => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const { t, isRTL, formatDate } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL, formatDate } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false,
+    formatDate: (date: Date) => date.toLocaleDateString()
+  };
   const [requests, setRequests] = useState<AdminRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');

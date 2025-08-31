@@ -1,9 +1,10 @@
 import { AdminPageContainer } from '@/components/admin/AdminPageContainer';
 import { AdminCommunicationCenter as CommunicationCenterComponent } from '@/components/admin/AdminCommunicationCenter';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 
 export default function AdminCommunicationCenter() {
-  const { t } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t } = languageContext || { t: (key: string) => key };
 
   return (
     <AdminPageContainer

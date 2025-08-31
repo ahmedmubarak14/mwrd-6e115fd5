@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Search, Bell, Menu } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { DashboardThemeToggle } from "@/components/ui/DashboardThemeToggle";
 import { AdminBreadcrumbs } from "./AdminBreadcrumbs";
 import { EnhancedAdminHeaderSearch } from "./EnhancedAdminHeaderSearch";
@@ -26,7 +26,11 @@ interface AdminHeaderProps {
 export const AdminHeader = ({ onMobileMenuOpen, onSidebarToggle, sidebarOpen }: AdminHeaderProps) => {
   const navigate = useNavigate();
   const { userProfile } = useAuth();
-  const { t, isRTL } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL } = languageContext || { 
+    t: (key: string) => key, 
+    isRTL: false 
+  };
   const isMobile = useIsMobile();
   const { unreadCount } = useNotifications();
 
