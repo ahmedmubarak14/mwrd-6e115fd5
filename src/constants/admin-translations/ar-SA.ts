@@ -4,6 +4,17 @@
  */
 
 export const adminTranslationsAR = {
+  // Header interface (Arabic)
+  openMobileMenu: "فتح القائمة المحمولة",
+  collapseSidebar: "طي الشريط الجانبي",
+  expandSidebar: "توسيع الشريط الجانبي",
+  goToAdminDashboard: "الذهاب إلى لوحة الإدارة",
+  logoAlt: "شعار MWRD",
+  managementPortal: "بوابة الإدارة",
+  viewNotifications: "عرض الإشعارات",
+  languageEnglish: "English",
+  languageArabic: "العربية",
+
   // مفاتيح الإدارة الجذرية للتنقل
   dashboard: "لوحة تحكم الإدارة",
   performanceMonitor: "مراقب الأداء",
@@ -88,6 +99,23 @@ export const adminTranslationsAR = {
 
   // مسار التنقل
   breadcrumbs: {
+    admin: "الإدارة",
+    dashboardOverview: "نظرة عامة على لوحة التحكم",
+    userManagement: "إدارة المستخدمين",
+    requestsManagement: "إدارة الطلبات",
+    offersManagement: "إدارة العروض",
+    ordersManagement: "إدارة الطلبيات",
+    projectsManagement: "إدارة المشاريع",
+    platformAnalytics: "تحليلات المنصة",
+    subscriptionManagement: "إدارة الاشتراكات",
+    supportCenter: "مركز الدعم",
+    verificationQueue: "قائمة انتظار التحقق",
+    categoryManagement: "إدارة الفئات",
+    expertConsultations: "الاستشارات الخبيرة",
+    financialTransactions: "المعاملات المالية",
+    securityMonitoring: "مراقبة الأمان",
+    communicationCenter: "مركز الاتصالات",
+    unknown: "غير معروف",
     dashboard: "لوحة التحكم",
     users: "المستخدمون",
     requests: "الطلبات",
@@ -99,8 +127,7 @@ export const adminTranslationsAR = {
     communications: "الاتصالات",
     security: "الأمان",
     verification: "التحقق",
-    automation: "الأتمتة",
-    expertConsultations: "الاستشارات الخبيرة"
+    automation: "الأتمتة"
   },
 
   // لوحة الأوامر

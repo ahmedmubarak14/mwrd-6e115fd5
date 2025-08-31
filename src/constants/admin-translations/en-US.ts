@@ -4,6 +4,17 @@
  */
 
 export const adminTranslationsEN = {
+  // Header interface
+  openMobileMenu: "Open mobile menu",
+  collapseSidebar: "Collapse sidebar",
+  expandSidebar: "Expand sidebar", 
+  goToAdminDashboard: "Go to admin dashboard",
+  logoAlt: "MWRD Logo",
+  managementPortal: "Management Portal",
+  viewNotifications: "View notifications",
+  languageEnglish: "English",
+  languageArabic: "العربية",
+
   // Root level admin keys for navigation
   dashboard: "Admin Dashboard",
   performanceMonitor: "Performance Monitor", 
@@ -88,6 +99,23 @@ export const adminTranslationsEN = {
 
   // Breadcrumbs
   breadcrumbs: {
+    admin: "Admin",
+    dashboardOverview: "Dashboard Overview",
+    userManagement: "User Management", 
+    requestsManagement: "Requests Management",
+    offersManagement: "Offers Management",
+    ordersManagement: "Orders Management",
+    projectsManagement: "Projects Management",
+    platformAnalytics: "Platform Analytics",
+    subscriptionManagement: "Subscription Management",
+    supportCenter: "Support Center",
+    verificationQueue: "Verification Queue",
+    categoryManagement: "Category Management",
+    expertConsultations: "Expert Consultations",
+    financialTransactions: "Financial Transactions",
+    securityMonitoring: "Security Monitoring",
+    communicationCenter: "Communication Center",
+    unknown: "Unknown",
     dashboard: "Dashboard",
     users: "Users",
     requests: "Requests",
@@ -99,8 +127,7 @@ export const adminTranslationsEN = {
     communications: "Communications",
     security: "Security",
     verification: "Verification",
-    automation: "Automation",
-    expertConsultations: "Expert Consultations"
+    automation: "Automation"
   },
 
   // Command Palette
