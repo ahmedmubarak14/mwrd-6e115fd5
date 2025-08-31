@@ -27,7 +27,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { CommunicationSettings } from '@/components/admin/CommunicationSettings';
 import { AdminPageContainer } from '@/components/admin/AdminPageContainer';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface PlatformSetting {
   id: string;
@@ -40,8 +40,7 @@ interface PlatformSetting {
 export const AdminSettings = () => {
   const { toast } = useToast();
   const { user } = useAuth();
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { t: (key: string) => key, isRTL: false };
+  const { t, isRTL } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);

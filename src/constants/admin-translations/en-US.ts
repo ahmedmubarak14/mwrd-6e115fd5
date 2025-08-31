@@ -1688,6 +1688,107 @@ export const adminTranslationsEN = {
     apply: "Apply",
     showMore: "Show More",
     showLess: "Show Less"
+  },
+
+  // Platform Settings Section
+  platformSettings: {
+    // Main titles and descriptions
+    title: "Platform Settings",
+    description: "Configure and manage your platform settings and preferences",
+    unsavedChanges: "Unsaved Changes",
+    refresh: "Refresh",
+    
+    // Loading and error states  
+    loadSettingsError: "Failed to load platform settings",
+    updateSettingsError: "Failed to update setting: {settingKey}",
+    settingsRefreshed: "Settings Refreshed", 
+    settingsRefreshedDesc: "Platform settings have been refreshed successfully",
+    settingsSaved: "Settings Saved",
+    settingsSavedDesc: "Your settings have been saved successfully",
+    settingsReset: "Settings Reset",
+    settingsResetDesc: "Settings have been reset to default values",
+    
+    // Tab labels
+    general: "General",
+    security: "Security", 
+    system: "System",
+    communication: "Communication",
+    advanced: "Advanced",
+    
+    // General settings
+    platformInformation: "Platform Information",
+    platformInfoDescription: "Basic information about your platform",
+    platformName: "Platform Name",
+    platformDescription: "Platform Description", 
+    defaultCurrency: "Default Currency",
+    defaultTimezone: "Default Timezone",
+    defaultUserRole: "Default User Role",
+    userRegistration: "User Registration",
+    userRegistrationDesc: "Allow new users to register on the platform",
+    saveGeneralSettings: "Save General Settings",
+    
+    // Currency options
+    currencySAR: "Saudi Riyal (SAR)",
+    currencyUSD: "US Dollar (USD)", 
+    currencyEUR: "Euro (EUR)",
+    currencyAED: "UAE Dirham (AED)",
+    
+    // Timezone options
+    timezoneRiyadh: "Asia/Riyadh (GMT+3)",
+    timezoneUTC: "UTC (GMT+0)",
+    timezoneNewYork: "America/New_York (GMT-5)",
+    timezoneLondon: "Europe/London (GMT+0)",
+    timezoneDubai: "Asia/Dubai (GMT+4)",
+    
+    // User roles
+    roleClient: "Client",
+    roleVendor: "Vendor",
+    
+    // Security settings
+    securityConfiguration: "Security Configuration",
+    securityConfigDesc: "Configure security and authentication settings",
+    sessionTimeout: "Session Timeout",
+    sessionTimeoutDesc: "Session timeout in minutes (30-1440)",
+    maxLoginAttempts: "Max Login Attempts", 
+    maxLoginAttemptsDesc: "Maximum failed login attempts before lockout",
+    passwordMinLength: "Password Minimum Length",
+    requirePasswordSymbols: "Require Password Symbols",
+    requirePasswordSymbolsDesc: "Require special characters in passwords",
+    emailVerificationRequired: "Email Verification Required",
+    emailVerificationDesc: "Require email verification for new accounts", 
+    twoFactorAuth: "Two-Factor Authentication",
+    twoFactorAuthDesc: "Enable two-factor authentication for enhanced security",
+    saveSecuritySettings: "Save Security Settings",
+    
+    // System settings
+    systemConfiguration: "System Configuration",
+    systemConfigDesc: "Configure system performance and limits",
+    apiRateLimit: "API Rate Limit",
+    apiRateLimitDesc: "Requests per hour per user (100-10000)",
+    fileUploadMaxSize: "File Upload Max Size",
+    fileUploadMaxSizeDesc: "Maximum file upload size in MB (1-100)",
+    maintenanceMode: "Maintenance Mode", 
+    maintenanceModeDesc: "Enable maintenance mode to restrict access",
+    maintenanceModeActive: "Maintenance Mode Active",
+    maintenanceModeActiveDesc: "The platform is currently in maintenance mode. Only administrators can access the system.",
+    saveSystemSettings: "Save System Settings",
+    
+    // Advanced settings
+    advancedConfiguration: "Advanced Configuration",
+    advancedConfigDesc: "Advanced platform configuration and management tools",
+    apiKeyManagement: "API Key Management",
+    apiKeyManagementDesc: "Manage platform API keys and integrations",
+    manageApiKeys: "Manage API Keys",
+    databaseTools: "Database Tools",
+    databaseToolsDesc: "Database maintenance and management utilities", 
+    manageDatabaseTools: "Manage Database Tools",
+    dangerZone: "Danger Zone",
+    resetPlatformSettings: "Reset Platform Settings",
+    resetPlatformSettingsDesc: "Reset all platform settings to default values",
+    resetSettings: "Reset Settings",
+    exportPlatformData: "Export Platform Data", 
+    exportDataDesc: "Export all platform data for backup purposes",
+    exportData: "Export Data"
   }
 
 };

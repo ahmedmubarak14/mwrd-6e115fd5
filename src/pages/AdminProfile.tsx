@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { useAuth } from "@/contexts/AuthContext";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useToastFeedback } from "@/hooks/useToastFeedback";
 import { supabase } from '@/integrations/supabase/client';
 import { 
@@ -49,8 +49,7 @@ interface AdminStats {
 
 const AdminProfile = () => {
   const { userProfile, updateProfile, user } = useAuth();
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { t: (key: string) => key, isRTL: false };
+  const { t, isRTL } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [statsLoading, setStatsLoading] = useState(true);
   const { showSuccess, showError } = useToastFeedback();

@@ -1160,6 +1160,107 @@ export const adminTranslationsAR = {
     messaging: "المراسلة"
   },
 
+  // إعدادات المنصة
+  platformSettings: {
+    // العناوين الرئيسية والأوصاف
+    title: "إعدادات المنصة",
+    description: "تكوين وإدارة إعدادات المنصة وتفضيلاتها",
+    unsavedChanges: "تغييرات غير محفوظة",
+    refresh: "تحديث",
+    
+    // حالات التحميل والخطأ
+    loadSettingsError: "فشل في تحميل إعدادات المنصة",
+    updateSettingsError: "فشل في تحديث الإعداد: {settingKey}",
+    settingsRefreshed: "تم تحديث الإعدادات",
+    settingsRefreshedDesc: "تم تحديث إعدادات المنصة بنجاح",
+    settingsSaved: "تم حفظ الإعدادات",
+    settingsSavedDesc: "تم حفظ إعداداتك بنجاح",
+    settingsReset: "تم إعادة تعيين الإعدادات",
+    settingsResetDesc: "تم إعادة تعيين الإعدادات إلى القيم الافتراضية",
+    
+    // تسميات التبويبات
+    general: "عام",
+    security: "الأمان",
+    system: "النظام", 
+    communication: "التواصل",
+    advanced: "متقدم",
+    
+    // الإعدادات العامة
+    platformInformation: "معلومات المنصة",
+    platformInfoDescription: "المعلومات الأساسية حول منصتك",
+    platformName: "اسم المنصة",
+    platformDescription: "وصف المنصة",
+    defaultCurrency: "العملة الافتراضية",
+    defaultTimezone: "المنطقة الزمنية الافتراضية",
+    defaultUserRole: "دور المستخدم الافتراضي",
+    userRegistration: "تسجيل المستخدمين",
+    userRegistrationDesc: "السماح للمستخدمين الجدد بالتسجيل في المنصة",
+    saveGeneralSettings: "حفظ الإعدادات العامة",
+    
+    // خيارات العملة
+    currencySAR: "الريال السعودي (SAR)",
+    currencyUSD: "الدولار الأمريكي (USD)",
+    currencyEUR: "اليورو (EUR)",
+    currencyAED: "الدرهم الإماراتي (AED)",
+    
+    // خيارات المنطقة الزمنية
+    timezoneRiyadh: "آسيا/الرياض (GMT+3)",
+    timezoneUTC: "UTC (GMT+0)",
+    timezoneNewYork: "أمريكا/نيويورك (GMT-5)",
+    timezoneLondon: "أوروبا/لندن (GMT+0)",
+    timezoneDubai: "آسيا/دبي (GMT+4)",
+    
+    // أدوار المستخدمين
+    roleClient: "عميل",
+    roleVendor: "مورد",
+    
+    // إعدادات الأمان
+    securityConfiguration: "تكوين الأمان",
+    securityConfigDesc: "تكوين إعدادات الأمان والمصادقة",
+    sessionTimeout: "انتهاء مهلة الجلسة",
+    sessionTimeoutDesc: "انتهاء مهلة الجلسة بالدقائق (30-1440)",
+    maxLoginAttempts: "الحد الأقصى لمحاولات تسجيل الدخول",
+    maxLoginAttemptsDesc: "الحد الأقصى لمحاولات تسجيل الدخول الفاشلة قبل القفل",
+    passwordMinLength: "الحد الأدنى لطول كلمة المرور",
+    requirePasswordSymbols: "طلب رموز في كلمة المرور",
+    requirePasswordSymbolsDesc: "طلب أحرف خاصة في كلمات المرور",
+    emailVerificationRequired: "التحقق من البريد الإلكتروني مطلوب",
+    emailVerificationDesc: "طلب التحقق من البريد الإلكتروني للحسابات الجديدة",
+    twoFactorAuth: "المصادقة الثنائية",
+    twoFactorAuthDesc: "تمكين المصادقة الثنائية لأمان محسن",
+    saveSecuritySettings: "حفظ إعدادات الأمان",
+    
+    // إعدادات النظام
+    systemConfiguration: "تكوين النظام",
+    systemConfigDesc: "تكوين أداء النظام والحدود",
+    apiRateLimit: "حد معدل API",
+    apiRateLimitDesc: "الطلبات في الساعة لكل مستخدم (100-10000)",
+    fileUploadMaxSize: "الحد الأقصى لحجم رفع الملف",
+    fileUploadMaxSizeDesc: "الحد الأقصى لحجم رفع الملف بالميجابايت (1-100)",
+    maintenanceMode: "وضع الصيانة",
+    maintenanceModeDesc: "تمكين وضع الصيانة لتقييد الوصول",
+    maintenanceModeActive: "وضع الصيانة نشط",
+    maintenanceModeActiveDesc: "المنصة حالياً في وضع الصيانة. المديرون فقط يمكنهم الوصول للنظام.",
+    saveSystemSettings: "حفظ إعدادات النظام",
+    
+    // الإعدادات المتقدمة
+    advancedConfiguration: "التكوين المتقدم",
+    advancedConfigDesc: "تكوين المنصة المتقدم وأدوات الإدارة",
+    apiKeyManagement: "إدارة مفاتيح API",
+    apiKeyManagementDesc: "إدارة مفاتيح API للمنصة والتكاملات",
+    manageApiKeys: "إدارة مفاتيح API",
+    databaseTools: "أدوات قاعدة البيانات",
+    databaseToolsDesc: "أدوات صيانة وإدارة قاعدة البيانات",
+    manageDatabaseTools: "إدارة أدوات قاعدة البيانات",
+    dangerZone: "منطقة الخطر",
+    resetPlatformSettings: "إعادة تعيين إعدادات المنصة",
+    resetPlatformSettingsDesc: "إعادة تعيين جميع إعدادات المنصة للقيم الافتراضية",
+    resetSettings: "إعادة تعيين الإعدادات",
+    exportPlatformData: "تصدير بيانات المنصة",
+    exportDataDesc: "تصدير جميع بيانات المنصة لأغراض النسخ الاحتياطي",
+    exportData: "تصدير البيانات"
+  },
+  
   // الإجراءات الشائعة
   actions: {
     viewDetails: "عرض التفاصيل",
