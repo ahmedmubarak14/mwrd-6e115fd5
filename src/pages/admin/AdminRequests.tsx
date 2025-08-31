@@ -257,7 +257,7 @@ const AdminRequests = () => {
             
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={t('admin.requestsManagement.statusPlaceholder')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">{t('admin.requestsManagement.allStatuses')}</SelectItem>
@@ -270,7 +270,7 @@ const AdminRequests = () => {
 
             <Select value={approvalFilter} onValueChange={setApprovalFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Approval Status" />
+                <SelectValue placeholder={t('admin.requestsManagement.approvalStatusPlaceholder')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">{t('admin.requestsManagement.allApprovals')}</SelectItem>
@@ -282,7 +282,7 @@ const AdminRequests = () => {
 
             <Select value={urgencyFilter} onValueChange={setUrgencyFilter}>
               <SelectTrigger>
-                <SelectValue placeholder="Urgency" />
+                <SelectValue placeholder={t('admin.requestsManagement.urgencyPlaceholder')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">{t('admin.requestsManagement.allUrgencies')}</SelectItem>

@@ -252,7 +252,7 @@ const AdminOffers = () => {
   };
 
   const calculateAverageResponseTime = () => {
-    return '2.5 hours';
+    return t('admin.offersManagement.averageResponseTime');
   };
 
   const getUrgencyLevel = (offer: AdminOffer) => {

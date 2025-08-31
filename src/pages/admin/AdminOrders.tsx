@@ -217,7 +217,7 @@ export default function AdminOrders() {
       : filteredOrders;
 
     const csvContent = [
-      'Order ID,Title,Client,Vendor,Status,Amount,Currency,Created Date',
+      t('admin.ordersManagement.csvHeaders'),
       ...ordersToExport.map(order => 
         `${order.id},"${order.title}","${order.client?.full_name || order.client?.email || 'Unknown'}","${order.vendor?.full_name || order.vendor?.email || 'Unknown'}",${order.status},${order.amount},${order.currency},${format(new Date(order.created_at), 'yyyy-MM-dd')}`
       )

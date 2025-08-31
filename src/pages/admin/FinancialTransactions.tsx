@@ -412,28 +412,28 @@ return (
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                   
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger>
-                      <SelectValue placeholder={t('financial.filterByStatus')} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">{t('financial.allStatus')}</SelectItem>
-                      <SelectItem value="pending">{t('financial.pending')}</SelectItem>
-                      <SelectItem value="completed">{t('financial.completed')}</SelectItem>
-                      <SelectItem value="failed">{t('financial.failed')}</SelectItem>
-                      <SelectItem value="cancelled">{t('financial.cancelled')}</SelectItem>
-                    </SelectContent>
-                  </Select>
+                   <Select value={statusFilter} onValueChange={setStatusFilter}>
+                     <SelectTrigger>
+                       <SelectValue placeholder={t('admin.financial.filterByStatus')} />
+                     </SelectTrigger>
+                     <SelectContent>
+                       <SelectItem value="all">{t('admin.financial.allStatus')}</SelectItem>
+                       <SelectItem value="pending">{t('admin.financial.pending')}</SelectItem>
+                       <SelectItem value="completed">{t('admin.financial.completed')}</SelectItem>
+                       <SelectItem value="failed">{t('admin.financial.failed')}</SelectItem>
+                       <SelectItem value="cancelled">{t('admin.financial.cancelled')}</SelectItem>
+                     </SelectContent>
+                   </Select>
 
-                  <Select value={typeFilter} onValueChange={setTypeFilter}>
-                    <SelectTrigger>
-                      <SelectValue placeholder={t('financial.filterByType')} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">{t('financial.allTypes')}</SelectItem>
-                      <SelectItem value="subscription">{t('financial.subscription')}</SelectItem>
-                      <SelectItem value="commission">{t('financial.commission')}</SelectItem>
-                      <SelectItem value="payment">{t('financial.payment')}</SelectItem>
+                   <Select value={typeFilter} onValueChange={setTypeFilter}>
+                     <SelectTrigger>
+                       <SelectValue placeholder={t('admin.financial.filterByType')} />
+                     </SelectTrigger>
+                     <SelectContent>
+                       <SelectItem value="all">{t('admin.financial.allTypes')}</SelectItem>
+                       <SelectItem value="subscription">{t('admin.financial.subscription')}</SelectItem>
+                       <SelectItem value="commission">{t('admin.financial.commission')}</SelectItem>
+                       <SelectItem value="payment">{t('admin.financial.payment')}</SelectItem>
                       <SelectItem value="refund">{t('financial.refund')}</SelectItem>
                       <SelectItem value="order_payment">Order Payment</SelectItem>
                       <SelectItem value="invoice_generated">Invoice</SelectItem>
