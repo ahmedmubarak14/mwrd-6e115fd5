@@ -1298,6 +1298,102 @@ export const adminTranslationsEN = {
     }
   },
 
+  // Admin Email Campaign Management
+  email: {
+    // Main tabs
+    campaigns: "Email Campaigns",
+    templates: "Email Templates", 
+    analytics: "Email Analytics",
+    
+    // Campaign creation
+    newCampaign: "New Campaign",
+    createCampaign: "Create Campaign",
+    campaignName: "Campaign Name",
+    campaignNamePlaceholder: "Enter campaign name...",
+    emailSubject: "Email Subject",
+    subjectPlaceholder: "Enter email subject...",
+    template: "Template",
+    selectTemplate: "Select template",
+    targetAudience: "Target Audience",
+    allUsers: "All Users",
+    clientsOnly: "Clients Only", 
+    vendorsOnly: "Vendors Only",
+    activeUsers: "Active Users",
+    scheduleOptional: "Schedule (Optional)",
+    
+    // Template creation
+    newTemplate: "New Template",
+    createEmailTemplate: "Create Email Template",
+    templateName: "Template Name",
+    templateNamePlaceholder: "Enter template name...",
+    category: "Category",
+    announcement: "Announcement",
+    newsletter: "Newsletter", 
+    promotion: "Promotion",
+    welcome: "Welcome",
+    defaultSubject: "Default Subject",
+    defaultSubjectPlaceholder: "Enter default subject...",
+    htmlContent: "HTML Content",
+    htmlContentPlaceholder: "Enter HTML content...",
+    createTemplate: "Create Template",
+    
+    // Campaign stats
+    totalCampaigns: "Total Campaigns",
+    allTime: "All Time",
+    sentThisMonth: "Sent This Month", 
+    monthlyGrowth: "Monthly Growth",
+    openRate: "Open Rate",
+    average: "Average",
+    clickRate: "Click Rate",
+    
+    // Campaign list
+    noCampaignsYet: "No campaigns yet",
+    createFirstCampaign: "Create your first email campaign to get started",
+    
+    // Success/Error messages
+    campaignCreatedSuccess: "Campaign created successfully",
+    campaignCreateFailed: "Failed to create campaign",
+    templateCreatedSuccess: "Template created successfully", 
+    templateCreateFailed: "Failed to create template",
+    campaignSentSuccess: "Campaign sent successfully",
+    campaignSendFailed: "Failed to send campaign"
+  },
+
+  // Admin Push Notifications Management
+  pushNotifications: {
+    // Main interface
+    title: "Push Notifications",
+    description: "Get notified about important updates even when the app is closed",
+    notSupported: "Push Notifications Not Supported",
+    notSupportedDesc: "Your browser doesn't support push notifications",
+    
+    // Permission states
+    enablePrompt: "Enable push notifications to stay updated with messages, offers, and important updates",
+    enableButton: "Enable Notifications", 
+    blockedMessage: "Notifications are blocked. Please enable them in your browser settings",
+    enabledMessage: "Push notifications are enabled",
+    
+    // Settings
+    settingsTitle: "Notification Settings",
+    newMessages: "New Messages",
+    newOffers: "New Offers", 
+    requestUpdates: "Request Updates",
+    marketingUpdates: "Marketing & Updates",
+    sendTestButton: "Send Test Notification",
+    
+    // Test notification
+    testNotificationTitle: "MWRD Test Notification",
+    testNotificationBody: "This is a test notification to verify everything is working!",
+    
+    // Success/Error messages
+    notSupportedError: "Push notifications are not supported in this browser",
+    enabledSuccess: "Push notifications enabled successfully!",
+    permissionDenied: "Push notifications permission denied", 
+    enableFailed: "Failed to enable push notifications",
+    testNotificationSent: "Test notification sent!",
+    enableFirst: "Please enable notifications first"
+  },
+
   // Subscriptions Management Messages
   subscriptionsMessages: {
     fetchError: "Failed to load subscriptions",

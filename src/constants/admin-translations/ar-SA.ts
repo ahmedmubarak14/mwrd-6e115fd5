@@ -1173,6 +1173,102 @@ export const adminTranslationsAR = {
     }
   },
 
+  // Admin Email Campaign Management
+  email: {
+    // Main tabs
+    campaigns: "حملات البريد الإلكتروني",
+    templates: "قوالب البريد الإلكتروني",
+    analytics: "تحليلات البريد الإلكتروني",
+    
+    // Campaign creation
+    newCampaign: "حملة جديدة", 
+    createCampaign: "إنشاء حملة",
+    campaignName: "اسم الحملة",
+    campaignNamePlaceholder: "أدخل اسم الحملة...",
+    emailSubject: "موضوع البريد الإلكتروني",
+    subjectPlaceholder: "أدخل موضوع البريد الإلكتروني...",
+    template: "القالب",
+    selectTemplate: "اختر القالب",
+    targetAudience: "الجمهور المستهدف",
+    allUsers: "جميع المستخدمين",
+    clientsOnly: "العملاء فقط",
+    vendorsOnly: "الموردون فقط", 
+    activeUsers: "المستخدمون النشطون",
+    scheduleOptional: "الجدولة (اختيارية)",
+    
+    // Template creation
+    newTemplate: "قالب جديد",
+    createEmailTemplate: "إنشاء قالب بريد إلكتروني",
+    templateName: "اسم القالب",
+    templateNamePlaceholder: "أدخل اسم القالب...",
+    category: "الفئة",
+    announcement: "إعلان",
+    newsletter: "نشرة إخبارية",
+    promotion: "ترويج", 
+    welcome: "ترحيب",
+    defaultSubject: "الموضوع الافتراضي",
+    defaultSubjectPlaceholder: "أدخل الموضوع الافتراضي...",
+    htmlContent: "محتوى HTML",
+    htmlContentPlaceholder: "أدخل محتوى HTML...",
+    createTemplate: "إنشاء القالب",
+    
+    // Campaign stats
+    totalCampaigns: "إجمالي الحملات",
+    allTime: "جميع الأوقات",
+    sentThisMonth: "أُرسل هذا الشهر",
+    monthlyGrowth: "النمو الشهري", 
+    openRate: "معدل الفتح",
+    average: "متوسط",
+    clickRate: "معدل النقر",
+    
+    // Campaign list
+    noCampaignsYet: "لا توجد حملات بعد",
+    createFirstCampaign: "إنشاء أول حملة بريد إلكتروني للبدء",
+    
+    // Success/Error messages
+    campaignCreatedSuccess: "تم إنشاء الحملة بنجاح",
+    campaignCreateFailed: "فشل في إنشاء الحملة",
+    templateCreatedSuccess: "تم إنشاء القالب بنجاح",
+    templateCreateFailed: "فشل في إنشاء القالب",
+    campaignSentSuccess: "تم إرسال الحملة بنجاح", 
+    campaignSendFailed: "فشل في إرسال الحملة"
+  },
+
+  // Admin Push Notifications Management
+  pushNotifications: {
+    // Main interface
+    title: "الإشعارات الفورية",
+    description: "احصل على إشعارات بالتحديثات المهمة حتى عند إغلاق التطبيق",
+    notSupported: "الإشعارات الفورية غير مدعومة",
+    notSupportedDesc: "متصفحك لا يدعم الإشعارات الفورية",
+    
+    // Permission states
+    enablePrompt: "تمكين الإشعارات الفورية للبقاء على اطلاع بالرسائل والعروض والتحديثات المهمة",
+    enableButton: "تمكين الإشعارات",
+    blockedMessage: "الإشعارات محظورة. يرجى تمكينها في إعدادات المتصفح",
+    enabledMessage: "تم تمكين الإشعارات الفورية",
+    
+    // Settings
+    settingsTitle: "إعدادات الإشعارات",
+    newMessages: "الرسائل الجديدة", 
+    newOffers: "العروض الجديدة",
+    requestUpdates: "تحديثات الطلبات",
+    marketingUpdates: "التسويق والتحديثات",
+    sendTestButton: "إرسال إشعار تجريبي",
+    
+    // Test notification
+    testNotificationTitle: "إشعار تجريبي من MWRD",
+    testNotificationBody: "هذا إشعار تجريبي للتحقق من أن كل شيء يعمل!",
+    
+    // Success/Error messages
+    notSupportedError: "الإشعارات الفورية غير مدعومة في هذا المتصفح",
+    enabledSuccess: "تم تمكين الإشعارات الفورية بنجاح!",
+    permissionDenied: "تم رفض إذن الإشعارات الفورية",
+    enableFailed: "فشل في تمكين الإشعارات الفورية", 
+    testNotificationSent: "تم إرسال الإشعار التجريبي!",
+    enableFirst: "يرجى تمكين الإشعارات أولاً"
+  },
+
   // رسائل إدارة الاشتراكات
   subscriptionsMessages: {
     fetchError: "فشل في تحميل الاشتراكات",

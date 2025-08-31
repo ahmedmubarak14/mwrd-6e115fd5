@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Bell, BellOff, Settings } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToastFeedback } from "@/hooks/useToastFeedback";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { cn } from "@/lib/utils";
 
 interface NotificationSettings {
   messages: boolean;
@@ -17,6 +19,7 @@ interface NotificationSettings {
 export const PushNotificationManager = () => {
   const { user } = useAuth();
   const { showSuccess, showError } = useToastFeedback();
+  const { t, isRTL } = useLanguage();
   const [isSupported, setIsSupported] = useState(false);
   const [permission, setPermission] = useState<NotificationPermission>("default");
   const [settings, setSettings] = useState<NotificationSettings>({
@@ -42,7 +45,7 @@ export const PushNotificationManager = () => {
 
   const requestPermission = async () => {
     if (!isSupported) {
-      showError("Push notifications are not supported in this browser");
+      showError(t("admin.pushNotifications.notSupportedError"));
       return;
     }
 
@@ -51,15 +54,15 @@ export const PushNotificationManager = () => {
       setPermission(permission);
       
       if (permission === "granted") {
-        showSuccess("Push notifications enabled successfully!");
+        showSuccess(t("admin.pushNotifications.enabledSuccess"));
         // In a real app, you would register a service worker here
         // and send the subscription to your backend
       } else {
-        showError("Push notifications permission denied");
+        showError(t("admin.pushNotifications.permissionDenied"));
       }
     } catch (error) {
       console.error("Error requesting notification permission:", error);
-      showError("Failed to enable push notifications");
+      showError(t("admin.pushNotifications.enableFailed"));
     }
   };
 
@@ -71,15 +74,15 @@ export const PushNotificationManager = () => {
 
   const sendTestNotification = () => {
     if (permission === "granted") {
-      new Notification("MWRD Test Notification", {
-        body: "This is a test notification to verify everything is working!",
+      new Notification(t("admin.pushNotifications.testNotificationTitle"), {
+        body: t("admin.pushNotifications.testNotificationBody"),
         icon: "/favicon.ico",
         badge: "/favicon.ico",
         tag: "test",
       });
-      showSuccess("Test notification sent!");
+      showSuccess(t("admin.pushNotifications.testNotificationSent"));
     } else {
-      showError("Please enable notifications first");
+      showError(t("admin.pushNotifications.enableFirst"));
     }
   };
 
@@ -89,10 +92,10 @@ export const PushNotificationManager = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <BellOff className="h-5 w-5" />
-            Push Notifications Not Supported
+            {t("admin.pushNotifications.notSupported")}
           </CardTitle>
           <CardDescription>
-            Your browser doesn't support push notifications.
+            {t("admin.pushNotifications.notSupportedDesc")}
           </CardDescription>
         </CardHeader>
       </Card>
@@ -100,26 +103,26 @@ export const PushNotificationManager = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className={cn("space-y-6", isRTL ? "rtl" : "ltr")} dir={isRTL ? 'rtl' : 'ltr'}>
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Bell className="h-5 w-5" />
-            Push Notifications
+            {t("admin.pushNotifications.title")}
           </CardTitle>
           <CardDescription>
-            Get notified about important updates even when the app is closed.
+            {t("admin.pushNotifications.description")}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {permission === "default" && (
             <div className="p-4 bg-muted rounded-lg">
               <p className="text-sm mb-3">
-                Enable push notifications to stay updated with messages, offers, and important updates.
+                {t("admin.pushNotifications.enablePrompt")}
               </p>
               <Button onClick={requestPermission}>
                 <Bell className="h-4 w-4 mr-2" />
-                Enable Notifications
+                {t("admin.pushNotifications.enableButton")}
               </Button>
             </div>
           )}
@@ -127,7 +130,7 @@ export const PushNotificationManager = () => {
           {permission === "denied" && (
             <div className="p-4 bg-destructive/10 rounded-lg">
               <p className="text-sm text-destructive">
-                Notifications are blocked. Please enable them in your browser settings.
+                {t("admin.pushNotifications.blockedMessage")}
               </p>
             </div>
           )}
@@ -136,20 +139,20 @@ export const PushNotificationManager = () => {
             <div className="space-y-4">
               <div className="p-4 bg-primary/10 rounded-lg">
                 <p className="text-sm text-primary font-medium">
-                  ✓ Push notifications are enabled
+                  ✓ {t("admin.pushNotifications.enabledMessage")}
                 </p>
               </div>
 
               <div className="space-y-4">
                 <h4 className="font-medium flex items-center gap-2">
                   <Settings className="h-4 w-4" />
-                  Notification Settings
+                  {t("admin.pushNotifications.settingsTitle")}
                 </h4>
                 
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between">
+                  <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
                     <Label htmlFor="messages" className="font-normal">
-                      New Messages
+                      {t("admin.pushNotifications.newMessages")}
                     </Label>
                     <Switch
                       id="messages"
@@ -158,9 +161,9 @@ export const PushNotificationManager = () => {
                     />
                   </div>
 
-                  <div className="flex items-center justify-between">
+                  <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
                     <Label htmlFor="offers" className="font-normal">
-                      New Offers
+                      {t("admin.pushNotifications.newOffers")}
                     </Label>
                     <Switch
                       id="offers"
@@ -169,9 +172,9 @@ export const PushNotificationManager = () => {
                     />
                   </div>
 
-                  <div className="flex items-center justify-between">
+                  <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
                     <Label htmlFor="requests" className="font-normal">
-                      Request Updates
+                      {t("admin.pushNotifications.requestUpdates")}
                     </Label>
                     <Switch
                       id="requests"
@@ -180,9 +183,9 @@ export const PushNotificationManager = () => {
                     />
                   </div>
 
-                  <div className="flex items-center justify-between">
+                  <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
                     <Label htmlFor="marketing" className="font-normal">
-                      Marketing & Updates
+                      {t("admin.pushNotifications.marketingUpdates")}
                     </Label>
                     <Switch
                       id="marketing"
@@ -194,7 +197,7 @@ export const PushNotificationManager = () => {
               </div>
 
               <Button variant="outline" onClick={sendTestNotification}>
-                Send Test Notification
+                {t("admin.pushNotifications.sendTestButton")}
               </Button>
             </div>
           )}
