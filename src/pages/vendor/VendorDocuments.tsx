@@ -243,7 +243,7 @@ export const VendorDocuments = () => {
                 <div className="flex justify-between items-center">
                   <div>
                     <CardTitle>{t('vendor.documents.documentLibrary')}</CardTitle>
-                    <CardDescription>{t('vendor.documents.documentLibraryDesc')}</CardDescription>
+                    <CardDescription>{t('vendor.documents.allUploaded')}</CardDescription>
                   </div>
                   <Button>
                     <Upload className="h-4 w-4 mr-2" />
@@ -336,7 +336,7 @@ export const VendorDocuments = () => {
                   
                   {filteredDocuments.length === 0 && (
                     <div className="text-center py-8 text-muted-foreground">
-                      {searchTerm ? t('vendor.documents.noDocumentsSearch') : t('vendor.documents.noDocumentsYet')}
+                      {searchTerm ? t('vendor.documents.noDocumentsFound') : t('vendor.documents.noDocumentsYet')}
                     </div>
                   )}
                 </div>
@@ -347,8 +347,8 @@ export const VendorDocuments = () => {
           <TabsContent value="rfq" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>{t('vendor.documents.rfqDocsTitle')}</CardTitle>
-                <CardDescription>{t('vendor.documents.rfqDocsDesc')}</CardDescription>
+                <CardTitle>{t('vendor.documents.rfqDocumentsTitle')}</CardTitle>
+                <CardDescription>{t('vendor.documents.rfqDocumentsDesc')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
@@ -362,7 +362,7 @@ export const VendorDocuments = () => {
                         <div>
                           <h4 className="font-medium text-sm">{doc.file_name}</h4>
                           <p className="text-xs text-muted-foreground">
-                            {t('vendor.documents.projectLabel')} {doc.project}
+                            {t('vendor.documents.project')} {doc.project}
                           </p>
                         </div>
                       </div>
@@ -384,8 +384,8 @@ export const VendorDocuments = () => {
           <TabsContent value="bid" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>{t('vendor.documents.bidDocsTitle')}</CardTitle>
-                <CardDescription>{t('vendor.documents.bidDocsDesc')}</CardDescription>
+                <CardTitle>{t('vendor.documents.bidDocumentsTitle')}</CardTitle>
+                <CardDescription>{t('vendor.documents.bidDocumentsDesc')}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
@@ -399,7 +399,7 @@ export const VendorDocuments = () => {
                         <div>
                           <h4 className="font-medium text-sm">{doc.file_name}</h4>
                           <p className="text-xs text-muted-foreground">
-                            {t('vendor.documents.bidForLabel')} {doc.project}
+                            {t('vendor.documents.bidFor')} {doc.project}
                           </p>
                         </div>
                       </div>
