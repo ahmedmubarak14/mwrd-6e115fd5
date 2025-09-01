@@ -453,7 +453,13 @@ export const arSA = {
     suppliers: "الموردين",
     vendors: "البائعين",
     manageSubscription: "الاشتراك",
-    navigateTo: "الانتقال إلى"
+    navigateTo: "الانتقال إلى",
+    subscription: "الاشتراك",
+    transactions: "المعاملات المالية",
+    rfqs: "طلبات التسعير",
+    clients: "العملاء",
+    documents: "المستندات",
+    reports: "التقارير"
   },
 
   // Client navigation groups
@@ -469,7 +475,9 @@ export const arSA = {
     overview: "نظرة عامة",
     workspace: "مساحة العمل", 
     portfolio: "المحفظة",
-    account: "الحساب والدعم"
+    account: "الحساب والدعم",
+    financial: "المالية",
+    business: "ذكاء الأعمال"
   },
   
   admin: adminTranslationsAR,

@@ -451,7 +451,13 @@ export const enUS = {
     suppliers: "Suppliers",
     vendors: "Vendors",
     manageSubscription: "Subscription",
-    navigateTo: "Navigate to"
+    navigateTo: "Navigate to",
+    subscription: "Subscription",
+    transactions: "Transactions",
+    rfqs: "RFQs",
+    clients: "Clients",
+    documents: "Documents",
+    reports: "Reports"
   },
   clientGroups: {
     overview: "Overview",
@@ -464,7 +470,9 @@ export const enUS = {
     overview: "Overview",
     workspace: "Workspace",
     portfolio: "Portfolio",
-    account: "Account & Support"
+    account: "Account & Support",
+    financial: "Financial",
+    business: "Business Intelligence"
   },
   
   // Projects page translations
