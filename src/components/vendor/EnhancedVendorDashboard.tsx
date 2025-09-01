@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { memo, useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { MetricCard } from "@/components/ui/MetricCard";
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { 
   FileText, 
   FolderOpen, 
@@ -33,7 +34,7 @@ import { useVendorStats } from "@/hooks/useVendorStats";
 import { VendorBreadcrumbs } from "./VendorBreadcrumbs";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-export const EnhancedVendorDashboard = () => {
+export const EnhancedVendorDashboard = memo(() => {
   const { userProfile } = useAuth();
   const languageContext = useOptionalLanguage();
   const { isRTL, formatCurrency, formatNumber } = languageContext || { 
@@ -63,7 +64,7 @@ export const EnhancedVendorDashboard = () => {
     }
   };
 
-  const quickActions = [
+  const quickActions = useMemo(() => [
     {
       title: t('vendor.cr.updateCR'),
       description: t('vendor.cr.verificationRequired'),
@@ -94,7 +95,7 @@ export const EnhancedVendorDashboard = () => {
       color: "bg-info",
       count: stats.profileCompletion < 100 ? 1 : undefined
     }
-  ];
+  ], [t, stats.crStatus, stats.profileCompletion]);
 
   if (loading) {
     return (
@@ -114,74 +115,82 @@ export const EnhancedVendorDashboard = () => {
   }
 
   return (
-    <div className={cn("space-y-8", isRTL && "rtl")}>
-      {/* Welcome Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">
-          {t('vendor.dashboard.welcome')}
-        </h1>
-        <p className="text-muted-foreground mt-2">
-          {userProfile?.company_name || userProfile?.full_name}
-        </p>
-      </div>
+    <ErrorBoundary>
+      <div className={cn(
+        "space-y-8", 
+        isRTL && "rtl",
+        isRTL && "[&_*]:text-right [&_.flex]:flex-row-reverse [&_.grid]:grid-cols-1 md:[&_.grid]:grid-cols-2 lg:[&_.grid]:grid-cols-4"
+      )}>
+        {/* Breadcrumbs */}
+        <VendorBreadcrumbs />
+        
+        {/* Welcome Header */}
+        <div className={cn(isRTL && "text-right")}>
+          <h1 className="text-3xl font-bold text-foreground">
+            {t('vendor.dashboard.welcome')}
+          </h1>
+          <p className="text-muted-foreground mt-2">
+            {userProfile?.company_name || userProfile?.full_name}
+          </p>
+        </div>
 
-      {/* CR Status Alert */}
-      {stats.crStatus !== 'approved' && (
-        <Card className="border-warning/50 bg-warning/5">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <AlertCircle className="h-5 w-5 text-warning" />
-              <div>
-                <h3 className="font-semibold text-warning">{t('vendor.cr.verificationRequired')}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {t('vendor.cr.completeVerification')}
-                </p>
+        {/* CR Status Alert */}
+        {stats.crStatus !== 'approved' && (
+          <Card className="border-warning/50 bg-warning/5">
+            <CardContent className="p-4">
+              <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
+                <AlertCircle className="h-5 w-5 text-warning" />
+                <div className="flex-1">
+                  <h3 className="font-semibold text-warning">{t('vendor.cr.verificationRequired')}</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {t('vendor.cr.completeVerification')}
+                  </p>
+                </div>
+                <Button variant="outline" size="sm" asChild className={cn(isRTL ? "mr-auto" : "ml-auto")}>
+                  <Link to="/vendor/cr-management">{t('vendor.cr.updateCR')}</Link>
+                </Button>
               </div>
-              <Button variant="outline" size="sm" asChild className="ml-auto">
-                <Link to="/vendor/cr-management">{t('vendor.cr.updateCR')}</Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+            </CardContent>
+          </Card>
+        )}
 
       {/* Core Performance Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <MetricCard
-          title="CR Verification Status"
+          title={t('vendor.dashboard.crVerificationStatus')}
           value={t(`vendor.cr.${stats.crStatus}`)}
-          description="Commercial Registration status"
+          description={t('vendor.dashboard.crVerificationDesc')}
           icon={getStatusIcon(stats.crStatus)}
           variant={getStatusVariant(stats.crStatus) as any}
           loading={loading}
         />
         
         <MetricCard
-          title="Profile Completion"
+          title={t('vendor.dashboard.profileCompletionTitle')}
           value={`${stats.profileCompletion}%`}
-          description="Complete to attract more clients"
+          description={t('vendor.dashboard.profileCompletionDesc')}
           icon={User}
           trend={{
             value: stats.profileCompletion > 80 ? 5 : -5,
-            label: stats.profileCompletion > 80 ? "Good" : "Needs work",
+            label: stats.profileCompletion > 80 ? t('common.good') : t('common.needsWork'),
             isPositive: stats.profileCompletion > 80
           }}
           loading={loading}
         />
         
         <MetricCard
-          title="Active Offers"
+          title={t('vendor.dashboard.activeOffersCount')}
           value={formatNumber(stats.activeOffers)}
-          description="Pending client decisions"
+          description={t('vendor.dashboard.activeOffersCountDesc')}
           icon={Package}
           variant="warning"
           loading={loading}
         />
         
         <MetricCard
-          title="Success Rate"
+          title={t('vendor.dashboard.successRateTitle')}
           value={`${stats.successRate}%`}
-          description="Offers accepted by clients"
+          description={t('vendor.dashboard.successRateDesc')}
           icon={Award}
           variant="success"
           loading={loading}
@@ -191,39 +200,39 @@ export const EnhancedVendorDashboard = () => {
       {/* Business Performance */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <MetricCard
-          title="Total Earnings"
+          title={t('vendor.dashboard.totalEarningsTitle')}
           value={formatCurrency(stats.totalEarnings)}
-          description="All-time revenue"
+          description={t('vendor.dashboard.totalEarningsDesc')}
           icon={DollarSign}
           trend={{
             value: 12,
-            label: "vs last month",
+            label: t('common.vsLastMonth'),
             isPositive: true
           }}
           loading={loading}
         />
         
         <MetricCard
-          title="Monthly Revenue"
+          title={t('vendor.dashboard.monthlyRevenueTitle')}
           value={formatCurrency(stats.monthlyEarnings)}
-          description="Current month earnings"
+          description={t('vendor.dashboard.monthlyRevenueDesc')}
           icon={TrendingUp}
           variant="success"
           loading={loading}
         />
         
         <MetricCard
-          title="Completed Projects"
+          title={t('vendor.dashboard.completedProjectsTitle')}
           value={formatNumber(stats.completedProjects)}
-          description="Successfully delivered"
+          description={t('vendor.dashboard.completedProjectsDesc')}
           icon={CheckCircle}
           loading={loading}
         />
         
         <MetricCard
-          title="Client Rating"
+          title={t('vendor.dashboard.clientRatingTitle')}
           value={`${stats.clientSatisfaction}/5`}
-          description="Average client satisfaction"
+          description={t('vendor.dashboard.clientRatingDesc')}
           icon={Star}
           variant="success"
           loading={loading}
@@ -241,11 +250,20 @@ export const EnhancedVendorDashboard = () => {
         <CardContent>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={stats.offerTrends}>
+              <LineChart data={stats.offerTrends} layout={isRTL ? "horizontal" : "vertical"}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
+                <XAxis 
+                  dataKey="date" 
+                  reversed={isRTL}
+                  tick={{ textAnchor: isRTL ? 'end' : 'start' }}
+                />
+                <YAxis reversed={isRTL} />
+                <Tooltip 
+                  contentStyle={{
+                    direction: isRTL ? 'rtl' : 'ltr',
+                    textAlign: isRTL ? 'right' : 'left'
+                  }}
+                />
                 <Line
                   type="monotone"
                   dataKey="offers"
@@ -299,50 +317,50 @@ export const EnhancedVendorDashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="hover:shadow-lg transition-shadow">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
               <AlertCircle className="h-5 w-5 text-warning" />
-              Action Required
+              {t('vendor.dashboard.actionRequired')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {stats.crStatus !== 'approved' && (
               <div className="flex items-center justify-between p-4 bg-warning/10 border border-warning/20 rounded-lg">
-                <div>
-                  <p className="font-medium">Complete CR Verification</p>
+                <div className="flex-1">
+                  <p className="font-medium">{t('vendor.dashboard.completeCRTitle')}</p>
                   <p className="text-sm text-foreground opacity-75">
-                    Upload required documents for approval
+                    {t('vendor.dashboard.completeCRDesc')}
                   </p>
                 </div>
                 <Link to="/vendor/cr-management">
-                  <Button size="sm" variant="outline">Update</Button>
+                  <Button size="sm" variant="outline">{t('common.update')}</Button>
                 </Link>
               </div>
             )}
             
             {stats.profileCompletion < 100 && (
               <div className="flex items-center justify-between p-4 bg-primary/10 border border-primary/20 rounded-lg">
-                <div>
-                  <p className="font-medium">Complete Profile</p>
+                <div className="flex-1">
+                  <p className="font-medium">{t('vendor.dashboard.completeProfileTitle')}</p>
                   <p className="text-sm text-foreground opacity-75">
-                    {100 - stats.profileCompletion}% remaining
+                    {100 - stats.profileCompletion}{t('vendor.dashboard.completeProfileDesc')}
                   </p>
                 </div>
                 <Link to="/vendor/profile">
-                  <Button size="sm" variant="outline">Complete</Button>
+                  <Button size="sm" variant="outline">{t('common.complete')}</Button>
                 </Link>
               </div>
             )}
 
             {stats.activeOffers > 0 && (
               <div className="flex items-center justify-between p-4 bg-success/10 border border-success/20 rounded-lg">
-                <div>
-                  <p className="font-medium">Active Offers</p>
+                <div className="flex-1">
+                  <p className="font-medium">{t('vendor.dashboard.activeOffersTitle')}</p>
                   <p className="text-sm text-foreground opacity-75">
-                    {formatNumber(stats.activeOffers)} offers awaiting response
+                    {formatNumber(stats.activeOffers)} {t('vendor.dashboard.activeOffersDesc')}
                   </p>
                 </div>
                 <Link to="/vendor/offers">
-                  <Button size="sm" variant="outline">View</Button>
+                  <Button size="sm" variant="outline">{t('common.view')}</Button>
                 </Link>
               </div>
             )}
@@ -350,7 +368,7 @@ export const EnhancedVendorDashboard = () => {
             {stats.crStatus === 'approved' && stats.profileCompletion === 100 && stats.activeOffers === 0 && (
               <div className="text-center py-6 text-foreground opacity-75">
                 <CheckCircle className="h-8 w-8 mx-auto mb-2 text-success" />
-                <p>All set! Ready for new opportunities.</p>
+                <p>{t('vendor.dashboard.allSetReady')}</p>
               </div>
             )}
           </CardContent>
@@ -358,34 +376,34 @@ export const EnhancedVendorDashboard = () => {
 
         <Card className="hover:shadow-lg transition-shadow">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
               <BarChart3 className="h-5 w-5 text-success" />
-              Quick Actions
+              {t('vendor.dashboard.quickActions')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 gap-4">
-              <Button onClick={() => navigate('/vendor/browse-requests')} className="h-auto p-4 justify-start">
-                <Eye className="h-5 w-5 mr-3" />
-                <div className="text-left">
-                  <div className="font-medium">Browse Requests</div>
-                  <div className="text-xs opacity-75">Find new opportunities</div>
+              <Button onClick={() => navigate('/vendor/browse-requests')} className={cn("h-auto p-4", isRTL ? "justify-end" : "justify-start")}>
+                <Eye className={cn("h-5 w-5", isRTL ? "ml-3" : "mr-3")} />
+                <div className={cn(isRTL ? "text-right" : "text-left")}>
+                  <div className="font-medium">{t('vendor.dashboard.browseRequestsTitle')}</div>
+                  <div className="text-xs opacity-75">{t('vendor.dashboard.browseRequestsDesc')}</div>
                 </div>
               </Button>
               
-              <Button variant="outline" onClick={() => navigate('/vendor/projects')} className="h-auto p-4 justify-start">
-                <FolderOpen className="h-5 w-5 mr-3" />
-                <div className="text-left">
-                  <div className="font-medium">Manage Projects</div>
-                  <div className="text-xs opacity-75">View your portfolio</div>
+              <Button variant="outline" onClick={() => navigate('/vendor/projects')} className={cn("h-auto p-4", isRTL ? "justify-end" : "justify-start")}>
+                <FolderOpen className={cn("h-5 w-5", isRTL ? "ml-3" : "mr-3")} />
+                <div className={cn(isRTL ? "text-right" : "text-left")}>
+                  <div className="font-medium">{t('vendor.dashboard.manageProjectsTitle')}</div>
+                  <div className="text-xs opacity-75">{t('vendor.dashboard.manageProjectsDesc')}</div>
                 </div>
               </Button>
 
-              <Button variant="outline" onClick={() => navigate('/vendor/messages')} className="h-auto p-4 justify-start">
-                <MessageSquare className="h-5 w-5 mr-3" />
-                <div className="text-left">
-                  <div className="font-medium">Messages</div>
-                  <div className="text-xs opacity-75">Communicate with clients</div>
+              <Button variant="outline" onClick={() => navigate('/vendor/messages')} className={cn("h-auto p-4", isRTL ? "justify-end" : "justify-start")}>
+                <MessageSquare className={cn("h-5 w-5", isRTL ? "ml-3" : "mr-3")} />
+                <div className={cn(isRTL ? "text-right" : "text-left")}>
+                  <div className="font-medium">{t('vendor.dashboard.messagesTitle')}</div>
+                  <div className="text-xs opacity-75">{t('vendor.dashboard.messagesDesc')}</div>
                 </div>
               </Button>
             </div>
@@ -396,14 +414,14 @@ export const EnhancedVendorDashboard = () => {
       {/* Business Performance Overview */}
       <Card className="hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle>Business Performance</CardTitle>
-          <CardDescription>Your vendor activity overview</CardDescription>
+          <CardTitle>{t('vendor.dashboard.businessPerformance')}</CardTitle>
+          <CardDescription>{t('vendor.dashboard.businessPerformanceDesc')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Offer Success Rate</span>
+                <span className="text-sm font-medium">{t('vendor.dashboard.offerSuccessRate')}</span>
                 <span className="text-sm text-success">
                   {stats.successRate}%
                 </span>
@@ -416,7 +434,7 @@ export const EnhancedVendorDashboard = () => {
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Profile Completion</span>
+                <span className="text-sm font-medium">{t('vendor.dashboard.profileCompletionTitle')}</span>
                 <span className="text-sm text-primary">
                   {stats.profileCompletion}%
                 </span>
@@ -429,7 +447,7 @@ export const EnhancedVendorDashboard = () => {
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Client Satisfaction</span>
+                <span className="text-sm font-medium">{t('vendor.dashboard.clientSatisfactionRate')}</span>
                 <span className="text-sm text-success">
                   {stats.clientSatisfaction}/5
                 </span>
@@ -442,6 +460,7 @@ export const EnhancedVendorDashboard = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </ErrorBoundary>
   );
-};
+});

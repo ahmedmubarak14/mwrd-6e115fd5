@@ -1,6 +1,110 @@
 import { adminTranslationsAR } from '@/constants/admin-translations/ar-SA';
 
 export const arSA = {
+  // Vendor Dashboard & CR Management
+  vendor: {
+    navigation: {
+      crManagement: 'إدارة السجل التجاري',
+      projectsManagement: 'إدارة المشاريع',
+      portfolioManagement: 'إدارة المحفظة',
+    },
+    groups: {
+      overview: "نظرة عامة",
+      workspace: "مساحة العمل", 
+      portfolio: "المحفظة",
+      account: "الحساب والدعم"
+    },
+    dashboard: {
+      title: "لوحة تحكم المورد",
+      welcome: "مرحباً بك في لوحة تحكم المورد",
+      crStatus: "حالة السجل التجاري",
+      completionRate: "اكتمال الملف الشخصي",
+      recentProjects: "المشاريع الحديثة",
+      quickActions: "الإجراءات السريعة",
+      overview: "نظرة عامة",
+      accessRequired: "مطلوب وصول المورد",
+      offerTrends: "اتجاهات العروض",
+      offerTrendsDesc: "تتبع أنماط تقديم العروض عبر الوقت",
+      businessPerformance: "الأداء التجاري",
+      businessPerformanceDesc: "نظرة عامة على نشاط المورد",
+      actionRequired: "إجراء مطلوب",
+      allSetReady: "كل شيء جاهز! مستعد للفرص الجديدة.",
+      browseRequestsTitle: "تصفح الطلبات",
+      browseRequestsDesc: "ابحث عن فرص جديدة",
+      manageProjectsTitle: "إدارة المشاريع",
+      manageProjectsDesc: "عرض محفظتك",
+      messagesTitle: "الرسائل",
+      messagesDesc: "التواصل مع العملاء",
+      completeCRTitle: "إكمال التحقق من السجل التجاري",
+      completeCRDesc: "رفع الوثائق المطلوبة للموافقة",
+      completeProfileTitle: "إكمال الملف الشخصي",
+      completeProfileDesc: "% متبقي",
+      activeOffersTitle: "العروض النشطة",
+      activeOffersDesc: "عروض في انتظار الرد",
+      crVerificationStatus: "حالة التحقق من السجل التجاري",
+      crVerificationDesc: "حالة السجل التجاري",
+      profileCompletionTitle: "اكتمال الملف الشخصي",
+      profileCompletionDesc: "اكمل لجذب المزيد من العملاء",
+      activeOffersCount: "العروض النشطة",
+      activeOffersCountDesc: "في انتظار قرارات العملاء",
+      successRateTitle: "معدل النجاح",
+      successRateDesc: "العروض المقبولة من العملاء",
+      totalEarningsTitle: "إجمالي الأرباح",
+      totalEarningsDesc: "الإيرادات الإجمالية",
+      monthlyRevenueTitle: "الإيرادات الشهرية",
+      monthlyRevenueDesc: "أرباح الشهر الحالي",
+      completedProjectsTitle: "المشاريع المكتملة",
+      completedProjectsDesc: "تم التسليم بنجاح",
+      clientRatingTitle: "تقييم العملاء",
+      clientRatingDesc: "متوسط رضا العملاء",
+      offerSuccessRate: "معدل نجاح العروض",
+      clientSatisfactionRate: "مستوى رضا العملاء"
+    },
+    cr: {
+      title: "السجل التجاري",
+      status: "الحالة",
+      verified: "محقق",
+      pending: "قيد التحقق",
+      rejected: "مرفوض",
+      unverified: "غير محقق",
+      updateCR: "تحديث معلومات السجل التجاري",
+      verificationRequired: "مطلوب التحقق من السجل التجاري للوصول لجميع الميزات",
+      completeVerification: "أكمل التحقق من السجل التجاري لإلغاء قفل جميع ميزات المورد",
+      approved: "موافق عليه"
+    },
+    projects: {
+      title: "عرض المشاريع",
+      add: "إضافة مشروع جديد",
+      addFirst: "أضف مشروعك الأول لعرض عملك"
+    },
+    portfolio: {
+      title: "إدارة المحفظة",
+      description: "إدارة محفظة مشاريعك وعرض أعمالك",
+      addProject: "إضافة مشروع",
+      editProject: "تعديل المشروع",
+      viewProject: "عرض المشروع",
+      deleteProject: "حذف المشروع",
+      noProjects: "لا توجد مشاريع في محفظتك",
+      addFirstProject: "أضف مشروعك الأول للبدء"
+    },
+    categories: {
+      title: "فئات الخدمة",
+      select: "اختيار الفئات",
+      manage: "إدارة الفئات"
+    },
+    profile: {
+      title: "ملف المورد الشخصي",
+      basicInfo: "المعلومات الأساسية"
+    },
+    crManagement: {
+      title: "إدارة السجل التجاري",
+      upload: "رفع وثيقة السجل التجاري",
+      status: "حالة التحقق",
+      pending: "قيد المراجعة",
+      approved: "موافق عليه", 
+      rejected: "مرفوض"
+    }
+  },
     common: {
       // ... existing translations
       errors: {
@@ -180,7 +284,11 @@ export const arSA = {
     viewAllActivity: "عرض جميع الأنشطة",
     activeOffers: "العروض النشطة",
     vendor: "مورد",
-    searchPlaceholder: "البحث..."
+    searchPlaceholder: "البحث...",
+    good: "جيد",
+    needsWork: "يحتاج عمل",
+    vsLastMonth: "مقارنة بالشهر الماضي", 
+    complete: "إكمال"
   },
   error: {
     general: 'حدث خطأ'
@@ -542,96 +650,6 @@ export const arSA = {
       slowResponseTime: "تم اكتشاف وقت استجابة بطيء",
       highErrorRate: "تم اكتشاف معدل خطأ عالي",
       lowUptime: "تم اكتشاف وقت تشغيل منخفض"
-    }
-  },
-
-  // Vendor Dashboard & CR Management
-  vendor: {
-    navigation: {
-      crManagement: 'إدارة السجل التجاري',
-      projectsManagement: 'إدارة المشاريع',
-      portfolioManagement: 'إدارة المحفظة',
-      dashboard: "لوحة التحكم",
-      offers: "عروضي",
-      projects: "المشاريع",
-      rfqs: "طلبات الأسعار",
-      analytics: "التحليلات",
-      messages: "الرسائل",
-      notifications: "الإشعارات",
-      settings: "الإعدادات",
-      profile: "الملف الشخصي",
-      support: "الدعم"
-    },
-    groups: {
-      overview: "نظرة عامة",
-      workspace: "مساحة العمل", 
-      portfolio: "الأعمال السابقة",
-      account: "الحساب"
-    },
-    dashboard: {
-      title: "لوحة تحكم المورد",
-      welcome: "مرحباً بك في لوحة تحكم المورد",
-      crStatus: "حالة السجل التجاري",
-      completionRate: "مستوى اكتمال الملف الشخصي",
-      recentProjects: "المشاريع الأخيرة",
-      quickActions: "إجراءات سريعة",
-      overview: "نظرة عامة",
-      stats: "الإحصائيات", 
-      recentActivity: "النشاط الأخير",
-      createOffer: "إنشاء عرض",
-      viewRequests: "عرض الطلبات", 
-      manageProjects: "إدارة المشاريع",
-      viewProfile: "عرض الملف الشخصي",
-      accessRequired: "مطلوب دخول المورد لعرض هذه الصفحة"
-    },
-    cr: {
-      title: "السجل التجاري",
-      status: "الحالة",
-      verified: "موثق",
-      pending: "في انتظار التحقق",
-      rejected: "مرفوض",
-      unverified: "غير موثق",
-      updateCR: "تحديث معلومات السجل التجاري",
-      verificationRequired: "يتطلب توثيق السجل التجاري للوصول إلى جميع الميزات"
-    },
-    projects: {
-      title: "إدارة المشاريع",
-      add: "إضافة مشروع جديد",
-      addFirst: "أضف مشروعك الأول لعرض أعمالك",
-      create: "إنشاء مشروع",
-      edit: "تحرير المشروع",
-      delete: "حذف المشروع",
-      status: "حالة المشروع"
-    },
-    portfolio: {
-      title: "إدارة الأعمال السابقة",
-      description: "إدارة محفظة مشاريعك وعرض أعمالك",
-      addProject: "إضافة مشروع",
-      editProject: "تحرير المشروع",
-      viewProject: "عرض المشروع",
-      deleteProject: "حذف المشروع",
-      noProjects: "لا توجد مشاريع في محفظتك",
-      addFirstProject: "أضف مشروعك الأول للبدء",
-      addItem: "إضافة عمل",
-      editItem: "تحرير العمل",
-      deleteItem: "حذف العمل"
-    },
-    categories: {
-      title: "فئات الخدمة",
-      select: "اختيار الفئات",
-      manage: "إدارة الفئات"
-    },
-    profile: {
-      title: "ملف المورد الشخصي",
-      basicInfo: "المعلومات الأساسية"
-    },
-    crManagement: {
-      title: "إدارة السجل التجاري",
-      upload: "رفع وثيقة السجل التجاري",
-      status: "حالة التحقق",
-      pending: "في انتظار المراجعة",
-      approved: "موافق عليه", 
-      rejected: "مرفوض"
     }
   }
 };

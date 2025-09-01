@@ -22,7 +22,43 @@ export const enUS = {
       recentProjects: "Recent Projects",
       quickActions: "Quick Actions",
       overview: "Overview",
-      accessRequired: "Vendor access required"
+      accessRequired: "Vendor access required",
+      offerTrends: "Offer Trends",
+      offerTrendsDesc: "Track your offer submission patterns over time",
+      businessPerformance: "Business Performance",
+      businessPerformanceDesc: "Your vendor activity overview",
+      actionRequired: "Action Required",
+      allSetReady: "All set! Ready for new opportunities.",
+      browseRequestsTitle: "Browse Requests",
+      browseRequestsDesc: "Find new opportunities",
+      manageProjectsTitle: "Manage Projects", 
+      manageProjectsDesc: "View your portfolio",
+      messagesTitle: "Messages",
+      messagesDesc: "Communicate with clients",
+      completeCRTitle: "Complete CR Verification",
+      completeCRDesc: "Upload required documents for approval",
+      completeProfileTitle: "Complete Profile",
+      completeProfileDesc: "% remaining",
+      activeOffersTitle: "Active Offers",
+      activeOffersDesc: "offers awaiting response",
+      crVerificationStatus: "CR Verification Status",
+      crVerificationDesc: "Commercial Registration status",
+      profileCompletionTitle: "Profile Completion",
+      profileCompletionDesc: "Complete to attract more clients",
+      activeOffersCount: "Active Offers",
+      activeOffersCountDesc: "Pending client decisions",
+      successRateTitle: "Success Rate",
+      successRateDesc: "Offers accepted by clients",
+      totalEarningsTitle: "Total Earnings",
+      totalEarningsDesc: "All-time revenue",
+      monthlyRevenueTitle: "Monthly Revenue",
+      monthlyRevenueDesc: "Current month earnings",
+      completedProjectsTitle: "Completed Projects",
+      completedProjectsDesc: "Successfully delivered",
+      clientRatingTitle: "Client Rating",
+      clientRatingDesc: "Average client satisfaction",
+      offerSuccessRate: "Offer Success Rate",
+      clientSatisfactionRate: "Client Satisfaction"
     },
     cr: {
       title: "Commercial Registration",
@@ -32,7 +68,9 @@ export const enUS = {
       rejected: "Rejected",
       unverified: "Unverified",
       updateCR: "Update CR Information",
-      verificationRequired: "CR verification required to access all features"
+      verificationRequired: "CR verification required to access all features",
+      completeVerification: "Complete your CR verification to unlock all vendor features",
+      approved: "Approved"
     },
     projects: {
       title: "Project Showcase",
@@ -245,7 +283,11 @@ export const enUS = {
     viewAllActivity: "View All Activity",
     activeOffers: "Active Offers",
     vendor: "Vendor",
-    searchPlaceholder: "Search..."
+    searchPlaceholder: "Search...",
+    good: "Good",
+    needsWork: "Needs work", 
+    vsLastMonth: "vs last month",
+    complete: "Complete"
   },
   error: {
     general: 'An error occurred'
