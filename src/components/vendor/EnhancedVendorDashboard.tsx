@@ -30,6 +30,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useVendorStats } from "@/hooks/useVendorStats";
+import { VendorBreadcrumbs } from "./VendorBreadcrumbs";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export const EnhancedVendorDashboard = () => {
@@ -114,6 +115,9 @@ export const EnhancedVendorDashboard = () => {
 
   return (
     <div className={cn("space-y-8", isRTL && "rtl")}>
+      {/* Breadcrumbs */}
+      <VendorBreadcrumbs />
+      
       {/* Welcome Header */}
       <div>
         <h1 className="text-3xl font-bold text-foreground">

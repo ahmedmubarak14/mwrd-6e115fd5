@@ -81,10 +81,6 @@ export const VendorHeader = ({
         </div>
       </div>
 
-      {/* Breadcrumbs section */}
-      <div className="border-t px-4 lg:px-6 py-3 bg-muted/20">
-        <VendorBreadcrumbs />
-      </div>
     </header>
   );
 };
