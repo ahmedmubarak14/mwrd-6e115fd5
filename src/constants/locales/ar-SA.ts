@@ -731,16 +731,6 @@ export const arSA = {
     network: "الشبكة",
     account: "الحساب والدعم"
   },
-
-  // Vendor navigation groups
-  vendorGroups: {
-    overview: "نظرة عامة",
-    workspace: "مساحة العمل", 
-    portfolio: "المحفظة",
-    account: "الحساب والدعم",
-    financial: "المالية",
-    business: "ذكاء الأعمال"
-  },
   
   admin: adminTranslationsAR,
   

@@ -727,15 +727,6 @@ export const enUS = {
     network: "Network", 
     account: "Account & Support"
   },
-
-  vendorGroups: {
-    overview: "Overview",
-    workspace: "Workspace",
-    portfolio: "Portfolio",
-    account: "Account & Support",
-    financial: "Financial",
-    business: "Business Intelligence"
-  },
   
   // Projects page translations
   projects: {
