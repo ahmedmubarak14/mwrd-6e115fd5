@@ -550,6 +550,14 @@ export const arSA = {
     failedToSave: "فشل في حفظ المشروع"
   },
 
+  // Theme translations - Arabic
+  theme: {
+    selectTheme: "اختيار السمة",
+    light: "فاتح",
+    dark: "داكن", 
+    system: "النظام"
+  },
+
   // Settings
   settings: {
     title: "الإعدادات",

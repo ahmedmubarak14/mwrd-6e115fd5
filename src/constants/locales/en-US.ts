@@ -560,6 +560,14 @@ export const enUS = {
     }
   },
 
+  // Theme translations  
+  theme: {
+    selectTheme: "Select Theme",
+    light: "Light",
+    dark: "Dark",
+    system: "System"
+  },
+
   // Settings
   settings: {
     title: "Settings",
