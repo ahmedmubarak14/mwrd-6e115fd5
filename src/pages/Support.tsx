@@ -1,5 +1,6 @@
 
-import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
+import { VendorBreadcrumbs } from "@/components/vendor/VendorBreadcrumbs";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,9 +12,10 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { LiveChatButton } from "@/components/support/LiveChatButton";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { HelpCircle, MessageSquare, Phone, Mail, Send, Ticket, CheckCircle, Clock, AlertCircle } from "lucide-react";
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
+import { cn } from "@/lib/utils";
 
-export const Support = () => {
+const SupportContent = React.memo(() => {
   const { userProfile } = useAuth();
   const languageContext = useOptionalLanguage();
   const { tickets, loading, createTicket } = useSupportTickets();
@@ -21,8 +23,11 @@ export const Support = () => {
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Safe fallback for translation
-  const t = languageContext?.t || ((key: string) => key.split('.').pop() || key);
+  const { t, isRTL, formatDate } = languageContext || { 
+    t: (key: string) => key.split('.').pop() || key,
+    isRTL: false,
+    formatDate: (date: Date) => date.toLocaleDateString()
+  };
   
   // Support metrics
   const metrics = useMemo(() => {
@@ -59,48 +64,52 @@ export const Support = () => {
 
   if (loading) {
     return (
-      <ClientPageContainer>
-        <div className="mb-8">
-          <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
-          <div className="h-4 w-32 bg-muted rounded animate-pulse" />
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <MetricCard key={i} title="" value="" loading={true} />
-          ))}
-        </div>
-      </ClientPageContainer>
+      <div className="flex justify-center items-center min-h-[400px]">
+        <LoadingSpinner size="lg" />
+      </div>
     );
   }
 
   return (
-    <ClientPageContainer
-      title={t('support.title') || 'Support'}
-      description={t('support.subtitle') || 'Get help from our support team'}
-    >
+    <div className={cn("space-y-6", isRTL && "rtl")} dir={isRTL ? 'rtl' : 'ltr'}>
+      <VendorBreadcrumbs />
+      
+      <div className="mb-8">
+        <h1 className={cn(
+          "text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight",
+          isRTL && "text-right"
+        )}>
+          {t('support.title')}
+        </h1>
+        <p className={cn(
+          "text-foreground opacity-75 text-sm sm:text-base max-w-2xl",
+          isRTL && "text-right"
+        )}>
+          {t('support.subtitle')}
+        </p>
+      </div>
       {/* Support Metrics */}
       {tickets && tickets.length > 0 && (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
           <MetricCard
-            title="Total Tickets"
+            title={t('support.totalTickets')}
             value={metrics.total}
             icon={Ticket}
           />
           <MetricCard
-            title="Open Tickets"
+            title={t('support.openTickets')}
             value={metrics.open}
             icon={AlertCircle}
             variant="warning"
           />
           <MetricCard
-            title="Pending"
+            title={t('support.pending')}
             value={metrics.pending}
             icon={Clock}
             variant="warning"
           />
           <MetricCard
-            title="Resolved"
+            title={t('support.resolved')}
             value={metrics.closed}
             icon={CheckCircle}
             variant="success"
@@ -112,20 +121,26 @@ export const Support = () => {
           {/* Contact Methods */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className={cn(
+                "flex items-center gap-2",
+                isRTL && "flex-row-reverse text-right"
+              )}>
                 <HelpCircle className="h-5 w-5" />
-                {t('support.contactUs') || 'Contact Us'}
+                {t('support.contactUs')}
               </CardTitle>
-              <CardDescription>
-                {t('support.contactDescription') || 'Choose how you\'d like to get in touch'}
+              <CardDescription className={isRTL ? "text-right" : ""}>
+                {t('support.contactDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+              <div className={cn(
+                "flex items-center gap-3 p-3 bg-muted/50 rounded-lg",
+                isRTL && "flex-row-reverse"
+              )}>
                 <MessageSquare className="h-5 w-5 text-blue-500" />
-                <div className="flex-1">
-                  <p className="font-medium">{t('support.liveChat') || 'Live Chat'}</p>
-                  <p className="text-sm text-muted-foreground">{t('support.liveChatHours') || 'Available 24/7'}</p>
+                <div className={cn("flex-1", isRTL && "text-right")}>
+                  <p className="font-medium">{t('support.liveChat')}</p>
+                  <p className="text-sm text-muted-foreground">{t('support.liveChatHours')}</p>
                 </div>
               </div>
               
@@ -133,18 +148,24 @@ export const Support = () => {
                 <LiveChatButton />
               </div>
               
-              <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+              <div className={cn(
+                "flex items-center gap-3 p-3 bg-muted/50 rounded-lg",
+                isRTL && "flex-row-reverse"
+              )}>
                 <Phone className="h-5 w-5 text-green-500" />
-                <div>
-                  <p className="font-medium">{t('support.phone') || 'Phone'}</p>
+                <div className={isRTL ? "text-right" : ""}>
+                  <p className="font-medium">{t('support.phone')}</p>
                   <p className="text-sm text-muted-foreground">+1 (555) 123-4567</p>
                 </div>
               </div>
               
-              <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+              <div className={cn(
+                "flex items-center gap-3 p-3 bg-muted/50 rounded-lg",
+                isRTL && "flex-row-reverse"
+              )}>
                 <Mail className="h-5 w-5 text-orange-500" />
-                <div>
-                  <p className="font-medium">{t('support.email') || 'Email'}</p>
+                <div className={isRTL ? "text-right" : ""}>
+                  <p className="font-medium">{t('support.email')}</p>
                   <p className="text-sm text-muted-foreground">support@mwrd.com</p>
                 </div>
               </div>
@@ -154,39 +175,50 @@ export const Support = () => {
           {/* Create Ticket */}
           <Card>
             <CardHeader>
-              <CardTitle>{t('support.createTicket') || 'Create Support Ticket'}</CardTitle>
-              <CardDescription>
-                {t('support.createTicketDescription') || 'Submit a detailed support request'}
+              <CardTitle className={isRTL ? "text-right" : ""}>
+                {t('support.createTicket')}
+              </CardTitle>
+              <CardDescription className={isRTL ? "text-right" : ""}>
+                {t('support.createTicketDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmitTicket} className="space-y-4">
                 <div>
                   <Input
-                    placeholder={t('support.subjectPlaceholder') || 'Subject'}
+                    placeholder={t('support.subjectPlaceholder')}
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
                     required
+                    className={isRTL ? "text-right" : ""}
                   />
                 </div>
                 
                 <div>
                   <Textarea
-                    placeholder={t('support.messagePlaceholder') || 'Describe your issue...'}
+                    placeholder={t('support.messagePlaceholder')}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     rows={4}
                     required
+                    className={isRTL ? "text-right" : ""}
                   />
                 </div>
                 
-                <Button type="submit" disabled={isSubmitting} className="w-full">
+                <Button 
+                  type="submit" 
+                  disabled={isSubmitting} 
+                  className={cn(
+                    "w-full gap-2",
+                    isRTL && "flex-row-reverse"
+                  )}
+                >
                   {isSubmitting ? (
                     <LoadingSpinner size="sm" />
                   ) : (
                     <>
-                      <Send className="h-4 w-4 mr-2" />
-                      {t('support.submitTicket') || 'Submit Ticket'}
+                      <Send className="h-4 w-4" />
+                      {t('support.submitTicket')}
                     </>
                   )}
                 </Button>
@@ -199,19 +231,27 @@ export const Support = () => {
         {tickets && tickets.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle>{t('support.recentTickets') || 'Recent Support Tickets'}</CardTitle>
+              <CardTitle className={isRTL ? "text-right" : ""}>
+                {t('support.recentTickets')}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 {tickets.slice(0, 5).map((ticket) => (
-                  <div key={ticket.id} className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
-                    <div>
+                  <div 
+                    key={ticket.id} 
+                    className={cn(
+                      "flex justify-between items-center p-3 bg-muted/50 rounded-lg",
+                      isRTL && "flex-row-reverse"
+                    )}
+                  >
+                    <div className={isRTL ? "text-right" : ""}>
                       <p className="font-medium">{ticket.subject}</p>
                       <p className="text-sm text-muted-foreground">
-                        {new Date(ticket.created_at).toLocaleDateString()}
+                        {formatDate(new Date(ticket.created_at))}
                       </p>
                     </div>
-                    <div className="text-right">
+                    <div className={isRTL ? "text-left" : "text-right"}>
                       <p className="text-sm font-medium capitalize">{ticket.status}</p>
                       <p className="text-sm text-muted-foreground capitalize">{ticket.priority}</p>
                     </div>
@@ -221,8 +261,20 @@ export const Support = () => {
           </CardContent>
         </Card>
       )}
-    </ClientPageContainer>
+    </div>
   );
-};
+});
+
+SupportContent.displayName = "SupportContent";
+
+export const Support = React.memo(() => {
+  return (
+    <ErrorBoundary>
+      <SupportContent />
+    </ErrorBoundary>
+  );
+});
+
+Support.displayName = "Support";
 
 export default Support;

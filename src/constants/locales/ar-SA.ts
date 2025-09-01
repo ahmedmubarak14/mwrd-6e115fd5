@@ -980,5 +980,28 @@ export const arSA = {
     communicateWithVendors: "تواصل مع الموردين والعملاء",
     searchConversations: "البحث في المحادثات...",
     unknownUser: "مستخدم غير معروف"
+  },
+
+  support: {
+    title: "الدعم",
+    subtitle: "احصل على المساعدة من فريق الدعم لدينا",
+    contactUs: "اتصل بنا",
+    contactDescription: "اختر كيف تريد التواصل معنا",
+    liveChat: "المحادثة المباشرة",
+    liveChatHours: "متاح 24/7",
+    phone: "الهاتف",
+    email: "البريد الإلكتروني",
+    createTicket: "إنشاء تذكرة دعم",
+    createTicketDescription: "قدم طلب دعم مفصل",
+    subjectPlaceholder: "الموضوع",
+    messagePlaceholder: "اوصف مشكلتك...",
+    submitTicket: "إرسال التذكرة",
+    recentTickets: "تذاكر الدعم الأخيرة",
+    totalTickets: "إجمالي التذاكر",
+    openTickets: "التذاكر المفتوحة",
+    pending: "قيد الانتظار",
+    resolved: "تم الحل",
+    ticketStatus: "الحالة",
+    ticketPriority: "الأولوية"
   }
 };

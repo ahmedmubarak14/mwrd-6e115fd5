@@ -74,12 +74,12 @@ export const CleanSidebar = ({ userRole, onItemClick }: CleanSidebarProps) => {
 
   return (
     <div className={cn(
-      "w-64 bg-white border-r border-gray-200 h-full flex flex-col",
+      "w-64 bg-white border-border h-full flex flex-col",
       isRTL ? "border-l border-r-0" : "border-r border-l-0"
     )}>
-      <div className="p-6 border-b border-gray-200">
+      <div className="p-6 border-b border-border">
         <h2 className={cn(
-          "text-sm font-medium text-gray-600 uppercase tracking-wide",
+          "text-sm font-medium text-muted-foreground uppercase tracking-wide",
           isRTL && "text-right"
         )}>
           {t('nav.menu')}
@@ -101,8 +101,8 @@ export const CleanSidebar = ({ userRole, onItemClick }: CleanSidebarProps) => {
                     "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                     isRTL && "flex-row-reverse text-right",
                     active 
-                      ? "bg-blue-50 text-blue-700 border border-blue-200" 
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                      ? "bg-primary/10 text-primary border border-primary/20" 
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                   )}
                 >
                   <Icon className="h-5 w-5 shrink-0" />
@@ -114,14 +114,14 @@ export const CleanSidebar = ({ userRole, onItemClick }: CleanSidebarProps) => {
         </ul>
       </nav>
       
-      <div className="p-4 border-t border-gray-200">
+      <div className="p-4 border-t border-border">
         <Link
           to="/settings"
           onClick={onItemClick}
           className={cn(
-            "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-gray-600 hover:text-gray-900 hover:bg-gray-50",
+            "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/50",
             isRTL && "flex-row-reverse text-right",
-            isActive('/settings') && "bg-blue-50 text-blue-700 border border-blue-200"
+            isActive('/settings') && "bg-primary/10 text-primary border border-primary/20"
           )}
         >
           <Settings className="h-5 w-5 shrink-0" />

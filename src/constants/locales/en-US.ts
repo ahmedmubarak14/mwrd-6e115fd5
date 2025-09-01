@@ -964,5 +964,28 @@ export const enUS = {
     communicateWithVendors: "Communicate with vendors and clients",
     searchConversations: "Search conversations...",
     unknownUser: "Unknown User"
+  },
+
+  support: {
+    title: "Support",
+    subtitle: "Get help from our support team",
+    contactUs: "Contact Us",
+    contactDescription: "Choose how you'd like to get in touch",
+    liveChat: "Live Chat",
+    liveChatHours: "Available 24/7",
+    phone: "Phone",
+    email: "Email",
+    createTicket: "Create Support Ticket",
+    createTicketDescription: "Submit a detailed support request",
+    subjectPlaceholder: "Subject",
+    messagePlaceholder: "Describe your issue...",
+    submitTicket: "Submit Ticket",
+    recentTickets: "Recent Support Tickets",
+    totalTickets: "Total Tickets",
+    openTickets: "Open Tickets",
+    pending: "Pending",
+    resolved: "Resolved",
+    ticketStatus: "Status",
+    ticketPriority: "Priority"
   }
 };
