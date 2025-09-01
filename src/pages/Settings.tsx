@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useMemo, memo } from "react";
 import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,15 +10,17 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { MetricCard } from "@/components/ui/MetricCard";
+import { VendorBreadcrumbs } from "@/components/vendor/VendorBreadcrumbs";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Settings as SettingsIcon, User, Bell, Shield, Globe, Palette, AlertCircle, CheckCircle, Clock } from "lucide-react";
-import { useState, useEffect, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Navigate } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
-export const Settings = () => {
+const SettingsPage = memo(() => {
   const { userProfile, updateProfile } = useAuth();
-  const languageContext = useOptionalLanguage();
+  const { t, language, setLanguage, isRTL } = useOptionalLanguage();
   const [isUpdating, setIsUpdating] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [notifications, setNotifications] = useState({
@@ -26,12 +29,6 @@ export const Settings = () => {
     sms: false
   });
   const { toast } = useToast();
-
-  // Safe fallback values if language context is not available
-  const t = languageContext?.t || ((key: string) => key);
-  const language = languageContext?.language || 'en';
-  const setLanguage = languageContext?.setLanguage || (() => {});
-  const isRTL = languageContext?.isRTL || false;
 
   // Settings metrics
   const metrics = useMemo(() => {
@@ -44,16 +41,15 @@ export const Settings = () => {
     
     const totalFields = 4;
     const profileCompletion = Math.round((completedFields / totalFields) * 100);
-    
     const activeNotifications = Object.values(notifications).filter(Boolean).length;
     
     return {
       profileCompletion,
       activeNotifications,
       securityScore: userProfile?.verification_status === 'approved' ? 85 : 60,
-      lastUpdate: 'Today'
+      lastUpdate: t('settingsPage.lastUpdated')
     };
-  }, [userProfile, notifications]);
+  }, [userProfile, notifications, t]);
 
   // Redirect admins to admin settings
   if (userProfile?.role === 'admin') {
@@ -94,14 +90,14 @@ export const Settings = () => {
     try {
       await updateProfile({ [field]: value });
       toast({
-        title: t('settings.profileUpdated'),
-        description: t('settings.profileUpdatedDesc')
+        title: t('settingsPage.settingsSaved'),
+        description: t('settingsPage.notificationPrefsUpdated')
       });
     } catch (error) {
       console.error('Error updating profile:', error);
       toast({
         title: t('common.error'),
-        description: t('settings.updateError'),
+        description: t('settingsPage.updateError'),
         variant: "destructive"
       });
     } finally {
@@ -127,17 +123,16 @@ export const Settings = () => {
       
       if (error) {
         console.error('Error saving notification settings:', error);
-        // Revert on error
         setNotifications(notifications);
         toast({
           title: t('common.error'),
-          description: t('settings.notificationError'),
+          description: t('settingsPage.notificationError'),
           variant: "destructive"
         });
       } else {
         toast({
-          title: t('settings.settingsSaved'),
-          description: t('settings.notificationPrefsUpdated')
+          title: t('settingsPage.settingsSaved'),
+          description: t('settingsPage.notificationPrefsUpdated')
         });
       }
     } catch (error) {
@@ -145,7 +140,7 @@ export const Settings = () => {
       setNotifications(notifications);
       toast({
         title: t('common.error'),
-        description: t('settings.notificationError'),
+        description: t('settingsPage.notificationError'),
         variant: "destructive"
       });
     }
@@ -159,140 +154,91 @@ export const Settings = () => {
 
   if (isLoading) {
     return (
-      <ClientPageContainer>
-        <div className="mb-8">
-          <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
-          <div className="h-4 w-32 bg-muted rounded animate-pulse" />
+      <ErrorBoundary>
+        <div className="p-6 space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
+          <VendorBreadcrumbs />
+          
+          <div className="mb-8">
+            <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
+            <div className="h-4 w-32 bg-muted rounded animate-pulse" />
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <MetricCard key={i} title="" value="" loading={true} />
+            ))}
+          </div>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <MetricCard key={i} title="" value="" loading={true} />
-          ))}
-        </div>
-      </ClientPageContainer>
-    );
-  }
-
-  // If language context is not available, show error state
-  if (!languageContext) {
-    return (
-      <ClientPageContainer
-        title={t('settings.languageContextError')}
-        description={t('settings.languageContextErrorDesc')}
-      >
-        <Card className="p-8 max-w-md mx-auto">
-          <CardContent>
-            <Button onClick={() => window.location.reload()} className="w-full">
-              {t('settings.refreshPage')}
-            </Button>
-          </CardContent>
-        </Card>
-      </ClientPageContainer>
+      </ErrorBoundary>
     );
   }
 
   return (
-    <div dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'text-right' : 'text-left'}>
-      <ClientPageContainer
-        title={t('settings.title')}
-        description={t('settings.subtitle')}
-      >
+    <ErrorBoundary>
+      <div className="p-6 space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
+        <VendorBreadcrumbs />
+        
+        {/* Header */}
+        <div className={cn(
+          "flex flex-col gap-4 md:flex-row md:justify-between md:items-start mb-8",
+          isRTL && "md:flex-row-reverse"
+        )}>
+          <div className={cn(isRTL && "text-right")}>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
+              {t('settings.title')}
+            </h1>
+            <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
+              {t('settings.subtitle')}
+            </p>
+          </div>
+        </div>
+
         {/* Settings Overview Metrics */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
           <MetricCard
-            title={t('settings.profileCompletion')}
+            title={t('settingsPage.profileCompletion')}
             value={`${metrics.profileCompletion}%`}
             icon={User}
             variant={metrics.profileCompletion >= 75 ? "success" : "warning"}
           />
           <MetricCard
-            title={t('settings.activeNotifications')}
+            title={t('settingsPage.activeNotifications')}
             value={metrics.activeNotifications}
             icon={Bell}
-            description={t('settings.enabledNotificationTypes')}
+            description={t('settingsPage.enabledNotificationTypes')}
           />
           <MetricCard
-            title={t('settings.securityScore')}
+            title={t('settingsPage.securityScore')}
             value={`${metrics.securityScore}/100`}
             icon={Shield}
             variant={metrics.securityScore >= 80 ? "success" : "warning"}
           />
           <MetricCard
-            title={t('settings.lastUpdated')}
+            title={t('settingsPage.lastUpdated')}
             value={metrics.lastUpdate}
             icon={Clock}
           />
         </div>
 
         <div className="grid gap-6">
-          {/* Profile Settings */}
-          <Card>
-            <CardHeader>
-              <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <User className="h-5 w-5" />
-                {t('settings.profile')}
-              </CardTitle>
-              <CardDescription>
-                {t('settings.profileDescription')}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="fullName">{t('settings.fullName')}</Label>
-                  <Input
-                    id="fullName"
-                    dir={isRTL ? 'rtl' : 'ltr'}
-                    value={userProfile?.full_name || ''}
-                    onChange={(e) => handleUpdateProfile('full_name', e.target.value)}
-                    placeholder={t('settings.fullNamePlaceholder')}
-                    disabled={isUpdating}
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="companyName">{t('settings.companyName')}</Label>
-                  <Input
-                    id="companyName"
-                    dir={isRTL ? 'rtl' : 'ltr'}
-                    value={userProfile?.company_name || ''}
-                    onChange={(e) => handleUpdateProfile('company_name', e.target.value)}
-                    placeholder={t('settings.companyNamePlaceholder')}
-                    disabled={isUpdating}
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <Label htmlFor="phone">{t('settings.phone')}</Label>
-                <Input
-                  id="phone"
-                  dir={isRTL ? 'rtl' : 'ltr'}
-                  value={userProfile?.phone || ''}
-                  onChange={(e) => handleUpdateProfile('phone', e.target.value)}
-                  placeholder={t('settings.phonePlaceholder')}
-                  disabled={isUpdating}
-                />
-              </div>
-            </CardContent>
-          </Card>
-
           {/* Language & Region */}
           <Card>
             <CardHeader>
-              <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <CardTitle className={cn(
+                "flex items-center gap-2",
+                isRTL && "flex-row-reverse"
+              )}>
                 <Globe className="h-5 w-5" />
-                {t('settings.languageAndRegion')}
+                {t('settingsPage.languageAndRegion')}
               </CardTitle>
               <CardDescription>
-                {t('settings.languageDescription')}
+                {t('settingsPage.languageDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <Label>{t('settings.language')}</Label>
+                  <Label>{t('settingsPage.language')}</Label>
                   <Select value={language} onValueChange={setLanguage}>
                     <SelectTrigger className="w-full">
                       <SelectValue />
@@ -310,19 +256,22 @@ export const Settings = () => {
           {/* Notification Settings */}
           <Card>
             <CardHeader>
-              <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <CardTitle className={cn(
+                "flex items-center gap-2",
+                isRTL && "flex-row-reverse"
+              )}>
                 <Bell className="h-5 w-5" />
                 {t('settings.notifications')}
               </CardTitle>
               <CardDescription>
-                {t('settings.notificationsDescription')}
+                {t('settingsPage.notificationsDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>{t('settings.emailNotifications')}</Label>
-                  <p className="text-sm text-muted-foreground">{t('settings.emailNotificationsDesc')}</p>
+                  <Label>{t('settingsPage.emailNotifications')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('settingsPage.emailNotificationsDesc')}</p>
                 </div>
                 <Switch
                   checked={notifications.email}
@@ -333,8 +282,8 @@ export const Settings = () => {
               
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>{t('settings.pushNotifications')}</Label>
-                  <p className="text-sm text-muted-foreground">{t('settings.pushNotificationsDesc')}</p>
+                  <Label>{t('settingsPage.pushNotifications')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('settingsPage.pushNotificationsDesc')}</p>
                 </div>
                 <Switch
                   checked={notifications.push}
@@ -342,46 +291,15 @@ export const Settings = () => {
                   disabled={isUpdating}
                 />
               </div>
-              
-              <div className="flex items-center justify-between">
-                <div>
-                  <Label>{t('settings.smsNotifications')}</Label>
-                  <p className="text-sm text-muted-foreground">{t('settings.smsNotificationsDesc')}</p>
-                </div>
-                <Switch
-                  checked={notifications.sms}
-                  onCheckedChange={(value) => handleNotificationChange('sms', value)}
-                  disabled={isUpdating}
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Security Settings */}
-          <Card>
-            <CardHeader>
-              <CardTitle className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <Shield className="h-5 w-5" />
-                {t('settings.security')}
-              </CardTitle>
-              <CardDescription>
-                {t('settings.securityDescription')}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Button variant="outline" className="w-full">
-                {t('settings.changePassword')}
-              </Button>
-              
-              <Button variant="outline" className="w-full">
-                {t('settings.enableTwoFactor')}
-              </Button>
             </CardContent>
           </Card>
         </div>
-      </ClientPageContainer>
-    </div>
+      </div>
+    </ErrorBoundary>
   );
-};
+});
 
-export default Settings;
+SettingsPage.displayName = 'SettingsPage';
+
+export { SettingsPage as Settings };
+export default SettingsPage;
