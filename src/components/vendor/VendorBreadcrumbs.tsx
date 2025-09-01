@@ -43,8 +43,9 @@ export const VendorBreadcrumbs = () => {
   };
 
   const getBreadcrumbPath = (index: number) => {
-    const segments = pathSegments.slice(0, index + 1);
-    return '/' + segments.join('/');
+    // For clean segments, we need to reconstruct the full path including 'vendor'
+    const vendorSegments = ['vendor', ...cleanSegments.slice(0, index + 1)];
+    return '/' + vendorSegments.join('/');
   };
 
   return (
@@ -81,7 +82,7 @@ export const VendorBreadcrumbs = () => {
             
             {cleanSegments.map((segment, index) => {
               const isLast = index === cleanSegments.length - 1;
-              const path = getBreadcrumbPath(index + (pathSegments[0] === 'vendor' ? 1 : 0));
+              const path = getBreadcrumbPath(index);
               const label = getBreadcrumbLabel(segment, index);
 
               return (
