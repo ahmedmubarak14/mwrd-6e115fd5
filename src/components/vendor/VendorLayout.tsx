@@ -67,12 +67,6 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
         <main className="flex-1 flex flex-col min-w-0">
           <VendorHeader 
             onMobileMenuOpen={() => setIsMobileSidebarOpen(true)}
-            onSidebarToggle={() => {
-              const newState = !sidebarOpen;
-              setSidebarOpen(newState);
-              localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
-            }}
-            sidebarOpen={sidebarOpen}
           />
           
           {userProfile.verification_status && 

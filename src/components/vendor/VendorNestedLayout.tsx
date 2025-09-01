@@ -22,10 +22,6 @@ interface VendorLayoutProps {
 
 export const VendorLayout = ({ children }: VendorLayoutProps) => {
   const { user, userProfile, loading } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(() => {
-    const saved = localStorage.getItem('vendorSidebarOpen');
-    return saved ? JSON.parse(saved) : true;
-  });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const languageContext = useOptionalLanguage();
@@ -88,24 +84,11 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
           </div>
         ) : (
           // Desktop Layout
-          <SidebarProvider 
-            defaultOpen={sidebarOpen}
-            onOpenChange={(open) => {
-              setSidebarOpen(open);
-              localStorage.setItem('vendorSidebarOpen', JSON.stringify(open));
-            }}
-          >
+          <SidebarProvider>
             <div className="min-h-screen flex w-full" dir={isRTL ? 'rtl' : 'ltr'}>
               <VendorSidebar />
               <main className="flex-1 flex flex-col min-w-0">
-                <VendorHeader 
-                  onSidebarToggle={() => {
-                    const newState = !sidebarOpen;
-                    setSidebarOpen(newState);
-                    localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
-                  }}
-                  sidebarOpen={sidebarOpen}
-                />
+                <VendorHeader />
                 <div className="flex-1 overflow-auto bg-muted/20 p-6">
                   <SmartBreadcrumbs />
                   <ErrorBoundary>
