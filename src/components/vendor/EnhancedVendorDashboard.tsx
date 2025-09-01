@@ -365,7 +365,7 @@ export const EnhancedVendorDashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 gap-4">
-              <Button onClick={() => navigate('/browse-requests')} className="h-auto p-4 justify-start">
+              <Button onClick={() => navigate('/vendor/browse-requests')} className="h-auto p-4 justify-start">
                 <Eye className="h-5 w-5 mr-3" />
                 <div className="text-left">
                   <div className="font-medium">Browse Requests</div>
@@ -381,7 +381,7 @@ export const EnhancedVendorDashboard = () => {
                 </div>
               </Button>
 
-              <Button variant="outline" onClick={() => navigate('/messages')} className="h-auto p-4 justify-start">
+              <Button variant="outline" onClick={() => navigate('/vendor/messages')} className="h-auto p-4 justify-start">
                 <MessageSquare className="h-5 w-5 mr-3" />
                 <div className="text-left">
                   <div className="font-medium">Messages</div>

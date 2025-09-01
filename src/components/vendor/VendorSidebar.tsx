@@ -109,7 +109,7 @@ export const VendorSidebar = ({ className, collapsed = false, onToggle, onItemCl
       items: [
         {
           name: t('nav.browseRequests'),
-          href: "/browse-requests",
+          href: "/vendor/browse-requests",
           icon: FolderOpen,
         },
         {
@@ -124,7 +124,7 @@ export const VendorSidebar = ({ className, collapsed = false, onToggle, onItemCl
         },
         {
           name: t('nav.messages'),
-          href: "/messages",
+          href: "/vendor/messages",
           icon: MessageSquare,
         },
       ]
@@ -168,7 +168,7 @@ export const VendorSidebar = ({ className, collapsed = false, onToggle, onItemCl
         },
         {
           name: t('nav.support'),
-          href: "/support",
+          href: "/vendor/support",
           icon: HelpCircle,
         },
       ]

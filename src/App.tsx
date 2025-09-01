@@ -47,6 +47,7 @@ import { Analytics } from './pages/Analytics';
 import BrowseRequests from './pages/BrowseRequests';
 import CreateRFQ from './pages/CreateRFQ';
 import CreateRequest from './pages/CreateRequest';
+import CreateProject from './pages/CreateProject';
 import { ManageSubscription } from './pages/ManageSubscription';
 import Messages from './pages/Messages';
 import MyOffers from './pages/MyOffers';
@@ -168,6 +169,17 @@ function App() {
                     }>
                       <Route index element={<Navigate to="/vendor/dashboard" replace />} />
                       <Route path="dashboard" element={<VendorDashboard />} />
+                      <Route path="analytics" element={<Analytics />} />
+                      <Route path="browse-requests" element={<BrowseRequests />} />
+                      <Route path="offers" element={<Offers />} />
+                      <Route path="orders" element={<Orders />} />
+                      <Route path="projects" element={<Projects />} />
+                      <Route path="projects/new" element={<CreateProject />} />
+                      <Route path="portfolio" element={<PortfolioManagementPage />} />
+                      <Route path="profile" element={<Profile />} />
+                      <Route path="settings" element={<Settings />} />
+                      <Route path="messages" element={<Messages />} />
+                      <Route path="support" element={<Support />} />
                       <Route path="cr-management" element={<CRManagementPage />} />
                       <Route path="projects-management" element={<ProjectsManagementPage />} />
                       <Route path="portfolio-management" element={<PortfolioManagementPage />} />
