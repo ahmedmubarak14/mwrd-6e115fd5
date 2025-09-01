@@ -1,9 +1,11 @@
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { MetricCard } from "@/components/ui/MetricCard";
 import { 
   FileText, 
   FolderOpen, 
@@ -15,39 +17,48 @@ import {
   AlertCircle,
   Plus,
   Eye,
-  Edit
+  Edit,
+  DollarSign,
+  Package,
+  Star,
+  Shield,
+  BarChart3,
+  Award,
+  Users,
+  MessageSquare
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useVendorStats } from "@/hooks/useVendorStats";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export const EnhancedVendorDashboard = () => {
   const { userProfile } = useAuth();
   const languageContext = useOptionalLanguage();
-  const { isRTL } = languageContext || { isRTL: false };
+  const { isRTL, formatCurrency, formatNumber } = languageContext || { 
+    isRTL: false, 
+    formatCurrency: (amount: number) => `$${amount.toLocaleString()}`,
+    formatNumber: (num: number) => num.toLocaleString()
+  };
   const t = languageContext?.t || ((key: string) => key);
+  const navigate = useNavigate();
+  const { stats, loading, error, refetch } = useVendorStats();
 
-  // Mock data for CR-focused metrics
-  const crStatus = userProfile?.verification_status || 'unverified';
-  const profileCompletion = 75; // Calculate based on filled fields
-  const recentProjects = 3; // Fetch from vendor_projects table
-  const activeOffers = 5; // Fetch from offers table
-  const totalEarnings = 125000; // Fetch from completed orders
-
-  const getStatusColor = (status: string) => {
+  const getStatusVariant = (status: string) => {
     switch (status) {
-      case 'approved': return 'text-success';
-      case 'pending': return 'text-warning';
-      case 'rejected': return 'text-destructive';
-      default: return 'text-muted-foreground';
+      case 'approved': return 'success';
+      case 'pending': return 'warning';
+      case 'rejected': return 'destructive';
+      default: return 'default';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'approved': return <CheckCircle className="h-4 w-4" />;
-      case 'pending': return <Clock className="h-4 w-4" />;
-      case 'rejected': return <AlertCircle className="h-4 w-4" />;
-      default: return <AlertCircle className="h-4 w-4" />;
+      case 'approved': return CheckCircle;
+      case 'pending': return Clock;
+      case 'rejected': return AlertCircle;
+      default: return AlertCircle;
     }
   };
 
@@ -57,30 +68,49 @@ export const EnhancedVendorDashboard = () => {
       description: t('vendor.cr.verificationRequired'),
       icon: FileText,
       href: "/vendor/cr-management",
-      color: "border-primary/20 hover:border-primary/40"
+      color: "bg-primary",
+      count: stats.crStatus === 'pending' ? 1 : undefined
     },
     {
       title: t('vendor.projects.add'),
       description: t('vendor.projects.addFirst'),
       icon: Plus,
       href: "/vendor/projects/new",
-      color: "border-success/20 hover:border-success/40"
+      color: "bg-success"
     },
     {
       title: t('vendor.categories.manage'),
       description: t('vendor.categories.select'),
       icon: Tags,
       href: "/vendor/categories",
-      color: "border-warning/20 hover:border-warning/40"
+      color: "bg-warning"
     },
     {
       title: t('vendor.profile.title'),
       description: t('vendor.profile.basicInfo'),
       icon: User,
       href: "/vendor/profile",
-      color: "border-info/20 hover:border-info/40"
+      color: "bg-info",
+      count: stats.profileCompletion < 100 ? 1 : undefined
     }
   ];
+
+  if (loading) {
+    return (
+      <div className={cn("space-y-8", isRTL && "rtl")}>
+        <div className="mb-8">
+          <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
+          <div className="h-4 w-32 bg-muted rounded animate-pulse" />
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <MetricCard key={i} title="" value="" loading={true} />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={cn("space-y-8", isRTL && "rtl")}>
@@ -94,69 +124,141 @@ export const EnhancedVendorDashboard = () => {
         </p>
       </div>
 
-      {/* Status Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              {t('vendor.cr.status')}
-            </CardTitle>
-            {getStatusIcon(crStatus)}
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              <Badge variant="outline" className={getStatusColor(crStatus)}>
-                {t(`vendor.cr.${crStatus}`)}
-              </Badge>
+      {/* CR Status Alert */}
+      {stats.crStatus !== 'approved' && (
+        <Card className="border-warning/50 bg-warning/5">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="h-5 w-5 text-warning" />
+              <div>
+                <h3 className="font-semibold text-warning">{t('vendor.cr.verificationRequired')}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {t('vendor.cr.completeVerification')}
+                </p>
+              </div>
+              <Button variant="outline" size="sm" asChild className="ml-auto">
+                <Link to="/vendor/cr-management">{t('vendor.cr.updateCR')}</Link>
+              </Button>
             </div>
           </CardContent>
         </Card>
+      )}
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              {t('vendor.dashboard.completionRate')}
-            </CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{profileCompletion}%</div>
-            <Progress value={profileCompletion} className="mt-2" />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              {t('vendor.dashboard.recentProjects')}
-            </CardTitle>
-            <FolderOpen className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{recentProjects}</div>
-            <p className="text-xs text-muted-foreground">
-              {t('common.thisMonth')}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              {t('common.activeOffers')}
-            </CardTitle>
-            <CheckCircle className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{activeOffers}</div>
-            <p className="text-xs text-muted-foreground">
-              {totalEarnings.toLocaleString()} {t('common.sar')}
-            </p>
-          </CardContent>
-        </Card>
+      {/* Core Performance Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <MetricCard
+          title="CR Verification Status"
+          value={t(`vendor.cr.${stats.crStatus}`)}
+          description="Commercial Registration status"
+          icon={getStatusIcon(stats.crStatus)}
+          variant={getStatusVariant(stats.crStatus) as any}
+          loading={loading}
+        />
+        
+        <MetricCard
+          title="Profile Completion"
+          value={`${stats.profileCompletion}%`}
+          description="Complete to attract more clients"
+          icon={User}
+          trend={{
+            value: stats.profileCompletion > 80 ? 5 : -5,
+            label: stats.profileCompletion > 80 ? "Good" : "Needs work",
+            isPositive: stats.profileCompletion > 80
+          }}
+          loading={loading}
+        />
+        
+        <MetricCard
+          title="Active Offers"
+          value={formatNumber(stats.activeOffers)}
+          description="Pending client decisions"
+          icon={Package}
+          variant="warning"
+          loading={loading}
+        />
+        
+        <MetricCard
+          title="Success Rate"
+          value={`${stats.successRate}%`}
+          description="Offers accepted by clients"
+          icon={Award}
+          variant="success"
+          loading={loading}
+        />
       </div>
 
-      {/* Quick Actions */}
+      {/* Business Performance */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <MetricCard
+          title="Total Earnings"
+          value={formatCurrency(stats.totalEarnings)}
+          description="All-time revenue"
+          icon={DollarSign}
+          trend={{
+            value: 12,
+            label: "vs last month",
+            isPositive: true
+          }}
+          loading={loading}
+        />
+        
+        <MetricCard
+          title="Monthly Revenue"
+          value={formatCurrency(stats.monthlyEarnings)}
+          description="Current month earnings"
+          icon={TrendingUp}
+          variant="success"
+          loading={loading}
+        />
+        
+        <MetricCard
+          title="Completed Projects"
+          value={formatNumber(stats.completedProjects)}
+          description="Successfully delivered"
+          icon={CheckCircle}
+          loading={loading}
+        />
+        
+        <MetricCard
+          title="Client Rating"
+          value={`${stats.clientSatisfaction}/5`}
+          description="Average client satisfaction"
+          icon={Star}
+          variant="success"
+          loading={loading}
+        />
+      </div>
+
+      {/* Performance Overview Chart */}
+      <Card>
+        <CardHeader>
+          <CardTitle>{t('vendor.dashboard.offerTrends')}</CardTitle>
+          <CardDescription>
+            {t('vendor.dashboard.offerTrendsDesc')}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="h-80">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={stats.offerTrends}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="offers"
+                  stroke="hsl(var(--primary))"
+                  strokeWidth={2}
+                  dot={{ fill: "hsl(var(--primary))" }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Quick Actions Grid */}
       <Card>
         <CardHeader>
           <CardTitle>{t('vendor.dashboard.quickActions')}</CardTitle>
@@ -166,111 +268,179 @@ export const EnhancedVendorDashboard = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {quickActions.map((action) => {
-              const Icon = action.icon;
-              return (
-                <Link key={action.href} to={action.href}>
-                  <Card className={cn(
-                    "p-4 transition-all duration-200 cursor-pointer",
-                    action.color,
-                    "hover:shadow-lg"
-                  )}>
-                    <div className="flex items-start space-x-3 rtl:space-x-reverse">
-                      <Icon className="h-5 w-5 text-primary mt-1 flex-shrink-0" />
-                      <div className="min-w-0 flex-1">
-                        <h3 className="font-medium text-sm text-foreground">
-                          {action.title}
-                        </h3>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {action.description}
-                        </p>
+            {quickActions.map((action) => (
+              <Link key={action.href} to={action.href}>
+                <Card className="hover:shadow-md transition-shadow cursor-pointer">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3">
+                      <div className={cn("p-2 rounded-lg", action.color)}>
+                        <action.icon className="h-5 w-5 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-sm">{action.title}</h3>
+                        <p className="text-xs text-muted-foreground">{action.description}</p>
+                        {action.count && (
+                          <Badge variant="secondary" className="mt-1">
+                            {action.count}
+                          </Badge>
+                        )}
                       </div>
                     </div>
-                  </Card>
-                </Link>
-              );
-            })}
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
           </div>
         </CardContent>
       </Card>
 
-      {/* Recent Activity & Projects */}
+      {/* Action Items & Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
+        <Card className="hover:shadow-lg transition-shadow">
           <CardHeader>
-            <CardTitle>{t('vendor.dashboard.recentProjects')}</CardTitle>
-            <CardDescription>
-              {t('common.yourLatestWork')}
-            </CardDescription>
+            <CardTitle className="flex items-center gap-2">
+              <AlertCircle className="h-5 w-5 text-warning" />
+              Action Required
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {/* Mock recent projects */}
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="flex items-center justify-between p-3 border rounded-lg">
-                  <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                    <FolderOpen className="h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <p className="font-medium text-sm">
-                        {t('common.mockProject')} {i}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {t('common.completed')} • 2 {t('common.daysAgo')}
-                      </p>
-                    </div>
-                  </div>
-                  <Button variant="ghost" size="sm">
-                    <Eye className="h-4 w-4" />
-                  </Button>
+          <CardContent className="space-y-4">
+            {stats.crStatus !== 'approved' && (
+              <div className="flex items-center justify-between p-4 bg-warning/10 border border-warning/20 rounded-lg">
+                <div>
+                  <p className="font-medium">Complete CR Verification</p>
+                  <p className="text-sm text-foreground opacity-75">
+                    Upload required documents for approval
+                  </p>
                 </div>
-              ))}
-              
-              <Button variant="outline" className="w-full" asChild>
-                <Link to="/vendor/projects">
-                  {t('common.viewAll')}
+                <Link to="/vendor/cr-management">
+                  <Button size="sm" variant="outline">Update</Button>
                 </Link>
-              </Button>
-            </div>
+              </div>
+            )}
+            
+            {stats.profileCompletion < 100 && (
+              <div className="flex items-center justify-between p-4 bg-primary/10 border border-primary/20 rounded-lg">
+                <div>
+                  <p className="font-medium">Complete Profile</p>
+                  <p className="text-sm text-foreground opacity-75">
+                    {100 - stats.profileCompletion}% remaining
+                  </p>
+                </div>
+                <Link to="/vendor/profile">
+                  <Button size="sm" variant="outline">Complete</Button>
+                </Link>
+              </div>
+            )}
+
+            {stats.activeOffers > 0 && (
+              <div className="flex items-center justify-between p-4 bg-success/10 border border-success/20 rounded-lg">
+                <div>
+                  <p className="font-medium">Active Offers</p>
+                  <p className="text-sm text-foreground opacity-75">
+                    {formatNumber(stats.activeOffers)} offers awaiting response
+                  </p>
+                </div>
+                <Link to="/vendor/offers">
+                  <Button size="sm" variant="outline">View</Button>
+                </Link>
+              </div>
+            )}
+
+            {stats.crStatus === 'approved' && stats.profileCompletion === 100 && stats.activeOffers === 0 && (
+              <div className="text-center py-6 text-foreground opacity-75">
+                <CheckCircle className="h-8 w-8 mx-auto mb-2 text-success" />
+                <p>All set! Ready for new opportunities.</p>
+              </div>
+            )}
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="hover:shadow-lg transition-shadow">
           <CardHeader>
-            <CardTitle>{t('common.recentActivity')}</CardTitle>
-            <CardDescription>
-              {t('common.latestUpdates')}
-            </CardDescription>
+            <CardTitle className="flex items-center gap-2">
+              <BarChart3 className="h-5 w-5 text-success" />
+              Quick Actions
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {/* Mock recent activity */}
-              {[
-                { type: 'offer', message: 'New offer received', time: '2h' },
-                { type: 'profile', message: 'Profile updated', time: '1d' },
-                { type: 'project', message: 'Project completed', time: '3d' }
-              ].map((activity, i) => (
-                <div key={i} className="flex items-start space-x-3 rtl:space-x-reverse p-3 border rounded-lg">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium">
-                      {activity.message}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {activity.time} {t('common.ago')}
-                    </p>
-                  </div>
+            <div className="grid grid-cols-1 gap-4">
+              <Button onClick={() => navigate('/browse-requests')} className="h-auto p-4 justify-start">
+                <Eye className="h-5 w-5 mr-3" />
+                <div className="text-left">
+                  <div className="font-medium">Browse Requests</div>
+                  <div className="text-xs opacity-75">Find new opportunities</div>
                 </div>
-              ))}
+              </Button>
               
-              <Button variant="outline" className="w-full" asChild>
-                <Link to="/activity">
-                  {t('common.viewAllActivity')}
-                </Link>
+              <Button variant="outline" onClick={() => navigate('/vendor/projects')} className="h-auto p-4 justify-start">
+                <FolderOpen className="h-5 w-5 mr-3" />
+                <div className="text-left">
+                  <div className="font-medium">Manage Projects</div>
+                  <div className="text-xs opacity-75">View your portfolio</div>
+                </div>
+              </Button>
+
+              <Button variant="outline" onClick={() => navigate('/messages')} className="h-auto p-4 justify-start">
+                <MessageSquare className="h-5 w-5 mr-3" />
+                <div className="text-left">
+                  <div className="font-medium">Messages</div>
+                  <div className="text-xs opacity-75">Communicate with clients</div>
+                </div>
               </Button>
             </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Business Performance Overview */}
+      <Card className="hover:shadow-lg transition-shadow">
+        <CardHeader>
+          <CardTitle>Business Performance</CardTitle>
+          <CardDescription>Your vendor activity overview</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Offer Success Rate</span>
+                <span className="text-sm text-success">
+                  {stats.successRate}%
+                </span>
+              </div>
+              <Progress 
+                value={stats.successRate} 
+                className="w-full" 
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Profile Completion</span>
+                <span className="text-sm text-primary">
+                  {stats.profileCompletion}%
+                </span>
+              </div>
+              <Progress 
+                value={stats.profileCompletion} 
+                className="w-full" 
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Client Satisfaction</span>
+                <span className="text-sm text-success">
+                  {stats.clientSatisfaction}/5
+                </span>
+              </div>
+              <Progress 
+                value={(stats.clientSatisfaction / 5) * 100} 
+                className="w-full" 
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
