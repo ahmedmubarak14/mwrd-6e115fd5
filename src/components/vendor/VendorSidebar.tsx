@@ -180,11 +180,11 @@ export const VendorSidebar = ({
   const getGroupPriorityStyles = (priority: NavigationGroup['priority']) => {
     switch (priority) {
       case 'primary':
-        return "border-l-2 border-l-primary/20 bg-primary/5";
+        return "bg-primary/5";
       case 'secondary':
-        return "border-l-2 border-l-accent/20 bg-accent/5";
+        return "bg-accent/5";
       case 'utility':
-        return "border-l-2 border-l-muted-foreground/20 bg-muted/50";
+        return "bg-muted/50";
       default:
         return "";
     }
