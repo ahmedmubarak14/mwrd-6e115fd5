@@ -283,7 +283,13 @@ export const enUS = {
     comparison: "Comparison",
     insights: "Insights",
     dashboard: "Analytics Dashboard",
-    reports: "Reports"
+    reports: "Reports",
+    spending: "Spending",
+    expenses: "Expenses",
+    monthlySpending: "Monthly Spending",
+    requestsByCategory: "Requests by Category",
+    spendingTrend: "Spending Trend",
+    categoryDistribution: "Category Distribution"
   },
 
   // Project System

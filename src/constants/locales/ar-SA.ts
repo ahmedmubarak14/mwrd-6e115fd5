@@ -283,7 +283,13 @@ export const arSA = {
     comparison: "مقارنة",
     insights: "رؤى",
     dashboard: "لوحة التحليلات",
-    reports: "تقارير"
+    reports: "تقارير",
+    spending: "الإنفاق",
+    expenses: "المصروفات",
+    monthlySpending: "الإنفاق الشهري",
+    requestsByCategory: "الطلبات حسب الفئة",
+    spendingTrend: "اتجاه الإنفاق",
+    categoryDistribution: "توزيع الفئات"
   },
 
   // Project System - Arabic
