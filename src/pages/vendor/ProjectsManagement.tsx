@@ -1,5 +1,10 @@
+import { VendorLayout } from "@/components/vendor/VendorLayout";
 import { ProjectsManagement } from "@/components/vendor/ProjectsManagement";
 
 export const ProjectsManagementPage = () => {
-  return <ProjectsManagement />;
+  return (
+    <VendorLayout>
+      <ProjectsManagement />
+    </VendorLayout>
+  );
 };

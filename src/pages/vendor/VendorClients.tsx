@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { VendorLayout } from "@/components/vendor/VendorLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -10,7 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Search, Users, MessageSquare, DollarSign, Star, Building } from "lucide-react";
 
-export const VendorClients = () => {
+const VendorClientsContent = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
   const { t } = useLanguage();
@@ -304,5 +305,13 @@ export const VendorClients = () => {
         </CardContent>
       </Card>
     </div>
+  );
+};
+
+export const VendorClients = () => {
+  return (
+    <VendorLayout>
+      <VendorClientsContent />
+    </VendorLayout>
   );
 };

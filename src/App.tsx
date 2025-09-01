@@ -9,7 +9,6 @@ import { GlobalErrorHandler } from '@/components/ui/GlobalErrorHandler';
 import { MobileAppShell } from './components/mobile/MobileAppShell';
 import { ClientLayout } from './components/layout/ClientLayout';
 import { AdminLayout } from './components/admin/AdminLayout';
-import { VendorLayout } from './components/vendor/VendorNestedLayout';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
@@ -25,6 +24,11 @@ import { VendorNotifications } from './pages/vendor/VendorNotifications';
 import { VendorClients } from './pages/vendor/VendorClients';
 import { VendorDocuments } from './pages/vendor/VendorDocuments';
 import { VendorReports } from './pages/vendor/VendorReports';
+import { VendorAnalytics } from './pages/vendor/VendorAnalytics';
+import { VendorBrowseRequests } from './pages/vendor/VendorBrowseRequests';
+import { VendorOffers } from './pages/vendor/VendorOffers';
+import { VendorOrders } from './pages/vendor/VendorOrders';
+import { VendorProfile } from './pages/vendor/VendorProfile';
 import Profile from './pages/Profile';
 import { Landing } from './pages/Landing';
 import NotFound from './pages/NotFound';
@@ -167,36 +171,117 @@ function App() {
                     <Route path="/vendor-rfqs" element={<Navigate to="/client/vendor-rfqs" replace />} />
                     <Route path="/vendors" element={<Navigate to="/client/vendors" replace />} />
                     
-                    {/* Vendor routes with layout */}
-                    <Route path="/vendor" element={
+                    {/* Vendor routes */}
+                    <Route path="/vendor/dashboard" element={
                       <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <VendorLayout />
+                        <VendorDashboard />
                       </RoleProtectedRoute>
-                    }>
-                      <Route index element={<Navigate to="/vendor/dashboard" replace />} />
-                      <Route path="dashboard" element={<VendorDashboard />} />
-                      <Route path="analytics" element={<Analytics />} />
-                      <Route path="browse-requests" element={<BrowseRequests />} />
-                      <Route path="offers" element={<Offers />} />
-                      <Route path="orders" element={<Orders />} />
-                      <Route path="projects" element={<Projects />} />
-                      <Route path="projects/new" element={<CreateProject />} />
-                      <Route path="portfolio" element={<PortfolioManagementPage />} />
-                      <Route path="profile" element={<Profile />} />
-                      <Route path="settings" element={<Settings />} />
-                      <Route path="messages" element={<Messages />} />
-                      <Route path="support" element={<Support />} />
-                      <Route path="cr-management" element={<CRManagementPage />} />
-                      <Route path="projects-management" element={<ProjectsManagementPage />} />
-                      <Route path="portfolio-management" element={<PortfolioManagementPage />} />
-                      <Route path="subscription" element={<VendorSubscription />} />
-                      <Route path="transactions" element={<VendorTransactions />} />
-                      <Route path="rfqs" element={<VendorRFQs />} />
-                      <Route path="notifications" element={<VendorNotifications />} />
-                      <Route path="clients" element={<VendorClients />} />
-                      <Route path="documents" element={<VendorDocuments />} />
-                      <Route path="reports" element={<VendorReports />} />
-                    </Route>
+                    } />
+                    <Route path="/vendor/analytics" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <VendorAnalytics />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/browse-requests" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <VendorBrowseRequests />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/offers" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <VendorOffers />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/orders" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <VendorOrders />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/projects" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <Projects />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/projects/new" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <CreateProject />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/portfolio" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <PortfolioManagementPage />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/profile" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <VendorProfile />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/settings" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <Settings />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/messages" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <Messages />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/support" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <Support />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/cr-management" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <CRManagementPage />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/projects-management" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <ProjectsManagementPage />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/portfolio-management" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <PortfolioManagementPage />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/subscription" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <VendorSubscription />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/transactions" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <VendorTransactions />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/rfqs" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <VendorRFQs />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/notifications" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <VendorNotifications />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/clients" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <VendorClients />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/documents" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <VendorDocuments />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/reports" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <VendorReports />
+                      </RoleProtectedRoute>
+                    } />
                     
                     {/* Legacy vendor dashboard route (redirect to new structure) */}
                     <Route path="/vendor-dashboard" element={<Navigate to="/vendor/dashboard" replace />} />
@@ -226,6 +311,9 @@ function App() {
                       <Route path="settings" element={<AdminSettings />} />
                       <Route path="profile" element={<AdminProfile />} />
                     </Route>
+                    
+                    {/* Vendor index redirect */}
+                    <Route path="/vendor" element={<Navigate to="/vendor/dashboard" replace />} />
                     
                     {/* Default and 404 routes */}
                     <Route path="/" element={<Navigate to="/landing" replace />} />
