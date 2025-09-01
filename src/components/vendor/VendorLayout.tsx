@@ -51,7 +51,6 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
     <div className={cn("min-h-screen flex w-full", isRTL && "rtl")}>
       {!isMobile && (
         <VendorSidebar 
-          userProfile={userProfile} 
           collapsed={!sidebarOpen}
           onItemClick={() => setIsMobileSidebarOpen(false)} 
         />
@@ -60,7 +59,6 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
       <VendorMobileSidebar
         isOpen={isMobileSidebarOpen}
         onOpenChange={setIsMobileSidebarOpen}
-        userProfile={userProfile}
       />
 
       <div 
@@ -70,8 +68,7 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
         )}
       >
         <VendorHeader 
-          userProfile={userProfile}
-          onMobileMenuToggle={() => setIsMobileSidebarOpen(true)}
+          onMobileMenuOpen={() => setIsMobileSidebarOpen(true)}
           onSidebarToggle={() => {
             const newState = !sidebarOpen;
             setSidebarOpen(newState);

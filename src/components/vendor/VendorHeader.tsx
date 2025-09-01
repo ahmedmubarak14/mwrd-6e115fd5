@@ -10,19 +10,19 @@ import { DashboardThemeToggle } from "@/components/ui/DashboardThemeToggle";
 import { VendorBreadcrumbs } from "./VendorBreadcrumbs";
 import { VendorHeaderSearch } from "./VendorHeaderSearch";
 import { VendorHeaderUserMenu } from "./VendorHeaderUserMenu";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface VendorHeaderProps {
-  onMobileMenuToggle?: () => void;
+  onMobileMenuOpen?: () => void;
   onSidebarToggle?: () => void;
   sidebarOpen?: boolean;
-  userProfile?: any;
 }
 
-export const VendorHeader = ({ onMobileMenuToggle, onSidebarToggle, sidebarOpen, userProfile }: VendorHeaderProps) => {
+export const VendorHeader = ({ onMobileMenuOpen, onSidebarToggle, sidebarOpen }: VendorHeaderProps) => {
   const navigate = useNavigate();
-  const { userProfile: authUserProfile } = useAuth();
+  const { userProfile } = useAuth();
   const languageContext = useOptionalLanguage();
   const { t, isRTL } = languageContext || { 
     t: (key: string) => key, 
@@ -30,7 +30,7 @@ export const VendorHeader = ({ onMobileMenuToggle, onSidebarToggle, sidebarOpen,
   };
   const isMobile = useIsMobile();
 
-  const currentUserProfile = userProfile || authUserProfile;
+  
 
   return (
     <header className="border-b border-border bg-card sticky top-0 z-50 shadow-sm">
@@ -43,7 +43,7 @@ export const VendorHeader = ({ onMobileMenuToggle, onSidebarToggle, sidebarOpen,
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={onMobileMenuToggle}
+                onClick={onMobileMenuOpen}
                 className="h-9 w-9 hover:bg-accent/50 transition-all duration-200 shrink-0"
                 aria-label="Open mobile menu"
               >
@@ -78,7 +78,7 @@ export const VendorHeader = ({ onMobileMenuToggle, onSidebarToggle, sidebarOpen,
                   MWRD Dashboard
                 </span>
                 <span className="text-xs leading-tight text-muted-foreground hidden md:block capitalize">
-                  Vendor Portal
+                  {userProfile?.role || 'User'} Portal
                 </span>
               </div>
             </button>
@@ -90,9 +90,11 @@ export const VendorHeader = ({ onMobileMenuToggle, onSidebarToggle, sidebarOpen,
             
             <NotificationBell />
             
+            <LanguageSwitcher />
+            
             <DashboardThemeToggle />
             
-            <VendorHeaderUserMenu userProfile={currentUserProfile} />
+            <VendorHeaderUserMenu userProfile={userProfile} />
           </div>
         </div>
       </div>

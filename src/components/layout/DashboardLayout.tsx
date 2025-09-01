@@ -61,10 +61,7 @@ export const DashboardLayout = ({ children, className }: DashboardLayoutProps) =
       >
         <SidebarProvider defaultOpen={true}>
           <div className={`min-h-screen flex w-full ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-            <VendorSidebar 
-              userRole={userProfile?.role as 'client' | 'vendor' | 'admin'}
-              userProfile={userProfile}
-            />
+            <VendorSidebar />
             
             <div className="flex-1 flex flex-col min-w-0">
               <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />

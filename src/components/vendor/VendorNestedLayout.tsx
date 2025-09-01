@@ -71,11 +71,10 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
         {isMobile ? (
           // Mobile Layout
           <div className="min-h-screen flex flex-col">
-            <VendorHeader onMobileMenuToggle={() => setMobileMenuOpen(true)} />
+            <VendorHeader onMobileMenuOpen={() => setMobileMenuOpen(true)} />
             <VendorMobileSidebar 
               isOpen={mobileMenuOpen} 
               onOpenChange={setMobileMenuOpen}
-              userProfile={userProfile}
             />
             <main className="flex-1 overflow-auto bg-muted/20 p-4 sm:p-6 min-h-[calc(100vh-8rem)] pb-20 safe-area-inset-bottom">
               <SmartBreadcrumbs />
@@ -91,7 +90,6 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
           <div className="min-h-screen flex w-full" dir={isRTL ? 'rtl' : 'ltr'}>
             <VendorSidebar 
               collapsed={!sidebarOpen}
-              userProfile={userProfile}
             />
             <div 
               className={cn(
@@ -106,7 +104,6 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
                   localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
                 }}
                 sidebarOpen={sidebarOpen}
-                userProfile={userProfile}
               />
               <main className="flex-1 overflow-auto bg-muted/20 p-6 min-h-[calc(100vh-4rem)]">
                 <SmartBreadcrumbs />

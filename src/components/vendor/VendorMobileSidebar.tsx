@@ -6,13 +6,11 @@ import { cn } from "@/lib/utils";
 interface VendorMobileSidebarProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  userProfile?: any;
 }
 
 export const VendorMobileSidebar = ({ 
   isOpen, 
-  onOpenChange, 
-  userProfile 
+  onOpenChange
 }: VendorMobileSidebarProps) => {
   const languageContext = useOptionalLanguage();
   const { isRTL } = languageContext || { isRTL: false };
@@ -28,7 +26,6 @@ export const VendorMobileSidebar = ({
           )}
         >
           <VendorSidebar 
-            userProfile={userProfile}
             onItemClick={() => onOpenChange(false)} 
           />
         </SheetContent>

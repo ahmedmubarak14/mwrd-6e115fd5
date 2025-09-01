@@ -31,8 +31,6 @@ interface VendorSidebarProps {
   className?: string;
   collapsed?: boolean;
   onToggle?: () => void;
-  userProfile?: any;
-  userRole?: string;
   onItemClick?: () => void;
 }
 
@@ -49,16 +47,16 @@ interface NavigationGroup {
   }[];
 }
 
-export const VendorSidebar = ({ className, collapsed = false, onToggle, userProfile, userRole, onItemClick }: VendorSidebarProps) => {
+export const VendorSidebar = ({ className, collapsed = false, onToggle, onItemClick }: VendorSidebarProps) => {
   const location = useLocation();
-  const { userProfile: authUserProfile } = useAuth();
+  const { userProfile } = useAuth();
   const languageContext = useOptionalLanguage();
   const { t, isRTL } = languageContext || { 
     t: (key: string) => key, 
     isRTL: false 
   };
 
-  const currentUserProfile = userProfile || authUserProfile;
+  
 
   // Track which groups are expanded with localStorage persistence
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(() => {

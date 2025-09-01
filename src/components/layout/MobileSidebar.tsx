@@ -25,10 +25,7 @@ export const MobileSidebar = ({ isOpen, onOpenChange }: MobileSidebarProps) => {
             "animate-slide-in-right"
           )}
         >
-          <VendorSidebar 
-            userRole={userProfile?.role as 'client' | 'vendor' | 'admin'}
-            userProfile={userProfile}
-          />
+          <VendorSidebar />
         </SheetContent>
       </Sheet>
     </div>
