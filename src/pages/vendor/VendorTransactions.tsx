@@ -129,7 +129,7 @@ const VendorTransactionsContent = () => {
       <div>
         <h1 className="text-2xl font-bold">{t('vendor.transactions.title')}</h1>
         <p className="text-muted-foreground mt-1">
-          {t('vendor.transactions.description')}
+          {t('vendor.transactions.subtitle')}
         </p>
       </div>
 
