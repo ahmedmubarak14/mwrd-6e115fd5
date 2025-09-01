@@ -138,7 +138,21 @@ export const enUS = {
       status: 'Status',
       reference: 'Reference',
       client: 'Client',
-      project: 'Project'
+      project: 'Project',
+      error: 'Error',
+      errorFetch: 'Failed to fetch transactions',
+      totalRevenue: 'Total Revenue',
+      totalExpenses: 'Total Expenses',
+      pendingAmount: 'Pending Amount',
+      netProfit: 'Net Profit',
+      subscriptionsAndFees: 'Subscriptions and fees',
+      awaitingProcessing: 'Awaiting processing',
+      revenueMinus: 'Revenue minus expenses',
+      searchTransactions: 'Search transactions...',
+      allStatus: 'All Status',
+      allTypes: 'All Types',
+      paymentReceived: 'Payment Received',
+      noTransactions: 'No transactions found'
     },
     subscription: {
       title: 'Subscription Management',
@@ -227,7 +241,8 @@ export const enUS = {
     approved: 'Approved',
     rejected: 'Rejected',
     completed: 'Completed',
-    cancelled: 'Cancelled'
+    cancelled: 'Cancelled',
+    accessDenied: 'Access Denied'
   },
 
   // Forms

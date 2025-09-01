@@ -138,7 +138,21 @@ export const arSA = {
       status: 'الحالة',
       reference: 'المرجع',
       client: 'العميل',
-      project: 'المشروع'
+      project: 'المشروع',
+      error: 'خطأ',
+      errorFetch: 'فشل في جلب المعاملات',
+      totalRevenue: 'إجمالي الإيرادات',
+      totalExpenses: 'إجمالي المصروفات',
+      pendingAmount: 'المبلغ المعلق',
+      netProfit: 'صافي الربح',
+      subscriptionsAndFees: 'الاشتراكات والرسوم',
+      awaitingProcessing: 'في انتظار المعالجة',
+      revenueMinus: 'الإيرادات ناقص المصروفات',
+      searchTransactions: 'البحث في المعاملات...',
+      allStatus: 'جميع الحالات',
+      allTypes: 'جميع الأنواع',
+      paymentReceived: 'دفعة مستلمة',
+      noTransactions: 'لا توجد معاملات'
     },
     subscription: {
       title: 'إدارة الاشتراك',
@@ -227,7 +241,8 @@ export const arSA = {
     approved: 'معتمد',
     rejected: 'مرفوض',
     completed: 'مكتمل',
-    cancelled: 'ملغي'
+    cancelled: 'ملغي',
+    accessDenied: 'الوصول مرفوض'
   },
 
   // Forms - Arabic
