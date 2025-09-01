@@ -72,7 +72,6 @@ export const MobileHeader = () => {
         "sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
         "mobile-header safe-area-padding-top"
       )}>
-
         {/* Role Badge */}
         {userProfile?.role && (
           <div className="px-4 pb-2">
