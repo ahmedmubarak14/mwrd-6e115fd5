@@ -17,9 +17,7 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
   const { userProfile, loading } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(() => {
     const saved = localStorage.getItem('vendorSidebarOpen');
-    const defaultOpen = saved ? JSON.parse(saved) : true;
-    console.log('VendorLayout - Initial sidebar state:', defaultOpen);
-    return defaultOpen;
+    return saved ? JSON.parse(saved) : true;
   });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
@@ -59,26 +57,17 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
         <VendorSidebar 
           collapsed={!sidebarOpen}
           onToggle={() => {
-            console.log('VendorSidebar onToggle called - current state:', sidebarOpen);
             const newState = !sidebarOpen;
             setSidebarOpen(newState);
             localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
-            console.log('VendorSidebar onToggle - new state:', newState);
           }}
         />
-        <div className={cn(
-          "flex-1 flex flex-col min-w-0 transition-all duration-300",
-          isRTL 
-            ? (sidebarOpen ? "mr-64" : "mr-16")
-            : (sidebarOpen ? "ml-64" : "ml-16")
-        )}>
+        <div className="flex-1 flex flex-col min-w-0">
           <VendorHeader 
             onSidebarToggle={() => {
-              console.log('VendorHeader onSidebarToggle called - current state:', sidebarOpen);
               const newState = !sidebarOpen;
               setSidebarOpen(newState);
               localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
-              console.log('VendorHeader onSidebarToggle - new state:', newState);
             }}
             sidebarOpen={sidebarOpen}
             onMobileMenuOpen={() => setMobileMenuOpen(true)}
