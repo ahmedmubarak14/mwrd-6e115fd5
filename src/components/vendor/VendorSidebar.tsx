@@ -135,12 +135,12 @@ export const VendorSidebar = ({ className, collapsed = false, onToggle, onItemCl
       priority: 'secondary',
       items: [
         {
-          name: t('vendor.projects.management'),
+          name: t('vendor.navigation.projectsManagement'),
           href: "/vendor/projects",
           icon: Briefcase,
         },
         {
-          name: t('vendor.portfolio.management'),
+          name: t('vendor.navigation.portfolioManagement'),
           href: "/vendor/portfolio",
           icon: Building2,
         },
@@ -157,7 +157,7 @@ export const VendorSidebar = ({ className, collapsed = false, onToggle, onItemCl
           icon: User,
         },
         {
-          name: t('vendor.cr.management'),
+          name: t('vendor.navigation.crManagement'),
           href: "/vendor/cr-management",
           icon: Shield,
         },

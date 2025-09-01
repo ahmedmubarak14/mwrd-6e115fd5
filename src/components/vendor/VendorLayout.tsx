@@ -86,8 +86,20 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
           <VerificationBanner />
         )}
         
-        <main className="flex-1 overflow-auto bg-muted/20 p-6 min-h-[calc(100vh-4rem)]">
-          <div className="max-w-7xl mx-auto">
+        <main 
+          className={cn(
+            "flex-1 overflow-auto bg-muted/20 p-6 min-h-[calc(100vh-4rem)]",
+            isRTL && "text-right"
+          )}
+          dir={isRTL ? 'rtl' : 'ltr'}
+        >
+          <div 
+            className={cn(
+              "max-w-7xl mx-auto",
+              isRTL && "text-right"
+            )}
+            dir={isRTL ? 'rtl' : 'ltr'}
+          >
             {children}
           </div>
         </main>
