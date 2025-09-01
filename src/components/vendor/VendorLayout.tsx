@@ -6,6 +6,7 @@ import { VendorSidebar } from "./VendorSidebar";
 import { VendorHeader } from "./VendorHeader";
 import { VendorMobileSidebar } from "./VendorMobileSidebar";
 import { VerificationBanner } from "@/components/verification/VerificationBanner";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 
 interface VendorLayoutProps {
@@ -42,35 +43,37 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
   }
 
   return (
-    <div className={cn("min-h-screen flex w-full", isRTL && "rtl")}>
-      <VendorSidebar 
-        userProfile={userProfile} 
-        onItemClick={() => setIsMobileSidebarOpen(false)} 
-      />
-      
-      <VendorMobileSidebar
-        isOpen={isMobileSidebarOpen}
-        onOpenChange={setIsMobileSidebarOpen}
-        userProfile={userProfile}
-      />
-
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <VendorHeader 
-          userProfile={userProfile}
-          onMobileMenuToggle={() => setIsMobileSidebarOpen(true)}
+    <SidebarProvider>
+      <div className={cn("min-h-screen flex w-full", isRTL && "rtl")}>
+        <VendorSidebar 
+          userProfile={userProfile} 
+          onItemClick={() => setIsMobileSidebarOpen(false)} 
         />
         
-        {userProfile.verification_status && 
-         userProfile.verification_status !== 'approved' && (
-          <VerificationBanner />
-        )}
-        
-        <main className="flex-1 overflow-auto bg-background">
-          <div className="container max-w-7xl mx-auto px-4 py-6">
-            {children}
-          </div>
-        </main>
+        <VendorMobileSidebar
+          isOpen={isMobileSidebarOpen}
+          onOpenChange={setIsMobileSidebarOpen}
+          userProfile={userProfile}
+        />
+
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <VendorHeader 
+            userProfile={userProfile}
+            onMobileMenuToggle={() => setIsMobileSidebarOpen(true)}
+          />
+          
+          {userProfile.verification_status && 
+           userProfile.verification_status !== 'approved' && (
+            <VerificationBanner />
+          )}
+          
+          <main className="flex-1 overflow-auto bg-background">
+            <div className="container max-w-7xl mx-auto px-4 py-6">
+              {children}
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+    </SidebarProvider>
   );
 };
