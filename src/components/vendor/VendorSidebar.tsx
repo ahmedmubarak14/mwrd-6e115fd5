@@ -200,8 +200,9 @@ export const VendorSidebar = ({ className, collapsed = false, onToggle, onItemCl
   return (
     <div 
       className={cn(
-        "flex flex-col h-screen bg-card border-r border-border transition-all duration-300 shadow-sm fixed left-0 top-0 z-40",
+        "flex flex-col h-screen bg-card border-border transition-all duration-300 shadow-sm fixed top-0 z-40",
         collapsed ? "w-16" : "w-64",
+        isRTL ? "right-0 border-l" : "left-0 border-r",
         className
       )} 
       dir={isRTL ? 'rtl' : 'ltr'}

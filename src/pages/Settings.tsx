@@ -47,7 +47,7 @@ const SettingsPage = memo(() => {
       profileCompletion,
       activeNotifications,
       securityScore: userProfile?.verification_status === 'approved' ? 85 : 60,
-      lastUpdate: t('settingsPage.lastUpdated')
+      lastUpdate: t('settings.lastUpdated')
     };
   }, [userProfile, notifications, t]);
 
@@ -90,14 +90,14 @@ const SettingsPage = memo(() => {
     try {
       await updateProfile({ [field]: value });
       toast({
-        title: t('settingsPage.settingsSaved'),
-        description: t('settingsPage.notificationPrefsUpdated')
+        title: t('settings.settingsSaved'),
+        description: t('settings.notificationPrefsUpdated')
       });
     } catch (error) {
       console.error('Error updating profile:', error);
       toast({
         title: t('common.error'),
-        description: t('settingsPage.updateError'),
+        description: t('settings.updateError'),
         variant: "destructive"
       });
     } finally {
@@ -126,13 +126,13 @@ const SettingsPage = memo(() => {
         setNotifications(notifications);
         toast({
           title: t('common.error'),
-          description: t('settingsPage.notificationError'),
+          description: t('settings.notificationError'),
           variant: "destructive"
         });
       } else {
         toast({
-          title: t('settingsPage.settingsSaved'),
-          description: t('settingsPage.notificationPrefsUpdated')
+        title: t('settings.settingsSaved'),
+        description: t('settings.notificationPrefsUpdated')
         });
       }
     } catch (error) {
@@ -140,7 +140,7 @@ const SettingsPage = memo(() => {
       setNotifications(notifications);
       toast({
         title: t('common.error'),
-        description: t('settingsPage.notificationError'),
+        description: t('settings.notificationError'),
         variant: "destructive"
       });
     }
@@ -196,25 +196,25 @@ const SettingsPage = memo(() => {
         {/* Settings Overview Metrics */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
           <MetricCard
-            title={t('settingsPage.profileCompletion')}
+            title={t('settings.profileCompletion')}
             value={`${metrics.profileCompletion}%`}
             icon={User}
             variant={metrics.profileCompletion >= 75 ? "success" : "warning"}
           />
           <MetricCard
-            title={t('settingsPage.activeNotifications')}
+            title={t('settings.activeNotifications')}
             value={metrics.activeNotifications}
             icon={Bell}
-            description={t('settingsPage.enabledNotificationTypes')}
+            description={t('settings.enabledNotificationTypes')}
           />
           <MetricCard
-            title={t('settingsPage.securityScore')}
+            title={t('settings.securityScore')}
             value={`${metrics.securityScore}/100`}
             icon={Shield}
             variant={metrics.securityScore >= 80 ? "success" : "warning"}
           />
           <MetricCard
-            title={t('settingsPage.lastUpdated')}
+            title={t('settings.lastUpdated')}
             value={metrics.lastUpdate}
             icon={Clock}
           />
@@ -229,16 +229,16 @@ const SettingsPage = memo(() => {
                 isRTL && "flex-row-reverse"
               )}>
                 <Globe className="h-5 w-5" />
-                {t('settingsPage.languageAndRegion')}
+                {t('settings.languageAndRegion')}
               </CardTitle>
               <CardDescription>
-                {t('settingsPage.languageDescription')}
+                {t('settings.languageDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <Label>{t('settingsPage.language')}</Label>
+                  <Label>{t('settings.language')}</Label>
                   <Select value={language} onValueChange={setLanguage}>
                     <SelectTrigger className="w-full">
                       <SelectValue />
@@ -264,14 +264,14 @@ const SettingsPage = memo(() => {
                 {t('settings.notifications')}
               </CardTitle>
               <CardDescription>
-                {t('settingsPage.notificationsDescription')}
+                {t('settings.notificationsDescription')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>{t('settingsPage.emailNotifications')}</Label>
-                  <p className="text-sm text-muted-foreground">{t('settingsPage.emailNotificationsDesc')}</p>
+                  <Label>{t('settings.emailNotifications')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('settings.emailNotificationsDesc')}</p>
                 </div>
                 <Switch
                   checked={notifications.email}
@@ -282,8 +282,8 @@ const SettingsPage = memo(() => {
               
               <div className="flex items-center justify-between">
                 <div>
-                  <Label>{t('settingsPage.pushNotifications')}</Label>
-                  <p className="text-sm text-muted-foreground">{t('settingsPage.pushNotificationsDesc')}</p>
+                  <Label>{t('settings.pushNotifications')}</Label>
+                  <p className="text-sm text-muted-foreground">{t('settings.pushNotificationsDesc')}</p>
                 </div>
                 <Switch
                   checked={notifications.push}
