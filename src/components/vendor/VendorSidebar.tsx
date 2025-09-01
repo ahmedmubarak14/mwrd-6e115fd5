@@ -18,9 +18,9 @@ import {
   User,
   ChevronDown,
   ChevronRight,
-  Search,
-  Briefcase,
-  Building
+  CreditCard,
+  Shield,
+  Briefcase
 } from "lucide-react";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useAuth } from "@/contexts/AuthContext";
@@ -31,15 +31,15 @@ interface VendorSidebarProps {
   className?: string;
   collapsed?: boolean;
   onToggle?: () => void;
-  userRole?: 'client' | 'vendor' | 'admin';
   userProfile?: any;
+  userRole?: string;
   onItemClick?: () => void;
 }
 
 interface NavigationGroup {
   id: string;
   label: string;
-  priority: 'high' | 'medium' | 'low';
+  priority: 'primary' | 'secondary' | 'utility';
   items: {
     name: string;
     href: string;
@@ -49,14 +49,16 @@ interface NavigationGroup {
   }[];
 }
 
-export const VendorSidebar = ({ className, collapsed = false, userRole, onItemClick }: VendorSidebarProps) => {
+export const VendorSidebar = ({ className, collapsed = false, onToggle, userProfile, userRole, onItemClick }: VendorSidebarProps) => {
   const location = useLocation();
-  const { userProfile } = useAuth();
+  const { userProfile: authUserProfile } = useAuth();
   const languageContext = useOptionalLanguage();
   const { t, isRTL } = languageContext || { 
-    t: (key: string) => key.split('.').pop() || key, 
+    t: (key: string) => key, 
     isRTL: false 
   };
+
+  const currentUserProfile = userProfile || authUserProfile;
 
   // Track which groups are expanded with localStorage persistence
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(() => {
@@ -88,7 +90,7 @@ export const VendorSidebar = ({ className, collapsed = false, userRole, onItemCl
     {
       id: 'overview',
       label: t('vendorGroups.overview'),
-      priority: 'high',
+      priority: 'primary',
       items: [
         {
           name: t('nav.dashboard'),
@@ -97,7 +99,7 @@ export const VendorSidebar = ({ className, collapsed = false, userRole, onItemCl
         },
         {
           name: t('nav.analytics'),
-          href: "/analytics",
+          href: "/vendor/analytics",
           icon: BarChart3,
         },
       ]
@@ -105,21 +107,21 @@ export const VendorSidebar = ({ className, collapsed = false, userRole, onItemCl
     {
       id: 'workspace',
       label: t('vendorGroups.workspace'),
-      priority: 'high',
+      priority: 'primary',
       items: [
         {
           name: t('nav.browseRequests'),
           href: "/browse-requests",
-          icon: Search,
+          icon: FolderOpen,
         },
         {
           name: t('nav.myOffers'),
-          href: "/my-offers",
+          href: "/vendor/offers",
           icon: Package,
         },
         {
           name: t('nav.orders'),
-          href: "/orders",
+          href: "/vendor/orders",
           icon: ShoppingCart,
         },
         {
@@ -132,33 +134,38 @@ export const VendorSidebar = ({ className, collapsed = false, userRole, onItemCl
     {
       id: 'portfolio',
       label: t('vendorGroups.portfolio'),
-      priority: 'medium',
+      priority: 'secondary',
       items: [
         {
-          name: t('vendor.navigation.projectsManagement'),
-          href: "/vendor/projects-management",
-          icon: Building2,
+          name: t('vendor.projects.management'),
+          href: "/vendor/projects",
+          icon: Briefcase,
         },
         {
-          name: t('vendor.navigation.portfolioManagement'),
-          href: "/vendor/portfolio-management",
-          icon: Briefcase,
+          name: t('vendor.portfolio.management'),
+          href: "/vendor/portfolio",
+          icon: Building2,
         },
       ]
     },
     {
       id: 'account',
       label: t('vendorGroups.account'),
-      priority: 'low',
+      priority: 'utility',
       items: [
         {
           name: t('nav.profile'),
-          href: "/profile",
+          href: "/vendor/profile",
           icon: User,
         },
         {
+          name: t('vendor.cr.management'),
+          href: "/vendor/cr-management",
+          icon: Shield,
+        },
+        {
           name: t('nav.settings'),
-          href: "/settings",
+          href: "/vendor/settings",
           icon: Settings,
         },
         {
@@ -171,26 +178,21 @@ export const VendorSidebar = ({ className, collapsed = false, userRole, onItemCl
   ];
 
   const isActive = (path: string) => {
-    // Handle vendor dashboard special case
-    if (path === '/vendor/dashboard' && (location.pathname === '/vendor/dashboard' || location.pathname === '/vendor')) {
-      return true;
+    if (path === '/vendor/dashboard') {
+      return location.pathname === '/vendor/dashboard';
     }
-    // Handle vendor nested routes
-    if (path.startsWith('/vendor/')) {
-      return location.pathname === path;
-    }
-    return location.pathname === path;
+    return location.pathname === path || location.pathname.startsWith(path + '/');
   };
-  
+
   const isParentActive = (path: string) => location.pathname.startsWith(path) && path !== '/vendor/dashboard';
 
   const getGroupPriorityStyles = (priority: NavigationGroup['priority']) => {
     switch (priority) {
-      case 'high':
+      case 'primary':
         return "border-l-2 border-l-primary/20 bg-primary/5";
-      case 'medium':
+      case 'secondary':
         return "border-l-2 border-l-accent/20 bg-accent/5";
-      case 'low':
+      case 'utility':
         return "border-l-2 border-l-muted-foreground/20 bg-muted/50";
       default:
         return "";
@@ -200,16 +202,18 @@ export const VendorSidebar = ({ className, collapsed = false, userRole, onItemCl
   return (
     <div 
       className={cn(
-        "flex flex-col h-screen bg-card border-border transition-all duration-300 shadow-sm fixed top-0 z-50",
+        "flex flex-col h-screen bg-card border-r border-border transition-all duration-300 shadow-sm fixed left-0 top-0 z-40",
         collapsed ? "w-16" : "w-64",
-        isRTL ? "right-0 border-l" : "left-0 border-r",
         className
       )} 
       dir={isRTL ? 'rtl' : 'ltr'}
     >
-      {/* Sidebar Header - matches main header height */}
-      <div className="border-b border-border bg-card h-16 flex items-center">
-        <VendorUserProfile variant="sidebar" collapsed={collapsed} />
+      {/* Sidebar Header - User Profile */}
+      <div className="border-b border-border bg-card min-h-16 flex items-center">
+        <VendorUserProfile 
+          variant="sidebar" 
+          collapsed={collapsed}
+        />
       </div>
 
       {/* Navigation Content */}
@@ -238,30 +242,19 @@ export const VendorSidebar = ({ className, collapsed = false, userRole, onItemCl
                       "w-full justify-between px-3 py-2 h-auto font-medium",
                       "text-xs uppercase tracking-wider",
                       "text-muted-foreground hover:text-foreground hover:bg-accent/50",
-                      hasActiveItem && "text-primary font-semibold",
-                      isRTL && "flex-row-reverse"
+                      hasActiveItem && "text-primary font-semibold"
                     )}
-                    type="button"
                   >
-                    <span className={cn(
-                      "flex items-center gap-2",
-                      isRTL && "flex-row-reverse"
-                    )}>
+                    <span className="flex items-center gap-2">
                       <span>{group.label}</span>
                       {hasActiveItem && (
                         <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
                       )}
                     </span>
                     {isExpanded ? (
-                      <ChevronDown className={cn(
-                        "h-3 w-3 transition-transform duration-200",
-                        isRTL && "rotate-180"
-                      )} />
+                      <ChevronDown className="h-3 w-3 transition-transform duration-200" />
                     ) : (
-                      <ChevronRight className={cn(
-                        "h-3 w-3 transition-transform duration-200",
-                        isRTL && "rotate-180"
-                      )} />
+                      <ChevronRight className="h-3 w-3 transition-transform duration-200" />
                     )}
                   </Button>
                 )}
@@ -287,8 +280,7 @@ export const VendorSidebar = ({ className, collapsed = false, userRole, onItemCl
                           collapsed ? "justify-center px-2" : "justify-start",
                           active 
                             ? "bg-primary/10 text-primary border border-primary/20 shadow-sm" 
-                            : "text-muted-foreground hover:text-foreground hover:bg-accent/30",
-                          isRTL && "flex-row-reverse"
+                            : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
                         )}
                         title={collapsed ? item.name : undefined}
                         aria-label={`${t('nav.navigateTo')} ${item.name}`}
@@ -304,10 +296,7 @@ export const VendorSidebar = ({ className, collapsed = false, userRole, onItemCl
                         
                         {!collapsed && (
                           <>
-                            <span className={cn(
-                              "truncate flex-1 text-foreground",
-                              isRTL && "text-right"
-                            )}>
+                            <span className="truncate flex-1 text-foreground">
                               {item.name}
                             </span>
                             

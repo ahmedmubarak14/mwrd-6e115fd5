@@ -115,9 +115,6 @@ export const EnhancedVendorDashboard = () => {
 
   return (
     <div className={cn("space-y-8", isRTL && "rtl")}>
-      {/* Breadcrumbs */}
-      <VendorBreadcrumbs />
-      
       {/* Welcome Header */}
       <div>
         <h1 className="text-3xl font-bold text-foreground">
