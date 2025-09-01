@@ -58,7 +58,7 @@ export const VendorNotificationCenter = () => {
       id: '1',
       type: 'offer_accepted',
       title: t('vendor.notifications.offerAccepted'),
-      message: 'Your offer for Construction Project Alpha has been accepted!',
+      message: t('vendor.notifications.sampleMessage1') || 'Your offer for Construction Project Alpha has been accepted!',
       timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
       read: false,
       priority: 'high',
@@ -68,7 +68,7 @@ export const VendorNotificationCenter = () => {
       id: '2',
       type: 'new_request',
       title: t('vendor.notifications.newRequest'),
-      message: 'New procurement request matching your expertise in Engineering',
+      message: t('vendor.notifications.sampleMessage2') || 'New procurement request matching your expertise in Engineering',
       timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
       read: false,
       priority: 'medium',
@@ -78,7 +78,7 @@ export const VendorNotificationCenter = () => {
       id: '3',
       type: 'payment_received',
       title: t('vendor.notifications.paymentReceived'),
-      message: 'Payment of $15,000 received for Project Beta',
+      message: t('vendor.notifications.sampleMessage3') || 'Payment of $15,000 received for Project Beta',
       timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24), // 1 day ago
       read: true,
       priority: 'high',
@@ -88,7 +88,7 @@ export const VendorNotificationCenter = () => {
       id: '4',
       type: 'message',
       title: t('vendor.notifications.newMessage'),
-      message: 'You have 3 new messages from clients',
+      message: t('vendor.notifications.sampleMessage4') || 'You have 3 new messages from clients',
       timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2), // 2 days ago
       read: true,
       priority: 'medium',
@@ -98,7 +98,7 @@ export const VendorNotificationCenter = () => {
       id: '5',
       type: 'rating',
       title: t('vendor.notifications.newRating'),
-      message: 'You received a 5-star rating from ABC Construction',
+      message: t('vendor.notifications.sampleMessage5') || 'You received a 5-star rating from ABC Construction',
       timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3), // 3 days ago
       read: true,
       priority: 'low',
@@ -180,10 +180,10 @@ export const VendorNotificationCenter = () => {
               {t('vendor.notifications.title')}
             </h1>
             <p className="text-muted-foreground">
-                                  {unreadCount > 0 
-                                    ? `${unreadCount} unread notifications`
-                                    : 'All notifications read'
-                                  }
+                                   {unreadCount > 0 
+                                     ? t('vendor.notifications.unreadCount').replace('{count}', unreadCount.toString()) || `${unreadCount} unread notifications`
+                                     : t('vendor.notifications.allRead') || 'All notifications read'
+                                   }
             </p>
           </div>
         </div>

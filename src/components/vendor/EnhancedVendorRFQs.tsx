@@ -67,12 +67,11 @@ export const EnhancedVendorRFQs = () => {
     isRTL: false 
   };
 
-  // Mock RFQ data for demo
   const mockRFQs: RFQ[] = [
     {
       id: '1',
-      title: 'Construction Project - Office Building',
-      description: 'We need a construction company to build a 5-story office building in downtown area.',
+      title: t('vendor.rfqs.sampleRfq1Title') || 'Construction Project - Office Building',
+      description: t('vendor.rfqs.sampleRfq1Description') || 'We need a construction company to build a 5-story office building in downtown area.',
       budget_min: 500000,
       budget_max: 750000,
       currency: 'USD',
@@ -80,15 +79,19 @@ export const EnhancedVendorRFQs = () => {
       category: 'Construction',
       status: 'open',
       client_name: 'ABC Corporation',
-      requirements: ['Licensed contractor', 'Insurance coverage', '5+ years experience'],
+      requirements: [
+        t('vendor.rfqs.sampleRequirement1') || 'Licensed contractor', 
+        t('vendor.rfqs.sampleRequirement2') || 'Insurance coverage', 
+        t('vendor.rfqs.sampleRequirement3') || '5+ years experience'
+      ],
       created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
       responses_count: 12,
       my_response_status: 'none'
     },
     {
-      id: '2',
-      title: 'Engineering Services - Bridge Design',
-      description: 'Looking for structural engineering services for a new bridge project.',
+      id: '2', 
+      title: t('vendor.rfqs.sampleRfq2Title') || 'Engineering Services - Bridge Design',
+      description: t('vendor.rfqs.sampleRfq2Description') || 'Looking for structural engineering services for a new bridge project.',
       budget_min: 75000,
       budget_max: 100000,
       currency: 'USD',
@@ -96,15 +99,19 @@ export const EnhancedVendorRFQs = () => {
       category: 'Engineering',
       status: 'open',
       client_name: 'City Planning Department',
-      requirements: ['PE license required', 'Bridge design experience', 'CAD proficiency'],
+      requirements: [
+        t('vendor.rfqs.sampleRequirement4') || 'PE license required', 
+        t('vendor.rfqs.sampleRequirement5') || 'Bridge design experience', 
+        t('vendor.rfqs.sampleRequirement6') || 'CAD proficiency'
+      ],
       created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
       responses_count: 8,
       my_response_status: 'submitted'
     },
     {
       id: '3',
-      title: 'IT Consulting - System Upgrade',
-      description: 'Need IT consulting services for upgrading our legacy systems.',
+      title: t('vendor.rfqs.sampleRfq3Title') || 'IT Consulting - System Upgrade',
+      description: t('vendor.rfqs.sampleRfq3Description') || 'Need IT consulting services for upgrading our legacy systems.',
       budget_min: 25000,
       budget_max: 40000,
       currency: 'USD',
@@ -112,15 +119,19 @@ export const EnhancedVendorRFQs = () => {
       category: 'Technology',
       status: 'open',
       client_name: 'TechCorp Industries',
-      requirements: ['Certified consultants', 'Legacy system experience', 'Available for on-site work'],
+      requirements: [
+        t('vendor.rfqs.sampleRequirement7') || 'Certified consultants', 
+        t('vendor.rfqs.sampleRequirement8') || 'Legacy system experience', 
+        t('vendor.rfqs.sampleRequirement9') || 'Available for on-site work'
+      ],
       created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
       responses_count: 15,
       my_response_status: 'none'
     },
     {
       id: '4',
-      title: 'Marketing Campaign - Product Launch',
-      description: 'Seeking creative agency for comprehensive marketing campaign.',
+      title: t('vendor.rfqs.sampleRfq4Title') || 'Marketing Campaign - Product Launch',
+      description: t('vendor.rfqs.sampleRfq4Description') || 'Seeking creative agency for comprehensive marketing campaign.',
       budget_min: 50000,
       budget_max: 80000,
       currency: 'USD',
@@ -128,7 +139,11 @@ export const EnhancedVendorRFQs = () => {
       category: 'Marketing',
       status: 'closed',
       client_name: 'Innovation Startup',
-      requirements: ['Portfolio of successful campaigns', 'Digital marketing expertise', 'Brand development'],
+      requirements: [
+        t('vendor.rfqs.sampleRequirement10') || 'Portfolio of successful campaigns', 
+        t('vendor.rfqs.sampleRequirement11') || 'Digital marketing expertise', 
+        t('vendor.rfqs.sampleRequirement12') || 'Brand development'
+      ],
       created_at: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000), // 10 days ago
       responses_count: 22,
       my_response_status: 'rejected'

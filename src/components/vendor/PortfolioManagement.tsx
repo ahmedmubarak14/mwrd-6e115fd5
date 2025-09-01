@@ -29,42 +29,43 @@ interface Project {
   images: string[];
 }
 
-// Mock data - replace with actual data from hooks
-const mockProjects: Project[] = [
-  {
-    id: '1',
-    title: 'Commercial Building Construction',
-    description: 'Complete construction of a 10-story commercial building in downtown Riyadh',
-    client: 'Al-Rajhi Company',
-    location: 'Riyadh, Saudi Arabia',
-    value: 5000000,
-    completedDate: '2024-01-15',
-    status: 'completed',
-    category: 'Construction',
-    images: ['/lovable-uploads/af2b3169-fe97-4bcd-b685-1ebacc0453de.png']
-  },
-  {
-    id: '2',
-    title: 'Hospital Interior Design',
-    description: 'Interior design and furniture for King Faisal Specialist Hospital',
-    client: 'Ministry of Health',
-    location: 'Jeddah, Saudi Arabia',
-    value: 2500000,
-    completedDate: '2024-03-20',
-    status: 'completed',
-    category: 'Interior Design',
-    images: ['/lovable-uploads/c18ac1e0-584d-4883-aaa4-4ef9d5a17d85.png']
-  }
-];
-
 const PortfolioManagementContent = React.memo(() => {
-  const [projects, setProjects] = useState<Project[]>(mockProjects);
   const languageContext = useOptionalLanguage();
   const { t, isRTL, formatCurrency } = languageContext || { 
     t: (key: string) => key.split('.').pop() || key, 
     isRTL: false,
     formatCurrency: (amount: number) => `${amount.toLocaleString()} SAR`
   };
+
+  // Mock data - replace with actual data from hooks
+  const mockProjects: Project[] = [
+    {
+      id: '1',
+      title: t('vendor.portfolio.sampleProject1Title') || 'Commercial Building Construction',
+      description: t('vendor.portfolio.sampleProject1Description') || 'Complete construction of a 10-story commercial building in downtown Riyadh',
+      client: 'Al-Rajhi Company',
+      location: 'Riyadh, Saudi Arabia',
+      value: 5000000,
+      completedDate: '2024-01-15',
+      status: 'completed',
+      category: 'Construction',
+      images: ['/lovable-uploads/af2b3169-fe97-4bcd-b685-1ebacc0453de.png']
+    },
+    {
+      id: '2',
+      title: t('vendor.portfolio.sampleProject2Title') || 'Hospital Interior Design',
+      description: t('vendor.portfolio.sampleProject2Description') || 'Interior design and furniture for King Faisal Specialist Hospital',
+      client: 'Ministry of Health',
+      location: 'Jeddah, Saudi Arabia',
+      value: 2500000,
+      completedDate: '2024-03-20',
+      status: 'completed',
+      category: 'Interior Design',
+      images: ['/lovable-uploads/c18ac1e0-584d-4883-aaa4-4ef9d5a17d85.png']
+    }
+  ];
+
+  const [projects, setProjects] = useState<Project[]>(mockProjects);
 
   const getStatusColor = (status: Project['status']) => {
     switch (status) {
