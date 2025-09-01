@@ -305,23 +305,23 @@ export const VendorReports = () => {
                 <CardDescription>{t('vendor.reports.revenueTrendDesc')}</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-80">
-                  <RechartsResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={reportData.revenue}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="date" />
-                      <YAxis />
-                      <Tooltip />
-                      <Area 
-                        type="monotone" 
-                        dataKey="revenue" 
-                        stroke="#8884d8" 
-                        fill="#8884d8" 
-                        fillOpacity={0.3}
-                      />
-                    </AreaChart>
-                  </RechartsResponsiveContainer>
-                </div>
+      <div className="h-80">
+        <RechartsResponsiveContainer width="100%" height="100%">
+          <AreaChart data={reportData.revenue}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Area 
+              type="monotone" 
+              dataKey="revenue" 
+              stroke="hsl(var(--primary))" 
+              fill="hsl(var(--primary))" 
+              fillOpacity={0.3}
+            />
+          </AreaChart>
+        </RechartsResponsiveContainer>
+      </div>
               </CardContent>
             </Card>
 
@@ -331,17 +331,17 @@ export const VendorReports = () => {
                 <CardDescription>{t('vendor.reports.orderVolumeDesc')}</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-64">
-                  <RechartsResponsiveContainer width="100%" height="100%">
-                    <BarChart data={reportData.revenue}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="date" />
-                      <YAxis />
-                      <Tooltip />
-                      <Bar dataKey="orders" fill="#82ca9d" />
-                    </BarChart>
-                  </RechartsResponsiveContainer>
-                </div>
+      <div className="h-64">
+        <RechartsResponsiveContainer width="100%" height="100%">
+          <BarChart data={reportData.revenue}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="orders" fill="hsl(var(--secondary))" />
+          </BarChart>
+        </RechartsResponsiveContainer>
+      </div>
               </CardContent>
             </Card>
           </TabsContent>
