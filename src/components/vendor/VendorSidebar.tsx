@@ -209,7 +209,10 @@ export const VendorSidebar = ({ onItemClick }: Pick<VendorSidebarProps, 'onItemC
   };
 
   return (
-    <Sidebar className="border-r">
+    <Sidebar 
+      side={isRTL ? "right" : "left"}
+      className="border-r"
+    >
       {/* Sidebar Header - User Profile */}
       <div className="border-b border-border bg-card min-h-16 flex items-center px-4">
         <VendorUserProfile 

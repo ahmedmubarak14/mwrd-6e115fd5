@@ -56,7 +56,7 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
         localStorage.setItem('vendorSidebarOpen', JSON.stringify(open));
       }}
     >
-      <div className={cn("min-h-screen flex w-full", isRTL && "rtl")}>
+      <div className="min-h-screen flex w-full" dir={isRTL ? 'rtl' : 'ltr'}>
         {!isMobile && <VendorSidebar />}
         
         <VendorMobileSidebar
@@ -80,20 +80,8 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
             <VerificationBanner />
           )}
           
-          <div 
-            className={cn(
-              "flex-1 overflow-auto bg-muted/20 p-6",
-              isRTL && "text-right"
-            )}
-            dir={isRTL ? 'rtl' : 'ltr'}
-          >
-            <div 
-              className={cn(
-                "max-w-7xl mx-auto",
-                isRTL && "text-right"
-              )}
-              dir={isRTL ? 'rtl' : 'ltr'}
-            >
+          <div className="flex-1 overflow-auto bg-muted/20 p-6">
+            <div className="max-w-7xl mx-auto">
               {children}
             </div>
           </div>
