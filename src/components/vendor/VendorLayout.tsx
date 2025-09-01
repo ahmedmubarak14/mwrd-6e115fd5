@@ -56,6 +56,11 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
       <div className="min-h-screen flex w-full" dir={isRTL ? 'rtl' : 'ltr'}>
         <VendorSidebar 
           collapsed={!sidebarOpen}
+          onToggle={() => {
+            const newState = !sidebarOpen;
+            setSidebarOpen(newState);
+            localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
+          }}
         />
         <div 
           className={cn(
