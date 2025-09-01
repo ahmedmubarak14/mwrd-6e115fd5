@@ -11,6 +11,8 @@ export interface VendorCRData {
   coverage_locations?: string[];
   equipment?: string[];
   certifications?: string[];
+  cr_document_url?: string;
+  verification_status?: string;
 }
 
 export const useVendorCR = () => {

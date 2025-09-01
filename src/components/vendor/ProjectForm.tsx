@@ -83,6 +83,7 @@ export const ProjectForm = ({ project, onClose }: ProjectFormProps) => {
         ...formData,
         project_value: formData.project_value ? parseFloat(formData.project_value) : undefined,
         contract_value: formData.contract_value ? parseFloat(formData.contract_value) : undefined,
+        status: 'active',
       };
 
       if (project) {

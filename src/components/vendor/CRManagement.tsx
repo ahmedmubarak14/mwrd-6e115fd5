@@ -116,7 +116,7 @@ export const CRManagement = () => {
 
   const handleSubmitForVerification = async () => {
     try {
-      await submitForVerification();
+      await updateCRData({ verification_status: 'pending' });
       toast({
         title: t('common.success'),
         description: t('vendor.verification.submitForReview'),
@@ -172,7 +172,7 @@ export const CRManagement = () => {
             {userProfile?.verification_status === 'rejected' && 
               'Your account was rejected. Please review the feedback and resubmit.'
             }
-            {(!userProfile?.verification_status || userProfile?.verification_status === 'unverified') && 
+            {(!userProfile?.verification_status || userProfile?.verification_status === 'under_review') && 
               'Please complete your business profile and verification to get approved.'
             }
           </CardDescription>
