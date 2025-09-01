@@ -1,7 +1,9 @@
+import React, { useState, useMemo } from "react";
 import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
-import { useState, useMemo, useEffect } from "react";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { useRFQs, RFQ } from "@/hooks/useRFQs";
+import { VendorBreadcrumbs } from "@/components/vendor/VendorBreadcrumbs";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useRFQs } from "@/hooks/useRFQs";
 import { useBids } from "@/hooks/useBids";
 import { useCategories } from "@/hooks/useCategories";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
@@ -24,13 +26,19 @@ import {
   TrendingUp,
   Eye,
   Send,
-  DollarSign,
-  Users
+  DollarSign
 } from "lucide-react";
 import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
-const VendorRFQs = () => {
-  const { t } = useLanguage();
+const VendorRFQsContent = React.memo(() => {
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL, formatCurrency } = languageContext || {
+    t: (key: string) => key.split('.').pop() || key,
+    isRTL: false,
+    formatCurrency: (amount: number) => `${amount.toLocaleString()} SAR`
+  };
+
   const { rfqs, loading: rfqsLoading } = useRFQs();
   const { bids, loading: bidsLoading } = useBids();
   const { categories, loading: categoriesLoading } = useCategories();
@@ -97,6 +105,26 @@ const VendorRFQs = () => {
 
   const loading = rfqsLoading || bidsLoading || categoriesLoading;
 
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'urgent': return 'destructive';
+      case 'high': return 'destructive';
+      case 'medium': return 'default';
+      case 'low': return 'secondary';
+      default: return 'default';
+    }
+  };
+
+  const getPriorityLabel = (priority: string) => {
+    switch (priority) {
+      case 'urgent': return t('vendor.rfqs.urgent');
+      case 'high': return t('vendor.rfqs.high');
+      case 'medium': return t('vendor.rfqs.medium');
+      case 'low': return t('vendor.rfqs.low');
+      default: return priority;
+    }
+  };
+
   if (loading) {
     return (
       <ClientPageContainer>
@@ -114,45 +142,44 @@ const VendorRFQs = () => {
     );
   }
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'urgent': return 'destructive';
-      case 'high': return 'destructive';
-      case 'medium': return 'default';
-      case 'low': return 'secondary';
-      default: return 'default';
-    }
-  };
-
   return (
-    <ClientPageContainer
-      title="Available RFQs"
-      description="Browse and submit bids for Request for Quotations"
-    >
+    <div className={cn("space-y-6", isRTL && "rtl")} dir={isRTL ? 'rtl' : 'ltr'}>
+      {/* Breadcrumbs */}
+      <VendorBreadcrumbs />
+
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
+          {t('vendor.rfqs.availableRFQs')}
+        </h1>
+        <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
+          {t('vendor.rfqs.browseRFQs')}
+        </p>
+      </div>
 
       {/* Metrics */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
         <MetricCard
-          title="Available RFQs"
+          title={t('vendor.rfqs.totalRFQs')}
           value={metrics.total}
           icon={FileText}
-          trend={{ value: 15, label: "vs last month", isPositive: true }}
+          trend={{ value: 15, label: t('vendor.rfqs.vsLastMonth'), isPositive: true }}
         />
         <MetricCard
-          title="New This Week"
+          title={t('vendor.rfqs.newThisWeek')}
           value={metrics.newThisWeek}
           icon={TrendingUp}
-          trend={{ value: 5, label: "this week", isPositive: true }}
+          trend={{ value: 5, label: t('vendor.rfqs.thisWeek'), isPositive: true }}
           variant="success"
         />
         <MetricCard
-          title="High Priority"
+          title={t('vendor.rfqs.highPriority')}
           value={metrics.highPriority}
           icon={AlertCircle}
           variant="warning"
         />
         <MetricCard
-          title="Bids Submitted"
+          title={t('vendor.rfqs.bidsSubmitted')}
           value={metrics.submitted}
           icon={Send}
           variant="default"
@@ -162,45 +189,53 @@ const VendorRFQs = () => {
       {/* Filters */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className={cn(
+            "flex items-center gap-2",
+            isRTL && "flex-row-reverse"
+          )}>
             <Filter className="h-5 w-5" />
-            Filters & Search
+            {t('vendor.rfqs.filtersSearch')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+          <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4 rtl:md:space-x-reverse">
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Search className={cn(
+                  "absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground",
+                  isRTL ? "right-3" : "left-3"
+                )} />
                 <Input
-                  placeholder="Search RFQs..."
+                  placeholder={t('vendor.rfqs.searchRFQs')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className={cn(
+                    isRTL ? "pr-10 text-right" : "pl-10"
+                  )}
                 />
               </div>
             </div>
             
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-full md:w-48">
-                <SelectValue placeholder="Filter by status" />
+                <SelectValue placeholder={t('vendor.rfqs.filterByStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All RFQs</SelectItem>
-                <SelectItem value="available">Available to Bid</SelectItem>
-                <SelectItem value="submitted">Already Submitted</SelectItem>
+                <SelectItem value="all">{t('vendor.rfqs.allRFQs')}</SelectItem>
+                <SelectItem value="available">{t('vendor.rfqs.availableToBid')}</SelectItem>
+                <SelectItem value="submitted">{t('vendor.rfqs.alreadySubmitted')}</SelectItem>
               </SelectContent>
             </Select>
 
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
               <SelectTrigger className="w-full md:w-48">
-                <SelectValue placeholder="Filter by category" />
+                <SelectValue placeholder={t('vendor.rfqs.filterByCategory')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
+                <SelectItem value="all">{t('vendor.rfqs.allCategories')}</SelectItem>
                 {categories.map((category) => (
                   <SelectItem key={category.id} value={category.id}>
-                    {category.name_en}
+                    {isRTL ? category.name_ar : category.name_en}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -208,8 +243,15 @@ const VendorRFQs = () => {
           </div>
 
           {(searchTerm || statusFilter !== "all" || categoryFilter !== "all") && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>Showing {filteredRFQs.length} of {metrics.total} RFQs</span>
+            <div className={cn(
+              "flex items-center gap-2 text-sm text-muted-foreground",
+              isRTL && "flex-row-reverse"
+            )}>
+              <span>
+                {t('vendor.rfqs.showingResults')
+                  .replace('{0}', filteredRFQs.length.toString())
+                  .replace('{1}', metrics.total.toString())}
+              </span>
               <Button
                 variant="ghost"
                 size="sm"
@@ -219,7 +261,7 @@ const VendorRFQs = () => {
                   setCategoryFilter("all");
                 }}
               >
-                Clear filters
+                {t('vendor.rfqs.clearFilters')}
               </Button>
             </div>
           )}
@@ -233,17 +275,26 @@ const VendorRFQs = () => {
             <Card key={rfq.id} className="hover:shadow-lg transition-shadow">
               <CardContent className="p-6">
                 <div className="space-y-4">
-                  <div className="flex justify-between items-start">
+                  <div className={cn(
+                    "flex justify-between items-start",
+                    isRTL && "flex-row-reverse"
+                  )}>
                     <div className="flex-1">
-                      <div className="flex items-start justify-between mb-2">
+                      <div className={cn(
+                        "flex items-start justify-between mb-2",
+                        isRTL && "flex-row-reverse"
+                      )}>
                         <h3 className="text-lg font-semibold">{rfq.title}</h3>
-                        <div className="flex gap-2">
+                        <div className={cn(
+                          "flex gap-2",
+                          isRTL && "flex-row-reverse"
+                        )}>
                           <Badge variant={getPriorityColor(rfq.priority) as any}>
-                            {rfq.priority}
+                            {getPriorityLabel(rfq.priority)}
                           </Badge>
                           {rfq.hasBid && (
                             <Badge variant="outline" className="text-success border-success">
-                              Bid Submitted
+                              {t('vendor.rfqs.bidAlreadySubmitted')}
                             </Badge>
                           )}
                         </div>
@@ -256,12 +307,12 @@ const VendorRFQs = () => {
                     <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                       <DollarSign className="h-4 w-4 text-green-500" />
                       <div>
-                        <p className="text-xs text-muted-foreground">Budget</p>
+                        <p className="text-xs text-muted-foreground">{t('vendor.rfqs.budget')}</p>
                         <p className="font-semibold text-sm">
                           {rfq.budget_min && rfq.budget_max 
-                            ? `${rfq.budget_min.toLocaleString()} - ${rfq.budget_max.toLocaleString()}`
-                            : 'Negotiable'
-                          } {rfq.currency}
+                            ? `${formatCurrency(rfq.budget_min)} - ${formatCurrency(rfq.budget_max)}`
+                            : t('vendor.rfqs.negotiable')
+                          }
                         </p>
                       </div>
                     </div>
@@ -269,7 +320,7 @@ const VendorRFQs = () => {
                     <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                       <Calendar className="h-4 w-4 text-blue-500" />
                       <div>
-                        <p className="text-xs text-muted-foreground">Deadline</p>
+                        <p className="text-xs text-muted-foreground">{t('vendor.rfqs.deadline')}</p>
                         <p className="font-semibold text-sm">
                           {format(new Date(rfq.submission_deadline), 'MMM dd, yyyy')}
                         </p>
@@ -279,15 +330,15 @@ const VendorRFQs = () => {
                     <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                       <MapPin className="h-4 w-4 text-orange-500" />
                       <div>
-                        <p className="text-xs text-muted-foreground">Location</p>
-                        <p className="font-semibold text-sm">{rfq.delivery_location || 'Not specified'}</p>
+                        <p className="text-xs text-muted-foreground">{t('vendor.rfqs.location')}</p>
+                        <p className="font-semibold text-sm">{rfq.delivery_location || t('vendor.rfqs.notSpecified')}</p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                       <Clock className="h-4 w-4 text-purple-500" />
                       <div>
-                        <p className="text-xs text-muted-foreground">Posted</p>
+                        <p className="text-xs text-muted-foreground">{t('vendor.rfqs.posted')}</p>
                         <p className="font-semibold text-sm">
                           {format(new Date(rfq.created_at), 'MMM dd')}
                         </p>
@@ -295,23 +346,35 @@ const VendorRFQs = () => {
                     </div>
                   </div>
                   
-                  <div className="flex gap-2 pt-2">
+                  <div className={cn(
+                    "flex gap-2 pt-2",
+                    isRTL && "flex-row-reverse"
+                  )}>
                     {!rfq.hasBid ? (
                       <BidSubmissionModal rfq={rfq}>
-                        <Button className="flex-1 gap-2">
+                        <Button className={cn(
+                          "flex-1 gap-2",
+                          isRTL && "flex-row-reverse"
+                        )}>
                           <Send className="h-4 w-4" />
-                          Submit Bid
+                          {t('vendor.rfqs.submitBid')}
                         </Button>
                       </BidSubmissionModal>
                     ) : (
-                      <Button variant="outline" className="flex-1 gap-2" disabled>
+                      <Button variant="outline" className={cn(
+                        "flex-1 gap-2",
+                        isRTL && "flex-row-reverse"
+                      )} disabled>
                         <Send className="h-4 w-4" />
-                        Bid Already Submitted
+                        {t('vendor.rfqs.bidAlreadySubmitted')}
                       </Button>
                     )}
-                    <Button variant="outline" className="gap-2">
+                    <Button variant="outline" className={cn(
+                      "gap-2",
+                      isRTL && "flex-row-reverse"
+                    )}>
                       <Eye className="h-4 w-4" />
-                      View Details
+                      {t('vendor.rfqs.viewDetails')}
                     </Button>
                   </div>
                 </div>
@@ -328,15 +391,15 @@ const VendorRFQs = () => {
             
             <h3 className="text-xl font-semibold text-foreground mb-2">
               {searchTerm || statusFilter !== "all" || categoryFilter !== "all" 
-                ? "No RFQs found" 
-                : "No Available RFQs"
+                ? t('vendor.rfqs.noRFQsFound')
+                : t('vendor.rfqs.noAvailableRFQs')
               }
             </h3>
             
             <p className="text-muted-foreground mb-6 max-w-md mx-auto">
               {searchTerm || statusFilter !== "all" || categoryFilter !== "all"
-                ? "Try adjusting your search criteria or filters to find available RFQs" 
-                : "There are currently no published RFQs available for bidding. Check back later for new opportunities."
+                ? t('vendor.rfqs.adjustCriteria')
+                : t('vendor.rfqs.checkBackLater')
               }
             </p>
 
@@ -348,17 +411,32 @@ const VendorRFQs = () => {
                   setStatusFilter("all");
                   setCategoryFilter("all");
                 }}
-                className="gap-2"
+                className={cn(
+                  "gap-2",
+                  isRTL && "flex-row-reverse"
+                )}
               >
                 <Package className="h-4 w-4" />
-                Clear Filters
+                {t('vendor.rfqs.clearFilters')}
               </Button>
             )}
           </CardContent>
         </Card>
       )}
+    </div>
+  );
+});
+
+VendorRFQsContent.displayName = "VendorRFQsContent";
+
+const VendorRFQs = () => {
+  return (
+    <ClientPageContainer>
+      <ErrorBoundary>
+        <VendorRFQsContent />
+      </ErrorBoundary>
     </ClientPageContainer>
   );
 };
 
-export default VendorRFQs;
+export default React.memo(VendorRFQs);

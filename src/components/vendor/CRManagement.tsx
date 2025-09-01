@@ -1,4 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { VendorBreadcrumbs } from "@/components/vendor/VendorBreadcrumbs";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useVendorCR } from "@/hooks/useVendorCR";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
@@ -20,13 +22,15 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const CRManagement = () => {
+const CRManagementContent = React.memo(() => {
   const { userProfile } = useAuth();
   const { crData, loading, updateCRData, uploadCRDocument } = useVendorCR();
   const languageContext = useOptionalLanguage();
   const { toast } = useToast();
-  const { isRTL } = languageContext || { isRTL: false };
-  const t = languageContext?.t || ((key: string) => key);
+  const { isRTL, t } = languageContext || { 
+    isRTL: false,
+    t: (key: string) => key.split('.').pop() || key
+  };
   
   const [formData, setFormData] = useState({
     business_size: crData?.business_size || '',
@@ -141,13 +145,16 @@ export const CRManagement = () => {
   const statusInfo = getStatusInfo(userProfile?.verification_status || 'unverified');
 
   return (
-    <div className={cn("space-y-6", isRTL && "rtl")}>
+    <div className={cn("space-y-6", isRTL && "rtl")} dir={isRTL ? 'rtl' : 'ltr'}>
+      {/* Breadcrumbs */}
+      <VendorBreadcrumbs />
+
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-foreground">
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
           {t('vendor.cr.title')}
         </h1>
-        <p className="text-muted-foreground mt-2">
+        <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
           {t('vendor.cr.verificationRequired')}
         </p>
       </div>
@@ -155,7 +162,10 @@ export const CRManagement = () => {
       {/* Status Card */}
       <Card className={cn("border-l-4", statusInfo.color)}>
         <CardHeader>
-          <CardTitle className="flex items-center space-x-3 rtl:space-x-reverse">
+          <CardTitle className={cn(
+            "flex items-center space-x-3",
+            isRTL && "space-x-reverse"
+          )}>
             {statusInfo.icon}
             <span>{t('vendor.cr.status')}</span>
             <Badge variant="outline" className={statusInfo.color}>
@@ -164,16 +174,16 @@ export const CRManagement = () => {
           </CardTitle>
           <CardDescription>
             {userProfile?.verification_status === 'approved' && 
-              'Your account is verified and you have full platform access.'
+              t('vendor.cr.statusApproved')
             }
             {userProfile?.verification_status === 'pending' && 
-              'Your account is under review. This typically takes 24-48 hours.'
+              t('vendor.cr.statusPending')
             }
             {userProfile?.verification_status === 'rejected' && 
-              'Your account was rejected. Please review the feedback and resubmit.'
+              t('vendor.cr.statusRejected')
             }
             {(!userProfile?.verification_status || userProfile?.verification_status === 'under_review') && 
-              'Please complete your business profile and verification to get approved.'
+              t('vendor.cr.statusDefault')
             }
           </CardDescription>
         </CardHeader>
@@ -182,7 +192,10 @@ export const CRManagement = () => {
       {/* CR Information Form */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2 rtl:space-x-reverse">
+          <CardTitle className={cn(
+            "flex items-center space-x-2",
+            isRTL && "space-x-reverse"
+          )}>
             <Building className="h-5 w-5" />
             <span>{t('vendor.profile.businessInfo')}</span>
           </CardTitle>
@@ -193,10 +206,10 @@ export const CRManagement = () => {
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="business_size">Business Size</Label>
+              <Label htmlFor="business_size">{t('vendor.cr.businessSize')}</Label>
               <Input
                 id="business_size"
-                placeholder="Small/Medium/Large"
+                placeholder={t('vendor.cr.smallMediumLarge')}
                 value={formData.business_size}
                 onChange={(e) => handleInputChange('business_size', e.target.value)}
                 className={isRTL ? "text-right" : ""}
@@ -204,9 +217,12 @@ export const CRManagement = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="established_year" className="flex items-center space-x-2 rtl:space-x-reverse">
+              <Label htmlFor="established_year" className={cn(
+                "flex items-center space-x-2",
+                isRTL && "space-x-reverse"
+              )}>
                 <Calendar className="h-4 w-4" />
-                <span>Established Year</span>
+                <span>{t('vendor.cr.establishedYear')}</span>
               </Label>
               <Input
                 id="established_year"
@@ -219,7 +235,7 @@ export const CRManagement = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="experience_years">Experience Years</Label>
+              <Label htmlFor="experience_years">{t('vendor.cr.experienceYears')}</Label>
               <Input
                 id="experience_years"
                 type="number"
@@ -231,10 +247,10 @@ export const CRManagement = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="employee_count">Employee Count</Label>
+              <Label htmlFor="employee_count">{t('vendor.cr.employeeCount')}</Label>
               <Input
                 id="employee_count"
-                placeholder="1-10 / 10-50 / 50+"
+                placeholder={t('vendor.cr.oneToTenEmployees')}
                 value={formData.employee_count}
                 onChange={(e) => handleInputChange('employee_count', e.target.value)}
                 className={isRTL ? "text-right" : ""}
@@ -243,17 +259,24 @@ export const CRManagement = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="team_size">Team Size</Label>
+            <Label htmlFor="team_size">{t('vendor.cr.teamSize')}</Label>
             <Input
               id="team_size"
-              placeholder="Small team / Large team"
+              placeholder={t('vendor.cr.smallLargeTeam')}
               value={formData.team_size}
               onChange={(e) => handleInputChange('team_size', e.target.value)}
               className={isRTL ? "text-right" : ""}
             />
           </div>
 
-          <Button onClick={handleSave} disabled={loading}>
+          <Button 
+            onClick={handleSave} 
+            disabled={loading}
+            className={cn(
+              "gap-2",
+              isRTL && "flex-row-reverse"
+            )}
+          >
             {loading ? <LoadingSpinner size="sm" /> : null}
             {t('common.save')}
           </Button>
@@ -263,22 +286,25 @@ export const CRManagement = () => {
       {/* Document Upload */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2 rtl:space-x-reverse">
+          <CardTitle className={cn(
+            "flex items-center space-x-2",
+            isRTL && "space-x-reverse"
+          )}>
             <FileText className="h-5 w-5" />
-            <span>{t('vendor.cr.upload')}</span>
+            <span>{t('vendor.cr.businessDocuments')}</span>
           </CardTitle>
           <CardDescription>
-            Upload your commercial registration and business license documents
+            {t('vendor.cr.upload')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-4">
             <div>
-              <Label>Business Documents</Label>
+              <Label>{t('vendor.cr.businessDocuments')}</Label>
               <div className="mt-2 p-4 border-2 border-dashed border-muted-foreground/25 rounded-lg text-center">
                 <FileText className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
                 <p className="text-sm text-muted-foreground">
-                  Document upload functionality will be available soon
+                  {t('vendor.cr.documentUpload')}
                 </p>
               </div>
             </div>
@@ -287,4 +313,16 @@ export const CRManagement = () => {
       </Card>
     </div>
   );
-};
+});
+
+CRManagementContent.displayName = "CRManagementContent";
+
+export const CRManagement = React.memo(() => {
+  return (
+    <ErrorBoundary>
+      <CRManagementContent />
+    </ErrorBoundary>
+  );
+});
+
+CRManagement.displayName = "CRManagement";

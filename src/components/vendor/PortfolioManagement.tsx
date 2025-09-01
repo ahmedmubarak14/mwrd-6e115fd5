@@ -1,4 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { VendorBreadcrumbs } from "@/components/vendor/VendorBreadcrumbs";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -56,7 +58,7 @@ const mockProjects: Project[] = [
   }
 ];
 
-export const PortfolioManagement = () => {
+const PortfolioManagementContent = React.memo(() => {
   const [projects, setProjects] = useState<Project[]>(mockProjects);
   const languageContext = useOptionalLanguage();
   const { t, isRTL, formatCurrency } = languageContext || { 
@@ -68,51 +70,60 @@ export const PortfolioManagement = () => {
   const getStatusColor = (status: Project['status']) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-800 border-green-200';
+        return 'bg-success/10 text-success border-success/20';
       case 'in-progress':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
+        return 'bg-primary/10 text-primary border-primary/20';
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+        return 'bg-warning/10 text-warning border-warning/20';
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return 'bg-muted/10 text-muted-foreground border-muted/20';
+    }
+  };
+
+  const getStatusLabel = (status: Project['status']) => {
+    switch (status) {
+      case 'completed':
+        return t('vendor.portfolio.completed');
+      case 'in-progress':
+        return t('vendor.portfolio.inProgress');
+      case 'pending':
+        return t('vendor.portfolio.pending');
+      default:
+        return status;
     }
   };
 
   const handleAddProject = () => {
-    // Handle add project logic
     console.log('Add new project');
   };
 
   const handleEditProject = (projectId: string) => {
-    // Handle edit project logic
     console.log('Edit project:', projectId);
   };
 
   const handleDeleteProject = (projectId: string) => {
-    // Handle delete project logic
     setProjects(projects.filter(p => p.id !== projectId));
   };
 
   const handleViewProject = (projectId: string) => {
-    // Handle view project logic
     console.log('View project:', projectId);
   };
 
   return (
-    <div className={cn(
-      "container mx-auto p-6 space-y-6",
-      isRTL && "rtl"
-    )}>
+    <div className={cn("space-y-6", isRTL && "rtl")} dir={isRTL ? 'rtl' : 'ltr'}>
+      {/* Breadcrumbs */}
+      <VendorBreadcrumbs />
+
       {/* Header */}
       <div className={cn(
         "flex items-center justify-between",
         isRTL && "flex-row-reverse"
       )}>
         <div>
-          <h1 className="text-3xl font-bold text-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
             {t('vendor.portfolio.title')}
           </h1>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
             {t('vendor.portfolio.description')}
           </p>
         </div>
@@ -137,7 +148,13 @@ export const PortfolioManagement = () => {
               <h3 className="text-lg font-semibold">{t('vendor.portfolio.noProjects')}</h3>
               <p className="text-muted-foreground">{t('vendor.portfolio.addFirstProject')}</p>
             </div>
-            <Button onClick={handleAddProject} className="gap-2">
+            <Button 
+              onClick={handleAddProject} 
+              className={cn(
+                "gap-2",
+                isRTL && "flex-row-reverse"
+              )}
+            >
               <Plus className="h-4 w-4" />
               {t('vendor.portfolio.addProject')}
             </Button>
@@ -157,11 +174,12 @@ export const PortfolioManagement = () => {
                   />
                   <Badge 
                     className={cn(
-                      "absolute top-3 left-3",
+                      "absolute top-3",
+                      isRTL ? "right-3" : "left-3",
                       getStatusColor(project.status)
                     )}
                   >
-                    {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
+                    {getStatusLabel(project.status)}
                   </Badge>
                 </div>
               )}
@@ -231,7 +249,10 @@ export const PortfolioManagement = () => {
                     variant="outline"
                     size="sm"
                     onClick={() => handleViewProject(project.id)}
-                    className="flex-1 gap-1"
+                    className={cn(
+                      "flex-1 gap-1",
+                      isRTL && "flex-row-reverse"
+                    )}
                   >
                     <Eye className="h-3 w-3" />
                     {t('vendor.portfolio.viewProject')}
@@ -261,4 +282,16 @@ export const PortfolioManagement = () => {
       )}
     </div>
   );
-};
+});
+
+PortfolioManagementContent.displayName = "PortfolioManagementContent";
+
+export const PortfolioManagement = React.memo(() => {
+  return (
+    <ErrorBoundary>
+      <PortfolioManagementContent />
+    </ErrorBoundary>
+  );
+});
+
+PortfolioManagement.displayName = "PortfolioManagement";

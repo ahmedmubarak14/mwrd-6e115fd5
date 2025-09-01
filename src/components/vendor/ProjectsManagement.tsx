@@ -1,4 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { VendorBreadcrumbs } from "@/components/vendor/VendorBreadcrumbs";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useVendorProjects } from "@/hooks/useVendorProjects";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,12 +29,15 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { ProjectForm } from "./ProjectForm";
 
-export const ProjectsManagement = () => {
+const ProjectsManagementContent = React.memo(() => {
   const { projects, loading, deleteProject } = useVendorProjects();
   const languageContext = useOptionalLanguage();
   const { toast } = useToast();
-  const { isRTL } = languageContext || { isRTL: false };
-  const t = languageContext?.t || ((key: string) => key);
+  const { isRTL, t, formatCurrency } = languageContext || { 
+    isRTL: false,
+    t: (key: string) => key.split('.').pop() || key,
+    formatCurrency: (amount: number) => `${amount.toLocaleString()} SAR`
+  };
   
   const [selectedProject, setSelectedProject] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -41,13 +46,13 @@ export const ProjectsManagement = () => {
   const getStatusInfo = (status: string) => {
     switch (status) {
       case 'completed':
-        return { color: 'bg-success text-success-foreground', label: t('vendor.projects.completed') };
+        return { color: 'bg-success/10 text-success border-success/20', label: t('vendor.projects.completed') };
       case 'ongoing':
-        return { color: 'bg-primary text-primary-foreground', label: t('vendor.projects.ongoing') };
+        return { color: 'bg-primary/10 text-primary border-primary/20', label: t('vendor.projects.ongoing') };
       case 'cancelled':
-        return { color: 'bg-destructive text-destructive-foreground', label: t('vendor.projects.cancelled') };
+        return { color: 'bg-destructive/10 text-destructive border-destructive/20', label: t('vendor.projects.cancelled') };
       default:
-        return { color: 'bg-muted text-muted-foreground', label: status };
+        return { color: 'bg-muted/10 text-muted-foreground border-muted/20', label: status };
     }
   };
 
@@ -102,22 +107,34 @@ export const ProjectsManagement = () => {
   }
 
   return (
-    <div className={cn("space-y-6", isRTL && "rtl")}>
+    <div className={cn("space-y-6", isRTL && "rtl")} dir={isRTL ? 'rtl' : 'ltr'}>
+      {/* Breadcrumbs */}
+      <VendorBreadcrumbs />
+
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className={cn(
+        "flex items-center justify-between",
+        isRTL && "flex-row-reverse"
+      )}>
         <div>
-          <h1 className="text-3xl font-bold text-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">
             {t('vendor.projects.title')}
           </h1>
-          <p className="text-muted-foreground mt-2">
-            Showcase your completed projects and work portfolio
+          <p className="text-foreground opacity-75 text-sm sm:text-base max-w-2xl">
+            {t('vendor.projects.showcasePortfolio')}
           </p>
         </div>
         
         <Dialog open={showForm} onOpenChange={setShowForm}>
           <DialogTrigger asChild>
-            <Button onClick={() => setSelectedProject(null)}>
-              <Plus className="h-4 w-4 mr-2 rtl:ml-2" />
+            <Button 
+              onClick={() => setSelectedProject(null)}
+              className={cn(
+                "gap-2",
+                isRTL && "flex-row-reverse"
+              )}
+            >
+              <Plus className="h-4 w-4" />
               {t('vendor.projects.add')}
             </Button>
           </DialogTrigger>
@@ -127,7 +144,7 @@ export const ProjectsManagement = () => {
                 {selectedProject ? t('vendor.projects.edit') : t('vendor.projects.add')}
               </DialogTitle>
               <DialogDescription>
-                {selectedProject ? 'Update your project information' : 'Add a new project to your portfolio'}
+                {selectedProject ? t('vendor.projects.updateProjectInfo') : t('vendor.projects.addNewProject')}
               </DialogDescription>
             </DialogHeader>
             <ProjectForm 
@@ -147,8 +164,14 @@ export const ProjectsManagement = () => {
             <p className="text-muted-foreground mb-4">
               {t('vendor.projects.addFirst')}
             </p>
-            <Button onClick={() => setShowForm(true)}>
-              <Plus className="h-4 w-4 mr-2" />
+            <Button 
+              onClick={() => setShowForm(true)}
+              className={cn(
+                "gap-2",
+                isRTL && "flex-row-reverse"
+              )}
+            >
+              <Plus className="h-4 w-4" />
               {t('vendor.projects.add')}
             </Button>
           </CardContent>
@@ -156,17 +179,24 @@ export const ProjectsManagement = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((project) => {
+            const statusInfo = getStatusInfo(project.status);
             return (
               <Card key={project.id} className="group hover:shadow-lg transition-all duration-200">
                 <CardHeader className="pb-3">
-                  <div className="flex items-start justify-between">
+                  <div className={cn(
+                    "flex items-start justify-between",
+                    isRTL && "flex-row-reverse"
+                  )}>
                     <div className="flex-1 min-w-0">
                       <CardTitle className="text-lg">
                         <span className="truncate">{project.title}</span>
                       </CardTitle>
-                      <div className="flex items-center space-x-2 rtl:space-x-reverse mt-2">
-                        <Badge className="bg-success text-success-foreground">
-                          {project.status}
+                      <div className={cn(
+                        "flex items-center space-x-2 mt-2",
+                        isRTL && "space-x-reverse"
+                      )}>
+                        <Badge className={statusInfo.color}>
+                          {statusInfo.label}
                         </Badge>
                       </div>
                     </div>
@@ -180,29 +210,44 @@ export const ProjectsManagement = () => {
                 <CardContent className="pt-0">
                   <div className="space-y-2 text-sm">
                     {project.location && (
-                      <div className="flex items-center space-x-2 rtl:space-x-reverse text-muted-foreground">
+                      <div className={cn(
+                        "flex items-center space-x-2 text-muted-foreground",
+                        isRTL && "space-x-reverse"
+                      )}>
                         <MapPin className="h-4 w-4" />
                         <span>{project.location}</span>
                       </div>
                     )}
                     
                     {project.budget_total && (
-                      <div className="flex items-center space-x-2 rtl:space-x-reverse text-muted-foreground">
+                      <div className={cn(
+                        "flex items-center space-x-2 text-muted-foreground",
+                        isRTL && "space-x-reverse"
+                      )}>
                         <DollarSign className="h-4 w-4" />
                         <span>
-                          {project.budget_total.toLocaleString()} {project.currency || 'SAR'}
+                          {formatCurrency(project.budget_total)}
                         </span>
                       </div>
                     )}
                   </div>
                   
-                  <div className="flex items-center justify-between mt-4 pt-4 border-t">
-                    <Badge variant="outline">
-                      <Building className="h-3 w-3 mr-1 rtl:ml-1" />
+                  <div className={cn(
+                    "flex items-center justify-between mt-4 pt-4 border-t",
+                    isRTL && "flex-row-reverse"
+                  )}>
+                    <Badge variant="outline" className={cn(
+                      "gap-1",
+                      isRTL && "flex-row-reverse"
+                    )}>
+                      <Building className="h-3 w-3" />
                       {project.category}
                     </Badge>
                     
-                    <div className="flex items-center space-x-1 rtl:space-x-reverse">
+                    <div className={cn(
+                      "flex items-center space-x-1",
+                      isRTL && "space-x-reverse"
+                    )}>
                       <Button variant="ghost" size="sm">
                         <Eye className="h-4 w-4" />
                       </Button>
@@ -232,4 +277,16 @@ export const ProjectsManagement = () => {
       )}
     </div>
   );
-};
+});
+
+ProjectsManagementContent.displayName = "ProjectsManagementContent";
+
+export const ProjectsManagement = React.memo(() => {
+  return (
+    <ErrorBoundary>
+      <ProjectsManagementContent />
+    </ErrorBoundary>
+  );
+});
+
+ProjectsManagement.displayName = "ProjectsManagement";
