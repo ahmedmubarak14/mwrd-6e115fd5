@@ -3,6 +3,7 @@ import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
+import i18next from "eslint-plugin-i18next";
 
 export default tseslint.config(
   { ignores: ["dist"] },
@@ -16,12 +17,26 @@ export default tseslint.config(
     plugins: {
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
+      "i18next": i18next,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": [
         "warn",
         { allowConstantExport: true },
+      ],
+      // ========== I18N HARDCODED STRING PREVENTION RULES ==========
+      "i18next/no-literal-string": [
+        "warn",
+        {
+          markupOnly: true,
+          ignoreAttribute: [
+            "className", "variant", "size", "type", "role", "aria-label",
+            "data-testid", "id", "name", "htmlFor", "href", "target",
+            "rel", "method", "action", "placeholder", "alt", "title",
+            "dir", "lang"
+          ]
+        }
       ],
       // ========== HARDCODED COLOR PREVENTION RULES ========== 
       "no-restricted-syntax": [

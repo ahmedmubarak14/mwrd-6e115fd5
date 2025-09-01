@@ -17,11 +17,30 @@ export const arSA = {
     messages: "الرسائل",
     orders: "الطلبات",
     settings: "الإعدادات",
-    subscription: "الاشتراك"
+    subscription: "الاشتراك",
+    browseRequests: "تصفح الطلبات",
+    myOffers: "عروضي",
+    rfqs: "طلبات التسعير",
+    profile: "الملف الشخصي", 
+    support: "الدعم",
+    logout: "تسجيل الخروج"
+  },
+
+  // Vendor Header  
+  vendorHeader: {
+    openMobileMenu: "فتح القائمة المحمولة",
+    toggleSidebar: "تبديل الشريط الجانبي",
+    goToDashboard: "الذهاب إلى لوحة التحكم", 
+    dashboard: "لوحة تحكم المورد",
+    portal: "البوابة"
   },
 
   // Vendor Groups
   vendorGroups: {
+    overview: "نظرة عامة",
+    workspace: "الأعمال", 
+    portfolio: "المحفظة",
+    account: "الحساب",
     financial: "المالية",
     businessIntelligence: "ذكاء الأعمال"
   },
@@ -400,7 +419,41 @@ export const arSA = {
     tryAgain: 'حاول مرة أخرى',
     selectAll: 'تحديد الكل',
     deselectAll: 'إلغاء تحديد الكل',
-    refresh: 'تحديث'
+    refresh: 'تحديث',
+    // Error messages
+    errorLoadingDashboard: 'خطأ في تحميل لوحة التحكم',
+    failedToUpdate: 'فشل في تحديث معلومات السجل التجاري',
+    failedToUpload: 'فشل في رفع الوثيقة',
+    failedToSubmit: 'فشل في تقديم طلب التحقق',
+    failedToFetch: 'فشل في جلب بيانات العملاء',
+    // Client labels
+    vipClient: 'عميل مميز',
+    activeClient: 'عميل نشط',
+    prospect: 'عميل محتمل',
+    // Labels
+    totalRevenue: 'إجمالي الإيرادات',
+    avgOrderValue: 'متوسط قيمة الطلب',
+    orders: 'الطلبات',
+    revenue: 'الإيرادات',
+    lastContact: 'آخر اتصال',
+    contact: 'تواصل',
+    // Time labels
+    now: 'الآن',
+    minutesAgo: 'دقائق مضت',
+    hoursAgo: 'ساعات مضت',
+    daysAgo: 'أيام مضت',
+    // Categories
+    construction: 'الإنشاءات',
+    engineering: 'الهندسة',
+    technology: 'التكنولوجيا',
+    marketing: 'التسويق',
+    unknown: 'غير معروف',
+    company: 'الشركة',
+    // Additional labels
+    fromAllClients: "من جميع العملاء",
+    perOrderAverage: "متوسط كل طلب",
+    clientDirectory: "دليل العملاء",
+    clientOverview: "نظرة شاملة على علاقات عملائك"
   },
 
   // Forms - Arabic
@@ -597,14 +650,5 @@ export const arSA = {
     errors: {
       ticketFailed: "فشل في إنشاء تذكرة الدعم"
     }
-  },
-
-  // Vendor Header
-  vendorHeader: {
-    openMobileMenu: "فتح القائمة المحمولة",
-    toggleSidebar: "تبديل الشريط الجانبي",
-    goToDashboard: "الذهاب إلى لوحة التحكم",
-    dashboard: "لوحة تحكم المورد",
-    portal: "بوابة الإدارة"
   }
 };

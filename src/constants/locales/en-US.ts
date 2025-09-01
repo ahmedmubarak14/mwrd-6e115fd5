@@ -17,11 +17,28 @@ export const enUS = {
     messages: "Messages",
     orders: "Orders",
     settings: "Settings",
-    subscription: "Subscription"
+    subscription: "Subscription",
+    browseRequests: "Browse Requests",
+    myOffers: "My Offers",
+    rfqs: "RFQs",
+    profile: "Profile",
+    support: "Support",
+    logout: "Logout"
   },
 
-  // Vendor Groups
+  // Vendor Header
+  vendorHeader: {
+    openMobileMenu: "Open mobile menu",
+    toggleSidebar: "Toggle sidebar", 
+    goToDashboard: "Go to dashboard",
+    dashboard: "Vendor Dashboard",
+    portal: "Portal"
+  },
   vendorGroups: {
+    overview: "Overview",
+    workspace: "Business",
+    portfolio: "Portfolio", 
+    account: "Account",
     financial: "Financial",
     businessIntelligence: "Business Intelligence"
   },
@@ -400,7 +417,41 @@ export const enUS = {
     tryAgain: 'Try Again',
     selectAll: 'Select All',
     deselectAll: 'Deselect All',
-    refresh: 'Refresh'
+    refresh: 'Refresh',
+    // Error messages
+    errorLoadingDashboard: 'Error Loading Dashboard',
+    failedToUpdate: 'Failed to update CR information',
+    failedToUpload: 'Failed to upload document', 
+    failedToSubmit: 'Failed to submit for verification',
+    failedToFetch: 'Failed to fetch client data',
+    // Client labels
+    vipClient: 'VIP Client',
+    activeClient: 'Active Client',
+    prospect: 'Prospect',
+    // Labels
+    totalRevenue: 'Total Revenue',
+    avgOrderValue: 'Avg Order Value',
+    orders: 'Orders',
+    revenue: 'Revenue',
+    lastContact: 'Last Contact',
+    contact: 'Contact',
+    // Time labels
+    now: 'now',
+    minutesAgo: 'minutes ago',
+    hoursAgo: 'hours ago',
+    daysAgo: 'days ago',
+    // Categories
+    construction: 'Construction',
+    engineering: 'Engineering', 
+    technology: 'Technology',
+    marketing: 'Marketing',
+    unknown: 'Unknown',
+    company: 'Company',
+    // Additional labels
+    fromAllClients: "From all clients",
+    perOrderAverage: "Per order average",
+    clientDirectory: "Client Directory", 
+    clientOverview: "Your complete client relationship overview"
   },
 
   // Forms
@@ -597,14 +648,5 @@ export const enUS = {
     errors: {
       ticketFailed: "Failed to create support ticket"
     }
-  },
-
-  // Vendor Header
-  vendorHeader: {
-    openMobileMenu: "Open mobile menu",
-    toggleSidebar: "Toggle sidebar",
-    goToDashboard: "Go to dashboard",
-    dashboard: "Vendor Dashboard", 
-    portal: "Management Portal"
   }
 };

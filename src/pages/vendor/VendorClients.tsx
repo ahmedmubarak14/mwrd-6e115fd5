@@ -112,8 +112,8 @@ const VendorClientsContent = () => {
     } catch (error) {
       console.error('Error fetching clients:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch client data",
+        title: t('common.error'),
+        description: t('common.failedToFetch'),
         variant: "destructive"
       });
     } finally {
@@ -136,9 +136,9 @@ const VendorClientsContent = () => {
   const averageOrderValue = activeClients > 0 ? totalRevenue / clients.reduce((sum, c) => sum + c.totalOrders, 0) : 0;
 
   const getRelationshipBadge = (relationship: string, totalOrders: number) => {
-    if (totalOrders > 5) return { variant: 'default' as const, label: 'VIP Client' };
-    if (totalOrders > 0) return { variant: 'secondary' as const, label: 'Active Client' };
-    return { variant: 'outline' as const, label: 'Prospect' };
+    if (totalOrders > 5) return { variant: 'default' as const, label: t('common.vipClient') };
+    if (totalOrders > 0) return { variant: 'secondary' as const, label: t('common.activeClient') };
+    return { variant: 'outline' as const, label: t('common.prospect') };
   };
 
   if (loading) {
@@ -187,7 +187,7 @@ const VendorClientsContent = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('common.totalRevenue')}</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -200,7 +200,7 @@ const VendorClientsContent = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg Order Value</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('common.avgOrderValue')}</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -251,7 +251,7 @@ const VendorClientsContent = () => {
                         </Avatar>
                         <div>
                           <h3 className="font-medium text-sm">
-                            {client.full_name || 'Unknown'}
+                            {client.full_name || t('common.unknown')}
                           </h3>
                           {client.company_name && (
                             <div className="flex items-center gap-1 text-xs text-muted-foreground">
@@ -268,15 +268,15 @@ const VendorClientsContent = () => {
 
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Orders:</span>
+                        <span className="text-muted-foreground">{t('common.orders')}:</span>
                         <span className="font-medium">{client.totalOrders}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Revenue:</span>
+                        <span className="text-muted-foreground">{t('common.revenue')}:</span>
                         <span className="font-medium">${client.totalRevenue.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Last Contact:</span>
+                        <span className="text-muted-foreground">{t('common.lastContact')}:</span>
                         <span className="font-medium">
                           {new Date(client.lastInteraction).toLocaleDateString()}
                         </span>

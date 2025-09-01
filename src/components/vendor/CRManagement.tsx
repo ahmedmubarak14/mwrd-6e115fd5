@@ -90,7 +90,7 @@ const CRManagementContent = React.memo(() => {
     } catch (error) {
       toast({
         title: t('common.error'),
-        description: error instanceof Error ? error.message : 'Failed to update CR information',
+        description: error instanceof Error ? error.message : t('common.failedToUpdate'),
         variant: "destructive"
       });
     }
@@ -109,7 +109,7 @@ const CRManagementContent = React.memo(() => {
     } catch (error) {
       toast({
         title: t('common.error'),
-        description: error instanceof Error ? error.message : 'Failed to upload document',
+        description: error instanceof Error ? error.message : t('common.failedToUpload'),
         variant: "destructive"
       });
     } finally {
@@ -127,7 +127,7 @@ const CRManagementContent = React.memo(() => {
     } catch (error) {
       toast({
         title: t('common.error'),
-        description: error instanceof Error ? error.message : 'Failed to submit for verification',
+        description: error instanceof Error ? error.message : t('common.failedToSubmit'),
         variant: "destructive"
       });
     }
