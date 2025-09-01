@@ -369,7 +369,8 @@ export const enUS = {
     accessDenied: 'Access Denied',
     tryAgain: 'Try Again',
     selectAll: 'Select All',
-    deselectAll: 'Deselect All'
+    deselectAll: 'Deselect All',
+    refresh: 'Refresh'
   },
 
   // Forms
@@ -401,9 +402,14 @@ export const enUS = {
 
   // Analytics Section
   analytics: {
+    // Page Structure
+    title: "Analytics Dashboard",
+    description: "Track your business performance and insights",
     overview: "Overview",
     revenue: "Revenue",
-    projects: "Projects", 
+    spending: "Spending",
+    requests: "Requests", 
+    projects: "Projects",
     clients: "Clients",
     performance: "Performance",
     trends: "Trends",
@@ -411,12 +417,67 @@ export const enUS = {
     insights: "Insights",
     dashboard: "Analytics Dashboard",
     reports: "Reports",
-    spending: "Spending",
     expenses: "Expenses",
+    platformAnalytics: "Platform Analytics",
+    monitorDescription: "Monitor platform performance and user engagement",
+    
+    // Export/Refresh Functionality
+    export: "Export",
+    exportAnalyticsTitle: "Analytics Exported",
+    exportAnalyticsDesc: "Your analytics data has been exported successfully",
+    exportError: "Export Failed",
+    exportErrorDesc: "There was an error exporting your analytics data",
+    dataRefreshed: "Data Refreshed",
+    dataRefreshedDesc: "Your analytics data has been updated",
+    refreshError: "Refresh Failed", 
+    refreshErrorDesc: "There was an error refreshing your data",
+    
+    // Date Range Selection
+    last7Days: "Last 7 Days",
+    last30Days: "Last 30 Days", 
+    last90Days: "Last 90 Days",
+    lastYear: "Last Year",
+    
+    // Metric Cards
+    myRequests: "My Requests",
+    activeOrders: "Active Orders",
+    totalSpending: "Total Spending",
+    completionRate: "Completion Rate",
+    pendingOffers: "Pending Offers",
+    avgOrderValue: "Average Order Value",
+    vendorsWorkedWith: "Vendors Worked With",
+    fromLastMonth: "from last month",
+    currentlyInProgress: "currently in progress",
+    ofTotalRequests: "of total requests",
+    awaitingReview: "awaiting review",
+    perCompletedOrder: "per completed order",
+    uniqueVendors: "unique vendors",
+    
+    // Chart Sections
     monthlySpending: "Monthly Spending",
-    requestsByCategory: "Requests by Category",
     spendingTrend: "Spending Trend",
-    categoryDistribution: "Category Distribution"
+    requestsByCategory: "Requests by Category",
+    categoryDistribution: "Category Distribution", 
+    ordersSpendingActivity: "Orders & Spending Activity",
+    dailyActivity: "Daily Activity",
+    
+    // Summary Sections
+    requestsSummary: "Requests Summary",
+    offersSummary: "Offers Summary",
+    performanceMetrics: "Performance Metrics",
+    totalRequests: "Total Requests",
+    activeRequests: "Active Requests", 
+    completedRequests: "Completed Requests",
+    acceptedOffers: "Accepted Offers",
+    avgResponseTime: "Average Response Time",
+    
+    // Platform Analytics
+    totalUsers: "Total Users",
+    totalOffers: "Total Offers",
+    totalTransactions: "Total Transactions",
+    totalRevenue: "Total Revenue",
+    activeUsers: "Active Users",
+    conversionRate: "Conversion Rate"
   },
 
   // Project System

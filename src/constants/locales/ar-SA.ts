@@ -369,7 +369,8 @@ export const arSA = {
     accessDenied: 'الوصول مرفوض',
     tryAgain: 'حاول مرة أخرى',
     selectAll: 'تحديد الكل',
-    deselectAll: 'إلغاء تحديد الكل'
+    deselectAll: 'إلغاء تحديد الكل',
+    refresh: 'تحديث'
   },
 
   // Forms - Arabic
@@ -401,9 +402,14 @@ export const arSA = {
 
   // Analytics Section - Arabic
   analytics: {
+    // Page Structure
+    title: "لوحة التحليلات",
+    description: "تتبع أداء عملك والرؤى",
     overview: "نظرة عامة",
     revenue: "الإيرادات",
-    projects: "المشاريع", 
+    spending: "الإنفاق",
+    requests: "الطلبات",
+    projects: "المشاريع",
     clients: "العملاء",
     performance: "الأداء",
     trends: "الاتجاهات",
@@ -411,12 +417,67 @@ export const arSA = {
     insights: "رؤى",
     dashboard: "لوحة التحليلات",
     reports: "تقارير",
-    spending: "الإنفاق",
     expenses: "المصروفات",
+    platformAnalytics: "تحليلات المنصة",
+    monitorDescription: "مراقبة أداء المنصة ومشاركة المستخدمين",
+    
+    // Export/Refresh Functionality
+    export: "تصدير",
+    exportAnalyticsTitle: "تم تصدير التحليلات",
+    exportAnalyticsDesc: "تم تصدير بيانات التحليلات بنجاح",
+    exportError: "فشل التصدير",
+    exportErrorDesc: "حدث خطأ في تصدير بيانات التحليلات",
+    dataRefreshed: "تم تحديث البيانات",
+    dataRefreshedDesc: "تم تحديث بيانات التحليلات",
+    refreshError: "فشل التحديث",
+    refreshErrorDesc: "حدث خطأ في تحديث البيانات",
+    
+    // Date Range Selection
+    last7Days: "آخر 7 أيام",
+    last30Days: "آخر 30 يوم",
+    last90Days: "آخر 90 يوم",
+    lastYear: "السنة الماضية",
+    
+    // Metric Cards
+    myRequests: "طلباتي",
+    activeOrders: "الطلبات النشطة",
+    totalSpending: "إجمالي الإنفاق",
+    completionRate: "معدل الإنجاز",
+    pendingOffers: "العروض المعلقة",
+    avgOrderValue: "متوسط قيمة الطلب",
+    vendorsWorkedWith: "الموردون الذين تم العمل معهم",
+    fromLastMonth: "من الشهر الماضي",
+    currentlyInProgress: "قيد التنفيذ حالياً",
+    ofTotalRequests: "من إجمالي الطلبات",
+    awaitingReview: "في انتظار المراجعة",
+    perCompletedOrder: "لكل طلب مكتمل",
+    uniqueVendors: "موردون فريدون",
+    
+    // Chart Sections
     monthlySpending: "الإنفاق الشهري",
-    requestsByCategory: "الطلبات حسب الفئة",
     spendingTrend: "اتجاه الإنفاق",
-    categoryDistribution: "توزيع الفئات"
+    requestsByCategory: "الطلبات حسب الفئة",
+    categoryDistribution: "توزيع الفئات",
+    ordersSpendingActivity: "نشاط الطلبات والإنفاق",
+    dailyActivity: "النشاط اليومي",
+    
+    // Summary Sections
+    requestsSummary: "ملخص الطلبات",
+    offersSummary: "ملخص العروض",
+    performanceMetrics: "مقاييس الأداء",
+    totalRequests: "إجمالي الطلبات",
+    activeRequests: "الطلبات النشطة",
+    completedRequests: "الطلبات المكتملة",
+    acceptedOffers: "العروض المقبولة",
+    avgResponseTime: "متوسط وقت الاستجابة",
+    
+    // Platform Analytics
+    totalUsers: "إجمالي المستخدمين",
+    totalOffers: "إجمالي العروض",
+    totalTransactions: "إجمالي المعاملات",
+    totalRevenue: "إجمالي الإيرادات",
+    activeUsers: "المستخدمون النشطون",
+    conversionRate: "معدل التحويل"
   },
 
   // Project System - Arabic
