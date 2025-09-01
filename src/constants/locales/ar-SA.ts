@@ -438,7 +438,7 @@ export const arSA = {
       errorFetch: "فشل في جلب بيانات التقرير"
     }
   },
-    common: {
+  common: {
       // ... existing translations
       errors: {
         networkConnection: 'مشكلة في الاتصال بالشبكة. يرجى التحقق من اتصال الإنترنت.',
@@ -1339,103 +1339,5 @@ export const arSA = {
     resolved: "تم الحل",
     ticketStatus: "الحالة",
     ticketPriority: "الأولوية"
-  }
-};
-    navigation: {
-      projectsManagement: "إدارة المشاريع",
-      portfolioManagement: "إدارة الحافظة",
-      crManagement: "إدارة السجل التجاري"
-    },
-    cr: {
-      updateCR: "تحديث السجل التجاري",
-      verificationRequired: "التحقق مطلوب",
-      completeVerification: "أكمل التحقق من السجل التجاري لفتح جميع الميزات",
-      pending: "قيد الانتظار",
-      approved: "معتمد",
-      rejected: "مرفوض"
-    },
-    documents: {
-      title: "المستندات",
-      description: "إدارة وعرض جميع المستندات والملفات المرفوعة",
-      totalDocuments: "إجمالي المستندات",
-      rfqDocuments: "مستندات طلبات الأسعار",
-      bidDocuments: "مستندات العروض",
-      storageUsed: "المساحة المستخدمة",
-      allFiles: "جميع الملفات",
-      rfqAttachments: "مرفقات طلبات الأسعار",
-      bidAttachments: "مرفقات العروض",
-      totalSize: "الحجم الإجمالي",
-      documentLibrary: "مكتبة المستندات",
-      documentLibraryDesc: "جميع المستندات والملفات المرفوعة",
-      uploadDocument: "رفع مستند",
-      searchDocuments: "البحث في المستندات...",
-      allCategories: "جميع الفئات",
-      allTypes: "جميع الأنواع",
-      images: "الصور",
-      documents: "المستندات",
-      rfqDocs: "مستندات طلبات الأسعار",
-      bidDocs: "مستندات العروض",
-      rfqDocumentsTitle: "مستندات طلبات الأسعار",
-      rfqDocumentsDesc: "المستندات المتعلقة بطلبات الأسعار",
-      bidDocumentsTitle: "مستندات العروض",
-      bidDocumentsDesc: "المستندات المرفقة مع عروضك",
-      project: "المشروع",
-      bidFor: "عرض لـ",
-      projectLabel: "المشروع:",
-      bidForLabel: "عرض لـ:",
-      noDocumentsFound: "لا توجد مستندات تطابق البحث",
-      noDocumentsSearch: "لا توجد مستندات تطابق البحث",
-      noDocumentsYet: "لم يتم رفع أي مستندات بعد",
-      downloadFailed: "فشل في تحميل المستند",
-      fetchFailed: "فشل في جلب المستندات"
-    },
-    reports: {
-      title: "التقارير والتحليلات",
-      description: "تحليلات شاملة لأداء الأعمال والرؤى",
-      totalRevenue: "إجمالي الإيرادات",
-      winRate: "معدل الفوز",
-      avgOrderValue: "متوسط قيمة الطلب",
-      activeClients: "العملاء النشطون",
-      fromOrders: "من {count} طلب",
-      bidsCount: "{won} من {total} عرض",
-      averagePerOrder: "متوسط لكل طلب",
-      uniquePayingClients: "عملاء فريدون يدفعون",
-      last7Days: "آخر 7 أيام",
-      last30Days: "آخر 30 يوم",
-      last90Days: "آخر 90 يوم",
-      lastYear: "السنة الماضية",
-      export: "تصدير",
-      revenueAnalysis: "تحليل الإيرادات",
-      bidPerformance: "أداء العروض",
-      clientAnalysis: "تحليل العملاء",
-      executiveSummary: "الملخص التنفيذي",
-      revenueTrend: "اتجاه الإيرادات",
-      revenueTrendDesc: "الإيرادات اليومية خلال الفترة المحددة",
-      orderVolume: "حجم الطلبات",
-      orderVolumeDesc: "عدد الطلبات في اليوم",
-      bidStatusDistribution: "توزيع حالة العروض",
-      bidStatusDesc: "تفصيل حالات عروضك",
-      topClientsByRevenue: "أفضل العملاء حسب الإيرادات",
-      topClientsDesc: "علاقات العملاء الأكثر قيمة",
-      ordersLabel: "طلبات",
-      avgLabel: "متوسط",
-      noClientData: "لا توجد بيانات عملاء متاحة للفترة المحددة",
-      executiveSummaryDesc: "مؤشرات الأداء الرئيسية والرؤى",
-      financialPerformance: "الأداء المالي",
-      businessDevelopment: "تطوير الأعمال",
-      totalRevenueLabel: "إجمالي الإيرادات:",
-      avgOrderValueLabel: "متوسط قيمة الطلب:",
-      totalOrdersLabel: "إجمالي الطلبات:",
-      bidSuccessRate: "معدل نجاح العروض:",
-      totalBidsSubmitted: "إجمالي العروض المقدمة:",
-      activeClientsLabel: "العملاء النشطون:",
-      keyInsights: "الرؤى الأساسية",
-      topPerformingCategory: "أفضل فئة أداء",
-      averageResponseTime: "متوسط وقت الاستجابة",
-      customerRetentionRate: "معدل الاحتفاظ بالعملاء",
-      exportInitiated: "بدء التصدير",
-      generatingReport: "إنشاء تقرير {type}...",
-      fetchFailed: "فشل في جلب بيانات التقرير"
-    }
   }
 };
