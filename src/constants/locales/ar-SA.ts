@@ -117,14 +117,27 @@ export const arSA = {
     },
     clients: {
       title: 'إدارة العملاء',
-      subtitle: 'إدارة علاقاتك مع العملاء والتفاعلات',
-      addClient: 'إضافة عميل جديد',
-      editClient: 'تحرير العميل',
-      clientName: 'اسم العميل',
-      contactPerson: 'شخص الاتصال',
+      subtitle: 'إدارة علاقاتك مع العملاء والشراكات',
+      addClient: 'إضافة عميل',
+      clientList: 'قائمة العملاء',
+      clientDetails: 'تفاصيل العميل',
+      newClient: 'عميل جديد',
+      editClient: 'تعديل العميل',
+      deleteClient: 'حذف العميل',
+      searchClients: 'البحث في العملاء...',
+      noClients: 'لم يتم العثور على عملاء',
+      noClientsDesc: 'ابدأ في بناء قاعدة عملائك عن طريق إضافة عميلك الأول.',
+      searchAndActions: 'البحث والإجراءات',
+      name: 'الاسم',
       email: 'البريد الإلكتروني',
       phone: 'الهاتف',
       company: 'الشركة',
+      location: 'الموقع',
+      joinedDate: 'تاريخ الانضمام',
+      status: 'الحالة',
+      actions: 'الإجراءات',
+      clientName: 'اسم العميل',
+      contactPerson: 'شخص الاتصال',
       address: 'العنوان',
       totalRevenue: 'إجمالي الإيرادات'
     },
@@ -156,16 +169,36 @@ export const arSA = {
     },
     subscription: {
       title: 'إدارة الاشتراك',
-      subtitle: 'إدارة خطة اشتراكك والفوترة',
+      subtitle: 'إدارة خطة الاشتراك والفوترة',
       currentPlan: 'الخطة الحالية',
+      billingCycle: 'دورة الفوترة',
+      nextBilling: 'تاريخ الفوترة التالي',
+      upgradeNow: 'ترقية الآن',
+      manageBilling: 'إدارة الفوترة',
+      features: 'المميزات',
+      usage: 'الاستخدام',
+      limits: 'الحدود',
+      support: 'مستوى الدعم',
       planName: 'اسم الخطة',
       planPrice: 'السعر',
-      billingCycle: 'دورة الفوترة',
-      nextBilling: 'تاريخ الفوترة التالية',
       paymentMethod: 'طريقة الدفع',
       upgradePlan: 'ترقية الخطة',
       downgradePlan: 'تخفيض الخطة',
-      cancelSubscription: 'إلغاء الاشتراك'
+      cancelSubscription: 'إلغاء الاشتراك',
+      plan: {
+        basic: 'الخطة الأساسية',
+        professional: 'الخطة المهنية',
+        enterprise: 'خطة الشركات',
+        free: 'الخطة المجانية'
+      },
+      billing: {
+        monthly: 'شهرياً',
+        yearly: 'سنوياً',
+        amount: 'المبلغ',
+        currency: 'ر.س',
+        paymentMethod: 'طريقة الدفع',
+        invoiceHistory: 'سجل الفواتير'
+      }
     },
     notifications: {
       title: 'الإشعارات',
@@ -190,6 +223,77 @@ export const arSA = {
       generateReport: 'إنتاج تقرير',
       reportType: 'نوع التقرير',
       dateRange: 'نطاق التاريخ'
+    }
+  },
+
+  // Messages System - Arabic
+  messages: {
+    title: "الرسائل",
+    subtitle: "تواصل مع العملاء وإدارة المحادثات",
+    searchAndActions: "البحث والإجراءات",
+    unknownUser: "مستخدم غير معروف",
+    startNewChat: "بدء محادثة جديدة",
+    noConversations: "لا توجد محادثات بعد",
+    noConversationsDesc: "ابدأ بمراسلة العملاء لرؤية المحادثات هنا.",
+    now: "الآن",
+    minutesAgo: "د مضت",
+    hoursAgo: "س مضت",
+    daysAgo: "ي مضت",
+    weeksAgo: "أ مضت",
+    monthsAgo: "ش مضت",
+    yearsAgo: "سنة مضت"
+  },
+
+  // Orders System - Arabic
+  orders: {
+    title: "الطلبات",
+    subtitle: "إدارة طلباتك وتتبع التسليم",
+    noOrders: "لا توجد طلبات بعد",
+    noOrdersDesc: "ستظهر الطلبات من العروض المقبولة هنا.",
+    browseRequests: "تصفح الطلبات",
+    orderNumber: "رقم الطلب",
+    deliveryDate: "تاريخ التسليم",
+    ordered: "تم الطلب",
+    amount: "المبلغ",
+    status: {
+      pending: "قيد الانتظار",
+      confirmed: "مؤكد",
+      processing: "قيد المعالجة",
+      shipped: "تم الشحن",
+      delivered: "تم التسليم",
+      cancelled: "ملغي",
+      refunded: "مسترد"
+    }
+  },
+
+  // Offers System - Arabic
+  offers: {
+    title: "العروض",
+    subtitle: {
+      vendor: "إدارة عروضك وتتبع حالتها",
+      client: "مراجعة وإدارة العروض المستلمة"
+    },
+    newOffer: "عرض جديد",
+    filtersAndSearch: "المرشحات والبحث",
+    noOffers: "لا توجد عروض بعد",
+    noOffersDesc: {
+      vendor: "ستظهر العروض التي تقدمها هنا.",
+      client: "ستظهر العروض من الموردين هنا."
+    },
+    status: {
+      draft: "مسودة",
+      pending: "قيد الانتظار",
+      accepted: "مقبول",
+      rejected: "مرفوض",
+      expired: "منتهي الصلاحية",
+      withdrawn: "مسحوب"
+    },
+    actions: {
+      view: "عرض التفاصيل",
+      edit: "تعديل العرض",
+      withdraw: "سحب",
+      accept: "قبول",
+      reject: "رفض"
     }
   },
 

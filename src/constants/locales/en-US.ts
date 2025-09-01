@@ -116,15 +116,28 @@ export const enUS = {
       subtitle: 'Showcase your work and manage your portfolio'
     },
     clients: {
-      title: 'Clients Management',
-      subtitle: 'Manage your client relationships and interactions',
-      addClient: 'Add New Client',
+      title: 'Client Management',
+      subtitle: 'Manage your client relationships and partnerships',
+      addClient: 'Add Client',
+      clientList: 'Client List',
+      clientDetails: 'Client Details',
+      newClient: 'New Client',
       editClient: 'Edit Client',
-      clientName: 'Client Name',
-      contactPerson: 'Contact Person',
+      deleteClient: 'Delete Client',
+      searchClients: 'Search clients...',
+      noClients: 'No clients found',
+      noClientsDesc: 'Start building your client base by adding your first client.',
+      searchAndActions: 'Search & Actions',
+      name: 'Name',
       email: 'Email',
       phone: 'Phone',
       company: 'Company',
+      location: 'Location',
+      joinedDate: 'Joined Date',
+      status: 'Status',
+      actions: 'Actions',
+      clientName: 'Client Name',
+      contactPerson: 'Contact Person',
       address: 'Address',
       totalRevenue: 'Total Revenue'
     },
@@ -158,14 +171,34 @@ export const enUS = {
       title: 'Subscription Management',
       subtitle: 'Manage your subscription plan and billing',
       currentPlan: 'Current Plan',
-      planName: 'Plan Name',
-      planPrice: 'Price',
       billingCycle: 'Billing Cycle',
       nextBilling: 'Next Billing Date',
+      upgradeNow: 'Upgrade Now',
+      manageBilling: 'Manage Billing',
+      features: 'Features',
+      usage: 'Usage',
+      limits: 'Limits',
+      support: 'Support Level',
+      planName: 'Plan Name',
+      planPrice: 'Price',
       paymentMethod: 'Payment Method',
       upgradePlan: 'Upgrade Plan',
       downgradePlan: 'Downgrade Plan',
-      cancelSubscription: 'Cancel Subscription'
+      cancelSubscription: 'Cancel Subscription',
+      plan: {
+        basic: 'Basic Plan',
+        professional: 'Professional Plan',
+        enterprise: 'Enterprise Plan',
+        free: 'Free Plan'
+      },
+      billing: {
+        monthly: 'Monthly',
+        yearly: 'Yearly',
+        amount: 'Amount',
+        currency: 'SAR',
+        paymentMethod: 'Payment Method',
+        invoiceHistory: 'Invoice History'
+      }
     },
     notifications: {
       title: 'Notifications',
@@ -190,6 +223,77 @@ export const enUS = {
       generateReport: 'Generate Report',
       reportType: 'Report Type',
       dateRange: 'Date Range'
+    }
+  },
+
+  // Messages System - English
+  messages: {
+    title: "Messages",
+    subtitle: "Communicate with clients and manage conversations",
+    searchAndActions: "Search & Actions",
+    unknownUser: "Unknown User",
+    startNewChat: "Start New Chat",
+    noConversations: "No conversations yet",
+    noConversationsDesc: "Start messaging clients to see conversations here.",
+    now: "now",
+    minutesAgo: "m ago",
+    hoursAgo: "h ago",
+    daysAgo: "d ago",
+    weeksAgo: "w ago",
+    monthsAgo: "mo ago",
+    yearsAgo: "y ago"
+  },
+
+  // Orders System - English
+  orders: {
+    title: "Orders",
+    subtitle: "Manage your orders and track deliveries",
+    noOrders: "No orders yet",
+    noOrdersDesc: "Orders from accepted proposals will appear here.",
+    browseRequests: "Browse Requests",
+    orderNumber: "Order Number",
+    deliveryDate: "Delivery Date",
+    ordered: "Ordered",
+    amount: "Amount",
+    status: {
+      pending: "Pending",
+      confirmed: "Confirmed",
+      processing: "Processing",
+      shipped: "Shipped",
+      delivered: "Delivered",
+      cancelled: "Cancelled",
+      refunded: "Refunded"
+    }
+  },
+
+  // Offers System - English
+  offers: {
+    title: "Offers",
+    subtitle: {
+      vendor: "Manage your proposals and track their status",
+      client: "Review and manage received offers"
+    },
+    newOffer: "New Offer",
+    filtersAndSearch: "Filters & Search",
+    noOffers: "No offers yet",
+    noOffersDesc: {
+      vendor: "Proposals you submit will appear here.",
+      client: "Offers from vendors will appear here."
+    },
+    status: {
+      draft: "Draft",
+      pending: "Pending",
+      accepted: "Accepted",
+      rejected: "Rejected",
+      expired: "Expired",
+      withdrawn: "Withdrawn"
+    },
+    actions: {
+      view: "View Details",
+      edit: "Edit Offer",
+      withdraw: "Withdraw",
+      accept: "Accept",
+      reject: "Reject"
     }
   },
 
