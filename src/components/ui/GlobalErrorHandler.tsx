@@ -1,25 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
-// Safe error handler that doesn't depend on external contexts during initialization
+// Track initialization to prevent duplicate event listeners
+let isGlobalErrorHandlerInitialized = false;
+
+// Completely static error handler with no React hooks to avoid dispatcher issues during hot reload
 export const GlobalErrorHandler = () => {
-  useEffect(() => {
-    // Get toast function safely
-    let toast: ((options: any) => void) | null = null;
-    
-    // Try to get toast, but don't fail if context is unavailable
-    try {
-      // Only import and use toast if we're in a proper React context
-      if (typeof window !== 'undefined' && window.React) {
-        import('@/hooks/use-toast').then(({ useToast }) => {
-          // This won't work here since we're not in a component context
-          // We'll handle this gracefully by just using console fallbacks
-        }).catch(() => {
-          // Import failed, use console fallback
-        });
-      }
-    } catch (error) {
-      // Context not available, will use console logging
-    }
+  // Set up error handlers immediately without using useEffect
+  if (typeof window !== 'undefined' && !isGlobalErrorHandlerInitialized) {
+    isGlobalErrorHandlerInitialized = true;
 
     // Global error handler for unhandled promise rejections
     const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
@@ -44,7 +32,6 @@ export const GlobalErrorHandler = () => {
         description = 'Our servers are experiencing issues. Please try again later.';
       }
       
-      // For now, always use console logging to avoid context issues
       console.error(`${title}: ${description}`);
     };
 
@@ -68,15 +55,7 @@ export const GlobalErrorHandler = () => {
     window.addEventListener('error', handleError);
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
-
-    // Cleanup
-    return () => {
-      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
-      window.removeEventListener('error', handleError);
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
-    };
-  }, []); // Empty dependency array to avoid re-running
+  }
 
   return null;
 };
