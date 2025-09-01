@@ -8,15 +8,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { CreditCard, Calendar, DollarSign, TrendingUp, CheckCircle, AlertCircle } from "lucide-react";
 
 const VendorSubscriptionContent = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t, formatCurrency } = languageContext || { 
+    t: (key: string) => key, 
+    formatCurrency: (amount: number) => `$${amount.toFixed(2)}` 
+  };
   const [loading, setLoading] = useState(false);
   const [transactions, setTransactions] = useState([]);
+  const [monthlySpend, setMonthlySpend] = useState(0);
+  const [monthlyChange, setMonthlyChange] = useState(0);
 
   useEffect(() => {
     if (userProfile) {
@@ -35,6 +41,27 @@ const VendorSubscriptionContent = () => {
         .limit(10);
       
       setTransactions(data || []);
+      
+      // Calculate monthly spend and change
+      const now = new Date();
+      const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      const twoMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+      
+      const thisMonthSpend = (data || [])
+        .filter(t => new Date(t.created_at) >= thisMonth)
+        .reduce((sum, t) => sum + Number(t.amount), 0);
+        
+      const lastMonthSpend = (data || [])
+        .filter(t => new Date(t.created_at) >= lastMonth && new Date(t.created_at) < thisMonth)
+        .reduce((sum, t) => sum + Number(t.amount), 0);
+        
+      setMonthlySpend(thisMonthSpend);
+      
+      if (lastMonthSpend > 0) {
+        const change = ((thisMonthSpend - lastMonthSpend) / lastMonthSpend) * 100;
+        setMonthlyChange(change);
+      }
     } catch (error) {
       console.error('Error fetching transactions:', error);
     }
@@ -133,9 +160,9 @@ const VendorSubscriptionContent = () => {
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$49</div>
+            <div className="text-2xl font-bold">{formatCurrency ? formatCurrency(monthlySpend, 'USD') : `$${monthlySpend.toFixed(2)}`}</div>
             <p className="text-xs text-muted-foreground mt-2">
-              +20% from last month
+              {monthlyChange > 0 ? '+' : ''}{monthlyChange.toFixed(1)}% {t('vendor.subscription.fromLastMonth')}
             </p>
           </CardContent>
         </Card>

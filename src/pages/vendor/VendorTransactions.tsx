@@ -9,13 +9,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { Download, Search, Filter, DollarSign, TrendingUp, ArrowUpCircle, ArrowDownCircle } from "lucide-react";
 
 const VendorTransactionsContent = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t } = languageContext || { t: (key: string) => key };
   const [transactions, setTransactions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -161,26 +162,26 @@ const VendorTransactionsContent = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Amount</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('vendor.transactions.pendingAmount')}</CardTitle>
             <ArrowDownCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${pendingAmount.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground mt-2">
-              Awaiting processing
+              {t('vendor.transactions.awaitingProcessing')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Net Profit</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('vendor.transactions.netProfit')}</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${(totalRevenue - totalExpenses).toFixed(2)}</div>
             <p className="text-xs text-muted-foreground mt-2">
-              Revenue minus expenses
+              {t('vendor.transactions.revenueMinus')}
             </p>
           </CardContent>
         </Card>
@@ -204,7 +205,7 @@ const VendorTransactionsContent = () => {
             <div className="relative flex-1">
               <Search className="h-4 w-4 absolute left-3 top-3 text-muted-foreground" />
               <Input
-                placeholder="Search transactions..."
+                placeholder={t('vendor.transactions.searchTransactions')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-9"
@@ -215,7 +216,7 @@ const VendorTransactionsContent = () => {
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="all">{t('vendor.transactions.allStatus')}</SelectItem>
                 <SelectItem value="completed">Completed</SelectItem>
                 <SelectItem value="pending">Pending</SelectItem>
                 <SelectItem value="failed">Failed</SelectItem>
@@ -226,8 +227,8 @@ const VendorTransactionsContent = () => {
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="payment_received">Payment Received</SelectItem>
+                <SelectItem value="all">{t('vendor.transactions.allTypes')}</SelectItem>
+                <SelectItem value="payment_received">{t('vendor.transactions.paymentReceived')}</SelectItem>
                 <SelectItem value="subscription">Subscription</SelectItem>
                 <SelectItem value="fee">Fee</SelectItem>
               </SelectContent>
@@ -278,7 +279,7 @@ const VendorTransactionsContent = () => {
                 ) : (
                   <TableRow>
                     <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                      No transactions found
+                      {t('vendor.transactions.noTransactions')}
                     </TableCell>
                   </TableRow>
                 )}

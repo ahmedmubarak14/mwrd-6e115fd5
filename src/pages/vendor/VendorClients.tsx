@@ -8,13 +8,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { Search, Users, MessageSquare, DollarSign, Star, Building } from "lucide-react";
 
 const VendorClientsContent = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const languageContext = useOptionalLanguage();
+  const { t } = languageContext || { t: (key: string) => key };
   const [clients, setClients] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -160,26 +161,26 @@ const VendorClientsContent = () => {
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Clients</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('vendor.clients.totalClients')}</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalClients}</div>
             <p className="text-xs text-muted-foreground mt-2">
-              All client relationships
+              {t('vendor.clients.allRelationships')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Clients</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('vendor.clients.activeClients')}</CardTitle>
             <Star className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{activeClients}</div>
             <p className="text-xs text-muted-foreground mt-2">
-              With completed orders
+              {t('vendor.clients.completedOrders')}
             </p>
           </CardContent>
         </Card>
@@ -225,7 +226,7 @@ const VendorClientsContent = () => {
             <div className="relative">
               <Search className="h-4 w-4 absolute left-3 top-3 text-muted-foreground" />
               <Input
-                placeholder="Search clients..."
+                placeholder={t('vendor.clients.searchClients')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-9"
@@ -285,10 +286,10 @@ const VendorClientsContent = () => {
                     <div className="flex gap-2 mt-4">
                       <Button variant="outline" size="sm" className="flex-1">
                         <MessageSquare className="h-3 w-3 mr-1" />
-                        Contact
+                        {t('vendor.clients.contact')}
                       </Button>
                       <Button variant="outline" size="sm" className="flex-1">
-                        View History
+                        {t('vendor.clients.viewHistory')}
                       </Button>
                     </div>
                   </CardContent>
@@ -299,7 +300,7 @@ const VendorClientsContent = () => {
 
           {filteredClients.length === 0 && (
             <div className="text-center py-8 text-muted-foreground">
-              {searchTerm ? 'No clients found matching your search' : 'No client relationships yet'}
+              {searchTerm ? t('vendor.clients.noClientsFound') : t('vendor.clients.noClientsYet')}
             </div>
           )}
         </CardContent>
