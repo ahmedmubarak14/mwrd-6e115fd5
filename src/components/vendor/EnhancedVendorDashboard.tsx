@@ -244,16 +244,15 @@ export const EnhancedVendorDashboard = memo(() => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="h-80">
+          <div className="h-80" style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={stats.offerTrends} layout={isRTL ? "horizontal" : "vertical"}>
+              <LineChart data={stats.offerTrends}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis 
                   dataKey="date" 
-                  reversed={isRTL}
-                  tick={{ textAnchor: isRTL ? 'end' : 'start' }}
+                  tick={{ textAnchor: 'middle' }}
                 />
-                <YAxis reversed={isRTL} />
+                <YAxis />
                 <Tooltip 
                   contentStyle={{
                     direction: isRTL ? 'rtl' : 'ltr',
