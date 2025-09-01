@@ -923,5 +923,46 @@ export const enUS = {
       highErrorRate: "High error rate detected",
       lowUptime: "Low uptime detected"
     }
+  },
+
+  // Messages page translations
+  messages: {
+    title: "Messages",
+    subtitle: "Your conversations and support chats",
+    totalConversations: "Total Conversations",
+    unreadMessages: "Unread Messages",
+    businessChats: "Business Chats",
+    supportTickets: "Support Tickets",
+    searchAndActions: "Search & Actions",
+    searchMessages: "Search conversations...",
+    startNewChat: "New Chat",
+    noConversations: "No conversations yet",
+    noConversationsDesc: "Start a conversation from the support page or when responding to requests",
+    noResults: "No conversations found",
+    noResultsDesc: "Try adjusting your search terms",
+    online: "Online",
+    offline: "Offline",
+    noMessages: "No messages",
+    startConversation: "Start a conversation...",
+    showingResults: "Showing {count} of {total} conversations",
+    clearSearch: "Clear search",
+    goToSupport: "Go to Support",
+    newMessage: "New Message",
+    support: "Support",
+    business: "Business",
+    vendor: "Vendor",
+    client: "Client",
+    now: "now",
+    minutesAgo: "{minutes}m ago",
+    hoursAgo: "{hours}h ago",
+    daysAgo: "{days}d ago",
+    total: "Total",
+    unread: "Unread",
+    conversations: "Conversations",
+    newChat: "New",
+    browseVendors: "Browse Vendors",
+    communicateWithVendors: "Communicate with vendors and clients",
+    searchConversations: "Search conversations...",
+    unknownUser: "Unknown User"
   }
 };
