@@ -348,7 +348,7 @@ export const ProductionVendorDashboard: React.FC = () => {
               {t('vendor.dashboard.quickActions')}
             </CardTitle>
             <CardDescription>
-              Fast access to your most common tasks
+              {t('vendor.dashboard.quickActionsDesc')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -361,8 +361,8 @@ export const ProductionVendorDashboard: React.FC = () => {
                 <Link to="/vendor/rfqs" className="text-center">
                   <Package className="h-6 w-6" />
                   <div>
-                    <div className="font-semibold">Browse RFQs</div>
-                    <div className="text-xs opacity-80">5 new requests</div>
+                    <div className="font-semibold">{t('vendor.dashboard.browseRFQs')}</div>
+                    <div className="text-xs opacity-80">{t('vendor.dashboard.newRequests')}</div>
                   </div>
                 </Link>
               </Button>
@@ -375,8 +375,8 @@ export const ProductionVendorDashboard: React.FC = () => {
                 <Link to="/vendor/offers/create" className="text-center">
                   <Plus className="h-6 w-6" />
                   <div>
-                    <div className="font-semibold">Submit Offer</div>
-                    <div className="text-xs opacity-80">Create new offer</div>
+                    <div className="font-semibold">{t('vendor.dashboard.submitOffer')}</div>
+                    <div className="text-xs opacity-80">{t('vendor.dashboard.createNewOffer')}</div>
                   </div>
                 </Link>
               </Button>
@@ -389,8 +389,8 @@ export const ProductionVendorDashboard: React.FC = () => {
                 <Link to="/vendor/messages" className="text-center">
                   <MessageSquare className="h-6 w-6" />
                   <div>
-                    <div className="font-semibold">Messages</div>
-                    <div className="text-xs opacity-80">2 unread</div>
+                    <div className="font-semibold">{t('vendor.dashboard.messages')}</div>
+                    <div className="text-xs opacity-80">{t('vendor.dashboard.unreadMessages')}</div>
                   </div>
                 </Link>
               </Button>
@@ -403,8 +403,8 @@ export const ProductionVendorDashboard: React.FC = () => {
                 <Link to="/vendor/profile" className="text-center">
                   <User className="h-6 w-6" />
                   <div>
-                    <div className="font-semibold">Update Profile</div>
-                    <div className="text-xs opacity-80">{stats.profileCompletion}% complete</div>
+                    <div className="font-semibold">{t('vendor.dashboard.updateProfile')}</div>
+                    <div className="text-xs opacity-80">{stats.profileCompletion}% {t('common.completed')}</div>
                   </div>
                 </Link>
               </Button>
@@ -418,7 +418,7 @@ export const ProductionVendorDashboard: React.FC = () => {
             <CardHeader>
               <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                 <Calendar className="h-5 w-5 text-primary" />
-                Recent Activity
+                {t('vendor.dashboard.recentActivity')}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -426,22 +426,22 @@ export const ProductionVendorDashboard: React.FC = () => {
                 <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
                   <div className="h-2 w-2 bg-green-500 rounded-full"></div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium">New RFQ received</p>
-                    <p className="text-xs text-muted-foreground">Construction project - 2 hours ago</p>
+                    <p className="text-sm font-medium">{t('vendor.dashboard.newRFQReceived')}</p>
+                    <p className="text-xs text-muted-foreground">{t('vendor.dashboard.constructionProject')} - {t('vendor.dashboard.hoursAgo')}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
                   <div className="h-2 w-2 bg-blue-500 rounded-full"></div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium">Offer submitted</p>
-                    <p className="text-xs text-muted-foreground">Office renovation - 5 hours ago</p>
+                    <p className="text-sm font-medium">{t('vendor.dashboard.offerSubmitted')}</p>
+                    <p className="text-xs text-muted-foreground">{t('vendor.dashboard.officeRenovation')} - {t('vendor.dashboard.hoursAgo')}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
                   <div className="h-2 w-2 bg-yellow-500 rounded-full"></div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium">Profile update required</p>
-                    <p className="text-xs text-muted-foreground">Complete verification - 1 day ago</p>
+                    <p className="text-sm font-medium">{t('vendor.dashboard.profileUpdateRequired')}</p>
+                    <p className="text-xs text-muted-foreground">{t('vendor.dashboard.completeVerification')} - {t('vendor.dashboard.dayAgo')}</p>
                   </div>
                 </div>
               </div>
@@ -452,28 +452,28 @@ export const ProductionVendorDashboard: React.FC = () => {
             <CardHeader>
               <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                 <BarChart3 className="h-5 w-5 text-primary" />
-                Performance Overview
+                {t('vendor.dashboard.performanceOverview')}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span>Profile Completion</span>
+                    <span>{t('vendor.dashboard.profileCompletion')}</span>
                     <span className="font-medium">{stats.profileCompletion}%</span>
                   </div>
                   <Progress value={stats.profileCompletion} className="h-2" />
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span>Success Rate</span>
+                    <span>{t('vendor.dashboard.successRateTitle')}</span>
                     <span className="font-medium">{stats.successRate}%</span>
                   </div>
                   <Progress value={stats.successRate} className="h-2" />
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span>Client Rating</span>
+                    <span>{t('vendor.dashboard.clientRatingTitle')}</span>
                     <span className="font-medium">{stats.clientRating}/5</span>
                   </div>
                   <Progress value={(stats.clientRating / 5) * 100} className="h-2" />
