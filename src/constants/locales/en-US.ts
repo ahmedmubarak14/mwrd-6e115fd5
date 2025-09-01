@@ -526,40 +526,8 @@ export const enUS = {
     titles: {
       adminOnline: 'Admin Online'
     },
-    loading: 'Loading...',
-    error: 'An error occurred',
-    success: 'Success!',
-    confirm: 'Confirm',
-    cancel: 'Cancel',
-    edit: 'Edit',
-    delete: 'Delete',
-    save: 'Save',
-    close: 'Close',
-    back: 'Back',
-    next: 'Next',
-    previous: 'Previous',
-    search: 'Search',
-    filter: 'Filter',
-    sort: 'Sort',
-    view: 'View',
-    download: 'Download',
-    upload: 'Upload',
-    new: 'New',
-    add: 'Add',
-    remove: 'Remove',
-    update: 'Update',
-    refresh: 'Refresh',
-    retry: 'Retry',
-    submit: 'Submit',
-    reset: 'Reset',
-    clear: 'Clear',
-    select: 'Select',
-    deselect: 'Deselect',
-    selectAll: 'Select All',
-    deselectAll: 'Deselect All',
-    approve: 'Approve',
-    reject: 'Reject',
-    pending: 'Pending',
+    actions: {
+      pending: 'Pending',
     scheduled: 'Scheduled',
     completed: 'Completed',
     approved: 'Approved',
@@ -1382,5 +1350,8 @@ export const enUS = {
     resolved: "Resolved",
     ticketStatus: "Status",
     ticketPriority: "Priority"
-  }
+  },
+
+  // Export admin translations
+  ...adminTranslationsEN,
 };

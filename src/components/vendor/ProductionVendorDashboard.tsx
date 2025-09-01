@@ -1,179 +1,212 @@
-import React, { memo, useMemo, Suspense } from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { MetricCard } from "@/components/ui/MetricCard";
-import { ProductionLoadingSpinner } from "@/components/ui/ProductionLoadingSpinner";
-import { ProductionErrorBoundary } from "@/components/ui/ProductionErrorBoundary";
-import { EmptyState } from "@/components/ui/EmptyState";
-import { SkeletonCard } from "@/components/ui/SkeletonCard";
-import { usePerformanceMonitor } from "@/hooks/usePerformanceMonitor";
+import React, { useMemo, Suspense } from 'react';
+import { Link } from 'react-router-dom';
 import { 
-  FileText, 
-  FolderOpen, 
-  Tags, 
-  User, 
-  TrendingUp, 
-  Clock, 
-  CheckCircle,
-  AlertCircle,
-  Plus,
-  Eye,
-  DollarSign,
-  Package,
-  Star,
-  BarChart3,
-  Award,
-  MessageSquare
-} from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { cn } from "@/lib/utils";
-import { useOptimizedVendorStats } from "@/hooks/useOptimizedVendorStats";
+  User, Package, Award, DollarSign, TrendingUp, CheckCircle, 
+  Star, AlertCircle, Activity, Calendar, FileText, 
+  BarChart3, PieChart, MessageSquare, Plus, Eye, Edit
+} from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useOptimizedVendorStats } from '@/components/vendor/useOptimizedVendorStats';
+import { usePerformanceMetrics, PerformanceMonitor } from '@/components/common/PerformanceMetrics';
+import { ProductionErrorBoundary } from '@/components/common/ProductionErrorBoundary';
+import { cn } from '@/lib/utils';
 
-// Lazy loaded chart component for better performance
-const LazyLineChart = memo(() => {
-  const LineChart = React.lazy(() => 
-    import('recharts').then(module => ({ default: module.LineChart }))
-  );
-  const Line = React.lazy(() => 
-    import('recharts').then(module => ({ default: module.Line }))
-  );
-  const XAxis = React.lazy(() => 
-    import('recharts').then(module => ({ default: module.XAxis }))
-  );
-  const YAxis = React.lazy(() => 
-    import('recharts').then(module => ({ default: module.YAxis }))
-  );
-  const CartesianGrid = React.lazy(() => 
-    import('recharts').then(module => ({ default: module.CartesianGrid }))
-  );
-  const Tooltip = React.lazy(() => 
-    import('recharts').then(module => ({ default: module.Tooltip }))
-  );
-  const ResponsiveContainer = React.lazy(() => 
-    import('recharts').then(module => ({ default: module.ResponsiveContainer }))
-  );
+interface MetricCardProps {
+  title: string;
+  value: string;
+  description?: string;
+  icon: React.ComponentType<{ className?: string }>;
+  trend?: {
+    value: number;
+    label: string;
+    isPositive: boolean;
+  };
+  variant?: 'default' | 'success' | 'warning' | 'destructive';
+  loading?: boolean;
+}
+
+const MetricCard: React.FC<MetricCardProps> = ({ 
+  title, 
+  value, 
+  description, 
+  icon: Icon, 
+  trend, 
+  variant = 'default',
+  loading = false
+}) => {
+  const { isRTL } = useOptionalLanguage() || { isRTL: false };
+  
+  const variantStyles = {
+    default: 'border-border',
+    success: 'border-green-200 bg-green-50/50 dark:border-green-800 dark:bg-green-900/10',
+    warning: 'border-yellow-200 bg-yellow-50/50 dark:border-yellow-800 dark:bg-yellow-900/10',
+    destructive: 'border-red-200 bg-red-50/50 dark:border-red-800 dark:bg-red-900/10'
+  };
+
+  if (loading) {
+    return (
+      <Card className={cn("relative overflow-hidden", variantStyles[variant])}>
+        <CardHeader className="pb-2">
+          <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-5 w-5 rounded" />
+          </div>
+        </CardHeader>
+        <CardContent>
+          <Skeleton className="h-8 w-16 mb-2" />
+          <Skeleton className="h-3 w-32" />
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
-    <Suspense fallback={<SkeletonCard showHeader={false} lines={10} className="h-80" />}>
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" tick={{ textAnchor: 'middle' }} />
-          <YAxis />
-          <Tooltip />
-          <Line
-            type="monotone"
-            dataKey="offers"
-            stroke="hsl(var(--primary))"
-            strokeWidth={2}
-            dot={{ fill: "hsl(var(--primary))" }}
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    </Suspense>
+    <Card className={cn("relative overflow-hidden transition-all hover:shadow-md", variantStyles[variant])}>
+      <CardHeader className="pb-2">
+        <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
+          <CardTitle className="text-sm font-medium text-muted-foreground">
+            {title}
+          </CardTitle>
+          <Icon className="h-5 w-5 text-muted-foreground" />
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className={cn("space-y-1", isRTL && "text-right")}>
+          <div className="text-2xl font-bold">{value}</div>
+          {description && (
+            <p className="text-xs text-muted-foreground">{description}</p>
+          )}
+          {trend && (
+            <div className={cn(
+              "flex items-center text-xs",
+              isRTL ? "flex-row-reverse" : "",
+              trend.isPositive ? "text-green-600" : "text-red-600"
+            )}>
+              <span className={cn(
+                "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium",
+                trend.isPositive 
+                  ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
+                  : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
+              )}>
+                {trend.isPositive ? '+' : ''}{trend.value}% {trend.label}
+              </span>
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
-});
+};
 
-export const ProductionVendorDashboard = memo(() => {
-  const { userProfile } = useAuth();
-  const languageContext = useOptionalLanguage();
-  const { isRTL, formatCurrency, formatNumber } = languageContext || { 
-    isRTL: false, 
-    formatCurrency: (amount: number) => `$${amount.toLocaleString()}`,
-    formatNumber: (num: number) => num.toLocaleString()
+const LoadingSkeleton = () => (
+  <div className="space-y-8">
+    <div className="space-y-2">
+      <Skeleton className="h-8 w-64" />
+      <Skeleton className="h-5 w-48" />
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {Array.from({ length: 8 }).map((_, i) => (
+        <Card key={i}>
+          <CardHeader className="pb-2">
+            <div className="flex items-center justify-between">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-5 w-5" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <Skeleton className="h-8 w-16 mb-2" />
+            <Skeleton className="h-3 w-32" />
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  </div>
+);
+
+export const ProductionVendorDashboard: React.FC = () => {
+  const { 
+    language, 
+    isRTL, 
+    t, 
+    formatNumber, 
+    formatCurrency, 
+    formatDate 
+  } = useOptionalLanguage() || {
+    language: 'en' as const,
+    isRTL: false,
+    t: (key: string) => key,
+    formatNumber: (num: number) => num.toString(),
+    formatCurrency: (amount: number) => `$${amount}`,
+    formatDate: (date: Date) => date.toLocaleDateString()
   };
-  const t = languageContext?.t || ((key: string) => key);
-  const navigate = useNavigate();
-  const { stats, loading, error, refetch } = useOptimizedVendorStats();
 
-  // Performance monitoring
-  const metrics = usePerformanceMonitor('ProductionVendorDashboard');
+  const { stats, loading, error, userProfile } = useOptimizedVendorStats();
+  const { metrics } = usePerformanceMetrics();
 
-  const getStatusVariant = (status: string) => {
-    switch (status) {
-      case 'approved': return 'success';
-      case 'pending': return 'warning';
-      case 'rejected': return 'destructive';
-      default: return 'default';
-    }
-  };
-
+  // Status icon helper
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'approved': return CheckCircle;
-      case 'pending': return Clock;
+      case 'pending': return Activity;
       case 'rejected': return AlertCircle;
       default: return AlertCircle;
     }
   };
 
-  const quickActions = useMemo(() => [
-    {
-      title: t('vendor.cr.updateCR'),
-      description: t('vendor.cr.verificationRequired'),
-      icon: FileText,
-      href: "/vendor/cr-management",
-      color: "bg-primary",
-      count: stats.crStatus === 'pending' ? 1 : undefined
-    },
-    {
-      title: t('vendor.projects.add'),
-      description: t('vendor.projects.addFirst'),
-      icon: Plus,
-      href: "/vendor/projects/new",
-      color: "bg-success"
-    },
-    {
-      title: t('vendor.categories.manage'),
-      description: t('vendor.categories.select'),
-      icon: Tags,
-      href: "/vendor/categories",
-      color: "bg-warning"
-    },
-    {
-      title: t('vendor.profile.title'),
-      description: t('vendor.profile.basicInfo'),
-      icon: User,
-      href: "/vendor/profile",
-      color: "bg-info",
-      count: stats.profileCompletion < 100 ? 1 : undefined
+  // Status variant helper
+  const getStatusVariant = (status: string) => {
+    switch (status) {
+      case 'approved': return 'success';
+      case 'pending': return 'warning';
+      case 'rejected': return 'destructive';
+      default: return 'warning';
     }
-  ], [t, stats.crStatus, stats.profileCompletion]);
+  };
 
-  if (loading) {
+  // Memoize expensive calculations
+  const memoizedStats = useMemo(() => ({
+    ...stats,
+    formattedEarnings: formatCurrency(stats.totalEarnings),
+    formattedMonthlyEarnings: formatCurrency(stats.monthlyEarnings)
+  }), [stats, formatCurrency]);
+
+  // Show loading skeleton
+  if (loading && !userProfile) {
     return (
-      <div className="space-y-8">
-        <div className="space-y-2">
-          <div className="h-8 w-64 bg-muted rounded shimmer" />
-          <div className="h-4 w-48 bg-muted rounded shimmer" />
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <SkeletonCard key={i} showHeader={false} lines={2} />
-          ))}
-        </div>
-        
-        <SkeletonCard lines={5} className="h-96" />
-      </div>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <LoadingSkeleton />
+      </Suspense>
     );
   }
 
+  // Error state
   if (error) {
     return (
-      <EmptyState
-        icon={AlertCircle}
-        title="Failed to load dashboard"
-        description={error}
-        action={{
-          label: t('common.retry'),
-          onClick: refetch
-        }}
-      />
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Card className="w-full max-w-md">
+          <CardContent className="pt-6">
+            <div className="text-center space-y-4">
+              <AlertCircle className="h-12 w-12 text-destructive mx-auto" />
+              <div>
+                <h3 className="font-semibold">Error Loading Dashboard</h3>
+                <p className="text-sm text-muted-foreground mt-1">{error}</p>
+              </div>
+              <Button 
+                onClick={() => window.location.reload()} 
+                variant="outline"
+                size="sm"
+              >
+                Try Again
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 
@@ -299,32 +332,17 @@ export const ProductionVendorDashboard = memo(() => {
           
           <MetricCard
             title={t('vendor.dashboard.clientRatingTitle')}
-            value={`${stats.clientSatisfaction}/5`}
+            value={`${stats.clientRating}/5`}
             description={t('vendor.dashboard.clientRatingDesc')}
             icon={Star}
             variant="success"
             loading={loading}
           />
         </div>
-
-        {/* Performance Overview Chart */}
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('vendor.dashboard.offerTrends')}</CardTitle>
-            <CardDescription>
-              {t('vendor.dashboard.offerTrendsDesc')}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-80">
-              <LazyLineChart />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Rest of the dashboard content - keeping the same structure as EnhancedVendorDashboard */}
-        {/* Quick Actions, Action Items, Business Performance sections... */}
       </div>
+      
+      {/* Performance Monitor for development */}
+      <PerformanceMonitor />
     </ProductionErrorBoundary>
   );
-});
+};

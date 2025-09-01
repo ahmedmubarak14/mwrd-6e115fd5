@@ -471,7 +471,6 @@ export const arSA = {
     }
   },
   common: {
-  common: {
     // Basic UI translations (Arabic)
     loading: "جاري التحميل...",
     error: "حدث خطأ",
@@ -497,8 +496,7 @@ export const arSA = {
     showMore: "عرض المزيد",
     showLess: "عرض أقل",
     
-      // ... existing translations
-      errors: {
+    errors: {
         networkConnection: 'مشكلة في الاتصال بالشبكة. يرجى التحقق من اتصال الإنترنت.',
         requestTimeout: 'انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.',
         dataLoading: 'فشل في تحميل البيانات. يرجى المحاولة مرة أخرى.',
@@ -527,39 +525,7 @@ export const arSA = {
       titles: {
         adminOnline: 'المشرف متصل'
       },
-    loading: 'جارٍ التحميل...',
-    error: 'حدث خطأ',
-    success: 'تم بنجاح!',
-    confirm: 'تأكيد',
-    cancel: 'إلغاء',
-    edit: 'تعديل',
-    delete: 'حذف',
-    save: 'حفظ',
-    close: 'إغلاق',
-    back: 'رجوع',
-    next: 'التالي',
-    previous: 'السابق',
-    search: 'بحث',
-    filter: 'تصفية',
-    sort: 'ترتيب',
-    view: 'عرض',
-    download: 'تحميل',
-    upload: 'رفع',
-    new: 'جديد',
-    add: 'إضافة',
-    remove: 'إزالة',
-    update: 'تحديث',
-    refresh: 'تحديث',
-    retry: 'إعادة المحاولة',
-    submit: 'إرسال',
-    reset: 'إعادة تعيين',
-    clear: 'مسح',
-    select: 'اختيار',
-    deselect: 'إلغاء الاختيار',
-    selectAll: 'اختيار الكل',
-    deselectAll: 'إلغاء اختيار الكل',
-    approve: 'موافقة',
-    reject: 'رفض',
+      actions: {
     pending: 'معلق',
     scheduled: 'مجدول',
     completed: 'مكتمل',
@@ -1397,5 +1363,8 @@ export const arSA = {
     resolved: "تم الحل",
     ticketStatus: "الحالة",
     ticketPriority: "الأولوية"
-  }
+  },
+
+  // Export admin translations
+  ...adminTranslationsAR,
 };

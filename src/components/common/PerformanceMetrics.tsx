@@ -174,12 +174,11 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
   );
 };
 
-// Higher-order component for automatic performance tracking
 export const withPerformanceTracking = <P extends object>(
   Component: React.ComponentType<P>,
   componentName?: string
 ) => {
-  return React.forwardRef<any, P>((props, ref) => {
+  const WrappedComponent = React.forwardRef<any, P>((props, ref) => {
     const { measureRenderTime } = usePerformanceMetrics();
     
     useEffect(() => {
@@ -195,4 +194,8 @@ export const withPerformanceTracking = <P extends object>(
 
     return <Component {...props} ref={ref} />;
   });
+
+  WrappedComponent.displayName = `withPerformanceTracking(${Component.displayName || Component.name})`;
+  
+  return WrappedComponent;
 };
