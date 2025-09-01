@@ -1,5 +1,3 @@
-import { adminTranslationsAR } from '@/constants/admin-translations/ar-SA';
-
 export const arSA = {
   // Vendor Dashboard & CR Management
   vendor: {
@@ -1363,7 +1361,5 @@ export const arSA = {
     resolved: "تم الحل",
     ticketStatus: "الحالة",
     ticketPriority: "الأولوية"
-  },
-
-  ...adminTranslationsAR
+  }
 };

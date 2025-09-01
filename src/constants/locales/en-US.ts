@@ -1,5 +1,3 @@
-import { adminTranslationsEN } from '@/constants/admin-translations/en-US';
-
 export const enUS = {
   // Vendor Dashboard & CR Management
   vendor: {
@@ -1047,7 +1045,7 @@ export const enUS = {
     goToDashboard: "Go to vendor dashboard"
   },
 
-  admin: adminTranslationsEN,
+  admin: {},
   analytics: {
     pendingApprovals: "Pending Approvals",
     totalUsers: "Total Users",
@@ -1350,7 +1348,5 @@ export const enUS = {
     resolved: "Resolved",
     ticketStatus: "Status",
     ticketPriority: "Priority"
-  },
-
-  ...adminTranslationsEN
+  }
 };
