@@ -2,40 +2,27 @@ import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { 
-  Sidebar, 
-  SidebarContent, 
-  SidebarGroup, 
-  SidebarGroupContent, 
-  SidebarGroupLabel, 
-  SidebarMenu, 
-  SidebarMenuButton, 
-  SidebarMenuItem,
-  useSidebar
-} from "@/components/ui/sidebar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   LayoutDashboard,
-  FolderOpen,
   FileText,
   Package,
   ShoppingCart,
   MessageSquare,
+  FolderOpen,
+  User,
   Settings,
   HelpCircle,
   BarChart3,
   Building2,
-  Users,
-  User,
-  ChevronDown,
-  ChevronRight,
-  CreditCard,
+  Briefcase,
   Shield,
-  Briefcase
+  ChevronDown,
+  ChevronRight
 } from "lucide-react";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
-import { useAuth } from "@/contexts/AuthContext";
-import { cn } from "@/lib/utils";
 import { VendorUserProfile } from "./VendorUserProfile";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { cn } from "@/lib/utils";
 
 interface VendorSidebarProps {
   className?: string;
@@ -53,21 +40,22 @@ interface NavigationGroup {
     href: string;
     icon: React.ElementType;
     badge?: number;
-    badgeVariant?: "default" | "secondary" | "destructive" | "success" | "warning";
+    badgeVariant?: "default" | "secondary" | "destructive" | "outline";
   }[];
 }
 
-export const VendorSidebar = ({ onItemClick }: Pick<VendorSidebarProps, 'onItemClick'>) => {
+export const VendorSidebar = ({ 
+  className, 
+  collapsed = false, 
+  onToggle, 
+  onItemClick 
+}: VendorSidebarProps) => {
   const location = useLocation();
-  const { userProfile } = useAuth();
-  const { open: sidebarOpen } = useSidebar();
   const languageContext = useOptionalLanguage();
   const { t, isRTL } = languageContext || { 
     t: (key: string) => key, 
     isRTL: false 
   };
-
-  
 
   // Track which groups are expanded with localStorage persistence
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(() => {
@@ -76,14 +64,14 @@ export const VendorSidebar = ({ onItemClick }: Pick<VendorSidebarProps, 'onItemC
       try {
         return new Set(JSON.parse(saved));
       } catch {
-        return new Set(['overview', 'workspace']); // Default groups
+        return new Set(['overview', 'business']); // Default groups
       }
     }
-    return new Set(['overview', 'workspace']); // Default groups
+    return new Set(['overview', 'business']); // Default groups
   });
 
   const toggleGroup = (groupId: string) => {
-    if (!sidebarOpen) return; // Don't allow toggling when collapsed
+    if (collapsed) return; // Don't allow toggling when collapsed
     const newExpanded = new Set(expandedGroups);
     if (newExpanded.has(groupId)) {
       newExpanded.delete(groupId);
@@ -98,215 +86,246 @@ export const VendorSidebar = ({ onItemClick }: Pick<VendorSidebarProps, 'onItemC
   const navigationGroups: NavigationGroup[] = [
     {
       id: 'overview',
-      label: t('vendorGroups.overview'),
+      label: t('vendorGroups.overview') || 'Overview',
       priority: 'primary',
       items: [
         {
-          name: t('nav.dashboard'),
-          href: "/vendor/dashboard",
+          name: t('nav.dashboard') || 'Dashboard',
+          href: '/vendor/dashboard',
           icon: LayoutDashboard,
         },
         {
-          name: t('nav.analytics'),
-          href: "/vendor/analytics",
+          name: t('nav.analytics') || 'Analytics',
+          href: '/vendor/analytics',
           icon: BarChart3,
         },
       ]
     },
     {
-      id: 'workspace',
-      label: t('vendorGroups.workspace'),
+      id: 'business',
+      label: t('vendorGroups.workspace') || 'Business',
       priority: 'primary',
       items: [
         {
-          name: t('nav.browseRequests'),
-          href: "/vendor/browse-requests",
+          name: t('nav.browseRequests') || 'Browse Requests',
+          href: '/vendor/browse-requests',
           icon: FolderOpen,
         },
         {
-          name: t('nav.myOffers'),
-          href: "/vendor/offers",
+          name: t('nav.myOffers') || 'My Offers',
+          href: '/vendor/offers',
           icon: Package,
         },
         {
-          name: t('nav.orders'),
-          href: "/vendor/orders",
+          name: t('nav.orders') || 'Orders',
+          href: '/vendor/orders',
           icon: ShoppingCart,
         },
         {
-          name: t('nav.messages'),
-          href: "/vendor/messages",
+          name: t('nav.messages') || 'Messages',
+          href: '/vendor/messages',
           icon: MessageSquare,
         },
       ]
     },
     {
       id: 'portfolio',
-      label: t('vendorGroups.portfolio'),
+      label: t('vendorGroups.portfolio') || 'Portfolio',
       priority: 'secondary',
       items: [
         {
-          name: t('vendor.navigation.projectsManagement'),
-          href: "/vendor/projects",
+          name: t('vendor.navigation.projectsManagement') || 'Projects',
+          href: '/vendor/projects',
           icon: Briefcase,
         },
         {
-          name: t('vendor.navigation.portfolioManagement'),
-          href: "/vendor/portfolio",
+          name: t('vendor.navigation.portfolioManagement') || 'Portfolio',
+          href: '/vendor/portfolio',
           icon: Building2,
         },
       ]
     },
     {
       id: 'account',
-      label: t('vendorGroups.account'),
+      label: t('vendorGroups.account') || 'Account',
       priority: 'utility',
       items: [
         {
-          name: t('nav.profile'),
-          href: "/vendor/profile",
+          name: t('nav.profile') || 'Profile',
+          href: '/vendor/profile',
           icon: User,
         },
         {
-          name: t('vendor.navigation.crManagement'),
-          href: "/vendor/cr-management",
+          name: t('vendor.navigation.crManagement') || 'CR Management',
+          href: '/vendor/cr-management',
           icon: Shield,
         },
         {
-          name: t('nav.settings'),
-          href: "/vendor/settings",
+          name: t('nav.settings') || 'Settings',
+          href: '/vendor/settings',
           icon: Settings,
         },
         {
-          name: t('nav.support'),
-          href: "/vendor/support",
+          name: t('nav.support') || 'Support',
+          href: '/vendor/support',
           icon: HelpCircle,
         },
       ]
     },
   ];
 
-  const isActive = (path: string) => {
-    if (path === '/vendor/dashboard') {
-      return location.pathname === '/vendor/dashboard';
-    }
-    return location.pathname === path || location.pathname.startsWith(path + '/');
-  };
-
+  const isActive = (path: string) => location.pathname === path;
   const isParentActive = (path: string) => location.pathname.startsWith(path) && path !== '/vendor/dashboard';
-
+  
   const getGroupPriorityStyles = (priority: NavigationGroup['priority']) => {
     switch (priority) {
       case 'primary':
-        return cn(
-          "bg-primary/5 relative",
-          "before:absolute before:w-1 before:h-full before:bg-primary/30",
-          isRTL ? "before:right-0" : "before:left-0"
-        );
+        return "border-l-2 border-l-primary/20 bg-primary/5";
       case 'secondary':
-        return cn(
-          "bg-accent/5 relative", 
-          "before:absolute before:w-1 before:h-full before:bg-accent/30",
-          isRTL ? "before:right-0" : "before:left-0"
-        );
+        return "border-l-2 border-l-accent/20 bg-accent/5";
       case 'utility':
-        return cn(
-          "bg-muted/30 relative",
-          "before:absolute before:w-1 before:h-full before:bg-muted-foreground/30",
-          isRTL ? "before:right-0" : "before:left-0"
-        );
+        return "border-l-2 border-l-muted-foreground/20 bg-muted/50";
       default:
         return "";
     }
   };
 
   return (
-    <Sidebar 
-      side={isRTL ? "right" : "left"}
-      collapsible="icon"
+    <div 
       className={cn(
-        isRTL ? "border-l" : "border-r"
-      )}
+        "flex flex-col h-screen bg-card border-border transition-all duration-300 shadow-sm fixed top-0 z-50",
+        collapsed ? "w-16" : "w-64",
+        isRTL ? "right-0 border-l" : "left-0 border-r",
+        className
+      )} 
+      dir={isRTL ? 'rtl' : 'ltr'}
     >
-      {/* Sidebar Header - User Profile */}
-      <div className={cn(
-        "border-b border-border bg-card min-h-16 flex items-center",
-        sidebarOpen ? "px-4" : "px-2"
-      )}>
-        <VendorUserProfile 
-          variant="sidebar" 
-          collapsed={!sidebarOpen}
-        />
+      {/* Sidebar Header - matches main header height */}
+      <div className="border-b border-border bg-card h-16 flex items-center px-4">
+        <VendorUserProfile variant="sidebar" collapsed={collapsed} />
       </div>
 
-      <SidebarContent>
-        {navigationGroups.map((group) => {
-          const isExpanded = !sidebarOpen ? false : expandedGroups.has(group.id);
-          const hasActiveItem = group.items.some(item => 
-            isActive(item.href) || isParentActive(item.href)
-          );
+      {/* Navigation Content */}
+      <ScrollArea className="flex-1">
+        <div className="p-3 space-y-3">
+          {navigationGroups.map((group) => {
+            const isExpanded = collapsed ? false : expandedGroups.has(group.id);
+            const hasActiveItem = group.items.some(item => 
+              isActive(item.href) || isParentActive(item.href)
+            );
 
-          return (
-            <SidebarGroup
-              key={group.id}
-              className={cn(getGroupPriorityStyles(group.priority))}
-            >
-              <SidebarGroupLabel className={cn(
-                "text-xs uppercase tracking-wider",
-                hasActiveItem && "text-primary font-semibold"
-              )}>
-                <span className="flex items-center gap-2">
-                  <span>{group.label}</span>
-                  {hasActiveItem && (
-                    <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
+            return (
+              <div 
+                key={group.id} 
+                className={cn(
+                  "rounded-lg transition-all duration-200",
+                  getGroupPriorityStyles(group.priority)
+                )}
+              >
+                {/* Group Label */}
+                {!collapsed && (
+                  <Button
+                    variant="ghost"
+                    onClick={() => toggleGroup(group.id)}
+                    className={cn(
+                      "w-full justify-between px-3 py-2 h-auto font-medium",
+                      "text-xs uppercase tracking-wider",
+                      "text-muted-foreground hover:text-foreground hover:bg-accent/50",
+                      hasActiveItem && "text-primary font-semibold",
+                      isRTL && "flex-row-reverse"
+                    )}
+                    type="button"
+                  >
+                    <span className={cn(
+                      "flex items-center gap-2",
+                      isRTL && "flex-row-reverse"
+                    )}>
+                      <span>{group.label}</span>
+                      {hasActiveItem && (
+                        <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
+                      )}
+                    </span>
+                    {isExpanded ? (
+                      <ChevronDown className={cn(
+                        "h-3 w-3 transition-transform duration-200",
+                        isRTL && "rotate-180"
+                      )} />
+                    ) : (
+                      <ChevronRight className={cn(
+                        "h-3 w-3 transition-transform duration-200",
+                        isRTL && "rotate-180"
+                      )} />
+                    )}
+                  </Button>
+                )}
+
+                {/* Group Items */}
+                <div 
+                  className={cn(
+                    "space-y-1 transition-all duration-300",
+                    collapsed ? "block" : (isExpanded ? "block" : "hidden"),
+                    !collapsed && "px-2 pb-2"
                   )}
-                </span>
-              </SidebarGroupLabel>
-              
-              <SidebarGroupContent>
-                <SidebarMenu>
+                >
                   {group.items.map((item) => {
                     const active = isActive(item.href) || isParentActive(item.href);
                     return (
-                      <SidebarMenuItem key={item.href}>
-                        <SidebarMenuButton 
-                          asChild
-                          isActive={active}
-                          tooltip={item.name}
-                        >
-                           <Link
-                             to={item.href}
-                             onClick={onItemClick}
-                             className={cn(
-                               "flex items-center gap-3",
-                               isRTL && "flex-row-reverse",
-                               active && "bg-primary/10 text-primary border border-primary/20"
-                             )}
-                           >
-                             <item.icon className="h-4 w-4" />
-                             {sidebarOpen && <span>{item.name}</span>}
-                             {item.badge && item.badge > 0 && sidebarOpen && (
-                               <Badge 
-                                 variant="secondary"
-                                 className={cn(
-                                   "h-5 min-w-5 px-1.5 text-xs",
-                                   isRTL ? "mr-auto" : "ml-auto"
-                                 )}
-                               >
-                                 {item.badge > 99 ? '99+' : item.badge}
-                               </Badge>
-                             )}
-                           </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
+                      <Link
+                        key={item.href}
+                        to={item.href}
+                        onClick={onItemClick}
+                        className={cn(
+                          "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200",
+                          "text-sm font-medium hover:bg-accent/50",
+                          collapsed ? "justify-center px-2" : "justify-start",
+                          active 
+                            ? "bg-primary/10 text-primary border border-primary/20 shadow-sm" 
+                            : "text-muted-foreground hover:text-foreground hover:bg-accent/30",
+                          isRTL && "flex-row-reverse"
+                        )}
+                        title={collapsed ? item.name : undefined}
+                        aria-label={`Navigate to ${item.name}`}
+                        aria-current={active ? 'page' : undefined}
+                      >
+                        <item.icon 
+                          className={cn(
+                            "shrink-0 transition-all duration-200",
+                            collapsed ? "h-5 w-5" : "h-4 w-4",
+                            active ? "text-primary" : "text-muted-foreground"
+                          )} 
+                        />
+                        
+                        {!collapsed && (
+                          <>
+                            <span className={cn(
+                              "truncate flex-1 text-foreground",
+                              isRTL && "text-right"
+                            )}>
+                              {item.name}
+                            </span>
+                            
+                            {item.badge && item.badge > 0 && (
+                              <Badge 
+                                variant={item.badgeVariant || "secondary"} 
+                                className={cn(
+                                  "h-5 min-w-5 px-1.5 text-xs flex items-center justify-center shrink-0",
+                                  item.badgeVariant === "destructive" && "animate-pulse"
+                                )}
+                              >
+                                {item.badge > 99 ? '99+' : item.badge}
+                              </Badge>
+                            )}
+                          </>
+                        )}
+                      </Link>
                     );
                   })}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          );
-        })}
-      </SidebarContent>
-    </Sidebar>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </ScrollArea>
+    </div>
   );
 };

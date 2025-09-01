@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Search, Bell, Menu, User } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
 import { NotificationBell } from '@/components/realtime/NotificationBell';
@@ -17,9 +16,15 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 interface VendorHeaderProps {
   onMobileMenuOpen?: () => void;
+  onSidebarToggle?: () => void;
+  sidebarOpen?: boolean;
 }
 
-export const VendorHeader = ({ onMobileMenuOpen }: VendorHeaderProps) => {
+export const VendorHeader = ({ 
+  onMobileMenuOpen, 
+  onSidebarToggle, 
+  sidebarOpen 
+}: VendorHeaderProps) => {
   const navigate = useNavigate();
   const { userProfile } = useAuth();
   const languageContext = useOptionalLanguage();
@@ -51,7 +56,15 @@ export const VendorHeader = ({ onMobileMenuOpen }: VendorHeaderProps) => {
             )}
 
             {!isMobile && (
-              <SidebarTrigger className="h-9 w-9 hover:bg-accent/50 transition-all duration-200 shrink-0" />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={onSidebarToggle}
+                className="h-9 w-9 hover:bg-accent/50 transition-all duration-200 shrink-0"
+                aria-label="Toggle sidebar"
+              >
+                <Menu className="h-4 w-4" />
+              </Button>
             )}
             
             <button
