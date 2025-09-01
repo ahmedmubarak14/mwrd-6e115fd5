@@ -1,11 +1,26 @@
-import { useEffect } from 'react';
-import { useToast } from '@/hooks/use-toast';
-import { AlertTriangle, Wifi, WifiOff } from 'lucide-react';
+import React, { useEffect } from 'react';
 
+// Safe error handler that doesn't depend on external contexts during initialization
 export const GlobalErrorHandler = () => {
-  const { toast } = useToast();
-
   useEffect(() => {
+    // Get toast function safely
+    let toast: ((options: any) => void) | null = null;
+    
+    // Try to get toast, but don't fail if context is unavailable
+    try {
+      // Only import and use toast if we're in a proper React context
+      if (typeof window !== 'undefined' && window.React) {
+        import('@/hooks/use-toast').then(({ useToast }) => {
+          // This won't work here since we're not in a component context
+          // We'll handle this gracefully by just using console fallbacks
+        }).catch(() => {
+          // Import failed, use console fallback
+        });
+      }
+    } catch (error) {
+      // Context not available, will use console logging
+    }
+
     // Global error handler for unhandled promise rejections
     const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
       console.error('Unhandled promise rejection:', event.reason);
@@ -29,43 +44,23 @@ export const GlobalErrorHandler = () => {
         description = 'Our servers are experiencing issues. Please try again later.';
       }
       
-      toast({
-        title,
-        description,
-        variant: 'destructive',
-        duration: 5000,
-      });
+      // For now, always use console logging to avoid context issues
+      console.error(`${title}: ${description}`);
     };
 
     // Global error handler for JavaScript errors
     const handleError = (event: ErrorEvent) => {
       console.error('Global JavaScript error:', event.error);
-      
-      toast({
-        title: 'Application Error',
-        description: 'Something went wrong. The page may need to be refreshed.',
-        variant: 'destructive',
-        duration: 5000,
-      });
+      console.error('Application Error: Something went wrong. The page may need to be refreshed.');
     };
 
     // Network status monitoring
     const handleOnline = () => {
-      toast({
-        title: 'Back Online',
-        description: 'Your internet connection has been restored.',
-        variant: 'default',
-        duration: 3000,
-      });
+      console.log('Back Online: Your internet connection has been restored.');
     };
 
     const handleOffline = () => {
-      toast({
-        title: 'Connection Lost', 
-        description: 'Please check your internet connection.',
-        variant: 'destructive',
-        duration: 10000,
-      });
+      console.warn('Connection Lost: Please check your internet connection.');
     };
 
     // Add event listeners
@@ -81,7 +76,7 @@ export const GlobalErrorHandler = () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
-  }, [toast]);
+  }, []); // Empty dependency array to avoid re-running
 
   return null;
 };

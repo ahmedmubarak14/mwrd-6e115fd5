@@ -78,7 +78,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     loadingText,
     children,
     disabled,
-    animation = 'scale',
+    animation = 'none',
     ...props 
   }, ref) => {
     const animations = {
