@@ -270,20 +270,40 @@ export const enUS = {
   offers: {
     title: "Offers",
     subtitle: {
-      vendor: "Manage your proposals and track their status",
-      client: "Review and manage received offers"
+      vendor: "Manage and track your submitted offers",
+      client: "Review and manage offers for your requests"
     },
     newOffer: "New Offer",
     filtersAndSearch: "Filters & Search",
-    noOffers: "No offers yet",
+    noOffers: "No offers available",
     noOffersDesc: {
-      vendor: "Proposals you submit will appear here.",
-      client: "Offers from vendors will appear here."
+      vendor: "You haven't submitted any offers yet. Start creating offers for client requests.",
+      client: "No offers have been submitted for your requests yet."
     },
+    noOffersFound: "No offers found",
+    tryAdjustingFilters: "Try adjusting your search terms or filters",
+    searchPlaceholder: "Search offers...",
+    offerStatus: "Offer Status",
+    allStatus: "All Status",
+    showingResults: "Showing {count} of {total} offers",
+    clearFilters: "Clear Filters",
+    totalOffers: "Total Offers",
+    pendingOffers: "Pending Offers",
+    approvedOffers: "Approved Offers",
+    rejectedOffers: "Rejected Offers",
+    compare: "Compare",
+    forRequest: "For request:",
+    vendor: "Vendor:",
+    days: "days",
+    viewDetails: "View Details",
+    messageVendor: "Message Vendor",
+    accept: "Accept",
+    reject: "Reject",
     status: {
       draft: "Draft",
       pending: "Pending",
       accepted: "Accepted",
+      approved: "Approved",
       rejected: "Rejected",
       expired: "Expired",
       withdrawn: "Withdrawn"
@@ -346,7 +366,10 @@ export const enUS = {
     rejected: 'Rejected',
     completed: 'Completed',
     cancelled: 'Cancelled',
-    accessDenied: 'Access Denied'
+    accessDenied: 'Access Denied',
+    tryAgain: 'Try Again',
+    selectAll: 'Select All',
+    deselectAll: 'Deselect All'
   },
 
   // Forms
@@ -399,6 +422,12 @@ export const enUS = {
   // Project System
   projects: {
     title: "Projects",
+    subtitle: "Track and manage your project progress",
+    overview: "Overview",
+    activeProjects: "Active Projects",
+    completedProjects: "Completed Projects",
+    totalBudget: "Total Budget",
+    vsLastMonth: "vs last month",
     createProject: "Create Project",
     editProject: "Edit Project",
     projectName: "Project Name",
@@ -423,7 +452,11 @@ export const enUS = {
     startFirstProject: "Start Your First Project",
     tryAdjusting: "Try adjusting your search and filters",
     createFirstProject: "Create your first project to get started",
-    createYourFirst: "Create Your First"
+    createYourFirst: "Create Your First",
+    summary: {
+      title: "Project Summary",
+      description: "Overview of all project activities and status"
+    }
   },
 
   // Support System

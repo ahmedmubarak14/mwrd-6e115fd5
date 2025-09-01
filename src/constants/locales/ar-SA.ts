@@ -270,20 +270,40 @@ export const arSA = {
   offers: {
     title: "العروض",
     subtitle: {
-      vendor: "إدارة عروضك وتتبع حالتها",
-      client: "مراجعة وإدارة العروض المستلمة"
+      vendor: "إدارة وتتبع العروض المقدمة",
+      client: "مراجعة وإدارة العروض لطلباتك"
     },
     newOffer: "عرض جديد",
     filtersAndSearch: "المرشحات والبحث",
-    noOffers: "لا توجد عروض بعد",
+    noOffers: "لا توجد عروض متاحة",
     noOffersDesc: {
-      vendor: "ستظهر العروض التي تقدمها هنا.",
-      client: "ستظهر العروض من الموردين هنا."
+      vendor: "لم تقدم أي عروض بعد. ابدأ في إنشاء عروض لطلبات العملاء.",
+      client: "لم يتم تقديم عروض لطلباتك بعد."
     },
+    noOffersFound: "لا توجد عروض",
+    tryAdjustingFilters: "جرب تعديل مصطلحات البحث أو المرشحات",
+    searchPlaceholder: "البحث في العروض...",
+    offerStatus: "حالة العرض",
+    allStatus: "جميع الحالات",
+    showingResults: "عرض {count} من {total} عرض",
+    clearFilters: "مسح المرشحات",
+    totalOffers: "إجمالي العروض",
+    pendingOffers: "العروض المعلقة",
+    approvedOffers: "العروض المعتمدة",
+    rejectedOffers: "العروض المرفوضة",
+    compare: "مقارنة",
+    forRequest: "للطلب:",
+    vendor: "المورد:",
+    days: "أيام",
+    viewDetails: "عرض التفاصيل",
+    messageVendor: "مراسلة المورد",
+    accept: "قبول",
+    reject: "رفض",
     status: {
       draft: "مسودة",
-      pending: "قيد الانتظار",
+      pending: "معلق",
       accepted: "مقبول",
+      approved: "مُعتمد",
       rejected: "مرفوض",
       expired: "منتهي الصلاحية",
       withdrawn: "مسحوب"
@@ -346,7 +366,10 @@ export const arSA = {
     rejected: 'مرفوض',
     completed: 'مكتمل',
     cancelled: 'ملغي',
-    accessDenied: 'الوصول مرفوض'
+    accessDenied: 'الوصول مرفوض',
+    tryAgain: 'حاول مرة أخرى',
+    selectAll: 'تحديد الكل',
+    deselectAll: 'إلغاء تحديد الكل'
   },
 
   // Forms - Arabic
@@ -399,6 +422,12 @@ export const arSA = {
   // Project System - Arabic
   projects: {
     title: "المشاريع",
+    subtitle: "تتبع وإدارة تقدم مشاريعك",
+    overview: "نظرة عامة",
+    activeProjects: "المشاريع النشطة",
+    completedProjects: "المشاريع المكتملة",
+    totalBudget: "إجمالي الميزانية",
+    vsLastMonth: "مقارنة بالشهر الماضي",
     createProject: "إنشاء مشروع",
     editProject: "تحرير المشروع",
     projectName: "اسم المشروع",
@@ -423,7 +452,11 @@ export const arSA = {
     startFirstProject: "ابدأ مشروعك الأول",
     tryAdjusting: "جرب تعديل البحث والفلاتر",
     createFirstProject: "أنشئ مشروعك الأول للبدء",
-    createYourFirst: "أنشئ الأول"
+    createYourFirst: "أنشئ الأول",
+    summary: {
+      title: "ملخص المشروع",
+      description: "نظرة عامة على جميع أنشطة المشروع والحالة"
+    }
   },
 
   // Support System
