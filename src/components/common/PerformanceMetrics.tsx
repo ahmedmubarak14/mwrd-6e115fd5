@@ -192,7 +192,9 @@ export const withPerformanceTracking = <P extends object>(
       };
     });
 
-    return <Component {...props} ref={ref} />;
+    // Handle components that may or may not accept refs
+    const componentProps = { ...props } as P;
+    return React.createElement(Component, componentProps);
   });
 
   WrappedComponent.displayName = `withPerformanceTracking(${Component.displayName || Component.name})`;
