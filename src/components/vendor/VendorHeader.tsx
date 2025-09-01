@@ -1,12 +1,9 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Menu, User } from "lucide-react";
+import { PanelLeft, Menu } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
 import { NotificationBell } from '@/components/realtime/NotificationBell';
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
-import { DashboardThemeToggle } from "@/components/ui/DashboardThemeToggle";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { VendorBreadcrumbs } from "./VendorBreadcrumbs";
 import { VendorHeaderSearch } from "./VendorHeaderSearch";
 import { VendorHeaderUserMenu } from "./VendorHeaderUserMenu";
@@ -20,12 +17,16 @@ interface VendorHeaderProps {
   userProfile?: any;
 }
 
-export const VendorHeader = ({ onMobileMenuToggle, onSidebarToggle, sidebarOpen, userProfile }: VendorHeaderProps) => {
-  const navigate = useNavigate();
+export const VendorHeader = ({ 
+  onMobileMenuToggle, 
+  onSidebarToggle, 
+  sidebarOpen, 
+  userProfile 
+}: VendorHeaderProps) => {
   const { userProfile: authUserProfile } = useAuth();
   const languageContext = useOptionalLanguage();
   const { t, isRTL } = languageContext || { 
-    t: (key: string) => key.split('.').pop() || key, 
+    t: (key: string) => key, 
     isRTL: false 
   };
   const isMobile = useIsMobile();
@@ -33,75 +34,56 @@ export const VendorHeader = ({ onMobileMenuToggle, onSidebarToggle, sidebarOpen,
   const currentUserProfile = userProfile || authUserProfile;
 
   return (
-    <header className="border-b border-border bg-card sticky top-0 z-50 shadow-sm">
-      {/* Main Header Bar */}
-      <div className="h-16 min-h-16">
-        <div className="max-w-full mx-auto px-3 sm:px-4 h-full flex items-center justify-between gap-2">
-          {/* Logo, Menu Trigger, and Sidebar Toggle */}
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 mr-2 sm:mr-4">
-            {isMobile && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onMobileMenuToggle}
-                className="h-9 w-9 hover:bg-accent/50 transition-all duration-200 shrink-0"
-                aria-label="Open mobile menu"
-              >
-                <Menu className="h-4 w-4" />
-              </Button>
-            )}
+    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="flex h-16 items-center gap-4 px-4 lg:px-6">
+        {/* Mobile menu button */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="lg:hidden"
+          onClick={onMobileMenuToggle}
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
 
-            {!isMobile && onSidebarToggle && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onSidebarToggle}
-                className="h-9 w-9 hover:bg-accent/50 transition-all duration-200 shrink-0"
-                aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
-              >
-                <Menu className="h-4 w-4" />
-              </Button>
-            )}
-            
-            <button
-              onClick={() => navigate('/vendor/dashboard')}
-              className="flex items-center gap-3 hover:opacity-80 transition-all duration-200 min-w-0"
-              aria-label="Go to vendor dashboard"
-            >
-              <img 
-                src="/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png" 
-                alt="MWRD Logo"
-                className="h-8 w-auto shrink-0"
-              />
-              <div className="hidden sm:flex flex-col items-start min-w-0">
-                <span className="text-sm sm:text-base font-semibold leading-tight truncate text-foreground">
-                  MWRD Vendor Portal
-                </span>
-                <span className="text-xs leading-tight text-muted-foreground hidden md:block capitalize">
-                  {currentUserProfile?.role || 'Vendor'} Dashboard
-                </span>
-              </div>
-            </button>
-          </div>
+        {/* Desktop sidebar toggle button */}
+        {onSidebarToggle && !isMobile && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onSidebarToggle}
+            className="hidden lg:flex"
+          >
+            <PanelLeft className="h-5 w-5" />
+          </Button>
+        )}
 
-          {/* Actions */}
-          <div className="flex items-center gap-1 shrink-0">
-            <VendorHeaderSearch />
-            
-            <NotificationBell />
-            
-            <DashboardThemeToggle />
-            
-            <VendorHeaderUserMenu userProfile={currentUserProfile} />
+        {/* Logo */}
+        <div className="flex items-center gap-2">
+          <div className="font-bold text-lg bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+            MWRD
           </div>
+          <div className="text-sm text-muted-foreground">
+            | Vendor Portal
+          </div>
+        </div>
+
+        {/* Center section - Search */}
+        <div className="flex-1 flex justify-center max-w-md">
+          <VendorHeaderSearch />
+        </div>
+
+        {/* Right section - Actions */}
+        <div className="flex items-center gap-2">
+          <NotificationBell />
+          <ThemeToggle />
+          <VendorHeaderUserMenu userProfile={currentUserProfile} />
         </div>
       </div>
-      
-      {/* Breadcrumbs Section */}
-      <div className="border-t border-border/50 bg-muted/30 px-4 py-2">
-        <div className="max-w-full mx-auto">
-          <VendorBreadcrumbs />
-        </div>
+
+      {/* Breadcrumbs section */}
+      <div className="border-t px-4 lg:px-6 py-3 bg-muted/20">
+        <VendorBreadcrumbs />
       </div>
     </header>
   );

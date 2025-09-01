@@ -284,6 +284,14 @@ export const arSA = {
     network: "الشبكة",
     account: "الحساب والدعم"
   },
+
+  // Vendor navigation groups
+  vendorGroups: {
+    overview: "نظرة عامة",
+    workspace: "مساحة العمل", 
+    portfolio: "المحفظة",
+    account: "الحساب والدعم"
+  },
   
   admin: adminTranslationsAR,
   
@@ -539,6 +547,17 @@ export const arSA = {
 
   // Vendor Dashboard & CR Management
   vendor: {
+    navigation: {
+      crManagement: 'إدارة السجل التجاري',
+      projectsManagement: 'إدارة المشاريع',
+      portfolioManagement: 'إدارة المحفظة'
+    },
+    groups: {
+      overview: "نظرة عامة",
+      workspace: "مساحة العمل", 
+      portfolio: "المحفظة",
+      account: "الحساب والدعم"
+    },
     dashboard: {
       title: "لوحة تحكم المورد",
       welcome: "مرحباً بك في لوحة تحكم المورد",
@@ -547,7 +566,7 @@ export const arSA = {
       recentProjects: "المشاريع الأخيرة",
       quickActions: "إجراءات سريعة",
       overview: "نظرة عامة",
-      accessRequired: "يتطلب الوصول كمورد"
+      accessRequired: "يتطلب وصول المورد لعرض هذه الصفحة"
     },
     cr: {
       title: "السجل التجاري",
@@ -564,6 +583,16 @@ export const arSA = {
       add: "إضافة مشروع جديد",
       addFirst: "أضف مشروعك الأول لعرض أعمالك"
     },
+    portfolio: {
+      title: "إدارة المحفظة",
+      description: "إدارة محفظة مشاريعك وعرض أعمالك",
+      addProject: "إضافة مشروع",
+      editProject: "تحرير المشروع",
+      viewProject: "عرض المشروع",
+      deleteProject: "حذف المشروع",
+      noProjects: "لا توجد مشاريع في محفظتك",
+      addFirstProject: "أضف مشروعك الأول للبدء"
+    },
     categories: {
       title: "فئات الخدمة",
       select: "اختيار الفئات",
@@ -572,19 +601,6 @@ export const arSA = {
     profile: {
       title: "ملف المورد الشخصي",
       basicInfo: "المعلومات الأساسية"
-    },
-    navigation: {
-      dashboard: "لوحة التحكم",
-      crManagement: "إدارة السجل التجاري",
-      projectsManagement: "إدارة المشاريع",
-      projects: "معرض المشاريع",
-      categories: "فئات الخدمة",
-      profile: "الملف الشخصي",
-      offers: "عروضي",
-      orders: "الطلبات",
-      messages: "الرسائل",
-      settings: "الإعدادات",
-      verification: "التحقق"
     }
   }
 };

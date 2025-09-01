@@ -6,7 +6,7 @@ import { VendorSidebar } from "./VendorSidebar";
 import { VendorHeader } from "./VendorHeader";
 import { VendorMobileSidebar } from "./VendorMobileSidebar";
 import { VerificationBanner } from "@/components/verification/VerificationBanner";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
 interface VendorLayoutProps {
@@ -18,7 +18,12 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
   const languageContext = useOptionalLanguage();
   const { isRTL } = languageContext || { isRTL: false };
   const t = languageContext?.t || ((key: string) => key);
+  const isMobile = useIsMobile();
   
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    const saved = localStorage.getItem('vendorSidebarOpen');
+    return saved ? JSON.parse(saved) : true;
+  });
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   if (loading) {
@@ -43,37 +48,49 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
   }
 
   return (
-    <SidebarProvider>
-      <div className={cn("min-h-screen flex w-full", isRTL && "rtl")}>
+    <div className={cn("min-h-screen flex w-full", isRTL && "rtl")}>
+      {!isMobile && (
         <VendorSidebar 
           userProfile={userProfile} 
+          collapsed={!sidebarOpen}
           onItemClick={() => setIsMobileSidebarOpen(false)} 
         />
-        
-        <VendorMobileSidebar
-          isOpen={isMobileSidebarOpen}
-          onOpenChange={setIsMobileSidebarOpen}
-          userProfile={userProfile}
-        />
+      )}
+      
+      <VendorMobileSidebar
+        isOpen={isMobileSidebarOpen}
+        onOpenChange={setIsMobileSidebarOpen}
+        userProfile={userProfile}
+      />
 
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <VendorHeader 
-            userProfile={userProfile}
-            onMobileMenuToggle={() => setIsMobileSidebarOpen(true)}
-          />
-          
-          {userProfile.verification_status && 
-           userProfile.verification_status !== 'approved' && (
-            <VerificationBanner />
-          )}
-          
-          <main className="flex-1 overflow-auto bg-background">
-            <div className="container max-w-7xl mx-auto px-4 py-6">
-              {children}
-            </div>
-          </main>
-        </div>
+      <div 
+        className={cn(
+          "flex-1 flex flex-col min-w-0 transition-all duration-300",
+          !isMobile && (sidebarOpen ? "ml-64" : "ml-16")
+        )}
+      >
+        <VendorHeader 
+          userProfile={userProfile}
+          onMobileMenuToggle={() => setIsMobileSidebarOpen(true)}
+          onSidebarToggle={() => {
+            const newState = !sidebarOpen;
+            setSidebarOpen(newState);
+            localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
+          }}
+          sidebarOpen={sidebarOpen}
+        />
+        
+        {userProfile.verification_status && 
+         userProfile.verification_status !== 'approved' && (
+          <VerificationBanner />
+        )}
+        
+        <main className="flex-1 overflow-auto bg-muted/20 p-6 min-h-[calc(100vh-4rem)]">
+          <div className="max-w-7xl mx-auto">
+            {children}
+          </div>
+        </main>
       </div>
-    </SidebarProvider>
+    </div>
   );
 };

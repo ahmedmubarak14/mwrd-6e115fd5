@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
@@ -20,7 +19,8 @@ import {
   ChevronDown,
   ChevronRight,
   Search,
-  Briefcase
+  Briefcase,
+  Building
 } from "lucide-react";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useAuth } from "@/contexts/AuthContext";
@@ -39,7 +39,7 @@ interface VendorSidebarProps {
 interface NavigationGroup {
   id: string;
   label: string;
-  priority: 'primary' | 'secondary' | 'utility';
+  priority: 'high' | 'medium' | 'low';
   items: {
     name: string;
     href: string;
@@ -87,8 +87,8 @@ export const VendorSidebar = ({ className, collapsed = false, userRole, onItemCl
   const navigationGroups: NavigationGroup[] = [
     {
       id: 'overview',
-      label: t('vendor.groups.overview'),
-      priority: 'primary',
+      label: t('vendorGroups.overview'),
+      priority: 'high',
       items: [
         {
           name: t('nav.dashboard'),
@@ -104,8 +104,8 @@ export const VendorSidebar = ({ className, collapsed = false, userRole, onItemCl
     },
     {
       id: 'workspace',
-      label: t('vendor.groups.workspace'),
-      priority: 'primary',
+      label: t('vendorGroups.workspace'),
+      priority: 'high',
       items: [
         {
           name: t('nav.browseRequests'),
@@ -131,8 +131,8 @@ export const VendorSidebar = ({ className, collapsed = false, userRole, onItemCl
     },
     {
       id: 'portfolio',
-      label: t('vendor.groups.portfolio'),
-      priority: 'secondary',
+      label: t('vendorGroups.portfolio'),
+      priority: 'medium',
       items: [
         {
           name: t('vendor.navigation.projectsManagement'),
@@ -148,8 +148,8 @@ export const VendorSidebar = ({ className, collapsed = false, userRole, onItemCl
     },
     {
       id: 'account',
-      label: t('vendor.groups.account'),
-      priority: 'utility',
+      label: t('vendorGroups.account'),
+      priority: 'low',
       items: [
         {
           name: t('nav.profile'),
@@ -186,11 +186,11 @@ export const VendorSidebar = ({ className, collapsed = false, userRole, onItemCl
 
   const getGroupPriorityStyles = (priority: NavigationGroup['priority']) => {
     switch (priority) {
-      case 'primary':
+      case 'high':
         return "border-l-2 border-l-primary/20 bg-primary/5";
-      case 'secondary':
+      case 'medium':
         return "border-l-2 border-l-accent/20 bg-accent/5";
-      case 'utility':
+      case 'low':
         return "border-l-2 border-l-muted-foreground/20 bg-muted/50";
       default:
         return "";
