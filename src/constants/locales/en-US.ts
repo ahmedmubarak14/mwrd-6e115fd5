@@ -1257,5 +1257,15 @@ export const enUS = {
     resolved: "Resolved",
     ticketStatus: "Status",
     ticketPriority: "Priority"
+  },
+
+  // Vendor Groups for Sidebar
+  vendorGroups: {
+    overview: "Overview",
+    workspace: "Workspace", 
+    portfolio: "Portfolio",
+    financial: "Financial",
+    businessIntelligence: "Business Intelligence",
+    account: "Account",
   }
 };

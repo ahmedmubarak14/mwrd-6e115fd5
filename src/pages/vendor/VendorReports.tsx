@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -19,6 +20,7 @@ import {
 export const VendorReports = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState("30");
   const [reportData, setReportData] = useState({
@@ -184,9 +186,9 @@ export const VendorReports = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold">Business Reports</h1>
+          <h1 className="text-2xl font-bold">{t('vendorReports.title')}</h1>
           <p className="text-muted-foreground mt-1">
-            Comprehensive business analytics and insights
+            {t('vendorReports.description')}
           </p>
         </div>
         <div className="flex gap-2">

@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { 
   Upload, FileText, Download, Search, Filter, Folder, 
@@ -16,6 +17,7 @@ import {
 export const VendorDocuments = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [documents, setDocuments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -150,9 +152,9 @@ export const VendorDocuments = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Document Center</h1>
+        <h1 className="text-2xl font-bold">{t('vendorDocuments.title')}</h1>
         <p className="text-muted-foreground mt-1">
-          Manage all your business documents and files
+          {t('vendorDocuments.description')}
         </p>
       </div>
 

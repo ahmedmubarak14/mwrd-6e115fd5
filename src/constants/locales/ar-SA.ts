@@ -1273,5 +1273,15 @@ export const arSA = {
     resolved: "تم الحل",
     ticketStatus: "الحالة",
     ticketPriority: "الأولوية"
+  },
+
+  // مجموعات البائع للشريط الجانبي
+  vendorGroups: {
+    overview: "نظرة عامة",
+    workspace: "مساحة العمل", 
+    portfolio: "المحفظة",
+    financial: "المالية",
+    businessIntelligence: "ذكاء الأعمال",
+    account: "الحساب",
   }
 };

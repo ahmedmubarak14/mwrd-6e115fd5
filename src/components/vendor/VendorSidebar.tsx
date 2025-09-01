@@ -167,8 +167,8 @@ export const VendorSidebar = ({
       ]
     },
     {
-      id: 'business',
-      label: t('vendorGroups.business') || 'Business Intelligence',
+      id: 'business-intelligence',
+      label: t('vendorGroups.businessIntelligence') || 'Business Intelligence',
       priority: 'secondary',
       items: [
         {
