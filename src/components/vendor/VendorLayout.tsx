@@ -64,15 +64,9 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
       <div 
         className={cn(
           "flex-1 flex flex-col min-w-0 transition-all duration-300",
-          !isMobile && !isRTL && (sidebarOpen ? "ml-64" : "ml-16")
+          !isMobile && !isRTL && (sidebarOpen ? "ml-64" : "ml-16"),
+          !isMobile && isRTL && (sidebarOpen ? "mr-64" : "mr-16")
         )}
-        style={!isMobile && isRTL ? {
-          width: sidebarOpen ? 'calc(100% - 256px)' : 'calc(100% - 64px)',
-          marginRight: 0,
-          position: 'relative',
-          left: 0,
-          right: sidebarOpen ? '256px' : '64px'
-        } : undefined}
       >
         <VendorHeader 
           onMobileMenuOpen={() => setIsMobileSidebarOpen(true)}
