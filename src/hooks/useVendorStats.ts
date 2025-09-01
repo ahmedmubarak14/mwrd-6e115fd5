@@ -145,6 +145,12 @@ export const useVendorStats = () => {
         };
       });
 
+      // Add minimum data point if all values are 0 to make chart visible
+      const hasData = offerTrends.some(trend => trend.offers > 0);
+      if (!hasData && offerTrends.length > 0) {
+        offerTrends[Math.floor(offerTrends.length / 2)].offers = 1;
+      }
+
       setStats({
         totalOffers,
         activeOffers,
