@@ -193,12 +193,13 @@ export const VendorSidebar = ({
   return (
     <div 
       className={cn(
-        "flex flex-col border-r bg-card transition-all duration-300",
+        "fixed top-0 z-50 flex flex-col bg-card transition-all duration-300",
         collapsed ? "w-16" : "w-64",
-        isRTL ? "border-l border-r-0" : "",
+        isRTL ? "right-0 border-l" : "left-0 border-r",
         className
       )} 
       dir={isRTL ? 'rtl' : 'ltr'}
+      style={{ height: '100vh' }}
     >
       {/* Sidebar Header - matches main header height */}
       <div className="border-b border-border bg-card h-16 flex items-center px-4">
@@ -209,7 +210,7 @@ export const VendorSidebar = ({
       <ScrollArea className="flex-1">
         <div className="p-3 space-y-3">
           {navigationGroups.map((group) => {
-            const isExpanded = collapsed ? true : expandedGroups.has(group.id);
+            const isExpanded = collapsed ? false : expandedGroups.has(group.id);
             const hasActiveItem = group.items.some(item => 
               isActive(item.href) || isParentActive(item.href)
             );

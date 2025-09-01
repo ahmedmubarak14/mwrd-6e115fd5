@@ -59,14 +59,8 @@ export const VendorHeader = ({
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => {
-                  console.log('Sidebar toggle clicked, current state:', sidebarOpen);
-                  onSidebarToggle?.();
-                }}
-                className={cn(
-                  "h-9 w-9 hover:bg-accent/50 transition-all duration-200 shrink-0",
-                  sidebarOpen ? "bg-primary/10 text-primary" : "text-muted-foreground"
-                )}
+                onClick={onSidebarToggle}
+                className="h-9 w-9 hover:bg-accent/50 transition-all duration-200 shrink-0"
                 aria-label="Toggle sidebar"
               >
                 <Menu className="h-4 w-4" />
