@@ -166,7 +166,21 @@ export const arSA = {
     emailNotificationsDescription: 'تلقي إشعارات البريد الإلكتروني لأنشطة المشرف',
     auditLogRetention: 'الاحتفاظ بسجل التدقيق (بالأيام)',
     auditLogRetentionDescription: 'مدة الاحتفاظ بسجلات التدقيق',
-    accessDenied: 'تم رفض الوصول'
+    accessDenied: 'تم رفض الوصول',
+    thisMonth: "هذا الشهر",
+    sar: "ريال سعودي",
+    getStartedActions: "ابدأ بهذه الإجراءات",
+    yourLatestWork: "أعمالك الأخيرة",
+    mockProject: "مشروع تجريبي",
+    daysAgo: "أيام مضت",
+    viewAll: "عرض الكل",
+    recentActivity: "النشاط الحديث",
+    latestUpdates: "آخر التحديثات",
+    ago: "مضى",
+    viewAllActivity: "عرض جميع الأنشطة",
+    activeOffers: "العروض النشطة",
+    vendor: "مورد",
+    searchPlaceholder: "البحث..."
   },
   error: {
     general: 'حدث خطأ'
@@ -520,6 +534,56 @@ export const arSA = {
       slowResponseTime: "تم اكتشاف وقت استجابة بطيء",
       highErrorRate: "تم اكتشاف معدل خطأ عالي",
       lowUptime: "تم اكتشاف وقت تشغيل منخفض"
+    }
+  },
+
+  // Vendor Dashboard & CR Management
+  vendor: {
+    dashboard: {
+      title: "لوحة تحكم المورد",
+      welcome: "مرحباً بك في لوحة تحكم المورد",
+      crStatus: "حالة السجل التجاري",
+      completionRate: "مستوى اكتمال الملف الشخصي",
+      recentProjects: "المشاريع الأخيرة",
+      quickActions: "إجراءات سريعة",
+      overview: "نظرة عامة",
+      accessRequired: "يتطلب الوصول كمورد"
+    },
+    cr: {
+      title: "السجل التجاري",
+      status: "الحالة",
+      verified: "موثق",
+      pending: "في انتظار التحقق",
+      rejected: "مرفوض",
+      unverified: "غير موثق",
+      updateCR: "تحديث معلومات السجل التجاري",
+      verificationRequired: "يتطلب توثيق السجل التجاري للوصول إلى جميع الميزات"
+    },
+    projects: {
+      title: "معرض المشاريع",
+      add: "إضافة مشروع جديد",
+      addFirst: "أضف مشروعك الأول لعرض أعمالك"
+    },
+    categories: {
+      title: "فئات الخدمة",
+      select: "اختيار الفئات",
+      manage: "إدارة الفئات"
+    },
+    profile: {
+      title: "ملف المورد الشخصي",
+      basicInfo: "المعلومات الأساسية"
+    },
+    navigation: {
+      dashboard: "لوحة التحكم",
+      crManagement: "إدارة السجل التجاري",
+      projects: "معرض المشاريع",
+      categories: "فئات الخدمة",
+      profile: "الملف الشخصي",
+      offers: "عروضي",
+      orders: "الطلبات",
+      messages: "الرسائل",
+      settings: "الإعدادات",
+      verification: "التحقق"
     }
   }
 };
