@@ -2,22 +2,25 @@
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { TouchOptimizedButton } from "@/components/ui/TouchOptimizedButton";
+import { SkipToContent } from "@/components/ui/SkipToContent";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
-import { useSupportTickets } from "@/hooks/useSupportTickets";
-import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { usePerformantSupportTickets } from "@/hooks/usePerformantSupportTickets";
+import { useAccessibleAnnouncements } from "@/hooks/useAccessibleAnnouncements";
+import { AccessibleLoadingSpinner } from "@/components/ui/AccessibleLoadingSpinner";
 import { LiveChatButton } from "@/components/support/LiveChatButton";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { EmptyTicketsState } from "@/components/support/EmptyTicketsState";
 import { SupportForm } from "@/components/support/SupportForm";
 import { HelpCircle, MessageSquare, Phone, Mail, Ticket, CheckCircle, Clock, AlertCircle } from "lucide-react";
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 const SupportContent = React.memo(() => {
   const { userProfile } = useAuth();
   const languageContext = useOptionalLanguage();
-  const { tickets, loading, createTicket } = useSupportTickets();
+  const { tickets, loading, createTicket, ticketMetrics } = usePerformantSupportTickets();
+  const { announce, announceLoading, announceSuccess, announceError } = useAccessibleAnnouncements();
   const [showCreateForm, setShowCreateForm] = useState(false);
 
   const { t, isRTL, formatDate } = languageContext || { 
@@ -25,18 +28,15 @@ const SupportContent = React.memo(() => {
     isRTL: false,
     formatDate: (date: Date) => date.toLocaleDateString()
   };
-  
-  // Support metrics
-  const metrics = useMemo(() => {
-    if (!tickets) return { total: 0, open: 0, closed: 0, pending: 0 };
-    
-    return {
-      total: tickets.length,
-      open: tickets.filter(t => t.status === 'open').length,
-      closed: tickets.filter(t => t.status === 'closed').length,
-      pending: tickets.filter(t => t.status === 'pending').length,
-    };
-  }, [tickets]);
+
+  // Announce page load to screen readers
+  useEffect(() => {
+    announce(t('support.title'), 'polite');
+    announceLoading(loading, 'support tickets');
+  }, [announce, announceLoading, loading, t]);
+
+  // Memoize metrics to prevent unnecessary recalculations
+  const metrics = useMemo(() => ticketMetrics, [ticketMetrics]);
 
   const handleSubmitTicket = useCallback(async (data: { subject: string; message: string; category: string; priority: string }) => {
     try {
@@ -47,26 +47,43 @@ const SupportContent = React.memo(() => {
         message: data.message
       });
       setShowCreateForm(false);
+      announceSuccess(t('support.success.ticketCreated'));
     } catch (error) {
       console.error('Error creating support ticket:', error);
+      announceError(t('support.errors.ticketFailed'));
       throw error; // Re-throw to be handled by SupportForm
     }
-  }, [createTicket]);
+  }, [createTicket, announceSuccess, announceError, t]);
 
   const handleShowCreateForm = useCallback(() => {
     setShowCreateForm(true);
-  }, []);
+    announce(t('support.createTicket'), 'polite');
+  }, [announce, t]);
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
+      <div 
+        className="flex justify-center items-center min-h-[400px]"
+        role="main"
+        aria-label={t('support.title')}
+      >
+        <AccessibleLoadingSpinner 
+          size="lg"
+          label={t('common.loading')}
+          description="Loading support tickets and information"
+        />
       </div>
     );
   }
 
   return (
-    <div className={cn("space-y-6", isRTL && "rtl")} dir={isRTL ? 'rtl' : 'ltr'}>
+    <main 
+      id="main-content"
+      className={cn("space-y-6", isRTL && "rtl")} 
+      dir={isRTL ? 'rtl' : 'ltr'}
+      role="main"
+      aria-label={t('support.title')}
+    >
       
       <div className="mb-8">
         <h1 className={cn(
@@ -84,34 +101,44 @@ const SupportContent = React.memo(() => {
       </div>
       {/* Support Metrics */}
       {tickets && tickets.length > 0 && (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+        <section 
+          className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8"
+          aria-label="Support ticket statistics"
+        >
           <MetricCard
             title={t('support.totalTickets')}
             value={metrics.total}
             icon={Ticket}
+            aria-label={`${metrics.total} ${t('support.totalTickets')}`}
           />
           <MetricCard
             title={t('support.openTickets')}
             value={metrics.open}
             icon={AlertCircle}
             variant="warning"
+            aria-label={`${metrics.open} ${t('support.openTickets')}`}
           />
           <MetricCard
             title={t('support.pending')}
             value={metrics.pending}
             icon={Clock}
             variant="warning"
+            aria-label={`${metrics.pending} ${t('support.pending')}`}
           />
           <MetricCard
             title={t('support.resolved')}
-            value={metrics.closed}
+            value={metrics.resolved}
             icon={CheckCircle}
             variant="success"
+            aria-label={`${metrics.resolved} ${t('support.resolved')}`}
           />
-        </div>
+        </section>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <section 
+        className="grid gap-6 lg:grid-cols-2"
+        aria-label="Support contact options and ticket creation"
+      >
         {/* Contact Methods */}
         <Card className="h-fit">
           <CardHeader>
@@ -198,61 +225,82 @@ const SupportContent = React.memo(() => {
             </CardContent>
           </Card>
         )}
-      </div>
+      </section>
 
       {/* Recent Tickets or Empty State */}
-      {tickets && tickets.length > 0 ? (
-        <Card>
-          <CardHeader>
-            <CardTitle className={isRTL ? "text-right" : ""}>
-              {t('support.recentTickets')}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {tickets.slice(0, 5).map((ticket) => (
-                <div 
-                  key={ticket.id} 
-                  className={cn(
-                    "flex justify-between items-start p-4 bg-muted/30 rounded-lg border border-border/50 transition-colors hover:bg-muted/50",
-                    isRTL && "flex-row-reverse"
-                  )}
-                >
-                  <div className={cn("flex-1", isRTL ? "text-right" : "")}>
-                    <p className="font-medium text-foreground mb-1">{ticket.subject}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {formatDate(new Date(ticket.created_at))}
-                    </p>
-                  </div>
-                  <div className={cn(
-                    "flex flex-col gap-1 ml-4",
-                    isRTL ? "text-left ml-0 mr-4" : "text-right"
-                  )}>
-                    <span className={cn(
-                      "text-xs font-medium px-2 py-1 rounded-full",
-                      ticket.status === 'open' ? "bg-warning/20 text-warning" :
-                      ticket.status === 'closed' ? "bg-success/20 text-success" :
-                      "bg-info/20 text-info"
+      <section aria-label="Support tickets">
+        {tickets && tickets.length > 0 ? (
+          <Card>
+            <CardHeader>
+              <CardTitle className={isRTL ? "text-right" : ""}>
+                {t('support.recentTickets')}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div 
+                className="space-y-3"
+                role="list"
+                aria-label="Recent support tickets"
+              >
+                {tickets.slice(0, 5).map((ticket, index) => (
+                  <div 
+                    key={ticket.id}
+                    role="listitem"
+                    tabIndex={0}
+                    className={cn(
+                      "flex justify-between items-start p-4 bg-muted/30 rounded-lg border border-border/50 transition-colors hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                      isRTL && "flex-row-reverse"
+                    )}
+                    aria-label={`Support ticket: ${ticket.subject}`}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        // Could navigate to ticket detail here
+                      }
+                    }}
+                  >
+                    <div className={cn("flex-1", isRTL ? "text-right" : "")}>
+                      <p className="font-medium text-foreground mb-1">{ticket.subject}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {formatDate(new Date(ticket.created_at))}
+                      </p>
+                    </div>
+                    <div className={cn(
+                      "flex flex-col gap-1 ml-4",
+                      isRTL ? "text-left ml-0 mr-4" : "text-right"
                     )}>
-                      {t(`support.status.${ticket.status}`)}
-                    </span>
-                    <span className="text-xs text-muted-foreground capitalize">
-                      {t(`support.priority.${ticket.priority}`)}
-                    </span>
+                      <span 
+                        className={cn(
+                          "text-xs font-medium px-2 py-1 rounded-full",
+                          ticket.status === 'open' ? "bg-warning/20 text-warning" :
+                          ticket.status === 'closed' ? "bg-success/20 text-success" :
+                          "bg-info/20 text-info"
+                        )}
+                        aria-label={`Status: ${t(`support.status.${ticket.status}`)}`}
+                      >
+                        {t(`support.status.${ticket.status}`)}
+                      </span>
+                      <span 
+                        className="text-xs text-muted-foreground capitalize"
+                        aria-label={`Priority: ${t(`support.priority.${ticket.priority}`)}`}
+                      >
+                        {t(`support.priority.${ticket.priority}`)}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      ) : !loading && !showCreateForm && (
-        <EmptyTicketsState 
-          onCreateTicket={handleShowCreateForm}
-          isRTL={isRTL}
-          t={t}
-        />
-      )}
-    </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        ) : !loading && !showCreateForm && (
+          <EmptyTicketsState 
+            onCreateTicket={handleShowCreateForm}
+            isRTL={isRTL}
+            t={t}
+          />
+        )}
+      </section>
+    </main>
   );
 });
 
@@ -260,9 +308,12 @@ SupportContent.displayName = "SupportContent";
 
 export const Support = React.memo(() => {
   return (
-    <ErrorBoundary>
-      <SupportContent />
-    </ErrorBoundary>
+    <div className="relative">
+      <SkipToContent targetId="main-content" />
+      <ErrorBoundary>
+        <SupportContent />
+      </ErrorBoundary>
+    </div>
   );
 });
 
