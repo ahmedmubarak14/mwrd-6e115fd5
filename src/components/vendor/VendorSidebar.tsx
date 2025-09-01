@@ -46,16 +46,26 @@ export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {
   // Role-based navigation items
   const getNavigationItems = () => {
     const baseItems = [
-      {
-        label: t('nav.dashboard'),
-        href: userRole === 'vendor' ? '/vendor-dashboard' : '/dashboard',
-        icon: LayoutDashboard,
-      }
+        {
+          label: t('nav.dashboard'),
+          href: userRole === 'vendor' ? '/vendor/dashboard' : '/dashboard',
+          icon: LayoutDashboard,
+        }
     ];
 
     if (userRole === 'vendor') {
       return [
         ...baseItems,
+        {
+          label: t('vendor.navigation.crManagement'),
+          href: '/vendor/cr-management',
+          icon: FileText,
+        },
+        {
+          label: t('vendor.navigation.projectsManagement'),
+          href: '/vendor/projects-management',
+          icon: FolderOpen,
+        },
         {
           label: t('nav.browseRequests'),
           href: '/browse-requests',
@@ -134,8 +144,12 @@ export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {
 
   const isActive = (path: string) => {
     // Handle vendor dashboard special case
-    if (path === '/vendor-dashboard' && location.pathname === '/vendor-dashboard') {
+    if (path === '/vendor/dashboard' && (location.pathname === '/vendor/dashboard' || location.pathname === '/vendor')) {
       return true;
+    }
+    // Handle vendor nested routes
+    if (path.startsWith('/vendor/')) {
+      return location.pathname === path;
     }
     return location.pathname === path;
   };

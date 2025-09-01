@@ -576,6 +576,7 @@ export const arSA = {
     navigation: {
       dashboard: "لوحة التحكم",
       crManagement: "إدارة السجل التجاري",
+      projectsManagement: "إدارة المشاريع",
       projects: "معرض المشاريع",
       categories: "فئات الخدمة",
       profile: "الملف الشخصي",

@@ -9,11 +9,14 @@ import { GlobalErrorHandler } from '@/components/ui/GlobalErrorHandler';
 import { MobileAppShell } from './components/mobile/MobileAppShell';
 import { ClientLayout } from './components/layout/ClientLayout';
 import { AdminLayout } from './components/admin/AdminLayout';
+import { VendorLayout } from './components/vendor/VendorNestedLayout';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import { VendorDashboard } from './pages/VendorDashboard';
+import { CRManagementPage } from './pages/vendor/CRManagement';
+import { ProjectsManagementPage } from './pages/vendor/ProjectsManagement';
 import Profile from './pages/Profile';
 import { Landing } from './pages/Landing';
 import NotFound from './pages/NotFound';
@@ -156,12 +159,20 @@ function App() {
                     <Route path="/vendor-rfqs" element={<Navigate to="/client/vendor-rfqs" replace />} />
                     <Route path="/vendors" element={<Navigate to="/client/vendors" replace />} />
                     
-                    {/* Vendor routes */}
-                    <Route path="/vendor-dashboard" element={
+                    {/* Vendor routes with layout */}
+                    <Route path="/vendor" element={
                       <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <VendorDashboard />
+                        <VendorLayout />
                       </RoleProtectedRoute>
-                    } />
+                    }>
+                      <Route index element={<Navigate to="/vendor/dashboard" replace />} />
+                      <Route path="dashboard" element={<VendorDashboard />} />
+                      <Route path="cr-management" element={<CRManagementPage />} />
+                      <Route path="projects-management" element={<ProjectsManagementPage />} />
+                    </Route>
+                    
+                    {/* Legacy vendor dashboard route (redirect to new structure) */}
+                    <Route path="/vendor-dashboard" element={<Navigate to="/vendor/dashboard" replace />} />
                     
                     {/* Admin routes with layout */}
                     <Route path="/admin" element={

@@ -1,37 +1,77 @@
 import { adminTranslationsEN } from '@/constants/admin-translations/en-US';
 
 export const enUS = {
-    common: {
-      // ... existing translations
-      errors: {
-        networkConnection: 'Network connection issue. Please check your internet connection.',
-        requestTimeout: 'Request timed out. Please try again.',
-        dataLoading: 'Data loading failed. Please try again.',
-        userManagement: 'User Management Error'
-      },
-      placeholders: {
-        searchLogs: 'Search logs...',
-        filterByAction: 'Filter by action',
-        filterByEntity: 'Filter by entity',
-        searchNotifications: 'Search notifications...',
-        searchTransactions: 'Search transactions...',
-        searchIncidents: 'Search incidents...',
-        searchConversations: 'Search conversations...',
-        typeMessage: 'Type a message...',
-        addNotes: 'Add notes about this verification...',
-        enterEnglishName: 'Enter English name',
-        enterArabicName: 'Enter Arabic name',
-        categorySlug: 'category-slug',
-        emailSubject: 'Your Weekly Update from MWRD',
-        notificationTitle: 'Notification title',
-        notificationMessage: 'Notification message',
-        incidentTitle: 'Incident title',
-        incidentDescription: 'Detailed incident description',
-        affectedSystems: 'Systems or components affected'
-      },
-      titles: {
-        adminOnline: 'Admin Online'
-      },
+  // Vendor Dashboard & CR Management
+  vendor: {
+    navigation: {
+      crManagement: 'CR Management',
+      projectsManagement: 'Projects Management',
+    },
+    dashboard: {
+      title: "Vendor Dashboard",
+      welcome: "Welcome to your vendor dashboard",
+      crStatus: "CR Status",
+      completionRate: "Profile Completion",
+      recentProjects: "Recent Projects",
+      quickActions: "Quick Actions",
+      overview: "Overview",
+      accessRequired: "Vendor access required"
+    },
+    cr: {
+      title: "Commercial Registration",
+      status: "Status",
+      verified: "Verified",
+      pending: "Pending Verification",
+      rejected: "Rejected",
+      unverified: "Unverified",
+      updateCR: "Update CR Information",
+      verificationRequired: "CR verification required to access all features"
+    },
+    projects: {
+      title: "Project Showcase",
+      add: "Add New Project",
+      addFirst: "Add your first project to showcase your work"
+    },
+    categories: {
+      title: "Service Categories",
+      select: "Select Categories",
+      manage: "Manage Categories"
+    },
+    profile: {
+      title: "Vendor Profile",
+      basicInfo: "Basic Information"
+    }
+  },
+  common: {
+    errors: {
+      networkConnection: 'Network connection issue. Please check your internet connection.',
+      requestTimeout: 'Request timed out. Please try again.',
+      dataLoading: 'Data loading failed. Please try again.',
+      userManagement: 'User Management Error'
+    },
+    placeholders: {
+      searchLogs: 'Search logs...',
+      filterByAction: 'Filter by action',
+      filterByEntity: 'Filter by entity',
+      searchNotifications: 'Search notifications...',
+      searchTransactions: 'Search transactions...',
+      searchIncidents: 'Search incidents...',
+      searchConversations: 'Search conversations...',
+      typeMessage: 'Type a message...',
+      addNotes: 'Add notes about this verification...',
+      enterEnglishName: 'Enter English name',
+      enterArabicName: 'Enter Arabic name',
+      categorySlug: 'category-slug',
+      emailSubject: 'Your Weekly Update from MWRD',
+      notificationTitle: 'Notification title',
+      notificationMessage: 'Notification message',
+      incidentTitle: 'Incident title',
+      incidentDescription: 'Detailed incident description',
+      affectedSystems: 'Systems or components affected'
+    },
+    titles: {
+      adminOnline: 'Admin Online'
+    },
     loading: 'Loading...',
     error: 'An error occurred',
     success: 'Success!',
@@ -251,7 +291,6 @@ export const enUS = {
     apiKeyDescription: 'Your personal admin API key',
     generateNewKey: 'Generate New Key'
   },
-  // Navigation Section
   nav: {
     notifications: "Notifications",
     dashboard: "Dashboard", 
@@ -276,18 +315,13 @@ export const enUS = {
     manageSubscription: "Subscription",
     navigateTo: "Navigate to"
   },
-
-  // Client navigation groups
   clientGroups: {
     overview: "Overview",
     workspace: "Workspace",
     network: "Network", 
     account: "Account & Support"
   },
-  
   admin: adminTranslationsEN,
-  
-  // Analytics translations
   analytics: {
     pendingApprovals: "Pending Approvals",
     totalUsers: "Total Users",
@@ -325,8 +359,6 @@ export const enUS = {
     noRecentActivity: "No recent activity",
     monitorDescription: "Monitor platform performance and user activity metrics"
   },
-
-  // System translations
   system: {
     allSystemsOperational: "All systems operational",
     database: "Database",
@@ -341,8 +373,6 @@ export const enUS = {
     requireAttention: "require attention",
     metricsError: "Failed to load metrics. Please try again."
   },
-
-  // Navigation translations
   navigation: {
     userManagement: "User Management",
     userManagementDescription: "Manage users, roles, and permissions",
@@ -361,23 +391,16 @@ export const enUS = {
     automation: "Automation",
     automationDescription: "Workflow automation and rules"
   },
-
-  // Dashboard translations
   dashboard: {
     quickActions: "Quick Actions",
     quickActionsDesc: "Common administrative tasks and shortcuts"
   },
-
-  // Requests translations
   requests: {
     requiresAdminReview: "Requires admin review"
   },
-  
-  // Actions translations 
   actions: {
     viewDetails: "View Details"
   },
-  
   theme: {
     selectTheme: "Select Theme",
     light: "Light",
@@ -536,56 +559,6 @@ export const enUS = {
       slowResponseTime: "Slow response time detected", 
       highErrorRate: "High error rate detected",
       lowUptime: "Low uptime detected"
-    }
-  },
-
-  // Vendor Dashboard & CR Management
-  vendor: {
-    dashboard: {
-      title: "Vendor Dashboard",
-      welcome: "Welcome to your vendor dashboard",
-      crStatus: "CR Status",
-      completionRate: "Profile Completion",
-      recentProjects: "Recent Projects",
-      quickActions: "Quick Actions",
-      overview: "Overview",
-      accessRequired: "Vendor access required"
-    },
-    cr: {
-      title: "Commercial Registration",
-      status: "Status",
-      verified: "Verified",
-      pending: "Pending Verification", 
-      rejected: "Rejected",
-      unverified: "Not Verified",
-      updateCR: "Update CR Information",
-      verificationRequired: "CR verification required to access full features"
-    },
-    projects: {
-      title: "Project Showcase",
-      add: "Add New Project",
-      addFirst: "Add your first project to showcase your work"
-    },
-    categories: {
-      title: "Service Categories",
-      select: "Select Categories",
-      manage: "Manage Categories"
-    },
-    profile: {
-      title: "Vendor Profile",
-      basicInfo: "Basic Information"
-    },
-    navigation: {
-      dashboard: "Dashboard",
-      crManagement: "CR Management",
-      projects: "Project Showcase",
-      categories: "Service Categories", 
-      profile: "Profile",
-      offers: "My Offers",
-      orders: "Orders",
-      messages: "Messages",
-      settings: "Settings",
-      verification: "Verification"
     }
   }
 };
