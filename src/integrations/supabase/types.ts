@@ -2151,6 +2151,10 @@ export type Database = {
         Args: { user_uuid: string }
         Returns: boolean
       }
+      check_support_ticket_rate_limit: {
+        Args: { user_uuid: string }
+        Returns: boolean
+      }
       execute_workflow_rules: {
         Args: {
           trigger_data_param?: Json

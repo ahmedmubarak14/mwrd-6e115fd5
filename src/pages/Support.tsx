@@ -1,26 +1,24 @@
 
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { TouchOptimizedButton } from "@/components/ui/TouchOptimizedButton";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { LiveChatButton } from "@/components/support/LiveChatButton";
 import { MetricCard } from "@/components/ui/MetricCard";
-import { HelpCircle, MessageSquare, Phone, Mail, Send, Ticket, CheckCircle, Clock, AlertCircle } from "lucide-react";
-import React, { useState, useMemo } from "react";
+import { EmptyTicketsState } from "@/components/support/EmptyTicketsState";
+import { SupportForm } from "@/components/support/SupportForm";
+import { HelpCircle, MessageSquare, Phone, Mail, Ticket, CheckCircle, Clock, AlertCircle } from "lucide-react";
+import React, { useState, useMemo, useCallback } from "react";
 import { cn } from "@/lib/utils";
 
 const SupportContent = React.memo(() => {
   const { userProfile } = useAuth();
   const languageContext = useOptionalLanguage();
   const { tickets, loading, createTicket } = useSupportTickets();
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showCreateForm, setShowCreateForm] = useState(false);
 
   const { t, isRTL, formatDate } = languageContext || { 
     t: (key: string) => key.split('.').pop() || key,
@@ -40,26 +38,24 @@ const SupportContent = React.memo(() => {
     };
   }, [tickets]);
 
-  const handleSubmitTicket = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!subject.trim() || !message.trim()) return;
-
-    setIsSubmitting(true);
+  const handleSubmitTicket = useCallback(async (data: { subject: string; message: string; category: string; priority: string }) => {
     try {
       await createTicket({
-        subject: subject.trim(),
-        category: 'general',
-        priority: 'medium',
-        message: message.trim()
+        subject: data.subject,
+        category: data.category,
+        priority: data.priority,
+        message: data.message
       });
-      setSubject("");
-      setMessage("");
+      setShowCreateForm(false);
     } catch (error) {
       console.error('Error creating support ticket:', error);
-    } finally {
-      setIsSubmitting(false);
+      throw error; // Re-throw to be handled by SupportForm
     }
-  };
+  }, [createTicket]);
+
+  const handleShowCreateForm = useCallback(() => {
+    setShowCreateForm(true);
+  }, []);
 
   if (loading) {
     return (
@@ -115,63 +111,70 @@ const SupportContent = React.memo(() => {
         </div>
       )}
 
-      <div className="grid gap-6 md:grid-cols-2">
-          {/* Contact Methods */}
-          <Card>
-            <CardHeader>
-              <CardTitle className={cn(
-                "flex items-center gap-2",
-                isRTL && "flex-row-reverse text-right"
-              )}>
-                <HelpCircle className="h-5 w-5" />
-                {t('support.contactUs')}
-              </CardTitle>
-              <CardDescription className={isRTL ? "text-right" : ""}>
-                {t('support.contactDescription')}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className={cn(
-                "flex items-center gap-3 p-3 bg-muted/50 rounded-lg",
-                isRTL && "flex-row-reverse"
-              )}>
-                <MessageSquare className="h-5 w-5 text-blue-500" />
-                <div className={cn("flex-1", isRTL && "text-right")}>
-                  <p className="font-medium">{t('support.liveChat')}</p>
-                  <p className="text-sm text-muted-foreground">{t('support.liveChatHours')}</p>
-                </div>
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Contact Methods */}
+        <Card className="h-fit">
+          <CardHeader>
+            <CardTitle className={cn(
+              "flex items-center gap-2",
+              isRTL && "flex-row-reverse text-right"
+            )}>
+              <HelpCircle className="h-5 w-5" />
+              {t('support.contactUs')}
+            </CardTitle>
+            <CardDescription className={isRTL ? "text-right" : ""}>
+              {t('support.contactDescription')}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className={cn(
+              "flex items-center gap-3 p-4 bg-muted/30 rounded-lg transition-colors hover:bg-muted/50",
+              isRTL && "flex-row-reverse"
+            )}>
+              <MessageSquare className="h-5 w-5 text-info" />
+              <div className={cn("flex-1", isRTL && "text-right")}>
+                <p className="font-medium">{t('support.liveChat')}</p>
+                <p className="text-sm text-muted-foreground">{t('support.liveChatHours')}</p>
               </div>
-              
-              <div className="mt-2">
-                <LiveChatButton />
+            </div>
+            
+            <div className="mt-2">
+              <LiveChatButton />
+            </div>
+            
+            <div className={cn(
+              "flex items-center gap-3 p-4 bg-muted/30 rounded-lg transition-colors hover:bg-muted/50",
+              isRTL && "flex-row-reverse"
+            )}>
+              <Phone className="h-5 w-5 text-success" />
+              <div className={isRTL ? "text-right" : ""}>
+                <p className="font-medium">{t('support.phone')}</p>
+                <p className="text-sm text-muted-foreground">+1 (555) 123-4567</p>
               </div>
-              
-              <div className={cn(
-                "flex items-center gap-3 p-3 bg-muted/50 rounded-lg",
-                isRTL && "flex-row-reverse"
-              )}>
-                <Phone className="h-5 w-5 text-green-500" />
-                <div className={isRTL ? "text-right" : ""}>
-                  <p className="font-medium">{t('support.phone')}</p>
-                  <p className="text-sm text-muted-foreground">+1 (555) 123-4567</p>
-                </div>
+            </div>
+            
+            <div className={cn(
+              "flex items-center gap-3 p-4 bg-muted/30 rounded-lg transition-colors hover:bg-muted/50",
+              isRTL && "flex-row-reverse"
+            )}>
+              <Mail className="h-5 w-5 text-warning" />
+              <div className={isRTL ? "text-right" : ""}>
+                <p className="font-medium">{t('support.email')}</p>
+                <p className="text-sm text-muted-foreground">support@mwrd.com</p>
               </div>
-              
-              <div className={cn(
-                "flex items-center gap-3 p-3 bg-muted/50 rounded-lg",
-                isRTL && "flex-row-reverse"
-              )}>
-                <Mail className="h-5 w-5 text-orange-500" />
-                <div className={isRTL ? "text-right" : ""}>
-                  <p className="font-medium">{t('support.email')}</p>
-                  <p className="text-sm text-muted-foreground">support@mwrd.com</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+          </CardContent>
+        </Card>
 
-          {/* Create Ticket */}
-          <Card>
+        {/* Create Ticket Form or Show Form Button */}
+        {showCreateForm ? (
+          <SupportForm 
+            onSubmit={handleSubmitTicket}
+            isRTL={isRTL}
+            t={t}
+          />
+        ) : (
+          <Card className="h-fit">
             <CardHeader>
               <CardTitle className={isRTL ? "text-right" : ""}>
                 {t('support.createTicket')}
@@ -181,83 +184,73 @@ const SupportContent = React.memo(() => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmitTicket} className="space-y-4">
-                <div>
-                  <Input
-                    placeholder={t('support.subjectPlaceholder')}
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                    required
-                    className={isRTL ? "text-right" : ""}
-                  />
-                </div>
-                
-                <div>
-                  <Textarea
-                    placeholder={t('support.messagePlaceholder')}
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    rows={4}
-                    required
-                    className={isRTL ? "text-right" : ""}
-                  />
-                </div>
-                
-                <Button 
-                  type="submit" 
-                  disabled={isSubmitting} 
+              <TouchOptimizedButton 
+                onClick={handleShowCreateForm}
+                size="lg"
+                className={cn(
+                  "w-full gap-2 font-semibold",
+                  isRTL && "flex-row-reverse"
+                )}
+              >
+                <Ticket className="h-4 w-4" />
+                {t('support.createTicket')}
+              </TouchOptimizedButton>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+
+      {/* Recent Tickets or Empty State */}
+      {tickets && tickets.length > 0 ? (
+        <Card>
+          <CardHeader>
+            <CardTitle className={isRTL ? "text-right" : ""}>
+              {t('support.recentTickets')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {tickets.slice(0, 5).map((ticket) => (
+                <div 
+                  key={ticket.id} 
                   className={cn(
-                    "w-full gap-2",
+                    "flex justify-between items-start p-4 bg-muted/30 rounded-lg border border-border/50 transition-colors hover:bg-muted/50",
                     isRTL && "flex-row-reverse"
                   )}
                 >
-                  {isSubmitting ? (
-                    <LoadingSpinner size="sm" />
-                  ) : (
-                    <>
-                      <Send className="h-4 w-4" />
-                      {t('support.submitTicket')}
-                    </>
-                  )}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Recent Tickets */}
-        {tickets && tickets.length > 0 && (
-          <Card>
-            <CardHeader>
-              <CardTitle className={isRTL ? "text-right" : ""}>
-                {t('support.recentTickets')}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {tickets.slice(0, 5).map((ticket) => (
-                  <div 
-                    key={ticket.id} 
-                    className={cn(
-                      "flex justify-between items-center p-3 bg-muted/50 rounded-lg",
-                      isRTL && "flex-row-reverse"
-                    )}
-                  >
-                    <div className={isRTL ? "text-right" : ""}>
-                      <p className="font-medium">{ticket.subject}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {formatDate(new Date(ticket.created_at))}
-                      </p>
-                    </div>
-                    <div className={isRTL ? "text-left" : "text-right"}>
-                      <p className="text-sm font-medium capitalize">{ticket.status}</p>
-                      <p className="text-sm text-muted-foreground capitalize">{ticket.priority}</p>
-                    </div>
+                  <div className={cn("flex-1", isRTL ? "text-right" : "")}>
+                    <p className="font-medium text-foreground mb-1">{ticket.subject}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {formatDate(new Date(ticket.created_at))}
+                    </p>
                   </div>
-                ))}
-              </div>
+                  <div className={cn(
+                    "flex flex-col gap-1 ml-4",
+                    isRTL ? "text-left ml-0 mr-4" : "text-right"
+                  )}>
+                    <span className={cn(
+                      "text-xs font-medium px-2 py-1 rounded-full",
+                      ticket.status === 'open' ? "bg-warning/20 text-warning" :
+                      ticket.status === 'closed' ? "bg-success/20 text-success" :
+                      "bg-info/20 text-info"
+                    )}>
+                      {t(`support.status.${ticket.status}`)}
+                    </span>
+                    <span className="text-xs text-muted-foreground capitalize">
+                      {t(`support.priority.${ticket.priority}`)}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
+      ) : !loading && !showCreateForm && (
+        <EmptyTicketsState 
+          onCreateTicket={handleShowCreateForm}
+          isRTL={isRTL}
+          t={t}
+        />
       )}
     </div>
   );
