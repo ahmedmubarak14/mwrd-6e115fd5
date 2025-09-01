@@ -12,7 +12,6 @@ import { MetricCard } from "@/components/ui/MetricCard";
 import { EmptyState } from "@/components/ui/empty-state";
 import { CreateOfferModal } from "@/components/modals/CreateOfferModal";
 import { RequestDetailsModal } from "@/components/modals/RequestDetailsModal";
-import { VendorBreadcrumbs } from "@/components/vendor/VendorBreadcrumbs";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Search, Package, MapPin, Calendar, DollarSign, Clock, Plus, Eye, FileText, TrendingUp, AlertCircle, Filter } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -43,7 +42,6 @@ const BrowseRequestsPage = memo(() => {
     return (
       <ErrorBoundary>
         <div className="p-6 space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
-          <VendorBreadcrumbs />
           
           <div className="mb-8">
             <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
@@ -102,7 +100,6 @@ const BrowseRequestsPage = memo(() => {
   return (
     <ErrorBoundary>
       <div className="p-6 space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
-        <VendorBreadcrumbs />
         
         {/* Header */}
         <div className={cn(

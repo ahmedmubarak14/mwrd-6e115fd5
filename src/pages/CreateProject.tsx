@@ -7,7 +7,6 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
-import { VendorBreadcrumbs } from '@/components/vendor/VendorBreadcrumbs';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { useToast } from '@/hooks/use-toast';
 import { 
@@ -156,7 +155,6 @@ const CreateProjectPage = memo(() => {
   return (
     <ErrorBoundary>
       <div className="p-6 space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
-        <VendorBreadcrumbs />
         
         {/* Header */}
         <div className={cn(

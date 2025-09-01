@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { VendorBreadcrumbs } from "@/components/vendor/VendorBreadcrumbs";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useVendorCR } from "@/hooks/useVendorCR";
 import { useAuth } from "@/contexts/AuthContext";
@@ -146,8 +145,6 @@ const CRManagementContent = React.memo(() => {
 
   return (
     <div className={cn("space-y-6", isRTL && "rtl")} dir={isRTL ? 'rtl' : 'ltr'}>
-      {/* Breadcrumbs */}
-      <VendorBreadcrumbs />
 
       {/* Header */}
       <div className="mb-8">

@@ -1,6 +1,5 @@
 import React from 'react';
 import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
-import { VendorBreadcrumbs } from "@/components/vendor/VendorBreadcrumbs";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -116,7 +115,6 @@ const Messages = React.memo(() => {
     return (
       <ErrorBoundary>
         <ClientPageContainer>
-          <VendorBreadcrumbs />
           <div className="mb-8">
             <div className={cn("h-8 w-48 bg-muted rounded animate-pulse mb-2", isRTL && "ml-auto")} />
             <div className={cn("h-4 w-32 bg-muted rounded animate-pulse", isRTL && "ml-auto")} />
@@ -141,7 +139,6 @@ const Messages = React.memo(() => {
         title={t('messages.title')}
         description={t('messages.subtitle')}
       >
-        <VendorBreadcrumbs />
         {/* Metrics */}
         {conversations.length > 0 && (
           <div className={cn(

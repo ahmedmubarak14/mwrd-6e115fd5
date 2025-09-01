@@ -9,7 +9,6 @@ import { useOrders } from "@/hooks/useOrders";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { EmptyState } from "@/components/ui/empty-state";
-import { VendorBreadcrumbs } from "@/components/vendor/VendorBreadcrumbs";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ShoppingCart, DollarSign, Clock, Eye, MapPin, Calendar, CheckCircle, AlertCircle, Package, TrendingUp } from "lucide-react";
 import { format } from "date-fns";
@@ -51,7 +50,6 @@ const OrdersPage = memo(() => {
     return (
       <ErrorBoundary>
         <div className="p-6 space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
-          <VendorBreadcrumbs />
           
           <div className="mb-8">
             <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
@@ -71,7 +69,6 @@ const OrdersPage = memo(() => {
   return (
     <ErrorBoundary>
       <div className="p-6 space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
-        <VendorBreadcrumbs />
         
         {/* Header */}
         <div className={cn(

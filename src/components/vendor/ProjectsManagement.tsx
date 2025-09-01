@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { VendorBreadcrumbs } from "@/components/vendor/VendorBreadcrumbs";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useVendorProjects } from "@/hooks/useVendorProjects";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
@@ -108,8 +107,6 @@ const ProjectsManagementContent = React.memo(() => {
 
   return (
     <div className={cn("space-y-6", isRTL && "rtl")} dir={isRTL ? 'rtl' : 'ltr'}>
-      {/* Breadcrumbs */}
-      <VendorBreadcrumbs />
 
       {/* Header */}
       <div className={cn(

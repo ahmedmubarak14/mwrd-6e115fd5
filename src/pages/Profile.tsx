@@ -12,7 +12,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useToastFeedback } from "@/hooks/useToastFeedback";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { VendorBreadcrumbs } from "@/components/vendor/VendorBreadcrumbs";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { 
   User, 
@@ -159,7 +158,6 @@ const ProfilePage = memo(() => {
   return (
     <ErrorBoundary>
       <div className="p-6 space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
-        <VendorBreadcrumbs />
         
         {/* Header */}
         <div className={cn(

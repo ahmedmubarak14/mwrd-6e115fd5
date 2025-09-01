@@ -9,7 +9,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { MetricCard } from "@/components/ui/MetricCard";
 import { EmptyState } from "@/components/ui/empty-state";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
-import { VendorBreadcrumbs } from "@/components/vendor/VendorBreadcrumbs";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Package, Search, Eye, MessageSquare, Plus, BarChart3, CheckCircle, XCircle, Clock, Filter, TrendingUp, AlertCircle, DollarSign } from "lucide-react";
 import { CreateOfferModal } from "@/components/modals/CreateOfferModal";
@@ -100,7 +99,6 @@ const OffersPage = memo(() => {
     return (
       <ErrorBoundary>
         <div className="p-6 space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
-          <VendorBreadcrumbs />
           
           <div className="mb-8">
             <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
@@ -121,7 +119,6 @@ const OffersPage = memo(() => {
     return (
       <ErrorBoundary>
         <div className="p-6 space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
-          <VendorBreadcrumbs />
           
           <EmptyState
             icon={Package}
@@ -141,7 +138,6 @@ const OffersPage = memo(() => {
   return (
     <ErrorBoundary>
       <div className="p-6 space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
-        <VendorBreadcrumbs />
         
         {/* Header */}
         <div className={cn(

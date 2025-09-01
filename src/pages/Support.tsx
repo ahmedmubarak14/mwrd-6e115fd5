@@ -1,5 +1,4 @@
 
-import { VendorBreadcrumbs } from "@/components/vendor/VendorBreadcrumbs";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -72,7 +71,6 @@ const SupportContent = React.memo(() => {
 
   return (
     <div className={cn("space-y-6", isRTL && "rtl")} dir={isRTL ? 'rtl' : 'ltr'}>
-      <VendorBreadcrumbs />
       
       <div className="mb-8">
         <h1 className={cn(

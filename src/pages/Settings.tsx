@@ -10,7 +10,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { MetricCard } from "@/components/ui/MetricCard";
-import { VendorBreadcrumbs } from "@/components/vendor/VendorBreadcrumbs";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Settings as SettingsIcon, User, Bell, Shield, Globe, Palette, AlertCircle, CheckCircle, Clock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -156,7 +155,6 @@ const SettingsPage = memo(() => {
     return (
       <ErrorBoundary>
         <div className="p-6 space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
-          <VendorBreadcrumbs />
           
           <div className="mb-8">
             <div className="h-8 w-48 bg-muted rounded animate-pulse mb-2" />
@@ -176,7 +174,6 @@ const SettingsPage = memo(() => {
   return (
     <ErrorBoundary>
       <div className="p-6 space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
-        <VendorBreadcrumbs />
         
         {/* Header */}
         <div className={cn(

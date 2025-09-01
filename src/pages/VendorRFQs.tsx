@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from "react";
 import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
-import { VendorBreadcrumbs } from "@/components/vendor/VendorBreadcrumbs";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useRFQs } from "@/hooks/useRFQs";
@@ -144,9 +143,7 @@ const VendorRFQsContent = React.memo(() => {
 
   return (
     <div className={cn("space-y-6", isRTL && "rtl")} dir={isRTL ? 'rtl' : 'ltr'}>
-      {/* Breadcrumbs */}
-      <VendorBreadcrumbs />
-
+      
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 leading-tight">

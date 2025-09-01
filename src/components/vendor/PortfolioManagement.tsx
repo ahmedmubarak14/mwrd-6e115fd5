@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { VendorBreadcrumbs } from "@/components/vendor/VendorBreadcrumbs";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -111,8 +110,6 @@ const PortfolioManagementContent = React.memo(() => {
 
   return (
     <div className={cn("space-y-6", isRTL && "rtl")} dir={isRTL ? 'rtl' : 'ltr'}>
-      {/* Breadcrumbs */}
-      <VendorBreadcrumbs />
 
       {/* Header */}
       <div className={cn(
