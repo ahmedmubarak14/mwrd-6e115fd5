@@ -150,7 +150,7 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
       });
     } catch (error: any) {
       console.error('Error submitting offer:', error);
-      showError('Failed to submit offer. Please try again.');
+      showError(t('common.failedToSubmit'));
     } finally {
       setLoading(false);
     }
@@ -180,7 +180,7 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
           </DialogHeader>
           <div className="text-center py-4">
             <p className="text-muted-foreground mb-4">
-              Unable to load request details. Please try again.
+              {t('common.unableToLoadDetails')}
             </p>
             <Button onClick={onClose} variant="outline">
               Close

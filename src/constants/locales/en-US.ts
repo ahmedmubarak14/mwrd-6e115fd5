@@ -451,7 +451,23 @@ export const enUS = {
     fromAllClients: "From all clients",
     perOrderAverage: "Per order average",
     clientDirectory: "Client Directory", 
-    clientOverview: "Your complete client relationship overview"
+    clientOverview: "Your complete client relationship overview",
+    // Error messages for dashboard/components
+    failedToLoad: "Failed to load data",
+    failedToDelete: "Failed to delete item",
+    unableToLoadDetails: "Unable to load request details. Please try again.",
+    failedToComplete: "Failed to complete onboarding. Please try again.",
+    failedToSave: "Failed to save project"
+  },
+
+  // Settings
+  settings: {
+    notifications: "Notifications",
+    notificationsDescription: "Manage your notification preferences",
+    emailNotifications: "Email Notifications", 
+    emailNotificationsDesc: "Receive updates via email",
+    pushNotifications: "Push Notifications",
+    pushNotificationsDesc: "Receive push notifications on your device"
   },
 
   // Forms

@@ -193,7 +193,7 @@ export const ProductionVendorDashboard: React.FC = () => {
             <div className="text-center space-y-4">
               <AlertCircle className="h-12 w-12 text-destructive mx-auto" />
               <div>
-                <h3 className="font-semibold">Error Loading Dashboard</h3>
+                <h3 className="font-semibold">{t('common.errorLoadingDashboard')}</h3>
                 <p className="text-sm text-muted-foreground mt-1">{error}</p>
               </div>
               <Button 
@@ -201,7 +201,7 @@ export const ProductionVendorDashboard: React.FC = () => {
                 variant="outline"
                 size="sm"
               >
-                Try Again
+                {t('common.tryAgain')}
               </Button>
             </div>
           </CardContent>

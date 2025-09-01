@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useAuth } from "@/contexts/AuthContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Clock, DollarSign, FileText, Send, Eye, Edit, Trash2 } from "lucide-react";
@@ -43,6 +44,7 @@ interface Request {
 export const OfferManagementSystem = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { t } = useOptionalLanguage() || { t: (key: string) => key };
   const [offers, setOffers] = useState<Offer[]>([]);
   const [availableRequests, setAvailableRequests] = useState<Request[]>([]);
   const [loading, setLoading] = useState(true);
@@ -80,8 +82,8 @@ export const OfferManagementSystem = () => {
     } catch (error) {
       console.error('Error fetching offers:', error);
       toast({
-        title: "Error",
-        description: "Failed to load offers",
+        title: t('common.error'),
+        description: error instanceof Error ? error.message : t('common.failedToLoad'),
         variant: "destructive"
       });
     }
@@ -176,8 +178,8 @@ export const OfferManagementSystem = () => {
     } catch (error) {
       console.error('Error submitting offer:', error);
       toast({
-        title: "Error",
-        description: "Failed to submit offer",
+        title: t('common.error'),
+        description: error instanceof Error ? error.message : t('common.failedToSubmit'),
         variant: "destructive"
       });
     } finally {
@@ -208,8 +210,8 @@ export const OfferManagementSystem = () => {
     } catch (error) {
       console.error('Error deleting offer:', error);
       toast({
-        title: "Error",
-        description: "Failed to delete offer",
+        title: t('common.error'),
+        description: error instanceof Error ? error.message : t('common.failedToDelete'),
         variant: "destructive"
       });
     }

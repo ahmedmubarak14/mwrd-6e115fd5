@@ -453,7 +453,23 @@ export const arSA = {
     fromAllClients: "من جميع العملاء",
     perOrderAverage: "متوسط كل طلب",
     clientDirectory: "دليل العملاء",
-    clientOverview: "نظرة شاملة على علاقات عملائك"
+    clientOverview: "نظرة شاملة على علاقات عملائك",
+    // Error messages for dashboard/components
+    failedToLoad: "فشل في تحميل البيانات",
+    failedToDelete: "فشل في حذف العنصر",
+    unableToLoadDetails: "تعذر تحميل تفاصيل الطلب. يرجى المحاولة مرة أخرى.",
+    failedToComplete: "فشل في إكمال الإعداد. يرجى المحاولة مرة أخرى.",
+    failedToSave: "فشل في حفظ المشروع"
+  },
+
+  // Settings
+  settings: {
+    notifications: "الإشعارات",
+    notificationsDescription: "إدارة تفضيلات الإشعارات",
+    emailNotifications: "إشعارات البريد الإلكتروني",
+    emailNotificationsDesc: "تلقي التحديثات عبر البريد الإلكتروني", 
+    pushNotifications: "الإشعارات الفورية",
+    pushNotificationsDesc: "تلقي إشعارات فورية على جهازك"
   },
 
   // Forms - Arabic
