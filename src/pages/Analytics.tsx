@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useToast } from "@/hooks/use-toast";
 import { useClientAnalytics } from "@/hooks/useClientAnalytics";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,7 +18,7 @@ const COLORS = ['hsl(var(--primary))', 'hsl(var(--secondary))', 'hsl(var(--accen
 
 export const Analytics = () => {
   const { userProfile } = useAuth();
-  const { language, t, isRTL, formatNumber, formatCurrency } = useLanguage();
+  const { language, t, isRTL, formatNumber, formatCurrency } = useOptionalLanguage();
   const { toast } = useToast();
   const [dateRange, setDateRange] = useState("30");
   const [isExporting, setIsExporting] = useState(false);
