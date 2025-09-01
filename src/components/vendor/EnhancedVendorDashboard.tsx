@@ -253,8 +253,7 @@ export const EnhancedVendorDashboard = memo(() => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis 
                   dataKey="date" 
-                  reversed={isRTL}
-                  tick={{ textAnchor: isRTL ? 'end' : 'start' }}
+                  tick={{ textAnchor: 'middle' }}
                 />
                 <YAxis />
                 <Tooltip 
