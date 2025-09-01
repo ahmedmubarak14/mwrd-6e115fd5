@@ -2,7 +2,17 @@ import { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { 
+  Sidebar, 
+  SidebarContent, 
+  SidebarGroup, 
+  SidebarGroupContent, 
+  SidebarGroupLabel, 
+  SidebarMenu, 
+  SidebarMenuButton, 
+  SidebarMenuItem,
+  useSidebar
+} from "@/components/ui/sidebar";
 import { 
   LayoutDashboard,
   FolderOpen,
@@ -47,9 +57,10 @@ interface NavigationGroup {
   }[];
 }
 
-export const VendorSidebar = ({ className, collapsed = false, onToggle, onItemClick }: VendorSidebarProps) => {
+export const VendorSidebar = ({ onItemClick }: Pick<VendorSidebarProps, 'onItemClick'>) => {
   const location = useLocation();
   const { userProfile } = useAuth();
+  const { open: sidebarOpen } = useSidebar();
   const languageContext = useOptionalLanguage();
   const { t, isRTL } = languageContext || { 
     t: (key: string) => key, 
@@ -72,7 +83,7 @@ export const VendorSidebar = ({ className, collapsed = false, onToggle, onItemCl
   });
 
   const toggleGroup = (groupId: string) => {
-    if (collapsed) return; // Don't allow toggling when collapsed
+    if (!sidebarOpen) return; // Don't allow toggling when collapsed
     const newExpanded = new Set(expandedGroups);
     if (newExpanded.has(groupId)) {
       newExpanded.delete(groupId);
@@ -198,129 +209,79 @@ export const VendorSidebar = ({ className, collapsed = false, onToggle, onItemCl
   };
 
   return (
-    <div 
-      className={cn(
-        "flex flex-col h-screen bg-card border-border transition-all duration-300 shadow-sm fixed top-0 z-40",
-        collapsed ? "w-16" : "w-64",
-        isRTL ? "right-0 border-l" : "left-0 border-r",
-        className
-      )} 
-      dir={isRTL ? 'rtl' : 'ltr'}
-    >
+    <Sidebar className="border-r">
       {/* Sidebar Header - User Profile */}
-      <div className="border-b border-border bg-card min-h-16 flex items-center">
+      <div className="border-b border-border bg-card min-h-16 flex items-center px-4">
         <VendorUserProfile 
           variant="sidebar" 
-          collapsed={collapsed}
+          collapsed={!sidebarOpen}
         />
       </div>
 
-      {/* Navigation Content */}
-      <ScrollArea className="flex-1">
-        <div className="p-3 space-y-3">
-          {navigationGroups.map((group) => {
-            const isExpanded = collapsed ? false : expandedGroups.has(group.id);
-            const hasActiveItem = group.items.some(item => 
-              isActive(item.href) || isParentActive(item.href)
-            );
+      <SidebarContent>
+        {navigationGroups.map((group) => {
+          const isExpanded = !sidebarOpen ? false : expandedGroups.has(group.id);
+          const hasActiveItem = group.items.some(item => 
+            isActive(item.href) || isParentActive(item.href)
+          );
 
-            return (
-              <div 
-                key={group.id} 
-                className={cn(
-                  "rounded-lg transition-all duration-200",
-                  getGroupPriorityStyles(group.priority)
-                )}
-              >
-                {/* Group Label */}
-                {!collapsed && (
-                  <Button
-                    variant="ghost"
-                    onClick={() => toggleGroup(group.id)}
-                    className={cn(
-                      "w-full justify-between px-3 py-2 h-auto font-medium",
-                      "text-xs uppercase tracking-wider",
-                      "text-muted-foreground hover:text-foreground hover:bg-accent/50",
-                      hasActiveItem && "text-primary font-semibold"
-                    )}
-                  >
-                    <span className="flex items-center gap-2">
-                      <span>{group.label}</span>
-                      {hasActiveItem && (
-                        <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
-                      )}
-                    </span>
-                    {isExpanded ? (
-                      <ChevronDown className="h-3 w-3 transition-transform duration-200" />
-                    ) : (
-                      <ChevronRight className="h-3 w-3 transition-transform duration-200" />
-                    )}
-                  </Button>
-                )}
-
-                {/* Group Items */}
-                <div 
-                  className={cn(
-                    "space-y-1 transition-all duration-300",
-                    collapsed ? "block" : (isExpanded ? "block" : "hidden"),
-                    !collapsed && "px-2 pb-2"
+          return (
+            <SidebarGroup
+              key={group.id}
+              className={cn(getGroupPriorityStyles(group.priority))}
+            >
+              <SidebarGroupLabel className={cn(
+                "text-xs uppercase tracking-wider",
+                hasActiveItem && "text-primary font-semibold"
+              )}>
+                <span className="flex items-center gap-2">
+                  <span>{group.label}</span>
+                  {hasActiveItem && (
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
                   )}
-                >
+                </span>
+              </SidebarGroupLabel>
+              
+              <SidebarGroupContent>
+                <SidebarMenu>
                   {group.items.map((item) => {
                     const active = isActive(item.href) || isParentActive(item.href);
                     return (
-                      <Link
-                        key={item.href}
-                        to={item.href}
-                        onClick={onItemClick}
-                        className={cn(
-                          "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200",
-                          "text-sm font-medium hover:bg-accent/50",
-                          collapsed ? "justify-center px-2" : "justify-start",
-                          active 
-                            ? "bg-primary/10 text-primary border border-primary/20 shadow-sm" 
-                            : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
-                        )}
-                        title={collapsed ? item.name : undefined}
-                        aria-label={`${t('nav.navigateTo')} ${item.name}`}
-                        aria-current={active ? 'page' : undefined}
-                      >
-                        <item.icon 
-                          className={cn(
-                            "shrink-0 transition-all duration-200",
-                            collapsed ? "h-5 w-5" : "h-4 w-4",
-                            active ? "text-primary" : "text-muted-foreground"
-                          )} 
-                        />
-                        
-                        {!collapsed && (
-                          <>
-                            <span className="truncate flex-1 text-foreground">
-                              {item.name}
-                            </span>
-                            
+                      <SidebarMenuItem key={item.href}>
+                        <SidebarMenuButton 
+                          asChild
+                          isActive={active}
+                          tooltip={item.name}
+                        >
+                          <Link
+                            to={item.href}
+                            onClick={onItemClick}
+                            className={cn(
+                              "flex items-center gap-3",
+                              active && "bg-primary/10 text-primary border border-primary/20"
+                            )}
+                          >
+                            <item.icon className="h-4 w-4" />
+                            <span>{item.name}</span>
                             {item.badge && item.badge > 0 && (
                               <Badge 
-                                variant={(item.badgeVariant === "success" || item.badgeVariant === "warning") ? "secondary" : item.badgeVariant || "secondary"} 
-                                className={cn(
-                                  "h-5 min-w-5 px-1.5 text-xs flex items-center justify-center shrink-0",
-                                  item.badgeVariant === "destructive" && "animate-pulse"
-                                )}
+                                variant="secondary"
+                                className="h-5 min-w-5 px-1.5 text-xs"
                               >
                                 {item.badge > 99 ? '99+' : item.badge}
                               </Badge>
                             )}
-                          </>
-                        )}
-                      </Link>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
                     );
                   })}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </ScrollArea>
-    </div>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          );
+        })}
+      </SidebarContent>
+    </Sidebar>
   );
 };

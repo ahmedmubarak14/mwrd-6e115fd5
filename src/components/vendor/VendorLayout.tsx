@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { VendorSidebar } from "./VendorSidebar";
 import { VendorHeader } from "./VendorHeader";
 import { VendorMobileSidebar } from "./VendorMobileSidebar";
@@ -48,59 +49,56 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
   }
 
   return (
-    <div className={cn("min-h-screen flex w-full", isRTL && "rtl")}>
-      {!isMobile && (
-        <VendorSidebar 
-          collapsed={!sidebarOpen}
-          onItemClick={() => setIsMobileSidebarOpen(false)} 
+    <SidebarProvider 
+      defaultOpen={sidebarOpen}
+      onOpenChange={(open) => {
+        setSidebarOpen(open);
+        localStorage.setItem('vendorSidebarOpen', JSON.stringify(open));
+      }}
+    >
+      <div className={cn("min-h-screen flex w-full", isRTL && "rtl")}>
+        {!isMobile && <VendorSidebar />}
+        
+        <VendorMobileSidebar
+          isOpen={isMobileSidebarOpen}
+          onOpenChange={setIsMobileSidebarOpen}
         />
-      )}
-      
-      <VendorMobileSidebar
-        isOpen={isMobileSidebarOpen}
-        onOpenChange={setIsMobileSidebarOpen}
-      />
 
-      <div 
-        className={cn(
-          "flex-1 flex flex-col min-w-0 transition-all duration-300",
-          !isMobile && !isRTL && (sidebarOpen ? "ml-64" : "ml-16"),
-          !isMobile && isRTL && (sidebarOpen ? "mr-64" : "mr-16")
-        )}
-      >
-        <VendorHeader 
-          onMobileMenuOpen={() => setIsMobileSidebarOpen(true)}
-          onSidebarToggle={() => {
-            const newState = !sidebarOpen;
-            setSidebarOpen(newState);
-            localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
-          }}
-          sidebarOpen={sidebarOpen}
-        />
-        
-        {userProfile.verification_status && 
-         userProfile.verification_status !== 'approved' && (
-          <VerificationBanner />
-        )}
-        
-        <main 
-          className={cn(
-            "flex-1 overflow-auto bg-muted/20 p-6 min-h-[calc(100vh-4rem)]",
-            isRTL && "text-right"
+        <main className="flex-1 flex flex-col min-w-0">
+          <VendorHeader 
+            onMobileMenuOpen={() => setIsMobileSidebarOpen(true)}
+            onSidebarToggle={() => {
+              const newState = !sidebarOpen;
+              setSidebarOpen(newState);
+              localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
+            }}
+            sidebarOpen={sidebarOpen}
+          />
+          
+          {userProfile.verification_status && 
+           userProfile.verification_status !== 'approved' && (
+            <VerificationBanner />
           )}
-          dir={isRTL ? 'rtl' : 'ltr'}
-        >
+          
           <div 
             className={cn(
-              "max-w-7xl mx-auto",
+              "flex-1 overflow-auto bg-muted/20 p-6",
               isRTL && "text-right"
             )}
             dir={isRTL ? 'rtl' : 'ltr'}
           >
-            {children}
+            <div 
+              className={cn(
+                "max-w-7xl mx-auto",
+                isRTL && "text-right"
+              )}
+              dir={isRTL ? 'rtl' : 'ltr'}
+            >
+              {children}
+            </div>
           </div>
         </main>
       </div>
-    </div>
+    </SidebarProvider>
   );
 };

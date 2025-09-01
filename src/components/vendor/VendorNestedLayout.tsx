@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { VendorSidebar } from "./VendorSidebar";
 import { VendorHeader } from "./VendorHeader";
 import { VendorMobileSidebar } from "./VendorMobileSidebar";
@@ -87,32 +88,33 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
           </div>
         ) : (
           // Desktop Layout
-          <div className="min-h-screen flex w-full" dir={isRTL ? 'rtl' : 'ltr'}>
-            <VendorSidebar 
-              collapsed={!sidebarOpen}
-            />
-            <div 
-              className={cn(
-                "flex-1 flex flex-col min-w-0 transition-all duration-300",
-                !isRTL && (sidebarOpen ? "ml-64" : "ml-16")
-              )}
-            >
-              <VendorHeader 
-                onSidebarToggle={() => {
-                  const newState = !sidebarOpen;
-                  setSidebarOpen(newState);
-                  localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
-                }}
-                sidebarOpen={sidebarOpen}
-              />
-              <main className="flex-1 overflow-auto bg-muted/20 p-6 min-h-[calc(100vh-4rem)]">
-                <SmartBreadcrumbs />
-                <ErrorBoundary>
-                  {children || <Outlet />}
-                </ErrorBoundary>
+          <SidebarProvider 
+            defaultOpen={sidebarOpen}
+            onOpenChange={(open) => {
+              setSidebarOpen(open);
+              localStorage.setItem('vendorSidebarOpen', JSON.stringify(open));
+            }}
+          >
+            <div className="min-h-screen flex w-full" dir={isRTL ? 'rtl' : 'ltr'}>
+              <VendorSidebar />
+              <main className="flex-1 flex flex-col min-w-0">
+                <VendorHeader 
+                  onSidebarToggle={() => {
+                    const newState = !sidebarOpen;
+                    setSidebarOpen(newState);
+                    localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
+                  }}
+                  sidebarOpen={sidebarOpen}
+                />
+                <div className="flex-1 overflow-auto bg-muted/20 p-6">
+                  <SmartBreadcrumbs />
+                  <ErrorBoundary>
+                    {children || <Outlet />}
+                  </ErrorBoundary>
+                </div>
               </main>
             </div>
-          </div>
+          </SidebarProvider>
         )}
       </MobileContainer>
     </ErrorBoundary>
