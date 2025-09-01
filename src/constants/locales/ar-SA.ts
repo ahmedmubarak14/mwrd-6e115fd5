@@ -770,7 +770,7 @@ export const arSA = {
     updateError: "فشل في تحديث الملف الشخصي"
   },
 
-  // Browse Requests page translations
+  // Add missing translation keys for BrowseRequests
   browseRequests: {
     title: "تصفح الطلبات",
     subtitle: "العثور على الطلبات وتقديم العروض",
@@ -788,7 +788,9 @@ export const arSA = {
     urgentHighPriority: "عاجل/أولوية عالية",
     highBudget: "ميزانية عالية (50 ألف+)",
     newThisWeek: "جديد هذا الأسبوع",
-    allCategories: "جميع الفئات"
+    allCategories: "جميع الفئات",
+    budgetNotSpecified: "لم يتم تحديد الميزانية",
+    budgetNegotiable: "ميزانية قابلة للتفاوض"
   },
 
   // Offers page translations

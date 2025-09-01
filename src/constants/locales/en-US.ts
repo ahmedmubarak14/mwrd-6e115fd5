@@ -513,7 +513,7 @@ export const enUS = {
     updateError: "Failed to update profile"
   },
 
-  // Browse Requests page translations
+  // Add missing translation keys for BrowseRequests
   browseRequests: {
     title: "Browse Requests",
     subtitle: "Find and submit offers for procurement requests",
@@ -531,7 +531,9 @@ export const enUS = {
     urgentHighPriority: "Urgent/High Priority",
     highBudget: "High Budget (50K+)",
     newThisWeek: "New This Week",
-    allCategories: "All Categories"
+    allCategories: "All Categories",
+    budgetNotSpecified: "Budget not specified",
+    budgetNegotiable: "Budget negotiable"
   },
 
   // Offers page translations
