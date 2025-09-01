@@ -1,146 +1,174 @@
 
-import { Link, useLocation } from "react-router-dom";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
-import { cn } from "@/lib/utils";
-import {
+import { useState } from "react";
+import { useLocation, Link } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { 
   LayoutDashboard,
   FolderOpen,
   FileText,
-  Users,
-  MessageSquare,
-  BarChart3,
-  ShoppingCart,
-  CreditCard,
-  HelpCircle,
-  Settings,
   Package,
+  ShoppingCart,
+  MessageSquare,
+  Settings,
+  HelpCircle,
+  BarChart3,
+  Building2,
+  Users,
+  User,
+  ChevronDown,
+  ChevronRight,
   Search,
-  PlusCircle
+  Briefcase
 } from "lucide-react";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarSeparator,
-  useSidebar,
-} from "@/components/ui/sidebar";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useAuth } from "@/contexts/AuthContext";
+import { cn } from "@/lib/utils";
+import { VendorUserProfile } from "./VendorUserProfile";
 
 interface VendorSidebarProps {
+  className?: string;
+  collapsed?: boolean;
+  onToggle?: () => void;
   userRole?: 'client' | 'vendor' | 'admin';
   userProfile?: any;
   onItemClick?: () => void;
 }
 
-export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {
-  const languageContext = useOptionalLanguage();
-  const t = languageContext?.t || ((key: string) => key.split('.').pop() || key);
-  const isRTL = languageContext?.isRTL || false;
+interface NavigationGroup {
+  id: string;
+  label: string;
+  priority: 'primary' | 'secondary' | 'utility';
+  items: {
+    name: string;
+    href: string;
+    icon: React.ElementType;
+    badge?: number;
+    badgeVariant?: "default" | "secondary" | "destructive" | "success" | "warning";
+  }[];
+}
+
+export const VendorSidebar = ({ className, collapsed = false, userRole, onItemClick }: VendorSidebarProps) => {
   const location = useLocation();
-  const { state } = useSidebar();
+  const { userProfile } = useAuth();
+  const languageContext = useOptionalLanguage();
+  const { t, isRTL } = languageContext || { 
+    t: (key: string) => key.split('.').pop() || key, 
+    isRTL: false 
+  };
 
-  // Role-based navigation items
-  const getNavigationItems = () => {
-    const baseItems = [
+  // Track which groups are expanded with localStorage persistence
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(() => {
+    const saved = localStorage.getItem('vendorSidebarExpanded');
+    if (saved) {
+      try {
+        return new Set(JSON.parse(saved));
+      } catch {
+        return new Set(['overview', 'workspace']); // Default groups
+      }
+    }
+    return new Set(['overview', 'workspace']); // Default groups
+  });
+
+  const toggleGroup = (groupId: string) => {
+    if (collapsed) return; // Don't allow toggling when collapsed
+    const newExpanded = new Set(expandedGroups);
+    if (newExpanded.has(groupId)) {
+      newExpanded.delete(groupId);
+    } else {
+      newExpanded.add(groupId);
+    }
+    setExpandedGroups(newExpanded);
+    // Persist to localStorage
+    localStorage.setItem('vendorSidebarExpanded', JSON.stringify(Array.from(newExpanded)));
+  };
+
+  const navigationGroups: NavigationGroup[] = [
+    {
+      id: 'overview',
+      label: t('vendor.groups.overview'),
+      priority: 'primary',
+      items: [
         {
-          label: t('nav.dashboard'),
-          href: userRole === 'vendor' ? '/vendor/dashboard' : '/dashboard',
+          name: t('nav.dashboard'),
+          href: "/vendor/dashboard",
           icon: LayoutDashboard,
-        }
-    ];
-
-    if (userRole === 'vendor') {
-      return [
-        ...baseItems,
-        {
-          label: t('vendor.navigation.crManagement'),
-          href: '/vendor/cr-management',
-          icon: FileText,
         },
         {
-          label: t('vendor.navigation.projectsManagement'),
-          href: '/vendor/projects-management',
-          icon: FolderOpen,
+          name: t('nav.analytics'),
+          href: "/analytics",
+          icon: BarChart3,
         },
+      ]
+    },
+    {
+      id: 'workspace',
+      label: t('vendor.groups.workspace'),
+      priority: 'primary',
+      items: [
         {
-          label: t('nav.browseRequests'),
-          href: '/browse-requests',
+          name: t('nav.browseRequests'),
+          href: "/browse-requests",
           icon: Search,
         },
         {
-          label: t('nav.myOffers'),
-          href: '/my-offers',
+          name: t('nav.myOffers'),
+          href: "/my-offers",
           icon: Package,
         },
         {
-          label: t('nav.messages'),
-          href: '/messages',
-          icon: MessageSquare,
-        },
-        {
-          label: t('nav.orders'),
-          href: '/orders',
+          name: t('nav.orders'),
+          href: "/orders",
           icon: ShoppingCart,
         },
         {
-          label: t('nav.support'),
-          href: '/support',
+          name: t('nav.messages'),
+          href: "/messages",
+          icon: MessageSquare,
+        },
+      ]
+    },
+    {
+      id: 'portfolio',
+      label: t('vendor.groups.portfolio'),
+      priority: 'secondary',
+      items: [
+        {
+          name: t('vendor.navigation.projectsManagement'),
+          href: "/vendor/projects-management",
+          icon: Building2,
+        },
+        {
+          name: t('vendor.navigation.portfolioManagement'),
+          href: "/vendor/portfolio-management",
+          icon: Briefcase,
+        },
+      ]
+    },
+    {
+      id: 'account',
+      label: t('vendor.groups.account'),
+      priority: 'utility',
+      items: [
+        {
+          name: t('nav.profile'),
+          href: "/profile",
+          icon: User,
+        },
+        {
+          name: t('nav.settings'),
+          href: "/settings",
+          icon: Settings,
+        },
+        {
+          name: t('nav.support'),
+          href: "/support",
           icon: HelpCircle,
-        }
-      ];
-    }
-
-    // Default client navigation
-    return [
-      ...baseItems,
-      {
-        label: t('nav.projects'),
-        href: '/projects',
-        icon: FolderOpen,
-      },
-      {
-        label: t('nav.createRequest'),
-        href: '/requests',
-        icon: PlusCircle,
-      },
-      {
-        label: t('nav.suppliers'),
-        href: '/vendors',
-        icon: Users,
-      },
-      {
-        label: t('nav.messages'),
-        href: '/messages',
-        icon: MessageSquare,
-      },
-      {
-        label: t('nav.analytics'),
-        href: '/analytics',
-        icon: BarChart3,
-      },
-      {
-        label: t('nav.orders'),
-        href: '/orders',
-        icon: ShoppingCart,
-      },
-      {
-        label: t('nav.manageSubscription'),
-        href: '/manage-subscription',
-        icon: CreditCard,
-      },
-      {
-        label: t('nav.support'),
-        href: '/support',
-        icon: HelpCircle,
-      }
-    ];
-  };
-
-  const navigationItems = getNavigationItems();
+        },
+      ]
+    },
+  ];
 
   const isActive = (path: string) => {
     // Handle vendor dashboard special case
@@ -153,85 +181,158 @@ export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {
     }
     return location.pathname === path;
   };
+  
+  const isParentActive = (path: string) => location.pathname.startsWith(path) && path !== '/vendor/dashboard';
+
+  const getGroupPriorityStyles = (priority: NavigationGroup['priority']) => {
+    switch (priority) {
+      case 'primary':
+        return "border-l-2 border-l-primary/20 bg-primary/5";
+      case 'secondary':
+        return "border-l-2 border-l-accent/20 bg-accent/5";
+      case 'utility':
+        return "border-l-2 border-l-muted-foreground/20 bg-muted/50";
+      default:
+        return "";
+    }
+  };
 
   return (
-    <Sidebar 
-      collapsible="icon" 
+    <div 
       className={cn(
-        "w-64 data-[state=collapsed]:w-16 transition-all duration-300",
-        isRTL ? "border-l border-r-0" : "border-r border-l-0"
-      )}
-      side={isRTL ? "right" : "left"}
+        "flex flex-col h-screen bg-card border-border transition-all duration-300 shadow-sm fixed top-0 z-50",
+        collapsed ? "w-16" : "w-64",
+        isRTL ? "right-0 border-l" : "left-0 border-r",
+        className
+      )} 
+      dir={isRTL ? 'rtl' : 'ltr'}
     >
-      <SidebarContent className={cn(
-        "h-full",
-        isRTL && "text-right"
-      )}>
-        <SidebarGroup>
-          <SidebarGroupLabel className={cn(
-            "px-2 py-2 text-sm font-medium",
-            isRTL && "text-right"
-          )}>
-            {t('nav.menu')}
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navigationItems.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <SidebarMenuItem key={item.href}>
-                    <SidebarMenuButton 
-                      asChild
-                      isActive={isActive(item.href)}
-                      tooltip={state === "collapsed" ? item.label : undefined}
-                      className={cn(
-                        "w-full transition-colors",
-                        isRTL && "flex-row-reverse text-right"
+      {/* Sidebar Header - matches main header height */}
+      <div className="border-b border-border bg-card h-16 flex items-center">
+        <VendorUserProfile variant="sidebar" collapsed={collapsed} />
+      </div>
+
+      {/* Navigation Content */}
+      <ScrollArea className="flex-1">
+        <div className="p-3 space-y-3">
+          {navigationGroups.map((group) => {
+            const isExpanded = collapsed ? false : expandedGroups.has(group.id);
+            const hasActiveItem = group.items.some(item => 
+              isActive(item.href) || isParentActive(item.href)
+            );
+
+            return (
+              <div 
+                key={group.id} 
+                className={cn(
+                  "rounded-lg transition-all duration-200",
+                  getGroupPriorityStyles(group.priority)
+                )}
+              >
+                {/* Group Label */}
+                {!collapsed && (
+                  <Button
+                    variant="ghost"
+                    onClick={() => toggleGroup(group.id)}
+                    className={cn(
+                      "w-full justify-between px-3 py-2 h-auto font-medium",
+                      "text-xs uppercase tracking-wider",
+                      "text-muted-foreground hover:text-foreground hover:bg-accent/50",
+                      hasActiveItem && "text-primary font-semibold",
+                      isRTL && "flex-row-reverse"
+                    )}
+                    type="button"
+                  >
+                    <span className={cn(
+                      "flex items-center gap-2",
+                      isRTL && "flex-row-reverse"
+                    )}>
+                      <span>{group.label}</span>
+                      {hasActiveItem && (
+                        <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
                       )}
-                    >
-                      <Link to={item.href} className={cn(
-                        "flex items-center gap-2 px-2 py-2 rounded-md hover:bg-accent",
-                        isRTL && "flex-row-reverse"
-                      )}>
-                        <Icon className="h-4 w-4 shrink-0" />
-                        <span className="truncate">{item.label}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        
-        <SidebarSeparator />
-        
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton 
-                  asChild
-                  isActive={isActive('/settings')}
-                  tooltip={state === "collapsed" ? t('nav.settings') : undefined}
+                    </span>
+                    {isExpanded ? (
+                      <ChevronDown className={cn(
+                        "h-3 w-3 transition-transform duration-200",
+                        isRTL && "rotate-180"
+                      )} />
+                    ) : (
+                      <ChevronRight className={cn(
+                        "h-3 w-3 transition-transform duration-200",
+                        isRTL && "rotate-180"
+                      )} />
+                    )}
+                  </Button>
+                )}
+
+                {/* Group Items */}
+                <div 
                   className={cn(
-                    "w-full transition-colors",
-                    isRTL && "flex-row-reverse text-right"
+                    "space-y-1 transition-all duration-300",
+                    collapsed ? "block" : (isExpanded ? "block" : "hidden"),
+                    !collapsed && "px-2 pb-2"
                   )}
                 >
-                  <Link to="/settings" className={cn(
-                    "flex items-center gap-2 px-2 py-2 rounded-md hover:bg-accent",
-                    isRTL && "flex-row-reverse"
-                  )}>
-                    <Settings className="h-4 w-4 shrink-0" />
-                    <span className="truncate">{t('nav.settings')}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
+                  {group.items.map((item) => {
+                    const active = isActive(item.href) || isParentActive(item.href);
+                    return (
+                      <Link
+                        key={item.href}
+                        to={item.href}
+                        onClick={onItemClick}
+                        className={cn(
+                          "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200",
+                          "text-sm font-medium hover:bg-accent/50",
+                          collapsed ? "justify-center px-2" : "justify-start",
+                          active 
+                            ? "bg-primary/10 text-primary border border-primary/20 shadow-sm" 
+                            : "text-muted-foreground hover:text-foreground hover:bg-accent/30",
+                          isRTL && "flex-row-reverse"
+                        )}
+                        title={collapsed ? item.name : undefined}
+                        aria-label={`${t('nav.navigateTo')} ${item.name}`}
+                        aria-current={active ? 'page' : undefined}
+                      >
+                        <item.icon 
+                          className={cn(
+                            "shrink-0 transition-all duration-200",
+                            collapsed ? "h-5 w-5" : "h-4 w-4",
+                            active ? "text-primary" : "text-muted-foreground"
+                          )} 
+                        />
+                        
+                        {!collapsed && (
+                          <>
+                            <span className={cn(
+                              "truncate flex-1 text-foreground",
+                              isRTL && "text-right"
+                            )}>
+                              {item.name}
+                            </span>
+                            
+                            {item.badge && item.badge > 0 && (
+                              <Badge 
+                                variant={(item.badgeVariant === "success" || item.badgeVariant === "warning") ? "secondary" : item.badgeVariant || "secondary"} 
+                                className={cn(
+                                  "h-5 min-w-5 px-1.5 text-xs flex items-center justify-center shrink-0",
+                                  item.badgeVariant === "destructive" && "animate-pulse"
+                                )}
+                              >
+                                {item.badge > 99 ? '99+' : item.badge}
+                              </Badge>
+                            )}
+                          </>
+                        )}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </ScrollArea>
+    </div>
   );
 };

@@ -6,6 +6,13 @@ export const enUS = {
     navigation: {
       crManagement: 'CR Management',
       projectsManagement: 'Projects Management',
+      portfolioManagement: 'Portfolio Management',
+    },
+    groups: {
+      overview: "Overview",
+      workspace: "Workspace", 
+      portfolio: "Portfolio",
+      account: "Account & Support"
     },
     dashboard: {
       title: "Vendor Dashboard",
@@ -31,6 +38,16 @@ export const enUS = {
       title: "Project Showcase",
       add: "Add New Project",
       addFirst: "Add your first project to showcase your work"
+    },
+    portfolio: {
+      title: "Portfolio Management",
+      description: "Manage your project portfolio and showcase your work",
+      addProject: "Add Project",
+      editProject: "Edit Project",
+      viewProject: "View Project",
+      deleteProject: "Delete Project",
+      noProjects: "No projects in your portfolio",
+      addFirstProject: "Add your first project to get started"
     },
     categories: {
       title: "Service Categories",
