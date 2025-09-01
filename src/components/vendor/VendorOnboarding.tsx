@@ -10,6 +10,7 @@ import { Progress } from '@/components/ui/progress';
 import { Building2, MapPin, Users, Award, Upload, CheckCircle } from 'lucide-react';
 import { CRDocumentUpload } from '@/components/verification/CRDocumentUpload';
 import { useAuth } from '@/contexts/AuthContext';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 import { supabase } from '@/integrations/supabase/client';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
 
@@ -85,6 +86,7 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
   const [loading, setLoading] = useState(false);
   const { userProfile, updateProfile } = useAuth();
   const { showSuccess, showError } = useToastFeedback();
+  const { t } = useOptionalLanguage() || { t: (key: string) => key };
 
   const totalSteps = 5;
   const progress = (currentStep / totalSteps) * 100;
@@ -202,7 +204,7 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
                   onValueChange={(value) => setOnboardingData(prev => ({ ...prev, businessSize: value }))}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select business size" />
+                    <SelectValue placeholder={t('forms.selectBusinessSize')} />
                   </SelectTrigger>
                   <SelectContent>
                     {BUSINESS_SIZES.map((size) => (
@@ -240,7 +242,7 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
                     }))}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select range" />
+                      <SelectValue placeholder={t('forms.selectRange')} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="1">1 (Just me)</SelectItem>
@@ -258,7 +260,7 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
                 <Label>Website (Optional)</Label>
                 <Input
                   type="url"
-                  placeholder="https://yourcompany.com"
+                  placeholder={t('forms.websiteExample')}
                   value={onboardingData.companyInfo.website}
                   onChange={(e) => setOnboardingData(prev => ({
                     ...prev,
@@ -361,7 +363,7 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
                     }))}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select team size" />
+                      <SelectValue placeholder={t('forms.selectTeamSize')} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="1-2">1-2 people</SelectItem>
@@ -391,7 +393,7 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
                 <Label>Company Description</Label>
                 <textarea
                   className="w-full min-h-[100px] p-3 border rounded-md"
-                  placeholder="Describe your company, services, and what makes you unique..."
+                  placeholder={t('forms.companyDescription')}
                   value={onboardingData.companyInfo.description}
                   onChange={(e) => setOnboardingData(prev => ({
                     ...prev,
@@ -457,7 +459,7 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
               onClick={handlePrevious}
               disabled={currentStep === 1}
             >
-              Previous
+              {t('common.previous')}
             </Button>
 
             {currentStep === totalSteps ? (
@@ -465,7 +467,7 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
                 onClick={handleComplete}
                 disabled={!crUploaded || loading}
               >
-                {loading ? 'Completing...' : 'Complete Onboarding'}
+                {loading ? t('common.completing') : t('common.completeOnboarding')}
               </Button>
             ) : (
               <Button

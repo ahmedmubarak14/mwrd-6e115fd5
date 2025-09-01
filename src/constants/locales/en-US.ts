@@ -441,11 +441,6 @@ export const enUS = {
     minutesAgo: 'minutes ago',
     hoursAgo: 'hours ago',
     daysAgo: 'days ago',
-    // Categories
-    construction: 'Construction',
-    engineering: 'Engineering', 
-    technology: 'Technology',
-    marketing: 'Marketing',
     unknown: 'Unknown',
     company: 'Company',
     // Additional labels
@@ -460,6 +455,10 @@ export const enUS = {
     failedToComplete: "Failed to complete onboarding. Please try again.",
     failedToSave: "Failed to save project",
     all: "All",
+    verified: "Verified",
+    previous: "Previous",
+    completing: "Completing...",
+    completeOnboarding: "Complete Onboarding",
     // Categories
     categories: {
       construction: "Construction",
@@ -487,6 +486,22 @@ export const enUS = {
 
   // Forms
   forms: {
+    validationError: "Validation Error",
+    pleaseCompleteFields: "Please fill in all required fields",
+    offerSubmittedSuccess: "Offer submitted successfully!",
+    offerDeletedSuccess: "Offer deleted successfully",
+    chooseRequest: "Choose a request to respond to",
+    enterOfferTitle: "Enter your offer title",
+    describeProposal: "Describe your proposal, methodology, and what you'll deliver...",
+    professionalServiceExample: "e.g., Professional Web Development Service",
+    describeApproach: "Describe your approach, methodology, and what makes your offer unique...",
+    warrantyExample: "e.g., 30 days support, 1 year warranty",
+    termsConditions: "Any specific terms, conditions, or requirements...",
+    selectBusinessSize: "Select business size",
+    selectRange: "Select range",
+    websiteExample: "https://yourcompany.com",
+    selectTeamSize: "Select team size",
+    companyDescription: "Describe your company, services, and what makes you unique...",
     required: 'This field is required',
     invalid: 'Invalid input',
     submit: 'Submit',

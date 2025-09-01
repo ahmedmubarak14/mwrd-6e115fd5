@@ -269,7 +269,7 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
                       id="title"
                       value={formData.title}
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      placeholder="e.g., Professional Web Development Service"
+                      placeholder={t('forms.professionalServiceExample')}
                       className={errors.title ? 'border-destructive' : ''}
                     />
                     {errors.title && (
@@ -286,7 +286,7 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
                       id="description"
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      placeholder="Describe your approach, methodology, and what makes your offer unique..."
+                      placeholder={t('forms.describeApproach')}
                       rows={4}
                       className={errors.description ? 'border-destructive' : ''}
                     />
@@ -384,7 +384,7 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
                       id="warranty"
                       value={formData.warranty_period}
                       onChange={(e) => setFormData({ ...formData, warranty_period: e.target.value })}
-                      placeholder="e.g., 30 days support, 1 year warranty"
+                      placeholder={t('forms.warrantyExample')}
                     />
                   </div>
 
@@ -394,7 +394,7 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
                       id="terms"
                       value={formData.terms_and_conditions}
                       onChange={(e) => setFormData({ ...formData, terms_and_conditions: e.target.value })}
-                      placeholder="Any specific terms, conditions, or requirements..."
+                      placeholder={t('forms.termsConditions')}
                       rows={3}
                     />
                   </div>

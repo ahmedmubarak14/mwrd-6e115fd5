@@ -443,17 +443,6 @@ export const arSA = {
     minutesAgo: 'دقائق مضت',
     hoursAgo: 'ساعات مضت',
     daysAgo: 'أيام مضت',
-    // Categories
-    categories: {
-      construction: 'الإنشاءات',
-      engineering: 'الهندسة', 
-      technology: 'التكنولوجيا',
-      marketing: 'التسويق'
-    },
-    construction: 'الإنشاءات',
-    engineering: 'الهندسة',
-    technology: 'التكنولوجيا',
-    marketing: 'التسويق',
     unknown: 'غير معروف',
     company: 'الشركة',
     // Additional labels
@@ -487,6 +476,22 @@ export const arSA = {
 
   // Forms - Arabic
   forms: {
+    validationError: "خطأ في التحقق",
+    pleaseCompleteFields: "يرجى ملء جميع الحقول المطلوبة",
+    offerSubmittedSuccess: "تم تقديم العرض بنجاح!",
+    offerDeletedSuccess: "تم حذف العرض بنجاح",
+    chooseRequest: "اختر طلباً للرد عليه",
+    enterOfferTitle: "أدخل عنوان عرضك",
+    describeProposal: "صف اقتراحك ومنهجيتك وما ستقدمه...",
+    professionalServiceExample: "مثال: خدمة تطوير المواقع المهنية",
+    describeApproach: "صف نهجك ومنهجيتك وما يجعل عرضك فريداً...",
+    warrantyExample: "مثال: دعم لمدة 30 يوماً، ضمان سنة واحدة",
+    termsConditions: "أي شروط أو ظروف أو متطلبات محددة...",
+    selectBusinessSize: "اختر حجم النشاط التجاري",
+    selectRange: "اختر النطاق",
+    websiteExample: "https://شركتك.com",
+    selectTeamSize: "اختر حجم الفريق",
+    companyDescription: "صف شركتك وخدماتها وما يميزها...",
     required: 'هذا الحقل مطلوب',
     invalid: 'إدخال غير صحيح',
     submit: 'إرسال',

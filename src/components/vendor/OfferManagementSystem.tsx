@@ -129,8 +129,8 @@ export const OfferManagementSystem = () => {
     
     if (!offerForm.title || !offerForm.description || !offerForm.price || !offerForm.delivery_time_days) {
       toast({
-        title: "Validation Error",
-        description: "Please fill in all required fields",
+        title: t('forms.validationError'),
+        description: t('forms.pleaseCompleteFields'),
         variant: "destructive"
       });
       return;
@@ -158,8 +158,8 @@ export const OfferManagementSystem = () => {
       if (error) throw error;
 
       toast({
-        title: "Success",
-        description: "Offer submitted successfully!"
+        title: t('common.success'),
+        description: t('forms.offerSubmittedSuccess')
       });
 
       // Reset form and close dialog
@@ -201,8 +201,8 @@ export const OfferManagementSystem = () => {
       if (error) throw error;
       
       toast({
-        title: "Success",
-        description: "Offer deleted successfully"
+        title: t('common.success'),
+        description: t('forms.offerDeletedSuccess')
       });
       
       await fetchOffers();
@@ -275,7 +275,7 @@ export const OfferManagementSystem = () => {
                   setSelectedRequest(request || null);
                 }}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Choose a request to respond to" />
+                    <SelectValue placeholder={t('forms.chooseRequest')} />
                   </SelectTrigger>
                   <SelectContent>
                     {availableRequests.map((request) => (
@@ -312,7 +312,7 @@ export const OfferManagementSystem = () => {
                         id="offer-title"
                         value={offerForm.title}
                         onChange={(e) => setOfferForm(prev => ({ ...prev, title: e.target.value }))}
-                        placeholder="Enter your offer title"
+                        placeholder={t('forms.enterOfferTitle')}
                       />
                     </div>
 
@@ -322,7 +322,7 @@ export const OfferManagementSystem = () => {
                         id="offer-description"
                         value={offerForm.description}
                         onChange={(e) => setOfferForm(prev => ({ ...prev, description: e.target.value }))}
-                        placeholder="Describe your proposal, methodology, and what you'll deliver..."
+                        placeholder={t('forms.describeProposal')}
                         rows={4}
                       />
                     </div>

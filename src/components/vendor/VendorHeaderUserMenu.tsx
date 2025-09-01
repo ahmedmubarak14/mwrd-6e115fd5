@@ -123,7 +123,7 @@ export const VendorHeaderUserMenu = ({ userProfile }: VendorHeaderUserMenuProps)
                 {isVerified && (
                   <Badge variant="default" className="text-xs">
                     <UserCheck className="h-3 w-3 mr-1" />
-                    Verified
+                    {t('common.verified')}
                   </Badge>
                 )}
               </div>

@@ -1,0 +1,7 @@
+{
+  "*.{js,jsx,ts,tsx}": [
+    "eslint --fix",
+    "eslint --rule 'i18next/no-literal-string: [2, {\"markupOnly\": true, \"ignoreAttribute\": [\"data-testid\", \"aria-label\", \"role\", \"type\", \"name\", \"id\", \"className\", \"key\", \"href\", \"src\", \"alt\"]}]'",
+    "git add"
+  ]
+}
