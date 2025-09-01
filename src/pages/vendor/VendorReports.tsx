@@ -1,3 +1,4 @@
+import { VendorLayout } from "@/components/vendor/VendorLayout";
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,7 +21,7 @@ import {
   FileText, Target, Users, Award 
 } from "lucide-react";
 
-export const VendorReports = () => {
+const VendorReportsContent = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
   const languageContext = useOptionalLanguage();
@@ -503,5 +504,13 @@ export const VendorReports = () => {
         </Tabs>
       </div>
     </ResponsiveContainer>
+  );
+};
+
+export const VendorReports = () => {
+  return (
+    <VendorLayout>
+      <VendorReportsContent />
+    </VendorLayout>
   );
 };

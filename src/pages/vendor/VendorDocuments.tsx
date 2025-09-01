@@ -1,3 +1,4 @@
+import { VendorLayout } from "@/components/vendor/VendorLayout";
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,7 +18,7 @@ import {
   Image, FileCode, Archive, Eye, Trash2, Share2 
 } from "lucide-react";
 
-export const VendorDocuments = () => {
+const VendorDocumentsContent = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
   const languageContext = useOptionalLanguage();
@@ -420,5 +421,13 @@ export const VendorDocuments = () => {
         </Tabs>
       </div>
     </ResponsiveContainer>
+  );
+};
+
+export const VendorDocuments = () => {
+  return (
+    <VendorLayout>
+      <VendorDocumentsContent />
+    </VendorLayout>
   );
 };

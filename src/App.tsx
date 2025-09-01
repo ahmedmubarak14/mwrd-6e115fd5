@@ -60,6 +60,10 @@ import CreateRFQ from './pages/CreateRFQ';
 import CreateRequest from './pages/CreateRequest';
 import CreateProject from './pages/CreateProject';
 import { ManageSubscription } from './pages/ManageSubscription';
+import { VendorMessages } from './pages/vendor/VendorMessages';
+import { VendorSettings } from './pages/vendor/VendorSettings';
+import { VendorProjects } from './pages/vendor/VendorProjects';
+import { VendorSupport } from './pages/vendor/VendorSupport';
 import Messages from './pages/Messages';
 import MyOffers from './pages/MyOffers';
 import Offers from './pages/Offers';
@@ -199,7 +203,7 @@ function App() {
                     } />
                     <Route path="/vendor/projects" element={
                       <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <Projects />
+                        <VendorProjects />
                       </RoleProtectedRoute>
                     } />
                     <Route path="/vendor/projects/new" element={
@@ -219,17 +223,17 @@ function App() {
                     } />
                     <Route path="/vendor/settings" element={
                       <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <Settings />
+                        <VendorSettings />
                       </RoleProtectedRoute>
                     } />
                     <Route path="/vendor/messages" element={
                       <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <Messages />
+                        <VendorMessages />
                       </RoleProtectedRoute>
                     } />
                     <Route path="/vendor/support" element={
                       <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <Support />
+                        <VendorSupport />
                       </RoleProtectedRoute>
                     } />
                     <Route path="/vendor/cr-management" element={

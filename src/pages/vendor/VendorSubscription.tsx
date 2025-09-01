@@ -1,3 +1,4 @@
+import { VendorLayout } from "@/components/vendor/VendorLayout";
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CreditCard, Calendar, DollarSign, TrendingUp, CheckCircle, AlertCircle } from "lucide-react";
 
-export const VendorSubscription = () => {
+const VendorSubscriptionContent = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
   const { t } = useLanguage();
@@ -247,5 +248,13 @@ export const VendorSubscription = () => {
         </TabsContent>
       </Tabs>
     </div>
+  );
+};
+
+export const VendorSubscription = () => {
+  return (
+    <VendorLayout>
+      <VendorSubscriptionContent />
+    </VendorLayout>
   );
 };

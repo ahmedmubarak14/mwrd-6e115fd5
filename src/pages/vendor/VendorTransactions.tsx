@@ -1,3 +1,4 @@
+import { VendorLayout } from "@/components/vendor/VendorLayout";
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Download, Search, Filter, DollarSign, TrendingUp, ArrowUpCircle, ArrowDownCircle } from "lucide-react";
 
-export const VendorTransactions = () => {
+const VendorTransactionsContent = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
   const { t } = useLanguage();
@@ -287,5 +288,13 @@ export const VendorTransactions = () => {
         </CardContent>
       </Card>
     </div>
+  );
+};
+
+export const VendorTransactions = () => {
+  return (
+    <VendorLayout>
+      <VendorTransactionsContent />
+    </VendorLayout>
   );
 };
