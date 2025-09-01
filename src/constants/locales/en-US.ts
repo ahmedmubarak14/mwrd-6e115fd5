@@ -472,6 +472,31 @@ export const enUS = {
     }
   },
   common: {
+    // Basic UI translations
+    loading: "Loading...",
+    error: "An error occurred",
+    retry: "Try Again",
+    good: "Good",
+    needsWork: "Needs Work",
+    vsLastMonth: "vs last month",
+    save: "Save",
+    cancel: "Cancel",
+    delete: "Delete",
+    edit: "Edit",
+    submit: "Submit",
+    close: "Close",
+    back: "Back",
+    next: "Next",
+    previous: "Previous",
+    search: "Search",
+    filter: "Filter",
+    clear: "Clear",
+    selectAll: "Select All",
+    deselectAll: "Deselect All",
+    noResults: "No results found",
+    showMore: "Show More",
+    showLess: "Show Less",
+    
     errors: {
       networkConnection: 'Network connection issue. Please check your internet connection.',
       requestTimeout: 'Request timed out. Please try again.',

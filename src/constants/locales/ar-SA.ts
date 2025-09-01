@@ -471,6 +471,32 @@ export const arSA = {
     }
   },
   common: {
+  common: {
+    // Basic UI translations (Arabic)
+    loading: "جاري التحميل...",
+    error: "حدث خطأ",
+    retry: "حاول مرة أخرى",
+    good: "جيد",
+    needsWork: "يحتاج عمل",
+    vsLastMonth: "مقارنة بالشهر الماضي",
+    save: "حفظ",
+    cancel: "إلغاء",
+    delete: "حذف",
+    edit: "تحرير",
+    submit: "إرسال",
+    close: "إغلاق",
+    back: "رجوع",
+    next: "التالي",
+    previous: "السابق",
+    search: "بحث",
+    filter: "تصفية",
+    clear: "مسح",
+    selectAll: "تحديد الكل",
+    deselectAll: "إلغاء تحديد الكل",
+    noResults: "لم يتم العثور على نتائج",
+    showMore: "عرض المزيد",
+    showLess: "عرض أقل",
+    
       // ... existing translations
       errors: {
         networkConnection: 'مشكلة في الاتصال بالشبكة. يرجى التحقق من اتصال الإنترنت.',
