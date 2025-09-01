@@ -13,6 +13,7 @@ export const enUS = {
     dashboard: {
       title: 'Vendor Dashboard',
       subtitle: 'Manage your commercial registration and business operations',
+      welcome: 'Welcome to your Dashboard',
       crStatus: 'CR Status',
       totalProjects: 'Total Projects',
       activeProjects: 'Active Projects',
@@ -25,7 +26,31 @@ export const enUS = {
       viewAllProjects: 'View All Projects',
       createNewProject: 'Create New Project',
       managePortfolio: 'Manage Portfolio',
-      updateProfile: 'Update Profile'
+      updateProfile: 'Update Profile',
+      crVerificationStatus: 'CR Verification',
+      crVerificationDesc: 'Commercial registration status',
+      profileCompletionTitle: 'Profile Completion',
+      profileCompletionDesc: 'Your profile completeness',
+      activeOffersCount: 'Active Offers',
+      activeOffersCountDesc: 'Currently active offers',
+      successRateTitle: 'Success Rate',
+      successRateDesc: 'Offer acceptance rate',
+      totalEarningsTitle: 'Total Earnings',
+      totalEarningsDesc: 'All-time earnings',
+      monthlyRevenueTitle: 'Monthly Revenue',
+      monthlyRevenueDesc: 'This month\'s revenue',
+      completedProjectsTitle: 'Completed Projects',
+      completedProjectsDesc: 'Successfully finished projects',
+      clientRatingTitle: 'Client Rating',
+      clientRatingDesc: 'Average client rating'
+    },
+    cr: {
+      verificationRequired: 'CR Verification Required',
+      completeVerification: 'Please complete your commercial registration verification',
+      updateCR: 'Update CR',
+      approved: 'Approved',
+      pending: 'Pending',
+      rejected: 'Rejected'
     },
     crManagement: {
       title: 'Commercial Registration Management',
@@ -109,7 +134,10 @@ export const enUS = {
     new: 'New',
     draft: 'Draft',
     published: 'Published',
-    archived: 'Archived'
+    archived: 'Archived',
+    good: 'Good',
+    needsWork: 'Needs Work',
+    vsLastMonth: 'vs last month'
   },
 
   // Navigation

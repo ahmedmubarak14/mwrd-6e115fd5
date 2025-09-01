@@ -256,7 +256,7 @@ export const ProductionVendorDashboard: React.FC = () => {
         )}
 
         {/* Core Performance Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
           <MetricCard
             title={t('vendor.dashboard.crVerificationStatus')}
             value={t(`vendor.cr.${stats.crStatus}`)}
@@ -299,7 +299,7 @@ export const ProductionVendorDashboard: React.FC = () => {
         </div>
 
         {/* Business Performance */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
           <MetricCard
             title={t('vendor.dashboard.totalEarningsTitle')}
             value={formatCurrency(stats.totalEarnings)}
@@ -338,6 +338,149 @@ export const ProductionVendorDashboard: React.FC = () => {
             variant="success"
             loading={loading}
           />
+        </div>
+
+        {/* Quick Actions Section */}
+        <Card className="border-primary/20 bg-gradient-to-r from-primary/5 to-primary/10">
+          <CardHeader>
+            <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
+              <Activity className="h-5 w-5 text-primary" />
+              {t('vendor.dashboard.quickActions')}
+            </CardTitle>
+            <CardDescription>
+              Fast access to your most common tasks
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Button 
+                asChild
+                className="h-auto p-4 flex-col space-y-2 bg-primary/10 hover:bg-primary/20 text-primary border-primary/20"
+                variant="outline"
+              >
+                <Link to="/vendor/rfqs" className="text-center">
+                  <Package className="h-6 w-6" />
+                  <div>
+                    <div className="font-semibold">Browse RFQs</div>
+                    <div className="text-xs opacity-80">5 new requests</div>
+                  </div>
+                </Link>
+              </Button>
+              
+              <Button 
+                asChild
+                className="h-auto p-4 flex-col space-y-2 bg-green-50 hover:bg-green-100 text-green-700 border-green-200"
+                variant="outline"
+              >
+                <Link to="/vendor/offers/create" className="text-center">
+                  <Plus className="h-6 w-6" />
+                  <div>
+                    <div className="font-semibold">Submit Offer</div>
+                    <div className="text-xs opacity-80">Create new offer</div>
+                  </div>
+                </Link>
+              </Button>
+              
+              <Button 
+                asChild
+                className="h-auto p-4 flex-col space-y-2 bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200"
+                variant="outline"
+              >
+                <Link to="/vendor/messages" className="text-center">
+                  <MessageSquare className="h-6 w-6" />
+                  <div>
+                    <div className="font-semibold">Messages</div>
+                    <div className="text-xs opacity-80">2 unread</div>
+                  </div>
+                </Link>
+              </Button>
+              
+              <Button 
+                asChild
+                className="h-auto p-4 flex-col space-y-2 bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200"
+                variant="outline"
+              >
+                <Link to="/vendor/profile" className="text-center">
+                  <User className="h-6 w-6" />
+                  <div>
+                    <div className="font-semibold">Update Profile</div>
+                    <div className="text-xs opacity-80">{stats.profileCompletion}% complete</div>
+                  </div>
+                </Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Recent Activity & Notifications */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
+                <Calendar className="h-5 w-5 text-primary" />
+                Recent Activity
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                  <div className="h-2 w-2 bg-green-500 rounded-full"></div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">New RFQ received</p>
+                    <p className="text-xs text-muted-foreground">Construction project - 2 hours ago</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                  <div className="h-2 w-2 bg-blue-500 rounded-full"></div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">Offer submitted</p>
+                    <p className="text-xs text-muted-foreground">Office renovation - 5 hours ago</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                  <div className="h-2 w-2 bg-yellow-500 rounded-full"></div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">Profile update required</p>
+                    <p className="text-xs text-muted-foreground">Complete verification - 1 day ago</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
+                <BarChart3 className="h-5 w-5 text-primary" />
+                Performance Overview
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Profile Completion</span>
+                    <span className="font-medium">{stats.profileCompletion}%</span>
+                  </div>
+                  <Progress value={stats.profileCompletion} className="h-2" />
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Success Rate</span>
+                    <span className="font-medium">{stats.successRate}%</span>
+                  </div>
+                  <Progress value={stats.successRate} className="h-2" />
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>Client Rating</span>
+                    <span className="font-medium">{stats.clientRating}/5</span>
+                  </div>
+                  <Progress value={(stats.clientRating / 5) * 100} className="h-2" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
       

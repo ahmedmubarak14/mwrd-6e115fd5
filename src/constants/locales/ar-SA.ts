@@ -13,6 +13,7 @@ export const arSA = {
     dashboard: {
       title: 'لوحة تحكم المورد',
       subtitle: 'إدارة سجلك التجاري وعمليات عملك',
+      welcome: 'أهلاً بك في لوحة التحكم',
       crStatus: 'حالة السجل التجاري',
       totalProjects: 'إجمالي المشاريع',
       activeProjects: 'المشاريع النشطة',
@@ -25,7 +26,31 @@ export const arSA = {
       viewAllProjects: 'عرض جميع المشاريع',
       createNewProject: 'إنشاء مشروع جديد',
       managePortfolio: 'إدارة المحفظة',
-      updateProfile: 'تحديث الملف الشخصي'
+      updateProfile: 'تحديث الملف الشخصي',
+      crVerificationStatus: 'التحقق من السجل التجاري',
+      crVerificationDesc: 'حالة السجل التجاري',
+      profileCompletionTitle: 'اكتمال الملف الشخصي',
+      profileCompletionDesc: 'مدى اكتمال ملفك الشخصي',
+      activeOffersCount: 'العروض النشطة',
+      activeOffersCountDesc: 'العروض النشطة حالياً',
+      successRateTitle: 'معدل النجاح',
+      successRateDesc: 'معدل قبول العروض',
+      totalEarningsTitle: 'إجمالي الأرباح',
+      totalEarningsDesc: 'إجمالي الأرباح المحققة',
+      monthlyRevenueTitle: 'الإيرادات الشهرية',
+      monthlyRevenueDesc: 'إيرادات هذا الشهر',
+      completedProjectsTitle: 'المشاريع المكتملة',
+      completedProjectsDesc: 'المشاريع المنجزة بنجاح',
+      clientRatingTitle: 'تقييم العملاء',
+      clientRatingDesc: 'متوسط تقييم العملاء'
+    },
+    cr: {
+      verificationRequired: 'مطلوب التحقق من السجل التجاري',
+      completeVerification: 'يرجى إكمال التحقق من سجلك التجاري',
+      updateCR: 'تحديث السجل التجاري',
+      approved: 'معتمد',
+      pending: 'معلق',
+      rejected: 'مرفوض'
     },
     crManagement: {
       title: 'إدارة السجل التجاري',
@@ -109,7 +134,9 @@ export const arSA = {
     new: 'جديد',
     draft: 'مسودة',
     published: 'منشور',
-    archived: 'مؤرشف'
+    good: 'جيد',
+    needsWork: 'يحتاج تحسين',
+    vsLastMonth: 'مقارنة بالشهر الماضي'
   },
 
   // Navigation
