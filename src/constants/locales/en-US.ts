@@ -8,7 +8,24 @@ export const enUS = {
       dashboard: 'Dashboard',
       support: 'Support',
       profile: 'Profile',
-      settings: 'Settings'
+      settings: 'Settings',
+      breadcrumbs: {
+        home: 'Home',
+        dashboard: 'Dashboard',
+        rfqs: 'RFQs',
+        projects: 'Projects',
+        portfolio: 'Portfolio',
+        subscription: 'Subscription',
+        transactions: 'Transactions',
+        notifications: 'Notifications',
+        clients: 'Clients',
+        documents: 'Documents',
+        reports: 'Reports',
+        messages: 'Messages',
+        profile: 'Profile',
+        settings: 'Settings',
+        support: 'Support'
+      }
     },
     dashboard: {
       title: 'Vendor Dashboard',
@@ -560,7 +577,7 @@ export const enUS = {
     refreshErrorDesc: "Failed to refresh analytics data"
   },
 
-  // Browse Requests Section  
+  // Analytics Section
   browseRequests: {
     title: "Browse Requests",
     subtitle: "Discover new business opportunities and submit offers",
@@ -771,30 +788,9 @@ export const enUS = {
     unknownUser: 'Unknown User'
   },
 
-  support: {
-    title: 'Support',
-    subtitle: 'Get help from our support team',
-    contactUs: 'Contact Us',
-    contactDescription: 'Choose how you\'d like to get in touch',
-    liveChat: 'Live Chat',
-    liveChatHours: 'Available 24/7',
-    phone: 'Phone',
-    email: 'Email',
-    createTicket: 'Create Support Ticket',
-    createTicketDescription: 'Submit a detailed support request',
-    subjectPlaceholder: 'Subject',
-    messagePlaceholder: 'Describe your issue...',
-    submitTicket: 'Submit Ticket',
-    recentTickets: 'Recent Support Tickets',
-    totalTickets: 'Total Tickets',
-    openTickets: 'Open Tickets',
-    pending: 'Pending',
-    resolved: 'Resolved',
-    ticketStatus: 'Status',
-    ticketPriority: 'Priority'
   },
 
-  // Orders Section
+  // Browse Requests Section  
   orders: {
     title: "Orders",
     subtitle: "Manage and track your orders",
@@ -969,5 +965,63 @@ export const enUS = {
     tryAdjusting: "Try adjusting your search and filters",
     createFirstProject: "Create your first project to get started",
     createYourFirst: "Create Your First"
+  },
+
+  // Support System
+  support: {
+    title: "Support Center",
+    subtitle: "Get help with your account and services",
+    contactUs: "Contact Support",
+    contactDescription: "Get in touch with our support team",
+    liveChat: "Live Chat",
+    startLiveChat: "Start Live Chat",
+    liveChatHours: "Available 24/7",
+    phone: "Phone Support",
+    email: "Email Support",
+    createTicket: "Create Support Ticket",
+    createTicketDescription: "Submit a detailed support request",
+    submitTicket: "Submit Ticket",
+    recentTickets: "Recent Support Tickets",
+    totalTickets: "Total Tickets",
+    openTickets: "Open Tickets", 
+    pending: "Pending",
+    resolved: "Resolved",
+    subjectPlaceholder: "Subject",
+    messagePlaceholder: "Describe your issue in detail",
+    category: {
+      label: "Category",
+      general: "General",
+      technical: "Technical",
+      billing: "Billing",
+      account: "Account", 
+      feature: "Feature Request"
+    },
+    priority: {
+      label: "Priority",
+      low: "Low",
+      medium: "Medium", 
+      high: "High",
+      urgent: "Urgent"
+    },
+    status: {
+      open: "Open",
+      closed: "Closed",
+      pending: "Pending"
+    },
+    success: {
+      ticketCreated: "Support ticket created successfully"
+    },
+    errors: {
+      ticketFailed: "Failed to create support ticket"
+    }
+  },
+
+  // Vendor Header
+  vendorHeader: {
+    openMobileMenu: "Open mobile menu",
+    toggleSidebar: "Toggle sidebar",
+    goToDashboard: "Go to dashboard",
+    dashboard: "Vendor Dashboard", 
+    portal: "Management Portal"
   }
 };

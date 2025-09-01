@@ -8,7 +8,24 @@ export const arSA = {
       dashboard: 'لوحة التحكم',
       support: 'الدعم',
       profile: 'الملف الشخصي',
-      settings: 'الإعدادات'
+      settings: 'الإعدادات',
+      breadcrumbs: {
+        home: 'الرئيسية',
+        dashboard: 'لوحة التحكم',
+        rfqs: 'طلبات عروض الأسعار',
+        projects: 'المشاريع',
+        portfolio: 'المحفظة',
+        subscription: 'الاشتراك',
+        transactions: 'المعاملات',
+        notifications: 'الإشعارات',
+        clients: 'العملاء',
+        documents: 'الوثائق',
+        reports: 'التقارير',
+        messages: 'الرسائل',
+        profile: 'الملف الشخصي',
+        settings: 'الإعدادات',
+        support: 'الدعم'
+      }
     },
     dashboard: {
       title: 'لوحة تحكم المورد',
@@ -514,7 +531,7 @@ export const arSA = {
     refreshErrorDesc: "فشل في تحديث بيانات التحليلات"
   },
 
-  // Browse Requests Section
+  // Analytics Section
   browseRequests: {
     title: "تصفح الطلبات",
     subtitle: "اكتشف فرص عمل جديدة وقدم عروضك",
@@ -724,30 +741,9 @@ export const arSA = {
     unknownUser: 'مستخدم غير معروف'
   },
 
-  support: {
-    title: 'الدعم',
-    subtitle: 'احصل على المساعدة من فريق الدعم لدينا',
-    contactUs: 'اتصل بنا',
-    contactDescription: 'اختر كيف تريد التواصل معنا',
-    liveChat: 'المحادثة المباشرة',
-    liveChatHours: 'متاح 24/7',
-    phone: 'الهاتف',
-    email: 'البريد الإلكتروني',
-    createTicket: 'إنشاء تذكرة دعم',
-    createTicketDescription: 'قدم طلب دعم مفصل',
-    subjectPlaceholder: 'الموضوع',
-    messagePlaceholder: 'اوصف مشكلتك...',
-    submitTicket: 'إرسال التذكرة',
-    recentTickets: 'تذاكر الدعم الأخيرة',
-    totalTickets: 'إجمالي التذاكر',
-    openTickets: 'التذاكر المفتوحة',
-    pending: 'قيد الانتظار',
-    resolved: 'تم الحل',
-    ticketStatus: 'الحالة',
-    ticketPriority: 'الأولوية'
   },
 
-  // Orders Section
+  // Browse Requests Section
   orders: {
     title: "الطلبات",
     subtitle: "إدارة وتتبع طلباتك",
@@ -922,5 +918,63 @@ export const arSA = {
     tryAdjusting: "جرب تعديل البحث والفلاتر",
     createFirstProject: "أنشئ مشروعك الأول للبدء",
     createYourFirst: "أنشئ الأول"
+  },
+
+  // Support System
+  support: {
+    title: "مركز الدعم",
+    subtitle: "احصل على المساعدة مع حسابك والخدمات",
+    contactUs: "اتصل بالدعم",
+    contactDescription: "تواصل مع فريق الدعم",
+    liveChat: "الدردشة المباشرة",
+    startLiveChat: "بدء الدردشة المباشرة",
+    liveChatHours: "متوفر على مدار الساعة",
+    phone: "الدعم الهاتفي",
+    email: "البريد الإلكتروني",
+    createTicket: "إنشاء تذكرة دعم",
+    createTicketDescription: "قدم طلب دعم مفصل",
+    submitTicket: "إرسال التذكرة",
+    recentTickets: "تذاكر الدعم الأخيرة",
+    totalTickets: "إجمالي التذاكر",
+    openTickets: "التذاكر المفتوحة",
+    pending: "قيد الانتظار",
+    resolved: "محلولة",
+    subjectPlaceholder: "الموضوع",
+    messagePlaceholder: "صف المشكلة بالتفصيل",
+    category: {
+      label: "الفئة",
+      general: "عام",
+      technical: "تقني",
+      billing: "الفوترة",
+      account: "الحساب",
+      feature: "طلب ميزة"
+    },
+    priority: {
+      label: "الأولوية", 
+      low: "منخفض",
+      medium: "متوسط",
+      high: "عالي",
+      urgent: "عاجل"
+    },
+    status: {
+      open: "مفتوح",
+      closed: "مغلق",
+      pending: "قيد الانتظار"
+    },
+    success: {
+      ticketCreated: "تم إنشاء تذكرة الدعم بنجاح"
+    },
+    errors: {
+      ticketFailed: "فشل في إنشاء تذكرة الدعم"
+    }
+  },
+
+  // Vendor Header
+  vendorHeader: {
+    openMobileMenu: "فتح القائمة المحمولة",
+    toggleSidebar: "تبديل الشريط الجانبي",
+    goToDashboard: "الذهاب إلى لوحة التحكم",
+    dashboard: "لوحة تحكم المورد",
+    portal: "بوابة الإدارة"
   }
 };

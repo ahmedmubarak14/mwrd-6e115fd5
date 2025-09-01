@@ -112,7 +112,7 @@ export const SupportForm = ({ onSubmit, isRTL = false, t }: SupportFormProps) =>
               htmlFor="category"
               className={cn("text-sm font-medium", isRTL && "text-right block")}
             >
-              {t('support.category.general')}
+              {t('support.category.label')}
             </Label>
             <Select value={category} onValueChange={setCategory}>
               <SelectTrigger className="h-11 min-h-[44px]">
@@ -134,7 +134,7 @@ export const SupportForm = ({ onSubmit, isRTL = false, t }: SupportFormProps) =>
               htmlFor="priority"
               className={cn("text-sm font-medium", isRTL && "text-right block")}
             >
-              {t('support.priority.medium')}
+              {t('support.priority.label')}
             </Label>
             <Select value={priority} onValueChange={setPriority}>
               <SelectTrigger className="h-11 min-h-[44px]">
