@@ -180,11 +180,11 @@ export const VendorSidebar = ({
   const getGroupPriorityStyles = (priority: NavigationGroup['priority']) => {
     switch (priority) {
       case 'primary':
-        return "bg-primary/5";
+        return "border-l-2 border-l-primary/20 bg-primary/5";
       case 'secondary':
-        return "bg-accent/5";
+        return "border-l-2 border-l-accent/20 bg-accent/5";
       case 'utility':
-        return "bg-muted/50";
+        return "border-l-2 border-l-muted-foreground/20 bg-muted/50";
       default:
         return "";
     }
@@ -209,7 +209,7 @@ export const VendorSidebar = ({
       <ScrollArea className="flex-1">
         <div className="p-3 space-y-3">
           {navigationGroups.map((group) => {
-            const isExpanded = collapsed ? true : expandedGroups.has(group.id);
+            const isExpanded = collapsed ? false : expandedGroups.has(group.id);
             const hasActiveItem = group.items.some(item => 
               isActive(item.href) || isParentActive(item.href)
             );
