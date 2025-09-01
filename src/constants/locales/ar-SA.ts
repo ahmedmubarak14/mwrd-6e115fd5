@@ -460,6 +460,8 @@ export const arSA = {
 
   // Settings
   settings: {
+    title: "الإعدادات",
+    subtitle: "إدارة إعدادات حسابك وتفضيلاتك.",
     notifications: "الإشعارات",
     notificationsDescription: "إدارة تفضيلات الإشعارات",
     emailNotifications: "إشعارات البريد الإلكتروني",
@@ -469,9 +471,16 @@ export const arSA = {
     languageAndRegion: "اللغة والمنطقة", 
     languageDescription: "اختر اللغة والمنطقة المفضلة لديك",
     language: "اللغة",
+    profileCompletion: "اكتمال الملف الشخصي",
+    activeNotifications: "الإشعارات النشطة",
+    securityScore: "نقاط الأمان",
+    lastUpdated: "آخر تحديث",
     enabledNotificationTypes: "أنواع الإشعارات المُفعلة",
-    securityScore: "درجة الأمان بناءً على اكتمال الملف الشخصي",
-    lastUpdated: "آخر تحديث"
+    settingsSaved: "تم حفظ الإعدادات",
+    settingsUpdated: "تم تحديث الإعدادات بنجاح",
+    updateError: "فشل في تحديث الإعدادات",
+    notificationPrefsUpdated: "تم تحديث تفضيلات الإشعارات",
+    notificationError: "فشل في تحديث إعدادات الإشعارات"
   },
 
   // Forms - Arabic

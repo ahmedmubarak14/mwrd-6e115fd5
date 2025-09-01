@@ -470,6 +470,8 @@ export const enUS = {
 
   // Settings
   settings: {
+    title: "Settings",
+    subtitle: "Manage your account settings and preferences.",
     notifications: "Notifications",
     notificationsDescription: "Manage your notification preferences",
     emailNotifications: "Email Notifications", 
@@ -479,9 +481,16 @@ export const enUS = {
     languageAndRegion: "Language & Region",
     languageDescription: "Choose your preferred language and region settings",
     language: "Language",
-    enabledNotificationTypes: "Enabled notification types",
-    securityScore: "Security score based on profile completion",
-    lastUpdated: "Last updated"
+    profileCompletion: "Profile Completion",
+    activeNotifications: "Active Notifications",
+    securityScore: "Security Score",
+    lastUpdated: "Last Updated",
+    enabledNotificationTypes: "enabled notification types",
+    settingsSaved: "Settings Saved",
+    settingsUpdated: "Settings Updated Successfully",
+    updateError: "Failed to update settings",
+    notificationPrefsUpdated: "Notification preferences updated",
+    notificationError: "Failed to update notification settings"
   },
 
   // Forms
