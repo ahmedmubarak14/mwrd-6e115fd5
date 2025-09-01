@@ -33,6 +33,7 @@ import {
 interface VendorSidebarProps {
   userRole?: 'client' | 'vendor' | 'admin';
   userProfile?: any;
+  onItemClick?: () => void;
 }
 
 export const VendorSidebar = ({ userRole }: VendorSidebarProps) => {

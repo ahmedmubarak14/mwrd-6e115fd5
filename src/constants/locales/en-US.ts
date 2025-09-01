@@ -166,7 +166,21 @@ export const enUS = {
     emailNotificationsDescription: 'Receive email notifications for admin activities',
     auditLogRetention: 'Audit Log Retention (days)',
     auditLogRetentionDescription: 'How long to keep audit logs',
-    accessDenied: 'Access Denied'
+    accessDenied: 'Access Denied',
+    thisMonth: "This month",
+    sar: "SAR",
+    getStartedActions: "Get started with these actions",
+    yourLatestWork: "Your latest work",
+    mockProject: "Mock Project",
+    daysAgo: "days ago",
+    viewAll: "View All",
+    recentActivity: "Recent Activity",
+    latestUpdates: "Latest updates",
+    ago: "ago",
+    viewAllActivity: "View All Activity",
+    activeOffers: "Active Offers",
+    vendor: "Vendor",
+    searchPlaceholder: "Search..."
   },
   error: {
     general: 'An error occurred'
@@ -522,6 +536,56 @@ export const enUS = {
       slowResponseTime: "Slow response time detected", 
       highErrorRate: "High error rate detected",
       lowUptime: "Low uptime detected"
+    }
+  },
+
+  // Vendor Dashboard & CR Management
+  vendor: {
+    dashboard: {
+      title: "Vendor Dashboard",
+      welcome: "Welcome to your vendor dashboard",
+      crStatus: "CR Status",
+      completionRate: "Profile Completion",
+      recentProjects: "Recent Projects",
+      quickActions: "Quick Actions",
+      overview: "Overview",
+      accessRequired: "Vendor access required"
+    },
+    cr: {
+      title: "Commercial Registration",
+      status: "Status",
+      verified: "Verified",
+      pending: "Pending Verification", 
+      rejected: "Rejected",
+      unverified: "Not Verified",
+      updateCR: "Update CR Information",
+      verificationRequired: "CR verification required to access full features"
+    },
+    projects: {
+      title: "Project Showcase",
+      add: "Add New Project",
+      addFirst: "Add your first project to showcase your work"
+    },
+    categories: {
+      title: "Service Categories",
+      select: "Select Categories",
+      manage: "Manage Categories"
+    },
+    profile: {
+      title: "Vendor Profile",
+      basicInfo: "Basic Information"
+    },
+    navigation: {
+      dashboard: "Dashboard",
+      crManagement: "CR Management",
+      projects: "Project Showcase",
+      categories: "Service Categories", 
+      profile: "Profile",
+      offers: "My Offers",
+      orders: "Orders",
+      messages: "Messages",
+      settings: "Settings",
+      verification: "Verification"
     }
   }
 };
