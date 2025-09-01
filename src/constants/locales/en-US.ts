@@ -60,12 +60,31 @@ export const enUS = {
       clientRatingDesc: 'Average client rating'
     },
     cr: {
-      verificationRequired: 'CR Verification Required',
+      title: "CR Management",
+      verificationRequired: "Commercial Registration verification required",
+      verified: "Verified",
+      pending: "Pending",
+      rejected: "Rejected", 
+      unverified: "Unverified",
+      status: "Verification Status",
+      statusApproved: "Your CR has been approved",
+      statusPending: "Your CR is under review",
+      statusRejected: "Your CR was rejected",
+      statusDefault: "Please submit your CR for verification",
+      businessSize: "Business Size",
+      smallMediumLarge: "Small, Medium, Large",
+      establishedYear: "Established Year",
+      experienceYears: "Years of Experience", 
+      employeeCount: "Employee Count",
+      oneToTenEmployees: "1-10 employees",
+      teamSize: "Team Size",
+      smallLargeTeam: "Small/Large team",
+      businessDocuments: "Business Documents",
+      upload: "Upload your CR documents",
+      documentUpload: "Upload documents here",
+      updateCR: "CR information updated successfully",
       completeVerification: 'Please complete your commercial registration verification',
-      updateCR: 'Update CR',
-      approved: 'Approved',
-      pending: 'Pending',
-      rejected: 'Rejected'
+      approved: 'Approved'
     },
     crManagement: {
       title: 'Commercial Registration Management',
@@ -81,6 +100,38 @@ export const enUS = {
       renewCR: 'Renew CR',
       updateDetails: 'Update Details',
       downloadCertificate: 'Download Certificate'
+    },
+    rfqs: {
+      title: "RFQs",
+      subtitle: "Browse and respond to RFQs",
+      newRFQTitle: "New RFQ Available",
+      newRFQDesc: "A new RFQ has been posted",
+      totalRFQs: "Total RFQs",
+      openRFQs: "Open RFQs",
+      myResponses: "My Responses", 
+      awarded: "Awarded",
+      searchPlaceholder: "Search RFQs...",
+      category: "Category",
+      status: "Status",
+      budget: "Budget",
+      open: "Open",
+      closed: "Closed",
+      newest: "Newest First",
+      oldest: "Oldest First",
+      deadlineSoon: "Deadline Soon",
+      budgetHigh: "Highest Budget",
+      leastCompetitive: "Least Competitive",
+      availableRFQs: "Available RFQs",
+      lastUpdated: "Last Updated",
+      responseSubmitted: "Response Submitted",
+      responseSubmittedDesc: "Your response has been submitted"
+    },
+    verification: {
+      submitForReview: "Submitted for review successfully"
+    },
+    profile: {
+      businessInfo: "Business Information",
+      basicInfo: "Basic business information"
     }
   },
 
@@ -265,5 +316,182 @@ export const enUS = {
     resolved: 'Resolved',
     ticketStatus: 'Status',
     ticketPriority: 'Priority'
+  },
+
+  // Orders Section
+  orders: {
+    title: "Orders",
+    subtitle: "Manage and track your orders",
+    totalOrders: "Total Orders",
+    pending: "Pending",
+    confirmed: "Confirmed", 
+    completed: "Completed",
+    noOrders: "No Orders Found",
+    noOrdersDesc: "You haven't placed any orders yet",
+    browseRequests: "Browse Requests",
+    orderNumber: "Order",
+    noDescription: "No description provided",
+    amountNotSet: "Amount not set",
+    deliveryDate: "Delivery Date:",
+    ordered: "Ordered:",
+    viewDetails: "View Details",
+    status: {
+      pending: "Pending",
+      confirmed: "Confirmed",
+      completed: "Completed", 
+      cancelled: "Cancelled",
+      in_progress: "In Progress"
+    }
+  },
+
+  // Offers Section
+  offers: {
+    title: "Offers",
+    subtitle: {
+      vendor: "Manage your submitted offers",
+      client: "Review offers from vendors"
+    },
+    compare: "Compare",
+    newOffer: "New Offer",
+    totalOffers: "Total Offers",
+    pendingOffers: "Pending Offers",
+    approvedOffers: "Approved Offers", 
+    rejectedOffers: "Rejected Offers",
+    filtersAndSearch: "Filters & Search",
+    searchPlaceholder: "Search offers...",
+    offerStatus: "Offer Status",
+    allStatus: "All Status",
+    showingResults: "Showing {count} of {total} results",
+    clearFilters: "Clear Filters",
+    noOffersFound: "No Offers Found",
+    noOffers: "No Offers Yet",
+    tryAdjustingFilters: "Try adjusting your filters",
+    noOffersDesc: {
+      vendor: "You haven't submitted any offers yet",
+      client: "No offers received yet"
+    },
+    forRequest: "For:",
+    vendor: "By:",
+    days: "days",
+    viewDetails: "View Details",
+    messageVendor: "Message Vendor",
+    accept: "Accept",
+    reject: "Reject",
+    status: {
+      pending: "Pending",
+      approved: "Approved", 
+      rejected: "Rejected"
+    }
+  },
+
+  // Profile Section
+  profile: {
+    title: "Profile",
+    subtitle: "Manage your account information",
+    verified: "Verified",
+    rejected: "Rejected",
+    underReview: "Under Review",
+    notVerified: "Not Verified",
+    profileNotFound: "Profile not found",
+    editProfile: "Edit Profile",
+    verification: "Verification",
+    personalInformation: "Personal Information",
+    personalInfoDescription: "Update your personal details",
+    saveChanges: "Save Changes",
+    fullName: "Full Name",
+    email: "Email",
+    phone: "Phone",
+    companyName: "Company Name",
+    address: "Address",
+    bio: "Bio",
+    bioPlaceholder: "Tell us about yourself...",
+    noBioProvided: "No bio provided",
+    accountVerification: "Account Verification",
+    verificationDescription: "Verify your account for enhanced features",
+    memberSince: "Member since",
+    notProvided: "Not provided"
+  },
+
+  // Messages Section
+  messages: {
+    title: "Messages",
+    subtitle: "Communication and conversations",
+    totalConversations: "Total Conversations",
+    unreadMessages: "Unread Messages",
+    businessChats: "Business Chats",
+    supportTickets: "Support Tickets",
+    searchAndActions: "Search & Actions",
+    searchMessages: "Search messages...",
+    startNewChat: "Start New Chat",
+    showingResults: "Showing {count} of {total} results",
+    clearSearch: "Clear Search",
+    noConversations: "No Conversations",
+    noResults: "No Results Found",
+    noConversationsDesc: "Start a conversation to get connected",
+    noResultsDesc: "Try different search terms",
+    goToSupport: "Go to Support",
+    unknownUser: "Unknown User",
+    support: "Support",
+    online: "Online",
+    noMessages: "No messages",
+    startConversation: "Start conversation...",
+    now: "now",
+    minutesAgo: "{minutes}m ago",
+    hoursAgo: "{hours}h ago",
+    daysAgo: "{days}d ago"
+  },
+
+  // Settings Section
+  settings: {
+    title: "Settings",
+    subtitle: "Manage your preferences and account settings",
+    settingsSaved: "Settings Saved",
+    notificationPrefsUpdated: "Notification preferences updated",
+    updateError: "Failed to update settings",
+    notificationError: "Failed to update notification settings",
+    profileCompletion: "Profile Completion",
+    activeNotifications: "Active Notifications",
+    enabledNotificationTypes: "Enabled notification types",
+    securityScore: "Security Score",
+    lastUpdated: "Last Updated",
+    languageAndRegion: "Language & Region",
+    languageDescription: "Choose your preferred language and region",
+    language: "Language",
+    notifications: "Notifications",
+    notificationsDescription: "Manage your notification preferences",
+    emailNotifications: "Email Notifications", 
+    emailNotificationsDesc: "Receive updates via email",
+    pushNotifications: "Push Notifications",
+    pushNotificationsDesc: "Receive push notifications"
+  },
+
+  // Projects Section
+  projects: {
+    title: "Projects",
+    subtitle: "Manage your projects and deliverables",
+    newProject: "New Project",
+    totalProjects: "Total Projects",
+    vsLastMonth: "vs last month",
+    activeProjects: "Active Projects",
+    thisWeek: "this week",
+    completed: "Completed",
+    draft: "Draft",
+    searchAndFilter: "Search & Filter",
+    searchProjects: "Search projects...",
+    allStatus: "All Status",
+    active: "Active",
+    cancelled: "Cancelled",
+    allPriority: "All Priority",
+    low: "Low",
+    medium: "Medium",
+    high: "High",
+    urgent: "Urgent",
+    showingResults: "Showing {count} of {total} results",
+    clearFilters: "Clear Filters",
+    noProjectsFound: "No Projects Found",
+    startFirstProject: "Start Your First Project",
+    tryAdjusting: "Try adjusting your search and filters",
+    createFirstProject: "Create your first project to get started",
+    createYourFirst: "Create Your First"
   }
 };

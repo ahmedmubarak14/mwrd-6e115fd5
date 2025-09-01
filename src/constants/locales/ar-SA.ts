@@ -60,12 +60,31 @@ export const arSA = {
       clientRatingDesc: 'متوسط تقييم العملاء'
     },
     cr: {
-      verificationRequired: 'مطلوب التحقق من السجل التجاري',
+      title: "إدارة السجل التجاري",
+      verificationRequired: "مطلوب التحقق من السجل التجاري",
+      verified: "موثق",
+      pending: "قيد الانتظار", 
+      rejected: "مرفوض",
+      unverified: "غير موثق",
+      status: "حالة التحقق",
+      statusApproved: "تم الموافقة على سجلك التجاري",
+      statusPending: "سجلك التجاري قيد المراجعة",
+      statusRejected: "تم رفض سجلك التجاري",
+      statusDefault: "يرجى تقديم سجلك التجاري للتحقق",
+      businessSize: "حجم الأعمال",
+      smallMediumLarge: "صغير، متوسط، كبير", 
+      establishedYear: "سنة التأسيس",
+      experienceYears: "سنوات الخبرة",
+      employeeCount: "عدد الموظفين",
+      oneToTenEmployees: "1-10 موظفين",
+      teamSize: "حجم الفريق",
+      smallLargeTeam: "فريق صغير/كبير",
+      businessDocuments: "المستندات التجارية",
+      upload: "رفع مستندات السجل التجاري",
+      documentUpload: "رفع المستندات هنا",
+      updateCR: "تم تحديث معلومات السجل التجاري بنجاح",
       completeVerification: 'يرجى إكمال التحقق من سجلك التجاري',
-      updateCR: 'تحديث السجل التجاري',
-      approved: 'معتمد',
-      pending: 'معلق',
-      rejected: 'مرفوض'
+      approved: 'معتمد'
     },
     crManagement: {
       title: 'إدارة السجل التجاري',
@@ -81,6 +100,38 @@ export const arSA = {
       renewCR: 'تجديد السجل التجاري',
       updateDetails: 'تحديث التفاصيل',
       downloadCertificate: 'تحميل الشهادة'
+    },
+    rfqs: {
+      title: "طلبات عروض الأسعار",
+      subtitle: "تصفح والرد على طلبات عروض الأسعار",
+      newRFQTitle: "طلب عرض سعر جديد",
+      newRFQDesc: "تم نشر طلب عرض سعر جديد",
+      totalRFQs: "إجمالي طلبات الأسعار",
+      openRFQs: "الطلبات المفتوحة",
+      myResponses: "ردودي",
+      awarded: "تم الفوز",
+      searchPlaceholder: "البحث في طلبات الأسعار...",
+      category: "الفئة",
+      status: "الحالة", 
+      budget: "الميزانية",
+      open: "مفتوح",
+      closed: "مغلق",
+      newest: "الأحدث أولاً",
+      oldest: "الأقدم أولاً",
+      deadlineSoon: "قرب انتهاء المهلة",
+      budgetHigh: "أعلى ميزانية",
+      leastCompetitive: "أقل منافسة",
+      availableRFQs: "طلبات الأسعار المتاحة",
+      lastUpdated: "آخر تحديث",
+      responseSubmitted: "تم إرسال الرد",
+      responseSubmittedDesc: "تم إرسال ردك بنجاح"
+    },
+    verification: {
+      submitForReview: "تم التقديم للمراجعة بنجاح"
+    },
+    profile: {
+      businessInfo: "معلومات الأعمال",
+      basicInfo: "معلومات الأعمال الأساسية"
     }
   },
 
@@ -264,5 +315,182 @@ export const arSA = {
     resolved: 'تم الحل',
     ticketStatus: 'الحالة',
     ticketPriority: 'الأولوية'
+  },
+
+  // Orders Section
+  orders: {
+    title: "الطلبات",
+    subtitle: "إدارة وتتبع طلباتك",
+    totalOrders: "إجمالي الطلبات",
+    pending: "قيد الانتظار",
+    confirmed: "مؤكد",
+    completed: "مكتمل",
+    noOrders: "لا توجد طلبات",
+    noOrdersDesc: "لم تقم بتقديم أي طلبات بعد",
+    browseRequests: "تصفح الطلبات",
+    orderNumber: "الطلب",
+    noDescription: "لا يوجد وصف",
+    amountNotSet: "لم يتم تحديد المبلغ",
+    deliveryDate: "تاريخ التسليم:",
+    ordered: "تم الطلب:",
+    viewDetails: "عرض التفاصيل",
+    status: {
+      pending: "قيد الانتظار",
+      confirmed: "مؤكد",
+      completed: "مكتمل",
+      cancelled: "ملغى",
+      in_progress: "قيد التنفيذ"
+    }
+  },
+
+  // Offers Section
+  offers: {
+    title: "العروض",
+    subtitle: {
+      vendor: "إدارة عروضك المقدمة",
+      client: "مراجعة عروض الموردين"
+    },
+    compare: "مقارنة",
+    newOffer: "عرض جديد",
+    totalOffers: "إجمالي العروض",
+    pendingOffers: "العروض المعلقة",
+    approvedOffers: "العروض المعتمدة",
+    rejectedOffers: "العروض المرفوضة",
+    filtersAndSearch: "الفلاتر والبحث",
+    searchPlaceholder: "البحث في العروض...",
+    offerStatus: "حالة العرض",
+    allStatus: "جميع الحالات",
+    showingResults: "عرض {count} من {total} نتيجة",
+    clearFilters: "مسح الفلاتر",
+    noOffersFound: "لا توجد عروض",
+    noOffers: "لا توجد عروض بعد",
+    tryAdjustingFilters: "جرب تعديل الفلاتر",
+    noOffersDesc: {
+      vendor: "لم تقدم أي عروض بعد",
+      client: "لم يتم استلام عروض بعد"
+    },
+    forRequest: "لـ:",
+    vendor: "من:",
+    days: "أيام",
+    viewDetails: "عرض التفاصيل",
+    messageVendor: "مراسلة المورد",
+    accept: "قبول",
+    reject: "رفض",
+    status: {
+      pending: "قيد الانتظار",
+      approved: "معتمد",
+      rejected: "مرفوض"
+    }
+  },
+
+  // Profile Section
+  profile: {
+    title: "الملف الشخصي",
+    subtitle: "إدارة معلومات حسابك",
+    verified: "موثق",
+    rejected: "مرفوض",
+    underReview: "قيد المراجعة",
+    notVerified: "غير موثق",
+    profileNotFound: "الملف الشخصي غير موجود",
+    editProfile: "تعديل الملف الشخصي",
+    verification: "التحقق",
+    personalInformation: "المعلومات الشخصية",
+    personalInfoDescription: "تحديث تفاصيلك الشخصية",
+    saveChanges: "حفظ التغييرات",
+    fullName: "الاسم الكامل",
+    email: "البريد الإلكتروني",
+    phone: "الهاتف",
+    companyName: "اسم الشركة",
+    address: "العنوان",
+    bio: "نبذة تعريفية",
+    bioPlaceholder: "أخبرنا عن نفسك...",
+    noBioProvided: "لا توجد نبذة تعريفية",
+    accountVerification: "التحقق من الحساب",
+    verificationDescription: "تحقق من حسابك للحصول على ميزات محسنة",
+    memberSince: "عضو منذ",
+    notProvided: "غير مقدم"
+  },
+
+  // Messages Section
+  messages: {
+    title: "الرسائل",
+    subtitle: "التواصل والمحادثات",
+    totalConversations: "إجمالي المحادثات",
+    unreadMessages: "الرسائل غير المقروءة",
+    businessChats: "محادثات الأعمال",
+    supportTickets: "تذاكر الدعم",
+    searchAndActions: "البحث والإجراءات",
+    searchMessages: "البحث في الرسائل...",
+    startNewChat: "بدء محادثة جديدة",
+    showingResults: "عرض {count} من {total} نتيجة",
+    clearSearch: "مسح البحث",
+    noConversations: "لا توجد محادثات",
+    noResults: "لا توجد نتائج",
+    noConversationsDesc: "ابدأ محادثة للتواصل",
+    noResultsDesc: "جرب مصطلحات بحث مختلفة",
+    goToSupport: "الذهاب للدعم",
+    unknownUser: "مستخدم غير معروف",
+    support: "الدعم",
+    online: "متصل",
+    noMessages: "لا توجد رسائل",
+    startConversation: "بدء محادثة...",
+    now: "الآن",
+    minutesAgo: "منذ {minutes} د",
+    hoursAgo: "منذ {hours} س",
+    daysAgo: "منذ {days} أيام"
+  },
+
+  // Settings Section
+  settings: {
+    title: "الإعدادات",
+    subtitle: "إدارة تفضيلاتك وإعدادات الحساب",
+    settingsSaved: "تم حفظ الإعدادات",
+    notificationPrefsUpdated: "تم تحديث تفضيلات التنبيهات",
+    updateError: "فشل في تحديث الإعدادات",
+    notificationError: "فشل في تحديث إعدادات التنبيهات",
+    profileCompletion: "اكتمال الملف الشخصي",
+    activeNotifications: "التنبيهات النشطة",
+    enabledNotificationTypes: "أنواع التنبيهات المفعلة",
+    securityScore: "نقاط الأمان",
+    lastUpdated: "آخر تحديث",
+    languageAndRegion: "اللغة والمنطقة",
+    languageDescription: "اختر لغتك ومنطقتك المفضلة",
+    language: "اللغة",
+    notifications: "التنبيهات",
+    notificationsDescription: "إدارة تفضيلات التنبيهات",
+    emailNotifications: "تنبيهات البريد الإلكتروني",
+    emailNotificationsDesc: "استقبال التحديثات عبر البريد الإلكتروني",
+    pushNotifications: "التنبيهات المدفوعة",
+    pushNotificationsDesc: "استقبال التنبيهات المدفوعة"
+  },
+
+  // Projects Section
+  projects: {
+    title: "المشاريع",
+    subtitle: "إدارة مشاريعك والتسليمات",
+    newProject: "مشروع جديد",
+    totalProjects: "إجمالي المشاريع",
+    vsLastMonth: "مقارنة بالشهر الماضي",
+    activeProjects: "المشاريع النشطة",
+    thisWeek: "هذا الأسبوع",
+    completed: "مكتمل",
+    draft: "مسودة",
+    searchAndFilter: "البحث والتصفية",
+    searchProjects: "البحث في المشاريع...",
+    allStatus: "جميع الحالات",
+    active: "نشط",
+    cancelled: "ملغى",
+    allPriority: "جميع الأولويات",
+    low: "منخفض",
+    medium: "متوسط",
+    high: "عالي",
+    urgent: "عاجل",
+    showingResults: "عرض {count} من {total} نتيجة",
+    clearFilters: "مسح الفلاتر",
+    noProjectsFound: "لا توجد مشاريع",
+    startFirstProject: "ابدأ مشروعك الأول",
+    tryAdjusting: "جرب تعديل البحث والفلاتر",
+    createFirstProject: "أنشئ مشروعك الأول للبدء",
+    createYourFirst: "أنشئ الأول"
   }
 };
