@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -72,16 +73,6 @@ export const MobileHeader = () => {
         "sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
         "mobile-header safe-area-padding-top"
       )}>
-        {/* Role Badge */}
-        {userProfile?.role && (
-          <div className="px-4 pb-2">
-            <Badge variant="secondary" className="text-xs">
-              {userProfile.role === 'admin' ? (isRTL ? 'مدير' : 'Admin') :
-               userProfile.role === 'vendor' ? (isRTL ? 'مورد' : 'Vendor') :
-               (isRTL ? 'عميل' : 'Client')}
-            </Badge>
-          </div>
-        )}
       </header>
 
       {/* Quick Actions Bar */}
