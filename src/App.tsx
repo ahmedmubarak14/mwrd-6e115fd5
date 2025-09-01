@@ -64,7 +64,6 @@ import Projects from './pages/Projects';
 import RFQManagement from './pages/RFQManagement';
 import Settings from './pages/Settings';
 import Support from './pages/Support';
-import VendorRFQs from './pages/VendorRFQs';
 import Vendors from './pages/Vendors';
 
 const RoleProtectedRoute: React.FC<{
