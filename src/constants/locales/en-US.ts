@@ -1352,6 +1352,5 @@ export const enUS = {
     ticketPriority: "Priority"
   },
 
-  // Export admin translations
-  ...adminTranslationsEN,
+  ...adminTranslationsEN
 };

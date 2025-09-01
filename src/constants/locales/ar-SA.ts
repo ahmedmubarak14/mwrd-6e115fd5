@@ -1365,6 +1365,5 @@ export const arSA = {
     ticketPriority: "الأولوية"
   },
 
-  // Export admin translations
-  ...adminTranslationsAR,
+  ...adminTranslationsAR
 };
