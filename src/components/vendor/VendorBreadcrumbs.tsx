@@ -52,7 +52,7 @@ export const VendorBreadcrumbs = () => {
     <Breadcrumb className={cn(isRTL && "rtl")}>
       <BreadcrumbList className={cn(
         "flex items-center gap-1.5 text-sm",
-        isRTL && "flex-row-reverse"
+        isRTL ? "flex-row-reverse text-right" : "text-left"
       )}>
         {/* Home/Dashboard Link */}
         <BreadcrumbItem>
@@ -62,7 +62,7 @@ export const VendorBreadcrumbs = () => {
           >
             <Link to="/vendor/dashboard" className={cn(
               "flex items-center gap-1.5",
-              isRTL && "flex-row-reverse"
+              isRTL ? "flex-row-reverse text-right" : "text-left"
             )}>
               <HomeIcon className="h-3.5 w-3.5" />
               <span className="font-medium">{t('nav.dashboard')}</span>

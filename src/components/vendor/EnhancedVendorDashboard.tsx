@@ -31,7 +31,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useVendorStats } from "@/hooks/useVendorStats";
-import { VendorBreadcrumbs } from "./VendorBreadcrumbs";
+
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export const EnhancedVendorDashboard = memo(() => {
@@ -118,14 +118,10 @@ export const EnhancedVendorDashboard = memo(() => {
     <ErrorBoundary>
       <div className={cn(
         "space-y-8", 
-        isRTL && "rtl",
-        isRTL && "[&_*]:text-right [&_.flex]:flex-row-reverse [&_.grid]:grid-cols-1 md:[&_.grid]:grid-cols-2 lg:[&_.grid]:grid-cols-4"
+        isRTL && "rtl text-right"
       )}>
-        {/* Breadcrumbs */}
-        <VendorBreadcrumbs />
-        
         {/* Welcome Header */}
-        <div className={cn(isRTL && "text-right")}>
+        <div className={cn("space-y-2", isRTL && "text-right")}>
           <h1 className="text-3xl font-bold text-foreground">
             {t('vendor.dashboard.welcome')}
           </h1>
