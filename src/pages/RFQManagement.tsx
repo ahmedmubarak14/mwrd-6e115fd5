@@ -1,6 +1,6 @@
 import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { useState, useMemo } from "react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useRFQs } from "@/hooks/useRFQs";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,9 +28,10 @@ import {
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { RFQCard } from "@/components/rfq/RFQCard";
+import { cn } from "@/lib/utils";
 
 const RFQManagement = () => {
-  const { t } = useLanguage();
+  const { t, isRTL } = useOptionalLanguage();
   const { rfqs, loading } = useRFQs();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -80,8 +81,8 @@ const RFQManagement = () => {
 
   return (
     <ClientPageContainer
-      title="RFQ Management"
-      description="Manage your Request for Quotations and track vendor responses"
+      title={t('rfq.management')}
+      description={t('rfq.managementDescription')}
       headerActions={
         <Button 
           size="lg" 
@@ -89,7 +90,7 @@ const RFQManagement = () => {
           onClick={() => navigate('/rfqs/create')}
         >
           <Plus className="h-4 w-4" />
-          Create New RFQ
+          {t('rfq.createNewRFQ')}
         </Button>
       }
     >
@@ -97,26 +98,26 @@ const RFQManagement = () => {
       {/* Metrics */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
         <MetricCard
-          title="Total RFQs"
+          title={t('rfq.totalRFQs')}
           value={metrics.total}
           icon={FileText}
-          trend={{ value: 15, label: "vs last month", isPositive: true }}
+          trend={{ value: 15, label: t('rfq.vsLastMonth'), isPositive: true }}
         />
         <MetricCard
-          title="Published"
+          title={t('rfq.published')}
           value={metrics.published}
           icon={TrendingUp}
-          trend={{ value: 5, label: "this week", isPositive: true }}
+          trend={{ value: 5, label: t('rfq.thisWeek'), isPositive: true }}
           variant="success"
         />
         <MetricCard
-          title="In Progress"
+          title={t('rfq.inProgress')}
           value={metrics.in_progress}
           icon={Users}
           variant="default"
         />
         <MetricCard
-          title="Draft"
+          title={t('rfq.draft')}
           value={metrics.draft}
           icon={Edit2}
           variant="warning"
@@ -126,45 +127,60 @@ const RFQManagement = () => {
       {/* Filters */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className={cn(
+            "flex items-center gap-2",
+            isRTL && "flex-row-reverse"
+          )}>
             <Filter className="h-5 w-5" />
-            Filters & Search
+            {t('rfq.filtersSearch')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4">
+          <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4 rtl:md:space-x-reverse">
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Search className={cn(
+                  "absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground",
+                  isRTL ? "right-3" : "left-3"
+                )} />
                 <Input
-                  placeholder="Search RFQs..."
+                  placeholder={t('rfq.searchRFQs')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className={cn(
+                    isRTL ? "pr-10 text-right" : "pl-10"
+                  )}
                 />
               </div>
             </div>
             
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-full md:w-48">
-                <SelectValue placeholder="Filter by status" />
+                <SelectValue placeholder={t('rfq.filterByStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="draft">Draft</SelectItem>
-                <SelectItem value="published">Published</SelectItem>
-                <SelectItem value="in_progress">In Progress</SelectItem>
-                <SelectItem value="evaluation">Evaluation</SelectItem>
-                <SelectItem value="awarded">Awarded</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="all">{t('rfq.allStatus')}</SelectItem>
+                <SelectItem value="draft">{t('rfq.draft')}</SelectItem>
+                <SelectItem value="published">{t('rfq.published')}</SelectItem>
+                <SelectItem value="in_progress">{t('rfq.inProgress')}</SelectItem>
+                <SelectItem value="evaluation">{t('rfq.evaluation')}</SelectItem>
+                <SelectItem value="awarded">{t('rfq.awarded')}</SelectItem>
+                <SelectItem value="cancelled">{t('rfq.cancelled')}</SelectItem>
+                <SelectItem value="completed">{t('rfq.completed')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           {(searchTerm || statusFilter !== "all") && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>Showing {filteredRFQs.length} of {metrics.total} RFQs</span>
+            <div className={cn(
+              "flex items-center gap-2 text-sm text-muted-foreground",
+              isRTL && "flex-row-reverse"
+            )}>
+              <span>
+                {t('rfq.showingResults')
+                  .replace('{0}', filteredRFQs.length.toString())
+                  .replace('{1}', metrics.total.toString())}
+              </span>
               {(searchTerm || statusFilter !== "all") && (
                 <Button
                   variant="ghost"
@@ -174,7 +190,7 @@ const RFQManagement = () => {
                     setStatusFilter("all");
                   }}
                 >
-                  Clear filters
+                  {t('rfq.clearFilters')}
                 </Button>
               )}
             </div>
@@ -203,13 +219,13 @@ const RFQManagement = () => {
             </div>
             
             <h3 className="text-xl font-semibold text-foreground mb-2">
-              {searchTerm || statusFilter !== "all" ? "No RFQs found" : "Create Your First RFQ"}
+              {searchTerm || statusFilter !== "all" ? t('rfq.noRFQsFound') : t('rfq.createFirstRFQ')}
             </h3>
             
             <p className="text-muted-foreground mb-6 max-w-md mx-auto">
               {searchTerm || statusFilter !== "all" 
-                ? "Try adjusting your search criteria or filters to find what you're looking for" 
-                : "Create your first Request for Quotation to get competitive bids from qualified vendors"}
+                ? t('rfq.adjustCriteria')
+                : t('rfq.createFirstRFQDesc')}
             </p>
 
             {!searchTerm && statusFilter === "all" && (
@@ -217,15 +233,15 @@ const RFQManagement = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm max-w-2xl mx-auto mb-6">
                   <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                     <CheckCircle className="h-4 w-4 text-success" />
-                    <span>Structured procurement</span>
+                    <span>{t('rfq.structuredProcurement')}</span>
                   </div>
                   <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                     <CheckCircle className="h-4 w-4 text-success" />
-                    <span>Transparent bidding</span>
+                    <span>{t('rfq.transparentBidding')}</span>
                   </div>
                   <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                     <CheckCircle className="h-4 w-4 text-success" />
-                    <span>Easy comparison</span>
+                    <span>{t('rfq.easyComparison')}</span>
                   </div>
                 </div>
 
@@ -235,7 +251,7 @@ const RFQManagement = () => {
                   onClick={() => navigate('/rfqs/create')}
                 >
                   <Plus className="h-4 w-4" />
-                  Create Your First RFQ
+                  {t('rfq.createFirstRFQ')}
                 </Button>
               </div>
             )}
@@ -250,7 +266,7 @@ const RFQManagement = () => {
                 className="gap-2"
               >
                 <Package className="h-4 w-4" />
-                Clear Filters
+                {t('rfq.clearFilters')}
               </Button>
             )}
           </CardContent>
