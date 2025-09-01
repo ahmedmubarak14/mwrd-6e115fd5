@@ -49,7 +49,7 @@ export const VendorHeader = ({
                 size="icon"
                 onClick={onMobileMenuOpen}
                 className="h-9 w-9 hover:bg-accent/50 transition-all duration-200 shrink-0"
-                aria-label="Open mobile menu"
+                aria-label={t('vendorHeader.openMobileMenu')}
               >
                 <Menu className="h-4 w-4" />
               </Button>
@@ -67,7 +67,7 @@ export const VendorHeader = ({
                   "h-9 w-9 hover:bg-accent/50 transition-all duration-200 shrink-0",
                   sidebarOpen ? "bg-primary/10 text-primary" : "text-muted-foreground"
                 )}
-                aria-label="Toggle sidebar"
+                aria-label={t('vendorHeader.toggleSidebar')}
               >
                 <Menu className="h-4 w-4" />
               </Button>
@@ -76,7 +76,7 @@ export const VendorHeader = ({
             <button
               onClick={() => navigate('/vendor/dashboard')}
               className="flex items-center gap-3 hover:opacity-80 transition-all duration-200 min-w-0"
-              aria-label="Go to vendor dashboard"
+              aria-label={t('vendorHeader.goToDashboard')}
             >
               <img 
                 src="/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png" 
@@ -85,10 +85,10 @@ export const VendorHeader = ({
               />
               <div className="hidden sm:flex flex-col items-start min-w-0">
                 <span className="text-sm sm:text-base font-semibold leading-tight truncate text-foreground">
-                  MWRD Dashboard
+                  {t('vendorHeader.dashboard')}
                 </span>
                 <span className="text-xs leading-tight text-muted-foreground hidden md:block capitalize">
-                  {userProfile?.role || 'User'} Portal
+                  {t('vendorHeader.portal')}
                 </span>
               </div>
             </button>

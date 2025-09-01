@@ -945,6 +945,82 @@ export const enUS = {
     invalidBudget: "Budget minimum cannot be greater than maximum"
   },
 
+  // Vendor sidebar groups
+  vendorGroups: {
+    overview: "Overview",
+    workspace: "Workspace", 
+    portfolio: "Portfolio",
+    financial: "Financial",
+    businessIntelligence: "Business Intelligence",
+    account: "Account & Support"
+  },
+
+  // Vendor notifications
+  vendorNotifications: {
+    title: "Notifications",
+    description: "Manage your notification preferences and view updates",
+    markAllRead: "Mark All Read",
+    unread: "Unread",
+    today: "Today",
+    total: "Total",
+    allNotifications: "All Notifications",
+    unreadNotifications: "Unread",
+    settings: "Settings",
+    notificationHistory: "Your complete notification history",
+    unreadDescription: "Notifications that need your attention",
+    noNotifications: "No notifications yet",
+    noUnreadNotifications: "No unread notifications",
+    settingsTitle: "Notification Settings",
+    settingsDescription: "Configure how you receive notifications",
+    deliveryMethods: "Delivery Methods",
+    emailNotifications: "Email Notifications",
+    emailDescription: "Receive notifications via email",
+    pushNotifications: "Push Notifications", 
+    pushDescription: "Browser push notifications",
+    smsNotifications: "SMS Notifications",
+    smsDescription: "Text message notifications",
+    notificationTypes: "Notification Types",
+    newRfqs: "New RFQs",
+    newRfqsDescription: "When new RFQs match your profile",
+    bidUpdates: "Bid Updates",
+    bidUpdatesDescription: "Status updates on your bids",
+    paymentAlerts: "Payment Alerts",
+    paymentAlertsDescription: "Payment confirmations and reminders",
+    messages: "Messages",
+    messagesDescription: "New messages from clients",
+    systemUpdates: "System Updates",
+    systemUpdatesDescription: "Platform updates and maintenance",
+    notificationsPending: "Notifications pending",
+    newToday: "New today",
+    allNotificationsCount: "All notifications",
+    settingsUpdated: "Your notification preferences have been saved",
+    allMarkedRead: "All notifications marked as read",
+    markReadError: "Failed to mark notifications as read",
+    fetchError: "Failed to fetch notifications"
+  },
+
+  // Vendor documents
+  vendorDocuments: {
+    totalDocuments: "Total Documents"
+  },
+
+  // Vendor reports
+  vendorReports: {
+    totalRevenue: "Total Revenue",
+    winRate: "Win Rate", 
+    avgOrderValue: "Avg Order Value",
+    activeClients: "Active Clients"
+  },
+
+  // Vendor header
+  vendorHeader: {
+    dashboard: "MWRD Vendor Dashboard",
+    portal: "Vendor Portal",
+    openMobileMenu: "Open mobile menu",
+    toggleSidebar: "Toggle sidebar",
+    goToDashboard: "Go to vendor dashboard"
+  },
+
   admin: adminTranslationsEN,
   analytics: {
     pendingApprovals: "Pending Approvals",
@@ -1248,15 +1324,5 @@ export const enUS = {
     resolved: "Resolved",
     ticketStatus: "Status",
     ticketPriority: "Priority"
-  },
-
-  // Vendor Groups for Sidebar
-  vendorGroups: {
-    overview: "Overview",
-    workspace: "Workspace", 
-    portfolio: "Portfolio",
-    financial: "Financial",
-    businessIntelligence: "Business Intelligence",
-    account: "Account",
   }
 };

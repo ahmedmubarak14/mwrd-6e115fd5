@@ -8,6 +8,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { LoadingScreen } from "@/components/ui/LoadingScreen";
+import { ErrorState } from "@/components/ui/ErrorState";
+import { ResponsiveContainer } from "@/components/ui/ResponsiveContainer";
 import { Bell, MessageSquare, DollarSign, FileText, Settings, Check, X, Archive } from "lucide-react";
 
 export const VendorNotifications = () => {
@@ -16,6 +19,7 @@ export const VendorNotifications = () => {
   const { t } = useLanguage();
   const [notifications, setNotifications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [settings, setSettings] = useState({
     email_notifications: true,
     push_notifications: true,
@@ -37,6 +41,7 @@ export const VendorNotifications = () => {
   const fetchNotifications = async () => {
     try {
       setLoading(true);
+      setError(null);
       const { data, error } = await supabase
         .from('notifications')
         .select('*')
@@ -48,9 +53,11 @@ export const VendorNotifications = () => {
       setNotifications(data || []);
     } catch (error) {
       console.error('Error fetching notifications:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setError(errorMessage);
       toast({
-        title: "Error",
-        description: "Failed to fetch notifications",
+        title: t('common.error'),
+        description: t('vendorNotifications.fetchError'),
         variant: "destructive"
       });
     } finally {
@@ -70,8 +77,8 @@ export const VendorNotifications = () => {
     setSettings(newSettings);
     localStorage.setItem(`notification-settings-${userProfile?.user_id}`, JSON.stringify(newSettings));
     toast({
-      title: "Settings updated",
-      description: "Your notification preferences have been saved"
+      title: t('common.success'),
+      description: t('vendorNotifications.settingsUpdated')
     });
   };
 
@@ -104,14 +111,14 @@ export const VendorNotifications = () => {
       
       setNotifications(prev => prev.map(n => ({ ...n, read: true })));
       toast({
-        title: "Success",
-        description: "All notifications marked as read"
+        title: t('common.success'),
+        description: t('vendorNotifications.allMarkedRead')
       });
     } catch (error) {
       console.error('Error marking all as read:', error);
       toast({
-        title: "Error",
-        description: "Failed to mark notifications as read",
+        title: t('common.error'),
+        description: t('vendorNotifications.markReadError'),
         variant: "destructive"
       });
     }
@@ -139,82 +146,103 @@ export const VendorNotifications = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
+      <ResponsiveContainer variant="dashboard">
+        <LoadingScreen variant="notifications" />
+      </ResponsiveContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <ResponsiveContainer variant="dashboard">
+        <ErrorState 
+          variant="error"
+          title={t('common.error')}
+          description={error}
+          onRetry={fetchNotifications}
+          showBackButton={false}
+        />
+      </ResponsiveContainer>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <ResponsiveContainer variant="dashboard">
+      <div className="space-y-6"
+           role="main"
+           aria-label={t('vendorNotifications.title')}
+      >
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold">{t('vendor.notifications.title')}</h1>
+          <h1 className="text-2xl font-bold">{t('vendorNotifications.title')}</h1>
           <p className="text-muted-foreground mt-1">
-            {t('vendor.notifications.description')}
+            {t('vendorNotifications.description')}
           </p>
         </div>
         {unreadCount > 0 && (
-          <Button onClick={markAllAsRead}>
+          <Button 
+            onClick={markAllAsRead}
+            aria-label={`${t('vendorNotifications.markAllRead')} - ${unreadCount} notifications`}
+          >
             <Check className="h-4 w-4 mr-2" />
-            {t('vendor.notifications.markAllRead')}
+            {t('vendorNotifications.markAllRead')}
           </Button>
         )}
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-3" role="region" aria-label="Notification statistics">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Unread</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('vendorNotifications.unread')}</CardTitle>
             <Bell className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{unreadCount}</div>
             <p className="text-xs text-muted-foreground mt-2">
-              Notifications pending
+              {t('vendorNotifications.notificationsPending')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Today</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('vendorNotifications.today')}</CardTitle>
             <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{todayNotifications.length}</div>
             <p className="text-xs text-muted-foreground mt-2">
-              New today
+              {t('vendorNotifications.newToday')}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('vendorNotifications.total')}</CardTitle>
             <Archive className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{notifications.length}</div>
             <p className="text-xs text-muted-foreground mt-2">
-              All notifications
+              {t('vendorNotifications.allNotificationsCount')}
             </p>
           </CardContent>
         </Card>
       </div>
 
-      <Tabs defaultValue="all" className="space-y-4">
+      <Tabs defaultValue="all" className="space-y-4" aria-label="Notification tabs">
         <TabsList>
-          <TabsTrigger value="all">All Notifications</TabsTrigger>
-          <TabsTrigger value="unread">Unread ({unreadCount})</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+          <TabsTrigger value="all">{t('vendorNotifications.allNotifications')}</TabsTrigger>
+          <TabsTrigger value="unread">{t('vendorNotifications.unread')} ({unreadCount})</TabsTrigger>
+          <TabsTrigger value="settings">{t('vendorNotifications.settings')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>All Notifications</CardTitle>
-              <CardDescription>Your complete notification history</CardDescription>
+              <CardTitle>{t('vendorNotifications.allNotifications')}</CardTitle>
+              <CardDescription>{t('vendorNotifications.notificationHistory')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -246,10 +274,11 @@ export const VendorNotifications = () => {
                             {notification.priority}
                           </Badge>
                           {!notification.read && (
-                            <Button
+                           <Button
                               size="sm"
                               variant="ghost"
                               onClick={() => markAsRead(notification.id)}
+                              aria-label={`Mark notification "${notification.title}" as read`}
                             >
                               <Check className="h-3 w-3" />
                             </Button>
@@ -262,7 +291,7 @@ export const VendorNotifications = () => {
                 
                 {notifications.length === 0 && (
                   <div className="text-center py-8 text-muted-foreground">
-                    No notifications yet
+                    {t('vendorNotifications.noNotifications')}
                   </div>
                 )}
               </div>
@@ -273,8 +302,8 @@ export const VendorNotifications = () => {
         <TabsContent value="unread" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Unread Notifications</CardTitle>
-              <CardDescription>Notifications that need your attention</CardDescription>
+              <CardTitle>{t('vendorNotifications.unreadNotifications')}</CardTitle>
+              <CardDescription>{t('vendorNotifications.unreadDescription')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -301,6 +330,7 @@ export const VendorNotifications = () => {
                           size="sm"
                           variant="ghost"
                           onClick={() => markAsRead(notification.id)}
+                          aria-label={`Mark notification "${notification.title}" as read`}
                         >
                           <Check className="h-3 w-3" />
                         </Button>
@@ -311,7 +341,7 @@ export const VendorNotifications = () => {
                 
                 {unreadCount === 0 && (
                   <div className="text-center py-8 text-muted-foreground">
-                    No unread notifications
+                    {t('vendorNotifications.noUnreadNotifications')}
                   </div>
                 )}
               </div>
@@ -322,53 +352,56 @@ export const VendorNotifications = () => {
         <TabsContent value="settings" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Notification Settings</CardTitle>
-              <CardDescription>Configure how you receive notifications</CardDescription>
+              <CardTitle>{t('vendorNotifications.settingsTitle')}</CardTitle>
+              <CardDescription>{t('vendorNotifications.settingsDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
-                <h3 className="font-medium mb-4">Delivery Methods</h3>
+                <h3 className="font-medium mb-4">{t('vendorNotifications.deliveryMethods')}</h3>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="font-medium">Email Notifications</label>
-                      <p className="text-sm text-muted-foreground">Receive notifications via email</p>
+                      <label className="font-medium">{t('vendorNotifications.emailNotifications')}</label>
+                      <p className="text-sm text-muted-foreground">{t('vendorNotifications.emailDescription')}</p>
                     </div>
                     <Switch
                       checked={settings.email_notifications}
                       onCheckedChange={(checked) => updateSettings('email_notifications', checked)}
+                      aria-describedby="email-notifications-desc"
                     />
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="font-medium">Push Notifications</label>
-                      <p className="text-sm text-muted-foreground">Browser push notifications</p>
+                      <label className="font-medium" id="push-notifications-label">{t('vendorNotifications.pushNotifications')}</label>
+                      <p className="text-sm text-muted-foreground" id="push-notifications-desc">{t('vendorNotifications.pushDescription')}</p>
                     </div>
                     <Switch
                       checked={settings.push_notifications}
                       onCheckedChange={(checked) => updateSettings('push_notifications', checked)}
+                      aria-describedby="push-notifications-desc"
                     />
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="font-medium">SMS Notifications</label>
-                      <p className="text-sm text-muted-foreground">Text message notifications</p>
+                      <label className="font-medium" id="sms-notifications-label">{t('vendorNotifications.smsNotifications')}</label>
+                      <p className="text-sm text-muted-foreground" id="sms-notifications-desc">{t('vendorNotifications.smsDescription')}</p>
                     </div>
                     <Switch
                       checked={settings.sms_notifications}
                       onCheckedChange={(checked) => updateSettings('sms_notifications', checked)}
+                      aria-describedby="sms-notifications-desc"
                     />
                   </div>
                 </div>
               </div>
 
               <div>
-                <h3 className="font-medium mb-4">Notification Types</h3>
+                <h3 className="font-medium mb-4">{t('vendorNotifications.notificationTypes')}</h3>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="font-medium">New RFQs</label>
-                      <p className="text-sm text-muted-foreground">When new RFQs match your profile</p>
+                      <label className="font-medium">{t('vendorNotifications.newRfqs')}</label>
+                      <p className="text-sm text-muted-foreground">{t('vendorNotifications.newRfqsDescription')}</p>
                     </div>
                     <Switch
                       checked={settings.new_rfqs}
@@ -377,8 +410,8 @@ export const VendorNotifications = () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="font-medium">Bid Updates</label>
-                      <p className="text-sm text-muted-foreground">Status updates on your bids</p>
+                      <label className="font-medium">{t('vendorNotifications.bidUpdates')}</label>
+                      <p className="text-sm text-muted-foreground">{t('vendorNotifications.bidUpdatesDescription')}</p>
                     </div>
                     <Switch
                       checked={settings.bid_updates}
@@ -387,8 +420,8 @@ export const VendorNotifications = () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="font-medium">Payment Alerts</label>
-                      <p className="text-sm text-muted-foreground">Payment confirmations and reminders</p>
+                      <label className="font-medium">{t('vendorNotifications.paymentAlerts')}</label>
+                      <p className="text-sm text-muted-foreground">{t('vendorNotifications.paymentAlertsDescription')}</p>
                     </div>
                     <Switch
                       checked={settings.payment_alerts}
@@ -397,8 +430,8 @@ export const VendorNotifications = () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="font-medium">Messages</label>
-                      <p className="text-sm text-muted-foreground">New messages from clients</p>
+                      <label className="font-medium">{t('vendorNotifications.messages')}</label>
+                      <p className="text-sm text-muted-foreground">{t('vendorNotifications.messagesDescription')}</p>
                     </div>
                     <Switch
                       checked={settings.messages}
@@ -407,8 +440,8 @@ export const VendorNotifications = () => {
                   </div>
                   <div className="flex items-center justify-between">
                     <div>
-                      <label className="font-medium">System Updates</label>
-                      <p className="text-sm text-muted-foreground">Platform updates and maintenance</p>
+                      <label className="font-medium">{t('vendorNotifications.systemUpdates')}</label>
+                      <p className="text-sm text-muted-foreground">{t('vendorNotifications.systemUpdatesDescription')}</p>
                     </div>
                     <Switch
                       checked={settings.system_updates}
@@ -421,6 +454,7 @@ export const VendorNotifications = () => {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
+      </div>
+    </ResponsiveContainer>
   );
 };

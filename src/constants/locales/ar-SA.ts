@@ -732,6 +732,82 @@ export const arSA = {
     account: "الحساب والدعم"
   },
   
+  // Vendor sidebar groups
+  vendorGroups: {
+    overview: "نظرة عامة",
+    workspace: "مساحة العمل",
+    portfolio: "المحفظة", 
+    financial: "المالية",
+    businessIntelligence: "ذكاء الأعمال",
+    account: "الحساب والدعم"
+  },
+
+  // Vendor notifications
+  vendorNotifications: {
+    title: "الإشعارات",
+    description: "إدارة تفضيلات الإشعارات وعرض التحديثات",
+    markAllRead: "تمييز الكل كمقروء",
+    unread: "غير مقروءة",
+    today: "اليوم",
+    total: "الإجمالي",
+    allNotifications: "جميع الإشعارات",
+    unreadNotifications: "غير مقروءة",
+    settings: "الإعدادات",
+    notificationHistory: "تاريخ الإشعارات الكامل",
+    unreadDescription: "الإشعارات التي تحتاج انتباهك",
+    noNotifications: "لا توجد إشعارات بعد",
+    noUnreadNotifications: "لا توجد إشعارات غير مقروءة",
+    settingsTitle: "إعدادات الإشعارات",
+    settingsDescription: "تكوين كيفية استلام الإشعارات",
+    deliveryMethods: "طرق التسليم",
+    emailNotifications: "إشعارات البريد الإلكتروني",
+    emailDescription: "استلام الإشعارات عبر البريد الإلكتروني",
+    pushNotifications: "الإشعارات المنبثقة",
+    pushDescription: "إشعارات المتصفح المنبثقة",
+    smsNotifications: "إشعارات الرسائل النصية",
+    smsDescription: "إشعارات الرسائل النصية",
+    notificationTypes: "أنواع الإشعارات",
+    newRfqs: "طلبات عروض أسعار جديدة",
+    newRfqsDescription: "عندما تتطابق طلبات عروض أسعار جديدة مع ملفك الشخصي",
+    bidUpdates: "تحديثات العروض",
+    bidUpdatesDescription: "تحديثات حالة عروضك",
+    paymentAlerts: "تنبيهات الدفع",
+    paymentAlertsDescription: "تأكيدات الدفع والتذكيرات",
+    messages: "الرسائل",
+    messagesDescription: "رسائل جديدة من العملاء",
+    systemUpdates: "تحديثات النظام",
+    systemUpdatesDescription: "تحديثات المنصة والصيانة",
+    notificationsPending: "إشعارات معلقة",
+    newToday: "جديد اليوم",
+    allNotificationsCount: "جميع الإشعارات",
+    settingsUpdated: "تم حفظ تفضيلات الإشعارات الخاصة بك",
+    allMarkedRead: "تم تمييز جميع الإشعارات كمقروءة",
+    markReadError: "فشل في تمييز الإشعارات كمقروءة",
+    fetchError: "فشل في جلب الإشعارات"
+  },
+
+  // Vendor documents
+  vendorDocuments: {
+    totalDocuments: "إجمالي المستندات"
+  },
+
+  // Vendor reports
+  vendorReports: {
+    totalRevenue: "إجمالي الإيرادات",
+    winRate: "معدل الفوز",
+    avgOrderValue: "متوسط قيمة الطلب",
+    activeClients: "العملاء النشطون"
+  },
+
+  // Vendor header
+  vendorHeader: {
+    dashboard: "لوحة تحكم الموردين MWRD",
+    portal: "بوابة الموردين",
+    openMobileMenu: "فتح القائمة المحمولة",
+    toggleSidebar: "تبديل الشريط الجانبي",
+    goToDashboard: "الانتقال إلى لوحة تحكم الموردين"
+  },
+
   admin: adminTranslationsAR,
   
   // Analytics translations
@@ -1263,15 +1339,5 @@ export const arSA = {
     resolved: "تم الحل",
     ticketStatus: "الحالة",
     ticketPriority: "الأولوية"
-  },
-
-  // مجموعات البائع للشريط الجانبي
-  vendorGroups: {
-    overview: "نظرة عامة",
-    workspace: "مساحة العمل", 
-    portfolio: "المحفظة",
-    financial: "المالية",
-    businessIntelligence: "ذكاء الأعمال",
-    account: "الحساب",
   }
 };
