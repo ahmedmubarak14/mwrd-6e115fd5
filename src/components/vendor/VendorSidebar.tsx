@@ -50,6 +50,7 @@ export const VendorSidebar = ({
   onToggle, 
   onItemClick 
 }: VendorSidebarProps) => {
+  console.log('VendorSidebar render - collapsed prop:', collapsed);
   const location = useLocation();
   const languageContext = useOptionalLanguage();
   const { t, isRTL } = languageContext || { 

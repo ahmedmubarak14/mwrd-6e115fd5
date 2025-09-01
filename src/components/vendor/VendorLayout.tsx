@@ -17,7 +17,9 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
   const { userProfile, loading } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(() => {
     const saved = localStorage.getItem('vendorSidebarOpen');
-    return saved ? JSON.parse(saved) : true;
+    const defaultOpen = saved ? JSON.parse(saved) : true;
+    console.log('VendorLayout - Initial sidebar state:', defaultOpen);
+    return defaultOpen;
   });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
@@ -57,9 +59,11 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
         <VendorSidebar 
           collapsed={!sidebarOpen}
           onToggle={() => {
+            console.log('VendorSidebar onToggle called - current state:', sidebarOpen);
             const newState = !sidebarOpen;
             setSidebarOpen(newState);
             localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
+            console.log('VendorSidebar onToggle - new state:', newState);
           }}
         />
         <div className={cn(
@@ -70,9 +74,11 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
         )}>
           <VendorHeader 
             onSidebarToggle={() => {
+              console.log('VendorHeader onSidebarToggle called - current state:', sidebarOpen);
               const newState = !sidebarOpen;
               setSidebarOpen(newState);
               localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
+              console.log('VendorHeader onSidebarToggle - new state:', newState);
             }}
             sidebarOpen={sidebarOpen}
             onMobileMenuOpen={() => setMobileMenuOpen(true)}
