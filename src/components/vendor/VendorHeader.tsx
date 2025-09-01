@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { PanelLeft, Menu } from "lucide-react";
+import { PanelLeft, Menu, PanelLeftClose } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
 import { NotificationBell } from '@/components/realtime/NotificationBell';
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
@@ -54,7 +54,7 @@ export const VendorHeader = ({
             onClick={onSidebarToggle}
             className="hidden lg:flex"
           >
-            <PanelLeft className="h-5 w-5" />
+            {sidebarOpen ? <PanelLeftClose className="h-5 w-5" /> : <PanelLeft className="h-5 w-5" />}
           </Button>
         )}
 

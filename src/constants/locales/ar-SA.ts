@@ -550,13 +550,23 @@ export const arSA = {
     navigation: {
       crManagement: 'إدارة السجل التجاري',
       projectsManagement: 'إدارة المشاريع',
-      portfolioManagement: 'إدارة المحفظة'
+      portfolioManagement: 'إدارة المحفظة',
+      dashboard: "لوحة التحكم",
+      offers: "عروضي",
+      projects: "المشاريع",
+      rfqs: "طلبات الأسعار",
+      analytics: "التحليلات",
+      messages: "الرسائل",
+      notifications: "الإشعارات",
+      settings: "الإعدادات",
+      profile: "الملف الشخصي",
+      support: "الدعم"
     },
     groups: {
       overview: "نظرة عامة",
       workspace: "مساحة العمل", 
-      portfolio: "المحفظة",
-      account: "الحساب والدعم"
+      portfolio: "الأعمال السابقة",
+      account: "الحساب"
     },
     dashboard: {
       title: "لوحة تحكم المورد",
@@ -566,7 +576,13 @@ export const arSA = {
       recentProjects: "المشاريع الأخيرة",
       quickActions: "إجراءات سريعة",
       overview: "نظرة عامة",
-      accessRequired: "يتطلب وصول المورد لعرض هذه الصفحة"
+      stats: "الإحصائيات", 
+      recentActivity: "النشاط الأخير",
+      createOffer: "إنشاء عرض",
+      viewRequests: "عرض الطلبات", 
+      manageProjects: "إدارة المشاريع",
+      viewProfile: "عرض الملف الشخصي",
+      accessRequired: "مطلوب دخول المورد لعرض هذه الصفحة"
     },
     cr: {
       title: "السجل التجاري",
@@ -579,19 +595,26 @@ export const arSA = {
       verificationRequired: "يتطلب توثيق السجل التجاري للوصول إلى جميع الميزات"
     },
     projects: {
-      title: "معرض المشاريع",
+      title: "إدارة المشاريع",
       add: "إضافة مشروع جديد",
-      addFirst: "أضف مشروعك الأول لعرض أعمالك"
+      addFirst: "أضف مشروعك الأول لعرض أعمالك",
+      create: "إنشاء مشروع",
+      edit: "تحرير المشروع",
+      delete: "حذف المشروع",
+      status: "حالة المشروع"
     },
     portfolio: {
-      title: "إدارة المحفظة",
+      title: "إدارة الأعمال السابقة",
       description: "إدارة محفظة مشاريعك وعرض أعمالك",
       addProject: "إضافة مشروع",
       editProject: "تحرير المشروع",
       viewProject: "عرض المشروع",
       deleteProject: "حذف المشروع",
       noProjects: "لا توجد مشاريع في محفظتك",
-      addFirstProject: "أضف مشروعك الأول للبدء"
+      addFirstProject: "أضف مشروعك الأول للبدء",
+      addItem: "إضافة عمل",
+      editItem: "تحرير العمل",
+      deleteItem: "حذف العمل"
     },
     categories: {
       title: "فئات الخدمة",
@@ -601,6 +624,14 @@ export const arSA = {
     profile: {
       title: "ملف المورد الشخصي",
       basicInfo: "المعلومات الأساسية"
+    },
+    crManagement: {
+      title: "إدارة السجل التجاري",
+      upload: "رفع وثيقة السجل التجاري",
+      status: "حالة التحقق",
+      pending: "في انتظار المراجعة",
+      approved: "موافق عليه", 
+      rejected: "مرفوض"
     }
   }
 };

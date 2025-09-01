@@ -57,6 +57,14 @@ export const enUS = {
     profile: {
       title: "Vendor Profile",
       basicInfo: "Basic Information"
+    },
+    crManagement: {
+      title: "Commercial Registration Management",
+      upload: "Upload CR Document",
+      status: "Verification Status",
+      pending: "Pending Review",
+      approved: "Approved", 
+      rejected: "Rejected"
     }
   },
   common: {

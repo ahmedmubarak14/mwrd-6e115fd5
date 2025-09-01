@@ -17,6 +17,7 @@ import Dashboard from './pages/Dashboard';
 import { VendorDashboard } from './pages/VendorDashboard';
 import { CRManagementPage } from './pages/vendor/CRManagement';
 import { ProjectsManagementPage } from './pages/vendor/ProjectsManagement';
+import { PortfolioManagementPage } from './pages/vendor/PortfolioManagement';
 import Profile from './pages/Profile';
 import { Landing } from './pages/Landing';
 import NotFound from './pages/NotFound';
@@ -169,6 +170,7 @@ function App() {
                       <Route path="dashboard" element={<VendorDashboard />} />
                       <Route path="cr-management" element={<CRManagementPage />} />
                       <Route path="projects-management" element={<ProjectsManagementPage />} />
+                      <Route path="portfolio-management" element={<PortfolioManagementPage />} />
                     </Route>
                     
                     {/* Legacy vendor dashboard route (redirect to new structure) */}
