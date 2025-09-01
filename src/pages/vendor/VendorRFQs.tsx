@@ -8,11 +8,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Search, Clock, FileText, DollarSign, Calendar, MapPin, Eye, Send } from "lucide-react";
 
 export const VendorRFQs = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [rfqs, setRfqs] = useState<any[]>([]);
   const [bids, setBids] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -122,23 +124,23 @@ export const VendorRFQs = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">RFQ Management</h1>
+        <h1 className="text-2xl font-bold">{t('vendor.rfqsPage.title')}</h1>
         <p className="text-muted-foreground mt-1">
-          Browse available RFQs and manage your bids
+          {t('vendor.rfqsPage.description')}
         </p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Available RFQs</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('vendor.rfqsPage.availableRFQs')}</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{rfqs.length}</div>
-            <p className="text-xs text-muted-foreground mt-2">
-              Active opportunities
-            </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                {t('vendor.rfqsPage.activeOpportunities')}
+              </p>
           </CardContent>
         </Card>
 
@@ -188,8 +190,8 @@ export const VendorRFQs = () => {
 
       <Tabs defaultValue="available" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="available">Available RFQs</TabsTrigger>
-          <TabsTrigger value="mybids">My Bids</TabsTrigger>
+          <TabsTrigger value="available">{t('vendor.rfqsPage.availableRFQsTab')}</TabsTrigger>
+          <TabsTrigger value="mybids">{t('vendor.rfqsPage.myBidsTab')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="available" className="space-y-4">
@@ -207,7 +209,7 @@ export const VendorRFQs = () => {
                 <div className="relative flex-1">
                   <Search className="h-4 w-4 absolute left-3 top-3 text-muted-foreground" />
                   <Input
-                    placeholder="Search RFQs..."
+                    placeholder={t('vendor.rfqsPage.searchRFQs')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-9"

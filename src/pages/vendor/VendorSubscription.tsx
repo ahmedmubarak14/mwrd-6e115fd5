@@ -7,11 +7,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { CreditCard, Calendar, DollarSign, TrendingUp, CheckCircle, AlertCircle } from "lucide-react";
 
 export const VendorSubscription = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [transactions, setTransactions] = useState([]);
 
@@ -42,9 +44,23 @@ export const VendorSubscription = () => {
   const expiresAt = userProfile?.subscription_expires_at;
 
   const planFeatures = {
-    basic: ['5 Bids per month', 'Basic analytics', 'Email support'],
-    premium: ['Unlimited bids', 'Advanced analytics', 'Priority support', 'Featured listings'],
-    enterprise: ['Everything in Premium', 'Custom integrations', 'Dedicated support', 'White-label options']
+    basic: [
+      t('vendor.subscription.plans.basic.features.0'),
+      t('vendor.subscription.plans.basic.features.1'),
+      t('vendor.subscription.plans.basic.features.2')
+    ],
+    premium: [
+      t('vendor.subscription.plans.premium.features.0'),
+      t('vendor.subscription.plans.premium.features.1'),
+      t('vendor.subscription.plans.premium.features.2'),
+      t('vendor.subscription.plans.premium.features.3')
+    ],
+    enterprise: [
+      t('vendor.subscription.plans.enterprise.features.0'),
+      t('vendor.subscription.plans.enterprise.features.1'),
+      t('vendor.subscription.plans.enterprise.features.2'),
+      t('vendor.subscription.plans.enterprise.features.3')
+    ]
   };
 
   const handleUpgrade = async (plan: string) => {
@@ -52,13 +68,13 @@ export const VendorSubscription = () => {
       setLoading(true);
       // Implementation would integrate with payment system
       toast({
-        title: "Upgrade initiated",
-        description: `Redirecting to payment for ${plan} plan...`
+        title: t('vendor.subscription.upgradeInitiated'),
+        description: `${t('vendor.subscription.redirectingPayment').replace('{plan}', plan)}`
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to initiate upgrade",
+        title: t('vendor.subscription.error'),
+        description: t('vendor.subscription.failedUpgrade'),
         variant: "destructive"
       });
     } finally {
@@ -79,16 +95,16 @@ export const VendorSubscription = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Subscription Management</h1>
+        <h1 className="text-2xl font-bold">{t('vendor.subscription.title')}</h1>
         <p className="text-muted-foreground mt-1">
-          Manage your subscription plan and billing information
+          {t('vendor.subscription.description')}
         </p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Current Plan</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('vendor.subscription.currentPlan')}</CardTitle>
             <CreditCard className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -101,7 +117,7 @@ export const VendorSubscription = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Days Remaining</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('vendor.subscription.daysRemaining')}</CardTitle>
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -112,7 +128,7 @@ export const VendorSubscription = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Monthly Spend</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('vendor.subscription.monthlySpend')}</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -126,20 +142,20 @@ export const VendorSubscription = () => {
 
       <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="upgrade">Upgrade</TabsTrigger>
-          <TabsTrigger value="billing">Billing History</TabsTrigger>
+          <TabsTrigger value="overview">{t('vendor.subscription.overview')}</TabsTrigger>
+          <TabsTrigger value="upgrade">{t('vendor.subscription.upgrade')}</TabsTrigger>
+          <TabsTrigger value="billing">{t('vendor.subscription.billingHistory')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Subscription Details</CardTitle>
-              <CardDescription>Your current plan features and usage</CardDescription>
+              <CardTitle>{t('vendor.subscription.subscriptionDetails')}</CardTitle>
+              <CardDescription>{t('vendor.subscription.description')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <h4 className="font-medium">Plan Features</h4>
+                <h4 className="font-medium">{t('vendor.subscription.planFeatures')}</h4>
                 <ul className="space-y-2">
                   {planFeatures[currentPlan as keyof typeof planFeatures]?.map((feature, index) => (
                     <li key={index} className="flex items-center gap-2">
@@ -154,7 +170,7 @@ export const VendorSubscription = () => {
                 <div className="flex items-center gap-2 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
                   <AlertCircle className="h-4 w-4 text-yellow-600" />
                   <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                    Your subscription expires in {daysRemaining} days. Renew now to avoid interruption.
+                    {t('vendor.subscription.expiresIn').replace('{days}', daysRemaining.toString())}
                   </p>
                 </div>
               )}
@@ -167,9 +183,9 @@ export const VendorSubscription = () => {
             {Object.entries(planFeatures).map(([plan, features]) => (
               <Card key={plan} className={currentPlan === plan ? "border-primary" : ""}>
                 <CardHeader>
-                  <CardTitle className="capitalize">{plan}</CardTitle>
+                  <CardTitle className="capitalize">{t(`vendor.subscription.plans.${plan}.name`)}</CardTitle>
                   <CardDescription>
-                    ${plan === 'basic' ? '19' : plan === 'premium' ? '49' : '99'}/month
+                    {t(`vendor.subscription.plans.${plan}.price`)}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -187,7 +203,7 @@ export const VendorSubscription = () => {
                     disabled={currentPlan === plan || loading}
                     onClick={() => handleUpgrade(plan)}
                   >
-                    {currentPlan === plan ? "Current Plan" : "Upgrade"}
+                    {currentPlan === plan ? t('vendor.subscription.currentPlanButton') : t('vendor.subscription.upgradeButton')}
                   </Button>
                 </CardContent>
               </Card>
@@ -198,8 +214,8 @@ export const VendorSubscription = () => {
         <TabsContent value="billing" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Billing History</CardTitle>
-              <CardDescription>Your recent subscription payments</CardDescription>
+              <CardTitle>{t('vendor.subscription.billingHistory')}</CardTitle>
+              <CardDescription>{t('vendor.subscription.description')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -222,7 +238,7 @@ export const VendorSubscription = () => {
                   ))
                 ) : (
                   <p className="text-muted-foreground text-center py-4">
-                    No billing history available
+                    {t('vendor.subscription.noBillingHistory')}
                   </p>
                 )}
               </div>

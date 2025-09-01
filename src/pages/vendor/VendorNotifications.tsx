@@ -7,11 +7,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Bell, MessageSquare, DollarSign, FileText, Settings, Check, X, Archive } from "lucide-react";
 
 export const VendorNotifications = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [notifications, setNotifications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [settings, setSettings] = useState({
@@ -147,15 +149,15 @@ export const VendorNotifications = () => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold">Notifications</h1>
+          <h1 className="text-2xl font-bold">{t('vendor.notifications.title')}</h1>
           <p className="text-muted-foreground mt-1">
-            Manage your notifications and preferences
+            {t('vendor.notifications.description')}
           </p>
         </div>
         {unreadCount > 0 && (
           <Button onClick={markAllAsRead}>
             <Check className="h-4 w-4 mr-2" />
-            Mark All Read
+            {t('vendor.notifications.markAllRead')}
           </Button>
         )}
       </div>

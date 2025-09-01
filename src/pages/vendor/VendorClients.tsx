@@ -7,11 +7,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Search, Users, MessageSquare, DollarSign, Star, Building } from "lucide-react";
 
 export const VendorClients = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [clients, setClients] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -148,9 +150,9 @@ export const VendorClients = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Client Relationships</h1>
+        <h1 className="text-2xl font-bold">{t('vendor.clients.title')}</h1>
         <p className="text-muted-foreground mt-1">
-          Manage your client relationships and interaction history
+          {t('vendor.clients.description')}
         </p>
       </div>
 

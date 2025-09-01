@@ -198,17 +198,31 @@ export const enUS = {
         basic: {
           name: "Basic",
           price: "$19/month",
-          features: ["5 Bids per month", "Basic analytics", "Email support"]
+          features: {
+            0: "5 Bids per month",
+            1: "Basic analytics", 
+            2: "Email support"
+          }
         },
         premium: {
-          name: "Premium", 
-          price: "$49/month",
-          features: ["Unlimited bids", "Advanced analytics", "Priority support", "Featured listings"]
+          name: "Premium",
+          price: "$49/month", 
+          features: {
+            0: "Unlimited bids",
+            1: "Advanced analytics",
+            2: "Priority support",
+            3: "Featured listings"
+          }
         },
         enterprise: {
           name: "Enterprise",
-          price: "$99/month", 
-          features: ["Everything in Premium", "Custom integrations", "Dedicated support", "White-label options"]
+          price: "$99/month",
+          features: {
+            0: "Everything in Premium",
+            1: "Custom integrations",
+            2: "Dedicated support",
+            3: "White-label options"
+          }
         }
       }
     },

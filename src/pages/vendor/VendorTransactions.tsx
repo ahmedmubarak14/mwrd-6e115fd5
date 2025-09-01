@@ -8,11 +8,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Download, Search, Filter, DollarSign, TrendingUp, ArrowUpCircle, ArrowDownCircle } from "lucide-react";
 
 export const VendorTransactions = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [transactions, setTransactions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -39,8 +41,8 @@ export const VendorTransactions = () => {
     } catch (error) {
       console.error('Error fetching transactions:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch transaction history",
+        title: t('vendor.transactions.error'),
+        description: t('vendor.transactions.errorFetch'),
         variant: "destructive"
       });
     } finally {
@@ -123,16 +125,16 @@ export const VendorTransactions = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Transaction History</h1>
+        <h1 className="text-2xl font-bold">{t('vendor.transactions.title')}</h1>
         <p className="text-muted-foreground mt-1">
-          Track all your financial transactions and payments
+          {t('vendor.transactions.description')}
         </p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('vendor.transactions.totalRevenue')}</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -145,14 +147,14 @@ export const VendorTransactions = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Expenses</CardTitle>
+            <CardTitle className="text-sm font-medium">{t('vendor.transactions.totalExpenses')}</CardTitle>
             <ArrowUpCircle className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${totalExpenses.toFixed(2)}</div>
-            <p className="text-xs text-muted-foreground mt-2">
-              Subscriptions and fees
-            </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                {t('vendor.transactions.subscriptionsAndFees')}
+              </p>
           </CardContent>
         </Card>
 
