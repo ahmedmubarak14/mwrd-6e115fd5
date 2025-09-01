@@ -18,7 +18,11 @@ import {
   Briefcase,
   Shield,
   ChevronDown,
-  ChevronRight
+  ChevronRight,
+  CreditCard,
+  DollarSign,
+  Bell,
+  Users
 } from "lucide-react";
 import { VendorUserProfile } from "./VendorUserProfile";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
@@ -142,6 +146,55 @@ export const VendorSidebar = ({
           name: t('vendor.navigation.portfolioManagement') || 'Portfolio',
           href: '/vendor/portfolio',
           icon: Building2,
+        },
+      ]
+    },
+    {
+      id: 'financial',
+      label: t('vendorGroups.financial') || 'Financial',
+      priority: 'secondary',
+      items: [
+        {
+          name: t('nav.subscription') || 'Subscription',
+          href: '/vendor/subscription',
+          icon: CreditCard,
+        },
+        {
+          name: t('nav.transactions') || 'Transactions',
+          href: '/vendor/transactions',
+          icon: DollarSign,
+        },
+      ]
+    },
+    {
+      id: 'business',
+      label: t('vendorGroups.business') || 'Business Intelligence',
+      priority: 'secondary',
+      items: [
+        {
+          name: t('nav.rfqs') || 'RFQs',
+          href: '/vendor/rfqs',
+          icon: FileText,
+        },
+        {
+          name: t('nav.notifications') || 'Notifications',
+          href: '/vendor/notifications',
+          icon: Bell,
+        },
+        {
+          name: t('nav.clients') || 'Clients',
+          href: '/vendor/clients',
+          icon: Users,
+        },
+        {
+          name: t('nav.documents') || 'Documents',
+          href: '/vendor/documents',
+          icon: FolderOpen,
+        },
+        {
+          name: t('nav.reports') || 'Reports',
+          href: '/vendor/reports',
+          icon: BarChart3,
         },
       ]
     },

@@ -18,6 +18,13 @@ import { VendorDashboard } from './pages/VendorDashboard';
 import { CRManagementPage } from './pages/vendor/CRManagement';
 import { ProjectsManagementPage } from './pages/vendor/ProjectsManagement';
 import { PortfolioManagementPage } from './pages/vendor/PortfolioManagement';
+import { VendorSubscription } from './pages/vendor/VendorSubscription';
+import { VendorTransactions } from './pages/vendor/VendorTransactions';
+import { VendorRFQs } from './pages/vendor/VendorRFQs';
+import { VendorNotifications } from './pages/vendor/VendorNotifications';
+import { VendorClients } from './pages/vendor/VendorClients';
+import { VendorDocuments } from './pages/vendor/VendorDocuments';
+import { VendorReports } from './pages/vendor/VendorReports';
 import Profile from './pages/Profile';
 import { Landing } from './pages/Landing';
 import NotFound from './pages/NotFound';
@@ -183,6 +190,13 @@ function App() {
                       <Route path="cr-management" element={<CRManagementPage />} />
                       <Route path="projects-management" element={<ProjectsManagementPage />} />
                       <Route path="portfolio-management" element={<PortfolioManagementPage />} />
+                      <Route path="subscription" element={<VendorSubscription />} />
+                      <Route path="transactions" element={<VendorTransactions />} />
+                      <Route path="rfqs" element={<VendorRFQs />} />
+                      <Route path="notifications" element={<VendorNotifications />} />
+                      <Route path="clients" element={<VendorClients />} />
+                      <Route path="documents" element={<VendorDocuments />} />
+                      <Route path="reports" element={<VendorReports />} />
                     </Route>
                     
                     {/* Legacy vendor dashboard route (redirect to new structure) */}
