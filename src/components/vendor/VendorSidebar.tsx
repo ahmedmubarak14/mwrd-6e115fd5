@@ -198,11 +198,23 @@ export const VendorSidebar = ({ onItemClick }: Pick<VendorSidebarProps, 'onItemC
   const getGroupPriorityStyles = (priority: NavigationGroup['priority']) => {
     switch (priority) {
       case 'primary':
-        return "border-l-2 border-l-primary/20 bg-primary/5";
+        return cn(
+          "bg-primary/5 relative",
+          "before:absolute before:w-1 before:h-full before:bg-primary/30",
+          isRTL ? "before:right-0" : "before:left-0"
+        );
       case 'secondary':
-        return "border-l-2 border-l-accent/20 bg-accent/5";
+        return cn(
+          "bg-accent/5 relative", 
+          "before:absolute before:w-1 before:h-full before:bg-accent/30",
+          isRTL ? "before:right-0" : "before:left-0"
+        );
       case 'utility':
-        return "border-l-2 border-l-muted-foreground/20 bg-muted/50";
+        return cn(
+          "bg-muted/30 relative",
+          "before:absolute before:w-1 before:h-full before:bg-muted-foreground/30",
+          isRTL ? "before:right-0" : "before:left-0"
+        );
       default:
         return "";
     }
@@ -217,7 +229,10 @@ export const VendorSidebar = ({ onItemClick }: Pick<VendorSidebarProps, 'onItemC
       )}
     >
       {/* Sidebar Header - User Profile */}
-      <div className="border-b border-border bg-card min-h-16 flex items-center px-4">
+      <div className={cn(
+        "border-b border-border bg-card min-h-16 flex items-center",
+        sidebarOpen ? "px-4" : "px-2"
+      )}>
         <VendorUserProfile 
           variant="sidebar" 
           collapsed={!sidebarOpen}
@@ -259,25 +274,29 @@ export const VendorSidebar = ({ onItemClick }: Pick<VendorSidebarProps, 'onItemC
                           isActive={active}
                           tooltip={item.name}
                         >
-                          <Link
-                            to={item.href}
-                            onClick={onItemClick}
-                            className={cn(
-                              "flex items-center gap-3",
-                              active && "bg-primary/10 text-primary border border-primary/20"
-                            )}
-                          >
-                            <item.icon className="h-4 w-4" />
-                            <span>{item.name}</span>
-                            {item.badge && item.badge > 0 && (
-                              <Badge 
-                                variant="secondary"
-                                className="h-5 min-w-5 px-1.5 text-xs"
-                              >
-                                {item.badge > 99 ? '99+' : item.badge}
-                              </Badge>
-                            )}
-                          </Link>
+                           <Link
+                             to={item.href}
+                             onClick={onItemClick}
+                             className={cn(
+                               "flex items-center gap-3",
+                               isRTL && "flex-row-reverse",
+                               active && "bg-primary/10 text-primary border border-primary/20"
+                             )}
+                           >
+                             <item.icon className="h-4 w-4" />
+                             {sidebarOpen && <span>{item.name}</span>}
+                             {item.badge && item.badge > 0 && sidebarOpen && (
+                               <Badge 
+                                 variant="secondary"
+                                 className={cn(
+                                   "h-5 min-w-5 px-1.5 text-xs",
+                                   isRTL ? "mr-auto" : "ml-auto"
+                                 )}
+                               >
+                                 {item.badge > 99 ? '99+' : item.badge}
+                               </Badge>
+                             )}
+                           </Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     );

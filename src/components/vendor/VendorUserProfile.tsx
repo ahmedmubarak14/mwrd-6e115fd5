@@ -71,7 +71,7 @@ export const VendorUserProfile = ({ variant = 'sidebar', collapsed = false }: Ve
 
   return (
     <div className={cn(
-      "flex items-center gap-3 px-4 w-full",
+      "flex items-center gap-3 w-full",
       isRTL && "flex-row-reverse"
     )}>
       <Avatar className="h-10 w-10">
