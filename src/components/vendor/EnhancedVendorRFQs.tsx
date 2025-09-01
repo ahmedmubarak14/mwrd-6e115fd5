@@ -400,10 +400,10 @@ export const EnhancedVendorRFQs = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">{t('common.all')}</SelectItem>
-                <SelectItem value="Construction">Construction</SelectItem>
-                <SelectItem value="Engineering">Engineering</SelectItem>
-                <SelectItem value="Technology">Technology</SelectItem>
-                <SelectItem value="Marketing">Marketing</SelectItem>
+                <SelectItem value="Construction">{t('common.categories.construction')}</SelectItem>
+                <SelectItem value="Engineering">{t('common.categories.engineering')}</SelectItem>
+                <SelectItem value="Technology">{t('common.categories.technology')}</SelectItem>
+                <SelectItem value="Marketing">{t('common.categories.marketing')}</SelectItem>
               </SelectContent>
             </Select>
 

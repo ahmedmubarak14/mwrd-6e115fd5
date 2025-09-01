@@ -117,7 +117,8 @@ export const enUS = {
       completedProjectsTitle: 'Completed Projects',
       completedProjectsDesc: 'Successfully finished projects',
       clientRatingTitle: 'Client Rating',
-      clientRatingDesc: 'Average client rating'
+      clientRatingDesc: 'Average client rating',
+      accessRequired: 'Access to this page is restricted to verified vendors only'
     },
     cr: {
       title: "CR Management",
@@ -457,7 +458,15 @@ export const enUS = {
     failedToDelete: "Failed to delete item",
     unableToLoadDetails: "Unable to load request details. Please try again.",
     failedToComplete: "Failed to complete onboarding. Please try again.",
-    failedToSave: "Failed to save project"
+    failedToSave: "Failed to save project",
+    all: "All",
+    // Categories
+    categories: {
+      construction: "Construction",
+      engineering: "Engineering", 
+      technology: "Technology",
+      marketing: "Marketing"
+    }
   },
 
   // Settings
@@ -467,7 +476,13 @@ export const enUS = {
     emailNotifications: "Email Notifications", 
     emailNotificationsDesc: "Receive updates via email",
     pushNotifications: "Push Notifications",
-    pushNotificationsDesc: "Receive push notifications on your device"
+    pushNotificationsDesc: "Receive push notifications on your device",
+    languageAndRegion: "Language & Region",
+    languageDescription: "Choose your preferred language and region settings",
+    language: "Language",
+    enabledNotificationTypes: "Enabled notification types",
+    securityScore: "Security score based on profile completion",
+    lastUpdated: "Last updated"
   },
 
   // Forms

@@ -117,9 +117,10 @@ export const arSA = {
       monthlyRevenueTitle: 'الإيرادات الشهرية',
       monthlyRevenueDesc: 'إيرادات هذا الشهر',
       completedProjectsTitle: 'المشاريع المكتملة',
-      completedProjectsDesc: 'المشاريع المنجزة بنجاح',
-      clientRatingTitle: 'تقييم العملاء',
-      clientRatingDesc: 'متوسط تقييم العملاء'
+    completedProjectsDesc: 'المشاريع المنجزة بنجاح',
+    clientRatingTitle: 'تقييم العملاء',
+    clientRatingDesc: 'متوسط تقييم العملاء',
+    accessRequired: 'الوصول إلى هذه الصفحة مقتصر على الموردين المعتمدين فقط'
     },
     cr: {
       title: "إدارة السجل التجاري",
@@ -443,6 +444,12 @@ export const arSA = {
     hoursAgo: 'ساعات مضت',
     daysAgo: 'أيام مضت',
     // Categories
+    categories: {
+      construction: 'الإنشاءات',
+      engineering: 'الهندسة', 
+      technology: 'التكنولوجيا',
+      marketing: 'التسويق'
+    },
     construction: 'الإنشاءات',
     engineering: 'الهندسة',
     technology: 'التكنولوجيا',
@@ -469,7 +476,13 @@ export const arSA = {
     emailNotifications: "إشعارات البريد الإلكتروني",
     emailNotificationsDesc: "تلقي التحديثات عبر البريد الإلكتروني", 
     pushNotifications: "الإشعارات الفورية",
-    pushNotificationsDesc: "تلقي إشعارات فورية على جهازك"
+    pushNotificationsDesc: "تلقي إشعارات فورية على جهازك",
+    languageAndRegion: "اللغة والمنطقة", 
+    languageDescription: "اختر اللغة والمنطقة المفضلة لديك",
+    language: "اللغة",
+    enabledNotificationTypes: "أنواع الإشعارات المُفعلة",
+    securityScore: "درجة الأمان بناءً على اكتمال الملف الشخصي",
+    lastUpdated: "آخر تحديث"
   },
 
   // Forms - Arabic
