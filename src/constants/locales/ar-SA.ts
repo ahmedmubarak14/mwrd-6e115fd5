@@ -1,4 +1,30 @@
 export const arSA = {
+  // Navigation
+  nav: {
+    dashboard: "لوحة التحكم",
+    requests: "الطلبات",
+    offers: "العروض",
+    portfolio: "المحفظة",
+    clients: "العملاء",
+    transactions: "المعاملات",
+    subscriptions: "الاشتراكات",
+    notifications: "الإشعارات",
+    documents: "المستندات",
+    reports: "التقارير",
+    crManagement: "إدارة السجل التجاري",
+    projects: "المشاريع",
+    analytics: "التحليلات",
+    messages: "الرسائل",
+    orders: "الطلبات",
+    settings: "الإعدادات",
+    subscription: "الاشتراك"
+  },
+
+  // Vendor Groups
+  vendorGroups: {
+    financial: "المالية",
+    businessIntelligence: "ذكاء الأعمال"
+  },
   // Vendor Dashboard & CR Management
   vendor: {
     navigation: {
@@ -223,6 +249,10 @@ export const arSA = {
       generateReport: 'إنتاج تقرير',
       reportType: 'نوع التقرير',
       dateRange: 'نطاق التاريخ'
+    },
+    profile: {
+      businessInfo: "معلومات الأعمال",
+      basicInfo: "المعلومات الأساسية"
     }
   },
 

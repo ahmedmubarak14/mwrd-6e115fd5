@@ -1,4 +1,30 @@
 export const enUS = {
+  // Navigation
+  nav: {
+    dashboard: "Dashboard",
+    requests: "Requests", 
+    offers: "Offers",
+    portfolio: "Portfolio",
+    clients: "Clients",
+    transactions: "Transactions",
+    subscriptions: "Subscriptions",
+    notifications: "Notifications",
+    documents: "Documents",
+    reports: "Reports",
+    crManagement: "CR Management",
+    projects: "Projects",
+    analytics: "Analytics",
+    messages: "Messages",
+    orders: "Orders",
+    settings: "Settings",
+    subscription: "Subscription"
+  },
+
+  // Vendor Groups
+  vendorGroups: {
+    financial: "Financial",
+    businessIntelligence: "Business Intelligence"
+  },
   // Vendor Dashboard & CR Management
   vendor: {
     navigation: {
@@ -223,6 +249,10 @@ export const enUS = {
       generateReport: 'Generate Report',
       reportType: 'Report Type',
       dateRange: 'Date Range'
+    },
+    profile: {
+      businessInfo: "Business Information",
+      basicInfo: "Basic Information"
     }
   },
 
