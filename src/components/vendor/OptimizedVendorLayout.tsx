@@ -2,8 +2,8 @@ import React, { useState, useCallback, useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { VendorSidebar } from "./VendorSidebar";
-import { VendorHeader } from "./VendorHeader";
+import { ProductionVendorHeader } from "./ProductionVendorHeader";
+import { ProductionVendorSidebar } from "./ProductionVendorSidebar";
 import { VendorMobileSidebar } from "./VendorMobileSidebar";
 import { VendorProtectedRoute } from "@/components/ui/VendorProtectedRoute";
 import { cn } from "@/lib/utils";
@@ -66,7 +66,7 @@ export const OptimizedVendorLayout = ({ children }: OptimizedVendorLayoutProps) 
         "min-h-screen bg-background font-sans antialiased",
         isRTL && "rtl"
       )}>
-        <VendorHeader {...headerProps} />
+        <ProductionVendorHeader {...headerProps} />
         
         {/* Verification Banner - Removed missing import */}
 
@@ -78,7 +78,7 @@ export const OptimizedVendorLayout = ({ children }: OptimizedVendorLayoutProps) 
               sidebarOpen ? "w-64" : "w-16",
               isRTL && "border-l border-r-0"
             )}>
-              <VendorSidebar {...sidebarProps} />
+              <ProductionVendorSidebar {...sidebarProps} />
             </aside>
           )}
 
