@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface SecurityAlert {
   id: string;
@@ -42,7 +42,7 @@ interface RealTimeMetric {
 
 export const RealTimeSecurityMonitor = () => {
   const { toast } = useToast();
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
   const [alerts, setAlerts] = useState<SecurityAlert[]>([]);
   const [metrics, setMetrics] = useState<RealTimeMetric[]>([]);
   const [isMonitoring, setIsMonitoring] = useState(true);

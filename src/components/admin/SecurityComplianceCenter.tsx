@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { useSecurityCompliance } from "@/hooks/useSecurityCompliance";
 import { useToast } from "@/hooks/use-toast";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const SecurityComplianceCenter = () => {
   const { 
@@ -31,7 +31,7 @@ export const SecurityComplianceCenter = () => {
     isLoading 
   } = useSecurityCompliance();
   const { toast } = useToast();
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
 
   const complianceFrameworks = [
     {

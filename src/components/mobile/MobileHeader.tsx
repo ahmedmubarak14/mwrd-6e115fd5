@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { NotificationBell } from "@/components/realtime/NotificationBell";
 import { SearchModal } from "@/components/modals/SearchModal";
 import { useAuth } from "@/contexts/AuthContext";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useMobileDetection } from "@/hooks/useMobileDetection";
 import { useCapacitor } from "@/hooks/useCapacitor";
 import { cn } from "@/lib/utils";
@@ -27,8 +27,7 @@ export const MobileHeader = () => {
   const { user, userProfile } = useAuth();
   const { triggerHaptic } = useCapacitor();
   const { isMobile, orientation } = useMobileDetection();
-  const languageContext = useOptionalLanguage();
-  const { isRTL } = languageContext || { isRTL: false };
+  const { t, isRTL } = useLanguage();
 
   const [showMenu, setShowMenu] = useState(false);
 

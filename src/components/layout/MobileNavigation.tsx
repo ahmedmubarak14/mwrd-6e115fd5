@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Menu, X, Zap, TrendingUp, Building2, Sparkles, Star } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import {
@@ -16,10 +16,7 @@ import {
 
 export const MobileNavigation = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const languageContext = useOptionalLanguage();
-  const t = languageContext?.t || ((key: string) => key.split('.').pop() || key);
-  const language = languageContext?.language || 'en';
-  const isRTL = language === 'ar';
+  const { t, language, isRTL } = useLanguage();
 
   const navigationItems = [
     {

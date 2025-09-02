@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import { 
   DollarSign, 
@@ -38,7 +38,7 @@ interface TransactionDetailsModalProps {
 }
 
 export const TransactionDetailsModal = ({ isOpen, onClose, transaction }: TransactionDetailsModalProps) => {
-  const { t, isRTL, formatCurrency } = useOptionalLanguage();
+  const { t, isRTL, formatCurrency } = useLanguage();
 
   const formatDateTime = (date: string) => new Date(date).toLocaleString();
 

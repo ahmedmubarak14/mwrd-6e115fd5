@@ -37,7 +37,7 @@ import {
 import { useVendorProfile } from '@/hooks/useVendorProfile';
 import { PrivateRequestModal } from './PrivateRequestModal';
 import { VideoCallModal } from './VideoCallModal';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRealTimeChat } from '@/hooks/useRealTimeChat';
 import { useVideoCall } from '@/hooks/useVideoCall';
@@ -55,8 +55,7 @@ export const EnhancedVendorProfileModal: React.FC<EnhancedVendorProfileModalProp
   children,
   vendorId
 }) => {
-  const languageContext = useOptionalLanguage();
-  const language = languageContext?.language || 'en';
+  const { t, isRTL, language } = useLanguage();
   const isArabic = language === 'ar';
   const { user } = useAuth();
   const navigate = useNavigate();

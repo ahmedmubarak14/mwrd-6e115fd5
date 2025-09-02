@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import { WifiOff, X } from "lucide-react";
 
@@ -10,8 +10,7 @@ interface OfflineIndicatorProps {
 }
 
 export const OfflineIndicator = ({ isOffline, onDismiss }: OfflineIndicatorProps) => {
-  const languageContext = useOptionalLanguage();
-  const { isRTL } = languageContext || { isRTL: false };
+  const { t, isRTL } = useLanguage();
 
   if (!isOffline) return null;
 

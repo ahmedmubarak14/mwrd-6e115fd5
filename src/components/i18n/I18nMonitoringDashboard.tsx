@@ -14,7 +14,7 @@ import {
   Code,
   RefreshCw
 } from "lucide-react";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Mock data - in a real implementation, this would come from actual validation
 const mockValidationResults = {
@@ -32,10 +32,7 @@ const mockValidationResults = {
 
 export const I18nMonitoringDashboard = () => {
   const [refreshing, setRefreshing] = useState(false);
-  const { t, isRTL } = useOptionalLanguage() || { 
-    t: (key: string) => key.split('.').pop() || key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useLanguage();
 
   const handleRefresh = () => {
     setRefreshing(true);

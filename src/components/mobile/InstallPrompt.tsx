@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import { Download, X, Smartphone } from "lucide-react";
 
@@ -12,8 +12,7 @@ interface InstallPromptProps {
 
 export const InstallPrompt = ({ onInstall, onDismiss }: InstallPromptProps) => {
   const [isDismissed, setIsDismissed] = useState(false);
-  const languageContext = useOptionalLanguage();
-  const { isRTL } = languageContext || { isRTL: false };
+  const { t, isRTL } = useLanguage();
 
   const handleDismiss = () => {
     setIsDismissed(true);

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useState } from "react";
 import { CheckCircle, XCircle, Clock, User, MapPin, Calendar, DollarSign } from "lucide-react";
 import { format } from "date-fns";
@@ -33,13 +33,9 @@ interface RequestApprovalCardProps {
 }
 
 export const RequestApprovalCard = ({ request, onApprove, onReject }: RequestApprovalCardProps) => {
-  const languageContext = useOptionalLanguage();
-  const { language } = languageContext || { 
-    language: 'en' as const
-  };
+  const { t, isRTL, language } = useLanguage();
   const [notes, setNotes] = useState(request.admin_approval_notes || '');
   const [isProcessing, setIsProcessing] = useState(false);
-  const isRTL = language === 'ar';
 
   const getUrgencyColor = (urgency: string) => {
     switch (urgency) {
@@ -89,13 +85,13 @@ export const RequestApprovalCard = ({ request, onApprove, onReject }: RequestApp
   };
 
   const formatBudget = () => {
-    const notSpecified = languageContext?.t('common.notSpecified') || 'Not specified';
+    const notSpecified = t('common.notSpecified') || 'Not specified';
     if (!request.budget_min && !request.budget_max) return notSpecified;
     if (request.budget_min && request.budget_max) {
       return `${request.budget_min.toLocaleString()} - ${request.budget_max.toLocaleString()} ${request.currency}`;
     }
-    if (request.budget_min) return `${languageContext?.t('common.from') || 'From'} ${request.budget_min.toLocaleString()} ${request.currency}`;
-    if (request.budget_max) return `${languageContext?.t('common.upTo') || 'Up to'} ${request.budget_max.toLocaleString()} ${request.currency}`;
+    if (request.budget_min) return `${t('common.from') || 'From'} ${request.budget_min.toLocaleString()} ${request.currency}`;
+    if (request.budget_max) return `${t('common.upTo') || 'Up to'} ${request.budget_max.toLocaleString()} ${request.currency}`;
     return notSpecified;
   };
 
@@ -161,7 +157,7 @@ export const RequestApprovalCard = ({ request, onApprove, onReject }: RequestApp
         {/* Approval Notes */}
         <div className="space-y-2">
           <Label htmlFor={`notes-${request.id}`} className={isRTL ? 'text-right' : ''}>
-            {languageContext?.t('admin.approvals.approvalNotes') || 'Approval Notes'}
+            {t('admin.approvals.approvalNotes') || 'Approval Notes'}
           </Label>
           <Textarea
             id={`notes-${request.id}`}

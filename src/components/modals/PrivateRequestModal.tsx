@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { CategorySelector } from '@/components/forms/CategorySelector';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useRequests } from '@/hooks/useRequests';
 import { Calendar, MapPin, DollarSign, Clock, FileText } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -23,8 +23,8 @@ export const PrivateRequestModal: React.FC<PrivateRequestModalProps> = ({
   vendorId,
   vendorName
 }) => {
-  const languageContext = useOptionalLanguage();
-  const isArabic = languageContext?.language === 'ar';
+  const { t, isRTL, language } = useLanguage();
+  const isArabic = language === 'ar';
   const { createRequest } = useRequests();
   const { toast } = useToast();
 

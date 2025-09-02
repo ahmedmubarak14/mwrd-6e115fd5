@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from "recharts";
 import { useSystemHealth } from "@/hooks/useSystemHealth";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
 export const SystemHealthMonitor = () => {
@@ -30,7 +30,7 @@ export const SystemHealthMonitor = () => {
   } = useSystemHealth();
 
   // Translation context
-  const { t, isRTL } = useOptionalLanguage();
+  const { t, isRTL } = useLanguage();
 
 const getStatusColor = (status: string) => {
     switch (status) {

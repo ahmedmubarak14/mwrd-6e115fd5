@@ -41,7 +41,7 @@ import {
   X
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { AdminTableSkeleton } from './AdminTableSkeleton';
 
@@ -149,11 +149,7 @@ export function ResponsiveDataTable<T extends Record<string, any>>({
   title,
   description
 }: ResponsiveDataTableProps<T>) {
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useLanguage();
   const isMobile = useIsMobile();
 
   const [localSearchValue, setLocalSearchValue] = useState(searchValue);

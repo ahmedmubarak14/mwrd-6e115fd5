@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from "recharts";
 import { useSecurityAnalytics } from "@/hooks/useSecurityAnalytics";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
 export const SecurityDashboard = () => {
@@ -26,7 +26,7 @@ export const SecurityDashboard = () => {
     activeThreats, 
     isLoading 
   } = useSecurityAnalytics();
-  const { t, isRTL } = useOptionalLanguage();
+  const { t, isRTL } = useLanguage();
 
   const securityScore = securityMetrics?.overallScore || 85;
 

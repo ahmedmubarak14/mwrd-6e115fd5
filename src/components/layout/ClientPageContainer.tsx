@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useResponsiveBreakpoints } from "@/hooks/useResponsiveBreakpoints";
 
 interface ClientPageContainerProps {
@@ -21,8 +21,7 @@ export const ClientPageContainer = ({
   maxWidth = "full",
   spacing = "md"
 }: ClientPageContainerProps) => {
-  const languageContext = useOptionalLanguage();
-  const { isRTL } = languageContext || { isRTL: false };
+  const { isRTL } = useLanguage();
   const breakpoints = useResponsiveBreakpoints();
 
   const maxWidthClasses = {

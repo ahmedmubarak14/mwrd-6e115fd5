@@ -2,7 +2,7 @@
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { VendorSidebar } from "@/components/vendor/VendorSidebar";
 import { useAuth } from "@/contexts/AuthContext";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
 interface MobileSidebarProps {
@@ -12,8 +12,7 @@ interface MobileSidebarProps {
 
 export const MobileSidebar = ({ isOpen, onOpenChange }: MobileSidebarProps) => {
   const { userProfile } = useAuth();
-  const languageContext = useOptionalLanguage();
-  const { isRTL } = languageContext || { isRTL: false };
+  const { isRTL } = useLanguage();
 
   return (
     <div className="lg:hidden">

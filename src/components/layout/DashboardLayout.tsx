@@ -7,7 +7,7 @@ import { MobileSidebar } from "./MobileSidebar";
 import { MobileContainer } from "@/components/ui/MobileContainer";
 import { MobileBottomNav, MobileBottomNavSpacer } from "@/components/navigation/MobileBottomNav";
 import { useAuth } from "@/contexts/AuthContext";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { VendorSidebar } from "@/components/vendor/VendorSidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -20,8 +20,7 @@ interface DashboardLayoutProps {
 export const DashboardLayout = ({ children, className }: DashboardLayoutProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { userProfile } = useAuth();
-  const languageContext = useOptionalLanguage();
-  const { isRTL } = languageContext || { isRTL: false };
+  const { isRTL } = useLanguage();
   const isMobile = useIsMobile();
 
   if (isMobile) {

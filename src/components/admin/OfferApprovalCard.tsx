@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useState } from "react";
 import { CheckCircle, XCircle, Clock, DollarSign, Truck, User } from "lucide-react";
 import { format } from "date-fns";
@@ -35,13 +35,9 @@ interface OfferApprovalCardProps {
 }
 
 export const OfferApprovalCard = ({ offer, onApprove, onReject, userRole }: OfferApprovalCardProps) => {
-  const languageContext = useOptionalLanguage();
-  const { language } = languageContext || { 
-    language: 'en' as const
-  };
+  const { t, isRTL, language } = useLanguage();
   const [notes, setNotes] = useState(offer.client_approval_notes || '');
   const [isProcessing, setIsProcessing] = useState(false);
-  const isRTL = language === 'ar';
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -127,7 +123,7 @@ export const OfferApprovalCard = ({ offer, onApprove, onReject, userRole }: Offe
         {canModifyOffer && (
           <div className="space-y-2">
             <Label htmlFor={`notes-${offer.id}`} className={isRTL ? 'text-right' : ''}>
-              {languageContext?.t('admin.approvals.approvalNotes') || 'Approval Notes'}
+              {t('admin.approvals.approvalNotes') || 'Approval Notes'}
             </Label>
             <Textarea
               id={`notes-${offer.id}`}
@@ -150,7 +146,7 @@ export const OfferApprovalCard = ({ offer, onApprove, onReject, userRole }: Offe
               variant="default"
             >
               <CheckCircle className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {languageContext?.t('admin.approvals.acceptOffer') || 'Accept Offer'}
+              {t('admin.approvals.acceptOffer') || 'Accept Offer'}
             </Button>
             <Button
               onClick={handleReject}
@@ -159,7 +155,7 @@ export const OfferApprovalCard = ({ offer, onApprove, onReject, userRole }: Offe
               variant="destructive"
             >
               <XCircle className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {languageContext?.t('admin.approvals.rejectOffer') || 'Reject Offer'}
+              {t('admin.approvals.rejectOffer') || 'Reject Offer'}
             </Button>
           </div>
         )}

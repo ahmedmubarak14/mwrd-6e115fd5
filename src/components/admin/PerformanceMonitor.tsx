@@ -26,7 +26,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useSystemHealth } from '@/hooks/useSystemHealth';
 import { usePerformanceOptimizations } from '@/hooks/usePerformanceOptimizations';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface PerformanceMetric {
   name: string;
@@ -60,7 +60,7 @@ export const PerformanceMonitor = () => {
   const { deviceCapabilities, networkSpeed, performanceConfig } = usePerformanceOptimizations();
   
   // Translation context
-  const { t, isRTL } = useOptionalLanguage();
+  const { t, isRTL } = useLanguage();
 
   const collectPerformanceMetrics = async () => {
     // Collect Web Vitals and performance metrics

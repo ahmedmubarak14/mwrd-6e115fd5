@@ -21,13 +21,13 @@ import {
 } from "lucide-react";
 import { useSecurityIncidents } from "@/hooks/useSecurityIncidents";
 import { useToast } from "@/hooks/use-toast";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
 export const SecurityIncidentManager = () => {
   const { incidents, createIncident, updateIncident, isLoading } = useSecurityIncidents();
   const { toast } = useToast();
-  const { t, isRTL } = useOptionalLanguage();
+  const { t, isRTL } = useLanguage();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterSeverity, setFilterSeverity] = useState("all");

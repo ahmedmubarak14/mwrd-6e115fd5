@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import { 
   Users, 
@@ -45,13 +45,7 @@ interface ActivityLog {
 
 export const PlatformAnalytics = () => {
   const { toast } = useToast();
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL, formatNumber, formatCurrency } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false,
-    formatNumber: (num: number) => num.toString(),
-    formatCurrency: (amount: number) => `$${amount}`
-  };
+  const { t, isRTL, formatNumber, formatCurrency } = useLanguage();
   const [stats, setStats] = useState<PlatformStats | null>(null);
   const [activityLogs, setActivityLogs] = useState<ActivityLog[]>([]);
   const [loading, setLoading] = useState(true);
