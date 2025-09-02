@@ -29,7 +29,7 @@ const VendorClientsContent = () => {
   // Mobile features
   const { isMobile } = useMobileDetection();
   const { initiateCall } = useVoiceVideo();
-  const { isInstallable, installApp } = usePWA();
+  const { isInstallable, installPWA: installApp } = usePWA();
   
   // UI state
   const [showCallInterface, setShowCallInterface] = useState(false);
