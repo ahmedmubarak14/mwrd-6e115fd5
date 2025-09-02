@@ -142,7 +142,7 @@ const VendorTransactionsContent = () => {
           <CardContent>
             <div className="text-2xl font-bold">${totalRevenue.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground mt-2">
-              From completed orders
+              {t('vendor.transactions.fromCompletedOrders')}
             </p>
           </CardContent>
         </Card>
@@ -191,12 +191,12 @@ const VendorTransactionsContent = () => {
         <CardHeader>
           <div className="flex justify-between items-center">
             <div>
-              <CardTitle>Recent Transactions</CardTitle>
-              <CardDescription>Your complete transaction history</CardDescription>
+              <CardTitle>{t('vendor.transactions.recentTransactions')}</CardTitle>
+              <CardDescription>{t('vendor.transactions.transactionHistory')}</CardDescription>
             </div>
             <Button onClick={exportTransactions} variant="outline" size="sm">
               <Download className="h-4 w-4 mr-2" />
-              Export
+              {t('vendor.transactions.export')}
             </Button>
           </div>
         </CardHeader>
@@ -213,24 +213,24 @@ const VendorTransactionsContent = () => {
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-32">
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={t('vendor.transactions.status')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">{t('vendor.transactions.allStatus')}</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="failed">Failed</SelectItem>
+                <SelectItem value="completed">{t('vendor.transactions.completed')}</SelectItem>
+                <SelectItem value="pending">{t('vendor.transactions.pending')}</SelectItem>
+                <SelectItem value="failed">{t('vendor.transactions.failed')}</SelectItem>
               </SelectContent>
             </Select>
             <Select value={typeFilter} onValueChange={setTypeFilter}>
               <SelectTrigger className="w-40">
-                <SelectValue placeholder="Type" />
+                <SelectValue placeholder={t('vendor.transactions.type')} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">{t('vendor.transactions.allTypes')}</SelectItem>
                 <SelectItem value="payment_received">{t('vendor.transactions.paymentReceived')}</SelectItem>
-                <SelectItem value="subscription">Subscription</SelectItem>
-                <SelectItem value="fee">Fee</SelectItem>
+                <SelectItem value="subscription">{t('vendor.transactions.subscription')}</SelectItem>
+                <SelectItem value="fee">{t('vendor.transactions.fee')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -239,12 +239,12 @@ const VendorTransactionsContent = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Description</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Reference</TableHead>
+                  <TableHead>{t('vendor.transactions.date')}</TableHead>
+                  <TableHead>{t('vendor.transactions.type')}</TableHead>
+                  <TableHead>{t('vendor.transactions.description')}</TableHead>
+                  <TableHead>{t('vendor.transactions.amount')}</TableHead>
+                  <TableHead>{t('vendor.transactions.status')}</TableHead>
+                  <TableHead>{t('vendor.transactions.reference')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
