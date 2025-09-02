@@ -824,60 +824,6 @@ export const arSA = {
       maxSize10MB: 'حجم الملف يجب أن يكون أقل من 10 ميجابايت',
       invalidFileTypePDFJPGPNG: 'يرجى رفع ملف PDF أو صورة (JPEG، PNG)'
     },
-    verification: {
-      title: 'حالة التحقق',
-      description: 'تتبع تقدم التحقق من وثائقك',
-      accountStatus: 'حالة الحساب',
-      documentSubmissions: 'الوثائق المرسلة',
-      nextSteps: 'الخطوات التالية',
-      adminNotes: 'ملاحظات الإدارة',
-      reviewNotes: 'ملاحظات المراجعة',
-      refresh: 'تحديث الحالة',
-      viewDocument: 'عرض الوثيقة',
-      downloadDocument: 'تحميل الوثيقة',
-      uploadDocument: 'رفع وثيقة',
-      resubmitDocument: 'إعادة إرسال الوثيقة',
-      commercialRegistration: 'السجل التجاري',
-      nationalId: 'الهوية الوطنية',
-      taxCertificate: 'شهادة الضرائب',
-      // Status messages
-      verified: 'موثق بالكامل ونشط',
-      verificationPending: 'التحقق قيد الانتظار',
-      documentsUnderReview: 'الوثائق قيد المراجعة',
-      verificationRejected: 'تم رفض التحقق',
-      reviewInProgress: 'المراجعة جارية (24-48 ساعة)',
-      // Action messages
-      noDocumentsSubmitted: 'لم يتم إرسال أي وثائق بعد. يرجى رفع السجل التجاري لبدء عملية التحقق.',
-      beginVerification: 'ارفع وثيقة السجل التجاري لبدء عملية التحقق.',
-      reviewFeedback: 'يرجى مراجعة التعليقات أعلاه ورفع وثيقة سجل تجاري جديدة.',
-      documentsBeingReviewed: 'وثائقك قيد المراجعة. سيتم إشعارك عند اكتمال المراجعة.',
-      // Status badges
-      approved: 'مُوافق عليه',
-      underReview: 'قيد المراجعة',
-      pending: 'قيد الانتظار',
-      rejected: 'مرفوض',
-      // Dates
-      submitted: 'تاريخ الإرسال',
-      reviewed: 'تاريخ المراجعة',
-      // CR Upload component
-      uploadCR: 'رفع السجل التجاري',
-      uploadCRDescription: 'يرجى رفع وثيقة السجل التجاري للتحقق',
-      selectFile: 'اختر ملف',
-      uploading: 'جاري الرفع...',
-      upload: 'رفع',
-      retry: 'إعادة المحاولة',
-      fileSelected: 'تم اختيار الملف',
-      supportedFormats: 'الصيغ المدعومة: PDF، JPG، PNG (الحد الأقصى 5 ميجابايت)',
-      uploadSuccess: 'تم رفع الوثيقة بنجاح',
-      uploadError: 'فشل في رفع الوثيقة',
-      verificationRequired: 'التحقق مطلوب',
-      completeVerificationAlert: 'أكمل التحقق من حسابك للوصول إلى جميع ميزات المنصة',
-      // Error messages
-      failedToLoad: 'فشل في تحميل حالة التحقق',
-      fileRequired: 'يرجى اختيار ملف أولاً',
-      fileTooLarge: 'حجم الملف يجب أن يكون أقل من 5 ميجابايت',
-      invalidFileType: 'نوع ملف غير صحيح. يرجى رفع ملفات PDF أو JPG أو PNG فقط'
-    },
       sortBy: "ترتيب حسب"
   },
 
