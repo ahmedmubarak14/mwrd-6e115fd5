@@ -89,8 +89,8 @@ export const VendorSidebar = ({
 
   const navigationGroups: NavigationGroup[] = [
     {
-      id: 'overview',
-      label: t('vendorGroups.overview') || 'Overview',
+      id: 'core-business',
+      label: t('vendor.sidebar.coreBusiness') || 'Core Business',
       priority: 'primary',
       items: [
         {

@@ -23,8 +23,8 @@ import { VendorRFQs } from './pages/vendor/VendorRFQs';
 import { VendorNotifications } from './pages/vendor/VendorNotifications';
 import { VendorClients } from './pages/vendor/VendorClients';
 import { VendorDocuments } from './pages/vendor/VendorDocuments';
-import { VendorReports } from './pages/vendor/VendorReports';
-import { VendorAnalytics } from './pages/vendor/VendorAnalytics';
+import { VendorBusinessIntelligence } from './pages/vendor/VendorBusinessIntelligence';
+import { VendorUnifiedProjects } from './pages/vendor/VendorUnifiedProjects';
 import { VendorBrowseRequests } from './pages/vendor/VendorBrowseRequests';
 import { VendorOffers } from './pages/vendor/VendorOffers';
 import { VendorOrders } from './pages/vendor/VendorOrders';
@@ -181,11 +181,22 @@ function App() {
                         <VendorDashboard />
                       </RoleProtectedRoute>
                     } />
-                    <Route path="/vendor/analytics" element={
+                    <Route path="/vendor/business-intelligence" element={
                       <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <VendorAnalytics />
+                        <VendorBusinessIntelligence />
                       </RoleProtectedRoute>
                     } />
+                    <Route path="/vendor/unified-projects" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <VendorUnifiedProjects />
+                      </RoleProtectedRoute>
+                    } />
+                    
+                    {/* Legacy routes - redirect to new unified pages */}
+                    <Route path="/vendor/analytics" element={<Navigate to="/vendor/business-intelligence" replace />} />
+                    <Route path="/vendor/reports" element={<Navigate to="/vendor/business-intelligence" replace />} />
+                    <Route path="/vendor/projects-management" element={<Navigate to="/vendor/unified-projects" replace />} />
+                    <Route path="/vendor/portfolio-management" element={<Navigate to="/vendor/unified-projects" replace />} />
                     <Route path="/vendor/browse-requests" element={
                       <RoleProtectedRoute allowedRoles={['vendor']}>
                         <VendorBrowseRequests />
@@ -241,16 +252,6 @@ function App() {
                         <CRManagementPage />
                       </RoleProtectedRoute>
                     } />
-                    <Route path="/vendor/projects-management" element={
-                      <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <ProjectsManagementPage />
-                      </RoleProtectedRoute>
-                    } />
-                    <Route path="/vendor/portfolio-management" element={
-                      <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <PortfolioManagementPage />
-                      </RoleProtectedRoute>
-                    } />
                     <Route path="/vendor/subscription" element={
                       <RoleProtectedRoute allowedRoles={['vendor']}>
                         <VendorSubscription />
@@ -279,11 +280,6 @@ function App() {
                     <Route path="/vendor/documents" element={
                       <RoleProtectedRoute allowedRoles={['vendor']}>
                         <VendorDocuments />
-                      </RoleProtectedRoute>
-                    } />
-                    <Route path="/vendor/reports" element={
-                      <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <VendorReports />
                       </RoleProtectedRoute>
                     } />
                     
