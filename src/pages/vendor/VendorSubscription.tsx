@@ -8,17 +8,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { CreditCard, Calendar, DollarSign, TrendingUp, CheckCircle, AlertCircle } from "lucide-react";
 
 const VendorSubscriptionContent = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
-  const languageContext = useOptionalLanguage();
-  const { t, formatCurrency } = languageContext || { 
-    t: (key: string) => key, 
-    formatCurrency: (amount: number) => `$${amount.toFixed(2)}` 
-  };
+  const { t, formatCurrency } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [monthlySpend, setMonthlySpend] = useState(0);

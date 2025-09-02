@@ -18,12 +18,10 @@ import { cn } from "@/lib/utils";
 
 const SupportContent = React.memo(() => {
   const { userProfile } = useAuth();
-  const { t } = useLanguage();
+  const { t, isRTL, formatDate } = useLanguage();
   const { tickets, loading, createTicket, ticketMetrics } = usePerformantSupportTickets();
   const { announce, announceLoading, announceSuccess, announceError } = useAccessibleAnnouncements();
   const [showCreateForm, setShowCreateForm] = useState(false);
-
-  const { t, isRTL, formatDate } = useLanguage();
 
   // Announce page load to screen readers
   useEffect(() => {

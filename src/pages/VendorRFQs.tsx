@@ -31,12 +31,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
 const VendorRFQsContent = React.memo(() => {
-  const { t } = useLanguage();
-  const { t, isRTL, formatCurrency } = languageContext || {
-    t: (key: string) => key.split('.').pop() || key,
-    isRTL: false,
-    formatCurrency: (amount: number) => `${amount.toLocaleString()} SAR`
-  };
+  const { t, isRTL, formatCurrency } = useLanguage();
 
   const { rfqs, loading: rfqsLoading } = useRFQs();
   const { bids, loading: bidsLoading } = useBids();

@@ -13,11 +13,7 @@ import { cn } from "@/lib/utils";
 import { AdminPageContainer } from "@/components/admin/AdminPageContainer";
 
 const AdminSecurity = () => {
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useLanguage();
 
   return (
     <div dir={isRTL ? 'rtl' : 'ltr'}>

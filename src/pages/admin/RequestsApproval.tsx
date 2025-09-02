@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Search, Filter, CheckCircle, XCircle, Clock, FileText } from "lucide-react";
 import { useToastFeedback } from "@/hooks/useToastFeedback";
@@ -28,12 +28,7 @@ interface Request {
 }
 
 export const RequestsApproval = () => {
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL, formatCurrency } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false,
-    formatCurrency: (amount: number) => `$${amount}`
-  };
+  const { t, isRTL, formatCurrency } = useLanguage();
   const { showSuccess, showError } = useToastFeedback();
   const [requests, setRequests] = useState<Request[]>([]);
   const [loading, setLoading] = useState(true);
