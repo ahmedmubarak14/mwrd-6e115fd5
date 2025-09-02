@@ -12,6 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import { ErrorState } from "@/components/ui/ErrorState";
 import { ResponsiveContainer } from "@/components/ui/ResponsiveContainer";
+import { cn } from "@/lib/utils";
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer as RechartsResponsiveContainer,
   LineChart, Line, PieChart, Pie, Cell, AreaChart, Area
@@ -203,14 +204,14 @@ const VendorReportsContent = () => {
   return (
     <ResponsiveContainer>
       <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <div>
+        <div className={cn("flex justify-between items-center", isRTL && "flex-row-reverse")}>
+          <div className={cn(isRTL && "text-right")}>
             <h1 className="text-2xl font-bold">{t('vendor.reports.title')}</h1>
             <p className="text-muted-foreground mt-1">
               {t('vendor.reports.description')}
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
             <Select value={dateRange} onValueChange={setDateRange}>
               <SelectTrigger className="w-32">
                 <SelectValue />
@@ -231,7 +232,7 @@ const VendorReportsContent = () => {
 
         <div className="grid gap-4 md:grid-cols-4">
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
               <CardTitle className="text-sm font-medium">{t('vendor.reports.totalRevenue')}</CardTitle>
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
@@ -246,7 +247,7 @@ const VendorReportsContent = () => {
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
               <CardTitle className="text-sm font-medium">{t('vendor.reports.winRate')}</CardTitle>
               <Target className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
@@ -263,7 +264,7 @@ const VendorReportsContent = () => {
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
               <CardTitle className="text-sm font-medium">{t('vendor.reports.avgOrderValue')}</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
@@ -278,7 +279,7 @@ const VendorReportsContent = () => {
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className={cn("flex flex-row items-center justify-between space-y-0 pb-2", isRTL && "flex-row-reverse")}>
               <CardTitle className="text-sm font-medium">{t('vendor.reports.activeClients')}</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
@@ -382,20 +383,20 @@ const VendorReportsContent = () => {
               {reportData.bids.map((bid, index) => (
                 <Card key={bid.status}>
                   <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-medium capitalize">{bid.status}</h3>
-                        <p className="text-2xl font-bold">{bid.count}</p>
-                      </div>
-                      <div className="text-right">
-                        <Badge 
-                          variant="secondary" 
-                          style={{ backgroundColor: COLORS[index % COLORS.length] + '20' }}
-                        >
-                          {bid.percentage}%
-                        </Badge>
-                      </div>
-                    </div>
+                     <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
+                       <div className={cn(isRTL && "text-right")}>
+                         <h3 className="font-medium capitalize">{bid.status}</h3>
+                         <p className="text-2xl font-bold">{bid.count}</p>
+                       </div>
+                       <div className={cn("text-right", isRTL && "text-left")}>
+                         <Badge 
+                           variant="secondary" 
+                           style={{ backgroundColor: COLORS[index % COLORS.length] + '20' }}
+                         >
+                           {bid.percentage}%
+                         </Badge>
+                       </div>
+                     </div>
                   </CardContent>
                 </Card>
               ))}
@@ -410,25 +411,25 @@ const VendorReportsContent = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {reportData.clients.map((client, index) => (
-                    <div key={client.client_id} className="flex items-center justify-between p-3 border rounded">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                          <span className="text-sm font-medium">#{index + 1}</span>
-                        </div>
-                        <div>
-                          <p className="font-medium">Client {client.client_id.slice(0, 8)}...</p>
-                          <p className="text-sm text-muted-foreground">{client.orders} {t('vendor.reports.ordersLabel')}</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-bold">${client.revenue.toFixed(2)}</p>
-                        <p className="text-sm text-muted-foreground">
-                          ${(client.revenue / client.orders).toFixed(2)} {t('vendor.reports.avgLabel')}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                   {reportData.clients.map((client, index) => (
+                     <div key={client.client_id} className={cn("flex items-center justify-between p-3 border rounded", isRTL && "flex-row-reverse")}>
+                       <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
+                         <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                           <span className="text-sm font-medium">#{index + 1}</span>
+                         </div>
+                         <div className={cn(isRTL && "text-right")}>
+                           <p className="font-medium">Client {client.client_id.slice(0, 8)}...</p>
+                           <p className="text-sm text-muted-foreground">{client.orders} {t('vendor.reports.ordersLabel')}</p>
+                         </div>
+                       </div>
+                       <div className={cn("text-right", isRTL && "text-left")}>
+                         <p className="font-bold">${client.revenue.toFixed(2)}</p>
+                         <p className="text-sm text-muted-foreground">
+                           ${(client.revenue / client.orders).toFixed(2)} {t('vendor.reports.avgLabel')}
+                         </p>
+                       </div>
+                     </div>
+                   ))}
                   
                   {reportData.clients.length === 0 && (
                     <div className="text-center py-8 text-muted-foreground">
@@ -451,36 +452,36 @@ const VendorReportsContent = () => {
                   <div className="space-y-4">
                     <h3 className="font-semibold text-lg">{t('vendor.reports.financialPerformance')}</h3>
                     <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span>{t('vendor.reports.totalRevenueLabel')}</span>
-                        <span className="font-medium">${reportData.performance.totalRevenue?.toFixed(2)}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>{t('vendor.reports.avgOrderValueLabel')}</span>
-                        <span className="font-medium">${reportData.performance.avgOrderValue?.toFixed(2)}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>{t('vendor.reports.totalOrdersLabel')}</span>
-                        <span className="font-medium">{reportData.performance.totalOrders}</span>
-                      </div>
+                     <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+                       <span>{t('vendor.reports.totalRevenueLabel')}</span>
+                       <span className="font-medium">${reportData.performance.totalRevenue?.toFixed(2)}</span>
+                     </div>
+                       <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+                         <span>{t('vendor.reports.avgOrderValueLabel')}</span>
+                         <span className="font-medium">${reportData.performance.avgOrderValue?.toFixed(2)}</span>
+                       </div>
+                       <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+                         <span>{t('vendor.reports.totalOrdersLabel')}</span>
+                         <span className="font-medium">{reportData.performance.totalOrders}</span>
+                       </div>
                     </div>
                   </div>
 
                   <div className="space-y-4">
                     <h3 className="font-semibold text-lg">{t('vendor.reports.businessDevelopment')}</h3>
                     <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span>{t('vendor.reports.bidSuccessRate')}</span>
-                        <span className="font-medium">{reportData.performance.winRate?.toFixed(1)}%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>{t('vendor.reports.totalBidsSubmitted')}</span>
-                        <span className="font-medium">{reportData.performance.totalBids}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>{t('vendor.reports.activeClientsLabel')}</span>
-                        <span className="font-medium">{reportData.clients.length}</span>
-                      </div>
+                       <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+                         <span>{t('vendor.reports.bidSuccessRate')}</span>
+                         <span className="font-medium">{reportData.performance.winRate?.toFixed(1)}%</span>
+                       </div>
+                       <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+                         <span>{t('vendor.reports.totalBidsSubmitted')}</span>
+                         <span className="font-medium">{reportData.performance.totalBids}</span>
+                       </div>
+                       <div className={cn("flex justify-between", isRTL && "flex-row-reverse")}>
+                         <span>{t('vendor.reports.activeClientsLabel')}</span>
+                         <span className="font-medium">{reportData.clients.length}</span>
+                       </div>
                     </div>
                   </div>
                 </div>
