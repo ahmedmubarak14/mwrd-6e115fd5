@@ -68,10 +68,10 @@ export const VendorSidebar = ({
       try {
         return new Set(JSON.parse(saved));
       } catch {
-        return new Set(['overview', 'business']); // Default groups
+        return new Set(['core-business', 'business']); // Default groups
       }
     }
-    return new Set(['overview', 'business']); // Default groups
+    return new Set(['core-business', 'business']); // Default groups
   });
 
   const toggleGroup = (groupId: string) => {
@@ -97,11 +97,6 @@ export const VendorSidebar = ({
           name: t('nav.dashboard') || 'Dashboard',
           href: '/vendor/dashboard',
           icon: LayoutDashboard,
-        },
-        {
-          name: t('nav.analytics') || 'Analytics',
-          href: '/vendor/analytics',
-          icon: BarChart3,
         },
       ]
     },
@@ -133,19 +128,14 @@ export const VendorSidebar = ({
       ]
     },
     {
-      id: 'portfolio',
-      label: t('vendorGroups.portfolio') || 'Portfolio',
+      id: 'project-management',
+      label: t('vendorGroups.projectManagement') || 'Project Management',
       priority: 'secondary',
       items: [
         {
-          name: t('vendor.navigation.projectsManagement') || 'Projects',
+          name: t('vendor.navigation.projects') || 'Projects',
           href: '/vendor/projects',
           icon: Briefcase,
-        },
-        {
-          name: t('vendor.navigation.portfolioManagement') || 'Portfolio',
-          href: '/vendor/portfolio',
-          icon: Building2,
         },
       ]
     },
@@ -172,6 +162,11 @@ export const VendorSidebar = ({
       priority: 'secondary',
       items: [
         {
+          name: t('nav.businessIntelligence') || 'Business Intelligence',
+          href: '/vendor/business-intelligence',
+          icon: BarChart3,
+        },
+        {
           name: t('nav.rfqs') || 'RFQs',
           href: '/vendor/rfqs',
           icon: FileText,
@@ -190,11 +185,6 @@ export const VendorSidebar = ({
           name: t('nav.documents') || 'Documents',
           href: '/vendor/documents',
           icon: FolderOpen,
-        },
-        {
-          name: t('nav.reports') || 'Reports',
-          href: '/vendor/reports',
-          icon: BarChart3,
         },
       ]
     },
