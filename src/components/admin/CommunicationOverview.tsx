@@ -20,7 +20,7 @@ import { useRealTimeChat } from "@/hooks/useRealTimeChat";
 import { useNotifications } from "@/hooks/useNotifications";
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
@@ -37,7 +37,7 @@ export const CommunicationOverview = () => {
   const { conversations, loading: chatLoading } = useRealTimeChat();
   const { notifications, loading: notificationLoading } = useNotifications();
   const { user } = useAuth();
-  const { t } = useLanguage();
+  const { t } = useOptionalLanguage();
   const navigate = useNavigate();
   const [metrics, setMetrics] = useState<CommunicationMetrics>({
     totalMessages: 0,

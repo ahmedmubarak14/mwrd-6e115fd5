@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useResponsiveBreakpoints } from "@/hooks/useResponsiveBreakpoints";
 
 interface AdminPageContainerProps {
@@ -21,7 +21,7 @@ export const AdminPageContainer = ({
   maxWidth = "full",
   spacing = "md"
 }: AdminPageContainerProps) => {
-  const { isRTL } = useLanguage();
+  const { isRTL } = useOptionalLanguage();
   const breakpoints = useResponsiveBreakpoints();
 
   const maxWidthClasses = {

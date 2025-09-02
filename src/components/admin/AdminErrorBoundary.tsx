@@ -3,7 +3,7 @@ import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 
 interface Props {
   children: ReactNode;
@@ -66,7 +66,7 @@ const AdminErrorFallback: React.FC<{
   errorInfo?: ErrorInfo;
   onReset: () => void;
 }> = ({ error, errorInfo, onReset }) => {
-  const { t } = useLanguage();
+  const { t } = useOptionalLanguage();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">

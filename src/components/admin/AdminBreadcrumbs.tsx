@@ -8,7 +8,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { ChevronRight, Home } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { cn } from "@/lib/utils";
 
 const breadcrumbKeys: Record<string, string> = {
@@ -32,7 +32,7 @@ const breadcrumbKeys: Record<string, string> = {
 
 export const AdminBreadcrumbs = () => {
   const location = useLocation();
-  const { t, isRTL } = useLanguage();
+  const { t, isRTL } = useOptionalLanguage();
   const pathSegments = location.pathname.split('/').filter(Boolean);
   
   // Build breadcrumb items

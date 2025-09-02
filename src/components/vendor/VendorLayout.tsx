@@ -6,7 +6,7 @@ import { VerificationBanner } from "../verification/VerificationBanner";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useAuth } from "@/contexts/AuthContext";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { cn } from "@/lib/utils";
 
 interface VendorLayoutProps {
@@ -21,7 +21,7 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
   });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
-  const { t, isRTL } = useLanguage();
+  const { t, isRTL } = useOptionalLanguage();
 
   if (loading) {
     return (

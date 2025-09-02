@@ -28,7 +28,7 @@ import {
   Zap
 } from "lucide-react";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { AdminUserProfile } from "./AdminUserProfile";
 import { cn } from "@/lib/utils";
 
@@ -54,7 +54,7 @@ interface NavigationGroup {
 export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSidebarProps) => {
   const location = useLocation();
   const { getPendingTicketsCount } = useSupportTickets();
-  const { t, isRTL } = useLanguage();
+  const { t, isRTL } = useOptionalLanguage();
   const pendingTickets = getPendingTicketsCount();
 
   // Track which groups are expanded with localStorage persistence

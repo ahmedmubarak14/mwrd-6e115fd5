@@ -12,7 +12,7 @@ import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
 import { AdminCommandPalette } from "./AdminCommandPalette";
 import { AdminErrorBoundary } from "./AdminErrorBoundary";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
@@ -24,7 +24,7 @@ export const AdminLayout = () => {
   });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const { t, isRTL } = useLanguage();
+  const { t, isRTL } = useOptionalLanguage();
   const isMobile = useIsMobile();
 
   useEffect(() => {

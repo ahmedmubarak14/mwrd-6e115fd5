@@ -8,7 +8,7 @@ import { CheckCircle, XCircle, Download, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useRequestApprovals } from '@/hooks/useRequestApprovals';
 import { useOfferApprovals } from '@/hooks/useOfferApprovals';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
 import { cn } from '@/lib/utils';
 
 interface BulkApprovalActionsProps {
@@ -25,7 +25,7 @@ export const BulkApprovalActions = ({
   onClearSelection 
 }: BulkApprovalActionsProps) => {
   const { toast } = useToast();
-  const { t, isRTL } = useLanguage();
+  const { t, isRTL } = useOptionalLanguage();
   const [loading, setLoading] = useState(false);
   const [notes, setNotes] = useState('');
   const [showBulkDialog, setShowBulkDialog] = useState(false);

@@ -8,7 +8,7 @@ import {
   DollarSign, 
   Activity
 } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { MetricsDetailModal } from "@/components/analytics/MetricsDetailModal";
 import { useState } from "react";
 
@@ -29,7 +29,7 @@ interface MetricsCardsProps {
 }
 
 export const MetricsCards = ({ metrics, onCardClick }: MetricsCardsProps) => {
-  const { t, isRTL, formatNumber, formatCurrency } = useLanguage();
+  const { t, isRTL, formatNumber, formatCurrency } = useOptionalLanguage();
   const [selectedMetric, setSelectedMetric] = useState<{
     type: 'users' | 'requests' | 'revenue' | 'orders' | null;
     title: string;

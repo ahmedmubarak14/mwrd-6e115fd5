@@ -1,7 +1,7 @@
 
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { AdminMobileSidebarContent } from "./AdminMobileSidebarContent";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
 import { cn } from "@/lib/utils";
 
 interface AdminMobileSidebarProps {
@@ -10,7 +10,7 @@ interface AdminMobileSidebarProps {
 }
 
 export const AdminMobileSidebar = ({ isOpen, onOpenChange }: AdminMobileSidebarProps) => {
-  const languageContext = useLanguage();
+  const languageContext = useOptionalLanguage();
   const { isRTL } = languageContext || { 
     isRTL: false 
   };
