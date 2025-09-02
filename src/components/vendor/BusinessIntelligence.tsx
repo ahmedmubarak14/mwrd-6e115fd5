@@ -8,7 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { ChartSkeleton } from "@/components/ui/ChartSkeleton";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useVendorStats } from "@/hooks/useVendorStats";
 import { supabase } from "@/integrations/supabase/client";
 import { LoadingScreen } from "@/components/ui/LoadingScreen";
@@ -49,11 +49,7 @@ export const BusinessIntelligence = () => {
   const { userProfile } = useAuth();
   const { toast } = useToast();
   const { stats, loading: analyticsLoading } = useVendorStats();
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useLanguage();
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

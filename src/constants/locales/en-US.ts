@@ -443,6 +443,28 @@ export const enUS = {
       reportType: 'Report Type',
       dateRange: 'Date Range'
     },
+    businessIntelligence: {
+      title: 'Business Intelligence',
+      subtitle: 'Advanced analytics and performance insights for your business'
+    },
+    analytics: {
+      overview: 'Overview',
+      offers: 'Offers',
+      categories: 'Categories',
+      offerAcceptanceRate: 'Offer Acceptance Rate',
+      averageResponseTime: 'Average Response Time',
+      clientSatisfaction: 'Client Satisfaction',
+      monthlyRevenue: 'Monthly Revenue',
+      offerTrends: 'Offer Trends',
+      totalOffers: 'Total Offers',
+      acceptedOffers: 'Accepted Offers',
+      categoryDistribution: 'Category Distribution',
+      offerPerformance: 'Offer Performance',
+      submitted: 'Submitted',
+      accepted: 'Accepted',
+      categoryBreakdown: 'Category Breakdown',
+      topPerformingCategories: 'Top Performing Categories'
+    },
     profile: {
       businessInfo: "Business Information",
       basicInfo: "Basic Information",

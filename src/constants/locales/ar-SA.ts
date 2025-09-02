@@ -445,6 +445,28 @@ export const arSA = {
       reportType: 'نوع التقرير',
       dateRange: 'نطاق التاريخ'
     },
+    businessIntelligence: {
+      title: 'ذكاء الأعمال',
+      subtitle: 'تحليلات متقدمة ورؤى الأداء لعملك'
+    },
+    analytics: {
+      overview: 'نظرة عامة',
+      offers: 'العروض',
+      categories: 'الفئات',
+      offerAcceptanceRate: 'معدل قبول العروض',
+      averageResponseTime: 'متوسط وقت الاستجابة',
+      clientSatisfaction: 'رضا العملاء',
+      monthlyRevenue: 'الإيرادات الشهرية',
+      offerTrends: 'اتجاهات العروض',
+      totalOffers: 'إجمالي العروض',
+      acceptedOffers: 'العروض المقبولة',
+      categoryDistribution: 'توزيع الفئات',
+      offerPerformance: 'أداء العروض',
+      submitted: 'مقدمة',
+      accepted: 'مقبولة',
+      categoryBreakdown: 'تفصيل الفئات',
+      topPerformingCategories: 'الفئات الأكثر أداءً'
+    },
     profile: {
       businessInfo: "معلومات الأعمال",
       basicInfo: "المعلومات الأساسية",
