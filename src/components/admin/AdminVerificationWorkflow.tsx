@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
 interface PendingVerification {
@@ -49,7 +49,7 @@ interface VerificationDocument {
 
 export const AdminVerificationWorkflow = () => {
   const { toast } = useToast();
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
   const [pendingVerifications, setPendingVerifications] = useState<PendingVerification[]>([]);
   const [selectedUser, setSelectedUser] = useState<PendingVerification | null>(null);
   const [reviewNotes, setReviewNotes] = useState('');

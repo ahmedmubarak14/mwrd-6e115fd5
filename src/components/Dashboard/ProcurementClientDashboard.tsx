@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { MetricCard } from "@/components/ui/MetricCard";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,7 +27,7 @@ interface ClientStats {
 }
 
 export const ProcurementClientDashboard = () => {
-  const { t, isRTL, formatNumber, formatCurrency } = useOptionalLanguage();
+  const { t, isRTL, formatNumber, formatCurrency } = useLanguage();
   const { userProfile } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();

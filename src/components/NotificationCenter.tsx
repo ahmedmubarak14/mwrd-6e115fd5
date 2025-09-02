@@ -5,12 +5,12 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { useRealTimeNotifications } from '@/hooks/useRealTimeNotifications';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { formatDistanceToNow } from 'date-fns';
 
 export const NotificationCenter = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
   const {
     notifications,
     unreadCount,

@@ -13,7 +13,7 @@ import { Search, Filter, UserCheck, UserX, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { BulkUserActions } from "./BulkUserActions";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import { DataErrorBoundary } from "./DataErrorBoundary";
 import { ResponsiveDataTable } from "./ResponsiveDataTable";
@@ -27,11 +27,7 @@ export const AdvancedUserManagement = () => {
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const { toast } = useToast();
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useLanguage();
 
   useEffect(() => {
     fetchUsers();

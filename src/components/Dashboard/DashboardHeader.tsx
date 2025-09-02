@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Clock, FileText } from "lucide-react";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface DashboardHeaderProps {
   onRefresh: () => void;
@@ -11,7 +11,7 @@ interface DashboardHeaderProps {
 }
 
 export const DashboardHeader = ({ onRefresh, onExport, isRefreshing, isExporting }: DashboardHeaderProps) => {
-  const { t, isRTL } = useOptionalLanguage();
+  const { t, isRTL } = useLanguage();
 
   return (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
