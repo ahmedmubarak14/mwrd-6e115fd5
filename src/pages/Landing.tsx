@@ -5,6 +5,16 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useOptionalAuth } from "@/contexts/useOptionalAuth";
 import { useState } from "react";
 import { StaggeredList } from "@/components/ui/animations/MicroInteractions";
+import { AnimatedCounter } from "@/components/ui/animations/AnimatedCounter";
+import { TestimonialsCarousel } from "@/components/ui/TestimonialsCarousel";
+import { SuccessStories } from "@/components/ui/SuccessStories";
+import { 
+  FloatingElement, 
+  PulseOnHover, 
+  MagneticHover, 
+  GlowOnScroll, 
+  TiltCard 
+} from "@/components/ui/advanced/AdvancedMicroInteractions";
 import { 
   ArrowRight, 
   Users, 
@@ -208,11 +218,12 @@ export const Landing = () => {
             <div className={`${language === 'ar' ? 'lg:order-1' : 'lg:order-2'} space-y-6`}>
               <StaggeredList staggerDelay={0.15}>
                 {[
-                  { 
+                   { 
                     icon: FileText, 
                     title: language === 'ar' ? 'نظام طلب التسعير' : 'RFQ System',
                     subtitle: language === 'ar' ? 'عروض ذكية' : 'Smart bidding',
-                    count: "24", 
+                    count: 24, 
+                    countSuffix: "",
                     label: language === 'ar' ? 'طلبات نشطة' : 'Active RFQs', 
                     color: '#8B5CF6',
                     progress: 60
@@ -221,7 +232,8 @@ export const Landing = () => {
                     icon: Users, 
                     title: language === 'ar' ? 'الموردون' : 'Vendors',
                     subtitle: language === 'ar' ? 'موردون موثقون' : 'Verified vendors',
-                    count: "1,247", 
+                    count: 1247, 
+                    countSuffix: "",
                     label: language === 'ar' ? 'موردون نشطون' : 'Active vendors', 
                     color: '#3B82F6',
                     progress: 85
@@ -230,19 +242,23 @@ export const Landing = () => {
                     icon: Shield, 
                     title: language === 'ar' ? 'آمان' : 'Secure',
                     subtitle: language === 'ar' ? 'معاملات موثقة' : 'Verified transactions',
-                    count: "99.9%", 
+                    count: 99.9, 
+                    countSuffix: "%",
                     label: language === 'ar' ? 'معدل النجاح' : 'Success rate', 
                     color: '#10B981',
-                    progress: 99
+                    progress: 99,
+                    decimals: 1
                   },
                   { 
                     icon: Clock, 
                     title: language === 'ar' ? 'سريع' : 'Fast',
                     subtitle: language === 'ar' ? 'متوسط الاستجابة' : 'Average response',
-                    count: "4.2h", 
+                    count: 4.2, 
+                    countSuffix: "h",
                     label: language === 'ar' ? 'وقت استجابة العرض' : 'Bid response time', 
                     color: '#F59E0B',
-                    progress: 70
+                    progress: 70,
+                    decimals: 1
                   }
                 ].map((stat, index) => (
                   <Card key={index} hoverEffect="lift" className="p-3 transition-all duration-300 animate-fade-in bg-white/5 border border-white/20 backdrop-blur-20">
@@ -257,7 +273,14 @@ export const Landing = () => {
                         <p className="text-xs text-white mb-1">{stat.subtitle}</p>
                         <div className="flex items-end justify-between">
                           <div>
-                            <div className="text-lg font-black text-white mb-1">{stat.count}</div>
+                            <div className="text-lg font-black text-white mb-1">
+                              <AnimatedCounter 
+                                end={stat.count} 
+                                suffix={stat.countSuffix}
+                                decimals={stat.decimals || 0}
+                                duration={2500}
+                              />
+                            </div>
                             <div className="text-xs text-white">{stat.label}</div>
                           </div>
                         </div>
@@ -432,6 +455,13 @@ export const Landing = () => {
         </div>
       </section>
 
+      {/* Success Stories Section */}
+      <section className="py-32 px-6 relative overflow-hidden">
+        <div className="container mx-auto relative z-10">
+          <SuccessStories isRTL={isRTL} />
+        </div>
+      </section>
+
       {/* Our Smart Platform Section */}
       <section className="py-32 px-6 relative overflow-hidden">
         <div className="container mx-auto relative z-10">
@@ -473,17 +503,25 @@ export const Landing = () => {
                 color: '#102C33'
               }
             ].map((feature, index) => (
-              <Card key={index} hoverEffect="scale" className="p-6 hover:shadow-2xl transition-all duration-500 bg-white/5 border border-white/20 backdrop-blur-20">
-                <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${feature.color}30` }}>
-                    <feature.icon className="h-8 w-8" style={{ color: feature.color }} />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold mb-2 text-white">{feature.title}</h3>
-                    <p className="text-white font-light leading-relaxed">{feature.desc}</p>
-                  </div>
-                </div>
-              </Card>
+              <FloatingElement key={index} intensity="low">
+                <PulseOnHover>
+                  <TiltCard>
+                    <Card hoverEffect="scale" className="p-6 hover:shadow-2xl transition-all duration-500 bg-white/5 border border-white/20 backdrop-blur-20 h-full">
+                      <div className="flex flex-col items-center text-center space-y-4">
+                        <MagneticHover strength={10}>
+                          <div className="w-16 h-16 rounded-2xl flex items-center justify-center border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${feature.color}30` }}>
+                            <feature.icon className="h-8 w-8" style={{ color: feature.color }} />
+                          </div>
+                        </MagneticHover>
+                        <div>
+                          <h3 className="text-xl font-bold mb-2 text-white">{feature.title}</h3>
+                          <p className="text-white font-light leading-relaxed">{feature.desc}</p>
+                        </div>
+                      </div>
+                    </Card>
+                  </TiltCard>
+                </PulseOnHover>
+              </FloatingElement>
             ))}
           </div>
         </div>
@@ -610,6 +648,23 @@ export const Landing = () => {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-32 px-6 relative overflow-hidden">
+        <div className="container mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
+              {language === 'ar' ? 'ماذا يقول عملاؤنا' : 'What Our Clients Say'}
+            </h2>
+            <p className="text-lg max-w-3xl mx-auto font-light text-white">
+              {language === 'ar' 
+                ? 'تجارب حقيقية من عملائنا وموردينا الذين غيروا أعمالهم معنا'
+                : 'Real experiences from our clients and vendors who transformed their businesses with us'}
+            </p>
+          </div>
+          <TestimonialsCarousel isRTL={isRTL} />
         </div>
       </section>
 
