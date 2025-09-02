@@ -2178,6 +2178,39 @@ export type Database = {
           total_users: number
         }[]
       }
+      get_current_user_profile: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          address: string | null
+          avatar_url: string | null
+          bio: string | null
+          categories: string[] | null
+          company_name: string | null
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          legacy_category: string | null
+          phone: string | null
+          portfolio_url: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          status: Database["public"]["Enums"]["user_status"]
+          subscription_expires_at: string | null
+          subscription_plan: string | null
+          subscription_status: string | null
+          updated_at: string
+          user_id: string
+          verification_documents: Json | null
+          verification_notes: string | null
+          verification_status: string | null
+          verified_at: string | null
+          verified_by: string | null
+        }[]
+      }
+      get_current_user_role: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
       get_growth_statistics: {
         Args: Record<PropertyKey, never>
         Returns: {

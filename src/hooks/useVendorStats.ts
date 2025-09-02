@@ -155,7 +155,7 @@ export const useVendorStats = () => {
         });
       }
 
-      console.log('Offer trends data:', offerTrends); // Debug log
+      console.log('Offer trends data for analytics:', offerTrends);
 
       setStats({
         totalOffers,

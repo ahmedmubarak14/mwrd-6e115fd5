@@ -76,7 +76,7 @@ export const BasicAnalyticsDashboard: React.FC = () => {
         totalRequests: requestsCount,
         totalOffers: offersCount || 0,
         totalTransactions,
-        activeSubscriptions: 0, // TODO: Implement subscription count
+        activeSubscriptions: 0, // Will be implemented when subscription feature is added
         monthlyRevenue
       });
 

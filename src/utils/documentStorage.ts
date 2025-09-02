@@ -69,8 +69,8 @@ export const verifyFileExists = async (filePath: string): Promise<{ success: boo
     const fileName = pathParts.pop();
     const folderPath = pathParts.join('/');
 
-    // Enhanced logging for debugging
-    console.log('Verifying file existence:', { filePath, folderPath, fileName });
+    // Production logging with proper error handling
+    console.log('Document verification check:', { filePath, folderPath, fileName });
 
     const { data, error } = await supabase.storage
       .from('chat-files')

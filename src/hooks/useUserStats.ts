@@ -107,7 +107,7 @@ export const useUserStats = () => {
             .eq('type', 'payment')
         ]);
 
-        // Now get pending offers on client's requests - FIXED BUG
+        // Get pending offers on client's requests - Fixed
         const clientRequestIds = requestsResult.data?.map(r => r.id) || [];
         let pendingOffersCount = 0;
         

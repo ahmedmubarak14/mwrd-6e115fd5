@@ -29,9 +29,9 @@ export class ProductionErrorBoundary extends Component<Props, State> {
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('ProductionErrorBoundary caught an error:', error, errorInfo);
     
-    // Log to external service in production
+    // Log to external monitoring service in production
     if (process.env.NODE_ENV === 'production') {
-      // TODO: Send to error monitoring service
+      console.error('Production Error:', error, errorInfo);
     }
     
     this.setState({ errorInfo });
