@@ -1,293 +1,259 @@
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { SearchResult } from "@/hooks/useSearch";
-import { 
-  FileText, 
-  Package, 
-  Users, 
-  MapPin, 
-  Calendar, 
-  DollarSign,
-  Clock,
-  Star,
-  Eye,
-  MessageCircle
-} from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { Calendar, MapPin, DollarSign, Clock, User, Building } from "lucide-react";
+import { AdvancedSearchResult, VendorSearchResult } from "@/hooks/useAdvancedSearch";
 import { format } from "date-fns";
 
 interface SearchResultsProps {
-  results: SearchResult[];
+  results: AdvancedSearchResult[];
+  vendorResults: VendorSearchResult[];
   loading: boolean;
-  onResultClick?: (result: SearchResult) => void;
-  showActions?: boolean;
+  totalCount: number;
+  searchType: 'rfqs' | 'vendors';
+  onLoadMore?: () => void;
+  hasMore?: boolean;
 }
 
-export const SearchResults = ({ 
-  results, 
-  loading, 
-  onResultClick,
-  showActions = true 
-}: SearchResultsProps) => {
-  const { t, isRTL } = useLanguage();
-
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case "request": return <FileText className="h-4 w-4" />;
-      case "offer": return <Package className="h-4 w-4" />;
-      case "vendor": return <Users className="h-4 w-4" />;
-      default: return <FileText className="h-4 w-4" />;
+const RFQResultCard = ({ result }: { result: AdvancedSearchResult }) => {
+  const getPriorityVariant = (priority: string) => {
+    switch (priority) {
+      case 'urgent':
+        return 'destructive';
+      case 'high':
+        return 'default';
+      case 'medium':
+        return 'secondary';
+      case 'low':
+        return 'outline';
+      default:
+        return 'secondary';
     }
   };
 
-  const getTypeBadge = (type: string) => {
-    const typeMap = {
-      request: { label: isRTL ? "طلب" : "Request", variant: "default" as const },
-      offer: { label: isRTL ? "عرض" : "Offer", variant: "secondary" as const },
-      vendor: { label: isRTL ? "مورد" : "Vendor", variant: "outline" as const }
-    };
-    return typeMap[type as keyof typeof typeMap] || typeMap.request;
-  };
+  return (
+    <Card className="p-6 hover:shadow-md transition-shadow">
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex-1">
+          <h3 className="font-semibold text-lg mb-2">{result.title}</h3>
+          <p className="text-muted-foreground text-sm line-clamp-2 mb-3">
+            {result.description}
+          </p>
+        </div>
+        <Badge variant={getPriorityVariant(result.priority)} className="ml-4">
+          {result.priority.toUpperCase()}
+        </Badge>
+      </div>
 
-  const getStatusBadge = (status: string) => {
-    const statusMap = {
-      new: { label: isRTL ? "جديد" : "New", variant: "default" as const },
-      active: { label: isRTL ? "نشط" : "Active", variant: "default" as const },
-      approved: { label: isRTL ? "موافق عليه" : "Approved", variant: "default" as const },
-      pending: { label: isRTL ? "في الانتظار" : "Pending", variant: "secondary" as const },
-      completed: { label: isRTL ? "مكتمل" : "Completed", variant: "outline" as const },
-      rejected: { label: isRTL ? "مرفوض" : "Rejected", variant: "destructive" as const }
-    };
-    return statusMap[status as keyof typeof statusMap] || statusMap.pending;
-  };
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+        <div className="flex items-center gap-2">
+          <DollarSign className="h-4 w-4 text-muted-foreground" />
+          <div>
+            <p className="text-sm font-medium">Budget</p>
+            <p className="text-xs text-muted-foreground">
+              {result.budget_min && result.budget_max 
+                ? `${result.currency} ${result.budget_min?.toLocaleString()} - ${result.budget_max?.toLocaleString()}`
+                : result.budget_max 
+                  ? `Up to ${result.currency} ${result.budget_max?.toLocaleString()}`
+                  : 'Not specified'
+              }
+            </p>
+          </div>
+        </div>
 
-  const formatPrice = (price: number | undefined, currency = 'SAR') => {
-    if (!price) return null;
-    return `${price.toLocaleString()} ${currency}`;
-  };
+        <div className="flex items-center gap-2">
+          <Calendar className="h-4 w-4 text-muted-foreground" />
+          <div>
+            <p className="text-sm font-medium">Deadline</p>
+            <p className="text-xs text-muted-foreground">
+              {format(new Date(result.submission_deadline), 'MMM dd, yyyy')}
+            </p>
+          </div>
+        </div>
 
-  const formatDate = (dateString: string) => {
-    return format(new Date(dateString), 'MMM dd, yyyy');
-  };
+        {result.delivery_location && (
+          <div className="flex items-center gap-2">
+            <MapPin className="h-4 w-4 text-muted-foreground" />
+            <div>
+              <p className="text-sm font-medium">Location</p>
+              <p className="text-xs text-muted-foreground">{result.delivery_location}</p>
+            </div>
+          </div>
+        )}
 
-  if (loading) {
+        <div className="flex items-center gap-2">
+          <Clock className="h-4 w-4 text-muted-foreground" />
+          <div>
+            <p className="text-sm font-medium">Posted</p>
+            <p className="text-xs text-muted-foreground">
+              {format(new Date(result.created_at), 'MMM dd')}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <Separator className="mb-4" />
+
+      <div className="flex items-center justify-between">
+        <Badge variant="outline">{result.status.replace('_', ' ').toUpperCase()}</Badge>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm">
+            View Details
+          </Button>
+          <Button size="sm">
+            Submit Bid
+          </Button>
+        </div>
+      </div>
+    </Card>
+  );
+};
+
+const VendorResultCard = ({ result }: { result: VendorSearchResult }) => {
+  return (
+    <Card className="p-6 hover:shadow-md transition-shadow">
+      <div className="flex items-start gap-4 mb-4">
+        <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center">
+          <User className="h-8 w-8 text-muted-foreground" />
+        </div>
+        <div className="flex-1">
+          <h3 className="font-semibold text-lg">{result.full_name}</h3>
+          {result.company_name && (
+            <div className="flex items-center gap-1 text-muted-foreground mb-1">
+              <Building className="h-3 w-3" />
+              <span className="text-sm">{result.company_name}</span>
+            </div>
+          )}
+          <Badge variant="secondary" className="text-xs">
+            {result.verification_status.toUpperCase()}
+          </Badge>
+        </div>
+      </div>
+
+      {result.bio && (
+        <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+          {result.bio}
+        </p>
+      )}
+
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        {result.address && (
+          <div className="flex items-center gap-2">
+            <MapPin className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm">{result.address}</span>
+          </div>
+        )}
+        {result.categories && result.categories.length > 0 && (
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium">Categories:</span>
+            <span className="text-sm text-muted-foreground">
+              {result.categories.length} specialties
+            </span>
+          </div>
+        )}
+      </div>
+
+      <Separator className="mb-4" />
+
+      <div className="flex justify-between">
+        <Badge variant="outline">
+          Member since {format(new Date(result.created_at), 'yyyy')}
+        </Badge>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm">
+            View Profile
+          </Button>
+          <Button size="sm">
+            Contact
+          </Button>
+        </div>
+      </div>
+    </Card>
+  );
+};
+
+export const SearchResults = ({ 
+  results, 
+  vendorResults,
+  loading, 
+  totalCount, 
+  searchType, 
+  onLoadMore, 
+  hasMore 
+}: SearchResultsProps) => {
+  const displayResults = searchType === 'rfqs' ? results : vendorResults;
+
+  if (loading && displayResults.length === 0) {
     return (
       <div className="space-y-4">
-        {[1, 2, 3].map(i => (
-          <Card key={i} className="animate-pulse">
-            <CardContent className="p-6">
-              <div className="space-y-3">
-                <div className="h-4 bg-muted rounded w-3/4"></div>
-                <div className="h-3 bg-muted rounded w-1/2"></div>
-                <div className="h-3 bg-muted rounded w-full"></div>
+        {[1, 2, 3].map((i) => (
+          <Card key={i} className="p-6 animate-pulse">
+            <div className="space-y-4">
+              <div className="flex justify-between">
+                <div className="space-y-2 flex-1">
+                  <div className="h-4 bg-muted rounded w-1/3"></div>
+                  <div className="h-3 bg-muted rounded w-2/3"></div>
+                </div>
+                <div className="h-6 bg-muted rounded w-16"></div>
               </div>
-            </CardContent>
+              <div className="grid grid-cols-4 gap-4">
+                {[1, 2, 3, 4].map((j) => (
+                  <div key={j} className="h-10 bg-muted rounded"></div>
+                ))}
+              </div>
+            </div>
           </Card>
         ))}
       </div>
     );
   }
 
-  if (results.length === 0) {
+  if (displayResults.length === 0 && !loading) {
     return (
-      <Card>
-        <CardContent className="p-8 text-center">
-          <FileText className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-          <h3 className="text-lg font-semibold mb-2">
-            {isRTL ? "لم يتم العثور على نتائج" : "No Results Found"}
-          </h3>
-          <p className="text-muted-foreground">
-            {isRTL ? "جرب تعديل المرشحات أو استخدم كلمات مختلفة" : "Try adjusting your filters or using different keywords"}
-          </p>
-        </CardContent>
+      <Card className="p-8 text-center">
+        <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
+          {searchType === 'rfqs' ? (
+            <DollarSign className="h-8 w-8 text-muted-foreground" />
+          ) : (
+            <User className="h-8 w-8 text-muted-foreground" />
+          )}
+        </div>
+        <h3 className="text-lg font-semibold mb-2">No Results Found</h3>
+        <p className="text-muted-foreground">
+          Try adjusting your search criteria or browse all available{' '}
+          {searchType === 'rfqs' ? 'RFQs' : 'vendors'}.
+        </p>
       </Card>
     );
   }
 
   return (
-    <div className="space-y-4">
-      {results.map((result) => {
-        const typeBadge = getTypeBadge(result.type);
-        const statusBadge = getStatusBadge(result.status);
-        
-        return (
-          <Card 
-            key={`${result.type}-${result.id}`} 
-            className="hover:shadow-md transition-shadow cursor-pointer group"
-            onClick={() => onResultClick?.(result)}
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold">
+          {totalCount} {searchType === 'rfqs' ? 'RFQs' : 'Vendors'} Found
+        </h2>
+      </div>
+
+      <div className="space-y-4">
+        {searchType === 'rfqs' 
+          ? results.map((result) => <RFQResultCard key={result.id} result={result} />)
+          : vendorResults.map((result) => <VendorResultCard key={result.id} result={result} />)
+        }
+      </div>
+
+      {hasMore && onLoadMore && (
+        <div className="text-center pt-4">
+          <Button
+            variant="outline"
+            onClick={onLoadMore}
+            disabled={loading}
           >
-            <CardContent className="p-6">
-              {/* Header */}
-              <div className={`flex items-start justify-between mb-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <div className="p-2 rounded-lg bg-muted/50">
-                    {getTypeIcon(result.type)}
-                  </div>
-                  <div className={isRTL ? 'text-right' : 'text-left'}>
-                    <div className={`flex items-center gap-2 mb-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <Badge variant={typeBadge.variant}>{typeBadge.label}</Badge>
-                      <Badge variant={statusBadge.variant}>{statusBadge.label}</Badge>
-                      {result.relevance > 0 && (
-                        <Badge variant="outline" className="text-xs">
-                          {result.relevance}% {isRTL ? "مطابقة" : "match"}
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                
-                {result.type === 'vendor' && result.metadata.avatar_url && (
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage src={result.metadata.avatar_url} />
-                    <AvatarFallback>
-                      {result.title.charAt(0).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                )}
-              </div>
-
-              {/* Title and Description */}
-              <div className={isRTL ? 'text-right' : 'text-left'}>
-                <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
-                  {result.title}
-                </h3>
-                <p className="text-muted-foreground mb-4 line-clamp-2">
-                  {result.description}
-                </p>
-              </div>
-
-              {/* Metadata */}
-              <div className={`flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                {result.location && (
-                  <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <MapPin className="h-3 w-3" />
-                    <span>{result.location}</span>
-                  </div>
-                )}
-                
-                <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <Calendar className="h-3 w-3" />
-                  <span>{formatDate(result.created_at)}</span>
-                </div>
-
-                {result.price && (
-                  <div className={`flex items-center gap-1 text-primary font-medium ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <DollarSign className="h-3 w-3" />
-                    <span>{formatPrice(result.price, result.currency)}</span>
-                  </div>
-                )}
-
-                {result.type === 'request' && result.metadata.urgency && (
-                  <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <Clock className="h-3 w-3" />
-                    <span className="capitalize">{result.metadata.urgency}</span>
-                  </div>
-                )}
-
-                {result.type === 'offer' && result.metadata.delivery_time_days && (
-                  <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <Clock className="h-3 w-3" />
-                    <span>{result.metadata.delivery_time_days} {isRTL ? "أيام" : "days"}</span>
-                  </div>
-                )}
-
-                {result.rating && (
-                  <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <Star className="h-3 w-3" />
-                    <span>{result.rating}</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Type-specific metadata */}
-              {result.type === 'request' && result.metadata.category && (
-                <div className={`mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
-                  <Badge variant="outline" className="mr-2">
-                    {result.metadata.category}
-                  </Badge>
-                  {result.metadata.client && (
-                    <span className="text-sm text-muted-foreground">
-                      {isRTL ? "بواسطة:" : "by"} {result.metadata.client}
-                    </span>
-                  )}
-                </div>
-              )}
-
-              {result.type === 'offer' && result.metadata.request_title && (
-                <div className={`mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
-                  <span className="text-sm text-muted-foreground">
-                    {isRTL ? "للطلب:" : "For request:"} 
-                  </span>
-                  <span className="text-sm font-medium ml-1">
-                    {result.metadata.request_title}
-                  </span>
-                  {result.metadata.vendor && (
-                    <div className="text-sm text-muted-foreground">
-                      {isRTL ? "بواسطة:" : "by"} {result.metadata.vendor}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {result.type === 'vendor' && (
-                <div className={`mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
-                  {result.metadata.company_name && (
-                    <div className="text-sm font-medium mb-1">
-                      {result.metadata.company_name}
-                    </div>
-                  )}
-                  {result.metadata.categories && (
-                    <div className="flex flex-wrap gap-1">
-                      {result.metadata.categories.slice(0, 3).map((category: string, index: number) => (
-                        <Badge key={index} variant="outline" className="text-xs">
-                          {category}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Actions */}
-              {showActions && (
-                <div className={`flex gap-2 pt-4 border-t ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
-                  >
-                    <Eye className="h-3 w-3" />
-                    {isRTL ? "عرض" : "View"}
-                  </Button>
-                  
-                  {result.type !== 'vendor' && (
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
-                    >
-                      <MessageCircle className="h-3 w-3" />
-                      {isRTL ? "رسالة" : "Message"}
-                    </Button>
-                  )}
-                  
-                  {result.type === 'request' && (
-                    <Button 
-                      size="sm"
-                      className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
-                    >
-                      <Package className="h-3 w-3" />
-                      {isRTL ? "تقديم عرض" : "Submit Offer"}
-                    </Button>
-                  )}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        );
-      })}
+            {loading ? 'Loading...' : 'Load More Results'}
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
