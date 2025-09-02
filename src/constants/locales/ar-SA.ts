@@ -558,6 +558,30 @@ export const arSA = {
     system: "النظام"
   },
 
+  // Browse Requests
+  browseRequests: {
+    title: "تصفح الطلبات",
+    subtitle: "اكتشف وقدم عروضاً على فرص الشراء",
+    totalRequests: "إجمالي الطلبات",
+    urgentHighPriority: "عاجل وأولوية عالية",
+    highBudget: "ميزانية عالية",
+    newThisWeek: "جديد هذا الأسبوع",
+    searchAndFilter: "البحث والتصفية",
+    searchPlaceholder: "البحث في الطلبات بالعنوان أو الفئة...",
+    filterByCategory: "التصفية حسب الفئة",
+    allCategories: "جميع الفئات",
+    noResults: "لا توجد نتائج",
+    noResultsDesc: "جرب تعديل معايير البحث أو التصفية",
+    budget: "الميزانية",
+    deadline: "الموعد النهائي",
+    posted: "تاريخ النشر",
+    submitOffer: "تقديم عرض",
+    viewDetails: "عرض التفاصيل",
+    budgetNotSpecified: "الميزانية غير محددة",
+    budgetNegotiable: "الميزانية قابلة للتفاوض",
+    filterDescription: "استخدم المرشحات للعثور على الطلبات ذات الصلة"
+  },
+
   // Settings
   settings: {
     title: "الإعدادات",

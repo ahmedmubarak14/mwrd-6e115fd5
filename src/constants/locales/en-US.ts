@@ -568,6 +568,30 @@ export const enUS = {
     system: "System"
   },
 
+  // Browse Requests
+  browseRequests: {
+    title: "Browse Requests",
+    subtitle: "Discover and bid on procurement opportunities",
+    totalRequests: "Total Requests",
+    urgentHighPriority: "Urgent & High Priority",
+    highBudget: "High Budget",
+    newThisWeek: "New This Week",
+    searchAndFilter: "Search & Filter",
+    searchPlaceholder: "Search requests by title or category...",
+    filterByCategory: "Filter by Category",
+    allCategories: "All Categories",
+    noResults: "No Results Found",
+    noResultsDesc: "Try adjusting your search or filter criteria",
+    budget: "Budget",
+    deadline: "Deadline",
+    posted: "Posted",
+    submitOffer: "Submit Offer",
+    viewDetails: "View Details",
+    budgetNotSpecified: "Budget not specified",
+    budgetNegotiable: "Budget negotiable",
+    filterDescription: "Use filters to find relevant requests"
+  },
+
   // Settings
   settings: {
     title: "Settings",
