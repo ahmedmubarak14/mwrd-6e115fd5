@@ -25,7 +25,7 @@ import {
   Users
 } from "lucide-react";
 import { VendorUserProfile } from "./VendorUserProfile";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
 interface VendorSidebarProps {
@@ -55,11 +55,7 @@ export const VendorSidebar = ({
   onItemClick 
 }: VendorSidebarProps) => {
   const location = useLocation();
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useLanguage();
 
   // Track which groups are expanded with localStorage persistence
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(() => {
