@@ -231,7 +231,24 @@ export const arSA = {
     subscription: {
       title: 'إدارة الاشتراك',
       subtitle: 'إدارة خطة الاشتراك والفوترة',
+      description: 'إدارة خطة الاشتراك وتفضيلات الفوترة',
       currentPlan: 'الخطة الحالية',
+      daysRemaining: 'الأيام المتبقية',
+      monthlySpend: 'الإنفاق الشهري',
+      fromLastMonth: 'من الشهر الماضي',
+      overview: 'نظرة عامة',
+      upgrade: 'ترقية',
+      billingHistory: 'سجل الفوترة',
+      subscriptionDetails: 'تفاصيل الاشتراك',
+      planFeatures: 'ميزات الخطة',
+      expiresIn: 'ينتهي اشتراكك خلال {days} أيام',
+      upgradeButton: 'ترقية الخطة',
+      currentPlanButton: 'الخطة الحالية',
+      noBillingHistory: 'لا يوجد سجل فوترة متاح',
+      upgradeInitiated: 'تم بدء الترقية',
+      redirectingPayment: 'إعادة توجيه للدفع لخطة {plan}...',
+      error: 'خطأ',
+      failedUpgrade: 'فشل في ترقية الاشتراك',
       billingCycle: 'دورة الفوترة',
       nextBilling: 'تاريخ الفوترة التالي',
       upgradeNow: 'ترقية الآن',
@@ -246,11 +263,36 @@ export const arSA = {
       upgradePlan: 'ترقية الخطة',
       downgradePlan: 'تخفيض الخطة',
       cancelSubscription: 'إلغاء الاشتراك',
-      plan: {
-        basic: 'الخطة الأساسية',
-        professional: 'الخطة المهنية',
-        enterprise: 'خطة الشركات',
-        free: 'الخطة المجانية'
+      plans: {
+        basic: {
+          name: 'الخطة الأساسية',
+          price: '9.99 دولار/شهر',
+          features: {
+            0: 'حتى 10 مشاريع',
+            1: 'دعم أساسي',
+            2: 'الميزات المعيارية'
+          }
+        },
+        premium: {
+          name: 'الخطة المميزة',
+          price: '19.99 دولار/شهر',
+          features: {
+            0: 'حتى 50 مشروع',
+            1: 'دعم ذو أولوية',
+            2: 'ميزات متقدمة',
+            3: 'لوحة تحليلات'
+          }
+        },
+        enterprise: {
+          name: 'خطة الشركات',
+          price: '49.99 دولار/شهر',
+          features: {
+            0: 'مشاريع غير محدودة',
+            1: 'دعم مخصص',
+            2: 'جميع الميزات',
+            3: 'تكاملات مخصصة'
+          }
+        }
       },
       billing: {
         monthly: 'شهرياً',

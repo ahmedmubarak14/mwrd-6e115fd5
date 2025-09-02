@@ -229,7 +229,24 @@ export const enUS = {
     subscription: {
       title: 'Subscription Management',
       subtitle: 'Manage your subscription plan and billing',
+      description: 'Manage your subscription plan and billing preferences',
       currentPlan: 'Current Plan',
+      daysRemaining: 'Days Remaining',
+      monthlySpend: 'Monthly Spend',
+      fromLastMonth: 'from last month',
+      overview: 'Overview',
+      upgrade: 'Upgrade',
+      billingHistory: 'Billing History',
+      subscriptionDetails: 'Subscription Details',
+      planFeatures: 'Plan Features',
+      expiresIn: 'Your subscription expires in {days} days',
+      upgradeButton: 'Upgrade Plan',
+      currentPlanButton: 'Current Plan',
+      noBillingHistory: 'No billing history available',
+      upgradeInitiated: 'Upgrade Initiated',
+      redirectingPayment: 'Redirecting to payment for {plan} plan...',
+      error: 'Error',
+      failedUpgrade: 'Failed to upgrade subscription',
       billingCycle: 'Billing Cycle',
       nextBilling: 'Next Billing Date',
       upgradeNow: 'Upgrade Now',
@@ -244,11 +261,36 @@ export const enUS = {
       upgradePlan: 'Upgrade Plan',
       downgradePlan: 'Downgrade Plan',
       cancelSubscription: 'Cancel Subscription',
-      plan: {
-        basic: 'Basic Plan',
-        professional: 'Professional Plan',
-        enterprise: 'Enterprise Plan',
-        free: 'Free Plan'
+      plans: {
+        basic: {
+          name: 'Basic Plan',
+          price: '$9.99/month',
+          features: {
+            0: 'Up to 10 projects',
+            1: 'Basic support',
+            2: 'Standard features'
+          }
+        },
+        premium: {
+          name: 'Premium Plan', 
+          price: '$19.99/month',
+          features: {
+            0: 'Up to 50 projects',
+            1: 'Priority support',
+            2: 'Advanced features',
+            3: 'Analytics dashboard'
+          }
+        },
+        enterprise: {
+          name: 'Enterprise Plan',
+          price: '$49.99/month',
+          features: {
+            0: 'Unlimited projects',
+            1: 'Dedicated support',
+            2: 'All features',
+            3: 'Custom integrations'
+          }
+        }
       },
       billing: {
         monthly: 'Monthly',
