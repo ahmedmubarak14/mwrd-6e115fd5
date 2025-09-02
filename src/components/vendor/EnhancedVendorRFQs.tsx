@@ -39,7 +39,7 @@ interface RFQ {
   currency: string;
   deadline: Date;
   category: string;
-  status: 'open' | 'closed' | 'awarded';
+  status: 'open' | 'closed' | 'awarded' | 'published' | 'draft' | 'evaluation';
   client_name: string;
   requirements: string[];
   created_at: Date;
@@ -67,88 +67,83 @@ export const EnhancedVendorRFQs = () => {
     isRTL: false 
   };
 
-  const mockRFQs: RFQ[] = [
-    {
-      id: '1',
-      title: t('vendor.rfqs.sampleRfq1Title') || 'Construction Project - Office Building',
-      description: t('vendor.rfqs.sampleRfq1Description') || 'We need a construction company to build a 5-story office building in downtown area.',
-      budget_min: 500000,
-      budget_max: 750000,
-      currency: 'USD',
-      deadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
-      category: 'Construction',
-      status: 'open',
-      client_name: 'ABC Corporation',
-      requirements: [
-        t('vendor.rfqs.sampleRequirement1') || 'Licensed contractor', 
-        t('vendor.rfqs.sampleRequirement2') || 'Insurance coverage', 
-        t('vendor.rfqs.sampleRequirement3') || '5+ years experience'
-      ],
-      created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-      responses_count: 12,
-      my_response_status: 'none'
-    },
-    {
-      id: '2', 
-      title: t('vendor.rfqs.sampleRfq2Title') || 'Engineering Services - Bridge Design',
-      description: t('vendor.rfqs.sampleRfq2Description') || 'Looking for structural engineering services for a new bridge project.',
-      budget_min: 75000,
-      budget_max: 100000,
-      currency: 'USD',
-      deadline: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000), // 21 days from now
-      category: 'Engineering',
-      status: 'open',
-      client_name: 'City Planning Department',
-      requirements: [
-        t('vendor.rfqs.sampleRequirement4') || 'PE license required', 
-        t('vendor.rfqs.sampleRequirement5') || 'Bridge design experience', 
-        t('vendor.rfqs.sampleRequirement6') || 'CAD proficiency'
-      ],
-      created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days ago
-      responses_count: 8,
-      my_response_status: 'submitted'
-    },
-    {
-      id: '3',
-      title: t('vendor.rfqs.sampleRfq3Title') || 'IT Consulting - System Upgrade',
-      description: t('vendor.rfqs.sampleRfq3Description') || 'Need IT consulting services for upgrading our legacy systems.',
-      budget_min: 25000,
-      budget_max: 40000,
-      currency: 'USD',
-      deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 14 days from now
-      category: 'Technology',
-      status: 'open',
-      client_name: 'TechCorp Industries',
-      requirements: [
-        t('vendor.rfqs.sampleRequirement7') || 'Certified consultants', 
-        t('vendor.rfqs.sampleRequirement8') || 'Legacy system experience', 
-        t('vendor.rfqs.sampleRequirement9') || 'Available for on-site work'
-      ],
-      created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), // 1 day ago
-      responses_count: 15,
-      my_response_status: 'none'
-    },
-    {
-      id: '4',
-      title: t('vendor.rfqs.sampleRfq4Title') || 'Marketing Campaign - Product Launch',
-      description: t('vendor.rfqs.sampleRfq4Description') || 'Seeking creative agency for comprehensive marketing campaign.',
-      budget_min: 50000,
-      budget_max: 80000,
-      currency: 'USD',
-      deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
-      category: 'Marketing',
-      status: 'closed',
-      client_name: 'Innovation Startup',
-      requirements: [
-        t('vendor.rfqs.sampleRequirement10') || 'Portfolio of successful campaigns', 
-        t('vendor.rfqs.sampleRequirement11') || 'Digital marketing expertise', 
-        t('vendor.rfqs.sampleRequirement12') || 'Brand development'
-      ],
-      created_at: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000), // 10 days ago
-      responses_count: 22,
-      my_response_status: 'rejected'
+  // Load RFQs from database instead of mock data
+  const fetchRFQsFromDB = async (): Promise<RFQ[]> => {
+    try {
+      // First get the RFQs
+      const { data: rfqData, error: rfqError } = await supabase
+        .from('rfqs')
+        .select('*')
+        .eq('is_public', true)
+        .eq('status', 'published')
+        .order('created_at', { ascending: false });
+
+      if (rfqError) {
+        console.error('Error fetching RFQs:', rfqError);
+        return [];
+      }
+
+      if (!rfqData || rfqData.length === 0) {
+        return [];
+      }
+
+      // Get categories and user profiles separately
+      const categoryIds = rfqData.map(rfq => rfq.category_id).filter(Boolean);
+      const clientIds = rfqData.map(rfq => rfq.client_id).filter(Boolean);
+
+      const [categoriesResult, profilesResult, bidsResult] = await Promise.all([
+        supabase
+          .from('procurement_categories')
+          .select('id, name, name_ar')
+          .in('id', categoryIds),
+        supabase
+          .from('user_profiles')
+          .select('user_id, full_name, company_name')
+          .in('user_id', clientIds),
+        supabase
+          .from('bids')
+          .select('rfq_id')
+          .in('rfq_id', rfqData.map(rfq => rfq.id))
+      ]);
+
+      const categories = categoriesResult.data || [];
+      const profiles = profilesResult.data || [];
+      const bids = bidsResult.data || [];
+
+      // Count bids per RFQ
+      const bidCounts = bids.reduce((acc, bid) => {
+        acc[bid.rfq_id] = (acc[bid.rfq_id] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
+
+      return rfqData.map(rfq => {
+        const category = categories.find(c => c.id === rfq.category_id);
+        const profile = profiles.find(p => p.user_id === rfq.client_id);
+        
+        return {
+          id: rfq.id,
+          title: rfq.title,
+          description: rfq.description,
+          budget_min: rfq.budget_min || 0,
+          budget_max: rfq.budget_max || 0,
+          currency: rfq.currency,
+          deadline: new Date(rfq.submission_deadline),
+          category: category?.name || 'Other',
+          status: (new Date(rfq.submission_deadline) > new Date() ? 'open' : 'closed') as RFQ['status'],
+          client_name: profile?.company_name || profile?.full_name || 'Anonymous',
+          requirements: Array.isArray(rfq.requirements) && typeof rfq.requirements === 'object' && rfq.requirements !== null
+            ? (rfq.requirements as any).requirements || []
+            : [],
+          created_at: new Date(rfq.created_at),
+          responses_count: bidCounts[rfq.id] || 0,
+          my_response_status: 'none' as const // TODO: Check if current user has submitted a bid
+        };
+      });
+    } catch (error) {
+      console.error('Error in fetchRFQsFromDB:', error);
+      return [];
     }
-  ];
+  };
 
   // Set up real-time updates
   useEffect(() => {
@@ -182,14 +177,13 @@ export const EnhancedVendorRFQs = () => {
     };
   }, [user, t]);
 
-  // Load RFQs
+  // Load RFQs from database
   useEffect(() => {
     setLoading(true);
-    // Simulate API delay
-    setTimeout(() => {
-      setRFQs(mockRFQs);
+    fetchRFQsFromDB().then(data => {
+      setRFQs(data);
       setLoading(false);
-    }, 1000);
+    });
   }, [realTimeUpdates]);
 
   // Filter and sort RFQs
