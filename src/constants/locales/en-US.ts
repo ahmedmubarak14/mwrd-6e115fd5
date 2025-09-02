@@ -465,6 +465,37 @@ export const enUS = {
       categoryBreakdown: 'Category Breakdown',
       topPerformingCategories: 'Top Performing Categories'
     },
+    categories: {
+      construction: 'Construction',
+      engineering: 'Engineering', 
+      consulting: 'Consulting',
+      technology: 'Technology',
+      other: 'Other'
+    },
+    months: {
+      jan: 'Jan',
+      feb: 'Feb',
+      mar: 'Mar', 
+      apr: 'Apr',
+      may: 'May',
+      jun: 'Jun',
+      jul: 'Jul',
+      aug: 'Aug',
+      sep: 'Sep',
+      oct: 'Oct',
+      nov: 'Nov',
+      dec: 'Dec'
+    },
+    bidStatus: {
+      pending: 'Pending',
+      awarded: 'Awarded', 
+      rejected: 'Rejected'
+    },
+    staticText: {
+      ofTotalProjects: 'of total projects',
+      clientLabel: 'Client',
+      hours: 'h'
+    },
     profile: {
       businessInfo: "Business Information",
       basicInfo: "Basic Information",

@@ -217,7 +217,7 @@ export const BusinessIntelligence = () => {
     },
     {
       title: t('vendor.analytics.averageResponseTime'),
-      value: '2.4h',
+      value: `2.4${t('vendor.staticText.hours')}`,
       change: '-15min',
       trend: 'up',
       icon: Clock,
@@ -242,20 +242,20 @@ export const BusinessIntelligence = () => {
   ];
 
   const chartData = [
-    { name: 'Jan', offers: 12, accepted: 8, revenue: 25000 },
-    { name: 'Feb', offers: 15, accepted: 11, revenue: 32000 },
-    { name: 'Mar', offers: 18, accepted: 14, revenue: 28000 },
-    { name: 'Apr', offers: 22, accepted: 16, revenue: 45000 },
-    { name: 'May', offers: 25, accepted: 19, revenue: 52000 },
-    { name: 'Jun', offers: 28, accepted: 22, revenue: 48000 }
+    { name: t('vendor.months.jan'), offers: 12, accepted: 8, revenue: 25000 },
+    { name: t('vendor.months.feb'), offers: 15, accepted: 11, revenue: 32000 },
+    { name: t('vendor.months.mar'), offers: 18, accepted: 14, revenue: 28000 },
+    { name: t('vendor.months.apr'), offers: 22, accepted: 16, revenue: 45000 },
+    { name: t('vendor.months.may'), offers: 25, accepted: 19, revenue: 52000 },
+    { name: t('vendor.months.jun'), offers: 28, accepted: 22, revenue: 48000 }
   ];
 
   const categoryData = [
-    { name: 'Construction', value: 35, color: 'hsl(var(--chart-1))' },
-    { name: 'Engineering', value: 25, color: 'hsl(var(--chart-2))' },
-    { name: 'Consulting', value: 20, color: 'hsl(var(--chart-3))' },
-    { name: 'Technology', value: 15, color: 'hsl(var(--chart-4))' },
-    { name: 'Other', value: 5, color: 'hsl(var(--chart-5))' }
+    { name: t('vendor.categories.construction'), value: 35, color: 'hsl(var(--chart-1))' },
+    { name: t('vendor.categories.engineering'), value: 25, color: 'hsl(var(--chart-2))' },
+    { name: t('vendor.categories.consulting'), value: 20, color: 'hsl(var(--chart-3))' },
+    { name: t('vendor.categories.technology'), value: 15, color: 'hsl(var(--chart-4))' },
+    { name: t('vendor.categories.other'), value: 5, color: 'hsl(var(--chart-5))' }
   ];
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
@@ -511,9 +511,9 @@ export const BusinessIntelligence = () => {
                   <PieChart>
                     <Pie
                       data={reportData.bids.length > 0 ? reportData.bids : [
-                        { status: 'pending', count: 15, percentage: '45.5' },
-                        { status: 'awarded', count: 8, percentage: '24.2' },
-                        { status: 'rejected', count: 10, percentage: '30.3' }
+                        { status: t('vendor.bidStatus.pending'), count: 15, percentage: '45.5' },
+                        { status: t('vendor.bidStatus.awarded'), count: 8, percentage: '24.2' },
+                        { status: t('vendor.bidStatus.rejected'), count: 10, percentage: '30.3' }
                       ]}
                       cx="50%"
                       cy="50%"
@@ -524,9 +524,9 @@ export const BusinessIntelligence = () => {
                       dataKey="count"
                     >
                       {(reportData.bids.length > 0 ? reportData.bids : [
-                        { status: 'pending', count: 15, percentage: '45.5' },
-                        { status: 'awarded', count: 8, percentage: '24.2' },
-                        { status: 'rejected', count: 10, percentage: '30.3' }
+                        { status: t('vendor.bidStatus.pending'), count: 15, percentage: '45.5' },
+                        { status: t('vendor.bidStatus.awarded'), count: 8, percentage: '24.2' },
+                        { status: t('vendor.bidStatus.rejected'), count: 10, percentage: '30.3' }
                       ]).map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
@@ -554,7 +554,7 @@ export const BusinessIntelligence = () => {
                         <span className="text-sm font-medium">#{index + 1}</span>
                       </div>
                       <div className={cn(isRTL && "text-right")}>
-                        <p className="font-medium">Client {client.client_id.slice(0, 8)}...</p>
+                        <p className="font-medium">{t('vendor.staticText.clientLabel')} {client.client_id.slice(0, 8)}...</p>
                         <p className="text-sm text-muted-foreground">{client.orders} {t('vendor.reports.ordersLabel')}</p>
                       </div>
                     </div>
@@ -622,7 +622,7 @@ export const BusinessIntelligence = () => {
                         <div>
                           <p className="font-medium">{category.name}</p>
                           <p className="text-sm text-muted-foreground">
-                            {category.value}% of total projects
+                            {category.value}% {t('vendor.staticText.ofTotalProjects')}
                           </p>
                         </div>
                       </div>

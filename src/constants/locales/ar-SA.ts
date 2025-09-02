@@ -467,6 +467,37 @@ export const arSA = {
       categoryBreakdown: 'تفصيل الفئات',
       topPerformingCategories: 'الفئات الأكثر أداءً'
     },
+    categories: {
+      construction: 'الإنشاءات',
+      engineering: 'الهندسة',
+      consulting: 'الاستشارات', 
+      technology: 'التكنولوجيا',
+      other: 'أخرى'
+    },
+    months: {
+      jan: 'يناير',
+      feb: 'فبراير',
+      mar: 'مارس',
+      apr: 'أبريل', 
+      may: 'مايو',
+      jun: 'يونيو',
+      jul: 'يوليو',
+      aug: 'أغسطس',
+      sep: 'سبتمبر',
+      oct: 'أكتوبر',
+      nov: 'نوفمبر',
+      dec: 'ديسمبر'
+    },
+    bidStatus: {
+      pending: 'قيد الانتظار',
+      awarded: 'مقبولة',
+      rejected: 'مرفوضة'
+    },
+    staticText: {
+      ofTotalProjects: 'من إجمالي المشاريع',
+      clientLabel: 'العميل',
+      hours: 'س'
+    },
     profile: {
       businessInfo: "معلومات الأعمال",
       basicInfo: "المعلومات الأساسية",
