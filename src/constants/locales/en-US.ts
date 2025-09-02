@@ -758,6 +758,60 @@ export const enUS = {
       technology: "Technology",
       marketing: "Marketing"
     },
+    verification: {
+      title: 'Verification Status',
+      description: 'Track your document verification progress',
+      accountStatus: 'Account Status',
+      documentSubmissions: 'Document Submissions',
+      nextSteps: 'Next Steps',
+      adminNotes: 'Admin Notes',
+      reviewNotes: 'Review Notes',
+      refresh: 'Refresh Status',
+      viewDocument: 'View Document',
+      downloadDocument: 'Download Document',
+      uploadDocument: 'Upload Document',
+      resubmitDocument: 'Resubmit Document',
+      commercialRegistration: 'Commercial Registration',
+      nationalId: 'National ID',
+      taxCertificate: 'Tax Certificate',
+      // Status messages
+      verified: 'Fully verified and active',
+      verificationPending: 'Verification pending',
+      documentsUnderReview: 'Documents under review',
+      verificationRejected: 'Verification rejected',
+      reviewInProgress: 'Review in progress (24-48 hours)',
+      // Action messages
+      noDocumentsSubmitted: 'No documents have been submitted yet. Please upload your Commercial Registration to begin verification.',
+      beginVerification: 'Upload your Commercial Registration document to begin the verification process.',
+      reviewFeedback: 'Please review the feedback above and upload a new Commercial Registration document.',
+      documentsBeingReviewed: 'Your documents are being reviewed. You will be notified once the review is complete.',
+      // Status badges
+      approved: 'Approved',
+      underReview: 'Under Review',
+      pending: 'Pending',
+      rejected: 'Rejected',
+      // Dates
+      submitted: 'Submitted',
+      reviewed: 'Reviewed',
+      // CR Upload component
+      uploadCR: 'Upload Commercial Registration',
+      uploadCRDescription: 'Please upload your Commercial Registration document for verification',
+      selectFile: 'Select File',
+      uploading: 'Uploading...',
+      upload: 'Upload',
+      retry: 'Retry Upload',
+      fileSelected: 'File Selected',
+      supportedFormats: 'Supported formats: PDF, JPG, PNG (Max 5MB)',
+      uploadSuccess: 'Document uploaded successfully',
+      uploadError: 'Failed to upload document',
+      verificationRequired: 'Verification Required',
+      completeVerificationAlert: 'Complete your account verification to access all platform features',
+      // Error messages
+      failedToLoad: 'Failed to load verification status',
+      fileRequired: 'Please select a file first',
+      fileTooLarge: 'File size must be less than 5MB',
+      invalidFileType: 'Invalid file type. Please upload PDF, JPG, or PNG files only'
+    },
     sortBy: "Sort By"
   },
 

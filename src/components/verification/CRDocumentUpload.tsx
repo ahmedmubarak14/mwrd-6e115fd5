@@ -8,6 +8,8 @@ import { Upload, FileText, CheckCircle, AlertCircle, RefreshCw } from 'lucide-re
 import { useToastFeedback } from '@/hooks/useToastFeedback';
 import { supabase } from '@/integrations/supabase/client';
 import { uploadDocument } from '@/utils/documentStorage';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { cn } from '@/lib/utils';
 
 interface CRDocumentUploadProps {
   onUploadSuccess?: (documentUrl: string) => void;
@@ -26,6 +28,7 @@ export const CRDocumentUpload = ({
   const [uploading, setUploading] = useState(false);
   const [retrying, setRetrying] = useState(false);
   const { showSuccess, showError } = useToastFeedback();
+  const { t, isRTL } = useLanguage();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -33,13 +36,13 @@ export const CRDocumentUpload = ({
       // Validate file type
       const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
       if (!allowedTypes.includes(selectedFile.type)) {
-        showError('Please upload a PDF or image file (JPEG, PNG)');
+        showError(t('verification.invalidFileTypePDFJPGPNG'));
         return;
       }
       
       // Validate file size (max 10MB)
       if (selectedFile.size > 10 * 1024 * 1024) {
-        showError('File size must be less than 10MB');
+        showError(t('verification.maxSize10MB'));
         return;
       }
       
@@ -54,7 +57,7 @@ export const CRDocumentUpload = ({
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        showError('You must be logged in to upload documents');
+        showError(t('verification.loginRequired'));
         return;
       }
 
@@ -86,7 +89,7 @@ export const CRDocumentUpload = ({
         throw new Error(`Failed to save verification request: ${insertError.message}`);
       }
 
-      showSuccess('Commercial Registration uploaded successfully');
+      showSuccess(t('verification.uploadSuccess'));
       onUploadSuccess?.(uploadResult.filePath!);
       setFile(null);
 
@@ -96,7 +99,7 @@ export const CRDocumentUpload = ({
 
     } catch (error: any) {
       console.error('Upload process error:', error);
-      showError(error.message || 'Failed to upload document');
+      showError(error.message || t('verification.uploadFailed'));
     } finally {
       setUploading(false);
     }
@@ -127,31 +130,39 @@ export const CRDocumentUpload = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className={cn(
+          "flex items-center gap-2",
+          isRTL && "flex-row-reverse"
+        )}>
           <FileText className="h-5 w-5" />
-          Commercial Registration Document
+          {t('verification.crDocumentTitle')}
           {isRequired && <span className="text-destructive">*</span>}
         </CardTitle>
-        <CardDescription>
-          Upload your company's Commercial Registration (CR) certificate. 
-          Accepted formats: PDF, JPEG, PNG (max 10MB)
+        <CardDescription className={cn(isRTL && "text-right")}>
+          {t('verification.crDocumentDescription')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {existingDocument && (
           <Alert>
             <CheckCircle className="h-4 w-4" />
-            <AlertDescription className="flex items-center justify-between">
-              <span>Commercial Registration document has been uploaded and is under review.</span>
+            <AlertDescription className={cn(
+              "flex items-center justify-between",
+              isRTL && "flex-row-reverse text-right"
+            )}>
+              <span>{t('verification.documentUploaded')}</span>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleRetryUpload}
                 disabled={retrying}
-                className="ml-2"
+                className={cn(isRTL ? "mr-2 ml-0" : "ml-2 mr-0")}
               >
-                <RefreshCw className="h-4 w-4 mr-1" />
-                Re-upload
+                <RefreshCw className={cn(
+                  "h-4 w-4",
+                  isRTL ? "ml-1 mr-0" : "mr-1 ml-0"
+                )} />
+                {t('verification.reupload')}
               </Button>
             </AlertDescription>
           </Alert>
@@ -164,10 +175,14 @@ export const CRDocumentUpload = ({
             onChange={handleFileChange}
             disabled={disabled || uploading}
             className="cursor-pointer"
+            dir={isRTL ? 'rtl' : 'ltr'}
           />
           
           {file && (
-            <div className="flex items-center gap-2 p-3 bg-muted rounded-md">
+            <div className={cn(
+              "flex items-center gap-2 p-3 bg-muted rounded-md",
+              isRTL && "flex-row-reverse"
+            )}>
               <FileText className="h-4 w-4" />
               <span className="text-sm">{file.name}</span>
               <span className="text-xs text-muted-foreground">
@@ -181,17 +196,19 @@ export const CRDocumentUpload = ({
             disabled={!file || uploading || disabled}
             className="w-full"
           >
-            <Upload className="h-4 w-4 mr-2" />
-            {uploading ? 'Uploading...' : 'Upload Commercial Registration'}
+            <Upload className={cn(
+              "h-4 w-4",
+              isRTL ? "ml-2 mr-0" : "mr-2 ml-0"
+            )} />
+            {uploading ? t('verification.uploading') : t('verification.uploadCRButton')}
           </Button>
         </div>
 
         {isRequired && (
           <Alert>
             <AlertCircle className="h-4 w-4" />
-            <AlertDescription>
-              Commercial Registration verification is required to access RFQ creation, 
-              order placement, and vendor interactions.
+            <AlertDescription className={cn(isRTL && "text-right")}>
+              {t('verification.crVerificationRequired')}
             </AlertDescription>
           </Alert>
         )}

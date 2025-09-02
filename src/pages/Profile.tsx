@@ -29,7 +29,7 @@ import {
   X
 } from "lucide-react";
 import { CRDocumentUpload } from "@/components/verification/CRDocumentUpload";
-import { VerificationStatus } from "@/components/verification/VerificationStatus";
+import { UnifiedVerificationStatus } from "@/components/verification/UnifiedVerificationStatus";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { AvatarUpload } from "@/components/profile/AvatarUpload";
 import { cn } from "@/lib/utils";
@@ -453,35 +453,19 @@ const ProfilePage = memo(() => {
           </TabsContent>
 
           <TabsContent value="verification" className="space-y-6">
-            <Card>
-               <CardHeader>
-                 <CardTitle className={cn(
-                   "flex items-center gap-2",
-                   isRTL && "flex-row-reverse"
-                 )}>
-                   <Shield className="h-5 w-5" />
-                   {t('profile.accountVerification')}
-                 </CardTitle>
-                 <CardDescription>
-                   {t('profile.verificationDescription')}
-                 </CardDescription>
-               </CardHeader>
-              <CardContent>
-                <VerificationStatus />
-                
-                {/* Allow both clients and vendors to upload CR documents */}
-                {(userProfile.verification_status === 'pending' || 
-                  userProfile.verification_status === 'rejected' || 
-                  !userProfile.verification_status) && (
-                  <div className="mt-6">
-                    <CRDocumentUpload
-                      onUploadSuccess={() => window.location.reload()}
-                      isRequired={true}
-                    />
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+            <UnifiedVerificationStatus showActions={true} compact={false} />
+            
+            {/* Allow document upload for non-verified users */}
+            {(userProfile.verification_status === 'pending' || 
+              userProfile.verification_status === 'rejected' || 
+              !userProfile.verification_status) && (
+              <div className="mt-6">
+                <CRDocumentUpload
+                  onUploadSuccess={() => window.location.reload()}
+                  isRequired={true}
+                />
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </div>
