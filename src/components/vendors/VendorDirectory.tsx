@@ -10,7 +10,7 @@ import { MapPin, Clock, Shield, Search, Filter, Users, Building2 } from "lucide-
 import { format } from "date-fns";
 import { useVendors, VendorFilters } from "@/hooks/useVendors";
 import { useCategories } from "@/hooks/useCategories";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { EmptyState } from "@/components/ui/empty-state";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
@@ -21,9 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { useRealTimeChat } from "@/hooks/useRealTimeChat";
 
 export const VendorDirectory: React.FC = () => {
-  const languageContext = useOptionalLanguage();
-  const language = languageContext?.language || 'en';
-  const isRTL = language === 'ar';
+  const { t, isRTL, language } = useLanguage();
   const navigate = useNavigate();
   const { vendors, loading, totalCount, fetchVendors } = useVendors();
   const { categories } = useCategories();

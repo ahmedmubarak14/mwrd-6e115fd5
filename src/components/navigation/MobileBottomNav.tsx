@@ -1,7 +1,7 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useMobileDetection } from "@/hooks/useMobileDetection";
 import { useCapacitor } from "@/hooks/useCapacitor";
 import { cn } from "@/lib/utils";
@@ -30,8 +30,7 @@ export const MobileBottomNav = () => {
   const { userProfile } = useAuth();
   const { triggerHaptic } = useCapacitor();
   const { isMobile } = useMobileDetection();
-  const languageContext = useOptionalLanguage();
-  const { isRTL } = languageContext || { isRTL: false };
+  const { isRTL } = useLanguage();
 
   const handleNavClick = async () => {
     await triggerHaptic();

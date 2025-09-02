@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useVendorStats } from "@/hooks/useVendorStats";
 import { 
   TrendingUp, 
@@ -37,11 +37,7 @@ interface PerformanceMetric {
 export const VendorPerformanceTracker = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('month');
   const { stats, loading } = useVendorStats();
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useLanguage();
 
   const performanceMetrics: PerformanceMetric[] = [
     {

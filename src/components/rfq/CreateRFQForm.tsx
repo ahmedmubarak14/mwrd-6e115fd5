@@ -12,7 +12,7 @@ import { Separator } from '@/components/ui/separator';
 import { CalendarIcon, AlertCircle, FileText, DollarSign, MapPin, Clock } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { SmartCategorySelector } from './SmartCategorySelector';
 import { SmartFileUpload } from './SmartFileUpload';
 import { useRFQs, CreateRFQData } from '@/hooks/useRFQs';
@@ -32,8 +32,7 @@ export const CreateRFQForm = () => {
   const navigate = useNavigate();
   const { createRFQ } = useRFQs();
   const { toast } = useToast();
-  const languageContext = useOptionalLanguage();
-  const language = languageContext?.language || 'en';
+  const { language } = useLanguage();
 
   const [formData, setFormData] = useState<{
     title: string;

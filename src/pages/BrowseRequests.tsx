@@ -1,5 +1,5 @@
 import React, { useState, useMemo, memo } from "react";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useMatchingSystem } from "@/hooks/useMatchingSystem";
 import { useCategories } from "@/hooks/useCategories";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
@@ -17,7 +17,7 @@ import { Search, Package, MapPin, Calendar, DollarSign, Clock, Plus, Eye, FileTe
 import { cn } from "@/lib/utils";
 
 const BrowseRequestsPage = memo(() => {
-  const { t, language, isRTL } = useOptionalLanguage();
+  const { t, language, isRTL } = useLanguage();
   const { matchedRequests, loading } = useMatchingSystem();
   const { categories, loading: categoriesLoading } = useCategories();
   const [searchTerm, setSearchTerm] = useState("");

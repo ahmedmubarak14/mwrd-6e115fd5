@@ -21,7 +21,7 @@ import {
   ArrowLeft
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { Footer } from '@/components/ui/layout/Footer';
 import { useRealTimeChat, type Conversation } from '@/hooks/useRealTimeChat';
 import { ChatInterface } from '@/components/chat/ChatInterface';
@@ -32,9 +32,7 @@ import { format } from 'date-fns';
 
 export default function EnhancedMessages() {
   const { user, userProfile } = useAuth();
-  const languageContext = useOptionalLanguage();
-  const language = languageContext?.language || 'en';
-  const isRTL = language === 'ar';
+  const { t, isRTL, language } = useLanguage();
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

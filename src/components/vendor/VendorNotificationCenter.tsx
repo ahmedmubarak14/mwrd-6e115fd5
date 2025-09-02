@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useRealTimeNotifications } from "@/hooks/useRealTimeNotifications";
 import { formatDistanceToNow } from "date-fns";
 import { 
@@ -46,11 +46,7 @@ export const VendorNotificationCenter = () => {
   const [activeTab, setActiveTab] = useState('all');
   const [filterPriority, setFilterPriority] = useState<string>('all');
   const { notifications, markAsRead, markAllAsRead, deleteNotification } = useRealTimeNotifications();
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useLanguage();
 
   // Mock notifications for demo
   const mockNotifications: Notification[] = [

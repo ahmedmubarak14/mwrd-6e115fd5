@@ -20,7 +20,7 @@ import {
   UserCheck
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 
@@ -32,11 +32,7 @@ export const VendorHeaderUserMenu = ({ userProfile }: VendorHeaderUserMenuProps)
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key.split('.').pop() || key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useLanguage();
 
   const handleSignOut = async () => {
     try {

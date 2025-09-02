@@ -4,20 +4,18 @@ import { Button } from "@/components/ui/button";
 import { MessageSquare } from "lucide-react";
 import { QuickChatModal } from "@/components/conversations/QuickChatModal";
 import { useAuth } from "@/contexts/AuthContext";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useToastFeedback } from "@/hooks/useToastFeedback";
 import { getAvailableAdmins, selectRandomAdmin } from "@/utils/adminUtils";
 
 export const LiveChatButton = () => {
   const { userProfile } = useAuth();
-  const languageContext = useOptionalLanguage();
+  const { t } = useLanguage();
   const { showError, showSuccess } = useToastFeedback();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedAdmin, setSelectedAdmin] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Safe fallback for translation
-  const t = languageContext?.t || ((key: string) => key.split('.').pop() || key);
 
   const handleStartChat = async () => {
     console.log('LiveChat: Button clicked');

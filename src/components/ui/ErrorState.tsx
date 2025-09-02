@@ -2,7 +2,7 @@ import { AlertTriangle, RefreshCw, Home, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ErrorStateProps {
   title?: string;
@@ -22,8 +22,7 @@ export const ErrorState = ({
   showBackButton = false
 }: ErrorStateProps) => {
   const navigate = useNavigate();
-  const languageContext = useOptionalLanguage();
-  const { t } = languageContext || { t: (key: string) => key };
+  const { t } = useLanguage();
 
   const getVariantStyles = () => {
     switch (variant) {

@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useSearch, SearchFilters } from "@/hooks/useSearch";
 import { AdvancedSearch } from "./AdvancedSearch";
 import { SearchResults } from "./SearchResults";
@@ -33,11 +33,7 @@ export const SearchPage = ({ initialQuery = "", initialFilters = {} }: SearchPag
     ...initialFilters
   });
 
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useLanguage();
 
   const { results, loading, totalCount, search, clearResults } = useSearch();
   const resultsPerPage = 10;

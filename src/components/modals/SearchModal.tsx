@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useSearch, SearchFilters } from "@/hooks/useSearch";
 import { SearchResults } from "@/components/search/SearchResults";
 import { Search, Filter, X } from "lucide-react";
@@ -27,11 +27,7 @@ export const SearchModal = ({ children }: SearchModalProps) => {
   });
   const [showFilters, setShowFilters] = useState(false);
 
-  const languageContext = useOptionalLanguage();
-  const { t, isRTL } = languageContext || { 
-    t: (key: string) => key, 
-    isRTL: false 
-  };
+  const { t, isRTL } = useLanguage();
 
   const { results, loading, search, clearResults } = useSearch();
 

@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import { supabase } from '@/integrations/supabase/client';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ProcurementCategory {
   id: string;
@@ -32,8 +32,7 @@ export const SmartCategorySelector = ({
 }: SmartCategorySelectorProps) => {
   const [categories, setCategories] = useState<ProcurementCategory[]>([]);
   const [loading, setLoading] = useState(true);
-  const languageContext = useOptionalLanguage();
-  const language = languageContext?.language || 'en';
+  const { language } = useLanguage();
 
   useEffect(() => {
     fetchCategories();

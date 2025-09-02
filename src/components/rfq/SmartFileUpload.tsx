@@ -9,7 +9,7 @@ import { Upload, File, X, FileText, Image, AlertCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface UploadedFile {
   id: string;
@@ -43,8 +43,7 @@ export const SmartFileUpload = ({
   const [uploadProgress, setUploadProgress] = useState(0);
   const { user } = useAuth();
   const { toast } = useToast();
-  const languageContext = useOptionalLanguage();
-  const language = languageContext?.language || 'en';
+  const { language } = useLanguage();
 
   const maxSizeBytes = maxSizePerFile * 1024 * 1024;
 

@@ -15,7 +15,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { format } from 'date-fns';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { RFQ } from '@/hooks/useRFQs';
 
 interface RFQCardProps {
@@ -35,8 +35,7 @@ export const RFQCard = ({
   showActions = true, 
   compact = false 
 }: RFQCardProps) => {
-  const languageContext = useOptionalLanguage();
-  const language = languageContext?.language || 'en';
+  const { language } = useLanguage();
 
   const getStatusColor = (status: string) => {
     switch (status) {

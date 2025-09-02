@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { ChevronRight, Home } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { usePerformanceOptimizations } from '@/hooks/usePerformanceOptimizations';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface BreadcrumbItem {
   label: string;
@@ -14,8 +14,7 @@ interface BreadcrumbItem {
 export const SmartBreadcrumbs = () => {
   const location = useLocation();
   const { performanceConfig, createOptimizedHandler } = usePerformanceOptimizations();
-  const languageContext = useOptionalLanguage();
-  const language = languageContext?.language || 'en';
+  const { language } = useLanguage();
 
   // Generate breadcrumbs from current path
   const generateBreadcrumbs = (): BreadcrumbItem[] => {

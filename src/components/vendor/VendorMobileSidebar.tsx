@@ -1,6 +1,6 @@
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { VendorSidebar } from "./VendorSidebar";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
 interface VendorMobileSidebarProps {
@@ -12,8 +12,7 @@ export const VendorMobileSidebar = ({
   isOpen, 
   onOpenChange
 }: VendorMobileSidebarProps) => {
-  const languageContext = useOptionalLanguage();
-  const { isRTL } = languageContext || { isRTL: false };
+  const { isRTL } = useLanguage();
 
   return (
     <div className="lg:hidden">

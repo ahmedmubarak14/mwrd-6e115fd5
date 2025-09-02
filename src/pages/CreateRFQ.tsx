@@ -3,12 +3,11 @@ import { CreateRFQForm } from "@/components/rfq/CreateRFQForm";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function CreateRFQ() {
   const navigate = useNavigate();
-  const languageContext = useOptionalLanguage();
-  const language = languageContext?.language || 'en';
+  const { t, language, isRTL } = useLanguage();
 
   return (
     <ClientPageContainer>

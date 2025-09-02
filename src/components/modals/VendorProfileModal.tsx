@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import { VideoCallModal } from './VideoCallModal';
 import { PrivateRequestModal } from './PrivateRequestModal';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRealTimeChat } from '@/hooks/useRealTimeChat';
 import { useVideoCall } from '@/hooks/useVideoCall';
@@ -55,8 +55,7 @@ interface VendorProfileModalProps {
 }
 
 export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps) => {
-  const languageContext = useOptionalLanguage();
-  const language = languageContext?.language || 'en';
+  const { t, isRTL, language } = useLanguage();
   const isArabic = language === 'ar';
   const { user } = useAuth();
   const navigate = useNavigate();

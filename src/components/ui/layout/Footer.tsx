@@ -1,37 +1,10 @@
 import { Link } from "react-router-dom";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Twitter, Linkedin, Facebook, Instagram, Mail, Phone, MapPin } from "lucide-react";
 import { AnimatedCard } from "@/components/ui/animations/MicroInteractions";
 
 export const Footer = () => {
-  const languageContext = useOptionalLanguage();
-  const language = languageContext?.language || 'en';
-  const t = languageContext?.t || ((key: string) => {
-    // Fallback translations
-    const fallbacks: { [key: string]: string } = {
-      'landing.footer.taglineText': language === 'ar' 
-        ? 'منصة ذكية تربط الشركات بأفضل الموردين في المملكة العربية السعودية'
-        : 'Smart platform connecting businesses with top suppliers in Saudi Arabia',
-      'landing.footer.company': language === 'ar' ? 'الشركة' : 'Company',
-      'landing.footer.contactUsBtn': language === 'ar' ? 'اتصل بنا' : 'Contact Us',
-      'landing.footer.blog': language === 'ar' ? 'المدونة' : 'Blog',
-      'nav.navigation': language === 'ar' ? 'التنقل' : 'Navigation',
-      'landing.footer.whyStart': language === 'ar' ? 'لماذا البداية معنا' : 'Why Start With Us',
-      'landing.footer.whyMove': language === 'ar' ? 'لماذا الانتقال إلينا' : 'Why Move To Us',
-      'landing.footer.pricingSection': language === 'ar' ? 'الأسعار' : 'Pricing',
-      'landing.footer.supportSection': language === 'ar' ? 'الدعم' : 'Support',
-      'landing.footer.support': language === 'ar' ? 'المساعدة والدعم' : 'Help & Support',
-      'landing.footer.helpCenterLink': language === 'ar' ? 'مركز المساعدة' : 'Help Center',
-      'landing.footer.documentation': language === 'ar' ? 'التوثيق' : 'Documentation',
-      'landing.footer.systemStatus': language === 'ar' ? 'حالة النظام' : 'System Status',
-      'landing.footer.privacyPolicy': language === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy',
-      'landing.footer.termsOfService': language === 'ar' ? 'شروط الخدمة' : 'Terms of Service',
-      'landing.footer.rights': language === 'ar' ? 'جميع الحقوق محفوظة.' : 'All rights reserved.',
-      'landing.footer.followUs': language === 'ar' ? 'تابعنا:' : 'Follow us:'
-    };
-    return fallbacks[key] || key.split('.').pop() || key;
-  });
-  const isRTL = language === 'ar';
+  const { language, t, isRTL } = useLanguage();
 
   return (
     <footer className="bg-gradient-to-r from-[#004F54] via-[#102C33] to-[#66023C] backdrop-blur-xl border-t border-white/10">

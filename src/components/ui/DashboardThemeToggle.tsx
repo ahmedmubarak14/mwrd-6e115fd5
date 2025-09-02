@@ -7,11 +7,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouteAwareTheme } from "@/contexts/RouteAwareThemeContext";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function DashboardThemeToggle() {
   const { setTheme, theme, isDashboardRoute, forceLightMode } = useRouteAwareTheme();
-  const { t, language } = useOptionalLanguage();
+  const { t, language } = useLanguage();
   const isRTL = language === 'ar';
 
   // Don't render the theme toggle on non-dashboard routes or when light mode is forced

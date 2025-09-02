@@ -3,13 +3,11 @@ import { ProcurementRequestForm } from "@/components/procurement/ProcurementRequ
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function CreateRequest() {
   const navigate = useNavigate();
-  const languageContext = useOptionalLanguage();
-  const language = languageContext?.language || 'en';
-  const isRTL = language === 'ar';
+  const { t, isRTL, language } = useLanguage();
 
   return (
     <ClientPageContainer className="max-w-none">

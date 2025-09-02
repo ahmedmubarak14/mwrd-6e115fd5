@@ -1,5 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -11,8 +11,7 @@ interface VendorUserProfileProps {
 
 export const VendorUserProfile = ({ variant = 'sidebar', collapsed = false }: VendorUserProfileProps) => {
   const { user, userProfile } = useAuth();
-  const languageContext = useOptionalLanguage();
-  const { isRTL } = languageContext || { isRTL: false };
+  const { isRTL } = useLanguage();
 
   if (!user || !userProfile) return null;
 

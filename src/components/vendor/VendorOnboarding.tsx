@@ -10,7 +10,7 @@ import { Progress } from '@/components/ui/progress';
 import { Building2, MapPin, Users, Award, Upload, CheckCircle } from 'lucide-react';
 import { CRDocumentUpload } from '@/components/verification/CRDocumentUpload';
 import { useAuth } from '@/contexts/AuthContext';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
 
@@ -86,7 +86,7 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
   const [loading, setLoading] = useState(false);
   const { userProfile, updateProfile } = useAuth();
   const { showSuccess, showError } = useToastFeedback();
-  const { t } = useOptionalLanguage() || { t: (key: string) => key };
+  const { t } = useLanguage();
 
   const totalSteps = 5;
   const progress = (currentStep / totalSteps) * 100;
