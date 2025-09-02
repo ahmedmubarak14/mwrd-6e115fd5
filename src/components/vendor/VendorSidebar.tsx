@@ -68,10 +68,10 @@ export const VendorSidebar = ({
       try {
         return new Set(JSON.parse(saved));
       } catch {
-        return new Set(['core-business', 'business']); // Default groups
+        return new Set(['core-business', 'project-management']); // Default groups
       }
     }
-    return new Set(['core-business', 'business']); // Default groups
+    return new Set(['core-business', 'project-management']); // Default groups
   });
 
   const toggleGroup = (groupId: string) => {
@@ -98,13 +98,6 @@ export const VendorSidebar = ({
           href: '/vendor/dashboard',
           icon: LayoutDashboard,
         },
-      ]
-    },
-    {
-      id: 'business',
-      label: t('vendorGroups.workspace') || 'Business',
-      priority: 'primary',
-      items: [
         {
           name: t('nav.browseRequests') || 'Browse Requests',
           href: '/vendor/browse-requests',
@@ -137,30 +130,6 @@ export const VendorSidebar = ({
           href: '/vendor/projects',
           icon: Briefcase,
         },
-      ]
-    },
-    {
-      id: 'financial',
-      label: t('vendorGroups.financial') || 'Financial',
-      priority: 'secondary',
-      items: [
-        {
-          name: t('nav.subscription') || 'Subscription',
-          href: '/vendor/subscription',
-          icon: CreditCard,
-        },
-        {
-          name: t('nav.transactions') || 'Transactions',
-          href: '/vendor/transactions',
-          icon: DollarSign,
-        },
-      ]
-    },
-    {
-      id: 'business-intelligence',
-      label: t('vendorGroups.businessIntelligence') || 'Business Intelligence',
-      priority: 'secondary',
-      items: [
         {
           name: t('nav.businessIntelligence') || 'Business Intelligence',
           href: '/vendor/business-intelligence',
@@ -189,6 +158,23 @@ export const VendorSidebar = ({
       ]
     },
     {
+      id: 'financial',
+      label: t('vendorGroups.financial') || 'Financial',
+      priority: 'secondary',
+      items: [
+        {
+          name: t('nav.subscription') || 'Subscription',
+          href: '/vendor/subscription',
+          icon: CreditCard,
+        },
+        {
+          name: t('nav.transactions') || 'Transactions',
+          href: '/vendor/transactions',
+          icon: DollarSign,
+        },
+      ]
+    },
+    {
       id: 'account',
       label: t('vendorGroups.account') || 'Account',
       priority: 'utility',
@@ -197,11 +183,6 @@ export const VendorSidebar = ({
           name: t('nav.profile') || 'Profile',
           href: '/vendor/profile',
           icon: User,
-        },
-        {
-          name: t('vendor.navigation.crManagement') || 'CR Management',
-          href: '/vendor/cr-management',
-          icon: Shield,
         },
         {
           name: t('nav.settings') || 'Settings',
