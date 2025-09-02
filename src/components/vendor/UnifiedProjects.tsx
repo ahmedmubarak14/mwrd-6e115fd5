@@ -14,7 +14,7 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { MetricCard } from "@/components/ui/MetricCard";
 import { EmptyState } from "@/components/ui/empty-state";
 import { useAuth } from "@/contexts/AuthContext";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +22,7 @@ import { toast } from "sonner";
 
 const UnifiedProjectsContent = memo(() => {
   const { userProfile } = useAuth();
-  const { t, isRTL } = useOptionalLanguage();
+  const { t, isRTL } = useLanguage();
   const { projects: generalProjects, loading: generalLoading, getStatusColor, getPriorityColor } = useProjects();
   const { projects: vendorProjects, loading: vendorLoading, createProject, updateProject, deleteProject } = useVendorProjects();
 

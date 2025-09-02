@@ -22,14 +22,14 @@ import {
 import { format } from "date-fns";
 import { useAuditTrail } from "@/hooks/useAuditTrail";
 import { useToast } from "@/hooks/use-toast";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 import { DateRange } from "react-day-picker";
 
 export const AuditTrailDashboard = () => {
   const { auditLogs, exportAuditLog, isLoading } = useAuditTrail();
   const { toast } = useToast();
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
   const [searchTerm, setSearchTerm] = useState("");
   const [filterAction, setFilterAction] = useState("all");
   const [filterEntity, setFilterEntity] = useState("all");

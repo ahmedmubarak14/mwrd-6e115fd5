@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { ChartSkeleton } from "@/components/ui/ChartSkeleton";
 import { useVendorStats } from "@/hooks/useVendorStats";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -37,7 +37,7 @@ import {
 
 export const VendorAnalytics = () => {
   const { stats, loading } = useVendorStats();
-  const languageContext = useOptionalLanguage();
+  const languageContext = useLanguage();
   const { t, isRTL } = languageContext || { 
     t: (key: string) => key, 
     isRTL: false 

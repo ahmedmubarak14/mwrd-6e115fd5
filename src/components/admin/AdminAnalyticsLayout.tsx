@@ -1,4 +1,4 @@
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -29,7 +29,7 @@ export const AdminAnalyticsLayout = ({
   isExporting = false,
   className
 }: AdminAnalyticsLayoutProps) => {
-  const languageContext = useOptionalLanguage();
+  const languageContext = useLanguage();
   const { t, isRTL } = languageContext || { 
     t: (key: string) => key, 
     isRTL: false 

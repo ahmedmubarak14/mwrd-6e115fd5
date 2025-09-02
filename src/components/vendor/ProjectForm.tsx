@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useVendorProjects } from "@/hooks/useVendorProjects";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,7 +18,7 @@ interface ProjectFormProps {
 
 export const ProjectForm = ({ project, onClose }: ProjectFormProps) => {
   const { createProject, updateProject, loading } = useVendorProjects();
-  const languageContext = useOptionalLanguage();
+  const languageContext = useLanguage();
   const { toast } = useToast();
   const { isRTL } = languageContext || { isRTL: false };
   const t = languageContext?.t || ((key: string) => key);

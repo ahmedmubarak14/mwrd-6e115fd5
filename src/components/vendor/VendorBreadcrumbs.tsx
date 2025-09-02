@@ -1,5 +1,5 @@
 import { useLocation, Link } from "react-router-dom";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 
 export const VendorBreadcrumbs = () => {
   const location = useLocation();
-  const languageContext = useOptionalLanguage();
+  const languageContext = useLanguage();
   const { t, isRTL } = languageContext || { 
     t: (key: string) => key.split('.').pop() || key, 
     isRTL: false 

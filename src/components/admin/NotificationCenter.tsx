@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import { useNotificationCenter } from "@/hooks/useNotificationCenter";
 import { useToast } from "@/hooks/use-toast";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const NotificationCenter = () => {
   const { 
@@ -31,7 +31,7 @@ export const NotificationCenter = () => {
     isLoading 
   } = useNotificationCenter();
   const { toast } = useToast();
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");

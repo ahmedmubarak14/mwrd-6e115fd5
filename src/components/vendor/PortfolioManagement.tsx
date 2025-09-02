@@ -13,7 +13,7 @@ import {
   MapPin,
   DollarSign
 } from "lucide-react";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
 interface Project {
@@ -30,7 +30,7 @@ interface Project {
 }
 
 const PortfolioManagementContent = React.memo(() => {
-  const languageContext = useOptionalLanguage();
+  const languageContext = useLanguage();
   const { t, isRTL, formatCurrency } = languageContext || { 
     t: (key: string) => key.split('.').pop() || key, 
     isRTL: false,

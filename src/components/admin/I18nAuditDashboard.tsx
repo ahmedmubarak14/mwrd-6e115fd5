@@ -15,11 +15,11 @@ import {
   Target,
   Zap
 } from 'lucide-react';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { i18nAuditor, I18nAuditReport } from '@/utils/audit/i18nAuditor';
 
 export const I18nAuditDashboard = () => {
-  const { t } = useOptionalLanguage();
+  const { t } = useLanguage();
   const [report, setReport] = useState<I18nAuditReport | null>(null);
   const [loading, setLoading] = useState(false);
   const [lastRun, setLastRun] = useState<Date | null>(null);

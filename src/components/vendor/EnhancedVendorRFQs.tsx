@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ChartSkeleton } from "@/components/ui/ChartSkeleton";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDebounce } from "@/hooks/useDebounce";
 import { supabase } from "@/integrations/supabase/client";
@@ -61,7 +61,7 @@ export const EnhancedVendorRFQs = () => {
 
   const { user, userProfile } = useAuth();
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
-  const languageContext = useOptionalLanguage();
+  const languageContext = useLanguage();
   const { t, isRTL } = languageContext || { 
     t: (key: string) => key, 
     isRTL: false 

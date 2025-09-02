@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useToast } from '@/hooks/use-toast';
 import { FinancialAnalyticsChart } from '@/components/analytics/FinancialAnalyticsChart';
 import { TransactionDetailsModal } from './TransactionDetailsModal';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { cn } from '@/lib/utils';
 import { 
@@ -54,7 +54,7 @@ interface FinancialStats {
 
 export const EnhancedFinancialDashboard = () => {
   const { toast } = useToast();
-  const { t, isRTL, formatNumber, formatCurrency } = useOptionalLanguage();
+  const { t, isRTL, formatNumber, formatCurrency } = useLanguage();
 
   const [transactions, setTransactions] = useState<FinancialTransaction[]>([]);
   const [filteredTransactions, setFilteredTransactions] = useState<FinancialTransaction[]>([]);

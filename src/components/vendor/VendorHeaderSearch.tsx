@@ -7,13 +7,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Search, X } from "lucide-react";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
 export const VendorHeaderSearch = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const languageContext = useOptionalLanguage();
+  const languageContext = useLanguage();
   const { t, isRTL } = languageContext || { 
     t: (key: string) => key, 
     isRTL: false 

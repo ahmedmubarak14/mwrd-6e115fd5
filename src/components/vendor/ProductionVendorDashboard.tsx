@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useOptimizedVendorStats } from '@/components/vendor/useOptimizedVendorStats';
 import { usePerformanceMetrics, PerformanceMonitor } from '@/components/common/PerformanceMetrics';
 import { ProductionErrorBoundary } from '@/components/common/ProductionErrorBoundary';
@@ -39,7 +39,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
   variant = 'default',
   loading = false
 }) => {
-  const { isRTL } = useOptionalLanguage() || { isRTL: false };
+  const { isRTL } = useLanguage();
   
   const variantStyles = {
     default: 'border-border',
@@ -136,14 +136,7 @@ export const ProductionVendorDashboard: React.FC = () => {
     formatNumber, 
     formatCurrency, 
     formatDate 
-  } = useOptionalLanguage() || {
-    language: 'en' as const,
-    isRTL: false,
-    t: (key: string) => key,
-    formatNumber: (num: number) => num.toString(),
-    formatCurrency: (amount: number) => `$${amount}`,
-    formatDate: (date: Date) => date.toLocaleDateString()
-  };
+  } = useLanguage();
 
   const { stats, loading, error, userProfile } = useOptimizedVendorStats();
   const { metrics } = usePerformanceMetrics();

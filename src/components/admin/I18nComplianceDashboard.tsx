@@ -21,7 +21,7 @@ import {
   Languages,
   ShieldCheck
 } from 'lucide-react';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import { 
   ComplianceReport, 
@@ -31,7 +31,7 @@ import {
 } from '@/utils/i18nComplianceValidator';
 
 export const I18nComplianceDashboard = () => {
-  const { t, isRTL } = useOptionalLanguage();
+  const { t, isRTL } = useLanguage();
   const [complianceReport, setComplianceReport] = useState<ComplianceReport | null>(null);
   const [translationCoverage, setTranslationCoverage] = useState<{ missing: string[]; extra: string[] } | null>(null);
   const [loading, setLoading] = useState(false);
@@ -45,7 +45,7 @@ export const I18nComplianceDashboard = () => {
       // scan actual component files from the filesystem or build process
       const mockComponentFiles = [
         { name: 'AdminErrorBoundary.tsx', content: 'mock content with t() calls' },
-        { name: 'ApprovalDashboard.tsx', content: 'mock content with useOptionalLanguage' },
+        { name: 'ApprovalDashboard.tsx', content: 'mock content with useLanguage' },
         { name: 'AuditTrailDashboard.tsx', content: 'mock content with i18n' },
         { name: 'SecurityDashboard.tsx', content: 'mock content compliant' },
         { name: 'WorkflowAutomation.tsx', content: 'mock content with RTL support' }

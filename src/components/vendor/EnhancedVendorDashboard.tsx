@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -37,7 +37,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 export const EnhancedVendorDashboard = memo(() => {
   const { userProfile } = useAuth();
-  const languageContext = useOptionalLanguage();
+  const languageContext = useLanguage();
   const { isRTL, formatCurrency, formatNumber } = languageContext || { 
     isRTL: false, 
     formatCurrency: (amount: number) => `$${amount.toLocaleString()}`,

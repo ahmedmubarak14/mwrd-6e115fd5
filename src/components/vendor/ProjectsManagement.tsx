@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useVendorProjects } from "@/hooks/useVendorProjects";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -30,7 +30,7 @@ import { ProjectForm } from "./ProjectForm";
 
 const ProjectsManagementContent = React.memo(() => {
   const { projects, loading, deleteProject } = useVendorProjects();
-  const languageContext = useOptionalLanguage();
+  const languageContext = useLanguage();
   const { toast } = useToast();
   const { isRTL, t, formatCurrency } = languageContext || { 
     isRTL: false,

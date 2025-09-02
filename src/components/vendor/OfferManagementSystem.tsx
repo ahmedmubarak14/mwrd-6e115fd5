@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useAuth } from "@/contexts/AuthContext";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Clock, DollarSign, FileText, Send, Eye, Edit, Trash2 } from "lucide-react";
@@ -44,7 +44,7 @@ interface Request {
 export const OfferManagementSystem = () => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const { t } = useOptionalLanguage() || { t: (key: string) => key };
+  const { t } = useLanguage();
   const [offers, setOffers] = useState<Offer[]>([]);
   const [availableRequests, setAvailableRequests] = useState<Request[]>([]);
   const [loading, setLoading] = useState(true);

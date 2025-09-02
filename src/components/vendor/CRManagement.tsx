@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useVendorCR } from "@/hooks/useVendorCR";
 import { useAuth } from "@/contexts/AuthContext";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
 const CRManagementContent = React.memo(() => {
   const { userProfile } = useAuth();
   const { crData, loading, updateCRData, uploadCRDocument } = useVendorCR();
-  const languageContext = useOptionalLanguage();
+  const languageContext = useLanguage();
   const { toast } = useToast();
   const { isRTL, t } = languageContext || { 
     isRTL: false,

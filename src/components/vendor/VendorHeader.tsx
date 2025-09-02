@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Search, Bell, Menu, User } from "lucide-react";
 import { useAuth } from '@/contexts/AuthContext';
 import { NotificationBell } from '@/components/realtime/NotificationBell';
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { DashboardThemeToggle } from "@/components/ui/DashboardThemeToggle";
 import { VendorBreadcrumbs } from "./VendorBreadcrumbs";
 import { VendorHeaderSearch } from "./VendorHeaderSearch";
@@ -27,7 +27,7 @@ export const VendorHeader = ({
 }: VendorHeaderProps) => {
   const navigate = useNavigate();
   const { userProfile } = useAuth();
-  const languageContext = useOptionalLanguage();
+  const languageContext = useLanguage();
   const { t, isRTL } = languageContext || { 
     t: (key: string) => key, 
     isRTL: false 
