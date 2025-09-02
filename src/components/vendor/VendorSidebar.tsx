@@ -90,7 +90,7 @@ export const VendorSidebar = ({
   const navigationGroups: NavigationGroup[] = [
     {
       id: 'core-business',
-      label: t('vendor.sidebar.coreBusiness') || 'Core Business',
+      label: t('vendorGroups.workspace') || 'Core Business',
       priority: 'primary',
       items: [
         {
@@ -126,12 +126,12 @@ export const VendorSidebar = ({
       priority: 'secondary',
       items: [
         {
-          name: t('vendor.navigation.projects') || 'Projects',
+          name: t('nav.projects') || 'Projects',
           href: '/vendor/projects',
           icon: Briefcase,
         },
         {
-          name: t('nav.businessIntelligence') || 'Business Intelligence',
+          name: t('vendorGroups.businessIntelligence') || 'Business Intelligence',
           href: '/vendor/business-intelligence',
           icon: BarChart3,
         },

@@ -42,7 +42,8 @@ export const arSA = {
     portfolio: "المحفظة",
     account: "الحساب",
     financial: "المالية",
-    businessIntelligence: "ذكاء الأعمال"
+    businessIntelligence: "ذكاء الأعمال",
+    projectManagement: "إدارة المشاريع"
   },
   // Vendor Dashboard & CR Management
   vendor: {

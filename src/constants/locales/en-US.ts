@@ -40,7 +40,8 @@ export const enUS = {
     portfolio: "Portfolio", 
     account: "Account",
     financial: "Financial",
-    businessIntelligence: "Business Intelligence"
+    businessIntelligence: "Business Intelligence",
+    projectManagement: "Project Management"
   },
   // Vendor Dashboard & CR Management
   vendor: {
