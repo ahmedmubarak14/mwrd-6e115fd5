@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { TouchOptimizedButton } from "@/components/ui/TouchOptimizedButton";
 import { SkipToContent } from "@/components/ui/SkipToContent";
 import { useAuth } from "@/contexts/AuthContext";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { usePerformantSupportTickets } from "@/hooks/usePerformantSupportTickets";
 import { useAccessibleAnnouncements } from "@/hooks/useAccessibleAnnouncements";
 import { AccessibleLoadingSpinner } from "@/components/ui/AccessibleLoadingSpinner";
@@ -18,16 +18,12 @@ import { cn } from "@/lib/utils";
 
 const SupportContent = React.memo(() => {
   const { userProfile } = useAuth();
-  const languageContext = useOptionalLanguage();
+  const { t } = useLanguage();
   const { tickets, loading, createTicket, ticketMetrics } = usePerformantSupportTickets();
   const { announce, announceLoading, announceSuccess, announceError } = useAccessibleAnnouncements();
   const [showCreateForm, setShowCreateForm] = useState(false);
 
-  const { t, isRTL, formatDate } = languageContext || { 
-    t: (key: string) => key.split('.').pop() || key,
-    isRTL: false,
-    formatDate: (date: Date) => date.toLocaleDateString()
-  };
+  const { t, isRTL, formatDate } = useLanguage();
 
   // Announce page load to screen readers
   useEffect(() => {

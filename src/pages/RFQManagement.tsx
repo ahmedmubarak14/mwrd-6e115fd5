@@ -1,6 +1,6 @@
 import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { useState, useMemo } from "react";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useRFQs } from "@/hooks/useRFQs";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -31,7 +31,7 @@ import { RFQCard } from "@/components/rfq/RFQCard";
 import { cn } from "@/lib/utils";
 
 const RFQManagement = () => {
-  const { t, isRTL } = useOptionalLanguage();
+  const { t, isRTL } = useLanguage();
   const { rfqs, loading } = useRFQs();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");

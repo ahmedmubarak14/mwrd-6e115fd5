@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/contexts/AuthContext";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 
 const SettingsPage = memo(() => {
   const { userProfile, updateProfile } = useAuth();
-  const { t, language, setLanguage, isRTL } = useOptionalLanguage();
+  const { t, language, setLanguage, isRTL } = useLanguage();
   const [isUpdating, setIsUpdating] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [notifications, setNotifications] = useState({

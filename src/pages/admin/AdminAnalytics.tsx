@@ -1,10 +1,9 @@
 import { AdminPageContainer } from '@/components/admin/AdminPageContainer';
 import { BasicAnalyticsDashboard } from '@/components/analytics/BasicAnalyticsDashboard';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function AdminAnalytics() {
-  const languageContext = useOptionalLanguage();
-  const { t } = languageContext || { t: (key: string) => key };
+  const { t } = useLanguage();
 
   return (
     <AdminPageContainer

@@ -6,12 +6,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
 export const AdminHeaderLanguageToggle = () => {
-  const { language, setLanguage, isRTL, t } = useOptionalLanguage();
+  const { language, setLanguage, isRTL, t } = useLanguage();
   const isMobile = useIsMobile();
 
   if (isMobile) {

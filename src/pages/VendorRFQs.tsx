@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { ClientPageContainer } from "@/components/layout/ClientPageContainer";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { useRFQs } from "@/hooks/useRFQs";
 import { useBids } from "@/hooks/useBids";
 import { useCategories } from "@/hooks/useCategories";
@@ -31,7 +31,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
 const VendorRFQsContent = React.memo(() => {
-  const languageContext = useOptionalLanguage();
+  const { t } = useLanguage();
   const { t, isRTL, formatCurrency } = languageContext || {
     t: (key: string) => key.split('.').pop() || key,
     isRTL: false,

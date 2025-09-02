@@ -1,8 +1,8 @@
 import { PerformanceMonitor } from '@/components/admin/PerformanceMonitor';
-import { useOptionalLanguage } from '@/contexts/useOptionalLanguage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function AdminPerformanceMonitor() {
-  const { t, isRTL } = useOptionalLanguage();
+  const { t, isRTL } = useLanguage();
 
   return (
     <div className="p-6 space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
