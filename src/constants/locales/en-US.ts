@@ -119,7 +119,8 @@ export const enUS = {
       clientRatingTitle: 'Client Rating',
       clientRatingDesc: 'Average client rating',
       accessRequired: 'Access to this page is restricted to verified vendors only',
-      performanceOverview: 'Performance Overview'
+      performanceOverview: 'Performance Overview',
+      completeVerification: 'Complete verification to access all features'
     },
     cr: {
       title: "CR Management",

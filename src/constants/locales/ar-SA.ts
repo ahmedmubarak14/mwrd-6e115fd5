@@ -119,9 +119,10 @@ export const arSA = {
       completedProjectsTitle: 'المشاريع المكتملة',
     completedProjectsDesc: 'المشاريع المنجزة بنجاح',
     clientRatingTitle: 'تقييم العملاء',
-    clientRatingDesc: 'متوسط تقييم العملاء',
+      clientRatingDesc: 'متوسط تقييم العملاء',
       accessRequired: 'الوصول إلى هذه الصفحة مقتصر على الموردين المعتمدين فقط',
-      performanceOverview: 'نظرة عامة على الأداء'
+      performanceOverview: 'نظرة عامة على الأداء',
+      completeVerification: 'أكمل التحقق للوصول إلى جميع الميزات'
     },
     cr: {
       title: "إدارة السجل التجاري",
