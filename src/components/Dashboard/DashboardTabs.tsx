@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-import { useOptionalLanguage } from "@/contexts/useOptionalLanguage";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface DashboardTabsProps {
   activeTab: string;
@@ -11,7 +11,7 @@ interface DashboardTabsProps {
 }
 
 export const DashboardTabs = ({ activeTab, onTabChange }: DashboardTabsProps) => {
-  const { t, isRTL } = useOptionalLanguage();
+  const { t, isRTL } = useLanguage();
 
   const tabs = [
     {
