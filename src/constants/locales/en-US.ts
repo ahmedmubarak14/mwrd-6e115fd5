@@ -427,7 +427,13 @@ export const enUS = {
       sampleRequirement9: "Available for on-site work",
       sampleRequirement10: "Portfolio of successful campaigns",
       sampleRequirement11: "Digital marketing expertise",
-      sampleRequirement12: "Brand development"
+      sampleRequirement12: "Brand development",
+      noRFQsFound: "No RFQs found",
+      noRFQsDesc: "Try adjusting your filters or check back later for new opportunities",
+      description: "Description",
+      deadline: "Deadline",
+      requirements: "Requirements",
+      submitResponse: "Submit Response"
     }
   },
 
@@ -435,6 +441,7 @@ export const enUS = {
   messages: {
     title: "Messages",
     subtitle: "Communicate with clients and manage conversations",
+    goToSupport: "Go to Support",
     searchAndActions: "Search & Actions",
     unknownUser: "Unknown User",
     startNewChat: "Start New Chat",
@@ -636,13 +643,14 @@ export const enUS = {
        good: "Good",
        needsWork: "Needs Work",
        vsLastMonth: "vs last month",
-     // Categories
+    // Categories
     categories: {
       construction: "Construction",
       engineering: "Engineering", 
       technology: "Technology",
       marketing: "Marketing"
-    }
+    },
+    sortBy: "Sort By"
   },
 
   // Theme translations  

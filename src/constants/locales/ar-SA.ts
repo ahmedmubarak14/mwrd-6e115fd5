@@ -429,7 +429,13 @@ export const arSA = {
       sampleRequirement9: "متاح للعمل في الموقع",
       sampleRequirement10: "محفظة من الحملات الناجحة",
       sampleRequirement11: "خبرة في التسويق الرقمي",
-      sampleRequirement12: "تطوير العلامة التجارية"
+      sampleRequirement12: "تطوير العلامة التجارية",
+      noRFQsFound: "لم يتم العثور على طلبات تسعير",
+      noRFQsDesc: "جرب تعديل مرشحاتك أو تحقق لاحقاً للحصول على فرص جديدة",
+      description: "الوصف",
+      deadline: "الموعد النهائي",
+      requirements: "المتطلبات",
+      submitResponse: "إرسال الرد"
     }
   },
 
@@ -437,6 +443,7 @@ export const arSA = {
   messages: {
     title: "الرسائل",
     subtitle: "تواصل مع العملاء وإدارة المحادثات",
+    goToSupport: "انتقل للدعم",
     searchAndActions: "البحث والإجراءات",
     unknownUser: "مستخدم غير معروف",
     startNewChat: "بدء محادثة جديدة",
@@ -644,7 +651,8 @@ export const arSA = {
         engineering: "الهندسة",
         technology: "التكنولوجيا",
         marketing: "التسويق"
-      }
+      },
+      sortBy: "ترتيب حسب"
   },
 
   // Browse Requests
