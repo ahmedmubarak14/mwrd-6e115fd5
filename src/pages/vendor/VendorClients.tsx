@@ -190,37 +190,37 @@ const VendorClientsContent = () => {
             <CardTitle className="text-sm font-medium">{t('common.totalRevenue')}</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">${totalRevenue.toFixed(2)}</div>
-            <p className="text-xs text-muted-foreground mt-2">
-              From all clients
-            </p>
-          </CardContent>
-        </Card>
+      <CardContent>
+        <div className="text-2xl font-bold">${totalRevenue.toFixed(2)}</div>
+        <p className="text-xs text-muted-foreground mt-2">
+          {t('common.fromAllClients')}
+        </p>
+      </CardContent>
+    </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{t('common.avgOrderValue')}</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">${averageOrderValue.toFixed(2)}</div>
-            <p className="text-xs text-muted-foreground mt-2">
-              Per order average
-            </p>
-          </CardContent>
-        </Card>
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">{t('common.avgOrderValue')}</CardTitle>
+        <DollarSign className="h-4 w-4 text-muted-foreground" />
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold">${averageOrderValue.toFixed(2)}</div>
+        <p className="text-xs text-muted-foreground mt-2">
+          {t('common.perOrderAverage')}
+        </p>
+      </CardContent>
+    </Card>
+  </div>
+
+  <Card>
+    <CardHeader>
+      <div className="flex justify-between items-center">
+        <div>
+          <CardTitle>{t('common.clientDirectory')}</CardTitle>
+          <CardDescription>{t('common.clientOverview')}</CardDescription>
+        </div>
       </div>
-
-      <Card>
-        <CardHeader>
-          <div className="flex justify-between items-center">
-            <div>
-              <CardTitle>Client Directory</CardTitle>
-              <CardDescription>Your complete client relationship overview</CardDescription>
-            </div>
-          </div>
-        </CardHeader>
+    </CardHeader>
         <CardContent>
           <div className="mb-4">
             <div className="relative">

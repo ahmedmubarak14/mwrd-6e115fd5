@@ -214,6 +214,7 @@ export const arSA = {
     clients: {
       title: 'إدارة العملاء',
       subtitle: 'إدارة علاقاتك مع العملاء والشراكات',
+      description: 'إدارة علاقاتك مع العملاء والشراكات',
       addClient: 'إضافة عميل',
       clientList: 'قائمة العملاء',
       clientDetails: 'تفاصيل العميل',
@@ -235,7 +236,15 @@ export const arSA = {
       clientName: 'اسم العميل',
       contactPerson: 'شخص الاتصال',
       address: 'العنوان',
-      totalRevenue: 'إجمالي الإيرادات'
+      totalRevenue: 'إجمالي الإيرادات',
+      totalClients: 'إجمالي العملاء',
+      allRelationships: 'جميع العلاقات',
+      activeClients: 'العملاء النشطون',
+      completedOrders: 'مع الطلبات المكتملة',
+      contact: 'تواصل',
+      viewHistory: 'عرض التاريخ',
+      noClientsFound: 'لم يتم العثور على عملاء يطابقون بحثك',
+      noClientsYet: 'لا يوجد عملاء بعد. ابدأ العمل مع العملاء لرؤيتهم هنا.'
     },
     subscription: {
       title: 'إدارة الاشتراك',

@@ -212,6 +212,7 @@ export const enUS = {
     clients: {
       title: 'Client Management',
       subtitle: 'Manage your client relationships and partnerships',
+      description: 'Manage your client relationships and partnerships',
       addClient: 'Add Client',
       clientList: 'Client List',
       clientDetails: 'Client Details',
@@ -233,7 +234,15 @@ export const enUS = {
       clientName: 'Client Name',
       contactPerson: 'Contact Person',
       address: 'Address',
-      totalRevenue: 'Total Revenue'
+      totalRevenue: 'Total Revenue',
+      totalClients: 'Total Clients',
+      allRelationships: 'All relationships',
+      activeClients: 'Active Clients',
+      completedOrders: 'With completed orders',
+      contact: 'Contact',
+      viewHistory: 'View History',
+      noClientsFound: 'No clients found matching your search',
+      noClientsYet: 'No clients yet. Start working with clients to see them here.'
     },
     subscription: {
       title: 'Subscription Management',
@@ -648,11 +657,11 @@ export const enUS = {
     daysAgo: 'days ago',
     unknown: 'Unknown',
     company: 'Company',
-    // Additional labels
-    fromAllClients: "From all clients",
-    perOrderAverage: "Per order average",
-    clientDirectory: "Client Directory", 
-    clientOverview: "Your complete client relationship overview",
+     // Additional labels
+     fromAllClients: "From all clients",
+     perOrderAverage: "Per order average",
+     clientDirectory: "Client Directory", 
+     clientOverview: "Your complete client relationship overview",
      // Error messages for dashboard/components
      failedToLoad: "Failed to load data",
      failedToDelete: "Failed to delete item",
