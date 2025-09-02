@@ -118,7 +118,8 @@ export const enUS = {
       completedProjectsDesc: 'Successfully finished projects',
       clientRatingTitle: 'Client Rating',
       clientRatingDesc: 'Average client rating',
-      accessRequired: 'Access to this page is restricted to verified vendors only'
+      accessRequired: 'Access to this page is restricted to verified vendors only',
+      performanceOverview: 'Performance Overview'
     },
     cr: {
       title: "CR Management",
@@ -613,18 +614,21 @@ export const enUS = {
     perOrderAverage: "Per order average",
     clientDirectory: "Client Directory", 
     clientOverview: "Your complete client relationship overview",
-    // Error messages for dashboard/components
-    failedToLoad: "Failed to load data",
-    failedToDelete: "Failed to delete item",
-    unableToLoadDetails: "Unable to load request details. Please try again.",
-    failedToComplete: "Failed to complete onboarding. Please try again.",
-    failedToSave: "Failed to save project",
-    all: "All",
-    verified: "Verified",
-    previous: "Previous",
-    completing: "Completing...",
-    completeOnboarding: "Complete Onboarding",
-    // Categories
+     // Error messages for dashboard/components
+     failedToLoad: "Failed to load data",
+     failedToDelete: "Failed to delete item",
+     unableToLoadDetails: "Unable to load request details. Please try again.",
+     failedToComplete: "Failed to complete onboarding. Please try again.",
+     failedToSave: "Failed to save project",
+     all: "All",
+     verified: "Verified",
+     previous: "Previous",
+     completing: "Completing...",
+     completeOnboarding: "Complete Onboarding",
+       good: "Good",
+       needsWork: "Needs Work",
+       vsLastMonth: "vs last month",
+     // Categories
     categories: {
       construction: "Construction",
       engineering: "Engineering", 

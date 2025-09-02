@@ -120,7 +120,8 @@ export const arSA = {
     completedProjectsDesc: 'المشاريع المنجزة بنجاح',
     clientRatingTitle: 'تقييم العملاء',
     clientRatingDesc: 'متوسط تقييم العملاء',
-    accessRequired: 'الوصول إلى هذه الصفحة مقتصر على الموردين المعتمدين فقط'
+      accessRequired: 'الوصول إلى هذه الصفحة مقتصر على الموردين المعتمدين فقط',
+      performanceOverview: 'نظرة عامة على الأداء'
     },
     cr: {
       title: "إدارة السجل التجاري",
@@ -615,20 +616,27 @@ export const arSA = {
     perOrderAverage: "متوسط كل طلب",
     clientDirectory: "دليل العملاء",
     clientOverview: "نظرة شاملة على علاقات عملائك",
-    // Error messages for dashboard/components
-    failedToLoad: "فشل في تحميل البيانات",
-    failedToDelete: "فشل في حذف العنصر",
-    unableToLoadDetails: "تعذر تحميل تفاصيل الطلب. يرجى المحاولة مرة أخرى.",
-    failedToComplete: "فشل في إكمال الإعداد. يرجى المحاولة مرة أخرى.",
-    failedToSave: "فشل في حفظ المشروع"
-  },
-
-  // Theme translations - Arabic
-  theme: {
-    selectTheme: "اختيار السمة",
-    light: "فاتح",
-    dark: "داكن", 
-    system: "النظام"
+     // Error messages for dashboard/components
+     failedToLoad: "فشل في تحميل البيانات",
+     failedToDelete: "فشل في حذف العنصر",
+     unableToLoadDetails: "تعذر تحميل تفاصيل الطلب. يرجى المحاولة مرة أخرى.",
+     failedToComplete: "فشل في إكمال الإعداد. يرجى المحاولة مرة أخرى.",
+     failedToSave: "فشل في حفظ المشروع",
+     all: "الكل",
+     verified: "موثق",
+     previous: "السابق",
+     completing: "جاري الإكمال...",
+     completeOnboarding: "إكمال الإعداد",
+      good: "جيد",
+      needsWork: "يحتاج عمل",
+      vsLastMonth: "مقارنة بالشهر الماضي",
+      // Categories
+      categories: {
+        construction: "البناء",
+        engineering: "الهندسة",
+        technology: "التكنولوجيا",
+        marketing: "التسويق"
+      }
   },
 
   // Browse Requests
