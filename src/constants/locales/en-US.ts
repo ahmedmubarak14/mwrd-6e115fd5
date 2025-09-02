@@ -159,6 +159,21 @@ export const enUS = {
       title: 'Portfolio Management',
       subtitle: 'Showcase your work and manage your portfolio'
     },
+    portfolio: {
+      title: 'Portfolio Management',
+      description: 'Showcase your work and manage your portfolio',
+      addProject: 'Add Project',
+      completed: 'Completed',
+      inProgress: 'In Progress',
+      pending: 'Pending',
+      viewProject: 'View Project',
+      noProjects: 'No Projects',
+      addFirstProject: 'Add your first project to showcase your work',
+      sampleProject1Title: 'Commercial Building Construction',
+      sampleProject1Description: 'Complete construction of a 10-story commercial building in downtown Riyadh',
+      sampleProject2Title: 'Hospital Interior Design',
+      sampleProject2Description: 'Interior design and furniture for King Faisal Specialist Hospital'
+    },
     clients: {
       title: 'Client Management',
       subtitle: 'Manage your client relationships and partnerships',

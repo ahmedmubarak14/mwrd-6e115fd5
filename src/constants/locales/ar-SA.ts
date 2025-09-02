@@ -161,6 +161,21 @@ export const arSA = {
       title: 'إدارة المحفظة',
       subtitle: 'اعرض أعمالك وأدر محفظتك'
     },
+    portfolio: {
+      title: 'إدارة المحفظة',
+      description: 'اعرض أعمالك وأدر محفظتك',
+      addProject: 'إضافة مشروع',
+      completed: 'مكتمل',
+      inProgress: 'قيد التنفيذ',
+      pending: 'في الانتظار',
+      viewProject: 'عرض المشروع',
+      noProjects: 'لا توجد مشاريع',
+      addFirstProject: 'أضف مشروعك الأول لعرض أعمالك',
+      sampleProject1Title: 'بناء مبنى تجاري',
+      sampleProject1Description: 'إنشاء مبنى تجاري كامل من 10 طوابق في وسط الرياض',
+      sampleProject2Title: 'تصميم داخلي للمستشفى',
+      sampleProject2Description: 'التصميم الداخلي والأثاث لمستشفى الملك فيصل التخصصي'
+    },
     clients: {
       title: 'إدارة العملاء',
       subtitle: 'إدارة علاقاتك مع العملاء والشراكات',
