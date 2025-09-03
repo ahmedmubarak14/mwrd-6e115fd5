@@ -1794,6 +1794,13 @@ export type Database = {
             referencedRelation: "user_profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "vendor_categories_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_business_directory"
+            referencedColumns: ["id"]
+          },
         ]
       }
       vendor_performance_metrics: {
@@ -1886,6 +1893,13 @@ export type Database = {
             referencedRelation: "user_profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "vendor_profiles_extended_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: true
+            referencedRelation: "vendor_business_directory"
+            referencedColumns: ["id"]
+          },
         ]
       }
       vendor_public_info: {
@@ -1931,6 +1945,13 @@ export type Database = {
             columns: ["id"]
             isOneToOne: true
             referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vendor_public_info_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "vendor_business_directory"
             referencedColumns: ["id"]
           },
         ]
@@ -2144,7 +2165,48 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      vendor_business_directory: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          categories: string[] | null
+          company_name: string | null
+          created_at: string | null
+          full_name: string | null
+          id: string | null
+          portfolio_url: string | null
+          role: Database["public"]["Enums"]["user_role"] | null
+          status: Database["public"]["Enums"]["user_status"] | null
+          verification_status: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          categories?: string[] | null
+          company_name?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string | null
+          portfolio_url?: string | null
+          role?: Database["public"]["Enums"]["user_role"] | null
+          status?: Database["public"]["Enums"]["user_status"] | null
+          verification_status?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          categories?: string[] | null
+          company_name?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string | null
+          portfolio_url?: string | null
+          role?: Database["public"]["Enums"]["user_role"] | null
+          status?: Database["public"]["Enums"]["user_status"] | null
+          verification_status?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       check_consultation_rate_limit: {
@@ -2240,6 +2302,14 @@ export type Database = {
           total_requests: number
           total_users: number
           total_vendors: number
+        }[]
+      }
+      get_safe_user_display_info: {
+        Args: { target_user_id: string }
+        Returns: {
+          avatar_url: string
+          company_name: string
+          display_name: string
         }[]
       }
       get_user_role: {
