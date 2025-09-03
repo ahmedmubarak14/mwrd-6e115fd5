@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
+import { createLogger } from '@/utils/logger';
 
 export interface CallInvitation {
   id: string;
@@ -18,6 +19,7 @@ export const useCallNotifications = () => {
   const { showInfo } = useToastFeedback();
   const [incomingCall, setIncomingCall] = useState<CallInvitation | null>(null);
   const [signalingSocket, setSignalingSocket] = useState<WebSocket | null>(null);
+  const logger = createLogger('useCallNotifications');
 
   // Connect to signaling server for call notifications
   const connectToSignaling = useCallback(() => {
@@ -27,7 +29,7 @@ export const useCallNotifications = () => {
     const ws = new WebSocket(wsUrl);
 
     ws.onopen = () => {
-      console.log('Connected to signaling server for notifications');
+      logger.info('Connected to signaling server for notifications');
       setSignalingSocket(ws);
     };
 
@@ -35,7 +37,11 @@ export const useCallNotifications = () => {
       const message = JSON.parse(event.data);
       
       if (message.type === 'incoming-call') {
-        console.log('Incoming call notification:', message);
+        logger.info('Incoming call notification received:', { 
+          callType: message.callType, 
+          callerName: message.callerName,
+          callId: message.callId
+        });
         
         const invitation: CallInvitation = {
           id: message.invitationId,
@@ -60,12 +66,12 @@ export const useCallNotifications = () => {
     };
 
     ws.onclose = () => {
-      console.log('Disconnected from signaling server');
+      logger.info('Disconnected from signaling server');
       setSignalingSocket(null);
     };
 
     ws.onerror = (error) => {
-      console.error('Signaling connection error:', error);
+      logger.error('Signaling connection error:', { error });
       setSignalingSocket(null);
     };
 
@@ -88,7 +94,7 @@ export const useCallNotifications = () => {
               filter: `invitee_id=eq.${user.id}`
             },
             async (payload) => {
-              console.log('New call invitation from database:', payload);
+              logger.debug('New call invitation from database:', { invitationId: payload.new.id, callId: payload.new.call_id });
               
               // Get additional call details
               const { data: callData } = await supabase
@@ -138,10 +144,10 @@ export const useCallNotifications = () => {
           )
           .subscribe((status, error) => {
             if (error) {
-              console.error('Call invitations realtime subscription error:', error);
-              console.log('Call invitations realtime disabled - app will work without live updates');
+              logger.error('Call invitations realtime subscription error:', { error });
+              logger.info('Call invitations realtime disabled - app will work without live updates');
             } else {
-              console.log('Call invitations realtime subscription status:', status);
+              logger.debug('Call invitations realtime subscription status:', { status });
             }
           });
 
@@ -152,7 +158,7 @@ export const useCallNotifications = () => {
           try {
             channel.unsubscribe();
           } catch (cleanupError) {
-            console.warn('Error cleaning up call invitations realtime channel:', cleanupError);
+            logger.warn('Error cleaning up call invitations realtime channel:', { cleanupError });
           }
           if (signalingSocket) {
             signalingSocket.close();
@@ -160,7 +166,7 @@ export const useCallNotifications = () => {
           }
         };
       } catch (error) {
-        console.error('Failed to setup call invitations realtime subscription:', error);
+        logger.error('Failed to setup call invitations realtime subscription:', { error });
         return () => {}; // Return empty cleanup function
       }
     };
@@ -194,7 +200,7 @@ export const useCallNotifications = () => {
       .gt('expires_at', new Date().toISOString());
 
     if (error) {
-      console.error('Error fetching call invitations:', error);
+      logger.error('Error fetching call invitations:', { error });
       return [];
     }
 
@@ -234,7 +240,7 @@ export const useCallNotifications = () => {
       .limit(limit);
 
     if (error) {
-      console.error('Error fetching call history:', error);
+      logger.error('Error fetching call history:', { error });
       return [];
     }
 

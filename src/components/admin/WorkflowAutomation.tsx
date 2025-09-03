@@ -14,10 +14,12 @@ import { useToast } from '@/hooks/use-toast';
 import { useWorkflowAutomation, useAutomatedTasks } from '@/hooks/useWorkflowAutomation';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { createLogger } from '@/utils/logger';
 
 export const WorkflowAutomation = () => {
   const { toast } = useToast();
   const { t } = useLanguage();
+  const logger = createLogger('WorkflowAutomation');
   
   const {
     workflows,
@@ -152,7 +154,7 @@ export const WorkflowAutomation = () => {
   }
 
   // Debug info
-  console.log('Workflow Automation Debug:', {
+  logger.debug('Workflow Automation state:', {
     workflows: workflows.length,
     executions: executions.length,
     tasks: tasks.length,

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { createLogger } from '@/utils/logger';
 
 export interface AuditLog {
   id: string;
@@ -15,6 +16,7 @@ export interface AuditLog {
 export const useAuditTrail = () => {
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const logger = createLogger('useAuditTrail');
 
   const fetchAuditLogs = async () => {
     try {
@@ -25,13 +27,13 @@ export const useAuditTrail = () => {
         .limit(100);
 
       if (error) {
-        console.error('Error fetching audit logs:', error);
+        logger.error('Error fetching audit logs:', { error });
         return;
       }
 
       setAuditLogs(data || []);
     } catch (error) {
-      console.error('Error fetching audit logs:', error);
+      logger.error('Error fetching audit logs:', { error });
     } finally {
       setIsLoading(false);
     }
@@ -65,7 +67,7 @@ export const useAuditTrail = () => {
       const { data, error } = await query;
 
       if (error) {
-        console.error('Error exporting audit logs:', error);
+        logger.error('Error exporting audit logs:', { error });
         throw error;
       }
 
@@ -91,7 +93,7 @@ export const useAuditTrail = () => {
       link.click();
 
     } catch (error) {
-      console.error('Error exporting audit logs:', error);
+      logger.error('Error exporting audit logs:', { error });
       throw error;
     }
   };
@@ -117,10 +119,10 @@ export const useAuditTrail = () => {
           )
           .subscribe((status, error) => {
             if (error) {
-              console.error('Audit log realtime subscription error:', error);
-              console.log('Audit log realtime disabled - app will work without live updates');
+              logger.error('Audit log realtime subscription error:', { error });
+              logger.info('Audit log realtime disabled - app will work without live updates');
             } else {
-              console.log('Audit log realtime subscription status:', status);
+              logger.debug('Audit log realtime subscription status:', { status });
             }
           });
 
@@ -128,11 +130,11 @@ export const useAuditTrail = () => {
           try {
             supabase.removeChannel(channel);
           } catch (cleanupError) {
-            console.warn('Error cleaning up audit log realtime channel:', cleanupError);
+            logger.warn('Error cleaning up audit log realtime channel:', { cleanupError });
           }
         };
       } catch (error) {
-        console.error('Failed to setup audit log realtime subscription:', error);
+        logger.error('Failed to setup audit log realtime subscription:', { error });
         return () => {}; // Return empty cleanup function
       }
     };

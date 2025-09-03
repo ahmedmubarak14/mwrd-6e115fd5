@@ -21,9 +21,11 @@ import { useRealTimeChat } from "@/hooks/useRealTimeChat";
 import type { Conversation, Message } from "@/hooks/useRealTimeChat";
 import { EmojiPicker } from "@/components/chat/EmojiPicker";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { createLogger } from "@/utils/logger";
 
 export const RealTimeChatSystem = () => {
   const { t, isRTL } = useLanguage();
+  const logger = createLogger('RealTimeChatSystem');
   const { 
     conversations, 
     messages, 
@@ -57,7 +59,7 @@ export const RealTimeChatSystem = () => {
       }
       setMessageInput("");
     } catch (error) {
-      console.error('Error sending message:', error);
+      logger.error('Error sending message:', { error, activeConversation, messageLength: messageInput.length });
     }
   };
 
@@ -72,7 +74,7 @@ export const RealTimeChatSystem = () => {
     const file = e.target.files?.[0];
     if (file && activeConversation) {
       // Handle file upload logic here
-      console.log('File selected:', file);
+      logger.info('File selected for upload:', { fileName: file.name, fileSize: file.size, conversationId: activeConversation });
     }
   };
 
