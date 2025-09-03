@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { createLogger } from '@/utils/logger';
 export interface Request {
   id: string;
   title: string;
@@ -28,6 +29,7 @@ export const useRealTimeRequests = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const channelRef = useRef<any>(null);
+  const logger = createLogger('RealTimeRequests');
 
   // Fetch initial requests
   const fetchRequests = async () => {
@@ -53,7 +55,7 @@ export const useRealTimeRequests = () => {
       
       setRequests(mappedData);
     } catch (error) {
-      console.error('Error fetching requests:', error);
+      logger.error('Error fetching requests', { error, userId: user?.id });
       toast({
         title: "Error",
         description: "Failed to load requests",
@@ -83,7 +85,7 @@ export const useRealTimeRequests = () => {
           filter: `client_id=eq.${user.id}`
         },
         (payload) => {
-          console.log('Real-time request update:', payload);
+          logger.debug('Real-time request update', { payload });
           
           if (payload.eventType === 'INSERT') {
             const newRequest = {
@@ -138,7 +140,7 @@ export const useRealTimeRequests = () => {
           table: 'offers'
         },
         (payload) => {
-          console.log('Real-time offer update:', payload);
+          logger.debug('Real-time offer update', { payload });
           
           // Update request with new offer data
           if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
@@ -190,7 +192,7 @@ export const useRealTimeRequests = () => {
         )
       );
     } catch (error) {
-      console.error('Error fetching offers:', error);
+      logger.error('Error fetching offers', { error, requestId });
     }
   };
 
@@ -243,7 +245,7 @@ export const useRealTimeRequests = () => {
 
       return data;
     } catch (error) {
-      console.error('Error creating request:', error);
+      logger.error('Error creating request', { error, requestData });
       throw error;
     }
   };
@@ -289,7 +291,7 @@ export const useRealTimeRequests = () => {
 
       return data;
     } catch (error) {
-      console.error('Error updating request:', error);
+      logger.error('Error updating request', { error, requestId: id, requestData });
       throw error;
     }
   };
@@ -319,7 +321,7 @@ export const useRealTimeRequests = () => {
         });
 
     } catch (error) {
-      console.error('Error deleting request:', error);
+      logger.error('Error deleting request', { error, requestId: id });
       throw error;
     }
   };

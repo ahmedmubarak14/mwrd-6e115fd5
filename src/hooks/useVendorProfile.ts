@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { createLogger } from '@/utils/logger';
 
 export interface VendorProfileData {
   // Basic Profile
@@ -48,6 +49,7 @@ export const useVendorProfile = (vendorId: string) => {
   const [vendorProfile, setVendorProfile] = useState<VendorProfileData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const logger = createLogger('VendorProfile');
 
   const fetchVendorProfile = async () => {
     if (!vendorId) return;
@@ -56,7 +58,7 @@ export const useVendorProfile = (vendorId: string) => {
       setLoading(true);
       setError(null);
 
-      console.log('Fetching vendor profile for ID:', vendorId);
+      logger.debug('Fetching vendor profile', { vendorId });
 
       // Fetch basic profile data
       const { data: profileData, error: profileError } = await supabase
@@ -67,7 +69,7 @@ export const useVendorProfile = (vendorId: string) => {
         .single();
 
       if (profileError) throw profileError;
-      console.log('Profile data:', profileData);
+      logger.debug('Profile data fetched', { profileData });
 
       // Fetch extended profile data
       const { data: extendedData } = await supabase
@@ -76,7 +78,7 @@ export const useVendorProfile = (vendorId: string) => {
         .eq('vendor_id', vendorId)
         .single();
 
-      console.log('Extended data:', extendedData);
+      logger.debug('Extended data fetched', { extendedData });
 
       // Fetch vendor categories - try both new and legacy approaches
       const { data: categoriesData, error: categoriesError } = await supabase
@@ -91,12 +93,14 @@ export const useVendorProfile = (vendorId: string) => {
         `)
         .eq('vendor_id', vendorId);
 
-      console.log('Categories data from vendor_categories table:', categoriesData);
-      console.log('Categories error:', categoriesError);
+      logger.debug('Categories data from vendor_categories table', { 
+        categoriesData, 
+        categoriesError 
+      });
 
       // Also check legacy categories from user_profiles
       const legacyCategories = profileData?.categories || [];
-      console.log('Legacy categories from user_profiles:', legacyCategories);
+      logger.debug('Legacy categories from user_profiles', { legacyCategories });
 
       // Fetch statistics
       const [offersResult, ordersResult] = await Promise.all([
@@ -136,7 +140,7 @@ export const useVendorProfile = (vendorId: string) => {
         }));
       }
 
-      console.log('Final processed categories:', processedCategories);
+      logger.debug('Final processed categories', { processedCategories });
 
       // Combine all data
       const combinedProfile: VendorProfileData = {
@@ -151,10 +155,10 @@ export const useVendorProfile = (vendorId: string) => {
         avg_response_time_hours: Math.floor(Math.random() * 12) + 1
       };
 
-      console.log('Final combined profile:', combinedProfile);
+      logger.debug('Final combined profile', { combinedProfile });
       setVendorProfile(combinedProfile);
     } catch (err: any) {
-      console.error('Error fetching vendor profile:', err);
+      logger.error('Error fetching vendor profile', { error: err, vendorId });
       setError(err.message);
     } finally {
       setLoading(false);

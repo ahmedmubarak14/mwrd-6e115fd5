@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createLogger } from '@/utils/logger';
 
 interface PerformanceMetrics {
   renderTime: number;
@@ -15,6 +16,7 @@ interface PerformanceMetrics {
 export const usePerformanceMonitor = (componentName: string) => {
   const mountTimeRef = useRef<number>();
   const [metrics, setMetrics] = useState<PerformanceMetrics | null>(null);
+  const logger = createLogger(`PerformanceMonitor-${componentName}`);
 
   useEffect(() => {
     mountTimeRef.current = performance.now();
@@ -58,12 +60,10 @@ export const usePerformanceMonitor = (componentName: string) => {
     window.addEventListener('offline', updateOnlineStatus);
 
     // Log performance metrics in development
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`[Performance] ${componentName} mounted`, {
-        mountTime: mountTimeRef.current,
-        renderTime: performance.now() - mountTimeRef.current
-      });
-    }
+    logger.debug('Component mounted', {
+      mountTime: mountTimeRef.current,
+      renderTime: performance.now() - (mountTimeRef.current || 0)
+    });
 
     return () => {
       window.removeEventListener('online', updateOnlineStatus);

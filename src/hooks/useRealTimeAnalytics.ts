@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { createLogger } from '@/utils/logger';
 
 interface AnalyticsMetrics {
   totalUsers: number;
@@ -32,6 +33,7 @@ export const useRealTimeAnalytics = () => {
   const [chartData, setChartData] = useState<ChartData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const logger = createLogger('RealTimeAnalytics');
 
   const fetchMetrics = async () => {
     try {
@@ -78,7 +80,7 @@ export const useRealTimeAnalytics = () => {
       });
 
     } catch (err) {
-      console.error('Error fetching analytics metrics:', err);
+      logger.error('Error fetching analytics metrics', { error: err });
       setError('Failed to fetch analytics data');
     }
   };
@@ -156,7 +158,7 @@ export const useRealTimeAnalytics = () => {
       });
 
     } catch (err) {
-      console.error('Error fetching chart data:', err);
+      logger.error('Error fetching chart data', { error: err });
     }
   };
 
@@ -178,39 +180,39 @@ export const useRealTimeAnalytics = () => {
         .on('postgres_changes', 
           { event: '*', schema: 'public', table: 'user_profiles' },
           () => {
-            console.log('User profiles changed, refreshing metrics');
+            logger.debug('User profiles changed, refreshing metrics');
             fetchMetrics();
           }
         )
         .on('postgres_changes',
           { event: '*', schema: 'public', table: 'requests' },
           () => {
-            console.log('Requests changed, refreshing metrics');
+            logger.debug('Requests changed, refreshing metrics');
             fetchMetrics();
           }
         )
         .on('postgres_changes',
           { event: '*', schema: 'public', table: 'orders' },
           () => {
-            console.log('Orders changed, refreshing metrics');
+            logger.debug('Orders changed, refreshing metrics');
             fetchMetrics();
           }
         )
         .subscribe((status: string, err?: any) => {
           if (status === 'SUBSCRIBED') {
-            console.log('Analytics real-time subscription active');
+            logger.info('Analytics real-time subscription active');
           } else if (status === 'CHANNEL_ERROR') {
-            console.warn('Analytics subscription error:', err);
+            logger.warn('Analytics subscription error', { error: err });
             // Continue without real-time updates
           } else if (status === 'TIMED_OUT') {
-            console.warn('Analytics subscription timed out');
+            logger.warn('Analytics subscription timed out');
             // Continue without real-time updates
           } else if (status === 'CLOSED') {
-            console.log('Analytics subscription closed');
+            logger.debug('Analytics subscription closed');
           }
         });
     } catch (error) {
-      console.warn('Failed to set up analytics real-time subscription:', error);
+      logger.warn('Failed to set up analytics real-time subscription', { error });
       // Continue without real-time updates - the dashboard will still work with polling
     }
 
@@ -219,7 +221,7 @@ export const useRealTimeAnalytics = () => {
         try {
           supabase.removeChannel(metricsSubscription);
         } catch (error) {
-          console.warn('Error removing analytics subscription:', error);
+          logger.warn('Error removing analytics subscription', { error });
         }
       }
     };

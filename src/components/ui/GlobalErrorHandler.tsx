@@ -1,7 +1,10 @@
 import React from 'react';
+import { createLogger } from '@/utils/logger';
 
 // Track initialization to prevent duplicate event listeners
 let isGlobalErrorHandlerInitialized = false;
+
+const logger = createLogger('GlobalErrorHandler');
 
 // Completely static error handler with no React hooks to avoid dispatcher issues during hot reload
 export const GlobalErrorHandler = () => {
@@ -11,7 +14,7 @@ export const GlobalErrorHandler = () => {
 
     // Global error handler for unhandled promise rejections
     const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
-      console.error('Unhandled promise rejection:', event.reason);
+      logger.error('Unhandled promise rejection', { reason: event.reason });
       
       // Parse common error types
       const error = event.reason;
@@ -32,22 +35,22 @@ export const GlobalErrorHandler = () => {
         description = 'Our servers are experiencing issues. Please try again later.';
       }
       
-      console.error(`${title}: ${description}`);
+      logger.error('Parsed error', { title, description });
     };
 
     // Global error handler for JavaScript errors
     const handleError = (event: ErrorEvent) => {
-      console.error('Global JavaScript error:', event.error);
-      console.error('Application Error: Something went wrong. The page may need to be refreshed.');
+      logger.error('Global JavaScript error', { error: event.error });
+      logger.error('Application Error: Something went wrong. The page may need to be refreshed.');
     };
 
     // Network status monitoring
     const handleOnline = () => {
-      console.log('Back Online: Your internet connection has been restored.');
+      logger.info('Back Online: Your internet connection has been restored.');
     };
 
     const handleOffline = () => {
-      console.warn('Connection Lost: Please check your internet connection.');
+      logger.warn('Connection Lost: Please check your internet connection.');
     };
 
     // Add event listeners
