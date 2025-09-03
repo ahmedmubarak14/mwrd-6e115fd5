@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { createLogger } from '@/utils/logger';
 
 export interface Offer {
   id: string;
@@ -41,6 +42,7 @@ export const useOffers = (requestId?: string) => {
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
   const { toast } = useToast();
+  const logger = createLogger('useOffers');
 
   const fetchOffers = async () => {
     if (!user) {
@@ -94,7 +96,7 @@ export const useOffers = (requestId?: string) => {
       const { data, error } = await query;
 
       if (error) {
-        console.error('Error fetching offers:', error);
+        logger.error('Error fetching offers:', { error, requestId, userRole: user?.role });
         setError('Failed to load offers');
         return;
       }
@@ -108,7 +110,7 @@ export const useOffers = (requestId?: string) => {
 
       setOffers(transformedOffers as Offer[]);
     } catch (err) {
-      console.error('Error in fetchOffers:', err);
+      logger.error('Unexpected error in fetchOffers:', { error: err, requestId, userRole: user?.role });
       setError('An unexpected error occurred');
     } finally {
       setLoading(false);
@@ -123,7 +125,7 @@ export const useOffers = (requestId?: string) => {
   useEffect(() => {
     if (!user) return;
 
-    console.log('Setting up offers realtime subscription');
+    logger.info('Setting up offers realtime subscription', { userId: user.id });
 
     const setupRealtimeSubscription = async () => {
       try {
@@ -132,16 +134,21 @@ export const useOffers = (requestId?: string) => {
           .on('postgres_changes', 
             { event: '*', schema: 'public', table: 'offers' },
             (payload) => {
-              console.log('Offer updated:', payload);
+              logger.debug('Offer updated via realtime:', { 
+                eventType: payload.eventType, 
+                table: payload.table,
+                hasNew: !!payload.new,
+                hasOld: !!payload.old
+              });
               fetchOffers(); // Refresh offers when changes occur
             }
           )
           .subscribe((status, error) => {
             if (error) {
-              console.error('Offers realtime subscription error:', error);
-              console.log('Offers realtime disabled - app will work without live updates');
+              logger.error('Offers realtime subscription error:', { error });
+              logger.info('Offers realtime disabled - app will work without live updates');
             } else {
-              console.log('Offers realtime subscription status:', status);
+              logger.debug('Offers realtime subscription status:', { status });
             }
           });
 
@@ -149,11 +156,11 @@ export const useOffers = (requestId?: string) => {
           try {
             supabase.removeChannel(channel);
           } catch (cleanupError) {
-            console.warn('Error cleaning up offers realtime channel:', cleanupError);
+            logger.warn('Error cleaning up offers realtime channel:', { cleanupError });
           }
         };
       } catch (error) {
-        console.error('Failed to setup offers realtime subscription:', error);
+        logger.error('Failed to setup offers realtime subscription:', { error });
         return () => {}; // Return empty cleanup function
       }
     };
@@ -179,7 +186,7 @@ export const useOffers = (requestId?: string) => {
         .eq('id', offerId);
 
       if (error) {
-        console.error('Supabase error updating offer status:', error);
+        logger.error('Error updating offer status:', { error, offerId, status });
         return false;
       }
 
@@ -192,7 +199,7 @@ export const useOffers = (requestId?: string) => {
       await fetchOffers();
       return true;
     } catch (error) {
-      console.error('Error updating offer status (unexpected):', error);
+      logger.error('Unexpected error updating offer status:', { error, offerId, status });
       return false;
     }
   };
@@ -232,7 +239,7 @@ export const useOffers = (requestId?: string) => {
       await fetchOffers();
       return data;
     } catch (error) {
-      console.error('Error creating offer:', error);
+      logger.error('Error creating offer:', { error, offerData });
       throw error;
     }
   };

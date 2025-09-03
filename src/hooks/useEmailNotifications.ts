@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToastFeedback } from './useToastFeedback';
+import { createLogger } from '@/utils/logger';
 
 interface EmailNotification {
   to: string;
@@ -13,6 +14,7 @@ interface EmailNotification {
 export const useEmailNotifications = () => {
   const [sending, setSending] = useState(false);
   const { showError, showSuccess } = useToastFeedback();
+  const logger = createLogger('useEmailNotifications');
 
   const sendNotificationEmail = async (notification: EmailNotification): Promise<boolean> => {
     setSending(true);
@@ -22,20 +24,20 @@ export const useEmailNotifications = () => {
       });
 
       if (error) {
-        console.error('Email notification error:', error);
+        logger.error('Email notification error:', { error, recipient: notification.to, type: notification.type });
         showError('Failed to send email notification');
         return false;
       }
 
       if (data?.success) {
-        console.log('Email notification sent:', data.emailId);
+        logger.info('Email notification sent successfully:', { emailId: data.emailId, recipient: notification.to, type: notification.type });
         return true;
       } else {
         showError('Email sending failed');
         return false;
       }
     } catch (error: any) {
-      console.error('Error sending email notification:', error);
+      logger.error('Error sending email notification:', { error, recipient: notification.to, type: notification.type });
       showError('Failed to send email notification');
       return false;
     } finally {

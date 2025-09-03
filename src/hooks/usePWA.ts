@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { createLogger } from '@/utils/logger';
 
 interface PWAInstallPrompt {
   prompt: () => Promise<void>;
@@ -20,6 +21,7 @@ export const usePWA = () => {
   const [isInstalled, setIsInstalled] = useState(false);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
+  const logger = createLogger('usePWA');
 
   // Check if PWA is already installed
   useEffect(() => {
@@ -44,7 +46,7 @@ export const usePWA = () => {
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
       const event = e as BeforeInstallPromptEvent;
-      console.log('PWA: Install prompt available');
+      logger.info('PWA install prompt available');
       
       // Prevent Chrome 67 and earlier from automatically showing the prompt
       event.preventDefault();
@@ -55,7 +57,7 @@ export const usePWA = () => {
     };
 
     const handleAppInstalled = () => {
-      console.log('PWA: App was installed');
+      logger.info('PWA app was installed');
       setIsInstalled(true);
       setIsInstallable(false);
       setDeferredPrompt(null);
@@ -73,12 +75,12 @@ export const usePWA = () => {
   // Handle online/offline status
   useEffect(() => {
     const handleOnline = () => {
-      console.log('PWA: Back online');
+      logger.info('PWA back online');
       setIsOnline(true);
     };
 
     const handleOffline = () => {
-      console.log('PWA: Gone offline');
+      logger.info('PWA gone offline');
       setIsOnline(false);
     };
 
@@ -95,7 +97,7 @@ export const usePWA = () => {
   useEffect(() => {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.addEventListener('controllerchange', () => {
-        console.log('PWA: Service Worker updated');
+        logger.info('PWA service worker updated');
         setIsUpdateAvailable(true);
       });
 
@@ -117,7 +119,7 @@ export const usePWA = () => {
   // Install PWA
   const installPWA = useCallback(async () => {
     if (!deferredPrompt) {
-      console.log('PWA: No install prompt available');
+      logger.warn('PWA install attempt failed - no install prompt available');
       return false;
     }
 
@@ -129,16 +131,16 @@ export const usePWA = () => {
       const choiceResult = await deferredPrompt.userChoice;
       
       if (choiceResult.outcome === 'accepted') {
-        console.log('PWA: User accepted install prompt');
+        logger.info('PWA install accepted by user');
         setIsInstallable(false);
         setDeferredPrompt(null);
         return true;
       } else {
-        console.log('PWA: User dismissed install prompt');
+        logger.info('PWA install dismissed by user');
         return false;
       }
     } catch (error) {
-      console.error('PWA: Install failed:', error);
+      logger.error('PWA install failed:', { error });
       return false;
     }
   }, [deferredPrompt]);
@@ -169,7 +171,7 @@ export const usePWA = () => {
         await navigator.share(data);
         return true;
       } catch (error) {
-        console.error('PWA: Share failed:', error);
+        logger.error('PWA share failed:', { error, data });
         return false;
       }
     } else {
@@ -179,7 +181,7 @@ export const usePWA = () => {
           await navigator.clipboard.writeText(data.url);
           return true;
         } catch (error) {
-          console.error('PWA: Clipboard write failed:', error);
+          logger.error('PWA clipboard write failed:', { error });
           return false;
         }
       }
@@ -208,7 +210,7 @@ export const usePWA = () => {
         
         return notification;
       } catch (error) {
-        console.error('PWA: Notification failed:', error);
+        logger.error('PWA notification failed:', { error, title });
         return null;
       }
     }

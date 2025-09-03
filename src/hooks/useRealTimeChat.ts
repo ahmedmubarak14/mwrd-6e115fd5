@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { createLogger } from '@/utils/logger';
 
 export interface Conversation {
   id: string;
@@ -38,11 +39,12 @@ export const useRealTimeChat = () => {
   const [activeConversation, setActiveConversation] = useState<string | null>(null);
   const { user } = useAuth();
   const [realtimeChannel, setRealtimeChannel] = useState<RealtimeChannel | null>(null);
+  const logger = createLogger('useRealTimeChat');
 
   useEffect(() => {
     if (!user) return;
 
-    console.log('Setting up real-time subscriptions for user:', user.id);
+    logger.info('Setting up real-time subscriptions for user:', { userId: user.id });
 
     const setupRealtimeSubscriptions = async () => {
       try {
@@ -55,7 +57,10 @@ export const useRealTimeChat = () => {
             table: 'messages',
             filter: `recipient_id=eq.${user.id}`
           }, (payload) => {
-            console.log('New message received:', payload);
+            logger.debug('New message received via realtime:', { 
+              conversationId: payload.new?.conversation_id,
+              senderId: payload.new?.sender_id
+            });
             const newMessage = payload.new as Message;
             setMessages(prev => ({
               ...prev,
@@ -70,7 +75,10 @@ export const useRealTimeChat = () => {
             schema: 'public',
             table: 'conversations'
           }, (payload) => {
-            console.log('Conversation updated:', payload);
+            logger.debug('Conversation updated via realtime:', { 
+              conversationId: payload.new?.id,
+              status: payload.new?.status
+            });
             fetchConversations();
           })
           .on('postgres_changes', {
@@ -78,31 +86,34 @@ export const useRealTimeChat = () => {
             schema: 'public',
             table: 'conversations'
           }, (payload) => {
-            console.log('New conversation created:', payload);
+            logger.debug('New conversation created via realtime:', { 
+              conversationId: payload.new?.id,
+              clientId: payload.new?.client_id
+            });
             fetchConversations();
           })
           .subscribe((status, error) => {
             if (error) {
-              console.error('Realtime subscription error:', error);
-              console.log('Realtime disabled - app will work without live updates');
+              logger.error('Realtime subscription error:', { error });
+              logger.info('Realtime disabled - app will work without live updates');
             } else {
-              console.log('Realtime subscription status:', status);
+              logger.debug('Realtime subscription status:', { status });
             }
           });
 
         setRealtimeChannel(channel);
 
         return () => {
-          console.log('Cleaning up real-time subscriptions');
+          logger.debug('Cleaning up real-time subscriptions');
           try {
             supabase.removeChannel(channel);
           } catch (cleanupError) {
-            console.warn('Error cleaning up realtime channel:', cleanupError);
+            logger.warn('Error cleaning up realtime channel:', { cleanupError });
           }
         };
       } catch (error) {
-        console.error('Failed to setup realtime subscriptions:', error);
-        console.log('App will continue to work without realtime features');
+        logger.error('Failed to setup realtime subscriptions:', { error });
+        logger.info('App will continue to work without realtime features');
         return () => {}; // Return empty cleanup function
       }
     };
@@ -124,7 +135,7 @@ export const useRealTimeChat = () => {
   ) => {
     if (!user) throw new Error('User not authenticated');
 
-    console.log('Starting conversation with recipient:', recipientUserIdOrProfileId);
+    logger.info('Starting conversation with recipient:', { recipientId: recipientUserIdOrProfileId, requestId, offerId });
 
     try {
       // First, get the current user's profile ID
@@ -138,7 +149,7 @@ export const useRealTimeChat = () => {
         throw new Error('Current user profile not found');
       }
 
-      console.log('Current user profile ID:', currentUserProfile.id);
+      logger.debug('Current user profile found:', { profileId: currentUserProfile.id });
 
       // Determine if recipientUserIdOrProfileId is a user_id or profile_id
       let recipientProfileId: string;
@@ -152,7 +163,7 @@ export const useRealTimeChat = () => {
 
       if (recipientProfile) {
         recipientProfileId = recipientProfile.id;
-        console.log('Found recipient by user_id:', recipientProfileId);
+        logger.debug('Found recipient by user_id:', { recipientProfileId });
       } else {
         // Try as profile_id
         const { data: profileById } = await supabase
@@ -163,13 +174,13 @@ export const useRealTimeChat = () => {
 
       if (profileById) {
         recipientProfileId = profileById.id;
-        console.log('Found recipient by profile_id:', recipientProfileId);
+        logger.debug('Found recipient by profile_id:', { recipientProfileId });
       } else {
         throw new Error('Recipient profile not found');
       }
       }
 
-      console.log('Recipient profile ID:', recipientProfileId);
+      logger.debug('Recipient profile resolved:', { recipientProfileId });
 
       // Determine which user is the client and which is the vendor
       const currentUserRole = user.user_metadata?.role;
@@ -187,12 +198,12 @@ export const useRealTimeChat = () => {
         .maybeSingle();
 
       if (existingConversation) {
-        console.log('Found existing conversation:', existingConversation.id);
+        logger.debug('Found existing conversation:', { conversationId: existingConversation.id });
         return existingConversation;
       }
 
       // Create new conversation using profile IDs
-      console.log('Creating new conversation...');
+      logger.debug('Creating new conversation between profiles:', { clientId, vendorId });
       const conversationData: any = {
         client_id: clientId,
         vendor_id: vendorId,
@@ -210,15 +221,15 @@ export const useRealTimeChat = () => {
         .single();
 
       if (error) {
-        console.error('Error creating conversation:', error);
+        logger.error('Error creating conversation:', { error, conversationData });
         throw error;
       }
 
-      console.log('Created new conversation:', newConversation);
+      logger.info('Created new conversation:', { conversationId: newConversation.id });
       await fetchConversations();
       return newConversation;
     } catch (error: any) {
-      console.error('Error starting conversation:', error);
+      logger.error('Error starting conversation:', { error, recipientId: recipientUserIdOrProfileId });
       throw error;
     }
   }, [user]);
@@ -232,7 +243,7 @@ export const useRealTimeChat = () => {
   ) => {
     if (!user) throw new Error('User not authenticated');
 
-    console.log('Sending message to conversation:', conversationId);
+    logger.debug('Sending message:', { conversationId, messageType, contentLength: content.length });
 
     try {
       const { data: message, error } = await supabase
@@ -269,10 +280,10 @@ export const useRealTimeChat = () => {
         [conversationId]: [...(prev[conversationId] || []), message]
       }));
 
-      console.log('Message sent successfully');
+      logger.debug('Message sent successfully:', { messageId: message.id });
       return message;
     } catch (error: any) {
-      console.error('Error sending message:', error);
+      logger.error('Error sending message:', { error, conversationId });
       throw error;
     }
   }, [user]);
@@ -287,12 +298,12 @@ export const useRealTimeChat = () => {
         .in('id', messageIds)
         .eq('recipient_id', user.id);
     } catch (error: any) {
-      console.error('Error marking messages as read:', error);
+      logger.error('Error marking messages as read:', { error, messageCount: messageIds.length });
     }
   }, [user]);
 
   const fetchMessages = useCallback(async (conversationId: string) => {
-    console.log('Fetching messages for conversation:', conversationId);
+    logger.debug('Fetching messages for conversation:', { conversationId });
     
     try {
       const { data, error } = await supabase
@@ -308,10 +319,10 @@ export const useRealTimeChat = () => {
         [conversationId]: data || []
       }));
 
-      console.log('Fetched', data?.length || 0, 'messages');
+      logger.debug('Fetched messages:', { conversationId, messageCount: data?.length || 0 });
       return data;
     } catch (error: any) {
-      console.error('Error fetching messages:', error);
+      logger.error('Error fetching messages:', { error, conversationId });
       return [];
     }
   }, []);
@@ -337,7 +348,7 @@ export const useRealTimeChat = () => {
         .maybeSingle();
 
       if (!currentUserProfile) {
-        console.error('Current user profile not found');
+        logger.error('Current user profile not found when fetching participant');
         return null;
       }
 
@@ -346,7 +357,7 @@ export const useRealTimeChat = () => {
         ? conversation.vendor_id 
         : conversation.client_id;
 
-      console.log('Looking for other participant with profile ID:', otherParticipantId);
+      logger.debug('Looking for other participant:', { otherParticipantId });
 
       // Fetch the other participant's profile using their profile ID
       const { data: profile, error } = await supabase
@@ -356,19 +367,22 @@ export const useRealTimeChat = () => {
         .maybeSingle();
 
       if (error) {
-        console.error('Error fetching other participant:', error);
+        logger.error('Error fetching other participant:', { error, otherParticipantId });
         return null;
       }
 
       if (!profile) {
-        console.error('Other participant profile not found for ID:', otherParticipantId);
+        logger.error('Other participant profile not found:', { otherParticipantId });
         return null;
       }
 
-      console.log('Found other participant:', profile.full_name || profile.company_name);
+      logger.debug('Found other participant:', { 
+        participantId: otherParticipantId,
+        name: profile.full_name || profile.company_name
+      });
       return profile;
     } catch (error) {
-      console.error('Error fetching participant:', error);
+      logger.error('Error fetching participant:', { error });
       return null;
     }
   }, [user]);
@@ -376,7 +390,7 @@ export const useRealTimeChat = () => {
   const fetchConversations = useCallback(async () => {
     if (!user) return;
 
-    console.log('Fetching conversations for user:', user.id);
+    logger.debug('Fetching conversations for user:', { userId: user.id });
     setLoading(true);
     setError(null);
 
@@ -400,10 +414,10 @@ export const useRealTimeChat = () => {
 
       if (error) throw error;
 
-      console.log('Fetched', data?.length || 0, 'conversations');
+      logger.debug('Fetched conversations:', { userId: user.id, conversationCount: data?.length || 0 });
       setConversations(data || []);
     } catch (error: any) {
-      console.error('Error fetching conversations:', error);
+      logger.error('Error fetching conversations:', { error, userId: user.id });
       setError(error.message);
     } finally {
       setLoading(false);

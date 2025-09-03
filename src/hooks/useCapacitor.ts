@@ -5,6 +5,7 @@ import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { Network, ConnectionStatus } from '@capacitor/network';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { SplashScreen } from '@capacitor/splash-screen';
+import { createLogger } from '@/utils/logger';
 
 export interface CapacitorState {
   isNative: boolean;
@@ -20,6 +21,7 @@ export const useCapacitor = () => {
     networkStatus: null,
     pushToken: null
   });
+  const logger = createLogger('useCapacitor');
 
   useEffect(() => {
     const initCapacitor = async () => {
@@ -66,28 +68,26 @@ export const useCapacitor = () => {
         // Handle registration
         PushNotifications.addListener('registration', (token: Token) => {
           setState(prev => ({ ...prev, pushToken: token.value }));
-          console.log('Push registration success:', token.value);
+          logger.info('Push registration success:', { tokenLength: token.value.length });
         });
 
         // Handle registration error
         PushNotifications.addListener('registrationError', (error: any) => {
-          console.error('Push registration error:', error);
+          logger.error('Push registration error:', { error });
         });
 
         // Handle push notification received
         PushNotifications.addListener('pushNotificationReceived', (notification: PushNotificationSchema) => {
-          console.log('Push notification received:', notification);
-          // You can dispatch to your notification store here
+          logger.info('Push notification received:', { title: notification.title });
         });
 
         // Handle push notification action
         PushNotifications.addListener('pushNotificationActionPerformed', (notification: ActionPerformed) => {
-          console.log('Push notification action performed:', notification);
-          // Handle notification tap - navigate to relevant screen
+          logger.info('Push notification action performed:', { actionId: notification.actionId });
         });
       }
     } catch (error) {
-      console.error('Push notification setup failed:', error);
+      logger.error('Push notification setup failed:', { error });
     }
   };
 
@@ -97,7 +97,7 @@ export const useCapacitor = () => {
       await StatusBar.setBackgroundColor({ color: '#ffffff' });
       await StatusBar.show();
     } catch (error) {
-      console.error('Status bar setup failed:', error);
+      logger.error('Status bar setup failed:', { error });
     }
   };
 
@@ -106,7 +106,7 @@ export const useCapacitor = () => {
       try {
         await Haptics.impact({ style });
       } catch (error) {
-        console.error('Haptic feedback failed:', error);
+        logger.error('Haptic feedback failed:', { error });
       }
     }
   };
@@ -116,7 +116,7 @@ export const useCapacitor = () => {
       try {
         await StatusBar.setStyle({ style });
       } catch (error) {
-        console.error('Status bar style change failed:', error);
+        logger.error('Status bar style change failed:', { error });
       }
     }
   };
