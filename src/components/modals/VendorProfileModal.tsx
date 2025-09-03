@@ -100,7 +100,6 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
   const handleSendMessage = async () => {
     setIsLoadingMessage(true);
     try {
-      console.log('Starting conversation with vendor:', vendor.id);
       const conversation = await startConversation(vendor.id.toString());
       
       if (conversation) {
@@ -108,7 +107,6 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
           ? 'مرحباً، أنا مهتم بخدماتكم.'
           : "Hello, I'm interested in your services.";
         
-        console.log('Sending message to conversation:', conversation.id);
         await sendMessage(
           conversation.id, 
           message, 
@@ -146,7 +144,6 @@ export const VendorProfileModal = ({ children, vendor }: VendorProfileModalProps
     setIsLoadingCall(true);
     try {
       // First create a conversation for the video call
-      console.log('Starting video call conversation with vendor:', vendor.id);
       const conversation = await startConversation(vendor.id.toString());
       
       if (conversation) {

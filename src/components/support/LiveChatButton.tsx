@@ -18,38 +18,27 @@ export const LiveChatButton = () => {
 
 
   const handleStartChat = async () => {
-    console.log('LiveChat: Button clicked');
-    
     if (!userProfile) {
-      console.log('LiveChat: No user profile found');
       showError('Please log in to start a chat');
       return;
     }
 
-    console.log('LiveChat: Starting chat for user:', userProfile.user_id);
     setIsLoading(true);
 
     try {
-      console.log('LiveChat: Getting available admins...');
       const admins = await getAvailableAdmins();
-      console.log('LiveChat: Received admins data:', admins);
       
       if (admins.length === 0) {
-        console.log('LiveChat: No admins available');
         showError('No support agents are currently available. Please create a support ticket instead.');
         return;
       }
 
-      console.log('LiveChat: Found', admins.length, 'admins');
       const admin = selectRandomAdmin(admins);
       
       if (!admin) {
-        console.log('LiveChat: Failed to select admin');
         showError('Failed to connect to support agent. Please try again.');
         return;
       }
-
-      console.log('LiveChat: Selected admin:', admin);
       
       // Validate admin has required fields
       if (!admin.user_id) {
@@ -71,7 +60,6 @@ export const LiveChatButton = () => {
   };
 
   const handleModalClose = () => {
-    console.log('LiveChat: Modal closing');
     setIsModalOpen(false);
     setSelectedAdmin(null);
   };

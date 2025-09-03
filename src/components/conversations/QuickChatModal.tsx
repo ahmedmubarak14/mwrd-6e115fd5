@@ -123,15 +123,7 @@ export const QuickChatModal = ({
 
   const initializeConversation = async () => {
     try {
-      console.log('QuickChatModal: Initializing conversation with:', {
-        recipientId,
-        conversationType,
-        requestId,
-        offerId
-      });
-      
       const conversation = await startConversation(recipientId, requestId, offerId, conversationType);
-      console.log('QuickChatModal: Conversation initialized:', conversation);
       
       setCurrentConversation(conversation);
       setActiveConversation(conversation.id);

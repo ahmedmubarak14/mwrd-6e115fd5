@@ -138,7 +138,6 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
       .on('postgres_changes', 
         { event: '*', schema: 'public', table: 'offers', filter: `request_id=eq.${requestId}` },
         (payload) => {
-          console.log('Offer updated:', payload);
           loadOffers();
         }
       )
@@ -150,14 +149,12 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
   }, [open, requestId]);
 
   const onApprove = async (id: string, notes: string) => {
-    console.log('Attempting to approve offer:', { id, notes, userProfile: userProfile?.id, requestOwnerId });
     const ok = await updateOfferStatus(id, 'approved', notes);
     if (ok) {
       toast({ title: isRTL ? 'تم القبول' : 'Approved', description: isRTL ? 'تم قبول العرض وإنشاء طلب جديد.' : 'Offer approved and new order created.' });
       setSelectedOffers(prev => prev.filter(offerId => offerId !== id));
       await loadOffers();
     } else {
-      console.error('Failed to approve offer - check database permissions and RLS policies');
       toast({ 
         title: isRTL ? 'خطأ' : 'Error', 
         description: isRTL ? 'تعذر قبول العرض. تحقق من الصلاحيات.' : 'Failed to approve offer. Check permissions.', 
@@ -167,14 +164,12 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
   };
 
   const onReject = async (id: string, notes: string) => {
-    console.log('Attempting to reject offer:', { id, notes, userProfile: userProfile?.id, requestOwnerId });
     const ok = await updateOfferStatus(id, 'rejected', notes);
     if (ok) {
       toast({ title: isRTL ? 'تم الرفض' : 'Rejected', description: isRTL ? 'تم رفض العرض.' : 'Offer rejected.' });
       setSelectedOffers(prev => prev.filter(offerId => offerId !== id));
       await loadOffers();
     } else {
-      console.error('Failed to reject offer - check database permissions and RLS policies');
       toast({ 
         title: isRTL ? 'خطأ' : 'Error', 
         description: isRTL ? 'تعذر رفض العرض. تحقق من الصلاحيات.' : 'Failed to reject offer. Check permissions.', 
@@ -189,15 +184,6 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
   const canManage = isAdmin || isRequestOwner;
   const userRole = canManage ? (isAdmin ? 'admin' : 'client') : 'vendor';
   
-  console.log('Permission check:', { 
-    userProfileId: userProfile?.id, 
-    userProfileRole: userProfile?.role,
-    requestOwnerId, 
-    isAdmin, 
-    isRequestOwner, 
-    canManage, 
-    userRole 
-  });
 
   const handleOfferSelection = (offerId: string, selected: boolean) => {
     if (selected) {
