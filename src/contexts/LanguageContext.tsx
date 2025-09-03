@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getTranslation } from '@/constants/translations';
+import { createLogger } from '@/utils/logger';
 
 type Language = 'en' | 'ar';
 
@@ -23,18 +24,20 @@ export const useLanguage = () => {
   return context;
 };
 
+const logger = createLogger('LanguageProvider');
+
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  console.log('LanguageProvider: Starting initialization');
+  logger.debug('Starting initialization');
   
   const [language, setLanguage] = useState<Language>(() => {
-    console.log('LanguageProvider: Initializing useState');
+    logger.debug('Initializing useState');
     try {
       const saved = localStorage.getItem('language');
       const result = (saved === 'ar' || saved === 'en') ? saved : 'en';
-      console.log('LanguageProvider: Initial language:', result);
+      logger.info('Initial language loaded', { language: result });
       return result;
     } catch (error) {
-      console.warn('Failed to access localStorage:', error);
+      logger.warn('Failed to access localStorage', { error });
       return 'en';
     }
   });
@@ -45,7 +48,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     try {
       localStorage.setItem('language', language);
     } catch (error) {
-      console.warn('Failed to save language to localStorage:', error);
+      logger.warn('Failed to save language to localStorage', { error });
     }
     
     // Update document attributes for RTL support

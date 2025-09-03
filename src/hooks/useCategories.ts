@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { createLogger } from '@/utils/logger';
 
 export interface Category {
   id: string;
@@ -30,6 +31,8 @@ export interface RequestCategory {
   created_at: string;
   categories?: Category;
 }
+
+const logger = createLogger('useCategories');
 
 // Helper function to sanitize data for database operations
 const sanitizeDataForDB = (data: any) => {
@@ -93,7 +96,7 @@ export const useCategories = (includeInactive: boolean = false) => {
 
       setCategories(rootCategories);
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      logger.error('Error fetching categories', { error });
       toast({
         title: "Error",
         description: "Failed to fetch categories",
@@ -113,11 +116,11 @@ export const useCategories = (includeInactive: boolean = false) => {
     sort_order?: number;
   }) => {
     try {
-      console.log('Creating category with data:', categoryData);
+      logger.debug('Creating category', { categoryData });
       
       // Sanitize data before sending to database
       const sanitizedData = sanitizeDataForDB(categoryData);
-      console.log('Sanitized data:', sanitizedData);
+      logger.debug('Sanitized data', { sanitizedData });
       
       const { data, error } = await supabase
         .from('categories')
@@ -126,11 +129,11 @@ export const useCategories = (includeInactive: boolean = false) => {
         .single();
 
       if (error) {
-        console.error('Create category error:', error);
+        logger.error('Create category error', { error });
         throw error;
       }
 
-      console.log('Category created successfully:', data);
+      logger.info('Category created successfully', { data });
       await fetchCategories();
       toast({
         title: "Success",
@@ -139,7 +142,7 @@ export const useCategories = (includeInactive: boolean = false) => {
       
       return data;
     } catch (error) {
-      console.error('Error creating category:', error);
+      logger.error('Error creating category', { error });
       
       // Enhanced error handling
       const errorMessage = error?.message || 'Failed to create category';
@@ -174,11 +177,11 @@ export const useCategories = (includeInactive: boolean = false) => {
 
   const updateCategory = async (id: string, updates: Partial<Category>) => {
     try {
-      console.log('Updating category ID:', id, 'with updates:', updates);
+      logger.debug('Updating category', { id, updates });
       
       // Get current user info for debugging
       const { data: user } = await supabase.auth.getUser();
-      console.log('Current user:', user?.user?.id);
+      logger.debug('Current user', { userId: user?.user?.id });
       
       // Get user profile for role verification
       const { data: profile, error: profileError } = await supabase
@@ -188,14 +191,14 @@ export const useCategories = (includeInactive: boolean = false) => {
         .single();
       
       if (profileError) {
-        console.error('Error fetching user profile:', profileError);
+        logger.error('Error fetching user profile', { profileError });
       } else {
-        console.log('User profile:', profile);
+        logger.debug('User profile', { profile });
       }
 
       // Sanitize data before sending to database
       const sanitizedUpdates = sanitizeDataForDB(updates);
-      console.log('Sanitized updates:', sanitizedUpdates);
+      logger.debug('Sanitized updates', { sanitizedUpdates });
 
       const { error } = await supabase
         .from('categories')
@@ -203,18 +206,18 @@ export const useCategories = (includeInactive: boolean = false) => {
         .eq('id', id);
 
       if (error) {
-        console.error('Update category error:', error);
+        logger.error('Update category error', { error });
         throw error;
       }
 
-      console.log('Category updated successfully');
+      logger.info('Category updated successfully');
       await fetchCategories();
       toast({
         title: "Success",
         description: "Category updated successfully"
       });
     } catch (error) {
-      console.error('Error updating category:', error);
+      logger.error('Error updating category', { error });
       
       // Enhanced error handling with specific messages
       const errorMessage = error?.message || 'Failed to update category';
@@ -249,7 +252,7 @@ export const useCategories = (includeInactive: boolean = false) => {
 
   const deleteCategory = async (id: string) => {
     try {
-      console.log('Deleting category ID:', id);
+      logger.debug('Deleting category', { id });
       
       const { error } = await supabase
         .from('categories')
@@ -257,18 +260,18 @@ export const useCategories = (includeInactive: boolean = false) => {
         .eq('id', id);
 
       if (error) {
-        console.error('Delete category error:', error);
+        logger.error('Delete category error', { error });
         throw error;
       }
 
-      console.log('Category deleted successfully');
+      logger.info('Category deleted successfully');
       await fetchCategories();
       toast({
         title: "Success",
         description: "Category deleted successfully"
       });
     } catch (error) {
-      console.error('Error deleting category:', error);
+      logger.error('Error deleting category', { error });
       
       // Enhanced error handling
       const errorMessage = error?.message || 'Failed to delete category';

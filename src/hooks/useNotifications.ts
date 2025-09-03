@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { createLogger } from '@/utils/logger';
 
 export interface Notification {
   id: string;
@@ -12,6 +13,8 @@ export interface Notification {
   created_at: string;
   user_id: string;
 }
+
+const logger = createLogger('useNotifications');
 
 export const useNotifications = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -37,7 +40,7 @@ export const useNotifications = () => {
       setNotifications(notificationData);
       setUnreadCount(notificationData.filter(n => !n.read_at).length);
     } catch (error) {
-      console.error('Error fetching notifications:', error);
+      logger.error('Error fetching notifications', { error });
     } finally {
       setLoading(false);
     }
@@ -63,7 +66,7 @@ export const useNotifications = () => {
       );
       setUnreadCount(prev => Math.max(0, prev - 1));
     } catch (error) {
-      console.error('Error marking notification as read:', error);
+      logger.error('Error marking notification as read', { error, notificationId });
     }
   };
 
@@ -91,7 +94,7 @@ export const useNotifications = () => {
       );
       setUnreadCount(0);
     } catch (error) {
-      console.error('Error marking all notifications as read:', error);
+      logger.error('Error marking all notifications as read', { error });
     }
   };
 
@@ -108,7 +111,7 @@ export const useNotifications = () => {
     let channel: any = null;
     
     try {
-      console.log('useNotifications: Setting up realtime subscription');
+      logger.debug('Setting up realtime subscription');
       channel = supabase
         .channel('notifications')
         .on(
@@ -120,7 +123,7 @@ export const useNotifications = () => {
             filter: `user_id=eq.${user.id}`,
           },
           (payload) => {
-            console.log('useNotifications: New notification received:', payload);
+            logger.debug('New notification received', { payload });
             const newNotification = payload.new as Notification;
             setNotifications(prev => [newNotification, ...prev]);
             setUnreadCount(prev => prev + 1);
@@ -135,7 +138,7 @@ export const useNotifications = () => {
             filter: `user_id=eq.${user.id}`,
           },
           (payload) => {
-            console.log('useNotifications: Notification updated:', payload);
+            logger.debug('Notification updated', { payload });
             const updatedNotification = payload.new as Notification;
             setNotifications(prev =>
               prev.map(n => n.id === updatedNotification.id ? updatedNotification : n)
@@ -143,41 +146,41 @@ export const useNotifications = () => {
           }
         )
         .subscribe((status: string, error?: any) => {
-          console.log('useNotifications: Subscription status:', status, error ? 'Error:' : '', error);
+          logger.debug('Subscription status', { status, error });
           
           if (error) {
-            console.error('Notifications realtime subscription error:', error);
-            console.log('Notifications realtime disabled - app will work without live updates');
+            logger.error('Notifications realtime subscription error', { error });
+            logger.info('Notifications realtime disabled - app will work without live updates');
             
             // Handle WebSocket errors gracefully
             if (error.message?.includes('WebSocket') || error.message?.includes('insecure')) {
-              console.log('WebSocket connection unavailable for notifications - continuing without realtime');
+              logger.info('WebSocket connection unavailable for notifications - continuing without realtime');
               return;
             }
           } else if (status === 'SUBSCRIBED') {
-            console.log('Notifications realtime subscription active');
+            logger.info('Notifications realtime subscription active');
           } else if (status === 'CHANNEL_ERROR') {
-            console.warn('Notifications subscription error - continuing without realtime updates');
+            logger.warn('Notifications subscription error - continuing without realtime updates');
           } else if (status === 'TIMED_OUT') {
-            console.warn('Notifications subscription timed out - continuing without realtime updates');
+            logger.warn('Notifications subscription timed out - continuing without realtime updates');
           } else if (status === 'CLOSED') {
-            console.log('Notifications subscription closed');
+            logger.info('Notifications subscription closed');
           }
         });
         
     } catch (error) {
-      console.warn('Failed to set up notifications realtime subscription:', error);
-      console.log('Continuing without realtime notifications - app will work normally with polling');
+      logger.warn('Failed to set up notifications realtime subscription', { error });
+      logger.info('Continuing without realtime notifications - app will work normally with polling');
       // App continues to work without realtime updates
     }
 
     return () => {
       if (channel) {
         try {
-          console.log('useNotifications: Cleaning up realtime subscription');
+          logger.debug('Cleaning up realtime subscription');
           supabase.removeChannel(channel);
         } catch (cleanupError) {
-          console.warn('useNotifications: Error during subscription cleanup:', cleanupError);
+          logger.warn('Error during subscription cleanup', { cleanupError });
         }
       }
     };
