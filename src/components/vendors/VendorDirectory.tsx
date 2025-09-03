@@ -19,6 +19,9 @@ import { EnhancedVendorProfileModal } from "@/components/modals/EnhancedVendorPr
 import { PrivateRequestModal } from "@/components/modals/PrivateRequestModal";
 import { useNavigate } from "react-router-dom";
 import { useRealTimeChat } from "@/hooks/useRealTimeChat";
+import { createLogger } from '@/utils/logger';
+
+const logger = createLogger('VendorDirectory');
 
 export const VendorDirectory: React.FC = () => {
   const { t, isRTL, language } = useLanguage();
@@ -184,13 +187,13 @@ export const VendorDirectory: React.FC = () => {
             className="flex-1" 
             onClick={async () => {
               try {
-                console.log('Starting direct conversation with vendor:', vendor.id);
+                logger.debug('Starting direct conversation', { vendorId: vendor.id });
                 const conversation = await startConversation(vendor.id.toString());
                 if (conversation) {
                   navigate('/messages');
                 }
               } catch (error) {
-                console.error('Error starting conversation:', error);
+                logger.error('Error starting conversation', { error, vendorId: vendor.id });
               }
             }}
           >

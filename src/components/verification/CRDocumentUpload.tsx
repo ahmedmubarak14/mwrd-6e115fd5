@@ -8,6 +8,9 @@ import { Upload, FileText, CheckCircle, AlertCircle, RefreshCw } from 'lucide-re
 import { useToastFeedback } from '@/hooks/useToastFeedback';
 import { supabase } from '@/integrations/supabase/client';
 import { uploadDocument } from '@/utils/documentStorage';
+import { createLogger } from '@/utils/logger';
+
+const logger = createLogger('CRDocumentUpload');
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
@@ -61,7 +64,7 @@ export const CRDocumentUpload = ({
         return;
       }
 
-      console.log('Starting upload process for user:', user.id);
+      logger.debug('Starting document upload process', { userId: user.id });
 
       // Use the new document storage utility
       const uploadResult = await uploadDocument(file, user.id, 'cr-documents');
@@ -70,7 +73,7 @@ export const CRDocumentUpload = ({
         throw new Error(uploadResult.error || 'Upload failed');
       }
 
-      console.log('Upload successful, saving to database:', uploadResult.filePath);
+      logger.info('Document upload successful', { filePath: uploadResult.filePath });
 
       // Store the verification request in database
       const { error: insertError } = await supabase

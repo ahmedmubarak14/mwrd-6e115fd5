@@ -87,8 +87,8 @@ export const MobileMessages = () => {
           <MessageSwipeCard
             key={conversation.id}
             onReply={() => setSelectedConversation(conversation.id)}
-            onStar={() => console.log('Star conversation:', conversation.id)}
-            onDelete={() => console.log('Delete conversation:', conversation.id)}
+            onStar={() => {}} // TODO: Implement star functionality
+            onDelete={() => {}} // TODO: Implement delete functionality
           >
             <div 
               className="flex items-center gap-3 cursor-pointer"

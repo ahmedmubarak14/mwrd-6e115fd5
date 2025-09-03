@@ -15,7 +15,10 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Plus, Edit, Trash2, ChevronRight, ChevronDown, AlertTriangle, Search, Filter, Download, Grid, List, MoreHorizontal, Folder, FolderOpen, Expand, Minimize } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { createLogger } from '@/utils/logger';
 import { cn } from '@/lib/utils';
+
+const logger = createLogger('CategoryManagement');
 
 interface Category {
   id: string;
@@ -134,8 +137,7 @@ export const CategoryManagement: React.FC = () => {
     }
     
     try {
-      console.log('Submitting form data:', formData);
-      console.log('Editing category:', editingCategory);
+      logger.debug('Submitting category form', { formData, editingCategory: editingCategory?.id });
       
       if (editingCategory) {
         await updateCategory(editingCategory.id, formData);
