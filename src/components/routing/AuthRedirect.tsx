@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { consoleCleanupGuide } from '@/utils/cleanupConsoleStats';
 
 /**
  * Component that handles automatic redirects based on authentication state
@@ -10,6 +11,7 @@ export const AuthRedirect = () => {
   const { user, userProfile, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const logger = consoleCleanupGuide.createLogger('AuthRedirect');
 
   useEffect(() => {
     // Don't redirect while still loading auth state
@@ -17,7 +19,7 @@ export const AuthRedirect = () => {
 
     // If user is authenticated and we have their profile, redirect based on role
     if (user && userProfile) {
-      console.log('AuthRedirect: User authenticated, redirecting based on role');
+      logger.debug('User authenticated, redirecting based on role');
       
       // Role-based redirection
       if (userProfile.role === 'admin') {

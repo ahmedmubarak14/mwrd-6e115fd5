@@ -16,6 +16,7 @@ import { CRDocumentUpload } from "@/components/verification/CRDocumentUpload";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle, Info } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { consoleCleanupGuide } from "@/utils/cleanupConsoleStats";
 
 interface AuthFormProps {
   onAuthSuccess?: (user: UserProfile) => void;
@@ -23,6 +24,7 @@ interface AuthFormProps {
 
 export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
   const navigate = useNavigate();
+  const logger = consoleCleanupGuide.createLogger('AuthForm');
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const [registrationStep, setRegistrationStep] = useState<'details' | 'verification'>('details');
   const [formData, setFormData] = useState({
@@ -41,7 +43,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
   // Handle successful authentication - redirect to dashboard
   useEffect(() => {
     if (user && userProfile) {
-      console.log('User authenticated, redirecting to dashboard');
+      logger.debug('User authenticated, redirecting to dashboard');
       // Call onAuthSuccess if provided
       if (onAuthSuccess) {
         onAuthSuccess(userProfile);
@@ -87,7 +89,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
         }
       }
     } catch (error: any) {
-      console.error('Sign up error:', error);
+      logger.error('Sign up error:', error);
       showError(error.message || 'Failed to create account');
     } finally {
       setLoading(false);
@@ -354,7 +356,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
                 className="w-full bg-white/5 border-white/20 text-white/80 hover:bg-white/10 hover:text-white rounded-2xl h-12"
                 onClick={() => {
                   // Temporary admin creation functionality
-                  console.log('Create admin user clicked');
+                  logger.debug('Create admin user clicked');
                 }}
               >
                 Create Admin User (Temporary)

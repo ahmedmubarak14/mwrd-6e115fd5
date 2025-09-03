@@ -25,6 +25,7 @@ import { useAutomatedTasks } from '@/hooks/useWorkflowAutomation';
 import { useMobileDetection } from '@/hooks/useMobileDetection';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { consoleCleanupGuide } from '@/utils/cleanupConsoleStats';
 
 interface QuickStat {
   label: string;
@@ -39,6 +40,7 @@ export const MobileDashboard = () => {
   const { notifications, loading: notificationsLoading } = useNotifications();
   const { tasks, loading: tasksLoading } = useAutomatedTasks();
   const { isMobile } = useMobileDetection();
+  const logger = consoleCleanupGuide.createLogger('MobileDashboard');
 
   const handleRefresh = async () => {
     // Simulate refresh delay
@@ -137,8 +139,8 @@ export const MobileDashboard = () => {
         recentNotifications.map((notification) => (
           <MessageSwipeCard
             key={notification.id}
-            onStar={() => console.log('Star notification:', notification.id)}
-            onDelete={() => console.log('Delete notification:', notification.id)}
+            onStar={() => logger.debug('Star notification:', notification.id)}
+            onDelete={() => logger.debug('Delete notification:', notification.id)}
           >
             <div className="flex gap-3">
               <div className="w-2 h-2 bg-primary rounded-full mt-2 shrink-0" />
@@ -178,7 +180,7 @@ export const MobileDashboard = () => {
                 icon: CheckCircle,
                 label: 'Complete',
                 color: 'success',
-                onClick: () => console.log('Complete task:', task.id)
+                onClick: () => logger.debug('Complete task:', task.id)
               }
             ]}
           >

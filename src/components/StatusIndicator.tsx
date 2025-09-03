@@ -3,12 +3,14 @@ import { Badge } from '@/components/ui/badge';
 import { Wifi, WifiOff, Activity } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { consoleCleanupGuide } from '@/utils/cleanupConsoleStats';
 
 const StatusIndicator: React.FC = () => {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const [isConnected, setIsConnected] = useState(false);
   const [lastActivity, setLastActivity] = useState<Date>(new Date());
   const { user } = useAuth();
+  const logger = consoleCleanupGuide.createLogger('StatusIndicator');
 
   // Monitor online/offline status
   useEffect(() => {
@@ -31,26 +33,26 @@ const StatusIndicator: React.FC = () => {
     let channel: any = null;
     
     try {
-      console.log('StatusIndicator: Attempting to create presence channel');
+      logger.debug('Attempting to create presence channel');
       channel = supabase.channel('connection-status');
       
       channel
         .on('presence', { event: 'sync' }, () => {
-          console.log('StatusIndicator: Presence sync event received');
+          logger.debug('Presence sync event received');
           setIsConnected(true);
           setLastActivity(new Date());
         })
         .on('presence', { event: 'join' }, () => {
-          console.log('StatusIndicator: Presence join event received');
+          logger.debug('Presence join event received');
           setIsConnected(true);
           setLastActivity(new Date());
         })
         .on('presence', { event: 'leave' }, () => {
-          console.log('StatusIndicator: Presence leave event received');
+          logger.debug('Presence leave event received');
           setIsConnected(false);
         })
         .subscribe(async (status: string, error?: any) => {
-          console.log('StatusIndicator: Subscription status:', status, error ? 'Error:' : '', error);
+          logger.debug('Subscription status:', status, error ? 'Error:' : '', error);
           
           if (status === 'SUBSCRIBED') {
             try {
@@ -58,27 +60,27 @@ const StatusIndicator: React.FC = () => {
                 user_id: user.id,
                 online_at: new Date().toISOString()
               });
-              console.log('StatusIndicator: User presence tracked successfully');
+              logger.debug('User presence tracked successfully');
               setIsConnected(true);
             } catch (trackError) {
-              console.warn('StatusIndicator: Failed to track user presence:', trackError);
+              logger.warn('Failed to track user presence:', trackError);
               // Continue without tracking - app still works
             }
           } else if (status === 'CHANNEL_ERROR') {
-            console.warn('StatusIndicator: Channel error, continuing without presence:', error);
+            logger.warn('Channel error, continuing without presence:', error);
             setIsConnected(false);
           } else if (status === 'TIMED_OUT') {
-            console.warn('StatusIndicator: Channel timed out, continuing without presence');
+            logger.warn('Channel timed out, continuing without presence');
             setIsConnected(false);
           } else if (status === 'CLOSED') {
-            console.log('StatusIndicator: Channel closed');
+            logger.debug('Channel closed');
             setIsConnected(false);
           }
         });
         
     } catch (error) {
-      console.warn('StatusIndicator: Failed to set up presence channel:', error);
-      console.log('StatusIndicator: Continuing without realtime presence - app will work normally');
+      logger.warn('Failed to set up presence channel:', error);
+      logger.debug('Continuing without realtime presence - app will work normally');
       // Set as disconnected but don't crash the app
       setIsConnected(false);
     }
@@ -86,10 +88,10 @@ const StatusIndicator: React.FC = () => {
     return () => {
       if (channel) {
         try {
-          console.log('StatusIndicator: Cleaning up presence channel');
+          logger.debug('Cleaning up presence channel');
           supabase.removeChannel(channel);
         } catch (cleanupError) {
-          console.warn('StatusIndicator: Error during channel cleanup:', cleanupError);
+          logger.warn('Error during channel cleanup:', cleanupError);
         }
       }
     };
