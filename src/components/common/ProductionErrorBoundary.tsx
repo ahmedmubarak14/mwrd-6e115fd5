@@ -3,6 +3,7 @@ import { AlertCircle, RefreshCw, Home, Bug } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { createLogger } from '@/utils/logger';
 
 interface Props {
   children: ReactNode;
@@ -22,6 +23,7 @@ interface State {
 export class ProductionErrorBoundary extends Component<Props, State> {
   private retryCount = 0;
   private maxRetries = 3;
+  private logger = createLogger('ProductionErrorBoundary');
 
   constructor(props: Props) {
     super(props);
@@ -45,8 +47,8 @@ export class ProductionErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     this.setState({ errorInfo });
     
-    // Log error details
-    console.error('Production Error Boundary caught an error:', {
+    // Log error details using secure logging
+    this.logger.error('Production Error Boundary caught an error', {
       error: error.message,
       stack: error.stack,
       componentStack: errorInfo.componentStack,

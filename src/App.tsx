@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import { LanguageProvider } from './contexts/LanguageContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { RouteAwareThemeProvider } from './contexts/RouteAwareThemeContext';
-import { ErrorBoundary } from './components/ui/ErrorBoundary';
+import { ProductionMonitoringProvider } from './components/ui/ProductionMonitoringProvider';
+import { ProductionErrorBoundary } from './components/common/ProductionErrorBoundary';
 import { Toaster } from '@/components/ui/toaster';
 import { GlobalErrorHandler } from '@/components/ui/GlobalErrorHandler';
 import { MobileAppShell } from './components/mobile/MobileAppShell';
@@ -101,13 +102,14 @@ const RoleProtectedRoute: React.FC<{
 
 function App() {
   return (
-    <ErrorBoundary>
+    <ProductionErrorBoundary showDetails={process.env.NODE_ENV === 'development'} showHomeButton={true}>
       <GlobalErrorHandler />
       <AuthProvider>
         <LanguageProvider>
           <Router>
             <RouteAwareThemeProvider>
-              <MobileAppShell>
+              <ProductionMonitoringProvider>
+                <MobileAppShell>
                 <Suspense fallback={
                   <div className="min-h-screen flex items-center justify-center">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -320,13 +322,14 @@ function App() {
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Suspense>
-              </MobileAppShell>
-              <Toaster />
+                </MobileAppShell>
+                <Toaster />
+              </ProductionMonitoringProvider>
             </RouteAwareThemeProvider>
           </Router>
         </LanguageProvider>
       </AuthProvider>
-    </ErrorBoundary>
+    </ProductionErrorBoundary>
   );
 }
 
