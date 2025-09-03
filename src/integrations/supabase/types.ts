@@ -2312,6 +2312,16 @@ export type Database = {
           display_name: string
         }[]
       }
+      get_user_display_info: {
+        Args: { user_profile_id: string }
+        Returns: {
+          avatar_url: string
+          company_name: string
+          display_name: string
+          id: string
+          verification_status: string
+        }[]
+      }
       get_user_role: {
         Args: { user_uuid: string }
         Returns: Database["public"]["Enums"]["user_role"]
