@@ -1794,6 +1794,13 @@ export type Database = {
             referencedRelation: "user_profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "vendor_categories_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_business_info"
+            referencedColumns: ["id"]
+          },
         ]
       }
       vendor_performance_metrics: {
@@ -1886,6 +1893,13 @@ export type Database = {
             referencedRelation: "user_profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "vendor_profiles_extended_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: true
+            referencedRelation: "vendor_business_info"
+            referencedColumns: ["id"]
+          },
         ]
       }
       vendor_public_info: {
@@ -1931,6 +1945,13 @@ export type Database = {
             columns: ["id"]
             isOneToOne: true
             referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vendor_public_info_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "vendor_business_info"
             referencedColumns: ["id"]
           },
         ]
@@ -2144,7 +2165,7 @@ export type Database = {
       }
     }
     Views: {
-      safe_vendor_profiles: {
+      vendor_business_info: {
         Row: {
           avatar_url: string | null
           bio: string | null
@@ -2154,7 +2175,6 @@ export type Database = {
           full_name: string | null
           id: string | null
           portfolio_url: string | null
-          updated_at: string | null
           verification_status: string | null
         }
         Insert: {
@@ -2166,7 +2186,6 @@ export type Database = {
           full_name?: string | null
           id?: string | null
           portfolio_url?: string | null
-          updated_at?: string | null
           verification_status?: string | null
         }
         Update: {
@@ -2178,18 +2197,9 @@ export type Database = {
           full_name?: string | null
           id?: string | null
           portfolio_url?: string | null
-          updated_at?: string | null
           verification_status?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "vendor_public_info_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "user_profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Functions: {
@@ -2330,6 +2340,20 @@ export type Database = {
           total_clients: number
           total_users: number
           total_vendors: number
+        }[]
+      }
+      get_vendor_business_info: {
+        Args: { vendor_user_id: string }
+        Returns: {
+          avatar_url: string
+          bio: string
+          categories: string[]
+          company_name: string
+          created_at: string
+          full_name: string
+          id: string
+          portfolio_url: string
+          verification_status: string
         }[]
       }
       get_vendor_public_info: {
