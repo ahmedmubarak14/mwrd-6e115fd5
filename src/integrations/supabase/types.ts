@@ -2343,7 +2343,7 @@ export type Database = {
         }[]
       }
       get_vendor_business_info: {
-        Args: { vendor_user_id: string }
+        Args: Record<PropertyKey, never> | { vendor_user_id: string }
         Returns: {
           avatar_url: string
           bio: string
