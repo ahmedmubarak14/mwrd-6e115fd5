@@ -6,11 +6,15 @@ import { cn } from "@/lib/utils";
 interface VendorMobileSidebarProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
+  collapsed?: boolean;
+  onToggle?: () => void;
 }
 
 export const VendorMobileSidebar = ({ 
   isOpen, 
-  onOpenChange
+  onOpenChange,
+  collapsed,
+  onToggle
 }: VendorMobileSidebarProps) => {
   const { isRTL } = useLanguage();
 
@@ -26,7 +30,9 @@ export const VendorMobileSidebar = ({
           )}
         >
           <VendorSidebar 
-            onItemClick={() => onOpenChange(false)} 
+            onItemClick={() => onOpenChange(false)}
+            collapsed={collapsed}
+            onToggle={onToggle}
           />
         </SheetContent>
       </Sheet>

@@ -48,16 +48,19 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
 
   return (
     <div className="min-h-screen">
-      {/* Always show desktop layout with sidebar for vendor */}
       <div className="min-h-screen flex w-full" dir={isRTL ? 'rtl' : 'ltr'}>
-        <VendorSidebar 
-          collapsed={!sidebarOpen}
-          onToggle={() => {
-            const newState = !sidebarOpen;
-            setSidebarOpen(newState);
-            localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
-          }}
-        />
+        {/* Desktop sidebar - only show on desktop */}
+        {!isMobile && (
+          <VendorSidebar 
+            collapsed={!sidebarOpen}
+            onToggle={() => {
+              const newState = !sidebarOpen;
+              setSidebarOpen(newState);
+              localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
+            }}
+          />
+        )}
+        
         <div className="flex-1 flex flex-col min-w-0">
           <VendorHeader 
             onSidebarToggle={() => {
@@ -80,11 +83,17 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
         </div>
       </div>
       
-      {/* Mobile sidebar overlay for small screens */}
+      {/* Mobile sidebar overlay - pass desktop state for consistency */}
       {isMobile && (
         <VendorMobileSidebar 
           isOpen={mobileMenuOpen} 
-          onOpenChange={setMobileMenuOpen} 
+          onOpenChange={setMobileMenuOpen}
+          collapsed={!sidebarOpen}
+          onToggle={() => {
+            const newState = !sidebarOpen;
+            setSidebarOpen(newState);
+            localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
+          }}
         />
       )}
     </div>
