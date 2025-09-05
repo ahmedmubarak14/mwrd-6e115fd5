@@ -31,13 +31,12 @@ interface VendorHeaderUserMenuProps {
 export const VendorHeaderUserMenu = ({ userProfile }: VendorHeaderUserMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const { t, isRTL } = useLanguage();
 
   const handleSignOut = async () => {
     try {
-      await supabase.auth.signOut();
-      navigate('/login');
+      await signOut();
     } catch (error) {
       console.error('Error signing out:', error);
     }
