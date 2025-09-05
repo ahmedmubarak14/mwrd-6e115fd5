@@ -36,7 +36,6 @@ interface AdminSidebarProps {
   className?: string;
   collapsed?: boolean;
   onToggle?: () => void;
-  onItemClick?: () => void;
 }
 
 interface NavigationGroup {
@@ -52,7 +51,7 @@ interface NavigationGroup {
   }[];
 }
 
-export const AdminSidebar = ({ className, collapsed = false, onToggle, onItemClick }: AdminSidebarProps) => {
+export const AdminSidebar = ({ className, collapsed = false, onToggle }: AdminSidebarProps) => {
   const location = useLocation();
   const { getPendingTicketsCount } = useSupportTickets();
   const { t, isRTL } = useLanguage();
@@ -306,7 +305,6 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle, onItemCli
                       <Link
                         key={item.href}
                         to={item.href}
-                        onClick={onItemClick}
                         className={cn(
                           "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200",
                           "text-sm font-medium hover:bg-accent/50",

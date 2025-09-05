@@ -3,15 +3,14 @@
 import { useState } from "react";
 import { Header } from "@/components/ui/layout/Header";
 import { Footer } from "@/components/ui/layout/Footer";
-import { VendorSidebar } from "@/components/vendor/VendorSidebar";
+import { MobileSidebar } from "./MobileSidebar";
 import { MobileContainer } from "@/components/ui/MobileContainer";
 import { MobileBottomNav, MobileBottomNavSpacer } from "@/components/navigation/MobileBottomNav";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { VendorSidebar } from "@/components/vendor/VendorSidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -35,17 +34,10 @@ export const DashboardLayout = ({ children, className }: DashboardLayoutProps) =
         <div className="min-h-screen flex flex-col">
           <Header onMobileMenuOpen={() => setMobileMenuOpen(true)} />
           
-          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <SheetContent 
-              side={isRTL ? "right" : "left"}
-              className={cn(
-                "w-[75vw] max-w-xs p-0 bg-background overflow-hidden",
-                "safe-area-inset-y"
-              )}
-            >
-              <VendorSidebar onItemClick={() => setMobileMenuOpen(false)} />
-            </SheetContent>
-          </Sheet>
+          <MobileSidebar 
+            isOpen={mobileMenuOpen} 
+            onOpenChange={setMobileMenuOpen} 
+          />
 
           <main className="flex-1 overflow-auto bg-background p-4 pb-20">
             {children}

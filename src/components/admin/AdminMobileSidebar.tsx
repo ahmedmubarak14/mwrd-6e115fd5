@@ -1,6 +1,6 @@
 
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { AdminSidebar } from "./AdminSidebar";
+import { AdminMobileSidebarContent } from "./AdminMobileSidebarContent";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
@@ -13,16 +13,18 @@ export const AdminMobileSidebar = ({ isOpen, onOpenChange }: AdminMobileSidebarP
   const { isRTL } = useLanguage();
 
   return (
-    <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent 
-        side={isRTL ? "right" : "left"}
-        className={cn(
-          "w-[75vw] max-w-xs p-0 bg-background border-r-2 overflow-hidden",
-          "safe-area-inset-y"
-        )}
-      >
-        <AdminSidebar onItemClick={() => onOpenChange(false)} />
-      </SheetContent>
-    </Sheet>
+    <div className="lg:hidden">
+      <Sheet open={isOpen} onOpenChange={onOpenChange}>
+        <SheetContent 
+          side={isRTL ? "right" : "left"}
+          className={cn(
+            "w-[75vw] max-w-xs p-0 bg-background border-r-2 overflow-hidden",
+            "safe-area-inset-y"
+          )}
+        >
+          <AdminMobileSidebarContent onItemClick={() => onOpenChange(false)} />
+        </SheetContent>
+      </Sheet>
+    </div>
   );
 };
