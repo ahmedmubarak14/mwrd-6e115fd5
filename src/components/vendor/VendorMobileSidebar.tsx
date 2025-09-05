@@ -26,7 +26,8 @@ export const VendorMobileSidebar = ({
           className={cn(
             "w-[75vw] max-w-xs p-0 bg-background overflow-hidden",
             "safe-area-inset-y",
-            isRTL ? "border-l-2" : "border-r-2"
+            isRTL ? "border-l-2" : "border-r-2",
+            "flex flex-col"
           )}
         >
           <VendorSidebar 
