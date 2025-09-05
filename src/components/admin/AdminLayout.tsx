@@ -61,15 +61,18 @@ export const AdminLayout = () => {
   return (
     <AdminErrorBoundary>
       <div className="min-h-screen">
-        {/* Always show desktop layout with sidebar for admin */}
         <div className="min-h-screen flex w-full" dir={isRTL ? 'rtl' : 'ltr'}>
-          <AdminSidebar 
-            collapsed={!sidebarOpen}
-          />
+          {/* Desktop sidebar - only show on desktop */}
+          {!isMobile && (
+            <AdminSidebar 
+              collapsed={!sidebarOpen}
+            />
+          )}
+          
           <div 
             className={cn(
               "flex-1 flex flex-col min-w-0 transition-all duration-300",
-              sidebarOpen ? (isRTL ? "mr-64" : "ml-64") : (isRTL ? "mr-16" : "ml-16")
+              !isMobile && sidebarOpen ? (isRTL ? "mr-64" : "ml-64") : !isMobile && (isRTL ? "mr-16" : "ml-16")
             )}
           >
             <AdminHeader 
@@ -90,11 +93,17 @@ export const AdminLayout = () => {
           <AdminCommandPalette />
         </div>
         
-        {/* Mobile sidebar overlay for small screens */}
+        {/* Mobile sidebar overlay - pass desktop state for consistency */}
         {isMobile && (
           <AdminMobileSidebar 
             isOpen={mobileMenuOpen} 
-            onOpenChange={setMobileMenuOpen} 
+            onOpenChange={setMobileMenuOpen}
+            collapsed={!sidebarOpen}
+            onToggle={() => {
+              const newState = !sidebarOpen;
+              setSidebarOpen(newState);
+              localStorage.setItem('adminSidebarOpen', JSON.stringify(newState));
+            }}
           />
         )}
       </div>

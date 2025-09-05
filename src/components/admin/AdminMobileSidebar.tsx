@@ -1,15 +1,22 @@
 
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { AdminMobileSidebarContent } from "./AdminMobileSidebarContent";
+import { AdminSidebar } from "./AdminSidebar";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
 interface AdminMobileSidebarProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
+  collapsed?: boolean;
+  onToggle?: () => void;
 }
 
-export const AdminMobileSidebar = ({ isOpen, onOpenChange }: AdminMobileSidebarProps) => {
+export const AdminMobileSidebar = ({ 
+  isOpen, 
+  onOpenChange,
+  collapsed,
+  onToggle
+}: AdminMobileSidebarProps) => {
   const { isRTL } = useLanguage();
 
   return (
@@ -22,7 +29,11 @@ export const AdminMobileSidebar = ({ isOpen, onOpenChange }: AdminMobileSidebarP
             "safe-area-inset-y"
           )}
         >
-          <AdminMobileSidebarContent onItemClick={() => onOpenChange(false)} />
+          <AdminSidebar 
+            onItemClick={() => onOpenChange(false)}
+            collapsed={collapsed}
+            onToggle={onToggle}
+          />
         </SheetContent>
       </Sheet>
     </div>
