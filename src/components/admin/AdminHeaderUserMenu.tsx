@@ -20,6 +20,15 @@ interface AdminHeaderUserMenuProps {
 export const AdminHeaderUserMenu = ({ userProfile }: AdminHeaderUserMenuProps) => {
   const navigate = useNavigate();
   const { signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      navigate('/login');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
   const { t, isRTL, language, setLanguage } = useLanguage();
   const isMobile = useIsMobile();
 
@@ -59,7 +68,7 @@ export const AdminHeaderUserMenu = ({ userProfile }: AdminHeaderUserMenuProps) =
           </>
         )}
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={signOut} className={cn("flex items-center text-destructive", isRTL && "flex-row-reverse")}>
+        <DropdownMenuItem onClick={handleSignOut} className={cn("flex items-center text-destructive", isRTL && "flex-row-reverse")}>
           <LogOut className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
           <span>{t('common.signOut')}</span>
         </DropdownMenuItem>

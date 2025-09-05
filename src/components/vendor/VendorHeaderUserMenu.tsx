@@ -37,6 +37,7 @@ export const VendorHeaderUserMenu = ({ userProfile }: VendorHeaderUserMenuProps)
   const handleSignOut = async () => {
     try {
       await signOut();
+      navigate('/login');
     } catch (error) {
       console.error('Error signing out:', error);
     }
