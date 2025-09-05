@@ -20,11 +20,13 @@ export const MobileSidebar = ({ isOpen, onOpenChange }: MobileSidebarProps) => {
         <SheetContent 
           side={isRTL ? "right" : "left"}
           className={cn(
-            "w-[90vw] max-w-sm p-0 bg-unified-page safe-area-pt safe-area-pb",
-            "animate-slide-in-right"
+            "w-[90vw] max-w-sm p-0 bg-background overflow-hidden",
+            "safe-area-inset-y",
+            isRTL ? "border-l-2" : "border-r-2",
+            "flex flex-col"
           )}
         >
-          <VendorSidebar />
+          <VendorSidebar onItemClick={() => onOpenChange(false)} />
         </SheetContent>
       </Sheet>
     </div>

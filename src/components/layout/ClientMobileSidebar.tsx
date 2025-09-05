@@ -19,6 +19,7 @@ import {
   X
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
 interface ClientMobileSidebarProps {
@@ -29,6 +30,7 @@ interface ClientMobileSidebarProps {
 export const ClientMobileSidebar = ({ isOpen, onOpenChange }: ClientMobileSidebarProps) => {
   const location = useLocation();
   const { userProfile } = useAuth();
+  const { isRTL } = useLanguage();
 
   const navigationItems = [
     {
@@ -124,8 +126,16 @@ export const ClientMobileSidebar = ({ isOpen, onOpenChange }: ClientMobileSideba
 
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent side="left" className="w-80 p-0">
-        <div className="flex flex-col h-full">
+      <SheetContent 
+        side={isRTL ? "right" : "left"}
+        className={cn(
+          "w-80 p-0 bg-background overflow-hidden",
+          "safe-area-inset-y",
+          isRTL ? "border-l-2" : "border-r-2",
+          "flex flex-col"
+        )}
+      >
+        <div className="flex flex-col h-full" dir={isRTL ? "rtl" : "ltr"}>
           {/* Header */}
           <div className="border-b border-border p-4 flex items-center justify-between">
             <Link 
@@ -176,7 +186,8 @@ export const ClientMobileSidebar = ({ isOpen, onOpenChange }: ClientMobileSideba
                             "text-sm font-medium",
                             active 
                               ? "bg-primary/10 text-primary border border-primary/20" 
-                              : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                              : "text-muted-foreground hover:text-foreground hover:bg-accent/50",
+                            isRTL && "flex-row-reverse text-right"
                           )}
                         >
                           <item.icon className="h-4 w-4 shrink-0" />

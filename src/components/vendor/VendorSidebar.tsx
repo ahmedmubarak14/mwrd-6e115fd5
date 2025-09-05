@@ -213,9 +213,10 @@ export const VendorSidebar = ({
   return (
     <div 
       className={cn(
-        "flex flex-col border-r bg-card transition-all duration-300",
+        "flex flex-col bg-card transition-all duration-300",
         collapsed ? "w-16" : "w-64",
-        isRTL ? "border-l border-r-0" : "",
+        // Only show border in desktop mode, mobile sheet handles its own borders
+        !onItemClick && (isRTL ? "border-l" : "border-r"),
         className
       )} 
       dir={isRTL ? 'rtl' : 'ltr'}
