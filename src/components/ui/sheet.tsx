@@ -58,11 +58,13 @@ const SheetContent = React.forwardRef<
 >(({ side = "right", className, children, ...props }, ref) => {
   const { isRTL } = useLanguage();
   
-  // Determine close button position based on RTL and side
+  // Fix close button position based on RTL and side
   const getCloseButtonPosition = () => {
     if (side === "left") {
+      // For left sidebar: close button on the right side of content
       return isRTL ? "left-4 top-4" : "right-4 top-4";
     } else if (side === "right") {
+      // For right sidebar: close button on the left side of content  
       return isRTL ? "right-4 top-4" : "left-4 top-4";
     }
     return "right-4 top-4";
