@@ -3,6 +3,21 @@ import * as RechartsPrimitive from "recharts"
 
 import { cn } from "@/lib/utils"
 
+// Security: CSS sanitization to prevent XSS attacks
+const sanitizeCSS = (css: string): string => {
+  // Remove potentially dangerous CSS constructs
+  return css
+    .replace(/@import/gi, '') // Block @import
+    .replace(/javascript:/gi, '') // Block javascript: URLs
+    .replace(/expression\s*\(/gi, '') // Block CSS expressions
+    .replace(/behavior\s*:/gi, '') // Block IE behaviors
+    .replace(/binding\s*:/gi, '') // Block XML binding
+    .replace(/url\s*\(\s*["']?\s*javascript:/gi, '') // Block javascript in urls
+    .replace(/url\s*\(\s*["']?\s*data:/gi, '') // Block data URLs for security
+    .replace(/<!--/g, '') // Remove HTML comments
+    .replace(/-->/g, '')
+}
+
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const
 
