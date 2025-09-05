@@ -128,6 +128,13 @@ export type Database = {
             referencedRelation: "user_profiles"
             referencedColumns: ["user_id"]
           },
+          {
+            foreignKeyName: "audit_log_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_business_info"
+            referencedColumns: ["user_id"]
+          },
         ]
       }
       automated_tasks: {
@@ -737,6 +744,13 @@ export type Database = {
             referencedRelation: "user_profiles"
             referencedColumns: ["user_id"]
           },
+          {
+            foreignKeyName: "expert_consultations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_business_info"
+            referencedColumns: ["user_id"]
+          },
         ]
       }
       financial_transactions: {
@@ -792,6 +806,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user_profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "financial_transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_business_info"
             referencedColumns: ["user_id"]
           },
         ]
@@ -891,6 +912,13 @@ export type Database = {
             referencedRelation: "user_profiles"
             referencedColumns: ["user_id"]
           },
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_business_info"
+            referencedColumns: ["user_id"]
+          },
         ]
       }
       offers: {
@@ -963,6 +991,13 @@ export type Database = {
             referencedRelation: "user_profiles"
             referencedColumns: ["user_id"]
           },
+          {
+            foreignKeyName: "offers_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_business_info"
+            referencedColumns: ["user_id"]
+          },
         ]
       }
       orders: {
@@ -1026,6 +1061,13 @@ export type Database = {
             referencedColumns: ["user_id"]
           },
           {
+            foreignKeyName: "orders_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_business_info"
+            referencedColumns: ["user_id"]
+          },
+          {
             foreignKeyName: "orders_offer_id_fkey"
             columns: ["offer_id"]
             isOneToOne: false
@@ -1044,6 +1086,13 @@ export type Database = {
             columns: ["vendor_id"]
             isOneToOne: false
             referencedRelation: "user_profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "orders_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_business_info"
             referencedColumns: ["user_id"]
           },
         ]
@@ -1363,6 +1412,13 @@ export type Database = {
             columns: ["client_id"]
             isOneToOne: false
             referencedRelation: "user_profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "requests_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_business_info"
             referencedColumns: ["user_id"]
           },
           {
@@ -1794,6 +1850,13 @@ export type Database = {
             referencedRelation: "user_profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "vendor_categories_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_business_info"
+            referencedColumns: ["id"]
+          },
         ]
       }
       vendor_performance_metrics: {
@@ -1886,6 +1949,13 @@ export type Database = {
             referencedRelation: "user_profiles"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "vendor_profiles_extended_vendor_id_fkey"
+            columns: ["vendor_id"]
+            isOneToOne: true
+            referencedRelation: "vendor_business_info"
+            referencedColumns: ["id"]
+          },
         ]
       }
       vendor_public_info: {
@@ -1931,6 +2001,13 @@ export type Database = {
             columns: ["id"]
             isOneToOne: true
             referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vendor_public_info_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "vendor_business_info"
             referencedColumns: ["id"]
           },
         ]
@@ -1981,6 +2058,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user_profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "fk_verification_requests_user_id"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_business_info"
             referencedColumns: ["user_id"]
           },
         ]
@@ -2144,7 +2228,45 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      vendor_business_info: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          categories: string[] | null
+          company_name: string | null
+          created_at: string | null
+          full_name: string | null
+          id: string | null
+          portfolio_url: string | null
+          user_id: string | null
+          verification_status: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          categories?: string[] | null
+          company_name?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string | null
+          portfolio_url?: string | null
+          user_id?: string | null
+          verification_status?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          categories?: string[] | null
+          company_name?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string | null
+          portfolio_url?: string | null
+          user_id?: string | null
+          verification_status?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       check_consultation_rate_limit: {
@@ -2248,6 +2370,19 @@ export type Database = {
           avatar_url: string
           company_name: string
           display_name: string
+        }[]
+      }
+      get_safe_vendor_info: {
+        Args: { vendor_user_id: string }
+        Returns: {
+          avatar_url: string
+          bio: string
+          categories: string[]
+          company_name: string
+          full_name: string
+          id: string
+          portfolio_url: string
+          verification_status: string
         }[]
       }
       get_user_display_info: {
