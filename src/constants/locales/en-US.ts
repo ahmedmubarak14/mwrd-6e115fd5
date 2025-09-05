@@ -43,6 +43,171 @@ export const enUS = {
     businessIntelligence: "Business Intelligence",
     projectManagement: "Project Management"
   },
+  // Admin Dashboard & Management  
+  admin: {
+    // Dashboard
+    dashboard: "Admin Dashboard",
+    dashboardData: {
+      description: "Comprehensive overview of platform metrics and system health",
+      quickActions: "Quick Actions", 
+      quickActionsDesc: "Fast access to essential admin functions"
+    },
+    
+    // Navigation & Sidebar
+    usersTitle: "Users",
+    requestsTitle: "Requests",
+    offersTitle: "Offers", 
+    ordersTitle: "Orders",
+    communicationsTitle: "Communications",
+    settingsTitle: "Settings",
+    profileTitle: "Profile",
+    sidebarAnalytics: "Analytics",
+    sidebarUsers: "User Management",
+    sidebarRequests: "Request Management",
+    sidebarOffers: "Offer Management", 
+    sidebarOrders: "Order Management",
+    sidebarCommunications: "Communication Center",
+    sidebarSettings: "System Settings",
+    
+    // Breadcrumbs
+    breadcrumbs: {
+      admin: "Admin",
+      userManagement: "User Management", 
+      requestsManagement: "Requests Management",
+      offersManagement: "Offers Management",
+      ordersManagement: "Orders Management",
+      communicationCenter: "Communication Center",
+      unknown: "Page"
+    },
+    
+    // Command Palette
+    commandPalette: {
+      goToUsers: "Go to Users",
+      createNewUser: "Create New User",
+      reviewRequests: "Review Requests", 
+      manageOffers: "Manage Offers",
+      viewAnalytics: "View Analytics",
+      financialTransactions: "Financial Transactions",
+      searchUsersRequestsOffers: "Search users, requests, offers..."
+    },
+    
+    // Quick Actions
+    quickActions: "Quick Actions",
+    
+    // Analytics & Metrics
+    analytics: {
+      totalUsers: "Total Users",
+      totalRevenue: "Total Revenue", 
+      pendingApprovals: "Pending Approvals",
+      platformActivity: "Platform Activity",
+      platformActivityDesc: "User activity and transaction trends over time"
+    },
+    
+    // System Health & Status
+    system: {
+      health: "System Health",
+      status: "System Status", 
+      statusDescription: "Current status of all system components",
+      database: "Database",
+      cpuUsage: "CPU Usage",
+      memoryUsage: "Memory Usage", 
+      healthy: "Healthy",
+      warning: "Warning",
+      critical: "Critical",
+      alerts: "System Alerts",
+      activeSystemAlerts: "active system alerts",
+      requireAttention: "require attention",
+      allSystemsOperational: "All systems operational"
+    },
+    
+    // User Management
+    users: {
+      activeThisMonth: "active this month"
+    },
+    
+    // Request Management  
+    requests: {
+      requiresAdminReview: "requires admin review"
+    },
+    
+    // Financial
+    financial: {
+      monthlyGrowth: "monthly growth"
+    },
+    
+    // Actions
+    actions: {
+      viewDetails: "View Details"
+    },
+    
+    // Messages
+    messages: {
+      error: "Error"
+    },
+    
+    // User Details
+    userDetails: {
+      role: "Role",
+      selectRole: "Select role", 
+      client: "Client",
+      vendor: "Vendor", 
+      admin: "Admin"
+    },
+    
+    // Communication
+    communication: {
+      allUsers: "All Users",
+      clientsOnly: "Clients Only",
+      vendorsOnly: "Vendors Only", 
+      pendingVerification: "Pending Verification",
+      inactiveUsers: "Inactive Users",
+      lowPriority: "Low Priority",
+      mediumPriority: "Medium Priority",
+      highPriority: "High Priority", 
+      urgentPriority: "Urgent Priority",
+      success: "Success", 
+      broadcastCreated: "Broadcast message sent successfully",
+      error: "Error",
+      broadcastFailed: "Failed to send broadcast message",
+      allMarkedRead: "All messages marked as read",
+      urgent: "Urgent",
+      high: "High",
+      medium: "Medium", 
+      low: "Low",
+      sent: "Sent",
+      draft: "Draft"
+    },
+    
+    // Verification
+    verification: {
+      allCaughtUp: "All caught up!",
+      noPendingVerifications: "No pending verifications at the moment",
+      verificationQueue: "Verification Queue",
+      approvedSuccessfully: "Approved successfully", 
+      rejectedSuccessfully: "Rejected successfully"
+    }
+  },
+
+  // Navigation Links  
+  navigation: {
+    userManagement: "User Management",
+    userManagementDescription: "Manage user accounts and permissions",
+    approvalQueue: "Approval Queue", 
+    approvalQueueDescription: "Review pending requests and verifications",
+    financialOverview: "Financial Overview",
+    financialOverviewDescription: "Monitor transactions and revenue",
+    systemHealth: "System Health",
+    systemHealthDescription: "Monitor server performance and system status",
+    securityCenter: "Security Center", 
+    securityCenterDescription: "Manage security settings and audit logs", 
+    communications: "Communications",
+    communicationsDescription: "Send broadcasts and manage notifications",
+    analytics: "Analytics",
+    analyticsDescription: "View platform metrics and user insights", 
+    automation: "Automation",
+    automationDescription: "Configure automated workflows and rules"
+  },
+
   // Vendor Dashboard & CR Management
   vendor: {
     navigation: {
@@ -716,6 +881,140 @@ export const enUS = {
     add: 'Add',
     create: 'Create',
     update: 'Update',
+    loading: 'Loading...',
+    notFound: 'Not Found',
+    refresh: 'Refresh',
+    export: 'Export',
+    view: 'View',
+    search: 'Search',
+    filter: 'Filter',
+    clear: 'Clear',
+    submit: 'Submit',
+    close: 'Close',
+    confirm: 'Confirm',
+    back: 'Back',
+    next: 'Next',
+    previous: 'Previous',
+    continue: 'Continue',
+    finish: 'Finish',
+    done: 'Done',
+    success: 'Success',
+    error: 'Error',
+    warning: 'Warning',
+    info: 'Information',
+    yes: 'Yes',
+    no: 'No',
+    ok: 'OK',
+    retry: 'Retry',
+    skip: 'Skip',
+    all: 'All',
+    none: 'None',
+    active: 'Active',
+    inactive: 'Inactive',
+    enabled: 'Enabled',
+    disabled: 'Disabled',
+    online: 'Online',
+    offline: 'Offline',
+    pending: 'Pending',
+    approved: 'Approved',
+    rejected: 'Rejected',
+    completed: 'Completed',
+    inProgress: 'In Progress',
+    draft: 'Draft',
+    published: 'Published',
+    total: 'Total',
+    status: 'Status',
+    actions: 'Actions',
+    details: 'Details',
+    description: 'Description',
+    date: 'Date',
+    time: 'Time',
+    name: 'Name',
+    title: 'Title',
+    type: 'Type',
+    category: 'Category',
+    priority: 'Priority',
+    amount: 'Amount',
+    price: 'Price',
+    quantity: 'Quantity',
+    download: 'Download',
+    upload: 'Upload',
+    today: 'Today',
+    yesterday: 'Yesterday',
+    tomorrow: 'Tomorrow',
+    thisWeek: 'This Week',
+    lastWeek: 'Last Week',
+    thisMonth: 'This Month',
+    lastMonth: 'Last Month',
+    thisYear: 'This Year',
+    lastYear: 'Last Year',
+    errors: {
+      networkConnection: 'Network connection error. Please check your internet connection.',
+      requestTimeout: 'Request timeout. Please try again.',
+      dataLoading: 'Failed to load data. Please refresh the page.',
+      unauthorized: 'You are not authorized to perform this action.',
+      forbidden: 'Access forbidden. Please contact your administrator.',
+      notFound: 'The requested resource was not found.',
+      serverError: 'Server error. Please try again later.',
+      validationFailed: 'Please check your input and try again.',
+      unexpected: 'An unexpected error occurred. Please try again.'
+    },
+    placeholders: {
+      email: 'Enter your email address',
+      password: 'Enter your password',
+      confirmPassword: 'Confirm your password',
+      firstName: 'Enter your first name',
+      lastName: 'Enter your last name',
+      companyName: 'Enter your company name',
+      phoneNumber: 'Enter your phone number',
+      address: 'Enter your address',
+      website: 'Enter your website URL',
+      description: 'Enter a description...',
+      search: 'Search...',
+      searchUsers: 'Search users...',
+      searchRequests: 'Search requests...',
+      searchOffers: 'Search offers...',
+      notes: 'Add your notes here...'
+    },
+    titles: {
+      adminOnline: 'Admin Online'
+    }
+  },
+
+  // User management
+  users: {
+    fillRequiredFields: 'Please fill in all required fields',
+    userCreated: 'User created successfully',
+    createUserError: 'Failed to create user',
+    addUser: 'Add User',
+    addUserDescription: 'Create a new user account',
+    email: 'Email',
+    users: 'Users',
+    user: 'User',
+    name: 'Name',
+    role: 'Role',
+    status: 'Status',
+    createdAt: 'Created At',
+    lastLogin: 'Last Login',
+    permissions: 'Permissions'
+  },
+
+  // User profile
+  user: {
+    fullName: 'Full Name',
+    companyName: 'Company Name',
+    phoneNumber: 'Phone Number',
+    address: 'Address',
+    bio: 'Biography',
+    website: 'Website',
+    profilePicture: 'Profile Picture',
+    personalInfo: 'Personal Information',
+    contactInfo: 'Contact Information',
+    businessInfo: 'Business Information'
+  },
+
+  // Forms
+  forms: {
     search: 'Search',
     searchPlaceholder: 'Search...',
     filter: 'Filter',
@@ -926,8 +1225,8 @@ export const enUS = {
     notificationError: "Failed to update notification settings"
   },
 
-  // Forms
-  forms: {
+  // Form translations
+  formData: {
     validationError: "Validation Error",
     pleaseCompleteFields: "Please fill in all required fields",
     offerSubmittedSuccess: "Offer submitted successfully!",
@@ -1068,10 +1367,10 @@ export const enUS = {
     avgResponseTime: "Average Response Time",
     
     // Platform Analytics
-    totalUsers: "Total Users",
+    platformUsers: "Total Users",
     totalOffers: "Total Offers",
     totalTransactions: "Total Transactions",
-    totalRevenue: "Total Revenue",
+    platformRevenue: "Total Revenue",
     activeUsers: "Active Users",
     conversionRate: "Conversion Rate"
   },

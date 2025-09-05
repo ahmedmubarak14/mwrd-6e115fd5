@@ -45,6 +45,319 @@ export const arSA = {
     businessIntelligence: "ذكاء الأعمال",
     projectManagement: "إدارة المشاريع"
   },
+
+  // Admin Dashboard & Management  
+  admin: {
+    // Dashboard
+    dashboard: "لوحة تحكم المدير",
+    dashboardData: {
+      description: "نظرة شاملة على مقاييس المنصة وحالة النظام",
+      quickActions: "الإجراءات السريعة", 
+      quickActionsDesc: "وصول سريع للوظائف الإدارية الأساسية"
+    },
+    
+    // Navigation & Sidebar
+    usersTitle: "المستخدمون",
+    requestsTitle: "الطلبات",
+    offersTitle: "العروض", 
+    ordersTitle: "الطلبيات",
+    communicationsTitle: "الاتصالات",
+    settingsTitle: "الإعدادات",
+    profileTitle: "الملف الشخصي",
+    sidebarAnalytics: "التحليلات",
+    sidebarUsers: "إدارة المستخدمين",
+    sidebarRequests: "إدارة الطلبات",
+    sidebarOffers: "إدارة العروض", 
+    sidebarOrders: "إدارة الطلبيات",
+    sidebarCommunications: "مركز الاتصالات",
+    sidebarSettings: "إعدادات النظام",
+    
+    // Breadcrumbs
+    breadcrumbs: {
+      admin: "المدير",
+      userManagement: "إدارة المستخدمين", 
+      requestsManagement: "إدارة الطلبات",
+      offersManagement: "إدارة العروض",
+      ordersManagement: "إدارة الطلبيات",
+      communicationCenter: "مركز الاتصالات",
+      unknown: "الصفحة"
+    },
+    
+    // Command Palette
+    commandPalette: {
+      goToUsers: "الذهاب للمستخدمين",
+      createNewUser: "إنشاء مستخدم جديد",
+      reviewRequests: "مراجعة الطلبات", 
+      manageOffers: "إدارة العروض",
+      viewAnalytics: "عرض التحليلات",
+      financialTransactions: "المعاملات المالية",
+      searchUsersRequestsOffers: "البحث في المستخدمين والطلبات والعروض..."
+    },
+    
+    // Quick Actions
+    quickActions: "الإجراءات السريعة",
+    
+    // Analytics & Metrics
+    analytics: {
+      totalUsers: "إجمالي المستخدمين",
+      totalRevenue: "إجمالي الإيرادات", 
+      pendingApprovals: "الموافقات المعلقة",
+      platformActivity: "نشاط المنصة",
+      platformActivityDesc: "نشاط المستخدمين واتجاهات المعاملات عبر الوقت"
+    },
+    
+    // System Health & Status
+    system: {
+      health: "حالة النظام",
+      status: "حالة النظام", 
+      statusDescription: "الحالة الحالية لجميع مكونات النظام",
+      database: "قاعدة البيانات",
+      cpuUsage: "استخدام المعالج",
+      memoryUsage: "استخدام الذاكرة", 
+      healthy: "سليم",
+      warning: "تحذير",
+      critical: "حرج",
+      alerts: "تنبيهات النظام",
+      activeSystemAlerts: "تنبيهات نظام نشطة",
+      requireAttention: "تتطلب انتباه",
+      allSystemsOperational: "جميع الأنظمة تعمل بشكل طبيعي"
+    },
+    
+    // User Management
+    users: {
+      activeThisMonth: "نشط هذا الشهر"
+    },
+    
+    // Request Management  
+    requests: {
+      requiresAdminReview: "يتطلب مراجعة المدير"
+    },
+    
+    // Financial
+    financial: {
+      monthlyGrowth: "النمو الشهري"
+    },
+    
+    // Actions
+    actions: {
+      viewDetails: "عرض التفاصيل"
+    },
+    
+    // Messages
+    messages: {
+      error: "خطأ"
+    },
+    
+    // User Details
+    userDetails: {
+      role: "الدور",
+      selectRole: "اختر الدور", 
+      client: "عميل",
+      vendor: "مورد", 
+      admin: "مدير"
+    },
+    
+    // Communication
+    communication: {
+      allUsers: "جميع المستخدمين",
+      clientsOnly: "العملاء فقط",
+      vendorsOnly: "الموردين فقط", 
+      pendingVerification: "التحقق المعلق",
+      inactiveUsers: "المستخدمين غير النشطين",
+      lowPriority: "أولوية منخفضة",
+      mediumPriority: "أولوية متوسطة",
+      highPriority: "أولوية عالية", 
+      urgentPriority: "أولوية عاجلة",
+      success: "نجح", 
+      broadcastCreated: "تم إرسال رسالة البث بنجاح",
+      error: "خطأ",
+      broadcastFailed: "فشل في إرسال رسالة البث",
+      allMarkedRead: "تم تحديد جميع الرسائل كمقروءة",
+      urgent: "عاجل",
+      high: "عالي",
+      medium: "متوسط", 
+      low: "منخفض",
+      sent: "مرسل",
+      draft: "مسودة"
+    },
+    
+    // Verification
+    verification: {
+      allCaughtUp: "كل شيء محدث!",
+      noPendingVerifications: "لا توجد عمليات تحقق معلقة في الوقت الحالي",
+      verificationQueue: "قائمة انتظار التحقق",
+      approvedSuccessfully: "تمت الموافقة بنجاح", 
+      rejectedSuccessfully: "تم الرفض بنجاح"
+    }
+  },
+
+  // Navigation Links  
+  navigation: {
+    userManagement: "إدارة المستخدمين",
+    userManagementDescription: "إدارة حسابات المستخدمين والصلاحيات",
+    approvalQueue: "قائمة انتظار الموافقات", 
+    approvalQueueDescription: "مراجعة الطلبات والتحققات المعلقة",
+    financialOverview: "النظرة المالية العامة",
+    financialOverviewDescription: "مراقبة المعاملات والإيرادات",
+    systemHealth: "حالة النظام",
+    systemHealthDescription: "مراقبة أداء الخادم وحالة النظام",
+    securityCenter: "مركز الأمان", 
+    securityCenterDescription: "إدارة إعدادات الأمان وسجلات التدقيق", 
+    communications: "الاتصالات",
+    communicationsDescription: "إرسال البث وإدارة الإشعارات",
+    analytics: "التحليلات",
+    analyticsDescription: "عرض مقاييس المنصة ورؤى المستخدمين", 
+    automation: "الأتمتة",
+    automationDescription: "تكوين تدفقات العمل المؤتمتة والقواعد"
+  },
+
+  // Common translations
+  common: {
+    save: 'حفظ',
+    cancel: 'إلغاء',
+    delete: 'حذف',
+    edit: 'تعديل',
+    add: 'إضافة',
+    create: 'إنشاء',
+    update: 'تحديث',
+    loading: 'جاري التحميل...',
+    notFound: 'غير موجود',
+    refresh: 'تحديث',
+    export: 'تصدير',
+    view: 'عرض',
+    search: 'بحث',
+    filter: 'تصفية',
+    clear: 'مسح',
+    submit: 'إرسال',
+    close: 'إغلاق',
+    confirm: 'تأكيد',
+    back: 'رجوع',
+    next: 'التالي',
+    previous: 'السابق',
+    continue: 'متابعة',
+    finish: 'إنهاء',
+    done: 'تم',
+    success: 'نجح',
+    error: 'خطأ',
+    warning: 'تحذير',
+    info: 'معلومات',
+    yes: 'نعم',
+    no: 'لا',
+    ok: 'موافق',
+    retry: 'إعادة المحاولة',
+    skip: 'تخطي',
+    all: 'الكل',
+    none: 'لا شيء',
+    active: 'نشط',
+    inactive: 'غير نشط',
+    enabled: 'مفعل',
+    disabled: 'معطل',
+    online: 'متصل',
+    offline: 'غير متصل',
+    pending: 'معلق',
+    approved: 'موافق عليه',
+    rejected: 'مرفوض',
+    completed: 'مكتمل',
+    inProgress: 'قيد التنفيذ',
+    draft: 'مسودة',
+    published: 'منشور',
+    total: 'الإجمالي',
+    status: 'الحالة',
+    actions: 'الإجراءات',
+    details: 'التفاصيل',
+    description: 'الوصف',
+    date: 'التاريخ',
+    time: 'الوقت',
+    name: 'الاسم',
+    title: 'العنوان',
+    type: 'النوع',
+    category: 'الفئة',
+    priority: 'الأولوية',
+    amount: 'المبلغ',
+    price: 'السعر',
+    quantity: 'الكمية',
+    download: 'تحميل',
+    upload: 'رفع',
+    today: 'اليوم',
+    yesterday: 'أمس',
+    tomorrow: 'غدا',
+    thisWeek: 'هذا الأسبوع',
+    lastWeek: 'الأسبوع الماضي',
+    thisMonth: 'هذا الشهر',
+    lastMonth: 'الشهر الماضي',
+    thisYear: 'هذا العام',
+    lastYear: 'العام الماضي',
+    errors: {
+      networkConnection: 'خطأ في الاتصال بالشبكة. يرجى التحقق من اتصال الإنترنت.',
+      requestTimeout: 'انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.',
+      dataLoading: 'فشل في تحميل البيانات. يرجى تحديث الصفحة.',
+      unauthorized: 'غير مخول للقيام بهذا الإجراء.',
+      forbidden: 'الوصول محظور. يرجى الاتصال بالمسؤول.',
+      notFound: 'المورد المطلوب غير موجود.',
+      serverError: 'خطأ في الخادم. يرجى المحاولة لاحقاً.',
+      validationFailed: 'يرجى التحقق من المدخلات والمحاولة مرة أخرى.',
+      unexpected: 'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.'
+    },
+    placeholders: {
+      searchLogs: 'البحث في السجلات...',
+      filterByAction: 'تصفية حسب الإجراء...',
+      addNotes: 'إضافة ملاحظات...',
+      enterText: 'أدخل النص...',
+      selectOption: 'اختر خيار...',
+      chooseFile: 'اختر ملف...',
+      searchUsers: 'البحث في المستخدمين...',
+      searchRequests: 'البحث في الطلبات...',
+      searchOffers: 'البحث في العروض...',
+      email: 'أدخل عنوان بريدك الإلكتروني',
+      password: 'أدخل كلمة المرور',
+      confirmPassword: 'تأكيد كلمة المرور',
+      firstName: 'أدخل اسمك الأول',
+      lastName: 'أدخل اسم العائلة',
+      companyName: 'أدخل اسم الشركة',
+      phoneNumber: 'أدخل رقم الهاتف',
+      address: 'أدخل العنوان',
+      website: 'أدخل رابط الموقع الإلكتروني',
+      description: 'أدخل الوصف...',
+      search: 'بحث...',
+      notes: 'أضف ملاحظاتك هنا...'
+    },
+    titles: {
+      adminOnline: 'المدير متصل'
+    }
+  },
+
+  // User management
+  users: {
+    fillRequiredFields: 'يرجى ملء جميع الحقول المطلوبة',
+    userCreated: 'تم إنشاء المستخدم بنجاح',
+    createUserError: 'فشل في إنشاء المستخدم',
+    addUser: 'إضافة مستخدم',
+    addUserDescription: 'إنشاء حساب مستخدم جديد',
+    email: 'البريد الإلكتروني',
+    users: 'المستخدمون',
+    user: 'المستخدم',
+    name: 'الاسم',
+    role: 'الدور',
+    status: 'الحالة',
+    createdAt: 'تاريخ الإنشاء',
+    lastLogin: 'آخر تسجيل دخول',
+    permissions: 'الصلاحيات'
+  },
+
+  // User profile
+  user: {
+    fullName: 'الاسم الكامل',
+    companyName: 'اسم الشركة',
+    phoneNumber: 'رقم الهاتف',
+    address: 'العنوان',
+    bio: 'السيرة الذاتية',
+    website: 'الموقع الإلكتروني',
+    profilePicture: 'صورة الملف الشخصي',
+    personalInfo: 'المعلومات الشخصية',
+    contactInfo: 'معلومات الاتصال',
+    businessInfo: 'معلومات الأعمال'
+  },
+
   // Vendor Dashboard & CR Management
   vendor: {
     navigation: {
