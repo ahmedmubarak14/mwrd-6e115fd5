@@ -2228,6 +2228,60 @@ export type Database = {
       }
     }
     Views: {
+      safe_vendor_profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          categories: string[] | null
+          company_name: string | null
+          created_at: string | null
+          full_name: string | null
+          id: string | null
+          portfolio_url: string | null
+          updated_at: string | null
+          verification_status: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          categories?: string[] | null
+          company_name?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string | null
+          portfolio_url?: string | null
+          updated_at?: string | null
+          verification_status?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          categories?: string[] | null
+          company_name?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string | null
+          portfolio_url?: string | null
+          updated_at?: string | null
+          verification_status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendor_public_info_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vendor_public_info_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "vendor_business_info"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       vendor_business_info: {
         Row: {
           avatar_url: string | null
