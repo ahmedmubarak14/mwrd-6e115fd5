@@ -3,21 +3,6 @@ import * as RechartsPrimitive from "recharts"
 
 import { cn } from "@/lib/utils"
 
-// Security: CSS sanitization to prevent XSS attacks
-const sanitizeCSS = (css: string): string => {
-  // Remove potentially dangerous CSS constructs
-  return css
-    .replace(/@import/gi, '') // Block @import
-    .replace(/javascript:/gi, '') // Block javascript: URLs
-    .replace(/expression\s*\(/gi, '') // Block CSS expressions
-    .replace(/behavior\s*:/gi, '') // Block IE behaviors
-    .replace(/binding\s*:/gi, '') // Block XML binding
-    .replace(/url\s*\(\s*["']?\s*javascript:/gi, '') // Block javascript in urls
-    .replace(/url\s*\(\s*["']?\s*data:/gi, '') // Block data URLs for security
-    .replace(/<!--/g, '') // Remove HTML comments
-    .replace(/-->/g, '')
-}
-
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const
 
@@ -80,17 +65,20 @@ const ChartContainer = React.forwardRef<
 })
 ChartContainer.displayName = "Chart"
 
-// Security utility to sanitize CSS color values and prevent XSS
+// Sanitize CSS property values to prevent XSS
 const sanitizeCSSValue = (value: string): string => {
-  if (!value || typeof value !== 'string') return '';
+  if (typeof value !== 'string') return '';
   
-  // Allow only valid CSS color formats: hex, rgb, rgba, hsl, hsla, and CSS color names
-  const colorPattern = /^(#[0-9A-Fa-f]{3,8}|rgb\([\d\s,]+\)|rgba\([\d\s,.]+\)|hsl\([\d\s,%]+\)|hsla\([\d\s,.%]+\)|[a-zA-Z]+)$/;
-  
-  // Remove any potentially dangerous characters and limit length
-  const cleaned = value.replace(/[<>"'`&;{}()\\]/g, '').trim().slice(0, 50);
-  
-  return colorPattern.test(cleaned) ? cleaned : '';
+  // Remove potentially dangerous CSS content
+  return value
+    .replace(/[<>'"]/g, '') // Remove HTML characters
+    .replace(/javascript:/gi, '') // Remove javascript: protocols
+    .replace(/expression\s*\(/gi, '') // Remove CSS expressions
+    .replace(/url\s*\(/gi, '') // Remove url() functions
+    .replace(/@import/gi, '') // Remove @import statements
+    .replace(/\/\*[\s\S]*?\*\//g, '') // Remove CSS comments
+    .replace(/;.*$/g, '') // Remove everything after semicolon
+    .trim();
 };
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
@@ -103,55 +91,39 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   }
 
   // Sanitize the chart ID to prevent injection
-  const sanitizedId = id.replace(/[^a-zA-Z0-9-_]/g, '');
+  const sanitizedId = id.replace(/[^a-zA-Z0-9_-]/g, '');
 
-  // Build CSS safely without dangerouslySetInnerHTML
-  const cssRules = Object.entries(THEMES)
+  const sanitizedCSS = Object.entries(THEMES)
     .map(([theme, prefix]) => {
-      const vars = colorConfig
+      const sanitizedPrefix = prefix.replace(/[^a-zA-Z0-9_.\-\s]/g, '');
+      const cssVariables = colorConfig
         .map(([key, itemConfig]) => {
           const color =
             itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
             itemConfig.color;
           
-          const sanitizedColor = sanitizeCSSValue(color || '');
-          const sanitizedKey = key.replace(/[^a-zA-Z0-9-_]/g, ''); // Sanitize key
+          if (!color) return null;
+          
+          // Sanitize the key and color value
+          const sanitizedKey = key.replace(/[^a-zA-Z0-9_-]/g, '');
+          const sanitizedColor = sanitizeCSSValue(color);
           
           return sanitizedColor ? `  --color-${sanitizedKey}: ${sanitizedColor};` : null;
         })
         .filter(Boolean)
-        .join('\n');
+        .join("\n")
 
-      return vars ? `${prefix} [data-chart="${sanitizedId}"] {\n${vars}\n}` : '';
+      return `${sanitizedPrefix} [data-chart="${sanitizedId}"] {\n${cssVariables}\n}`
     })
-    .filter(Boolean)
-    .join('\n');
+    .join("\n")
 
-  // Use a safer approach by creating CSS rules programmatically
-  React.useEffect(() => {
-    if (!cssRules) return;
-
-    const styleId = `chart-style-${sanitizedId}`;
-    const existingStyle = document.getElementById(styleId);
-    
-    if (existingStyle) {
-      existingStyle.textContent = cssRules;
-    } else {
-      const style = document.createElement('style');
-      style.id = styleId;
-      style.textContent = cssRules;
-      document.head.appendChild(style);
-    }
-
-    return () => {
-      const style = document.getElementById(styleId);
-      if (style) {
-        style.remove();
-      }
-    };
-  }, [cssRules, sanitizedId]);
-
-  return null; // No need to render inline style element
+  return (
+    <style
+      dangerouslySetInnerHTML={{
+        __html: sanitizedCSS,
+      }}
+    />
+  )
 }
 
 const ChartTooltip = RechartsPrimitive.Tooltip
@@ -271,12 +243,10 @@ const ChartTooltipContent = React.forwardRef<
                               "my-0.5": nestLabel && indicator === "dashed",
                             }
                           )}
-                          style={
-                            {
-                              "--color-bg": indicatorColor,
-                              "--color-border": indicatorColor,
-                            } as React.CSSProperties
-                          }
+                          style={{
+                            "--color-bg": indicatorColor,
+                            "--color-border": indicatorColor,
+                          } as React.CSSProperties}
                         />
                       )
                     )}
