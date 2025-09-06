@@ -219,9 +219,11 @@ export const useRealTimeRequests = () => {
           category: requestData.category,
           budget_min: requestData.budget_min,
           budget_max: requestData.budget_max,
+          currency: 'USD',
           location: requestData.location,
           deadline: requestData.deadline,
           urgency: requestData.urgency,
+          requirements: {}
         }])
         .select()
         .single();
