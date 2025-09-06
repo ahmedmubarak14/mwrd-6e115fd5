@@ -101,25 +101,37 @@ export const useRequests = () => {
     if (!user) throw new Error('User not authenticated');
 
     try {
+      console.log('Creating request with data:', requestData);
+      console.log('User ID:', user.id);
+      
+      const insertData = { 
+        client_id: user.id,
+        title: requestData.title,
+        description: requestData.description,
+        category: requestData.category,
+        budget_min: requestData.budget_min,
+        budget_max: requestData.budget_max,
+        location: requestData.location,
+        deadline: requestData.deadline,
+        urgency: requestData.urgency,
+        currency: requestData.currency || 'SAR',
+        requirements: requestData.requirements || {},
+      };
+      
+      console.log('Insert data:', insertData);
+      
       const { data, error } = await supabase
         .from('requests')
-        .insert([{ 
-          client_id: user.id,
-          title: requestData.title,
-          description: requestData.description,
-          category: requestData.category,
-          budget_min: requestData.budget_min,
-          budget_max: requestData.budget_max,
-          location: requestData.location,
-          deadline: requestData.deadline,
-          urgency: requestData.urgency,
-          currency: requestData.currency || 'SAR',
-          requirements: requestData.requirements || {},
-        }])
+        .insert([insertData])
         .select()
         .single();
 
-      if (error) throw error;
+      console.log('Supabase response:', { data, error });
+
+      if (error) {
+        console.error('Supabase error details:', error);
+        throw error;
+      }
 
       // Track activity
       await trackActivity({

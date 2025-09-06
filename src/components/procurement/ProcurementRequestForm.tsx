@@ -146,12 +146,18 @@ export const ProcurementRequestForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    console.log('Form submission started');
+    console.log('All requests:', requests);
+    
     // Validate all requests
     const invalidRequests = requests.filter(req => 
       !req.title || !req.description || req.categories.length === 0
     );
     
+    console.log('Invalid requests:', invalidRequests);
+    
     if (invalidRequests.length > 0) {
+      console.log('Validation failed');
       toast({
         title: isRTL ? "خطأ في البيانات" : "Validation Error",
         description: isRTL ? "يرجى ملء جميع الحقول المطلوبة لجميع الطلبات" : "Please fill in all required fields for all requests",
@@ -161,8 +167,12 @@ export const ProcurementRequestForm = () => {
     }
 
     try {
+      console.log('Starting to create requests...');
+      
       // Create all requests
-      const createPromises = requests.map(async (request) => {
+      const createPromises = requests.map(async (request, index) => {
+        console.log(`Processing request ${index + 1}:`, request);
+        
         const requestData = {
           title: request.title,
           description: request.description,
@@ -182,12 +192,20 @@ export const ProcurementRequestForm = () => {
           }
         };
         
-        return createRequest(requestData);
+        console.log(`Request data for request ${index + 1}:`, requestData);
+        
+        const result = await createRequest(requestData);
+        console.log(`Result for request ${index + 1}:`, result);
+        
+        return result;
       });
 
+      console.log('Waiting for all requests to complete...');
       const results = await Promise.all(createPromises);
+      console.log('All results:', results);
       
       if (results.every(result => result)) {
+        console.log('All requests created successfully');
         toast({
           title: isRTL ? "تم إنشاء الطلبات بنجاح" : "Requests Created Successfully",
           description: isRTL ? `تم إنشاء ${requests.length} طلب بنجاح` : `Successfully created ${requests.length} requests`
