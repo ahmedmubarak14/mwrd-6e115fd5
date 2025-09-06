@@ -95,6 +95,8 @@ export const useRequests = () => {
     location?: string;
     deadline?: string;
     urgency: 'low' | 'medium' | 'high' | 'urgent';
+    currency?: string;
+    requirements?: any;
   }) => {
     if (!user) throw new Error('User not authenticated');
 
@@ -111,6 +113,8 @@ export const useRequests = () => {
           location: requestData.location,
           deadline: requestData.deadline,
           urgency: requestData.urgency,
+          currency: requestData.currency || 'SAR',
+          requirements: requestData.requirements || {},
         }])
         .select()
         .single();
