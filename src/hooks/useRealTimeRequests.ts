@@ -203,9 +203,11 @@ export const useRealTimeRequests = () => {
     category: string;
     budget_min?: number;
     budget_max?: number;
+    currency?: string;
     location?: string;
     deadline?: string;
     urgency: 'low' | 'medium' | 'high' | 'urgent';
+    requirements?: any;
   }) => {
     if (!user) throw new Error('User not authenticated');
 
@@ -219,11 +221,11 @@ export const useRealTimeRequests = () => {
           category: requestData.category,
           budget_min: requestData.budget_min,
           budget_max: requestData.budget_max,
-          currency: 'USD',
+          currency: requestData.currency || 'USD',
           location: requestData.location,
           deadline: requestData.deadline,
           urgency: requestData.urgency,
-          requirements: {}
+          requirements: requestData.requirements || {}
         }])
         .select()
         .single();
