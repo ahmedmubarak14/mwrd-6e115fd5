@@ -12,7 +12,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CategorySelector } from "@/components/enhanced/CategorySelector";
-import { useRequests } from "@/hooks/useRequests";
+import { useRealTimeRequests } from "@/hooks/useRealTimeRequests";
 import { useToast } from "@/hooks/use-toast";
 
 interface BOQItem {
@@ -42,7 +42,7 @@ interface RequestItem {
 
 export const ProcurementRequestForm = () => {
   const { t, language } = useLanguage();
-  const { createRequest } = useRequests();
+  const { createRequest } = useRealTimeRequests();
   const { toast } = useToast();
   const isRTL = language === 'ar';
 
