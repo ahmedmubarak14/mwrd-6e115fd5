@@ -1,4 +1,12 @@
 export const enUS = {
+  // Client Groups
+  clientGroups: {
+    overview: "Overview",
+    workspace: "Workspace", 
+    network: "Network",
+    account: "Account"
+  },
+
   // Navigation
   nav: {
     dashboard: "Dashboard",
@@ -24,7 +32,9 @@ export const enUS = {
     profile: "Profile",
     support: "Support",
     logout: "Logout",
-    navigateTo: "Navigate to"
+    navigateTo: "Navigate to",
+    vendors: "Vendors",
+    manageSubscription: "Manage Subscription"
   },
 
   // Vendor Header

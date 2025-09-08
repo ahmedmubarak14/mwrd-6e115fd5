@@ -13,7 +13,7 @@ export const LanguageSwitcher = () => {
       variant="outline"
       size="sm"
       onClick={toggleLanguage}
-      className="px-3 py-1 h-8 min-w-[50px] border-muted-foreground/20 text-muted-foreground hover:text-foreground hover:border-foreground/30 rtl-transition font-medium"
+      className="px-3 py-1 h-8 min-w-[50px] border-muted-foreground/20 text-muted-foreground hover:text-foreground hover:border-foreground/30 rtl-transition font-medium hover:bg-accent"
     >
       {language.toUpperCase()}
     </Button>

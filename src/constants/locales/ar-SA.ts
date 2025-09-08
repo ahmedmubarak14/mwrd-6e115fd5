@@ -1,4 +1,12 @@
 export const arSA = {
+  // Client Groups
+  clientGroups: {
+    overview: "نظرة عامة",
+    workspace: "مساحة العمل", 
+    network: "الشبكة",
+    account: "الحساب"
+  },
+
   // Navigation
   nav: {
     dashboard: "لوحة التحكم",
@@ -24,7 +32,9 @@ export const arSA = {
     profile: "الملف الشخصي", 
     support: "الدعم",
     logout: "تسجيل الخروج",
-    navigateTo: "انتقل إلى"
+    navigateTo: "انتقل إلى",
+    vendors: "الموردين",
+    manageSubscription: "إدارة الاشتراك"
   },
 
   // Vendor Header  

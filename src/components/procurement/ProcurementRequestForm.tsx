@@ -174,29 +174,30 @@ export const ProcurementRequestForm = () => {
         console.log(`Processing request ${index + 1}:`, request);
         
         console.log('Creating request with data:', {
-          title: request.title,
-          description: request.description,
+          title: request.title.trim(),
+          description: request.description.trim(),
           category: request.categories[0],
-          location: globalFormData.location,
-          locationProcessed: globalFormData.location && globalFormData.location.trim() !== '' ? globalFormData.location : null
+          location: globalFormData.location?.trim() || null,
+          budget_min: request.budget_min ? parseFloat(request.budget_min) : undefined,
+          budget_max: request.budget_max ? parseFloat(request.budget_max) : undefined
         });
         
         const requestData = {
-          title: request.title,
-          description: request.description,
+          title: request.title.trim(),
+          description: request.description.trim(),
           category: request.categories[0], // Primary category
           budget_min: request.budget_min ? parseFloat(request.budget_min) : undefined,
           budget_max: request.budget_max ? parseFloat(request.budget_max) : undefined,
           currency: globalFormData.currency,
-          location: globalFormData.location && globalFormData.location.trim() !== '' ? globalFormData.location : null,
-          deadline: request.deadline?.toISOString().split('T')[0] || undefined,
+          location: globalFormData.location?.trim() || null,
+          deadline: request.deadline?.toISOString().split('T')[0] || null,
           urgency: request.urgency,
           requirements: {
             categories: request.categories,
             boq_items: request.boqItems,
-            payment_terms: request.payment_terms,
-            delivery_requirements: request.delivery_requirements,
-            quality_standards: request.quality_standards
+            payment_terms: request.payment_terms || null,
+            delivery_requirements: request.delivery_requirements || null,
+            quality_standards: request.quality_standards || null
           }
         };
         
