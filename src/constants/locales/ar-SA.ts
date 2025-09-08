@@ -23,7 +23,8 @@ export const arSA = {
     rfqs: "طلبات التسعير",
     profile: "الملف الشخصي", 
     support: "الدعم",
-    logout: "تسجيل الخروج"
+    logout: "تسجيل الخروج",
+    navigateTo: "انتقل إلى"
   },
 
   // Vendor Header  
@@ -1481,5 +1482,24 @@ export const arSA = {
     currency: "العملة المفضلة",
     deleteAccount: "حذف الحساب",
     downloadData: "تحميل بياناتي"
+  },
+
+  // Landing Page
+  landing: {
+    footer: {
+      taglineText: "شريكك الموثوق في المشتريات وإدارة سلسلة التوريد",
+      whyStart: "لماذا تبدأ مع MWRD",
+      whyMove: "لماذا تنتقل إلى MWRD",
+      pricingSection: "التسعير",
+      supportSection: "الدعم", 
+      support: "الدعم",
+      helpCenterLink: "مركز المساعدة",
+      documentation: "التوثيق",
+      systemStatus: "حالة النظام",
+      privacyPolicy: "سياسة الخصوصية",
+      termsOfService: "شروط الخدمة",
+      rights: "جميع الحقوق محفوظة",
+      followUs: "تابعنا"
+    }
   }
 };

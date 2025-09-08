@@ -196,7 +196,6 @@ export const useRealTimeRequests = () => {
     }
   };
 
-  // Create request with real-time update
   const createRequest = async (requestData: {
     title: string;
     description: string;
@@ -212,44 +211,74 @@ export const useRealTimeRequests = () => {
     if (!user) throw new Error('User not authenticated');
 
     try {
+      logger.debug('Creating request with data:', { requestData, userId: user.id });
+      
+      // Validate required fields
+      if (!requestData.title || !requestData.description || !requestData.category) {
+        throw new Error('Missing required fields: title, description, or category');
+      }
+
+      // Ensure location is either a valid string or null
+      const processedLocation = requestData.location && requestData.location.trim() !== '' 
+        ? requestData.location.trim() 
+        : null;
+
+      // Validate budget values
+      const budgetMin = requestData.budget_min && !isNaN(requestData.budget_min) ? requestData.budget_min : null;
+      const budgetMax = requestData.budget_max && !isNaN(requestData.budget_max) ? requestData.budget_max : null;
+
+      const insertData = { 
+        client_id: user.id,
+        title: requestData.title.trim(),
+        description: requestData.description.trim(),
+        category: requestData.category,
+        budget_min: budgetMin,
+        budget_max: budgetMax,
+        currency: requestData.currency || 'SAR',
+        location: processedLocation,
+        deadline: requestData.deadline || null,
+        urgency: requestData.urgency,
+        requirements: requestData.requirements || null
+      };
+
+      logger.debug('Processed insert data:', insertData);
+
       const { data, error } = await supabase
         .from('requests')
-        .insert([{ 
-          client_id: user.id,
-          title: requestData.title,
-          description: requestData.description,
-          category: requestData.category,
-          budget_min: requestData.budget_min,
-          budget_max: requestData.budget_max,
-          currency: requestData.currency || 'USD',
-          location: requestData.location,
-          deadline: requestData.deadline,
-          urgency: requestData.urgency,
-          requirements: requestData.requirements || {}
-        }])
+        .insert([insertData])
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        logger.error('Supabase error creating request:', { error, insertData });
+        throw error;
+      }
+
+      logger.info('Request created successfully:', { requestId: data.id, title: data.title });
 
       // Track activity
-      await supabase
-        .from('activity_feed')
-        .insert({
-          user_id: user.id,
-          activity_type: 'request_created',
-          description: `Created request: ${requestData.title}`,
-          title: `New ${requestData.category} request`,
-          metadata: { 
-            category: requestData.category,
-            budget_range: `${requestData.budget_min || 0} - ${requestData.budget_max || 0}`,
-            urgency: requestData.urgency 
-          }
-        });
+      try {
+        await supabase
+          .from('activity_feed')
+          .insert({
+            user_id: user.id,
+            activity_type: 'request_created',
+            description: `Created request: ${requestData.title}`,
+            title: `New ${requestData.category} request`,
+            metadata: { 
+              category: requestData.category,
+              budget_range: `${budgetMin || 0} - ${budgetMax || 0}`,
+              urgency: requestData.urgency 
+            }
+          });
+      } catch (activityError) {
+        // Don't fail the request creation if activity logging fails
+        logger.warn('Failed to log activity:', activityError);
+      }
 
       return data;
     } catch (error) {
-      logger.error('Error creating request', { error, requestData });
+      logger.error('Error creating request:', { error: error.message, stack: error.stack, requestData, userId: user?.id });
       throw error;
     }
   };

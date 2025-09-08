@@ -23,7 +23,8 @@ export const enUS = {
     rfqs: "RFQs",
     profile: "Profile",
     support: "Support",
-    logout: "Logout"
+    logout: "Logout",
+    navigateTo: "Navigate to"
   },
 
   // Vendor Header
@@ -1547,5 +1548,24 @@ export const enUS = {
     currency: "Preferred Currency",
     deleteAccount: "Delete Account",
     downloadData: "Download My Data"
+  },
+
+  // Landing Page
+  landing: {
+    footer: {
+      taglineText: "Your trusted partner for procurement and supply chain management",
+      whyStart: "Why Start with MWRD",
+      whyMove: "Why Move to MWRD", 
+      pricingSection: "Pricing",
+      supportSection: "Support",
+      support: "Support",
+      helpCenterLink: "Help Center",
+      documentation: "Documentation",
+      systemStatus: "System Status",
+      privacyPolicy: "Privacy Policy",
+      termsOfService: "Terms of Service",
+      rights: "All rights reserved",
+      followUs: "Follow Us"
+    }
   }
 };

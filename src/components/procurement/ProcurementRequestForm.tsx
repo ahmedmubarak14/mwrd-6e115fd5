@@ -242,9 +242,21 @@ export const ProcurementRequestForm = () => {
       }
     } catch (error) {
       console.error('Error creating requests:', error);
+      
+      // Provide more specific error message based on error type
+      let errorMessage = isRTL ? "حدث خطأ أثناء إنشاء الطلبات" : "Failed to create request. Please try again.";
+      
+      if (error.message?.includes('invalid input syntax for type json')) {
+        errorMessage = isRTL ? "خطأ في تنسيق البيانات. يرجى المحاولة مرة أخرى." : "Data formatting error. Please try again.";
+      } else if (error.message?.includes('Missing required fields')) {
+        errorMessage = isRTL ? "يرجى ملء جميع الحقول المطلوبة" : "Please fill in all required fields";
+      } else if (error.message?.includes('User not authenticated')) {
+        errorMessage = isRTL ? "يرجى تسجيل الدخول أولاً" : "Please log in first";
+      }
+      
       toast({
-        title: isRTL ? "خطأ في إنشاء الطلبات" : "Error Creating Requests",
-        description: isRTL ? "حدث خطأ أثناء إنشاء الطلبات" : "An error occurred while creating the requests",
+        title: isRTL ? "خطأ في إنشاء الطلب" : "Error",
+        description: errorMessage,
         variant: "destructive"
       });
     }
