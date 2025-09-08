@@ -173,6 +173,14 @@ export const ProcurementRequestForm = () => {
       const createPromises = requests.map(async (request, index) => {
         console.log(`Processing request ${index + 1}:`, request);
         
+        console.log('Creating request with data:', {
+          title: request.title,
+          description: request.description,
+          category: request.categories[0],
+          location: globalFormData.location,
+          locationProcessed: globalFormData.location && globalFormData.location.trim() !== '' ? globalFormData.location : null
+        });
+        
         const requestData = {
           title: request.title,
           description: request.description,
