@@ -34,7 +34,8 @@ export const arSA = {
     logout: "تسجيل الخروج",
     navigateTo: "انتقل إلى",
     vendors: "الموردين",
-    manageSubscription: "إدارة الاشتراك"
+    manageSubscription: "إدارة الاشتراك",
+    products: "كاتالوج المنتجات"
   },
 
   // Vendor Header  
@@ -54,7 +55,8 @@ export const arSA = {
     account: "الحساب",
     financial: "المالية",
     businessIntelligence: "ذكاء الأعمال",
-    projectManagement: "إدارة المشاريع"
+    projectManagement: "إدارة المشاريع",
+    businessOperations: "العمليات التجارية"
   },
 
   // Admin Dashboard & Management  

@@ -34,7 +34,8 @@ export const enUS = {
     logout: "Logout",
     navigateTo: "Navigate to",
     vendors: "Vendors",
-    manageSubscription: "Manage Subscription"
+    manageSubscription: "Manage Subscription",
+    products: "Product Catalog"
   },
 
   // Vendor Header
@@ -52,7 +53,8 @@ export const enUS = {
     account: "Account",
     financial: "Financial",
     businessIntelligence: "Business Intelligence",
-    projectManagement: "Project Management"
+    projectManagement: "Project Management",
+    businessOperations: "Business Operations"
   },
   // Admin Dashboard & Management  
   admin: {

@@ -15,6 +15,7 @@ import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import { VendorDashboard } from './pages/VendorDashboard';
+import { VendorProductCatalog } from './components/vendor/VendorProductCatalog';
 import { CRManagementPage } from './pages/vendor/CRManagement';
 import { ProjectsManagementPage } from './pages/vendor/ProjectsManagement';
 import { PortfolioManagementPage } from './pages/vendor/PortfolioManagement';
@@ -214,14 +215,9 @@ function App() {
                         <VendorOrders />
                       </RoleProtectedRoute>
                     } />
-                    <Route path="/vendor/projects" element={
+                    <Route path="/vendor/products" element={
                       <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <VendorProjects />
-                      </RoleProtectedRoute>
-                    } />
-                    <Route path="/vendor/projects/new" element={
-                      <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <CreateProject />
+                        <VendorProductCatalog />
                       </RoleProtectedRoute>
                     } />
                     <Route path="/vendor/portfolio" element={
@@ -272,16 +268,6 @@ function App() {
                     <Route path="/vendor/notifications" element={
                       <RoleProtectedRoute allowedRoles={['vendor']}>
                         <VendorNotifications />
-                      </RoleProtectedRoute>
-                    } />
-                    <Route path="/vendor/clients" element={
-                      <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <VendorClients />
-                      </RoleProtectedRoute>
-                    } />
-                    <Route path="/vendor/documents" element={
-                      <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <VendorDocuments />
                       </RoleProtectedRoute>
                     } />
                     

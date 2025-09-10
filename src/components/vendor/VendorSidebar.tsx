@@ -95,6 +95,11 @@ export const VendorSidebar = ({
           icon: LayoutDashboard,
         },
         {
+          name: t('nav.products') || 'Product Catalog',
+          href: '/vendor/products',
+          icon: Package,
+        },
+        {
           name: t('nav.browseRequests') || 'Browse Requests',
           href: '/vendor/browse-requests',
           icon: FolderOpen,
@@ -102,7 +107,7 @@ export const VendorSidebar = ({
         {
           name: t('nav.myOffers') || 'My Offers',
           href: '/vendor/offers',
-          icon: Package,
+          icon: FileText,
         },
         {
           name: t('nav.orders') || 'Orders',
@@ -117,15 +122,10 @@ export const VendorSidebar = ({
       ]
     },
     {
-      id: 'project-management',
-      label: t('vendorGroups.projectManagement') || 'Project Management',
+      id: 'business-operations',
+      label: t('vendorGroups.businessOperations') || 'Business Operations',
       priority: 'secondary',
       items: [
-        {
-          name: t('nav.projects') || 'Projects',
-          href: '/vendor/projects',
-          icon: Briefcase,
-        },
         {
           name: t('vendorGroups.businessIntelligence') || 'Business Intelligence',
           href: '/vendor/business-intelligence',
@@ -140,16 +140,6 @@ export const VendorSidebar = ({
           name: t('nav.notifications') || 'Notifications',
           href: '/vendor/notifications',
           icon: Bell,
-        },
-        {
-          name: t('nav.clients') || 'Clients',
-          href: '/vendor/clients',
-          icon: Users,
-        },
-        {
-          name: t('nav.documents') || 'Documents',
-          href: '/vendor/documents',
-          icon: FolderOpen,
         },
       ]
     },
