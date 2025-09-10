@@ -1125,6 +1125,50 @@ export type Database = {
           },
         ]
       }
+      product_categories: {
+        Row: {
+          created_at: string
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          name_ar: string
+          name_en: string
+          parent_id: string | null
+          sort_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name_ar: string
+          name_en: string
+          parent_id?: string | null
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          name_ar?: string
+          name_en?: string
+          parent_id?: string | null
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "product_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       projects: {
         Row: {
           budget_total: number | null
@@ -1834,6 +1878,95 @@ export type Database = {
           vendor_id?: string
         }
         Relationships: []
+      }
+      vendor_products: {
+        Row: {
+          category: string
+          created_at: string
+          currency: string
+          delivery_time_days: number | null
+          description: string | null
+          dimensions_cm: string | null
+          featured: boolean | null
+          features: string[] | null
+          id: string
+          images: string[] | null
+          min_order_quantity: number | null
+          name: string
+          price: number
+          sku: string | null
+          specifications: Json | null
+          status: string
+          stock_quantity: number | null
+          subcategory: string | null
+          tags: string[] | null
+          unit: string | null
+          updated_at: string
+          vendor_id: string
+          warranty_months: number | null
+          weight_kg: number | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          currency?: string
+          delivery_time_days?: number | null
+          description?: string | null
+          dimensions_cm?: string | null
+          featured?: boolean | null
+          features?: string[] | null
+          id?: string
+          images?: string[] | null
+          min_order_quantity?: number | null
+          name: string
+          price: number
+          sku?: string | null
+          specifications?: Json | null
+          status?: string
+          stock_quantity?: number | null
+          subcategory?: string | null
+          tags?: string[] | null
+          unit?: string | null
+          updated_at?: string
+          vendor_id: string
+          warranty_months?: number | null
+          weight_kg?: number | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          currency?: string
+          delivery_time_days?: number | null
+          description?: string | null
+          dimensions_cm?: string | null
+          featured?: boolean | null
+          features?: string[] | null
+          id?: string
+          images?: string[] | null
+          min_order_quantity?: number | null
+          name?: string
+          price?: number
+          sku?: string | null
+          specifications?: Json | null
+          status?: string
+          stock_quantity?: number | null
+          subcategory?: string | null
+          tags?: string[] | null
+          unit?: string | null
+          updated_at?: string
+          vendor_id?: string
+          warranty_months?: number | null
+          weight_kg?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_vendor_products_vendor_id"
+            columns: ["vendor_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       vendor_profiles_extended: {
         Row: {
