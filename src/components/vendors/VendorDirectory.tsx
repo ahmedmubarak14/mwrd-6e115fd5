@@ -20,6 +20,7 @@ import { PrivateRequestModal } from "@/components/modals/PrivateRequestModal";
 import { useNavigate } from "react-router-dom";
 import { useRealTimeChat } from "@/hooks/useRealTimeChat";
 import { createLogger } from '@/utils/logger';
+import { cn } from '@/lib/utils';
 
 const logger = createLogger('VendorDirectory');
 
@@ -87,8 +88,14 @@ export const VendorDirectory: React.FC = () => {
   const renderVendorCard = (vendor: any) => (
     <Card key={vendor.id} className="hover:shadow-lg transition-all duration-200">
       <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
+        <div className={cn(
+          "flex items-start justify-between",
+          isRTL && "flex-row-reverse"
+        )}>
+          <div className={cn(
+            "flex items-center gap-3",
+            isRTL && "flex-row-reverse"
+          )}>
             <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
               {vendor.avatar_url ? (
                 <img src={vendor.avatar_url} alt="" className="w-full h-full rounded-lg object-cover" />
@@ -101,54 +108,112 @@ export const VendorDirectory: React.FC = () => {
               )}
             </div>
             <div>
-              <CardTitle className="text-lg">{vendor.company_name || vendor.full_name}</CardTitle>
-              <div className="flex items-center gap-2 mt-1">
+              <CardTitle 
+                className="text-lg"
+                style={isRTL ? { textAlign: 'right !important' } : {}}
+              >
+                {vendor.company_name || vendor.full_name}
+              </CardTitle>
+              <div className={cn(
+                "flex items-center gap-2 mt-1",
+                isRTL && "flex-row-reverse"
+              )}>
                 {vendor.address && (
-                  <div className="flex items-center gap-1">
+                  <div className={cn(
+                    "flex items-center gap-1",
+                    isRTL && "flex-row-reverse"
+                  )}>
                     <MapPin className="h-3 w-3 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">{vendor.address}</span>
+                    <span 
+                      className="text-sm text-muted-foreground"
+                      style={isRTL ? { textAlign: 'right !important' } : {}}
+                    >
+                      {vendor.address}
+                    </span>
                   </div>
                 )}
                 {vendor.verification_status === 'approved' && (
                   <>
                     {vendor.address && <span className="text-muted-foreground">•</span>}
-                    <div className="flex items-center gap-1">
+                    <div className={cn(
+                      "flex items-center gap-1",
+                      isRTL && "flex-row-reverse"
+                    )}>
                       <Shield className="h-3 w-3 text-green-600" />
-                      <span className="text-sm text-green-600">
-                        {isRTL ? 'معتمد' : 'Verified'}
+                      <span 
+                        className="text-sm text-green-600"
+                        style={isRTL ? { textAlign: 'right !important' } : {}}
+                      >
+                        {t('vendors.verified')}
                       </span>
                     </div>
                   </>
                 )}
+                {(vendor.address || vendor.verification_status === 'approved') && (
+                  <span className="text-muted-foreground">•</span>
+                )}
+                <div className={cn(
+                  "flex items-center gap-1",
+                  isRTL && "flex-row-reverse"
+                )}>
+                  <Package className="h-3 w-3 text-muted-foreground" />
+                  <span 
+                    className="text-sm text-muted-foreground"
+                    style={isRTL ? { textAlign: 'right !important' } : {}}
+                  >
+                    {vendor.product_count || 0} {t('vendors.products')}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-          <Badge variant="secondary" className="bg-green-100 text-green-700">
-            {isRTL ? 'متاح' : 'Available'}
+          <Badge 
+            variant="secondary" 
+            className="bg-green-100 text-green-700"
+            style={isRTL ? { textAlign: 'right !important' } : {}}
+          >
+            {t('vendors.available')}
           </Badge>
         </div>
       </CardHeader>
       
       <CardContent className="space-y-4">
         {vendor.bio && (
-          <p className="text-sm text-muted-foreground line-clamp-2">{vendor.bio}</p>
+          <p 
+            className="text-sm text-muted-foreground line-clamp-2"
+            style={isRTL ? { textAlign: 'right !important' } : {}}
+          >
+            {vendor.bio}
+          </p>
         )}
         
         {/* Categories */}
         {vendor.vendor_categories && vendor.vendor_categories.length > 0 && (
           <div>
-            <h4 className="text-sm font-medium mb-2">
-              {isRTL ? 'التخصصات' : 'Specialties'}
+            <h4 
+              className="text-sm font-medium mb-2"
+              style={isRTL ? { textAlign: 'right !important' } : {}}
+            >
+              {t('vendors.specialties')}
             </h4>
             <div className="flex flex-wrap gap-1">
               {vendor.vendor_categories.slice(0, 3).map((vc: any) => (
-                <Badge key={vc.id} variant="outline" className="text-xs">
+                <Badge 
+                  key={vc.id} 
+                  variant="outline" 
+                  className="text-xs"
+                  style={isRTL ? { textAlign: 'right !important' } : {}}
+                >
                   {isRTL ? vc.categories.name_ar : vc.categories.name_en}
                 </Badge>
               ))}
               {vendor.vendor_categories.length > 3 && (
-                <Badge variant="outline" className="text-xs">
-                  +{vendor.vendor_categories.length - 3} {isRTL ? 'المزيد' : 'more'}
+                <Badge 
+                  variant="outline" 
+                  className="text-xs"
+                  style={isRTL ? { textAlign: 'right !important' } : {}}
+                >
+                  +{vendor.vendor_categories.length - 3} {t('vendors.more')}
                 </Badge>
               )}
             </div>
@@ -156,11 +221,17 @@ export const VendorDirectory: React.FC = () => {
         )}
 
         {/* Vendor Info */}
-        <div className="flex items-center justify-between pt-3 border-t text-sm text-muted-foreground">
-          <div className="flex items-center gap-1">
+        <div className={cn(
+          "flex items-center justify-between pt-3 border-t text-sm text-muted-foreground",
+          isRTL && "flex-row-reverse"
+        )}>
+          <div className={cn(
+            "flex items-center gap-1",
+            isRTL && "flex-row-reverse"
+          )}>
             <Clock className="h-3 w-3" />
-            <span>
-              {isRTL ? 'انضم في' : 'Joined'} {format(new Date(vendor.created_at), 'MMM yyyy')}
+            <span style={isRTL ? { textAlign: 'right !important' } : {}}>
+              {t('vendors.joined')} {format(new Date(vendor.created_at), 'MMM yyyy')}
             </span>
           </div>
           {vendor.portfolio_url && (
@@ -169,16 +240,22 @@ export const VendorDirectory: React.FC = () => {
               target="_blank" 
               rel="noopener noreferrer"
               className="text-primary hover:underline"
+              style={isRTL ? { textAlign: 'right !important' } : {}}
             >
-              {isRTL ? 'عرض الأعمال' : 'Portfolio'}
+              {t('vendors.portfolio')}
             </a>
           )}
         </div>
 
         <div className="flex gap-2 pt-2">
           <EnhancedVendorProfileModal vendorId={vendor.id.toString()}>
-            <Button variant="outline" size="sm" className="flex-1">
-              {isRTL ? 'عرض الملف' : 'View Profile'}
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="flex-1"
+              style={isRTL ? { textAlign: 'right !important' } : {}}
+            >
+              {t('vendors.viewProfile')}
             </Button>
           </EnhancedVendorProfileModal>
           <Button 
@@ -196,19 +273,26 @@ export const VendorDirectory: React.FC = () => {
                 logger.error('Error starting conversation', { error, vendorId: vendor.id });
               }
             }}
+            style={isRTL ? { textAlign: 'right !important' } : {}}
           >
-            {isRTL ? 'رسالة' : 'Message'}
+            {t('vendors.message')}
           </Button>
           <Button 
             variant="outline" 
             size="sm" 
             className="flex-1" 
             onClick={() => setPrivateRequestVendor(vendor)}
+            style={isRTL ? { textAlign: 'right !important' } : {}}
           >
-            {isRTL ? 'طلب خاص' : 'Private Request'}
+            {t('vendors.privateRequest')}
           </Button>
-          <Button size="sm" className="flex-1" onClick={() => navigate('/requests/create')}>
-            {isRTL ? 'طلب عام' : 'Public Request'}
+          <Button 
+            size="sm" 
+            className="flex-1" 
+            onClick={() => navigate('/requests/create')}
+            style={isRTL ? { textAlign: 'right !important' } : {}}
+          >
+            {t('vendors.publicRequest')}
           </Button>
         </div>
       </CardContent>
@@ -218,69 +302,92 @@ export const VendorDirectory: React.FC = () => {
   const renderFilters = () => (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle 
+          className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}
+          style={isRTL ? { textAlign: 'right !important' } : {}}
+        >
           <Filter className="h-5 w-5" />
-          {isRTL ? 'تصفية النتائج' : 'Filter Results'}
+          {t('vendors.filterResults')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className={cn(
+            "absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground",
+            isRTL ? "right-3" : "left-3"
+          )} />
           <Input
-            placeholder={isRTL ? 'ابحث عن الموردين...' : 'Search vendors...'}
+            placeholder={t('vendors.searchVendors')}
             value={filters.search || ''}
             onChange={(e) => handleFilterChange('search', e.target.value)}
-            className="pl-10"
+            className={cn(
+              isRTL ? "pr-10 text-right" : "pl-10"
+            )}
+            style={isRTL ? { textAlign: 'right !important' } : {}}
           />
         </div>
 
         {/* Sort */}
         <div>
-          <label className="text-sm font-medium mb-2 block">
-            {isRTL ? 'ترتيب حسب' : 'Sort by'}
+          <label 
+            className="text-sm font-medium mb-2 block"
+            style={isRTL ? { textAlign: 'right !important' } : {}}
+          >
+            {t('vendors.sortBy')}
           </label>
           <Select value={sortBy} onValueChange={setSortBy}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="created_at">{isRTL ? 'الأحدث' : 'Newest'}</SelectItem>
-              <SelectItem value="rating">{isRTL ? 'التقييم' : 'Rating'}</SelectItem>
-              <SelectItem value="company_name">{isRTL ? 'اسم الشركة' : 'Company Name'}</SelectItem>
+              <SelectItem value="created_at">{t('vendors.newest')}</SelectItem>
+              <SelectItem value="rating">{t('vendors.rating')}</SelectItem>
+              <SelectItem value="company_name">{t('vendors.companyName')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         {/* Budget Range */}
         <div>
-          <label className="text-sm font-medium mb-2 block">
-            {isRTL ? 'نطاق الميزانية' : 'Budget Range (SAR)'}
+          <label 
+            className="text-sm font-medium mb-2 block"
+            style={isRTL ? { textAlign: 'right !important' } : {}}
+          >
+            {t('vendors.budgetRange')}
           </label>
           <div className="grid grid-cols-2 gap-2">
             <Input
               type="number"
-              placeholder={isRTL ? 'الحد الأدنى' : 'Min'}
+              placeholder={t('vendors.min')}
               value={filters.budgetMin || ''}
               onChange={(e) => handleFilterChange('budgetMin', parseFloat(e.target.value) || undefined)}
+              style={isRTL ? { textAlign: 'right !important' } : {}}
             />
             <Input
               type="number"
-              placeholder={isRTL ? 'الحد الأقصى' : 'Max'}
+              placeholder={t('vendors.max')}
               value={filters.budgetMax || ''}
               onChange={(e) => handleFilterChange('budgetMax', parseFloat(e.target.value) || undefined)}
+              style={isRTL ? { textAlign: 'right !important' } : {}}
             />
           </div>
         </div>
 
         {/* Categories Filter */}
         <div>
-          <label className="text-sm font-medium mb-2 block">
-            {isRTL ? 'الفئات' : 'Categories'}
+          <label 
+            className="text-sm font-medium mb-2 block"
+            style={isRTL ? { textAlign: 'right !important' } : {}}
+          >
+            {t('vendors.categories')}
           </label>
           <div className="space-y-2 max-h-48 overflow-y-auto">
             {categories.map((category) => (
-              <div key={category.id} className="flex items-center space-x-2">
+              <div key={category.id} className={cn(
+                "flex items-center space-x-2",
+                isRTL && "flex-row-reverse space-x-reverse"
+              )}>
                 <Checkbox
                   id={`category-${category.id}`}
                   checked={(filters.categories || []).includes(category.id)}
@@ -289,6 +396,7 @@ export const VendorDirectory: React.FC = () => {
                 <label 
                   htmlFor={`category-${category.id}`} 
                   className="text-sm cursor-pointer flex-1"
+                  style={isRTL ? { textAlign: 'right !important' } : {}}
                 >
                   {isRTL ? category.name_ar : category.name_en}
                 </label>
@@ -297,8 +405,14 @@ export const VendorDirectory: React.FC = () => {
           </div>
         </div>
 
-        <Button onClick={clearFilters} variant="outline" size="sm" className="w-full">
-          {isRTL ? 'مسح المرشحات' : 'Clear All Filters'}
+        <Button 
+          onClick={clearFilters} 
+          variant="outline" 
+          size="sm" 
+          className="w-full"
+          style={isRTL ? { textAlign: 'right !important' } : {}}
+        >
+          {t('vendors.clearAllFilters')}
         </Button>
       </CardContent>
     </Card>
@@ -334,33 +448,39 @@ export const VendorDirectory: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div 
+      className={cn("space-y-6", isRTL && "rtl-text-right")}
+      style={isRTL ? { textAlign: 'right !important' } : {}}
+    >
       {/* Vendor Metrics */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+      <div 
+        className={cn("grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8", isRTL && "rtl-text-right")}
+        style={isRTL ? { textAlign: 'right !important' } : {}}
+      >
         <MetricCard
-          title="Total Vendors"
+          title={t('vendors.totalVendors')}
           value={metrics.total}
           icon={Building2}
-          description="Registered vendors"
+          description={t('vendors.registeredVendors')}
         />
         <MetricCard
-          title="Verified Vendors"
+          title={t('vendors.verifiedVendors')}
           value={metrics.verified}
           icon={Shield}
           variant="success"
-          description="Quality assured partners"
+          description={t('vendors.qualityAssuredPartners')}
         />
         <MetricCard
-          title="Available Now"
+          title={t('vendors.availableNow')}
           value={metrics.available}
           icon={Users}
-          description="Ready for new projects"
+          description={t('vendors.readyForNewProjects')}
         />
         <MetricCard
-          title="Service Categories"
+          title={t('vendors.serviceCategories')}
           value={metrics.categories}
           icon={Filter}
-          description="Different specializations"
+          description={t('vendors.differentSpecializations')}
         />
       </div>
 
@@ -377,10 +497,10 @@ export const VendorDirectory: React.FC = () => {
           ) : (
             <EmptyState
               icon={Building2}
-              title={isRTL ? 'لم يتم العثور على موردين' : 'No vendors found'}
-              description={isRTL ? 'جرب تعديل معايير البحث' : 'Try adjusting your search criteria'}
+              title={t('vendors.noVendorsFound')}
+              description={t('vendors.tryAdjustingSearch')}
               action={{
-                label: isRTL ? 'مسح المرشحات' : 'Clear Filters',
+                label: t('vendors.clearFilters'),
                 onClick: clearFilters,
                 variant: "outline" as const
               }}
@@ -390,26 +510,31 @@ export const VendorDirectory: React.FC = () => {
           {/* Pagination */}
           {totalCount > 20 && (
             <div className="flex justify-center mt-8">
-              <div className="flex items-center gap-2">
+              <div className={cn(
+                "flex items-center gap-2",
+                isRTL && "flex-row-reverse"
+              )}>
                 <Button
                   variant="outline"
                   onClick={() => setPage(p => Math.max(1, p - 1))}
                   disabled={page === 1}
+                  style={isRTL ? { textAlign: 'right !important' } : {}}
                 >
-                  {isRTL ? 'السابق' : 'Previous'}
+                  {t('vendors.previous')}
                 </Button>
-                <span className="text-sm text-muted-foreground px-4">
-                  {isRTL ? 
-                    `الصفحة ${page} من ${Math.ceil(totalCount / 20)}` :
-                    `Page ${page} of ${Math.ceil(totalCount / 20)}`
-                  }
+                <span 
+                  className="text-sm text-muted-foreground px-4"
+                  style={isRTL ? { textAlign: 'right !important' } : {}}
+                >
+                  {t('vendors.page')} {page} {t('vendors.of')} {Math.ceil(totalCount / 20)}
                 </span>
                 <Button
                   variant="outline"
                   onClick={() => setPage(p => p + 1)}
                   disabled={page >= Math.ceil(totalCount / 20)}
+                  style={isRTL ? { textAlign: 'right !important' } : {}}
                 >
-                  {isRTL ? 'التالي' : 'Next'}
+                  {t('vendors.next')}
                 </Button>
               </div>
             </div>
