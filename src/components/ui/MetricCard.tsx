@@ -74,9 +74,15 @@ export const MetricCard = ({
           className
       )}
     >
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <CardDescription className="text-xs font-medium uppercase tracking-wide">
+      <CardHeader className={cn("pb-3", className?.includes('text-right') && "text-right")}>
+        <div className={cn(
+          "flex items-center justify-between",
+          className?.includes('text-right') && "flex-row-reverse"
+        )}>
+          <CardDescription className={cn(
+            "text-xs font-medium uppercase tracking-wide",
+            className?.includes('text-right') && "text-right"
+          )}>
             {title}
           </CardDescription>
           {Icon && (
@@ -87,18 +93,27 @@ export const MetricCard = ({
           )}
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className={cn(className?.includes('text-right') && "text-right")}>
         <div className="space-y-2">
-          <div className="text-2xl font-bold tracking-tight">
+          <div className={cn(
+            "text-2xl font-bold tracking-tight",
+            className?.includes('text-right') && "text-right"
+          )}>
             {value}
           </div>
           {description && (
-            <p className="text-foreground opacity-75">
+            <p className={cn(
+              "text-foreground opacity-75",
+              className?.includes('text-right') && "text-right"
+            )}>
               {description}
             </p>
           )}
           {trend && (
-            <div className="flex items-center space-x-1">
+            <div className={cn(
+              "flex items-center space-x-1",
+              className?.includes('text-right') && "flex-row-reverse space-x-reverse"
+            )}>
               {trend.isPositive ? (
                 <TrendingUp className="h-3 w-3 text-success" />
               ) : (
@@ -111,7 +126,10 @@ export const MetricCard = ({
                 {trend.value}%
               </Badge>
               {trend.label && (
-                <span className="text-xs text-foreground opacity-75">
+                <span className={cn(
+                  "text-xs text-foreground opacity-75",
+                  className?.includes('text-right') && "text-right"
+                )}>
                   {trend.label}
                 </span>
               )}
