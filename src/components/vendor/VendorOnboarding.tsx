@@ -192,13 +192,13 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
           <div className="space-y-6">
             <div className="text-center space-y-2">
               <Building2 className="h-12 w-12 mx-auto text-primary" />
-              <h2 className="text-2xl font-bold">Business Information</h2>
-              <p className="text-muted-foreground">Tell us about your business</p>
+              <h2 className="text-2xl font-bold">{t('dashboard.vendorOnboarding.businessInfo.title')}</h2>
+              <p className="text-muted-foreground">{t('dashboard.vendorOnboarding.businessInfo.description')}</p>
             </div>
 
             <div className="space-y-4">
               <div>
-                <Label>Business Size *</Label>
+                <Label>{t('dashboard.vendorOnboarding.businessInfo.businessSize')} *</Label>
                 <Select 
                   value={onboardingData.businessSize} 
                   onValueChange={(value) => setOnboardingData(prev => ({ ...prev, businessSize: value }))}
@@ -221,7 +221,7 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label>Established Year</Label>
+                  <Label>{t('dashboard.vendorOnboarding.businessInfo.establishedYear')}</Label>
                   <Input
                     type="number"
                     placeholder="2020"
@@ -233,7 +233,7 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
                   />
                 </div>
                 <div>
-                  <Label>Current Employee Count</Label>
+                  <Label>{t('dashboard.vendorOnboarding.businessInfo.employeeCount')}</Label>
                   <Select 
                     value={onboardingData.companyInfo.employeeCount}
                     onValueChange={(value) => setOnboardingData(prev => ({
@@ -257,7 +257,7 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
               </div>
 
               <div>
-                <Label>Website (Optional)</Label>
+                <Label>{t('dashboard.vendorOnboarding.businessInfo.website')} ({t('common.optional')})</Label>
                 <Input
                   type="url"
                   placeholder={t('forms.websiteExample')}
@@ -277,8 +277,8 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
           <div className="space-y-6">
             <div className="text-center space-y-2">
               <Award className="h-12 w-12 mx-auto text-primary" />
-              <h2 className="text-2xl font-bold">Service Categories</h2>
-              <p className="text-muted-foreground">Select the services you provide</p>
+              <h2 className="text-2xl font-bold">{t('dashboard.vendorOnboarding.serviceCategories.title')}</h2>
+              <p className="text-muted-foreground">{t('dashboard.vendorOnboarding.serviceCategories.description')}</p>
             </div>
 
             <div className="space-y-4">
@@ -319,8 +319,8 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
           <div className="space-y-6">
             <div className="text-center space-y-2">
               <MapPin className="h-12 w-12 mx-auto text-primary" />
-              <h2 className="text-2xl font-bold">Service Coverage</h2>
-              <p className="text-muted-foreground">Where do you provide your services?</p>
+              <h2 className="text-2xl font-bold">{t('dashboard.vendorOnboarding.serviceCoverage.title')}</h2>
+              <p className="text-muted-foreground">{t('dashboard.vendorOnboarding.serviceCoverage.description')}</p>
             </div>
 
             <div className="space-y-4">
@@ -347,8 +347,8 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
           <div className="space-y-6">
             <div className="text-center space-y-2">
               <Users className="h-12 w-12 mx-auto text-primary" />
-              <h2 className="text-2xl font-bold">Capabilities & Experience</h2>
-              <p className="text-muted-foreground">Help clients understand your capacity</p>
+              <h2 className="text-2xl font-bold">{t('dashboard.vendorOnboarding.capabilities.title')}</h2>
+              <p className="text-muted-foreground">{t('dashboard.vendorOnboarding.capabilities.description')}</p>
             </div>
 
             <div className="space-y-4">
@@ -390,7 +390,7 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
               </div>
 
               <div>
-                <Label>Company Description</Label>
+                <Label>{t('dashboard.vendorOnboarding.businessInfo.description')}</Label>
                 <textarea
                   className="w-full min-h-[100px] p-3 border rounded-md"
                   placeholder={t('forms.companyDescription')}
@@ -410,8 +410,8 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
           <div className="space-y-6">
             <div className="text-center space-y-2">
               <Upload className="h-12 w-12 mx-auto text-primary" />
-              <h2 className="text-2xl font-bold">Verification Documents</h2>
-              <p className="text-muted-foreground">Upload your Commercial Registration</p>
+              <h2 className="text-2xl font-bold">{t('dashboard.vendorOnboarding.documentVerification.title')}</h2>
+              <p className="text-muted-foreground">{t('dashboard.vendorOnboarding.documentVerification.description')}</p>
             </div>
 
             <CRDocumentUpload
@@ -423,7 +423,7 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
               <Alert>
                 <CheckCircle className="h-4 w-4" />
                 <AlertDescription>
-                  Commercial Registration uploaded successfully! You can now complete your onboarding.
+                  {t('dashboard.vendorOnboarding.documentVerification.verificationNote')}
                 </AlertDescription>
               </Alert>
             )}
@@ -441,9 +441,9 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
         <CardHeader>
           <div className="space-y-4">
             <div className="text-center">
-              <CardTitle className="text-2xl">Vendor Onboarding</CardTitle>
+              <CardTitle className="text-2xl">{t('dashboard.vendorOnboarding.title')}</CardTitle>
               <CardDescription>
-                Step {currentStep} of {totalSteps} - Complete your vendor profile
+                {t('dashboard.vendorOnboarding.stepOf', { current: currentStep, total: totalSteps })} - {t('dashboard.vendorOnboarding.subtitle')}
               </CardDescription>
             </div>
             <Progress value={progress} className="w-full" />
@@ -478,7 +478,7 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
                   (currentStep === 3 && onboardingData.coverageLocations.length === 0)
                 }
               >
-                Next
+{t('common.next')}
               </Button>
             )}
           </div>

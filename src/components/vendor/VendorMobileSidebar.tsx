@@ -67,52 +67,12 @@ export const VendorMobileSidebar = ({ isOpen, onOpenChange }: VendorMobileSideba
       ]
     },
     {
-      section: t('vendorGroups.projectManagement') || "Project Management",
-      items: [
-        {
-          name: t('nav.projects') || "Projects",
-          href: "/vendor/projects",
-          icon: Briefcase,
-        },
-        {
-          name: t('vendorGroups.businessIntelligence') || "Business Intelligence",
-          href: "/vendor/analytics",
-          icon: BarChart3,
-        },
-        {
-          name: t('vendorGroups.performanceTracking') || "Performance Tracking",
-          href: "/vendor/performance",
-          icon: TrendingUp,
-        },
-      ]
-    },
-    {
-      section: t('vendorGroups.network') || "Network",
-      items: [
-        {
-          name: t('vendorGroups.clientRelations') || "Client Relations",
-          href: "/vendor/clients",
-          icon: Users,
-        },
-        {
-          name: t('vendorGroups.documentation') || "Documentation",
-          href: "/vendor/documents",
-          icon: FileText,
-        },
-      ]
-    },
-    {
       section: t('vendorGroups.account') || "Account",
       items: [
         {
           name: t('nav.profile') || "Profile",
           href: "/vendor/profile",
           icon: User,
-        },
-        {
-          name: t('vendorGroups.subscription') || "Subscription",
-          href: "/vendor/subscription",
-          icon: CreditCard,
         },
         {
           name: t('nav.settings') || "Settings",

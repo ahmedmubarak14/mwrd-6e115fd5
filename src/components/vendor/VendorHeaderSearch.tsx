@@ -23,7 +23,7 @@ export const VendorHeaderSearch = () => {
     e.preventDefault();
     if (searchQuery.trim()) {
       // Handle search logic here
-      console.log('Searching for:', searchQuery);
+      // Search functionality will be implemented
       setIsOpen(false);
     }
   };

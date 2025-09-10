@@ -8,6 +8,7 @@ import {
   FileText,
   Package,
   ShoppingCart,
+  ShoppingBag,
   MessageSquare,
   FolderOpen,
   User,
@@ -18,11 +19,13 @@ import {
   Briefcase,
   Shield,
   ChevronDown,
+  TrendingUp,
   ChevronRight,
   CreditCard,
   DollarSign,
   Bell,
-  Users
+  Users,
+  Search
 } from "lucide-react";
 import { VendorUserProfile } from "./VendorUserProfile";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -109,47 +112,20 @@ export const VendorSidebar = ({
           href: '/vendor/orders',
           icon: ShoppingCart,
         },
+    {
+      name: t('nav.products') || 'Product Catalog',
+      href: '/vendor/products',
+      icon: Package,
+    },
+    {
+      name: t('vendor.rfqs.title') || 'Browse RFQs',
+      href: '/vendor/rfqs',
+      icon: Search,
+    },
         {
           name: t('nav.messages') || 'Messages',
           href: '/vendor/messages',
           icon: MessageSquare,
-        },
-      ]
-    },
-    {
-      id: 'project-management',
-      label: t('vendorGroups.projectManagement') || 'Project Management',
-      priority: 'secondary',
-      items: [
-        {
-          name: t('nav.projects') || 'Projects',
-          href: '/vendor/projects',
-          icon: Briefcase,
-        },
-        {
-          name: t('vendorGroups.businessIntelligence') || 'Business Intelligence',
-          href: '/vendor/business-intelligence',
-          icon: BarChart3,
-        },
-        {
-          name: t('nav.rfqs') || 'RFQs',
-          href: '/vendor/rfqs',
-          icon: FileText,
-        },
-        {
-          name: t('nav.notifications') || 'Notifications',
-          href: '/vendor/notifications',
-          icon: Bell,
-        },
-        {
-          name: t('nav.clients') || 'Clients',
-          href: '/vendor/clients',
-          icon: Users,
-        },
-        {
-          name: t('nav.documents') || 'Documents',
-          href: '/vendor/documents',
-          icon: FolderOpen,
         },
       ]
     },
@@ -162,11 +138,6 @@ export const VendorSidebar = ({
           name: t('nav.subscription') || 'Subscription',
           href: '/vendor/subscription',
           icon: CreditCard,
-        },
-        {
-          name: t('nav.transactions') || 'Transactions',
-          href: '/vendor/transactions',
-          icon: DollarSign,
         },
       ]
     },
@@ -213,8 +184,9 @@ export const VendorSidebar = ({
   return (
     <div 
       className={cn(
-        "flex flex-col bg-card transition-all duration-300",
+        "flex flex-col bg-card transition-all duration-300 fixed top-0 h-full z-40",
         collapsed ? "w-16" : "w-64",
+        isRTL ? "right-0" : "left-0",
         // Only show border in desktop mode, mobile sheet handles its own borders
         !onItemClick && (isRTL ? "border-l" : "border-r"),
         className

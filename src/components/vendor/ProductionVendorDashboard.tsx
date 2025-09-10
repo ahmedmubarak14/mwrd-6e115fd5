@@ -69,7 +69,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
     <Card className={cn("relative overflow-hidden transition-all hover:shadow-md", variantStyles[variant])}>
       <CardHeader className="pb-2">
         <div className={cn("flex items-center justify-between", isRTL && "flex-row-reverse")}>
-          <CardTitle className="text-sm font-medium text-muted-foreground">
+          <CardTitle className={cn("text-sm font-medium text-muted-foreground", isRTL && "text-right")}>
             {title}
           </CardTitle>
           <Icon className="h-5 w-5 text-muted-foreground" />
@@ -77,14 +77,14 @@ const MetricCard: React.FC<MetricCardProps> = ({
       </CardHeader>
       <CardContent>
         <div className={cn("space-y-1", isRTL && "text-right")}>
-          <div className="text-2xl font-bold">{value}</div>
+          <div className={cn("text-2xl font-bold", isRTL && "text-right")}>{value}</div>
           {description && (
-            <p className="text-xs text-muted-foreground">{description}</p>
+            <p className={cn("text-xs text-muted-foreground", isRTL && "text-right")}>{description}</p>
           )}
           {trend && (
             <div className={cn(
               "flex items-center text-xs",
-              isRTL ? "flex-row-reverse" : "",
+              isRTL ? "flex-row-reverse justify-end" : "",
               trend.isPositive ? "text-green-600" : "text-red-600"
             )}>
               <span className={cn(
@@ -235,12 +235,19 @@ export const ProductionVendorDashboard: React.FC = () => {
               <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                 <AlertCircle className="h-5 w-5 text-warning" />
                 <div className="flex-1">
-                  <h3 className="font-semibold text-warning">{t('vendor.cr.verificationRequired')}</h3>
+                  <h3 className="font-semibold text-warning">
+                    {t('vendor.cr.verificationRequired')}
+                  </h3>
                   <p className="text-sm text-muted-foreground">
                     {t('vendor.cr.completeVerification')}
                   </p>
                 </div>
-                <Button variant="outline" size="sm" asChild className={cn(isRTL ? "mr-auto" : "ml-auto")}>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  asChild 
+                  className={cn(isRTL ? "mr-auto" : "ml-auto")}
+                >
                   <Link to="/vendor/cr-management">{t('vendor.cr.updateCR')}</Link>
                 </Button>
               </div>
@@ -340,7 +347,7 @@ export const ProductionVendorDashboard: React.FC = () => {
               <Activity className="h-5 w-5 text-primary" />
               {t('vendor.dashboard.quickActions')}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className={cn(isRTL && "text-right")}>
               {t('vendor.dashboard.quickActionsDesc')}
             </CardDescription>
           </CardHeader>
@@ -351,9 +358,9 @@ export const ProductionVendorDashboard: React.FC = () => {
                 className="h-auto p-4 flex-col space-y-2 bg-primary/10 hover:bg-primary/20 text-primary border-primary/20"
                 variant="outline"
               >
-                <Link to="/vendor/rfqs" className="text-center">
+                <Link to="/vendor/rfqs" className={cn("text-center", isRTL && "text-right")}>
                   <Package className="h-6 w-6" />
-                  <div>
+                  <div className={cn(isRTL && "text-right")}>
                     <div className="font-semibold">{t('vendor.dashboard.browseRFQs')}</div>
                     <div className="text-xs opacity-80">{t('vendor.dashboard.newRequests')}</div>
                   </div>
@@ -365,9 +372,9 @@ export const ProductionVendorDashboard: React.FC = () => {
                 className="h-auto p-4 flex-col space-y-2 bg-green-50 hover:bg-green-100 text-green-700 border-green-200"
                 variant="outline"
               >
-                <Link to="/vendor/offers/create" className="text-center">
+                <Link to="/vendor/offers/create" className={cn("text-center", isRTL && "text-right")}>
                   <Plus className="h-6 w-6" />
-                  <div>
+                  <div className={cn(isRTL && "text-right")}>
                     <div className="font-semibold">{t('vendor.dashboard.submitOffer')}</div>
                     <div className="text-xs opacity-80">{t('vendor.dashboard.createNewOffer')}</div>
                   </div>
@@ -379,9 +386,9 @@ export const ProductionVendorDashboard: React.FC = () => {
                 className="h-auto p-4 flex-col space-y-2 bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200"
                 variant="outline"
               >
-                <Link to="/vendor/messages" className="text-center">
+                <Link to="/vendor/messages" className={cn("text-center", isRTL && "text-right")}>
                   <MessageSquare className="h-6 w-6" />
-                  <div>
+                  <div className={cn(isRTL && "text-right")}>
                     <div className="font-semibold">{t('vendor.dashboard.messages')}</div>
                     <div className="text-xs opacity-80">{t('vendor.dashboard.unreadMessages')}</div>
                   </div>
@@ -393,9 +400,9 @@ export const ProductionVendorDashboard: React.FC = () => {
                 className="h-auto p-4 flex-col space-y-2 bg-orange-50 hover:bg-orange-100 text-orange-700 border-orange-200"
                 variant="outline"
               >
-                <Link to="/vendor/profile" className="text-center">
+                <Link to="/vendor/profile" className={cn("text-center", isRTL && "text-right")}>
                   <User className="h-6 w-6" />
-                  <div>
+                  <div className={cn(isRTL && "text-right")}>
                     <div className="font-semibold">{t('vendor.dashboard.updateProfile')}</div>
                     <div className="text-xs opacity-80">{stats.profileCompletion}% {t('common.completed')}</div>
                   </div>
@@ -416,25 +423,25 @@ export const ProductionVendorDashboard: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                <div className={cn("flex items-center gap-3 p-3 rounded-lg bg-muted/30", isRTL && "flex-row-reverse")}>
                   <div className="h-2 w-2 bg-green-500 rounded-full"></div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium">{t('vendor.dashboard.newRFQReceived')}</p>
-                    <p className="text-xs text-muted-foreground">{t('vendor.dashboard.constructionProject')} - {t('vendor.dashboard.hoursAgo')}</p>
+                    <p className={cn("text-sm font-medium", isRTL && "text-right")}>{t('vendor.dashboard.newRFQReceived')}</p>
+                    <p className={cn("text-xs text-muted-foreground", isRTL && "text-right")}>{t('vendor.dashboard.constructionProject')} - {t('vendor.dashboard.hoursAgo')}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                <div className={cn("flex items-center gap-3 p-3 rounded-lg bg-muted/30", isRTL && "flex-row-reverse")}>
                   <div className="h-2 w-2 bg-blue-500 rounded-full"></div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium">{t('vendor.dashboard.offerSubmitted')}</p>
-                    <p className="text-xs text-muted-foreground">{t('vendor.dashboard.officeRenovation')} - {t('vendor.dashboard.hoursAgo')}</p>
+                    <p className={cn("text-sm font-medium", isRTL && "text-right")}>{t('vendor.dashboard.offerSubmitted')}</p>
+                    <p className={cn("text-xs text-muted-foreground", isRTL && "text-right")}>{t('vendor.dashboard.officeRenovation')} - {t('vendor.dashboard.hoursAgo')}</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                <div className={cn("flex items-center gap-3 p-3 rounded-lg bg-muted/30", isRTL && "flex-row-reverse")}>
                   <div className="h-2 w-2 bg-yellow-500 rounded-full"></div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium">{t('vendor.dashboard.profileUpdateRequired')}</p>
-                    <p className="text-xs text-muted-foreground">{t('vendor.dashboard.completeVerification')} - {t('vendor.dashboard.dayAgo')}</p>
+                    <p className={cn("text-sm font-medium", isRTL && "text-right")}>{t('vendor.dashboard.profileUpdateRequired')}</p>
+                    <p className={cn("text-xs text-muted-foreground", isRTL && "text-right")}>{t('vendor.dashboard.completeVerification')} - {t('vendor.dashboard.dayAgo')}</p>
                   </div>
                 </div>
               </div>
@@ -451,23 +458,23 @@ export const ProductionVendorDashboard: React.FC = () => {
             <CardContent>
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>{t('vendor.dashboard.profileCompletion')}</span>
-                    <span className="font-medium">{stats.profileCompletion}%</span>
+                  <div className={cn("flex justify-between text-sm", isRTL && "flex-row-reverse")}>
+                    <span className={cn(isRTL && "text-right")}>{t('vendor.dashboard.profileCompletion')}</span>
+                    <span className={cn("font-medium", isRTL && "text-right")}>{stats.profileCompletion}%</span>
                   </div>
                   <Progress value={stats.profileCompletion} className="h-2" />
                 </div>
                 <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>{t('vendor.dashboard.successRateTitle')}</span>
-                    <span className="font-medium">{stats.successRate}%</span>
+                  <div className={cn("flex justify-between text-sm", isRTL && "flex-row-reverse")}>
+                    <span className={cn(isRTL && "text-right")}>{t('vendor.dashboard.successRateTitle')}</span>
+                    <span className={cn("font-medium", isRTL && "text-right")}>{stats.successRate}%</span>
                   </div>
                   <Progress value={stats.successRate} className="h-2" />
                 </div>
                 <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>{t('vendor.dashboard.clientRatingTitle')}</span>
-                    <span className="font-medium">{stats.clientRating}/5</span>
+                  <div className={cn("flex justify-between text-sm", isRTL && "flex-row-reverse")}>
+                    <span className={cn(isRTL && "text-right")}>{t('vendor.dashboard.clientRatingTitle')}</span>
+                    <span className={cn("font-medium", isRTL && "text-right")}>{stats.clientRating}/5</span>
                   </div>
                   <Progress value={(stats.clientRating / 5) * 100} className="h-2" />
                 </div>

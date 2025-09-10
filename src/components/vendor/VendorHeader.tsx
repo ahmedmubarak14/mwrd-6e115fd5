@@ -40,9 +40,9 @@ export const VendorHeader = ({
     <header className="border-b border-border bg-card sticky top-0 z-50 shadow-sm">
       {/* Main Header Bar */}
       <div className="h-16 min-h-16">
-        <div className="max-w-full mx-auto px-3 sm:px-4 h-full flex items-center justify-between gap-2">
+        <div className={cn("max-w-full mx-auto px-3 sm:px-4 h-full flex items-center justify-between gap-2", isRTL && "flex-row-reverse")}>
           {/* Logo, Menu Trigger, and Sidebar Toggle */}
-          <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 mr-2 sm:mr-4">
+          <div className={cn("flex items-center gap-2 sm:gap-3 min-w-0 flex-1", isRTL ? "ml-2 sm:ml-4" : "mr-2 sm:mr-4")}>
             {isMobile && (
               <Button
                 variant="ghost"
@@ -60,7 +60,6 @@ export const VendorHeader = ({
                 variant="ghost"
                 size="icon"
                 onClick={() => {
-                  console.log('Sidebar toggle clicked, current state:', sidebarOpen);
                   onSidebarToggle?.();
                 }}
                 className={cn(
@@ -75,7 +74,7 @@ export const VendorHeader = ({
             
             <button
               onClick={() => navigate('/vendor/dashboard')}
-              className="flex items-center gap-3 hover:opacity-80 transition-all duration-200 min-w-0"
+              className={cn("flex items-center gap-3 hover:opacity-80 transition-all duration-200 min-w-0", isRTL && "flex-row-reverse")}
               aria-label={t('vendorHeader.goToDashboard')}
             >
               <img 
@@ -83,7 +82,7 @@ export const VendorHeader = ({
                 alt="MWRD Logo"
                 className="h-8 w-auto shrink-0"
               />
-              <div className="hidden sm:flex flex-col items-start min-w-0">
+              <div className={cn("hidden sm:flex flex-col min-w-0", isRTL ? "items-end text-right" : "items-start text-left")}>
                 <span className="text-sm sm:text-base font-semibold leading-tight truncate text-foreground">
                   {t('vendorHeader.dashboard')}
                 </span>
@@ -95,7 +94,7 @@ export const VendorHeader = ({
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-1 shrink-0">
+          <div className={cn("flex items-center gap-1 shrink-0", isRTL && "flex-row-reverse")}>
             <VendorHeaderSearch />
             
             <NotificationBell />

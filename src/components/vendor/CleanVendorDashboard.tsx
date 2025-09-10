@@ -89,7 +89,7 @@ export const CleanVendorDashboard = () => {
 
   const handleOfferSuccess = () => {
     // Refresh data or show success feedback
-    console.log('Offer submitted successfully');
+    // Offer submitted successfully
   };
 
   const stats = {
