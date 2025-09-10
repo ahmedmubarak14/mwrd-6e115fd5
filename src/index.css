@@ -28,6 +28,39 @@
   }
   
   .touch-pan-y { touch-action: pan-y; }
+  
+  /* RTL Text Alignment */
+  .rtl-text-right { text-align: right !important; }
+  .rtl-text-left { text-align: left !important; }
+  
+  /* Aggressive RTL overrides for Messages page */
+  [dir="rtl"] .rtl-text-right,
+  [dir="rtl"] .rtl-text-right * {
+    text-align: right !important;
+  }
+  
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] p,
+  [dir="rtl"] span,
+  [dir="rtl"] button,
+  [dir="rtl"] input {
+    text-align: right !important;
+  }
+  
+  /* Specific Messages page RTL overrides */
+  .messages-page[dir="rtl"] * {
+    text-align: right !important;
+  }
+  
+  /* CardTitle RTL overrides */
+  [dir="rtl"] .card-title,
+  [dir="rtl"] [data-card-title],
+  [dir="rtl"] h3 {
+    text-align: right !important;
+    justify-content: flex-end !important;
+  }
 }
 
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
@@ -776,6 +809,115 @@ All colors MUST be HSL.
   [dir="rtl"] [contenteditable] {
     text-align: right;
     direction: rtl;
+  }
+
+  /* RTL support for Select component - Multiple approaches */
+  [dir="rtl"] [data-radix-select-content],
+  [dir="rtl"] [data-radix-select-content] * {
+    text-align: right !important;
+    direction: rtl !important;
+  }
+
+  [dir="rtl"] [data-radix-select-item],
+  [dir="rtl"] [data-radix-select-item] * {
+    text-align: right !important;
+    direction: rtl !important;
+    padding-left: 0.5rem !important;
+    padding-right: 2rem !important;
+    flex-direction: row-reverse !important;
+  }
+
+  [dir="rtl"] [data-radix-select-item] span[data-radix-select-item-indicator],
+  [dir="rtl"] [data-radix-select-item] .absolute {
+    left: auto !important;
+    right: 0.5rem !important;
+  }
+
+  /* Alternative selectors for Select component */
+  [dir="rtl"] .relative.z-50 * {
+    text-align: right !important;
+    direction: rtl !important;
+  }
+
+  [dir="rtl"] .relative.flex.w-full * {
+    text-align: right !important;
+    direction: rtl !important;
+  }
+
+  /* Force RTL for all dropdown content */
+  [dir="rtl"] [role="listbox"] *,
+  [dir="rtl"] [role="option"] * {
+    text-align: right !important;
+    direction: rtl !important;
+  }
+
+  /* Target specific SelectItem classes */
+  [dir="rtl"] .relative.flex.w-full.cursor-default.select-none.items-center.rounded-sm.py-1\\.5.pl-8.pr-2 {
+    padding-left: 0.5rem !important;
+    padding-right: 2rem !important;
+    text-align: right !important;
+    direction: rtl !important;
+    flex-direction: row-reverse !important;
+  }
+
+  [dir="rtl"] .absolute.left-2.flex.h-3\\.5.w-3\\.5.items-center.justify-center {
+    left: auto !important;
+    right: 0.5rem !important;
+  }
+
+  /* Custom RTL classes for Select component */
+  [dir="rtl"] .rtl-select-content,
+  [dir="rtl"] .rtl-select-content * {
+    text-align: right !important;
+    direction: rtl !important;
+  }
+
+  [dir="rtl"] .rtl-select-item,
+  [dir="rtl"] .rtl-select-item * {
+    text-align: right !important;
+    direction: rtl !important;
+    padding-left: 0.5rem !important;
+    padding-right: 2rem !important;
+    flex-direction: row-reverse !important;
+  }
+
+  [dir="rtl"] .rtl-select-item .absolute {
+    left: auto !important;
+    right: 0.5rem !important;
+  }
+
+  /* Maximum specificity RTL language selector */
+  [dir="rtl"] .rtl-language-selector,
+  [dir="rtl"] .rtl-language-selector *,
+  [dir="rtl"] .rtl-language-selector [data-radix-select-content],
+  [dir="rtl"] .rtl-language-selector [data-radix-select-content] *,
+  [dir="rtl"] .rtl-language-selector [data-radix-select-item],
+  [dir="rtl"] .rtl-language-selector [data-radix-select-item] * {
+    text-align: right !important;
+    direction: rtl !important;
+  }
+
+  [dir="rtl"] .rtl-language-selector [data-radix-select-item] {
+    padding-left: 0.5rem !important;
+    padding-right: 2rem !important;
+    flex-direction: row-reverse !important;
+  }
+
+  [dir="rtl"] .rtl-language-selector [data-radix-select-item] .absolute,
+  [dir="rtl"] .rtl-language-selector [data-radix-select-item] span {
+    left: auto !important;
+    right: 0.5rem !important;
+  }
+
+  /* Nuclear option - force all text in RTL language selector to be right-aligned */
+  [dir="rtl"] .rtl-language-selector {
+    text-align: right !important;
+    direction: rtl !important;
+  }
+
+  [dir="rtl"] .rtl-language-selector * {
+    text-align: right !important;
+    direction: rtl !important;
   }
   
   /* Enhanced disabled form field styles - no opacity */

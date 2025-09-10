@@ -14,18 +14,9 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
-import { VendorDashboard } from './pages/VendorDashboard';
+import { VendorDashboard } from './pages/vendor/ProductionVendorDashboard';
 import { CRManagementPage } from './pages/vendor/CRManagement';
-import { ProjectsManagementPage } from './pages/vendor/ProjectsManagement';
-import { PortfolioManagementPage } from './pages/vendor/PortfolioManagement';
 import { VendorSubscription } from './pages/vendor/VendorSubscription';
-import { VendorTransactions } from './pages/vendor/VendorTransactions';
-import { VendorRFQs } from './pages/vendor/VendorRFQs';
-import { VendorNotifications } from './pages/vendor/VendorNotifications';
-import { VendorClients } from './pages/vendor/VendorClients';
-import { VendorDocuments } from './pages/vendor/VendorDocuments';
-import { VendorBusinessIntelligence } from './pages/vendor/VendorBusinessIntelligence';
-import { VendorUnifiedProjects } from './pages/vendor/VendorUnifiedProjects';
 import { VendorBrowseRequests } from './pages/vendor/VendorBrowseRequests';
 import { VendorOffers } from './pages/vendor/VendorOffers';
 import { VendorOrders } from './pages/vendor/VendorOrders';
@@ -40,7 +31,6 @@ import AdminOffers from './pages/admin/AdminOffers';
 import AdminAnalytics from './pages/admin/AdminAnalytics';
 
 import AdminPerformanceMonitor from './pages/admin/AdminPerformanceMonitor';
-import AdminProjects from './pages/admin/AdminProjects';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminVerificationQueue from './pages/admin/AdminVerificationQueue';
 import WorkflowAutomation from './pages/admin/WorkflowAutomation';
@@ -53,24 +43,28 @@ import { ExpertConsultations } from './pages/admin/ExpertConsultations';
 import AdminSettings from './pages/AdminSettings';
 import AdminProfile from './pages/AdminProfile';
 import Requests from './pages/Requests';
-import CreateSimpleRequest from './pages/CreateSimpleRequest';
 import { SearchPage } from './components/search/SearchPage';
 import { Analytics } from './pages/Analytics';
 import BrowseRequests from './pages/BrowseRequests';
 import CreateRFQ from './pages/CreateRFQ';
-import CreateRequest from './pages/CreateRequest';
-import CreateProject from './pages/CreateProject';
+import CreateMultipleRFQs from './pages/CreateMultipleRFQs';
+import TestMultiRFQ from './pages/TestMultiRFQ';
 import { ManageSubscription } from './pages/ManageSubscription';
 import { VendorMessages } from './pages/vendor/VendorMessages';
 import { VendorSettings } from './pages/vendor/VendorSettings';
-import { VendorProjects } from './pages/vendor/VendorProjects';
 import { VendorSupport } from './pages/vendor/VendorSupport';
+import { VendorProductCatalog } from './pages/vendor/VendorProductCatalog';
+import VendorRegistration from './pages/vendor/VendorRegistration';
+import { VendorRFQs } from './pages/vendor/VendorRFQs';
+import { VendorRFQDetail } from './pages/vendor/VendorRFQDetail';
+import { VendorBidSubmission } from './pages/vendor/VendorBidSubmission';
+import { VendorLayout } from './components/vendor/VendorLayout';
 import Messages from './pages/Messages';
 import MyOffers from './pages/MyOffers';
 import Offers from './pages/Offers';
 import Orders from './pages/Orders';
-import Projects from './pages/Projects';
 import RFQManagement from './pages/RFQManagement';
+import RFQBidEvaluation from './pages/RFQBidEvaluation';
 import Settings from './pages/Settings';
 import Support from './pages/Support';
 import Vendors from './pages/Vendors';
@@ -136,20 +130,21 @@ function App() {
                       </RoleProtectedRoute>
                     }>
                       <Route path="requests" element={<Requests />} />
-                      <Route path="requests/create" element={<CreateSimpleRequest />} />
+                      <Route path="requests/create" element={<Navigate to="/client/create-rfq" replace />} />
                       <Route path="profile" element={<Profile />} />
                       <Route path="search" element={<SearchPage />} />
                       <Route path="analytics" element={<Analytics />} />
                       <Route path="browse-requests" element={<BrowseRequests />} />
                       <Route path="create-rfq" element={<CreateRFQ />} />
-                      <Route path="create-request" element={<CreateRequest />} />
+                      <Route path="create-multiple-rfqs" element={<CreateMultipleRFQs />} />
+                      <Route path="create-request" element={<Navigate to="/client/create-rfq" replace />} />
                       <Route path="manage-subscription" element={<ManageSubscription />} />
                       <Route path="messages" element={<Messages />} />
                       <Route path="my-offers" element={<MyOffers />} />
                       <Route path="offers" element={<Offers />} />
                       <Route path="orders" element={<Orders />} />
-                      <Route path="projects" element={<Projects />} />
                       <Route path="rfq-management" element={<RFQManagement />} />
+                      <Route path="rfqs/:id/bids" element={<RFQBidEvaluation />} />
                       <Route path="settings" element={<Settings />} />
                       <Route path="support" element={<Support />} />
                       <Route path="vendor-rfqs" element={<VendorRFQs />} />
@@ -170,7 +165,6 @@ function App() {
                     <Route path="/my-offers" element={<Navigate to="/client/my-offers" replace />} />
                     <Route path="/offers" element={<Navigate to="/client/offers" replace />} />
                     <Route path="/orders" element={<Navigate to="/client/orders" replace />} />
-                    <Route path="/projects" element={<Navigate to="/client/projects" replace />} />
                     <Route path="/rfq-management" element={<Navigate to="/client/rfq-management" replace />} />
                     <Route path="/settings" element={<Navigate to="/client/settings" replace />} />
                     <Route path="/support" element={<Navigate to="/client/support" replace />} />
@@ -183,22 +177,12 @@ function App() {
                         <VendorDashboard />
                       </RoleProtectedRoute>
                     } />
-                    <Route path="/vendor/business-intelligence" element={
-                      <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <VendorBusinessIntelligence />
-                      </RoleProtectedRoute>
-                    } />
-                    <Route path="/vendor/unified-projects" element={
-                      <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <VendorUnifiedProjects />
-                      </RoleProtectedRoute>
-                    } />
-                    
-                    {/* Legacy routes - redirect to new unified pages */}
-                    <Route path="/vendor/analytics" element={<Navigate to="/vendor/business-intelligence" replace />} />
-                    <Route path="/vendor/reports" element={<Navigate to="/vendor/business-intelligence" replace />} />
-                    <Route path="/vendor/projects-management" element={<Navigate to="/vendor/unified-projects" replace />} />
-                    <Route path="/vendor/portfolio-management" element={<Navigate to="/vendor/unified-projects" replace />} />
+                    {/* Legacy routes - redirect to dashboard */}
+                    <Route path="/vendor/analytics" element={<Navigate to="/vendor/dashboard" replace />} />
+                    <Route path="/vendor/reports" element={<Navigate to="/vendor/dashboard" replace />} />
+                    <Route path="/vendor/business-intelligence" element={<Navigate to="/vendor/dashboard" replace />} />
+                    <Route path="/vendor/projects-management" element={<Navigate to="/vendor/dashboard" replace />} />
+                    <Route path="/vendor/portfolio-management" element={<Navigate to="/vendor/dashboard" replace />} />
                     <Route path="/vendor/browse-requests" element={
                       <RoleProtectedRoute allowedRoles={['vendor']}>
                         <VendorBrowseRequests />
@@ -214,21 +198,37 @@ function App() {
                         <VendorOrders />
                       </RoleProtectedRoute>
                     } />
-                    <Route path="/vendor/projects" element={
-                      <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <VendorProjects />
-                      </RoleProtectedRoute>
-                    } />
-                    <Route path="/vendor/projects/new" element={
-                      <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <CreateProject />
-                      </RoleProtectedRoute>
-                    } />
-                    <Route path="/vendor/portfolio" element={
-                      <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <PortfolioManagementPage />
-                      </RoleProtectedRoute>
-                    } />
+                <Route path="/vendor/products" element={
+                  <RoleProtectedRoute allowedRoles={['vendor']}>
+                    <VendorProductCatalog />
+                  </RoleProtectedRoute>
+                } />
+                <Route path="/vendor/register" element={<VendorRegistration />} />
+                <Route path="/vendor/rfqs" element={
+                  <RoleProtectedRoute allowedRoles={['vendor']}>
+                    <VendorLayout>
+                      <VendorRFQs />
+                    </VendorLayout>
+                  </RoleProtectedRoute>
+                } />
+                <Route path="/vendor/rfqs/:id" element={
+                  <RoleProtectedRoute allowedRoles={['vendor']}>
+                    <VendorLayout>
+                      <VendorRFQDetail />
+                    </VendorLayout>
+                  </RoleProtectedRoute>
+                } />
+                <Route path="/vendor/rfqs/:id/bid" element={
+                  <RoleProtectedRoute allowedRoles={['vendor']}>
+                    <VendorLayout>
+                      <VendorBidSubmission />
+                    </VendorLayout>
+                  </RoleProtectedRoute>
+                } />
+                    <Route path="/vendor/enhanced-bidding" element={<Navigate to="/vendor/dashboard" replace />} />
+                    <Route path="/vendor/order-kanban" element={<Navigate to="/vendor/dashboard" replace />} />
+                    <Route path="/vendor/performance" element={<Navigate to="/vendor/dashboard" replace />} />
+                    <Route path="/vendor/portfolio" element={<Navigate to="/vendor/dashboard" replace />} />
                     <Route path="/vendor/profile" element={
                       <RoleProtectedRoute allowedRoles={['vendor']}>
                         <VendorProfile />
@@ -259,31 +259,12 @@ function App() {
                         <VendorSubscription />
                       </RoleProtectedRoute>
                     } />
-                    <Route path="/vendor/transactions" element={
-                      <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <VendorTransactions />
-                      </RoleProtectedRoute>
-                    } />
-                    <Route path="/vendor/rfqs" element={
-                      <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <VendorRFQs />
-                      </RoleProtectedRoute>
-                    } />
-                    <Route path="/vendor/notifications" element={
-                      <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <VendorNotifications />
-                      </RoleProtectedRoute>
-                    } />
-                    <Route path="/vendor/clients" element={
-                      <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <VendorClients />
-                      </RoleProtectedRoute>
-                    } />
-                    <Route path="/vendor/documents" element={
-                      <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <VendorDocuments />
-                      </RoleProtectedRoute>
-                    } />
+                    {/* Removed unused routes - redirect to dashboard */}
+                    <Route path="/vendor/transactions" element={<Navigate to="/vendor/dashboard" replace />} />
+                    <Route path="/vendor/rfqs" element={<Navigate to="/vendor/dashboard" replace />} />
+                    <Route path="/vendor/notifications" element={<Navigate to="/vendor/dashboard" replace />} />
+                    <Route path="/vendor/clients" element={<Navigate to="/vendor/dashboard" replace />} />
+                    <Route path="/vendor/documents" element={<Navigate to="/vendor/dashboard" replace />} />
                     
                     {/* Legacy vendor dashboard route (redirect to new structure) */}
                     <Route path="/vendor-dashboard" element={<Navigate to="/vendor/dashboard" replace />} />
@@ -300,7 +281,6 @@ function App() {
                       <Route path="offers" element={<AdminOffers />} />
                       <Route path="analytics" element={<AdminAnalytics />} />
                       <Route path="performance-monitor" element={<AdminPerformanceMonitor />} />
-                      <Route path="projects" element={<AdminProjects />} />
                       <Route path="orders" element={<AdminOrders />} />
                       <Route path="verification" element={<AdminVerificationQueue />} />
                       <Route path="automation" element={<WorkflowAutomation />} />
