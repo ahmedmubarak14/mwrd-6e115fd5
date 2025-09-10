@@ -4,6 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { noHooksToast } from '@/utils/noHooksToast';
 import { UserProfile } from '@/types/database';
 import { validateEmailDomain, rateLimiter, logSecurityEvent } from '@/utils/security';
+import { logger } from '@/utils/logger';
 
 interface AuthContextType {
   user: User | null;
@@ -64,7 +65,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session: initialSession }, error }) => {
       if (error) {
-        console.error('Session retrieval error:', error);
+        logger.error('Session retrieval error', { error: error.message });
         logSecurityEvent('session_retrieval_error', { error: error.message });
       }
       setSession(initialSession);
@@ -88,7 +89,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         .maybeSingle();
 
       if (error) {
-        console.error('Error fetching user profile:', error);
+        logger.error('Error fetching user profile', { 
+          userId, 
+          error: error.message 
+        });
         logSecurityEvent('profile_fetch_error', { 
           user_id: userId, 
           error: error.message 

@@ -10,7 +10,7 @@ interface LanguageContextType {
   t: (key: string) => string;
   isRTL: boolean;
   formatNumber: (num: number) => string;
-  formatDate: (date: Date) => string;
+  formatDate: (date: Date | string | null | undefined) => string;
   formatCurrency: (amount: number, currency?: string) => string;
 }
 
@@ -80,19 +80,33 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   // Format dates according to language
-  const formatDate = (date: Date): string => {
+  const formatDate = (date: Date | string | null | undefined): string => {
+    if (!date) return '';
+    
+    let dateObj: Date;
+    if (typeof date === 'string') {
+      dateObj = new Date(date);
+    } else {
+      dateObj = date;
+    }
+    
+    // Check if the date is valid
+    if (isNaN(dateObj.getTime())) {
+      return '';
+    }
+    
     if (language === 'ar') {
       return new Intl.DateTimeFormat('ar-SA', {
         year: 'numeric',
         month: 'long',
         day: 'numeric'
-      }).format(date);
+      }).format(dateObj);
     }
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
-    }).format(date);
+    }).format(dateObj);
   };
 
   // Format currency
