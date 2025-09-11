@@ -15,3 +15,13 @@ export { MobileSheet } from '../MobileSheet';
 export { MobileOptimizedButton } from '../MobileOptimizedButton';
 export { MobileContainer } from '../MobileContainer';
 export { MobileBottomNav, MobileBottomNavSpacer } from '../../navigation/MobileBottomNav';
+
+// Re-export mobile-optimized components
+export { 
+  MobileCollapsibleCard,
+  MobileSearchFilter, 
+  MobileDataList,
+  MobileFormSection,
+  MobileMetricsGrid,
+  ResponsiveContainer
+} from '../mobile-optimized-components';
