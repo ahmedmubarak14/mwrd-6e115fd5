@@ -1,4 +1,10 @@
 export const enUS = {
+  // Client Dashboard
+  dashboard: {
+    title: "Client Dashboard",
+    welcomeMessage: "Welcome to your procurement dashboard"
+  },
+
   // Client Groups
   clientGroups: {
     overview: "Overview",

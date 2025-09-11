@@ -1,4 +1,10 @@
 export const arSA = {
+  // Client Dashboard
+  dashboard: {
+    title: "لوحة تحكم العميل",
+    welcomeMessage: "مرحباً بك في لوحة تحكم المشتريات"
+  },
+
   // Client Groups
   clientGroups: {
     overview: "نظرة عامة",
