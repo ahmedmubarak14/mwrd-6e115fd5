@@ -19,6 +19,10 @@ export interface UserProfile {
   portfolio_url?: string;
   verification_documents: any;
   categories: string[];
+  industry_preferences?: string[];
+  bank_name?: string;
+  bank_account_number?: string;
+  iban?: string;
   subscription_plan: string;
   subscription_status: string;
   subscription_expires_at?: string;

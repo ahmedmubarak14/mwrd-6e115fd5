@@ -439,6 +439,47 @@ export type Database = {
           },
         ]
       }
+      client_profiles_extended: {
+        Row: {
+          budget_range: string | null
+          business_requirements: Json | null
+          client_id: string
+          created_at: string
+          id: string
+          preferred_vendors: string[] | null
+          procurement_frequency: string | null
+          updated_at: string
+        }
+        Insert: {
+          budget_range?: string | null
+          business_requirements?: Json | null
+          client_id: string
+          created_at?: string
+          id?: string
+          preferred_vendors?: string[] | null
+          procurement_frequency?: string | null
+          updated_at?: string
+        }
+        Update: {
+          budget_range?: string | null
+          business_requirements?: Json | null
+          client_id?: string
+          created_at?: string
+          id?: string
+          preferred_vendors?: string[] | null
+          procurement_frequency?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_profiles_extended_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       communication_metrics: {
         Row: {
           campaign_id: string | null
@@ -1727,13 +1768,17 @@ export type Database = {
         Row: {
           address: string | null
           avatar_url: string | null
+          bank_account_number: string | null
+          bank_name: string | null
           bio: string | null
           categories: string[] | null
           company_name: string | null
           created_at: string
           email: string
           full_name: string | null
+          iban: string | null
           id: string
+          industry_preferences: string[] | null
           legacy_category: string | null
           phone: string | null
           portfolio_url: string | null
@@ -1753,13 +1798,17 @@ export type Database = {
         Insert: {
           address?: string | null
           avatar_url?: string | null
+          bank_account_number?: string | null
+          bank_name?: string | null
           bio?: string | null
           categories?: string[] | null
           company_name?: string | null
           created_at?: string
           email: string
           full_name?: string | null
+          iban?: string | null
           id?: string
+          industry_preferences?: string[] | null
           legacy_category?: string | null
           phone?: string | null
           portfolio_url?: string | null
@@ -1779,13 +1828,17 @@ export type Database = {
         Update: {
           address?: string | null
           avatar_url?: string | null
+          bank_account_number?: string | null
+          bank_name?: string | null
           bio?: string | null
           categories?: string[] | null
           company_name?: string | null
           created_at?: string
           email?: string
           full_name?: string | null
+          iban?: string | null
           id?: string
+          industry_preferences?: string[] | null
           legacy_category?: string | null
           phone?: string | null
           portfolio_url?: string | null
@@ -2316,13 +2369,17 @@ export type Database = {
         Returns: {
           address: string | null
           avatar_url: string | null
+          bank_account_number: string | null
+          bank_name: string | null
           bio: string | null
           categories: string[] | null
           company_name: string | null
           created_at: string
           email: string
           full_name: string | null
+          iban: string | null
           id: string
+          industry_preferences: string[] | null
           legacy_category: string | null
           phone: string | null
           portfolio_url: string | null
