@@ -32,6 +32,7 @@ import { CRDocumentUpload } from "@/components/verification/CRDocumentUpload";
 import { UnifiedVerificationStatus } from "@/components/verification/UnifiedVerificationStatus";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { AvatarUpload } from "@/components/profile/AvatarUpload";
+import { CompanyProfileSetupModal } from "@/components/onboarding/CompanyProfileSetupModal";
 import { cn } from "@/lib/utils";
 
 // Service categories for vendors
@@ -55,6 +56,7 @@ const ProfilePage = memo(() => {
   const { t, isRTL } = useLanguage();
   const [isSaving, setIsSaving] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [showSetupModal, setShowSetupModal] = useState(false);
   const { showSuccess } = useToastFeedback();
 
   const [formData, setFormData] = useState({
@@ -178,14 +180,24 @@ const ProfilePage = memo(() => {
           )}>
             {getVerificationBadge()}
             {!isEditing && (
-              <Button 
-                onClick={() => setIsEditing(true)}
-                variant="outline"
-                className="w-full md:w-auto"
-              >
-                <Edit className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
-                {t('profile.editProfile')}
-              </Button>
+              <div className="flex gap-2">
+                <Button 
+                  onClick={() => setShowSetupModal(true)}
+                  variant="default"
+                  className="w-full md:w-auto"
+                >
+                  <Building className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
+                  Company Setup
+                </Button>
+                <Button 
+                  onClick={() => setIsEditing(true)}
+                  variant="outline"
+                  className="w-full md:w-auto"
+                >
+                  <Edit className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
+                  {t('profile.editProfile')}
+                </Button>
+              </div>
             )}
           </div>
         </div>
@@ -468,6 +480,15 @@ const ProfilePage = memo(() => {
             )}
           </TabsContent>
         </Tabs>
+
+        <CompanyProfileSetupModal 
+          open={showSetupModal}
+          onOpenChange={setShowSetupModal}
+          onComplete={() => {
+            setShowSetupModal(false);
+            window.location.reload();
+          }}
+        />
       </div>
     </ErrorBoundary>
   );
