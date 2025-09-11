@@ -93,14 +93,7 @@ export const useVendors = () => {
       
       let query = supabase
         .from('user_profiles')
-        .select(`
-          *,
-          vendor_categories(
-            id,
-            category_id,
-            categories(id, slug, name_en, name_ar, parent_id)
-          )
-        `, { count: 'exact' })
+        .select(`*`, { count: 'exact' })
         .eq('role', 'vendor')
         .eq('status', 'approved')
         .eq('verification_status', 'approved');
@@ -116,7 +109,8 @@ export const useVendors = () => {
         if (vendorIds && vendorIds.length > 0) {
           query = query.in('id', vendorIds.map(v => v.vendor_id));
         } else {
-          // No vendors found with these categories
+          // No vendors found with these categories, but still show other vendors if no category filter
+          console.log('No vendors found for selected categories');
           setVendors([]);
           setTotalCount(0);
           setLoading(false);
@@ -151,10 +145,27 @@ export const useVendors = () => {
         throw error;
       }
 
-      // Cast data with proper error handling
-      const vendorData = (data || []) as unknown as VendorWithCategories[];
-      console.log('Fetched vendors:', vendorData);
-      setVendors(vendorData);
+      // Fetch categories separately for each vendor to avoid complex joins
+      const vendorsWithCategories = await Promise.all(
+        (data || []).map(async (vendor: any) => {
+          const { data: categories } = await supabase
+            .from('vendor_categories')
+            .select(`
+              id,
+              category_id,
+              categories(id, slug, name_en, name_ar, parent_id)
+            `)
+            .eq('vendor_id', vendor.id);
+          
+          return {
+            ...vendor,
+            vendor_categories: categories || []
+          };
+        })
+      );
+
+      console.log('Fetched vendors:', vendorsWithCategories);
+      setVendors(vendorsWithCategories as VendorWithCategories[]);
       setTotalCount(count || 0);
     } catch (error) {
       console.error('Error fetching vendors:', error);
@@ -172,14 +183,7 @@ export const useVendors = () => {
     try {
       const { data, error } = await supabase
         .from('user_profiles')
-        .select(`
-          *,
-          vendor_categories(
-            id,
-            category_id,
-            categories(id, slug, name_en, name_ar, parent_id)
-          )
-        `)
+        .select('*')
         .eq('id', id)
         .eq('role', 'vendor')
         .eq('status', 'approved')
@@ -187,7 +191,21 @@ export const useVendors = () => {
         .single();
 
       if (error) throw error;
-      return data as unknown as VendorWithCategories;
+      
+      // Fetch categories separately
+      const { data: categories } = await supabase
+        .from('vendor_categories')
+        .select(`
+          id,
+          category_id,
+          categories(id, slug, name_en, name_ar, parent_id)
+        `)
+        .eq('vendor_id', id);
+
+      return {
+        ...data,
+        vendor_categories: categories || []
+      } as VendorWithCategories;
     } catch (error) {
       console.error('Error fetching vendor:', error);
       return null;
