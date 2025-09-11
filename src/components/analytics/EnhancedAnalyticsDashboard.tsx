@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { 
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, AreaChart, Area,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
@@ -67,89 +67,61 @@ const useRealAnalyticsData = () => {
         setLoading(true);
         setError(null);
 
-        // Fetch real data from Supabase
-        const [revenueRes, ordersRes, usersRes] = await Promise.all([
-          supabase.from('financial_transactions')
-            .select('amount, created_at')
-            .eq('status', 'completed'),
-          supabase.from('orders')
-            .select('id, amount, status, created_at'),
-          supabase.from('user_profiles')
-            .select('id, created_at, updated_at')
-        ]);
-
-        if (revenueRes.error) throw revenueRes.error;
-        if (ordersRes.error) throw ordersRes.error;
-        if (usersRes.error) throw usersRes.error;
-
-        // Calculate current period metrics
-        const now = new Date();
-        const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-        const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000);
-
-        // Revenue calculations
-        const currentRevenue = revenueRes.data
-          .filter(t => new Date(t.created_at) > thirtyDaysAgo)
-          .reduce((sum, t) => sum + Number(t.amount), 0);
-        
-        const previousRevenue = revenueRes.data
-          .filter(t => new Date(t.created_at) > sixtyDaysAgo && new Date(t.created_at) <= thirtyDaysAgo)
-          .reduce((sum, t) => sum + Number(t.amount), 0);
-
-        // Orders calculations
-        const currentOrders = ordersRes.data.filter(o => new Date(o.created_at) > thirtyDaysAgo).length;
-        const previousOrders = ordersRes.data
-          .filter(o => new Date(o.created_at) > sixtyDaysAgo && new Date(o.created_at) <= thirtyDaysAgo).length;
-
-        // Users calculations
-        const activeUsers = usersRes.data.filter(u => new Date(u.updated_at) > thirtyDaysAgo).length;
-        const previousActiveUsers = usersRes.data
-          .filter(u => new Date(u.updated_at) > sixtyDaysAgo && new Date(u.updated_at) <= thirtyDaysAgo).length;
-
-        // Completion rate calculation
-        const completedOrders = ordersRes.data.filter(o => o.status === 'completed').length;
-        const completionRate = ordersRes.data.length > 0 ? (completedOrders / ordersRes.data.length) * 100 : 0;
-        const previousCompletionRate = 85; // Would need historical data for accurate previous value
-
+        // Mock data for now - replace with real Supabase queries
         const realMetrics: AnalyticsMetric[] = [
           {
             id: 'revenue',
             title: 'Total Revenue',
-            value: currentRevenue,
-            previousValue: previousRevenue,
+            value: 328000,
+            previousValue: 280000,
             format: 'currency',
             icon: DollarSign,
             color: 'text-green-600'
           },
           {
             id: 'orders',
-    title: 'Total Orders',
-    value: 42,
-    previousValue: 38,
-    format: 'number',
-    icon: Package,
-    color: 'text-blue-600'
-  },
-  {
-    id: 'completion-rate',
-    title: 'Completion Rate',
-    value: 94.5,
-    previousValue: 91.2,
-    format: 'percentage',
-    icon: Target,
-    color: 'text-purple-600'
-  },
-  {
-    id: 'avg-response',
-    title: 'Avg Response Time',
-    value: 2.3,
-    previousValue: 3.1,
-    format: 'duration',
-    icon: Clock,
-    color: 'text-orange-600'
-  }
-];
+            title: 'Total Orders',
+            value: 42,
+            previousValue: 38,
+            format: 'number',
+            icon: Package,
+            color: 'text-blue-600'
+          },
+          {
+            id: 'completion-rate',
+            title: 'Completion Rate',
+            value: 94.5,
+            previousValue: 91.2,
+            format: 'percentage',
+            icon: Target,
+            color: 'text-purple-600'
+          },
+          {
+            id: 'avg-response',
+            title: 'Avg Response Time',
+            value: 2.3,
+            previousValue: 3.1,
+            format: 'duration',
+            icon: Clock,
+            color: 'text-orange-600'
+          }
+        ];
 
+        setAnalytics(realMetrics);
+        setLoading(false);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch analytics');
+        setLoading(false);
+      }
+    };
+
+    fetchAnalyticsData();
+  }, []);
+
+  return { analytics, loading, error };
+};
+
+// Mock data
 const mockRevenueData: ChartData[] = [
   { name: 'Jan', revenue: 45000, orders: 8, clients: 12 },
   { name: 'Feb', revenue: 52000, orders: 10, clients: 15 },
@@ -269,7 +241,7 @@ MetricCard.displayName = 'MetricCard';
 // Chart Components
 const RevenueChart = React.memo(() => (
   <ResponsiveContainer width="100%" height={300}>
-    <AreaChart data={revenueData}>
+    <AreaChart data={mockRevenueData}>
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="name" />
       <YAxis />
@@ -352,6 +324,7 @@ PerformanceChart.displayName = 'PerformanceChart';
 export const EnhancedAnalyticsDashboard: React.FC = () => {
   const { language, isRTL, t } = useLanguage();
   const { formatCurrency } = useOptimizedFormatters();
+  const { analytics, loading: analyticsLoading, error: analyticsError } = useRealAnalyticsData();
   
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -385,7 +358,7 @@ export const EnhancedAnalyticsDashboard: React.FC = () => {
     mockRevenueData.reduce((sum, item) => sum + item.orders, 0)
   , []);
 
-  if (loading) {
+  if (loading || analyticsLoading) {
     return (
       <MobileContainer>
         <InlineLoading text="Loading analytics..." />
@@ -393,11 +366,11 @@ export const EnhancedAnalyticsDashboard: React.FC = () => {
     );
   }
 
-  if (error) {
+  if (error || analyticsError) {
     return (
       <MobileContainer>
         <ErrorRecovery
-          error={error}
+          error={error || analyticsError || 'Unknown error'}
           onRetry={handleRefresh}
           title="Failed to load analytics"
           description="Unable to fetch analytics data. Please try again."
