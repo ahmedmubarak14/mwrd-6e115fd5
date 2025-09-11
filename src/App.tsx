@@ -15,7 +15,7 @@ import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import { VendorDashboard } from './pages/VendorDashboard';
-import { VendorProductCatalog } from './components/vendor/VendorProductCatalog';
+import { VendorProducts } from './pages/vendor/VendorProducts';
 import { CRManagementPage } from './pages/vendor/CRManagement';
 import { ProjectsManagementPage } from './pages/vendor/ProjectsManagement';
 import { PortfolioManagementPage } from './pages/vendor/PortfolioManagement';
@@ -217,7 +217,7 @@ function App() {
                     } />
                     <Route path="/vendor/products" element={
                       <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <VendorProductCatalog />
+                        <VendorProducts />
                       </RoleProtectedRoute>
                     } />
                     <Route path="/vendor/portfolio" element={
