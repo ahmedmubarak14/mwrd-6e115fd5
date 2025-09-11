@@ -64,9 +64,16 @@ export const useSearch = () => {
       query = query.eq('urgency', filters.urgency.toLowerCase());
     }
 
+    // Fix budget filtering logic - filter requests that fit within the budget range
     if (filters.budgetRange[0] > 0 || filters.budgetRange[1] < 10000) {
-      query = query.gte('budget_max', filters.budgetRange[0])
-                   .lte('budget_min', filters.budgetRange[1]);
+      // Show requests where the max budget is at least the minimum filter
+      // and the min budget is at most the maximum filter
+      if (filters.budgetRange[0] > 0) {
+        query = query.gte('budget_max', filters.budgetRange[0]);
+      }
+      if (filters.budgetRange[1] < 10000) {
+        query = query.lte('budget_min', filters.budgetRange[1]);
+      }
     }
 
     // Only show approved requests for vendors, all for admins/clients
@@ -108,7 +115,7 @@ export const useSearch = () => {
           deadline: item.deadline,
           client: item.user_profiles?.full_name || item.user_profiles?.company_name
         },
-        relevance: calculateRelevance(filters.query, item.title, item.description)
+        relevance: calculateRelevance(filters.query, item.title, item.description, item.category)
       })),
       count: count || 0
     };
@@ -217,32 +224,54 @@ export const useSearch = () => {
     };
   };
 
-  const calculateRelevance = (query: string, title: string, description: string): number => {
+  const calculateRelevance = (query: string, title: string, description: string, category?: string): number => {
     if (!query) return 100;
     
     const queryLower = query.toLowerCase();
     const titleLower = title.toLowerCase();
     const descLower = description.toLowerCase();
+    const categoryLower = category?.toLowerCase() || '';
     
     let score = 0;
     
-    // Exact title match gets highest score
-    if (titleLower.includes(queryLower)) {
-      score += 60;
-      if (titleLower === queryLower) score += 20;
-    }
+    // Exact matches get highest scores
+    if (titleLower === queryLower) score += 100;
+    else if (titleLower.includes(queryLower)) score += 80;
     
-    // Description match gets medium score
-    if (descLower.includes(queryLower)) {
-      score += 20;
-    }
+    // Partial title matches at beginning get high scores
+    if (titleLower.startsWith(queryLower)) score += 60;
     
-    // Word matches
-    const queryWords = queryLower.split(' ');
-    queryWords.forEach(word => {
-      if (titleLower.includes(word)) score += 10;
-      if (descLower.includes(word)) score += 5;
+    // Category matches are important
+    if (categoryLower.includes(queryLower)) score += 40;
+    
+    // Description matches get medium scores
+    if (descLower.includes(queryLower)) score += 30;
+    
+    // Word-by-word analysis for better fuzzy matching
+    const queryWords = queryLower.split(/\s+/).filter(word => word.length > 2);
+    const titleWords = titleLower.split(/\s+/);
+    const descWords = descLower.split(/\s+/);
+    
+    queryWords.forEach(queryWord => {
+      // Exact word matches in title
+      if (titleWords.some(titleWord => titleWord === queryWord)) score += 25;
+      // Partial word matches in title
+      else if (titleWords.some(titleWord => titleWord.includes(queryWord))) score += 15;
+      
+      // Word matches in description
+      if (descWords.some(descWord => descWord.includes(queryWord))) score += 8;
+      
+      // Category word matches
+      if (categoryLower.includes(queryWord)) score += 20;
     });
+    
+    // Boost score for multiple word matches
+    const matchingWords = queryWords.filter(queryWord => 
+      titleLower.includes(queryWord) || descLower.includes(queryWord)
+    );
+    if (matchingWords.length > 1) {
+      score += matchingWords.length * 5;
+    }
     
     return Math.min(100, Math.max(0, score));
   };
