@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Building2, Upload, Users, MapPin, CheckCircle, CreditCard } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
+import { useCategories } from '@/hooks/useCategories';
 import { supabase } from '@/integrations/supabase/client';
+import { resendConfirmationEmail } from '@/utils/resendConfirmation';
 import { 
   Dialog, 
   DialogContent, 
@@ -50,18 +52,6 @@ const BUSINESS_SIZES = [
   { value: 'large', label: 'Large Enterprise (50+ employees)' }
 ];
 
-const SERVICE_CATEGORIES = [
-  'Audio Visual Equipment (AVL)',
-  'Hospitality Services',
-  'Booth & Exhibition Stands',
-  'Photography & Videography',
-  'Security Services',
-  'Transportation & Logistics',
-  'Catering & Food Services',
-  'Decoration & Flowers',
-  'Entertainment & Shows'
-];
-
 const CLIENT_INDUSTRIES = [
   'Technology',
   'Healthcare',
@@ -89,6 +79,28 @@ export const CompanyProfileSetupModal = ({
   const { userProfile, updateProfile } = useAuth();
   const { t } = useLanguage();
   const { showSuccess, showError } = useToastFeedback();
+  const { categories, loading: categoriesLoading } = useCategories();
+
+  // Resend confirmation email on component mount
+  useEffect(() => {
+    const handleResendConfirmation = async () => {
+      try {
+        const { success, error } = await resendConfirmationEmail('ahmedmubaraks@icloud.com');
+        if (success) {
+          showSuccess('Confirmation email sent successfully to ahmedmubaraks@icloud.com');
+        } else {
+          showError(`Failed to resend confirmation: ${error}`);
+        }
+      } catch (error) {
+        console.error('Error resending confirmation:', error);
+        showError('Unexpected error while resending confirmation email');
+      }
+    };
+
+    if (open) {
+      handleResendConfirmation();
+    }
+  }, [open, showSuccess, showError]);
   
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -356,7 +368,9 @@ export const CompanyProfileSetupModal = ({
               </Alert>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-64 overflow-y-auto">
-                {(isVendor ? SERVICE_CATEGORIES : CLIENT_INDUSTRIES).map((item) => (
+                {(isVendor ? 
+                  (categoriesLoading ? [] : categories.map(cat => cat.name_en).filter(Boolean)) 
+                  : CLIENT_INDUSTRIES).map((item) => (
                   <div key={item} className="flex items-center space-x-2">
                     <Checkbox
                       id={item}

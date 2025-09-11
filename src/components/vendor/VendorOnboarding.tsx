@@ -13,6 +13,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
+import { useCategories } from '@/hooks/useCategories';
 
 interface VendorOnboardingProps {
   onComplete?: () => void;
@@ -44,17 +45,6 @@ const BUSINESS_SIZES = [
   { value: 'large', label: 'Large Enterprise', description: '50+ employees' }
 ];
 
-const SERVICE_CATEGORIES = [
-  'Audio Visual Equipment (AVL)',
-  'Hospitality Services',
-  'Booth & Exhibition Stands',
-  'Photography & Videography',
-  'Security Services',
-  'Transportation & Logistics',
-  'Catering & Food Services',
-  'Decoration & Flowers',
-  'Entertainment & Shows'
-];
 
 const COVERAGE_LOCATIONS = [
   'Riyadh', 'Jeddah', 'Dammam', 'Mecca', 'Medina', 
@@ -64,6 +54,10 @@ const COVERAGE_LOCATIONS = [
 
 export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
   const [currentStep, setCurrentStep] = useState(1);
+  const { categories, loading: categoriesLoading } = useCategories();
+  // Get service categories from database
+  const serviceCategories = categories.map(cat => cat.name_en).filter(Boolean);
+  
   const [onboardingData, setOnboardingData] = useState<OnboardingData>({
     businessSize: '',
     companyInfo: {
@@ -289,7 +283,7 @@ export const VendorOnboarding = ({ onComplete }: VendorOnboardingProps) => {
               </Alert>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {SERVICE_CATEGORIES.map((category) => (
+                {(categoriesLoading ? [] : serviceCategories).map((category) => (
                   <div key={category} className="flex items-center space-x-2">
                     <Checkbox
                       id={category}

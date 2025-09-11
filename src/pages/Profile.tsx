@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useToastFeedback } from "@/hooks/useToastFeedback";
+import { useCategories } from '@/hooks/useCategories';
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { 
@@ -35,25 +36,13 @@ import { AvatarUpload } from "@/components/profile/AvatarUpload";
 import { CompanyProfileSetupModal } from "@/components/onboarding/CompanyProfileSetupModal";
 import { cn } from "@/lib/utils";
 
-// Service categories for vendors
-const SERVICE_CATEGORIES = [
-  "Construction & Building",
-  "Electrical Services",
-  "Plumbing & HVAC",
-  "Interior Design",
-  "Landscaping",
-  "Cleaning Services",
-  "Security Services",
-  "IT & Technology",
-  "Catering & Food Services",
-  "Transportation & Logistics",
-  "Professional Services",
-  "Marketing & Advertising"
-];
 
 const ProfilePage = memo(() => {
   const { userProfile, updateProfile, loading } = useAuth();
   const { t, isRTL } = useLanguage();
+  const { categories, loading: categoriesLoading } = useCategories();
+  // Get service categories from database
+  const serviceCategories = categories.map(cat => cat.name_en).filter(Boolean);
   const [isSaving, setIsSaving] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [showSetupModal, setShowSetupModal] = useState(false);
