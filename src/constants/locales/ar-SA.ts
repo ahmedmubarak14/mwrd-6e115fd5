@@ -338,6 +338,7 @@ export const arSA = {
       website: 'أدخل رابط الموقع الإلكتروني',
       description: 'أدخل الوصف...',
       search: 'بحث...',
+      searchPlaceholder: 'البحث...',
       notes: 'أضف ملاحظاتك هنا...'
     },
     titles: {

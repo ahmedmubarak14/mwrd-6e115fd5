@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useLanguage } from '@/contexts/LanguageContext';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { useToast } from '@/hooks/use-toast';
+import { useCategories } from '@/hooks/useCategories';
 import { 
   Building, 
   Calendar, 
@@ -22,21 +23,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-// Project categories for selection
-const PROJECT_CATEGORIES = [
-  'Construction & Building',
-  'Electrical Services', 
-  'Plumbing & HVAC',
-  'Interior Design',
-  'Landscaping',
-  'Cleaning Services',
-  'Security Services',
-  'IT & Technology',
-  'Catering & Food Services',
-  'Transportation & Logistics',
-  'Professional Services',
-  'Marketing & Advertising'
-];
+// Priority levels and currencies remain hardcoded as they are not stored in the database
 
 const PRIORITY_LEVELS = [
   { value: 'low', label: 'Low' },
@@ -55,7 +42,16 @@ const CURRENCIES = [
 const CreateProjectPage = memo(() => {
   const { t, isRTL } = useLanguage();
   const { toast } = useToast();
+  const { categories, loading: categoriesLoading } = useCategories(true);
   const [isLoading, setIsLoading] = useState(false);
+  
+  if (categoriesLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -213,9 +209,9 @@ const CreateProjectPage = memo(() => {
                       <SelectValue placeholder={t('createProject.selectCategory')} />
                     </SelectTrigger>
                     <SelectContent align={isRTL ? 'end' : 'start'}>
-                      {PROJECT_CATEGORIES.map((category) => (
-                        <SelectItem key={category} value={category}>
-                          {category}
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.slug}>
+                          {isRTL ? category.name_ar : category.name_en}
                         </SelectItem>
                       ))}
                     </SelectContent>

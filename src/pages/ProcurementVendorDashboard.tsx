@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useState } from "react";
 import { useMatchingSystem } from "@/hooks/useMatchingSystem";
 import { useOffers } from "@/hooks/useOffers";
+import { useCategories } from "@/hooks/useCategories";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { CreateOfferModal } from "@/components/modals/CreateOfferModal";
 import { ViewDetailsModal } from "@/components/modals/ViewDetailsModal";
@@ -27,8 +28,9 @@ export const ProcurementVendorDashboard = () => {
   
   const { matchedRequests, loading: matchingLoading } = useMatchingSystem();
   const { offers, loading: offersLoading } = useOffers();
+  const { categories, loading: categoriesLoading } = useCategories(true);
 
-  if (matchingLoading || offersLoading) {
+  if (matchingLoading || offersLoading || categoriesLoading) {
     return <LoadingSpinner />;
   }
 
@@ -215,11 +217,11 @@ export const ProcurementVendorDashboard = () => {
                     </SelectTrigger>
                     <SelectContent className="z-50 bg-popover">
                       <SelectItem value="all">{isRTL ? 'جميع الفئات' : 'All Categories'}</SelectItem>
-                      <SelectItem value="Construction Materials">{isRTL ? 'مواد البناء' : 'Construction Materials'}</SelectItem>
-                      <SelectItem value="Office Supplies">{isRTL ? 'مستلزمات المكاتب' : 'Office Supplies'}</SelectItem>
-                      <SelectItem value="IT Equipment">{isRTL ? 'معدات تكنولوجيا المعلومات' : 'IT Equipment'}</SelectItem>
-                      <SelectItem value="Medical Supplies">{isRTL ? 'المستلزمات الطبية' : 'Medical Supplies'}</SelectItem>
-                      <SelectItem value="Industrial Equipment">{isRTL ? 'المعدات الصناعية' : 'Industrial Equipment'}</SelectItem>
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.slug}>
+                          {isRTL ? category.name_ar : category.name_en}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
