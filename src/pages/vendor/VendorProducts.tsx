@@ -1,10 +1,10 @@
 import { VendorLayout } from "@/components/vendor/VendorLayout";
-import { VendorProductCatalog } from "@/components/vendor/VendorProductCatalog";
+import { OptimizedVendorProductCatalog } from "@/components/vendor/OptimizedVendorProductCatalog";
 
 export const VendorProducts = () => {
   return (
     <VendorLayout>
-      <VendorProductCatalog />
+      <OptimizedVendorProductCatalog />
     </VendorLayout>
   );
 };

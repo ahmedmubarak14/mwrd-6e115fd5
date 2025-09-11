@@ -7,6 +7,7 @@ export { MobileOptimizedInput } from './MobileOptimizedInput';
 export { MobileGrid, MobileStack } from './MobileGrid';
 export { MobileActionSheet } from './MobileActionSheet';
 export { MobileSearchBar } from './MobileSearchBar';
+export { MobilePageWrapper } from './MobilePageWrapper';
 
 // Re-export from other mobile components
 export { MobileFriendlyCard } from '../MobileFriendlyCard';
