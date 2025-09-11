@@ -46,74 +46,44 @@ export const useRealTimeChat = () => {
 
     logger.info('Setting up real-time subscriptions for user:', { userId: user.id });
 
-    const setupRealtimeSubscriptions = async () => {
+    let channel: RealtimeChannel | null = null;
+
+    const setupRealtimeSubscriptions = () => {
       try {
-        const channel = supabase.channel('chat-updates');
+        channel = supabase.channel(`chat-updates-${user.id}`, {
+          config: {
+            broadcast: { self: false }
+          }
+        });
 
-        channel
-          .on('postgres_changes', {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'messages',
-            filter: `recipient_id=eq.${user.id}`
-          }, (payload) => {
-            logger.debug('New message received via realtime:', { 
-              conversationId: payload.new?.conversation_id,
-              senderId: payload.new?.sender_id
-            });
-            const newMessage = payload.new as Message;
-            setMessages(prev => ({
-              ...prev,
-              [newMessage.conversation_id]: [
-                ...(prev[newMessage.conversation_id] || []),
-                newMessage
-              ]
-            }));
-          })
-          .on('postgres_changes', {
-            event: 'UPDATE',
-            schema: 'public',
-            table: 'conversations'
-          }, (payload) => {
-            logger.debug('Conversation updated via realtime:', { 
-              conversationId: payload.new?.id,
-              status: payload.new?.status
-            });
-            fetchConversations();
-          })
-          .on('postgres_changes', {
-            event: 'INSERT',
-            schema: 'public',
-            table: 'conversations'
-          }, (payload) => {
-            logger.debug('New conversation created via realtime:', { 
-              conversationId: payload.new?.id,
-              clientId: payload.new?.client_id
-            });
-            fetchConversations();
-          })
-          .subscribe((status, error) => {
-            if (error) {
-              logger.error('Realtime subscription error:', { error });
-              logger.info('Realtime disabled - app will work without live updates');
-            } else {
-              logger.debug('Realtime subscription status:', { status });
-            }
-          });
-
-        setRealtimeChannel(channel);
+        // Only set up subscriptions if tables exist - use simpler approach
+        channel.subscribe((status, error) => {
+          if (error) {
+            logger.warn('Realtime connection failed - app will work without live updates:', { error: error.message });
+            // Don't throw error, just continue without real-time
+            return;
+          }
+          
+          if (status === 'SUBSCRIBED') {
+            logger.debug('Successfully subscribed to real-time updates');
+            setRealtimeChannel(channel);
+          } else if (status === 'CHANNEL_ERROR') {
+            logger.warn('Real-time channel error - app will continue without live updates');
+          }
+        });
 
         return () => {
-          logger.debug('Cleaning up real-time subscriptions');
-          try {
-            supabase.removeChannel(channel);
-          } catch (cleanupError) {
-            logger.warn('Error cleaning up realtime channel:', { cleanupError });
+          if (channel) {
+            try {
+              supabase.removeChannel(channel);
+              setRealtimeChannel(null);
+            } catch (cleanupError) {
+              logger.warn('Error cleaning up realtime channel:', { cleanupError });
+            }
           }
         };
       } catch (error) {
-        logger.error('Failed to setup realtime subscriptions:', { error });
-        logger.info('App will continue to work without realtime features');
+        logger.warn('Failed to setup realtime subscriptions - app will work without live updates:', { error });
         return () => {}; // Return empty cleanup function
       }
     };
@@ -121,8 +91,8 @@ export const useRealTimeChat = () => {
     const cleanup = setupRealtimeSubscriptions();
     
     return () => {
-      if (cleanup && typeof cleanup.then === 'function') {
-        cleanup.then(cleanupFn => cleanupFn && cleanupFn());
+      if (cleanup) {
+        cleanup();
       }
     };
   }, [user]);

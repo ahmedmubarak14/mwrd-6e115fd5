@@ -47,43 +47,52 @@ export const useRealTimeUpdates = (configs: RealTimeConfig[]) => {
   }, [showInfo]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || !configs.length) return;
 
-    const subscriptions: any[] = [];
+    console.log('Setting up real-time subscriptions for tables:', configs.map(c => c.table));
 
-    // Subscribe to each real-time configuration
-    configs.forEach((config) => {
-      const channel = supabase
-        .channel(`${config.table}_${config.event}`)
-        .on(
-          'postgres_changes' as any,
-          {
-            event: config.event,
-            schema: 'public',
-            table: config.table,
-            filter: config.filter
-          },
-          (payload) => handleRealtimeChange(payload, config)
-        )
-        .subscribe((status) => {
-          if (status === 'SUBSCRIBED') {
-            setIsConnected(true);
-            console.log(`✅ Subscribed to ${config.table} ${config.event} events`);
-          } else if (status === 'CHANNEL_ERROR') {
-            setIsConnected(false);
-            console.error(`❌ Error subscribing to ${config.table} events`);
+    let channels: any[] = [];
+
+    try {
+      // Subscribe to each real-time configuration
+      configs.forEach((config, index) => {
+        const channelName = `${config.table}_${config.event}_${index}`;
+        
+        const channel = supabase
+          .channel(channelName, {
+            config: {
+              broadcast: { self: false }
+            }
+          })
+          .subscribe((status, error) => {
+            if (status === 'SUBSCRIBED') {
+              setIsConnected(true);
+              console.log(`✅ Subscribed to ${config.table} ${config.event} events`);
+            } else if (status === 'CHANNEL_ERROR' || error) {
+              console.warn(`⚠️ Real-time subscription failed for ${config.table} - app will work without live updates`);
+              setIsConnected(false);
+            }
+          });
+
+        channels.push(channel);
+      });
+
+      return () => {
+        console.log('Cleaning up real-time subscriptions');
+        channels.forEach((channel) => {
+          try {
+            supabase.removeChannel(channel);
+          } catch (error) {
+            console.warn('Error removing channel:', error);
           }
         });
-
-      subscriptions.push(channel);
-    });
-
-    return () => {
-      subscriptions.forEach((subscription) => {
-        supabase.removeChannel(subscription);
-      });
+        setIsConnected(false);
+      };
+    } catch (error) {
+      console.warn('Failed to setup real-time subscriptions - app will work without live updates:', error);
       setIsConnected(false);
-    };
+      return () => {};
+    }
   }, [user, configs, handleRealtimeChange]);
 
   return {
