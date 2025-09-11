@@ -83,12 +83,7 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
               localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
             }}
           />
-          <div 
-            className={cn(
-              "flex-1 flex flex-col min-w-0 transition-all duration-300",
-              sidebarOpen ? "ml-64" : "ml-16"
-            )}
-          >
+          <div className="flex-1 flex flex-col min-w-0">
             <VendorHeader 
               onSidebarToggle={() => {
                 const newState = !sidebarOpen;
