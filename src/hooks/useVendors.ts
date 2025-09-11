@@ -102,7 +102,8 @@ export const useVendors = () => {
           )
         `, { count: 'exact' })
         .eq('role', 'vendor')
-        .eq('status', 'approved');
+        .eq('status', 'approved')
+        .eq('verification_status', 'approved');
 
       // Apply filters
       if (filters.categories && filters.categories.length > 0) {
@@ -181,6 +182,8 @@ export const useVendors = () => {
         `)
         .eq('id', id)
         .eq('role', 'vendor')
+        .eq('status', 'approved')
+        .eq('verification_status', 'approved')
         .single();
 
       if (error) throw error;
@@ -289,6 +292,7 @@ export const useSuppliers = () => {
         .select('*')
         .eq('role', 'vendor')
         .eq('status', 'approved')
+        .eq('verification_status', 'approved')
         .order('created_at', { ascending: false });
 
       if (error) {
