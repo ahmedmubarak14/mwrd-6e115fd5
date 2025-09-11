@@ -13,6 +13,7 @@ import { AdminLayout } from './components/admin/AdminLayout';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
+import AuthCallback from './pages/AuthCallback';
 import Dashboard from './pages/Dashboard';
 import { VendorDashboard } from './pages/VendorDashboard';
 import { VendorProducts } from './pages/vendor/VendorProducts';
@@ -122,6 +123,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/auth" element={<AuthCallback />} />
                     
                     {/* Multi-role dashboard route (will redirect based on role) */}
                     <Route path="/dashboard" element={

@@ -6,8 +6,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useSecureAuth } from '@/hooks/useSecureAuth';
+import { useAuth } from '@/contexts/AuthContext';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
-import { Eye, EyeOff, Shield } from 'lucide-react';
+import { Eye, EyeOff, Shield, Mail } from 'lucide-react';
 import { sanitizeInput } from '@/utils/security';
 
 interface SecureAuthFormProps {
@@ -21,9 +22,11 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
   const [companyName, setCompanyName] = useState('');
   const [role, setRole] = useState<'client' | 'vendor'>('client');
   const [showPassword, setShowPassword] = useState(false);
+  const [resendingConfirmation, setResendingConfirmation] = useState(false);
   
   const { secureSignIn, securePasswordReset, secureSignUp, loading } = useSecureAuth();
-  const { showError, showSuccess } = useToastFeedback();
+  const { resendConfirmation } = useAuth();
+  const { showError, showSuccess, showInfo } = useToastFeedback();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +45,11 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
       const { error } = await secureSignIn(email, password);
       
       if (error) {
-        showError(error.message);
+        if (error.message.includes('Email not confirmed')) {
+          showError('Please confirm your email address before signing in.');
+        } else {
+          showError(error.message);
+        }
       } else {
         showSuccess('Welcome back!');
       }
@@ -69,6 +76,27 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
       if (error) {
         showError(error.message);
       }
+    }
+  };
+
+  const handleResendConfirmation = async () => {
+    if (!email) {
+      showError('Please enter your email address first.');
+      return;
+    }
+
+    setResendingConfirmation(true);
+    try {
+      const { error } = await resendConfirmation(email);
+      if (error) {
+        showError(error.message);
+      } else {
+        showSuccess('Confirmation email sent! Please check your inbox.');
+      }
+    } catch (error) {
+      showError('Failed to resend confirmation email. Please try again.');
+    } finally {
+      setResendingConfirmation(false);
     }
   };
 
@@ -206,18 +234,44 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
               </Button>
             </form>
 
-            <div className="text-center space-y-2">
+            <div className="text-center space-y-3">
               {mode === 'signin' ? (
                 <>
-                  <p className="text-sm text-white/70">
-                    Don't have an account?{' '}
-                    <Link to="/register" className="text-primary hover:underline">
-                      Sign up
+                  <div className="space-y-2">
+                    <p className="text-sm text-white/70">
+                      Don't have an account?{' '}
+                      <Link to="/register" className="text-primary hover:underline">
+                        Sign up
+                      </Link>
+                    </p>
+                    <Link to="/forgot-password" className="text-sm text-primary hover:underline block">
+                      Forgot your password?
                     </Link>
-                  </p>
-                  <Link to="/forgot-password" className="text-sm text-primary hover:underline block">
-                    Forgot your password?
-                  </Link>
+                  </div>
+                  
+                  <div className="pt-2 border-t border-white/10">
+                    <p className="text-xs text-white/60 mb-2">Need to confirm your email?</p>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleResendConfirmation}
+                      disabled={resendingConfirmation}
+                      className="w-full bg-white/5 border-white/20 text-white hover:bg-white/10"
+                    >
+                      {resendingConfirmation ? (
+                        <>
+                          <Mail className="h-3 w-3 mr-2 animate-pulse" />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <Mail className="h-3 w-3 mr-2" />
+                          Resend Confirmation Email
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </>
               ) : mode === 'signup' ? (
                 <p className="text-sm text-white/70">

@@ -15,6 +15,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signUp: (email: string, password: string, userData?: any) => Promise<{ error: AuthError | null }>;
   resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
+  resendConfirmation: (email: string) => Promise<{ error: AuthError | null }>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -217,7 +218,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         email: email.toLowerCase().trim(),
         password,
         options: {
-          emailRedirectTo: redirectUrl,
+          emailRedirectTo: `${window.location.origin}/auth`,
           data: userData
         }
       });
@@ -288,6 +289,42 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // Resend confirmation email
+  const resendConfirmation = async (email: string): Promise<{ error: AuthError | null }> => {
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth`
+        }
+      });
+
+      logSecurityEvent('confirmation_resend', { 
+        success: !error,
+        email: email.substring(0, 3) + '***',
+        error: error?.message
+      });
+
+      if (error) {
+        noHooksToast.showError(error.message);
+      } else {
+        noHooksToast.showSuccess('Confirmation email sent! Please check your inbox.');
+      }
+
+      return { error };
+    } catch (error) {
+      const authError = error as AuthError;
+      logSecurityEvent('confirmation_resend', { 
+        success: false,
+        email: email.substring(0, 3) + '***',
+        error: authError.message
+      });
+      noHooksToast.showError('Failed to resend confirmation email.');
+      return { error: authError };
+    }
+  };
+
   const updateProfile = async (updates: Partial<UserProfile>): Promise<boolean> => {
     if (!user || !userProfile) return false;
 
@@ -353,6 +390,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     signUp,
     signOut,
     resetPassword,
+    resendConfirmation,
     updateProfile,
   };
 
