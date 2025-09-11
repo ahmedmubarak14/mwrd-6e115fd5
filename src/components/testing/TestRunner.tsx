@@ -372,7 +372,7 @@ export const TestRunner = () => {
                         <div key={index} className="flex items-start gap-3 p-3 rounded-lg border">
                           {getTestStatusIcon(test.status)}
                           <div className="flex-1">
-                            <div className="font-medium">{test.testName || 'Test'}</div>
+                            <div className="font-medium">{test.test}</div>
                             <div className="text-sm text-muted-foreground">
                               {test.message}
                             </div>

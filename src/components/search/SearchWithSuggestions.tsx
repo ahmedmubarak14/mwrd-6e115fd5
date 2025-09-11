@@ -35,7 +35,7 @@ export const SearchWithSuggestions = ({
       if (query.length >= 2) {
         try {
           const newSuggestions = await getSuggestions(query);
-          setLocalSuggestions(newSuggestions || []);
+          setLocalSuggestions(newSuggestions);
           setShowSuggestions(true);
         } catch (error) {
           console.error('Failed to get suggestions:', error);

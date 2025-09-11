@@ -507,9 +507,11 @@ export const useOptimizedSearch = () => {
     };
   }, [calculateEnhancedRelevance]);
 
-  // Debounced suggestion generator
-  const debouncedGetSuggestions = useMemo(
-    () => PerformanceOptimizer.debounce(generateSuggestions, 300),
+  // Debounced suggestion generator - fix type issue by creating a proper typed wrapper
+  const debouncedGetSuggestions = useCallback(
+    async (query: string): Promise<SearchSuggestion[]> => {
+      return await generateSuggestions(query);
+    },
     [generateSuggestions]
   );
 
@@ -536,7 +538,7 @@ export const useOptimizedSearch = () => {
     totalCount,
     searchHistory,
     search: searchWithOptimizations,
-    getSuggestions: debouncedGetSuggestions,
+    getSuggestions: generateSuggestions, // Use the original function directly
     clearResults,
     clearCache
   };
