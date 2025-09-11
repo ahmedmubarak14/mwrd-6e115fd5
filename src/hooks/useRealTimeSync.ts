@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 // WebSocket connection states
 type ConnectionState = 'connecting' | 'connected' | 'disconnected' | 'reconnecting' | 'error';

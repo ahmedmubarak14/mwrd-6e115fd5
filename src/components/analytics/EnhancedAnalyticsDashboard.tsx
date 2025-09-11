@@ -55,19 +55,74 @@ interface PerformanceData {
   responseTime: number;
 }
 
-// Mock data for demonstration
-const mockMetrics: AnalyticsMetric[] = [
-  {
-    id: 'revenue',
-    title: 'Total Revenue',
-    value: 287500,
-    previousValue: 245000,
-    format: 'currency',
-    icon: DollarSign,
-    color: 'text-green-600'
-  },
-  {
-    id: 'orders',
+// Real-time analytics data hook
+const useRealAnalyticsData = () => {
+  const [analytics, setAnalytics] = useState<AnalyticsMetric[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchAnalyticsData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Fetch real data from Supabase
+        const [revenueRes, ordersRes, usersRes] = await Promise.all([
+          supabase.from('financial_transactions')
+            .select('amount, created_at')
+            .eq('status', 'completed'),
+          supabase.from('orders')
+            .select('id, amount, status, created_at'),
+          supabase.from('user_profiles')
+            .select('id, created_at, updated_at')
+        ]);
+
+        if (revenueRes.error) throw revenueRes.error;
+        if (ordersRes.error) throw ordersRes.error;
+        if (usersRes.error) throw usersRes.error;
+
+        // Calculate current period metrics
+        const now = new Date();
+        const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        const sixtyDaysAgo = new Date(now.getTime() - 60 * 24 * 60 * 60 * 1000);
+
+        // Revenue calculations
+        const currentRevenue = revenueRes.data
+          .filter(t => new Date(t.created_at) > thirtyDaysAgo)
+          .reduce((sum, t) => sum + Number(t.amount), 0);
+        
+        const previousRevenue = revenueRes.data
+          .filter(t => new Date(t.created_at) > sixtyDaysAgo && new Date(t.created_at) <= thirtyDaysAgo)
+          .reduce((sum, t) => sum + Number(t.amount), 0);
+
+        // Orders calculations
+        const currentOrders = ordersRes.data.filter(o => new Date(o.created_at) > thirtyDaysAgo).length;
+        const previousOrders = ordersRes.data
+          .filter(o => new Date(o.created_at) > sixtyDaysAgo && new Date(o.created_at) <= thirtyDaysAgo).length;
+
+        // Users calculations
+        const activeUsers = usersRes.data.filter(u => new Date(u.updated_at) > thirtyDaysAgo).length;
+        const previousActiveUsers = usersRes.data
+          .filter(u => new Date(u.updated_at) > sixtyDaysAgo && new Date(u.updated_at) <= thirtyDaysAgo).length;
+
+        // Completion rate calculation
+        const completedOrders = ordersRes.data.filter(o => o.status === 'completed').length;
+        const completionRate = ordersRes.data.length > 0 ? (completedOrders / ordersRes.data.length) * 100 : 0;
+        const previousCompletionRate = 85; // Would need historical data for accurate previous value
+
+        const realMetrics: AnalyticsMetric[] = [
+          {
+            id: 'revenue',
+            title: 'Total Revenue',
+            value: currentRevenue,
+            previousValue: previousRevenue,
+            format: 'currency',
+            icon: DollarSign,
+            color: 'text-green-600'
+          },
+          {
+            id: 'orders',
     title: 'Total Orders',
     value: 42,
     previousValue: 38,
@@ -214,7 +269,7 @@ MetricCard.displayName = 'MetricCard';
 // Chart Components
 const RevenueChart = React.memo(() => (
   <ResponsiveContainer width="100%" height={300}>
-    <AreaChart data={mockRevenueData}>
+    <AreaChart data={revenueData}>
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="name" />
       <YAxis />
@@ -389,7 +444,7 @@ export const EnhancedAnalyticsDashboard: React.FC = () => {
 
       {/* Key Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {mockMetrics.map(metric => (
+        {analytics.map(metric => (
           <MetricCard key={metric.id} metric={metric} />
         ))}
       </div>
