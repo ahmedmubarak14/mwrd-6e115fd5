@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
-import { Helmet } from 'react-helmet-async';
 
 const AuthCallback = () => {
   const [searchParams] = useSearchParams();
@@ -106,12 +105,6 @@ const AuthCallback = () => {
   };
 
   return (
-    <>
-      <Helmet>
-        <title>Email Confirmation | MWRD</title>
-        <meta name="description" content="Email confirmation status for your MWRD account." />
-        <link rel="canonical" href={`${window.location.origin}/auth`} />
-      </Helmet>
       <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
         <h1 className="sr-only">Email Confirmation</h1>
         <div className="w-full max-w-md">
@@ -159,7 +152,6 @@ const AuthCallback = () => {
           </Card>
         </div>
       </main>
-    </>
   );
 };
 

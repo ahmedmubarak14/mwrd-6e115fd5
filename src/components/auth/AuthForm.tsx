@@ -67,7 +67,7 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
         email: formData.email,
         password: formData.password,
         options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
+          emailRedirectTo: `${window.location.origin}/auth`,
           data: {
             full_name: formData.full_name,
             company_name: formData.company_name,
