@@ -15,6 +15,7 @@ export const enUS = {
 
   // Navigation
   nav: {
+    navigation: "Navigation",
     dashboard: "Dashboard",
     requests: "Requests", 
     offers: "Offers",

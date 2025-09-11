@@ -15,6 +15,7 @@ export const arSA = {
 
   // Navigation
   nav: {
+    navigation: "التصفح",
     dashboard: "لوحة التحكم",
     requests: "الطلبات",
     offers: "العروض",
