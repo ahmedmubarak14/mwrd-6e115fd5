@@ -21,6 +21,9 @@ import { useOptimizedFormatters } from '@/hooks/usePerformanceOptimization';
 import { ResponsiveContainer as MobileContainer } from '@/components/ui/mobile-optimized-components';
 import { ErrorRecovery } from '@/components/ui/error-recovery';
 import { InlineLoading } from '@/components/ui/enhanced-loading-states';
+import { useAnalyticsData } from '@/hooks/useAnalyticsData';
+import { MetricCard } from '@/components/analytics/MetricCard';
+import { RevenueChart, OrdersCategoryChart, PerformanceChart, mockOrdersByCategory, mockPerformanceData } from '@/components/analytics/AnalyticsCharts';
 import { cn } from '@/lib/utils';
 
 // Analytics data types
@@ -55,310 +58,80 @@ interface PerformanceData {
   responseTime: number;
 }
 
-// Real-time analytics data hook
-const useRealAnalyticsData = () => {
-  const [analytics, setAnalytics] = useState<AnalyticsMetric[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchAnalyticsData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        // Mock data for now - replace with real Supabase queries
-        const realMetrics: AnalyticsMetric[] = [
-          {
-            id: 'revenue',
-            title: 'Total Revenue',
-            value: 328000,
-            previousValue: 280000,
-            format: 'currency',
-            icon: DollarSign,
-            color: 'text-green-600'
-          },
-          {
-            id: 'orders',
-            title: 'Total Orders',
-            value: 42,
-            previousValue: 38,
-            format: 'number',
-            icon: Package,
-            color: 'text-blue-600'
-          },
-          {
-            id: 'completion-rate',
-            title: 'Completion Rate',
-            value: 94.5,
-            previousValue: 91.2,
-            format: 'percentage',
-            icon: Target,
-            color: 'text-purple-600'
-          },
-          {
-            id: 'avg-response',
-            title: 'Avg Response Time',
-            value: 2.3,
-            previousValue: 3.1,
-            format: 'duration',
-            icon: Clock,
-            color: 'text-orange-600'
-          }
-        ];
-
-        setAnalytics(realMetrics);
-        setLoading(false);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch analytics');
-        setLoading(false);
-      }
-    };
-
-    fetchAnalyticsData();
-  }, []);
-
-  return { analytics, loading, error };
-};
-
-// Mock data
-const mockRevenueData: ChartData[] = [
-  { name: 'Jan', revenue: 45000, orders: 8, clients: 12 },
-  { name: 'Feb', revenue: 52000, orders: 10, clients: 15 },
-  { name: 'Mar', revenue: 48000, orders: 9, clients: 14 },
-  { name: 'Apr', revenue: 61000, orders: 12, clients: 18 },
-  { name: 'May', revenue: 55000, orders: 11, clients: 16 },
-  { name: 'Jun', revenue: 67000, orders: 14, clients: 20 }
-];
-
-const mockOrdersByCategory: ChartData[] = [
-  { name: 'Construction', value: 18, color: '#3b82f6' },
-  { name: 'Renovation', value: 14, color: '#10b981' },
-  { name: 'Maintenance', value: 8, color: '#f59e0b' },
-  { name: 'Consulting', value: 6, color: '#8b5cf6' }
-];
-
-const mockPerformanceData: PerformanceData[] = [
-  {
-    period: 'Week 1',
-    orders: 3,
-    revenue: 18000,
-    completionRate: 100,
-    clientSatisfaction: 4.8,
-    responseTime: 1.5
-  },
-  {
-    period: 'Week 2', 
-    orders: 4,
-    revenue: 22000,
-    completionRate: 95,
-    clientSatisfaction: 4.9,
-    responseTime: 2.1
-  },
-  {
-    period: 'Week 3',
-    orders: 2,
-    revenue: 15000,
-    completionRate: 100,
-    clientSatisfaction: 4.7,
-    responseTime: 1.8
-  },
-  {
-    period: 'Week 4',
-    orders: 5,
-    revenue: 28000,
-    clientSatisfaction: 4.6,
-    completionRate: 90,
-    responseTime: 2.8
-  }
-];
-
-// Metric Card Component
-const MetricCard = React.memo<{ metric: AnalyticsMetric }>(({ metric }) => {
-  const { formatCurrency, formatNumber, formatPercentage } = useOptimizedFormatters();
-  const Icon = metric.icon;
-  
-  const formatValue = (value: number) => {
-    switch (metric.format) {
-      case 'currency':
-        return formatCurrency(value);
-      case 'percentage':
-        return formatPercentage(value);
-      case 'duration':
-        return `${value}h`;
-      default:
-        return formatNumber(value);
-    }
-  };
-
-  const changePercent = ((metric.value - metric.previousValue) / metric.previousValue) * 100;
-  const isPositive = changePercent > 0;
-  const isNeutral = Math.abs(changePercent) < 0.1;
-
-  return (
-    <Card className="hover:shadow-md transition-shadow">
-      <CardContent className="p-6">
-        <div className="flex items-center justify-between">
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-muted-foreground">
-              {metric.title}
-            </p>
-            <p className="text-2xl font-bold">
-              {formatValue(metric.value)}
-            </p>
-            <div className="flex items-center gap-2 text-xs">
-              {isNeutral ? (
-                <Minus className="h-3 w-3 text-muted-foreground" />
-              ) : isPositive ? (
-                <ArrowUpRight className="h-3 w-3 text-green-600" />
-              ) : (
-                <ArrowDownRight className="h-3 w-3 text-red-600" />
-              )}
-              <span className={cn(
-                "font-medium",
-                isNeutral ? "text-muted-foreground" :
-                isPositive ? "text-green-600" : "text-red-600"
-              )}>
-                {isNeutral ? "No change" : `${Math.abs(changePercent).toFixed(1)}%`}
-              </span>
-              <span className="text-muted-foreground">vs last period</span>
-            </div>
-          </div>
-          <div className={cn(
-            "p-3 rounded-full bg-muted",
-            metric.color.replace('text-', 'bg-').replace('-600', '-100')
-          )}>
-            <Icon className={cn("h-6 w-6", metric.color)} />
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-});
-
-MetricCard.displayName = 'MetricCard';
-
-// Chart Components
-const RevenueChart = React.memo(() => (
-  <ResponsiveContainer width="100%" height={300}>
-    <AreaChart data={mockRevenueData}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" />
-      <YAxis />
-      <Tooltip 
-        formatter={(value: any, name: string) => [
-          name === 'revenue' ? `SAR ${value.toLocaleString()}` : value,
-          name === 'revenue' ? 'Revenue' : 'Orders'
-        ]}
-      />
-      <Area
-        type="monotone"
-        dataKey="revenue"
-        stackId="1"
-        stroke="#3b82f6"
-        fill="#3b82f6"
-        fillOpacity={0.6}
-      />
-    </AreaChart>
-  </ResponsiveContainer>
-));
-
-RevenueChart.displayName = 'RevenueChart';
-
-const OrdersCategoryChart = React.memo(() => (
-  <ResponsiveContainer width="100%" height={300}>
-    <PieChart>
-      <Pie
-        data={mockOrdersByCategory}
-        cx="50%"
-        cy="50%"
-        labelLine={false}
-        label={({ name, percent }: any) => `${name} ${(percent * 100).toFixed(0)}%`}
-        outerRadius={80}
-        fill="#8884d8"
-        dataKey="value"
-      >
-        {mockOrdersByCategory.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={entry.color} />
-        ))}
-      </Pie>
-      <Tooltip />
-    </PieChart>
-  </ResponsiveContainer>
-));
-
-OrdersCategoryChart.displayName = 'OrdersCategoryChart';
-
-const PerformanceChart = React.memo(() => (
-  <ResponsiveContainer width="100%" height={300}>
-    <LineChart data={mockPerformanceData}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="period" />
-      <YAxis yAxisId="left" />
-      <YAxis yAxisId="right" orientation="right" />
-      <Tooltip />
-      <Legend />
-      <Bar yAxisId="left" dataKey="orders" fill="#3b82f6" name="Orders" />
-      <Line
-        yAxisId="right"
-        type="monotone"
-        dataKey="completionRate"
-        stroke="#10b981"
-        strokeWidth={2}
-        name="Completion Rate (%)"
-      />
-      <Line
-        yAxisId="right"
-        type="monotone"
-        dataKey="clientSatisfaction"
-        stroke="#8b5cf6"
-        strokeWidth={2}
-        name="Client Rating"
-      />
-    </LineChart>
-  </ResponsiveContainer>
-));
-
-PerformanceChart.displayName = 'PerformanceChart';
-
+// Real-time analytics data hook using Supabase
 export const EnhancedAnalyticsDashboard: React.FC = () => {
   const { language, isRTL, t } = useLanguage();
   const { formatCurrency } = useOptimizedFormatters();
-  const { analytics, loading: analyticsLoading, error: analyticsError } = useRealAnalyticsData();
+  const { metrics, monthlyData, loading: analyticsLoading, error: analyticsError, refetch } = useAnalyticsData();
   
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [dateRange, setDateRange] = useState<{from: Date; to: Date}>({
-    from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 30 days ago
-    to: new Date()
-  });
   const [selectedPeriod, setSelectedPeriod] = useState('30d');
   const [activeTab, setActiveTab] = useState('overview');
 
   const handleRefresh = useCallback(() => {
-    setLoading(true);
-    setError(null);
-    
-    // Simulate data refresh
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }, []);
+    refetch();
+  }, [refetch]);
 
   const handleExport = useCallback(() => {
     // Export analytics data
     console.log('Exporting analytics data...');
   }, []);
 
+  // Convert metrics to the format expected by MetricCard
+  const analytics = useMemo(() => {
+    if (!metrics) return [];
+    
+    return [
+      {
+        id: 'revenue',
+        title: 'Total Revenue',
+        value: metrics.totalRevenue,
+        previousValue: metrics.previousRevenue,
+        format: 'currency' as const,
+        icon: DollarSign,
+        color: 'text-green-600'
+      },
+      {
+        id: 'orders',
+        title: 'Total Orders',
+        value: metrics.totalOrders,
+        previousValue: metrics.previousOrders,
+        format: 'number' as const,
+        icon: Package,
+        color: 'text-blue-600'
+      },
+      {
+        id: 'completion-rate',
+        title: 'Completion Rate',
+        value: metrics.completionRate,
+        previousValue: metrics.previousCompletionRate,
+        format: 'percentage' as const,
+        icon: Target,
+        color: 'text-purple-600'
+      },
+      {
+        id: 'avg-response',
+        title: 'Avg Response Time',
+        value: metrics.avgResponseTime,
+        previousValue: metrics.previousResponseTime,
+        format: 'duration' as const,
+        icon: Clock,
+        color: 'text-orange-600'
+      }
+    ];
+  }, [metrics]);
+
+  // Use real monthly data or fallback to empty array
+  const revenueData = monthlyData.length > 0 ? monthlyData : [];
+
   const totalRevenue = useMemo(() => 
-    mockRevenueData.reduce((sum, item) => sum + item.revenue, 0)
-  , []);
+    revenueData.reduce((sum, item) => sum + item.revenue, 0)
+  , [revenueData]);
 
   const totalOrders = useMemo(() => 
-    mockRevenueData.reduce((sum, item) => sum + item.orders, 0)
-  , []);
+    revenueData.reduce((sum, item) => sum + item.orders, 0)
+  , [revenueData]);
 
-  if (loading || analyticsLoading) {
+  if (analyticsLoading) {
     return (
       <MobileContainer>
         <InlineLoading text="Loading analytics..." />
@@ -366,11 +139,11 @@ export const EnhancedAnalyticsDashboard: React.FC = () => {
     );
   }
 
-  if (error || analyticsError) {
+  if (analyticsError) {
     return (
       <MobileContainer>
         <ErrorRecovery
-          error={error || analyticsError || 'Unknown error'}
+          error={analyticsError}
           onRetry={handleRefresh}
           title="Failed to load analytics"
           description="Unable to fetch analytics data. Please try again."
@@ -444,7 +217,7 @@ export const EnhancedAnalyticsDashboard: React.FC = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <RevenueChart />
+                <RevenueChart data={revenueData} />
               </CardContent>
             </Card>
 
@@ -459,7 +232,7 @@ export const EnhancedAnalyticsDashboard: React.FC = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <OrdersCategoryChart />
+                <OrdersCategoryChart data={mockOrdersByCategory} />
               </CardContent>
             </Card>
           </div>
@@ -503,7 +276,7 @@ export const EnhancedAnalyticsDashboard: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <RevenueChart />
+              <RevenueChart data={revenueData} />
             </CardContent>
           </Card>
         </TabsContent>
@@ -517,7 +290,7 @@ export const EnhancedAnalyticsDashboard: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <OrdersCategoryChart />
+              <OrdersCategoryChart data={mockOrdersByCategory} />
             </CardContent>
           </Card>
         </TabsContent>
@@ -531,7 +304,7 @@ export const EnhancedAnalyticsDashboard: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <PerformanceChart />
+              <PerformanceChart data={mockPerformanceData} />
             </CardContent>
           </Card>
         </TabsContent>
