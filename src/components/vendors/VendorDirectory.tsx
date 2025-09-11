@@ -370,7 +370,11 @@ export const VendorDirectory: React.FC = () => {
 
         {/* Vendors Grid */}
         <div className="lg:col-span-3">
-          {vendors.length > 0 ? (
+          {loading ? (
+            <div className="flex items-center justify-center h-64">
+              <LoadingSpinner />
+            </div>
+          ) : vendors.length > 0 ? (
             <div className="grid gap-6 md:grid-cols-2">
               {vendors.map(renderVendorCard)}
             </div>

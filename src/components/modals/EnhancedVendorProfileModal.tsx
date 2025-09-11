@@ -32,11 +32,13 @@ import {
   Target,
   CheckCircle2,
   Factory,
-  Wrench
+  Wrench,
+  ShoppingBag
 } from "lucide-react";
 import { useVendorProfile } from '@/hooks/useVendorProfile';
 import { PrivateRequestModal } from './PrivateRequestModal';
 import { VideoCallModal } from './VideoCallModal';
+import { PublicVendorProductCatalog } from '@/components/vendor/PublicVendorProductCatalog';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRealTimeChat } from '@/hooks/useRealTimeChat';
@@ -285,8 +287,9 @@ export const EnhancedVendorProfileModal: React.FC<EnhancedVendorProfileModalProp
 
           {/* Main Content Tabs */}
           <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="overview">{isArabic ? "نظرة عامة" : "Overview"}</TabsTrigger>
+              <TabsTrigger value="products">{isArabic ? "المنتجات" : "Products"}</TabsTrigger>
               <TabsTrigger value="details">{isArabic ? "التفاصيل" : "Details"}</TabsTrigger>
               <TabsTrigger value="portfolio">{isArabic ? "أعمال سابقة" : "Portfolio"}</TabsTrigger>
               <TabsTrigger value="stats">{isArabic ? "إحصائيات" : "Statistics"}</TabsTrigger>
@@ -395,6 +398,14 @@ export const EnhancedVendorProfileModal: React.FC<EnhancedVendorProfileModalProp
                   </CardContent>
                 </Card>
               </div>
+            </TabsContent>
+
+            {/* Products Tab */}
+            <TabsContent value="products">
+              <PublicVendorProductCatalog 
+                vendorId={vendorId} 
+                vendorName={vendorProfile.company_name || vendorProfile.full_name}
+              />
             </TabsContent>
 
             {/* Details Tab */}

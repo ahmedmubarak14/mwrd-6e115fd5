@@ -118,6 +118,7 @@ export const useVendors = () => {
           // No vendors found with these categories
           setVendors([]);
           setTotalCount(0);
+          setLoading(false);
           return;
         }
       }
@@ -144,10 +145,14 @@ export const useVendors = () => {
 
       const { data, error, count } = await query;
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching vendors:', error);
+        throw error;
+      }
 
       // Cast data with proper error handling
       const vendorData = (data || []) as unknown as VendorWithCategories[];
+      console.log('Fetched vendors:', vendorData);
       setVendors(vendorData);
       setTotalCount(count || 0);
     } catch (error) {
