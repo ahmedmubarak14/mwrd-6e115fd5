@@ -175,16 +175,16 @@ export const VendorDirectory: React.FC = () => {
           )}
         </div>
 
-        <div className="flex flex-wrap gap-2 pt-2">
-          <EnhancedVendorProfileModal vendorId={vendor.id.toString()}>
-            <Button variant="outline" size="sm" className="flex-1 min-w-0">
+        	<div className="grid grid-cols-2 gap-2 pt-2">
+          	<EnhancedVendorProfileModal vendorId={vendor.id.toString()}>
+            	<Button variant="outline" size="sm" className="w-full">
               {isRTL ? 'عرض الملف' : 'View Profile'}
             </Button>
           </EnhancedVendorProfileModal>
           <Button 
             variant="secondary" 
             size="sm" 
-            className="flex-1 min-w-0" 
+            className="w-full" 
             onClick={async () => {
               try {
                 logger.debug('Starting direct conversation', { vendorId: vendor.id });
@@ -202,14 +202,14 @@ export const VendorDirectory: React.FC = () => {
           <Button 
             variant="outline" 
             size="sm" 
-            className="flex-1 min-w-0" 
+            className="w-full" 
             onClick={() => setPrivateRequestVendor(vendor)}
           >
             {isRTL ? 'طلب خاص' : 'Private Request'}
           </Button>
           <Button 
             size="sm" 
-            className="flex-1 min-w-0" 
+            className="w-full" 
             onClick={() => navigate('/requests/create')}
           >
             {isRTL ? 'طلب عام' : 'Public Request'}
