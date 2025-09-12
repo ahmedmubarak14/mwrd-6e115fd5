@@ -1131,6 +1131,57 @@ export const arSA = {
     }
   },
 
+  requests: {
+    description: "إدارة وتتبع طلبات الشراء الخاصة بك",
+    createNew: "إنشاء طلب جديد",
+    metrics: {
+      total: "إجمالي الطلبات",
+      active: "الطلبات النشطة",
+      completed: "مكتمل",
+      pending: "قيد الانتظار"
+    },
+    filters: {
+      title: "الفلاتر والبحث",
+      searchPlaceholder: "البحث في الطلبات...",
+      statusPlaceholder: "تصفية حسب الحالة",
+      showing: "عرض",
+      of: "من",
+      requests: "الطلبات",
+      clear: "مسح الفلاتر",
+      statuses: {
+        all: "كل الحالات",
+        new: "جديد",
+        in_progress: "قيد التنفيذ",
+        completed: "مكتمل",
+        cancelled: "ملغى"
+      }
+    },
+    card: {
+      viewDetails: "عرض التفاصيل",
+      editRequest: "تعديل الطلب",
+      notSpecified: "غير محدد",
+      noDeadline: "بدون موعد نهائي"
+    },
+    empty: {
+      noResultsTitle: "لم يتم العثور على طلبات",
+      noResultsDesc: "حاول تعديل معايير البحث أو الفلاتر للعثور على ما تبحث عنه",
+      startTitle: "ابدأ أول طلب لك",
+      startDesc: "أنشئ أول طلب مشتريات لربطك بموردين مؤهلين والحصول على عروض تنافسية",
+      features: {
+        match: "مطابقة سريعة للموردين",
+        offers: "عروض تنافسية",
+        secure: "معاملات آمنة"
+      },
+      createFirst: "أنشئ أول طلب لك"
+    },
+    status: {
+      new: "جديد",
+      in_progress: "قيد التنفيذ",
+      completed: "مكتمل",
+      cancelled: "ملغى"
+    }
+  },
+
   // Browse Requests
   browseRequests: {
     title: "تصفح الطلبات",

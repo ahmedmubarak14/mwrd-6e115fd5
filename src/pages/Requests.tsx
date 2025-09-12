@@ -27,11 +27,11 @@ import {
   MoreHorizontal
 } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { format } from "date-fns";
+import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 
 const Requests = () => {
-  const { t } = useLanguage();
+  const { t, formatDate, formatNumber } = useLanguage();
   const { requests, loading } = useRealTimeRequests();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
@@ -81,6 +81,11 @@ const Requests = () => {
 
   return (
     <div className="p-6 space-y-6">
+      <Helmet>
+        <title>{t('nav.requests')}</title>
+        <meta name="description" content={t('requests.description')} />
+        <link rel="canonical" href="/client/requests" />
+      </Helmet>
       {/* Header */}
       <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-start mb-8">
         <div>
@@ -104,26 +109,26 @@ const Requests = () => {
       {/* Metrics */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
         <MetricCard
-          title="Total Requests"
+          title={t('requests.metrics.total')}
           value={metrics.total}
           icon={FileText}
-          trend={{ value: 15, label: "vs last month", isPositive: true }}
+          trend={{ value: 15, label: t('common.vsLastMonth'), isPositive: true }}
         />
         <MetricCard
-          title="Active Requests"
+          title={t('requests.metrics.active')}
           value={metrics.active}
           icon={TrendingUp}
-          trend={{ value: 5, label: "this week", isPositive: true }}
+          trend={{ value: 5, label: t('common.thisWeek'), isPositive: true }}
           variant="success"
         />
         <MetricCard
-          title="Completed"
+          title={t('requests.metrics.completed')}
           value={metrics.completed}
           icon={CheckCircle}
           variant="success"
         />
         <MetricCard
-          title="Pending"
+          title={t('requests.metrics.pending')}
           value={metrics.pending}
           icon={AlertCircle}
           variant="warning"
@@ -135,7 +140,7 @@ const Requests = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Filter className="h-5 w-5" />
-            Filters & Search
+            {t('requests.filters.title')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -144,7 +149,7 @@ const Requests = () => {
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search requests..."
+                  placeholder={t('requests.filters.searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -154,21 +159,23 @@ const Requests = () => {
             
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-full md:w-48">
-                <SelectValue placeholder="Filter by status" />
+                <SelectValue placeholder={t('requests.filters.statusPlaceholder')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="new">New</SelectItem>
-                <SelectItem value="in_progress">In Progress</SelectItem>
-                <SelectItem value="completed">Completed</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
+                <SelectItem value="all">{t('requests.filters.statuses.all')}</SelectItem>
+                <SelectItem value="new">{t('requests.filters.statuses.new')}</SelectItem>
+                <SelectItem value="in_progress">{t('requests.filters.statuses.in_progress')}</SelectItem>
+                <SelectItem value="completed">{t('requests.filters.statuses.completed')}</SelectItem>
+                <SelectItem value="cancelled">{t('requests.filters.statuses.cancelled')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           {(searchTerm || statusFilter !== "all") && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>Showing {filteredRequests.length} of {metrics.total} requests</span>
+              <span>
+                {t('requests.filters.showing')} {formatNumber(filteredRequests.length)} {t('requests.filters.of')} {formatNumber(metrics.total)} {t('requests.filters.requests')}
+              </span>
               {(searchTerm || statusFilter !== "all") && (
                 <Button
                   variant="ghost"
@@ -178,7 +185,7 @@ const Requests = () => {
                     setStatusFilter("all");
                   }}
                 >
-                  Clear filters
+                  {t('requests.filters.clear')}
                 </Button>
               )}
             </div>
@@ -200,7 +207,7 @@ const Requests = () => {
                       request.status === 'in_progress' ? 'secondary' :
                       request.status === 'completed' ? 'outline' : 'destructive'
                     }>
-                      {request.status}
+                      {request.status === 'new' ? t('requests.status.new') : request.status === 'in_progress' ? t('common.inProgress') : request.status === 'completed' ? t('common.completed') : request.status === 'cancelled' ? t('common.cancelled') : request.status}
                     </Badge>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -211,13 +218,13 @@ const Requests = () => {
                       <DropdownMenuContent align="end">
                         <RequestDetailsModal request={request} userRole="client">
                           <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                            View Details
+                            {t('requests.card.viewDetails')}
                           </DropdownMenuItem>
                         </RequestDetailsModal>
                         <EditRequestModal request={request}>
                           <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                             <Edit className="h-4 w-4 mr-2" />
-                            Edit Request
+                            {t('requests.card.editRequest')}
                           </DropdownMenuItem>
                         </EditRequestModal>
                       </DropdownMenuContent>
@@ -237,17 +244,17 @@ const Requests = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       <MapPin className="h-4 w-4" />
-                      <span>{request.location || 'Not specified'}</span>
+                      <span>{request.location || t('requests.card.notSpecified')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4" />
                       <span>
-                        {request.deadline ? format(new Date(request.deadline), 'MMM dd, yyyy') : 'No deadline'}
+                        {request.deadline ? formatDate(new Date(request.deadline)) : t('requests.card.noDeadline')}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Clock className="h-4 w-4" />
-                      <span>{format(new Date(request.created_at), 'MMM dd, yyyy')}</span>
+                      <span>{formatDate(new Date(request.created_at))}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -263,13 +270,13 @@ const Requests = () => {
             </div>
             
             <h3 className="text-xl font-semibold text-foreground mb-2">
-              {searchTerm || statusFilter !== "all" ? "No requests found" : "Start Your First Request"}
+              {searchTerm || statusFilter !== "all" ? t('requests.empty.noResultsTitle') : t('requests.empty.startTitle')}
             </h3>
             
             <p className="text-muted-foreground mb-6 max-w-md mx-auto">
               {searchTerm || statusFilter !== "all" 
-                ? "Try adjusting your search criteria or filters to find what you're looking for" 
-                : "Create your first procurement request to connect with qualified vendors and get competitive offers"}
+                ? t('requests.empty.noResultsDesc') 
+                : t('requests.empty.startDesc')}
             </p>
 
             {!searchTerm && statusFilter === "all" && (
@@ -277,15 +284,15 @@ const Requests = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm max-w-2xl mx-auto mb-6">
                   <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                     <CheckCircle className="h-4 w-4 text-success" />
-                    <span>Fast vendor matching</span>
+                    <span>{t('requests.empty.features.match')}</span>
                   </div>
                   <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                     <CheckCircle className="h-4 w-4 text-success" />
-                    <span>Competitive offers</span>
+                    <span>{t('requests.empty.features.offers')}</span>
                   </div>
                   <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
                     <CheckCircle className="h-4 w-4 text-success" />
-                    <span>Secure transactions</span>
+                    <span>{t('requests.empty.features.secure')}</span>
                   </div>
                 </div>
 
@@ -294,7 +301,7 @@ const Requests = () => {
                   className="w-full md:w-auto gap-2"
                 >
                   <Plus className="h-4 w-4" />
-                  Create Your First Request
+                  {t('requests.empty.createFirst')}
                 </Button>
               </div>
             )}
@@ -309,7 +316,7 @@ const Requests = () => {
                 className="gap-2"
               >
                 <Package className="h-4 w-4" />
-                Clear Filters
+                {t('requests.filters.clear')}
               </Button>
             )}
           </CardContent>

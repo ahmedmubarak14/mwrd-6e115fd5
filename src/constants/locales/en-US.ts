@@ -1196,6 +1196,57 @@ export const enUS = {
     system: "System"
   },
 
+  requests: {
+    description: "Manage and track your procurement requests",
+    createNew: "Create New",
+    metrics: {
+      total: "Total Requests",
+      active: "Active Requests",
+      completed: "Completed",
+      pending: "Pending"
+    },
+    filters: {
+      title: "Filters & Search",
+      searchPlaceholder: "Search requests...",
+      statusPlaceholder: "Filter by status",
+      showing: "Showing",
+      of: "of",
+      requests: "requests",
+      clear: "Clear filters",
+      statuses: {
+        all: "All Status",
+        new: "New",
+        in_progress: "In Progress",
+        completed: "Completed",
+        cancelled: "Cancelled"
+      }
+    },
+    card: {
+      viewDetails: "View Details",
+      editRequest: "Edit Request",
+      notSpecified: "Not specified",
+      noDeadline: "No deadline"
+    },
+    empty: {
+      noResultsTitle: "No requests found",
+      noResultsDesc: "Try adjusting your search criteria or filters to find what you're looking for",
+      startTitle: "Start Your First Request",
+      startDesc: "Create your first procurement request to connect with qualified vendors and get competitive offers",
+      features: {
+        match: "Fast vendor matching",
+        offers: "Competitive offers",
+        secure: "Secure transactions"
+      },
+      createFirst: "Create Your First Request"
+    },
+    status: {
+      new: "New",
+      in_progress: "In Progress",
+      completed: "Completed",
+      cancelled: "Cancelled"
+    }
+  },
+
   // Browse Requests
   browseRequests: {
     title: "Browse Requests",
