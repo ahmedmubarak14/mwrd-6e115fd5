@@ -47,11 +47,14 @@ export const UnifiedVerificationStatus = ({
 
   const fetchVerificationRequests = async () => {
     try {
+      console.log('Fetching verification requests for user:', userProfile?.user_id);
       const { data, error } = await supabase
         .from('verification_requests')
         .select('*')
+        .eq('user_id', userProfile?.user_id)
         .order('submitted_at', { ascending: false });
 
+      console.log('Verification requests data:', data, 'Error:', error);
       if (error) throw error;
       setVerificationRequests(data || []);
     } catch (error: any) {
@@ -63,8 +66,10 @@ export const UnifiedVerificationStatus = ({
   };
 
   useEffect(() => {
-    fetchVerificationRequests();
-  }, []);
+    if (userProfile?.user_id) {
+      fetchVerificationRequests();
+    }
+  }, [userProfile?.user_id]);
 
   if (!userProfile) return null;
 

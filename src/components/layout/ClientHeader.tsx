@@ -10,6 +10,7 @@ import { DashboardThemeToggle } from "@/components/ui/DashboardThemeToggle";
 import { ClientBreadcrumbs } from "./ClientBreadcrumbs";
 import { ClientHeaderSearch } from "./ClientHeaderSearch";
 import { ClientHeaderUserMenu } from "./ClientHeaderUserMenu";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -82,6 +83,8 @@ export const ClientHeader = ({ onMobileMenuOpen, onSidebarToggle, sidebarOpen }:
             <ClientHeaderSearch />
             
             <NotificationBell />
+            
+            <LanguageSwitcher />
             
             <DashboardThemeToggle />
             
