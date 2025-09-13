@@ -968,6 +968,7 @@ export const enUS = {
     lastMonth: 'Last Month',
     thisYear: 'This Year',
     lastYear: 'Last Year',
+    vsLastMonth: 'vs last month',
     errors: {
       networkConnection: 'Network connection error. Please check your internet connection.',
       requestTimeout: 'Request timeout. Please try again.',
