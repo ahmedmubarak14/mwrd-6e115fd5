@@ -20,7 +20,6 @@ import {
   FileText, 
   CheckCircle, 
   XCircle,
-  Compare,
   TrendingUp,
   Shield,
   AlertCircle
@@ -290,7 +289,7 @@ export const BidEvaluationInterface = ({ rfqId, bids }: BidEvaluationInterfacePr
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Compare className="h-5 w-5" />
+              <FileText className="h-5 w-5" />
               {language === 'ar' ? 'مقارنة العروض' : 'Bid Comparison'}
             </div>
             <div className="flex gap-2">

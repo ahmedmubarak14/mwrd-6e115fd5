@@ -86,7 +86,10 @@ export const EnhancedOrderManagement = ({ orders, onOrderUpdate }: EnhancedOrder
         if (!acc[milestone.order_id]) {
           acc[milestone.order_id] = [];
         }
-        acc[milestone.order_id].push(milestone);
+        acc[milestone.order_id].push({
+          ...milestone,
+          status: milestone.status as 'pending' | 'in_progress' | 'completed' | 'delayed'
+        });
         return acc;
       }, {} as Record<string, OrderMilestone[]>);
 
@@ -153,10 +156,13 @@ export const EnhancedOrderManagement = ({ orders, onOrderUpdate }: EnhancedOrder
       if (error) throw error;
 
       // Update local state
-      setMilestones(prev => ({
-        ...prev,
-        [selectedOrder.id]: [...(prev[selectedOrder.id] || []), data]
-      }));
+        setMilestones(prev => ({
+          ...prev,
+          [selectedOrder.id]: [...(prev[selectedOrder.id] || []), {
+            ...data,
+            status: data.status as 'pending' | 'in_progress' | 'completed' | 'delayed'
+          }]
+        }));
 
       setNewMilestone({
         title: '',
@@ -202,7 +208,7 @@ export const EnhancedOrderManagement = ({ orders, onOrderUpdate }: EnhancedOrder
               ? { 
                   ...m, 
                   progress_percentage: progress,
-                  status: status || (progress === 100 ? 'completed' : progress > 0 ? 'in_progress' : 'pending'),
+                  status: (status || (progress === 100 ? 'completed' : progress > 0 ? 'in_progress' : 'pending')) as 'pending' | 'in_progress' | 'completed' | 'delayed',
                   completed_date: progress === 100 ? new Date().toISOString() : null,
                   updated_at: new Date().toISOString()
                 }
@@ -333,7 +339,7 @@ export const EnhancedOrderManagement = ({ orders, onOrderUpdate }: EnhancedOrder
                           </span>
                           <span className="text-xs text-muted-foreground">({milestone.progress_percentage}%)</span>
                         </div>
-              ))
+                      ))}
                       {orderMilestones.length > 4 && (
                         <div className="text-sm text-muted-foreground">
                           +{orderMilestones.length - 4} {language === 'ar' ? 'المزيد' : 'more'}
@@ -494,7 +500,7 @@ export const EnhancedOrderManagement = ({ orders, onOrderUpdate }: EnhancedOrder
                     </div>
                   </CardContent>
                 </Card>
-              )))}
+              ))}
             </div>
           </div>
 

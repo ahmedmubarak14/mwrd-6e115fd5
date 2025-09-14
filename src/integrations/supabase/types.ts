@@ -1006,6 +1006,56 @@ export type Database = {
           },
         ]
       }
+      order_milestones: {
+        Row: {
+          completed_date: string | null
+          created_at: string
+          description: string | null
+          due_date: string | null
+          id: string
+          notes: string | null
+          order_id: string | null
+          progress_percentage: number
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          completed_date?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          notes?: string | null
+          order_id?: string | null
+          progress_percentage?: number
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          completed_date?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          notes?: string | null
+          order_id?: string | null
+          progress_percentage?: number
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_milestones_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           amount: number
@@ -1266,6 +1316,84 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      purchase_orders: {
+        Row: {
+          bid_id: string | null
+          client_id: string
+          created_at: string
+          currency: string
+          delivery_date: string | null
+          id: string
+          payment_terms: string | null
+          po_number: string
+          rfq_id: string | null
+          shipping_address: string | null
+          special_instructions: string | null
+          status: string
+          technical_specifications: Json | null
+          terms_and_conditions: string | null
+          total_amount: number
+          updated_at: string
+          vendor_id: string
+          warranty_period_months: number | null
+        }
+        Insert: {
+          bid_id?: string | null
+          client_id: string
+          created_at?: string
+          currency?: string
+          delivery_date?: string | null
+          id?: string
+          payment_terms?: string | null
+          po_number: string
+          rfq_id?: string | null
+          shipping_address?: string | null
+          special_instructions?: string | null
+          status?: string
+          technical_specifications?: Json | null
+          terms_and_conditions?: string | null
+          total_amount: number
+          updated_at?: string
+          vendor_id: string
+          warranty_period_months?: number | null
+        }
+        Update: {
+          bid_id?: string | null
+          client_id?: string
+          created_at?: string
+          currency?: string
+          delivery_date?: string | null
+          id?: string
+          payment_terms?: string | null
+          po_number?: string
+          rfq_id?: string | null
+          shipping_address?: string | null
+          special_instructions?: string | null
+          status?: string
+          technical_specifications?: Json | null
+          terms_and_conditions?: string | null
+          total_amount?: number
+          updated_at?: string
+          vendor_id?: string
+          warranty_period_months?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchase_orders_bid_id_fkey"
+            columns: ["bid_id"]
+            isOneToOne: false
+            referencedRelation: "bids"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchase_orders_rfq_id_fkey"
+            columns: ["rfq_id"]
+            isOneToOne: false
+            referencedRelation: "rfqs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       push_notifications: {
         Row: {
