@@ -73,6 +73,7 @@ import Offers from './pages/Offers';
 import Orders from './pages/Orders';
 import Projects from './pages/Projects';
 import RFQManagement from './pages/RFQManagement';
+import RFQDetail from './pages/RFQDetail';
 import Settings from './pages/Settings';
 import Support from './pages/Support';
 import Vendors from './pages/Vendors';
@@ -153,6 +154,7 @@ function App() {
                       <Route path="orders" element={<Orders />} />
                       <Route path="projects" element={<Projects />} />
                       <Route path="rfq-management" element={<RFQManagement />} />
+                      <Route path="rfqs/:id" element={<RFQDetail />} />
                       <Route path="settings" element={<Settings />} />
                       <Route path="support" element={<Support />} />
                       <Route path="vendor-rfqs" element={<VendorRFQs />} />
@@ -175,6 +177,7 @@ function App() {
                     <Route path="/orders" element={<Navigate to="/client/orders" replace />} />
                     <Route path="/projects" element={<Navigate to="/client/projects" replace />} />
                     <Route path="/rfq-management" element={<Navigate to="/client/rfq-management" replace />} />
+                    <Route path="/rfqs/:id" element={<Navigate to="/client/rfqs/:id" replace />} />
                     <Route path="/settings" element={<Navigate to="/client/settings" replace />} />
                     <Route path="/support" element={<Navigate to="/client/support" replace />} />
                     <Route path="/vendor-rfqs" element={<Navigate to="/client/vendor-rfqs" replace />} />
