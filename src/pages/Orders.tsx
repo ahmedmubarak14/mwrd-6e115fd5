@@ -13,6 +13,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ShoppingCart, DollarSign, Clock, Eye, MapPin, Calendar, CheckCircle, AlertCircle, Package, TrendingUp } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { EnhancedOrderManagement } from "@/components/orders/EnhancedOrderManagement";
 
 const OrdersPage = memo(() => {
   const { userProfile } = useAuth();

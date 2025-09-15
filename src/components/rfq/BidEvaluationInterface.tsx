@@ -29,6 +29,7 @@ import { format } from 'date-fns';
 interface BidEvaluationInterfaceProps {
   rfqId: string;
   bids: Bid[];
+  onAwarded?: (winningBidId: string) => void;
 }
 
 interface EvaluationCriteria {
@@ -38,7 +39,7 @@ interface EvaluationCriteria {
   experience: number;
 }
 
-export const BidEvaluationInterface = ({ rfqId, bids }: BidEvaluationInterfaceProps) => {
+export const BidEvaluationInterface = ({ rfqId, bids, onAwarded }: BidEvaluationInterfaceProps) => {
   const { language } = useLanguage();
   const { toast } = useToast();
   
@@ -115,49 +116,24 @@ export const BidEvaluationInterface = ({ rfqId, bids }: BidEvaluationInterfacePr
     try {
       setAwardingBid(true);
 
-      // Update the winning bid status
-      const { error: bidError } = await supabase
-        .from('bids')
-        .update({ 
-          status: 'accepted',
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', selectedWinner);
+      // Use Edge Function to perform award with proper permissions
+      const { data, error } = await supabase.functions.invoke('award_bid', {
+        body: {
+          rfq_id: rfqId,
+          bid_id: selectedWinner,
+          notes: evaluationNotes
+        }
+      });
 
-      if (bidError) throw bidError;
+      if (error) throw error;
 
-      // Update other bids to rejected
-      const otherBids = bids.filter(bid => bid.id !== selectedWinner).map(bid => bid.id);
-      if (otherBids.length > 0) {
-        const { error: rejectError } = await supabase
-          .from('bids')
-          .update({ 
-            status: 'rejected',
-            updated_at: new Date().toISOString()
-          })
-          .in('id', otherBids);
-
-        if (rejectError) throw rejectError;
-      }
-
-      // Update RFQ status to awarded
-      const { error: rfqError } = await supabase
-        .from('rfqs')
-        .update({ 
-          status: 'awarded',
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', rfqId);
-
-      if (rfqError) throw rfqError;
-
-      // Create purchase order (this would be handled by the PO generation component)
       toast({
         title: language === 'ar' ? 'تم ربح العرض' : 'Bid Awarded',
-        description: language === 'ar' ? 'تم ترسية العرض بنجاح وسيتم إنشاء أمر الشراء' : 'Bid has been awarded successfully and purchase order will be created',
+        description: language === 'ar' ? 'تم ترسية العرض بنجاح' : 'Bid has been awarded successfully',
       });
 
       setShowAwardDialog(false);
+      onAwarded?.(selectedWinner);
     } catch (error) {
       console.error('Error awarding bid:', error);
       toast({

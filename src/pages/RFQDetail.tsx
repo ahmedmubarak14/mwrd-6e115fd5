@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ClientPageContainer } from '@/components/layout/ClientPageContainer';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { BidEvaluationInterface } from '@/components/rfq/BidEvaluationInterface';
+import { PurchaseOrderGenerator } from '@/components/rfq/PurchaseOrderGenerator';
 
 export default function RFQDetail() {
   const { id } = useParams<{ id: string }>();
@@ -36,6 +37,7 @@ export default function RFQDetail() {
   const [rfq, setRfq] = useState<RFQ | null>(null);
   const [bids, setBids] = useState<Bid[]>([]);
   const [loading, setLoading] = useState(true);
+  const acceptedBid = useMemo(() => bids.find(b => b.status === 'accepted'), [bids]);
 
   useEffect(() => {
     const loadRFQDetails = async () => {
@@ -463,7 +465,17 @@ export default function RFQDetail() {
         </TabsContent>
 
         <TabsContent value="evaluation" className="space-y-6">
-          <BidEvaluationInterface rfqId={rfq.id} bids={bids} />
+          <BidEvaluationInterface 
+            rfqId={rfq.id} 
+            bids={bids} 
+            onAwarded={async () => {
+              const rfqBids = await getBidsByRFQ(rfq.id);
+              setBids(rfqBids);
+            }}
+          />
+          {acceptedBid && (
+            <PurchaseOrderGenerator rfq={rfq} winningBid={acceptedBid} />
+          )}
         </TabsContent>
       </Tabs>
     </ClientPageContainer>
