@@ -183,8 +183,7 @@ export const CompanyProfileSetupModal = ({
         industry_preferences: isClient ? profileData.industryPreferences : undefined,
         bank_name: profileData.bankName,
         bank_account_number: profileData.bankAccountNumber,
-        iban: profileData.iban,
-        verification_status: 'pending'
+        iban: profileData.iban
       });
 
       if (success) {
