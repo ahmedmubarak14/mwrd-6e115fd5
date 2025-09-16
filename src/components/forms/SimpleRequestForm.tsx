@@ -27,6 +27,10 @@ const CATEGORIES = [
   'Security Services'
 ];
 
+const CITIES = [
+  'Riyadh','Jeddah','Mecca','Medina','Dammam','Khobar','Dhahran','Taif','Buraidah','Tabuk','Khamis Mushait','Hail','Jubail','Abha'
+];
+
 export const SimpleRequestForm = () => {
   const { createRequest } = useRealTimeRequests();
   const { toast } = useToast();
@@ -39,6 +43,7 @@ export const SimpleRequestForm = () => {
     budget_min: '',
     budget_max: '',
     location: '',
+    national_address: '',
     deadline: undefined as Date | undefined,
     urgency: 'medium' as 'low' | 'medium' | 'high' | 'urgent'
   });
@@ -67,7 +72,8 @@ export const SimpleRequestForm = () => {
         budget_max: formData.budget_max ? parseFloat(formData.budget_max) : undefined,
         location: formData.location || undefined,
         deadline: formData.deadline?.toISOString().split('T')[0] || undefined,
-        urgency: formData.urgency
+        urgency: formData.urgency,
+        requirements: formData.national_address?.trim() ? { national_address: formData.national_address.trim() } : undefined
       });
       
       toast({
@@ -161,12 +167,27 @@ export const SimpleRequestForm = () => {
           </div>
 
           <div>
-            <Label htmlFor="location">Location</Label>
-            <Input
-              id="location"
-              value={formData.location}
-              onChange={(e) => setFormData({...formData, location: e.target.value})}
-              placeholder="Project location (optional)"
+            <Label htmlFor="location">City</Label>
+            <Select value={formData.location} onValueChange={(value) => setFormData({ ...formData, location: value })}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select city" />
+              </SelectTrigger>
+              <SelectContent className="z-50">
+                {CITIES.map((city) => (
+                  <SelectItem key={city} value={city}>{city}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="national_address">National Address or Short Address</Label>
+            <Textarea
+              id="national_address"
+              value={formData.national_address}
+              onChange={(e) => setFormData({ ...formData, national_address: e.target.value })}
+              placeholder="Enter national address or short delivery address"
+              rows={2}
             />
           </div>
 
@@ -192,6 +213,7 @@ export const SimpleRequestForm = () => {
                     selected={formData.deadline}
                     onSelect={(date) => setFormData({...formData, deadline: date})}
                     initialFocus
+                    className={cn("p-3 pointer-events-auto")}
                   />
                 </PopoverContent>
               </Popover>
