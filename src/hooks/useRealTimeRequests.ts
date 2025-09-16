@@ -227,7 +227,7 @@ export const useRealTimeRequests = () => {
       const budgetMin = requestData.budget_min && !isNaN(requestData.budget_min) ? requestData.budget_min : null;
       const budgetMax = requestData.budget_max && !isNaN(requestData.budget_max) ? requestData.budget_max : null;
 
-      const insertData = { 
+      const insertData: any = { 
         client_id: user.id,
         title: requestData.title.trim(),
         description: requestData.description.trim(),
@@ -237,46 +237,46 @@ export const useRealTimeRequests = () => {
         currency: requestData.currency || 'SAR',
         location: processedLocation,
         deadline: requestData.deadline || null,
-        urgency: requestData.urgency,
-        requirements: requestData.requirements || {}
+        urgency: requestData.urgency
       };
+
+      if (requestData.requirements && Object.keys(requestData.requirements).length > 0) {
+        insertData.requirements = requestData.requirements; // let DB default handle otherwise
+      }
 
       logger.debug('Processed insert data:', insertData);
 
       const { data, error } = await supabase
         .from('requests')
         .insert([insertData])
-        .select()
-        .single();
+        .select('id, title, category, deadline, urgency, admin_approval_status');
 
       if (error) {
         logger.error('Supabase error creating request:', { error, insertData });
         throw error;
       }
 
-      logger.info('Request created successfully:', { requestId: data.id, title: data.title });
-
-      // Track activity
-      try {
-        await supabase
-          .from('activity_feed')
-          .insert({
-            user_id: user.id,
-            activity_type: 'request_created',
-            description: `Created request: ${requestData.title}`,
-            title: `New ${requestData.category} request`,
-            metadata: { 
-              category: requestData.category,
-              budget_range: `${budgetMin || 0} - ${budgetMax || 0}`,
-              urgency: requestData.urgency 
-            }
-          });
-      } catch (activityError) {
-        // Don't fail the request creation if activity logging fails
-        logger.warn('Failed to log activity:', activityError);
+      const created = Array.isArray(data) ? data[0] : data;
+      if (!created) {
+        throw new Error('Failed to create request');
       }
 
-      return data;
+      logger.info('Request created successfully:', { requestId: created.id, title: created.title });
+
+      // Best-effort activity log (table may not exist in some envs)
+      try {
+        await supabase.from('audit_log').insert({
+          user_id: user.id,
+          action: 'request_created',
+          entity_type: 'requests',
+          entity_id: created.id,
+          new_values: insertData
+        });
+      } catch (activityError) {
+        logger.warn('Failed to write audit log for request_created:', activityError);
+      }
+
+      return created;
     } catch (error) {
       logger.error('Error creating request:', { error: error.message, stack: error.stack, requestData, userId: user?.id });
       throw error;

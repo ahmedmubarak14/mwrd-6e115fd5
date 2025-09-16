@@ -11,7 +11,7 @@ import { CalendarIcon, Plus, X } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { CategorySelector } from "@/components/enhanced/CategorySelector";
+import { CategorySelector } from "@/components/forms/CategorySelector";
 import { useRealTimeRequests } from "@/hooks/useRealTimeRequests";
 import { useToast } from "@/hooks/use-toast";
 
@@ -423,14 +423,15 @@ export const ProcurementRequestForm = () => {
                 <div>
                   <Label>{isRTL ? 'الفئات المطلوبة' : 'Required Categories'}</Label>
                   <CategorySelector
-                    selectedCategory=""
-                    onCategoryChange={(category: string) => {
+                    value={''}
+                    onValueChange={(category: string) => {
                       if (category && !activeRequest.categories.includes(category)) {
                         updateRequest(activeRequestIndex, { 
                           categories: [...activeRequest.categories, category] 
                         });
                       }
                     }}
+                    includeSubcategories
                   />
                   
                   {/* Display selected categories */}
