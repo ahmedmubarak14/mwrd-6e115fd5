@@ -238,7 +238,7 @@ export const useRealTimeRequests = () => {
         location: processedLocation,
         deadline: requestData.deadline || null,
         urgency: requestData.urgency,
-        requirements: requestData.requirements || null
+        requirements: requestData.requirements || {}
       };
 
       logger.debug('Processed insert data:', insertData);

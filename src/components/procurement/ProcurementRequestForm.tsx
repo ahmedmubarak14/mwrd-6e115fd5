@@ -48,6 +48,7 @@ export const ProcurementRequestForm = () => {
 
   const [globalFormData, setGlobalFormData] = useState({
     location: '',
+    national_address: '',
     currency: 'SAR',
   });
 
@@ -197,7 +198,8 @@ export const ProcurementRequestForm = () => {
             boq_items: request.boqItems,
             payment_terms: request.payment_terms || null,
             delivery_requirements: request.delivery_requirements || null,
-            quality_standards: request.quality_standards || null
+            quality_standards: request.quality_standards || null,
+            national_address: globalFormData.national_address?.trim() || null
           }
         };
         
@@ -238,6 +240,7 @@ export const ProcurementRequestForm = () => {
         setActiveRequestIndex(0);
         setGlobalFormData({
           location: '',
+          national_address: '',
           currency: 'SAR',
         });
       }
@@ -291,12 +294,31 @@ export const ProcurementRequestForm = () => {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label>{isRTL ? 'الموقع' : 'Location'}</Label>
-                    <Input
-                      value={globalFormData.location}
-                      onChange={(e) => setGlobalFormData({...globalFormData, location: e.target.value})}
-                      placeholder={isRTL ? 'أدخل الموقع' : 'Enter location'}
-                    />
+                    <Label>{isRTL ? 'المدينة' : 'City'}</Label>
+                    <Select 
+                      value={globalFormData.location} 
+                      onValueChange={(value) => setGlobalFormData({...globalFormData, location: value})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder={isRTL ? 'اختر المدينة' : 'Select city'} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Riyadh">{isRTL ? 'الرياض' : 'Riyadh'}</SelectItem>
+                        <SelectItem value="Jeddah">{isRTL ? 'جدة' : 'Jeddah'}</SelectItem>
+                        <SelectItem value="Mecca">{isRTL ? 'مكة المكرمة' : 'Mecca'}</SelectItem>
+                        <SelectItem value="Medina">{isRTL ? 'المدينة المنورة' : 'Medina'}</SelectItem>
+                        <SelectItem value="Dammam">{isRTL ? 'الدمام' : 'Dammam'}</SelectItem>
+                        <SelectItem value="Khobar">{isRTL ? 'الخبر' : 'Khobar'}</SelectItem>
+                        <SelectItem value="Dhahran">{isRTL ? 'الظهران' : 'Dhahran'}</SelectItem>
+                        <SelectItem value="Taif">{isRTL ? 'الطائف' : 'Taif'}</SelectItem>
+                        <SelectItem value="Buraidah">{isRTL ? 'بريدة' : 'Buraidah'}</SelectItem>
+                        <SelectItem value="Tabuk">{isRTL ? 'تبوك' : 'Tabuk'}</SelectItem>
+                        <SelectItem value="Khamis_Mushait">{isRTL ? 'خميس مشيط' : 'Khamis Mushait'}</SelectItem>
+                        <SelectItem value="Hail">{isRTL ? 'حائل' : 'Hail'}</SelectItem>
+                        <SelectItem value="Jubail">{isRTL ? 'الجبيل' : 'Jubail'}</SelectItem>
+                        <SelectItem value="Abha">{isRTL ? 'أبها' : 'Abha'}</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                   
                   <div>
@@ -312,6 +334,16 @@ export const ProcurementRequestForm = () => {
                       </SelectContent>
                     </Select>
                   </div>
+                </div>
+                
+                <div className="mt-4">
+                  <Label>{isRTL ? 'العنوان الوطني أو العنوان المختصر' : 'National Address or Short Address'}</Label>
+                  <Textarea
+                    value={globalFormData.national_address}
+                    onChange={(e) => setGlobalFormData({...globalFormData, national_address: e.target.value})}
+                    placeholder={isRTL ? 'أدخل العنوان الوطني أو عنوان مختصر للتسليم' : 'Enter national address or short delivery address'}
+                    rows={2}
+                  />
                 </div>
               </CardContent>
             </Card>
