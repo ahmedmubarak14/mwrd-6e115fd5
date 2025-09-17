@@ -81,7 +81,7 @@ export const SimpleRequestForm = () => {
         description: "Request created successfully!"
       });
       
-      navigate('/requests');
+      navigate('/client/requests');
     } catch (error) {
       console.error('Error creating request:', error);
       toast({
@@ -239,7 +239,7 @@ export const SimpleRequestForm = () => {
             <Button
               type="button"
               variant="outline"
-              onClick={() => navigate('/requests')}
+              onClick={() => navigate('/client/requests')}
               className="flex-1"
             >
               Cancel
