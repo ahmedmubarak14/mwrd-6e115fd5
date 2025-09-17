@@ -183,24 +183,26 @@ export const ProcurementRequestForm = () => {
           budget_max: request.budget_max ? parseFloat(request.budget_max) : undefined
         });
         
+        const descriptionParts = [
+          request.description.trim(),
+          request.payment_terms ? `Payment terms: ${request.payment_terms}` : null,
+          request.delivery_requirements ? `Delivery requirements: ${request.delivery_requirements}` : null,
+          request.quality_standards ? `Quality standards: ${request.quality_standards}` : null,
+          (Array.isArray(request.categories) && request.categories.length ? `Categories: ${request.categories.join(', ')}` : null),
+          (request.boqItems?.length ? `BOQ items count: ${request.boqItems.length}` : null),
+          (globalFormData.national_address?.trim() ? `Address: ${globalFormData.national_address.trim()}` : null)
+        ].filter(Boolean).join('\n\n');
+        
         const requestData = {
           title: request.title.trim(),
-          description: request.description.trim(),
+          description: descriptionParts,
           category: request.categories[0], // Primary category
           budget_min: request.budget_min ? parseFloat(request.budget_min) : undefined,
           budget_max: request.budget_max ? parseFloat(request.budget_max) : undefined,
           currency: globalFormData.currency,
           location: globalFormData.location?.trim() || null,
           deadline: request.deadline?.toISOString().split('T')[0] || null,
-          urgency: request.urgency,
-          requirements: {
-            categories: request.categories,
-            boq_items: request.boqItems,
-            payment_terms: request.payment_terms || null,
-            delivery_requirements: request.delivery_requirements || null,
-            quality_standards: request.quality_standards || null,
-            national_address: globalFormData.national_address?.trim() || null
-          }
+          urgency: request.urgency
         };
         
         console.log(`Request data for request ${index + 1}:`, requestData);

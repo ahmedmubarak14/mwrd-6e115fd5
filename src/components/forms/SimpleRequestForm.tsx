@@ -64,16 +64,16 @@ export const SimpleRequestForm = () => {
 
     setLoading(true);
     try {
+      const descriptionToSend = formData.description + (formData.national_address?.trim() ? `\n\nAddress: ${formData.national_address.trim()}` : '');
       await createRequest({
         title: formData.title,
-        description: formData.description,
+        description: descriptionToSend,
         category: formData.category,
         budget_min: formData.budget_min ? parseFloat(formData.budget_min) : undefined,
         budget_max: formData.budget_max ? parseFloat(formData.budget_max) : undefined,
         location: formData.location || undefined,
         deadline: formData.deadline?.toISOString().split('T')[0] || undefined,
-        urgency: formData.urgency,
-        requirements: formData.national_address?.trim() ? { national_address: formData.national_address.trim() } : undefined
+        urgency: formData.urgency
       });
       
       toast({

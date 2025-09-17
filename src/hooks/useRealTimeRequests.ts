@@ -240,9 +240,6 @@ export const useRealTimeRequests = () => {
         urgency: requestData.urgency
       };
 
-      if (requestData.requirements && Object.keys(requestData.requirements).length > 0) {
-        insertData.requirements = requestData.requirements; // let DB default handle otherwise
-      }
 
       logger.debug('Processed insert data:', insertData);
 
