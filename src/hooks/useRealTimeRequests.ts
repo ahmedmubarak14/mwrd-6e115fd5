@@ -273,7 +273,7 @@ export const useRealTimeRequests = () => {
           user_id: user.id,
           action: 'request_created',
           entity_type: 'requests',
-          entity_id: crypto.randomUUID?.() || undefined,
+          entity_id: data.id,
           new_values: insertData
         });
       } catch (activityError) {
