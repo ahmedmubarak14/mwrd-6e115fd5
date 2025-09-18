@@ -227,25 +227,38 @@ export const useRealTimeRequests = () => {
       const budgetMin = requestData.budget_min && !isNaN(requestData.budget_min) ? requestData.budget_min : null;
       const budgetMax = requestData.budget_max && !isNaN(requestData.budget_max) ? requestData.budget_max : null;
 
+      // Build insert data without undefined/null values that could cause issues
       const insertData: any = { 
         client_id: user.id,
         title: requestData.title.trim(),
         description: requestData.description.trim(),
         category: requestData.category,
-        budget_min: budgetMin,
-        budget_max: budgetMax,
         currency: requestData.currency || 'SAR',
-        location: processedLocation,
-        deadline: requestData.deadline || null,
         urgency: requestData.urgency
       };
+
+      // Only add fields that have actual values to avoid null constraint issues
+      if (budgetMin !== null && budgetMin !== undefined) {
+        insertData.budget_min = budgetMin;
+      }
+      if (budgetMax !== null && budgetMax !== undefined) {
+        insertData.budget_max = budgetMax;
+      }
+      if (processedLocation) {
+        insertData.location = processedLocation;
+      }
+      if (requestData.deadline) {
+        insertData.deadline = requestData.deadline;
+      }
 
 
       logger.debug('Processed insert data:', insertData);
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('requests')
-        .insert([insertData]);
+        .insert([insertData])
+        .select('id')
+        .single();
 
       if (error) {
         logger.error('Supabase error creating request:', { error, insertData });
