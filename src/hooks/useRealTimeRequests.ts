@@ -234,7 +234,9 @@ export const useRealTimeRequests = () => {
         description: requestData.description.trim(),
         category: requestData.category,
         currency: requestData.currency || 'SAR',
-        urgency: requestData.urgency
+        urgency: requestData.urgency,
+        // ensure jsonb column always receives an object, not undefined
+        requirements: requestData.requirements ?? {}
       };
 
       // Only add fields that have actual values to avoid null constraint issues
@@ -254,11 +256,9 @@ export const useRealTimeRequests = () => {
 
       logger.debug('Processed insert data:', insertData);
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('requests')
-        .insert([insertData])
-        .select('id')
-        .single();
+        .insert([insertData]);
 
       if (error) {
         logger.error('Supabase error creating request:', { error, insertData });
@@ -273,7 +273,7 @@ export const useRealTimeRequests = () => {
           user_id: user.id,
           action: 'request_created',
           entity_type: 'requests',
-          entity_id: data.id,
+          entity_id: null,
           new_values: insertData
         });
       } catch (activityError) {
