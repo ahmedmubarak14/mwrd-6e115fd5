@@ -201,7 +201,7 @@ export const ProcurementRequestForm = () => {
           budget_max: request.budget_max ? parseFloat(request.budget_max) : undefined,
           currency: globalFormData.currency,
           location: globalFormData.location?.trim() || null,
-          deadline: request.deadline?.toISOString().split('T')[0] || null,
+          deadline: request.deadline?.toISOString() || null,
           urgency: request.urgency
         };
         

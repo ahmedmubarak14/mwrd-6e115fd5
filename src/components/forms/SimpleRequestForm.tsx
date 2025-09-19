@@ -72,7 +72,7 @@ export const SimpleRequestForm = () => {
         budget_min: formData.budget_min ? parseFloat(formData.budget_min) : undefined,
         budget_max: formData.budget_max ? parseFloat(formData.budget_max) : undefined,
         location: formData.location || undefined,
-        deadline: formData.deadline?.toISOString().split('T')[0] || undefined,
+        deadline: formData.deadline?.toISOString() || undefined,
         urgency: formData.urgency
       });
       
@@ -86,7 +86,7 @@ export const SimpleRequestForm = () => {
       console.error('Error creating request:', error);
       toast({
         title: "Error",
-        description: "Failed to create request. Please try again.",
+        description: (error as any)?.message || "Failed to create request. Please try again.",
         variant: "destructive"
       });
     } finally {
