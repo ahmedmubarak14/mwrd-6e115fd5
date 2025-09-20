@@ -64,62 +64,44 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
 
   const loadOffers = async () => {
     setLoading(true);
-    // Use mock data since requests/offers tables are not available in generated types
-    const mockRequest = {
-      client_id: 'sample-client',
-      title: 'Sample Request',
-      description: 'This is a sample request',
-      category: 'construction'
-    };
-    
-    const mockOffers = [
-      {
-        id: '1',
-        request_id: requestId,
-        vendor_id: 'vendor1',
-        title: 'Sample Offer 1',
-        description: 'First offer',
-        price: 5000,
-        currency: 'SAR',
-        delivery_time_days: 30,
-        status: 'pending',
-        admin_approval_status: 'approved',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        client_approval_status: 'pending',
-        user_profiles: {
-          full_name: 'John Vendor',
-          company_name: 'Vendor Co',
-          email: 'vendor@example.com'
-        },
-        request: mockRequest
-      },
-      {
-        id: '2',
-        request_id: requestId,
-        vendor_id: 'vendor2',
-        title: 'Sample Offer 2',
-        description: 'Second offer',
-        price: 4500,
-        currency: 'SAR',
-        delivery_time_days: 25,
-        status: 'pending',
-        admin_approval_status: 'approved',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        client_approval_status: 'pending',
-        user_profiles: {
-          full_name: 'Jane Vendor',
-          company_name: 'Vendor LLC',
-          email: 'jane@example.com'
-        },
-        request: mockRequest
-      }
-    ];
+    try {
+      // Fetch real offers from database
+      const { data: offersData, error } = await supabase
+        .from('offers')
+        .select(`
+          *,
+          requests(title, description, client_id, category, location),
+          user_profiles:vendor_id(full_name, company_name, email)
+        `)
+        .eq('request_id', requestId)
+        .order('created_at', { ascending: false });
 
-    setRequestOwnerId(mockRequest.client_id);
-    setOffers(mockOffers as any);
-    setLoading(false);
+      if (error) {
+        console.error('Error fetching offers:', error);
+        toast({
+          title: isRTL ? 'خطأ' : 'Error',
+          description: isRTL ? 'فشل في تحميل العروض' : 'Failed to load offers',
+          variant: 'destructive'
+        });
+        return;
+      }
+
+      // Get the request owner ID from the first offer's request data
+      if (offersData && offersData.length > 0 && offersData[0].requests) {
+        setRequestOwnerId(offersData[0].requests.client_id);
+      }
+
+      setOffers((offersData || []) as OfferRow[]);
+    } catch (error) {
+      console.error('Error in loadOffers:', error);
+      toast({
+        title: isRTL ? 'خطأ' : 'Error',
+        description: isRTL ? 'فشل في تحميل العروض' : 'Failed to load offers',
+        variant: 'destructive'
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {

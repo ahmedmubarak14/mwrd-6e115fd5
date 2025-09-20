@@ -56,24 +56,31 @@ export const OfferDetailsModal = ({ children, offerId, userRole = 'client', onUp
     setLoading(true);
     setPermissionError(null);
     try {
-      // Use mock data since offers table is not available in generated types
-      const mockOffer = {
-        id: offerId,
-        title: 'Sample Offer',
-        description: 'This is a sample offer',
-        price: 5000,
-        vendor_id: 'sample-vendor',
-        status: 'pending',
-        created_at: new Date().toISOString(),
-        request: {
-          client_id: 'sample-client'
+      // Fetch real offer from database
+      const { data: offerData, error } = await supabase
+        .from('offers')
+        .select(`
+          *,
+          requests(title, description, client_id, category),
+          user_profiles:vendor_id(full_name, company_name, email, avatar_url)
+        `)
+        .eq('id', offerId)
+        .single();
+
+      if (error) {
+        console.error('Error fetching offer:', error);
+        if (error.code === 'PGRST116') {
+          setPermissionError('Offer not found or access denied');
+        } else {
+          setPermissionError('Failed to load offer details');
         }
-      };
+        return;
+      }
 
-      setOffer(mockOffer as any);
+      setOffer(offerData as OfferRow);
 
-      // Mock permissions check
-      const isRequestOwner = user?.id === mockOffer.request?.client_id;
+      // Check permissions
+      const isRequestOwner = user?.id === offerData.requests?.client_id;
       const isAdmin = userRole === 'admin';
       
       if (!isRequestOwner && !isAdmin) {
@@ -84,8 +91,9 @@ export const OfferDetailsModal = ({ children, offerId, userRole = 'client', onUp
       requestAnimationFrame(() => {
         scrollRef.current?.scrollTo({ top: 0, behavior: 'auto' });
       });
-    } catch (err: any) {
-      console.error('Error fetching offer details:', err);
+    } catch (error) {
+      console.error('Error in fetchOffer:', error);
+      setPermissionError('An unexpected error occurred');
       toast({ 
         title: isRTL ? 'خطأ' : 'Error', 
         description: isRTL ? 'خطأ في جلب تفاصيل العرض' : 'Failed to fetch offer details', 

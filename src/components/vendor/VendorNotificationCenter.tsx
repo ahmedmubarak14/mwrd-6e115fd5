@@ -48,59 +48,8 @@ export const VendorNotificationCenter = () => {
   const { notifications, markAsRead, markAllAsRead, deleteNotification } = useRealTimeNotifications();
   const { t, isRTL } = useLanguage();
 
-  // Mock notifications for demo
-  const mockNotifications: Notification[] = [
-    {
-      id: '1',
-      type: 'offer_accepted',
-      title: t('vendor.notifications.offerAccepted'),
-      message: t('vendor.notifications.sampleMessage1') || 'Your offer for Construction Project Alpha has been accepted!',
-      timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-      read: false,
-      priority: 'high',
-      actionUrl: '/vendor/offers/1'
-    },
-    {
-      id: '2',
-      type: 'new_request',
-      title: t('vendor.notifications.newRequest'),
-      message: t('vendor.notifications.sampleMessage2') || 'New procurement request matching your expertise in Engineering',
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
-      read: false,
-      priority: 'medium',
-      actionUrl: '/vendor/requests/2'
-    },
-    {
-      id: '3',
-      type: 'payment_received',
-      title: t('vendor.notifications.paymentReceived'),
-      message: t('vendor.notifications.sampleMessage3') || 'Payment of $15,000 received for Project Beta',
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24), // 1 day ago
-      read: true,
-      priority: 'high',
-      actionUrl: '/vendor/transactions/3'
-    },
-    {
-      id: '4',
-      type: 'message',
-      title: t('vendor.notifications.newMessage'),
-      message: t('vendor.notifications.sampleMessage4') || 'You have 3 new messages from clients',
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2), // 2 days ago
-      read: true,
-      priority: 'medium',
-      actionUrl: '/vendor/messages'
-    },
-    {
-      id: '5',
-      type: 'rating',
-      title: t('vendor.notifications.newRating'),
-      message: t('vendor.notifications.sampleMessage5') || 'You received a 5-star rating from ABC Construction',
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24 * 3), // 3 days ago
-      read: true,
-      priority: 'low',
-      actionUrl: '/vendor/reviews/5'
-    }
-  ];
+  // Filter and display real notifications only
+  const displayNotifications = notifications?.length > 0 ? notifications : [];
 
   const getNotificationIcon = (type: string) => {
     switch (type) {
@@ -147,13 +96,13 @@ export const VendorNotificationCenter = () => {
     }
   };
 
-  const filteredNotifications = mockNotifications.filter(notification => {
+  const filteredNotifications = displayNotifications.filter(notification => {
     if (activeTab !== 'all' && activeTab !== notification.type) return false;
     if (filterPriority !== 'all' && filterPriority !== notification.priority) return false;
     return true;
   });
 
-  const unreadCount = mockNotifications.filter(n => !n.read).length;
+  const unreadCount = displayNotifications.filter(n => !n.read).length;
 
   return (
     <div className="space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
@@ -318,7 +267,7 @@ export const VendorNotificationCenter = () => {
                                     {notification.message}
                                   </p>
                                    <p className="text-xs text-muted-foreground">
-                                     {formatDistanceToNow(notification.timestamp, { addSuffix: true })}
+                                     {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
                                    </p>
                                 </div>
                                 
@@ -335,29 +284,20 @@ export const VendorNotificationCenter = () => {
                                         {t('vendor.notifications.markRead')}
                                       </DropdownMenuItem>
                                     )}
-                                    {notification.actionUrl && (
-                                      <DropdownMenuItem onClick={() => {}}>
-                                        <FileText className="w-4 h-4 mr-2" />
-                                        {t('vendor.notifications.viewDetails')}
-                                      </DropdownMenuItem>
-                                    )}
-                                    <DropdownMenuItem onClick={() => {}}>
-                                      <X className="w-4 h-4 mr-2" />
-                                      {t('vendor.notifications.delete')}
-                                    </DropdownMenuItem>
+                                     {/* No additional actions for now */}
+                                     <DropdownMenuItem onClick={() => {}}>
+                                       <FileText className="w-4 w-4 mr-2" />
+                                       {t('vendor.notifications.viewDetails')}
+                                     </DropdownMenuItem>
+                                     <DropdownMenuItem onClick={() => {}}>
+                                       <X className="w-4 h-4 mr-2" />
+                                       {t('vendor.notifications.delete')}
+                                     </DropdownMenuItem>
                                   </DropdownMenuContent>
                                 </DropdownMenu>
                               </div>
                             </div>
                           </div>
-                          
-                          {notification.actionUrl && (
-                            <div className="mt-3 ml-12">
-                              <Button variant="outline" size="sm">
-                                {t('vendor.notifications.viewDetails')}
-                              </Button>
-                            </div>
-                          )}
                         </div>
                       );
                     })}
