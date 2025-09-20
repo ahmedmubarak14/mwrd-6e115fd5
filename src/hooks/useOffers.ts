@@ -68,9 +68,9 @@ export const useOffers = (requestId?: string) => {
         query = query.eq('request_id', requestId);
       } else {
         // If no requestId, show offers based on user role
-        if (userProfile?.role === 'vendor' && userProfile?.id) {
-          // Vendors: see their own offers by vendor profile id
-          query = query.eq('vendor_id', userProfile.id);
+        if (userProfile?.role === 'vendor' && user?.id) {
+          // Vendors: see their own offers by auth user id (vendor_id references user_profiles.user_id)
+          query = query.eq('vendor_id', user.id);
         } else {
           // For clients, show all offers for their requests (client_id stores auth.uid())
           const { data: userRequests } = await supabase
@@ -210,7 +210,7 @@ export const useOffers = (requestId?: string) => {
       const { data, error } = await supabase
         .from('offers')
         .insert([{
-          vendor_id: userProfile.id,
+          vendor_id: user.id,
           title: offerData.title,
           description: offerData.description,
           price: offerData.price,

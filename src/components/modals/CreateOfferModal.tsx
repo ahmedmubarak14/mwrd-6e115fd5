@@ -135,7 +135,7 @@ export const CreateOfferModal = ({ children, requestId }: CreateOfferModalProps)
         .from('offers')
         .insert([{
           request_id: formData.requestId,
-          vendor_id: vendorProfile.id,
+          vendor_id: authUserId,
           title: formData.title.trim(),
           description: formData.description.trim(),
           price: priceNum,

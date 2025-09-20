@@ -116,7 +116,7 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
         .from('offers')
         .insert({
           request_id: request.id,
-          vendor_id: vendorProfile.id,
+          vendor_id: authUserId,
           title: formData.title.trim(),
           description: formData.description.trim(),
           price: priceNum,
@@ -145,7 +145,7 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
           data: {
             offer_id: offer.id,
             request_id: request.id,
-            vendor_id: vendorProfile.id
+            vendor_id: authUserId
           }
         });
       if (notifError) {
