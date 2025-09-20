@@ -65,10 +65,45 @@ export const CreateOfferModal = ({ children, requestId }: CreateOfferModalProps)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!user) {
+    
+    if (!user?.id) {
       toast({
         title: isRTL ? "خطأ" : "Error",
         description: isRTL ? "يجب تسجيل الدخول أولاً" : "Please log in to create an offer",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Get the user's profile ID for vendor_id
+    const { data: vendorProfile, error: profileError } = await supabase
+      .from('user_profiles')
+      .select('id, role, status')
+      .eq('user_id', user.id)
+      .single();
+
+    if (profileError || !vendorProfile) {
+      toast({
+        title: isRTL ? "خطأ" : "Error",
+        description: isRTL ? "لم يتم العثور على ملف المورد" : "Vendor profile not found",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (vendorProfile.role !== 'vendor') {
+      toast({
+        title: isRTL ? "خطأ" : "Error",
+        description: isRTL ? "يمكن للموردين فقط إنشاء العروض" : "Only vendors can create offers",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (vendorProfile.status !== 'approved') {
+      toast({
+        title: isRTL ? "خطأ" : "Error", 
+        description: isRTL ? "يجب الموافقة على حسابك أولاً" : "Your account must be approved first",
         variant: "destructive"
       });
       return;
@@ -86,11 +121,18 @@ export const CreateOfferModal = ({ children, requestId }: CreateOfferModalProps)
     setIsLoading(true);
     
     try {
+      console.log('Creating offer with data:', {
+        request_id: formData.requestId,
+        vendor_id: vendorProfile.id,
+        price: parseFloat(formData.price),
+        delivery_time_days: parseInt(formData.deliveryTime)
+      });
+      
       const { error } = await supabase
         .from('offers')
         .insert([{
           request_id: formData.requestId,
-          vendor_id: user.id,
+          vendor_id: vendorProfile.id,
           title: formData.title,
           description: formData.description,
           price: parseFloat(formData.price),
@@ -102,8 +144,11 @@ export const CreateOfferModal = ({ children, requestId }: CreateOfferModalProps)
         }]);
 
       if (error) {
+        console.error('Database error creating offer:', error);
         throw error;
       }
+      
+      console.log('Offer created successfully');
 
       toast({
         title: isRTL ? "تم إنشاء العرض بنجاح" : "Offer Created Successfully",
