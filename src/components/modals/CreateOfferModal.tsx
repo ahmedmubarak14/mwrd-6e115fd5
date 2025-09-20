@@ -41,16 +41,24 @@ export const CreateOfferModal = ({ children, requestId }: CreateOfferModalProps)
 
   const fetchAvailableRequests = async () => {
     try {
-      // Use mock data since requests table is not available in generated types
-      const mockRequests = [
-        { id: '1', title: 'Construction Project', description: 'Building construction', category: 'construction' },
-        { id: '2', title: 'IT Services', description: 'Software development', category: 'technology' },
-        { id: '3', title: 'Marketing Campaign', description: 'Digital marketing', category: 'marketing' }
-      ];
+      const { data, error } = await supabase
+        .from('requests')
+        .select('id, title, description, category')
+        .eq('admin_approval_status', 'approved')
+        .eq('status', 'new');
       
-      setRequests(mockRequests);
+      if (error) {
+        throw error;
+      }
+      
+      setRequests(data || []);
     } catch (error: any) {
       console.error('Error fetching requests:', error);
+      toast({
+        title: isRTL ? "خطأ" : "Error",
+        description: isRTL ? "فشل في تحميل الطلبات" : "Failed to load requests",
+        variant: "destructive"
+      });
     }
   };
 
@@ -78,20 +86,24 @@ export const CreateOfferModal = ({ children, requestId }: CreateOfferModalProps)
     setIsLoading(true);
     
     try {
-      // Use mock data since offers table is not available in generated types
-      const mockOffer = {
-        id: formData.requestId,
-        request_id: formData.requestId,
-        vendor_id: user.id,
-        title: formData.title,
-        description: formData.description,
-        price: parseInt(formData.price),
-        delivery_time: parseInt(formData.deliveryTime),
-        status: 'pending',
-        created_at: new Date().toISOString()
-      };
+      const { error } = await supabase
+        .from('offers')
+        .insert([{
+          request_id: formData.requestId,
+          vendor_id: user.id,
+          title: formData.title,
+          description: formData.description,
+          price: parseFloat(formData.price),
+          delivery_time_days: parseInt(formData.deliveryTime),
+          currency: 'SAR',
+          status: 'pending',
+          client_approval_status: 'pending',
+          admin_approval_status: 'approved'
+        }]);
 
-      console.log('Mock offer created:', mockOffer);
+      if (error) {
+        throw error;
+      }
 
       toast({
         title: isRTL ? "تم إنشاء العرض بنجاح" : "Offer Created Successfully",
