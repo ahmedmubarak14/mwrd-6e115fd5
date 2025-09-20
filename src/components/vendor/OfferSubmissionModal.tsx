@@ -103,8 +103,14 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
         .select('id, role, status')
         .eq('user_id', authUserId)
         .single();
-      if (vpError || !vendorProfile) throw new Error('Vendor profile not found');
+      if (vpError || !vendorProfile) throw new Error(vpError?.message || 'Vendor profile not found');
       if (vendorProfile.role !== 'vendor' || vendorProfile.status !== 'approved') throw new Error('Vendor not approved');
+
+      const priceNum = parseFloat(formData.price);
+      const deliveryDaysNum = parseInt(formData.delivery_time_days);
+      if (Number.isNaN(priceNum) || Number.isNaN(deliveryDaysNum)) {
+        throw new Error('Invalid numeric values for price or delivery time');
+      }
 
       const { data: offer, error } = await supabase
         .from('offers')
@@ -113,9 +119,9 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
           vendor_id: vendorProfile.id,
           title: formData.title.trim(),
           description: formData.description.trim(),
-          price: parseFloat(formData.price),
+          price: priceNum,
           currency: formData.currency || 'SAR',
-          delivery_time_days: parseInt(formData.delivery_time_days),
+          delivery_time_days: deliveryDaysNum,
           status: 'pending',
           client_approval_status: 'pending',
           admin_approval_status: 'approved'
@@ -124,9 +130,10 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
         .single();
 
       if (error) throw error;
+      if (!offer) throw new Error('Offer creation did not return a row');
 
-      // Create notification for client
-      await supabase
+      // Best-effort notification (non-blocking)
+      const { error: notifError } = await supabase
         .from('notifications')
         .insert({
           user_id: request.client_id,
@@ -138,9 +145,12 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
           data: {
             offer_id: offer.id,
             request_id: request.id,
-            vendor_id: authUserId
+            vendor_id: vendorProfile.id
           }
         });
+      if (notifError) {
+        console.warn('Notification insert failed (continuing):', notifError);
+      }
 
       showSuccess('Offer submitted successfully!');
       onSuccess?.();
@@ -160,7 +170,8 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
       });
     } catch (error: any) {
       console.error('Error submitting offer:', error);
-      showError(t('common.failedToSubmit'));
+      const msg = error?.message || t('common.failedToSubmit');
+      showError(msg);
     } finally {
       setLoading(false);
     }

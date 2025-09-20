@@ -121,42 +121,42 @@ export const CreateOfferModal = ({ children, requestId }: CreateOfferModalProps)
     setIsLoading(true);
     
     try {
-      // Use auth user id to satisfy RLS (vendor_id must equal auth.uid())
       const { data: authData } = await supabase.auth.getUser();
       const authUserId = authData?.user?.id;
-      if (!authUserId) {
-        throw new Error('Not authenticated');
+      if (!authUserId) throw new Error('Not authenticated');
+
+      const priceNum = parseFloat(formData.price);
+      const daysNum = parseInt(formData.deliveryTime);
+      if (Number.isNaN(priceNum) || Number.isNaN(daysNum)) {
+        throw new Error('Invalid price or delivery time');
       }
 
-      console.log('Creating offer with data:', {
-        request_id: formData.requestId,
-        vendor_id: vendorProfile.id,
-        price: parseFloat(formData.price),
-        delivery_time_days: parseInt(formData.deliveryTime)
-      });
-      
-      const { error } = await supabase
+      const { data: created, error: insertError } = await supabase
         .from('offers')
         .insert([{
           request_id: formData.requestId,
           vendor_id: vendorProfile.id,
-          title: formData.title,
-          description: formData.description,
-          price: parseFloat(formData.price),
-          delivery_time_days: parseInt(formData.deliveryTime),
+          title: formData.title.trim(),
+          description: formData.description.trim(),
+          price: priceNum,
+          delivery_time_days: daysNum,
           currency: 'SAR',
           status: 'pending',
           client_approval_status: 'pending',
           admin_approval_status: 'approved'
-        }]);
+        }])
+        .select()
+        .single();
 
-      if (error) {
-        console.error('Database error creating offer:', error);
-        throw error;
+      if (insertError) {
+        console.error('Database error creating offer:', insertError);
+        throw insertError;
+      }
+
+      if (!created?.id) {
+        throw new Error('Offer was created but no row returned');
       }
       
-      console.log('Offer created successfully');
-
       toast({
         title: isRTL ? "تم إنشاء العرض بنجاح" : "Offer Created Successfully",
         description: isRTL ? "تم إرسال عرضك وسيتم إشعار العميل" : "Your offer has been submitted and the client will be notified",
@@ -171,9 +171,10 @@ export const CreateOfferModal = ({ children, requestId }: CreateOfferModalProps)
         deliveryTime: ""
       });
     } catch (error: any) {
+      const description = error?.message || (isRTL ? "فشل إنشاء العرض" : "Failed to create offer");
       toast({
         title: isRTL ? "خطأ في إنشاء العرض" : "Error Creating Offer",
-        description: error.message,
+        description,
         variant: "destructive"
       });
     } finally {
