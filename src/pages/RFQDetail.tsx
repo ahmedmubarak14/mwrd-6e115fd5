@@ -398,9 +398,17 @@ export default function RFQDetail() {
                   <CardContent className="p-6">
                     <div className="flex justify-between items-start mb-4">
                       <div>
-                        <h4 className="font-semibold">
-                          {language === 'ar' ? 'عرض من مورد' : 'Bid from Vendor'}
-                        </h4>
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="font-semibold">
+                            {bid.vendor_profile?.company_name || bid.vendor_profile?.full_name || 
+                             (language === 'ar' ? 'عرض من مورد' : 'Bid from Vendor')}
+                          </h4>
+                          {bid.vendor_profile?.verification_status === 'approved' && (
+                            <Badge variant="outline" className="text-xs">
+                              {language === 'ar' ? 'معتمد' : 'Verified'}
+                            </Badge>
+                          )}
+                        </div>
                         <p className="text-sm text-muted-foreground">
                           {language === 'ar' ? 'مقدم في' : 'Submitted on'} {format(new Date(bid.created_at), 'PPP')}
                         </p>
@@ -445,6 +453,33 @@ export default function RFQDetail() {
                       </p>
                       <p className="text-sm">{bid.proposal}</p>
                     </div>
+                    
+                    {bid.vendor_profile && (
+                      <div className="mb-4">
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {language === 'ar' ? 'معلومات المورد' : 'Vendor Information'}
+                        </p>
+                        <div className="flex items-center gap-3">
+                          {bid.vendor_profile.avatar_url && (
+                            <img 
+                              src={bid.vendor_profile.avatar_url} 
+                              alt="Vendor avatar" 
+                              className="w-8 h-8 rounded-full object-cover"
+                            />
+                          )}
+                          <div>
+                            <p className="text-sm font-medium">
+                              {bid.vendor_profile.company_name || bid.vendor_profile.full_name}
+                            </p>
+                            {bid.vendor_profile.verification_status === 'approved' && (
+                              <Badge variant="outline" className="text-xs">
+                                {language === 'ar' ? 'مورد معتمد' : 'Verified Vendor'}
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               ))}

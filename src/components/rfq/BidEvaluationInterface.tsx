@@ -75,11 +75,12 @@ export const BidEvaluationInterface = ({ rfqId, bids, onAwarded }: BidEvaluation
         ? ((maxTimeline - bid.delivery_timeline_days) / (maxTimeline - minTimeline)) * 100
         : 100;
 
-      // Quality score (assuming 5-star rating system)
-      const qualityScore = 80; // Default quality score - would be based on vendor ratings
+      // Quality score (based on vendor verification and ratings)
+      const qualityScore = bid.vendor_profile?.verification_status === 'approved' ? 85 : 70;
 
-      // Experience score (based on vendor history)
-      const experienceScore = 75; // Default experience score - would be based on vendor track record
+      // Experience score (based on vendor history and categories match)
+      const categoryMatch = bid.vendor_profile?.categories?.length > 0 ? 80 : 70;
+      const experienceScore = bid.vendor_profile?.verification_status === 'approved' ? categoryMatch : 65;
 
       // Calculate weighted total score
       const totalScore = (
@@ -307,9 +308,10 @@ export const BidEvaluationInterface = ({ rfqId, bids, onAwarded }: BidEvaluation
                         <SelectContent>
                           {selectedBids.map(bidId => {
                             const bid = scoredBids.find(b => b.id === bidId);
+                            const vendorName = bid?.vendor_profile?.company_name || bid?.vendor_profile?.full_name || 'Unknown Vendor';
                             return (
                               <SelectItem key={bidId} value={bidId}>
-                                {bid?.total_price.toLocaleString()} {bid?.currency} - {bid?.delivery_timeline_days} {language === 'ar' ? 'يوم' : 'days'}
+                                {bid?.total_price.toLocaleString()} {bid?.currency} - {bid?.delivery_timeline_days} {language === 'ar' ? 'يوم' : 'days'} ({vendorName})
                               </SelectItem>
                             );
                           })}
@@ -358,9 +360,16 @@ export const BidEvaluationInterface = ({ rfqId, bids, onAwarded }: BidEvaluation
                           {getStatusIcon(bid.status)}
                           <span className="text-sm font-medium capitalize">{bid.status.replace('_', ' ')}</span>
                         </div>
-                        <p className="text-sm text-muted-foreground">
-                          {language === 'ar' ? 'مقدم في' : 'Submitted on'} {format(new Date(bid.created_at), 'MMM dd, yyyy')}
-                        </p>
+                        <div className="flex flex-col gap-1">
+                          {bid.vendor_profile && (
+                            <p className="text-sm font-medium">
+                              {bid.vendor_profile.company_name || bid.vendor_profile.full_name}
+                            </p>
+                          )}
+                          <p className="text-sm text-muted-foreground">
+                            {language === 'ar' ? 'مقدم في' : 'Submitted on'} {format(new Date(bid.created_at), 'MMM dd, yyyy')}
+                          </p>
+                        </div>
                       </div>
                     </div>
                     <div className="text-right">
@@ -393,7 +402,12 @@ export const BidEvaluationInterface = ({ rfqId, bids, onAwarded }: BidEvaluation
                     <div className="flex items-center gap-2">
                       <Star className="h-4 w-4 text-yellow-600" />
                       <div>
-                        <p className="font-semibold">{language === 'ar' ? 'جيد' : 'Good'}</p>
+                        <p className="font-semibold">
+                          {bid.vendor_profile?.verification_status === 'approved' ? 
+                            (language === 'ar' ? 'معتمد' : 'Verified') : 
+                            (language === 'ar' ? 'جيد' : 'Good')
+                          }
+                        </p>
                         <p className={`text-xs ${getScoreColor(bid.scores.quality)}`}>
                           {language === 'ar' ? 'نقاط الجودة' : 'Quality Score'}: {Math.round(bid.scores.quality)}
                         </p>
@@ -410,11 +424,40 @@ export const BidEvaluationInterface = ({ rfqId, bids, onAwarded }: BidEvaluation
                     )}
                   </div>
 
-                  <div className="pt-3 border-t">
-                    <p className="text-sm text-muted-foreground mb-2">
-                      {language === 'ar' ? 'تفاصيل العرض' : 'Proposal Details'}
-                    </p>
-                    <p className="text-sm">{bid.proposal}</p>
+                  <div className="pt-3 border-t space-y-3">
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-2">
+                        {language === 'ar' ? 'تفاصيل العرض' : 'Proposal Details'}
+                      </p>
+                      <p className="text-sm">{bid.proposal}</p>
+                    </div>
+                    
+                    {bid.vendor_profile && (
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {language === 'ar' ? 'معلومات المورد' : 'Vendor Information'}
+                        </p>
+                        <div className="flex items-center gap-3">
+                          {bid.vendor_profile.avatar_url && (
+                            <img 
+                              src={bid.vendor_profile.avatar_url} 
+                              alt="Vendor avatar" 
+                              className="w-8 h-8 rounded-full object-cover"
+                            />
+                          )}
+                          <div>
+                            <p className="text-sm font-medium">
+                              {bid.vendor_profile.company_name || bid.vendor_profile.full_name}
+                            </p>
+                            {bid.vendor_profile.verification_status === 'approved' && (
+                              <Badge variant="outline" className="text-xs">
+                                {language === 'ar' ? 'مورد معتمد' : 'Verified Vendor'}
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>

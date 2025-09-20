@@ -19,6 +19,13 @@ export interface Bid {
   expires_at?: string;
   created_at: string;
   updated_at: string;
+  vendor_profile?: {
+    full_name: string;
+    company_name: string;
+    avatar_url: string;
+    verification_status: string;
+    categories: string[];
+  };
 }
 
 export interface CreateBidData {
@@ -45,7 +52,16 @@ export const useBids = () => {
       setLoading(true);
       let query = (supabase as any)
         .from('bids')
-        .select('*')
+        .select(`
+          *,
+          vendor_profile:user_profiles!vendor_id(
+            full_name,
+            company_name,
+            avatar_url,
+            verification_status,
+            categories
+          )
+        `)
         .order('created_at', { ascending: false });
 
       if (rfqId) {
@@ -225,7 +241,16 @@ export const useBids = () => {
     try {
       const { data, error } = await (supabase as any)
         .from('bids')
-        .select('*')
+        .select(`
+          *,
+          vendor_profile:user_profiles!vendor_id(
+            full_name,
+            company_name,
+            avatar_url,
+            verification_status,
+            categories
+          )
+        `)
         .eq('rfq_id', rfqId)
         .order('created_at', { ascending: false });
 
