@@ -46,6 +46,7 @@ export interface CreateRFQData {
   requirements?: any;
   evaluation_criteria?: any;
   terms_and_conditions?: string;
+  product_id?: string; // For product-specific quote requests
 }
 
 export const useRFQs = () => {
@@ -123,6 +124,7 @@ export const useRFQs = () => {
           requirements: rfqData.requirements || {},
           evaluation_criteria: rfqData.evaluation_criteria || {},
           terms_and_conditions: rfqData.terms_and_conditions,
+          product_id: rfqData.product_id, // Include product_id for product-specific RFQs
         }])
         .select()
         .single();

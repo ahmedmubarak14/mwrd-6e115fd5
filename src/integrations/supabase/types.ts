@@ -1647,6 +1647,7 @@ export type Database = {
           invited_vendors: string[] | null
           is_public: boolean
           priority: Database["public"]["Enums"]["rfq_priority"]
+          product_id: string | null
           project_end_date: string | null
           project_start_date: string | null
           requirements: Json
@@ -1672,6 +1673,7 @@ export type Database = {
           invited_vendors?: string[] | null
           is_public?: boolean
           priority?: Database["public"]["Enums"]["rfq_priority"]
+          product_id?: string | null
           project_end_date?: string | null
           project_start_date?: string | null
           requirements?: Json
@@ -1697,6 +1699,7 @@ export type Database = {
           invited_vendors?: string[] | null
           is_public?: boolean
           priority?: Database["public"]["Enums"]["rfq_priority"]
+          product_id?: string | null
           project_end_date?: string | null
           project_start_date?: string | null
           requirements?: Json
@@ -1713,6 +1716,13 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "procurement_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rfqs_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_products"
             referencedColumns: ["id"]
           },
           {

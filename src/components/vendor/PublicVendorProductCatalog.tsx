@@ -25,6 +25,7 @@ import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { ProductQuoteRequestModal } from "@/components/modals/ProductQuoteRequestModal";
 
 interface PublicVendorProductCatalogProps {
   vendorId: string;
@@ -215,10 +216,12 @@ export const PublicVendorProductCatalog: React.FC<PublicVendorProductCatalogProp
               </DialogContent>
             </Dialog>
             
-            <Button size="sm" className="flex-1">
-              <Info className="h-4 w-4 mr-2" />
-              {isArabic ? 'طلب عرض' : 'Request Quote'}
-            </Button>
+            <ProductQuoteRequestModal product={product} vendorName={vendorName}>
+              <Button size="sm" className="flex-1">
+                <Info className="h-4 w-4 mr-2" />
+                {isArabic ? 'طلب عرض' : 'Request Quote'}
+              </Button>
+            </ProductQuoteRequestModal>
           </div>
         </div>
       </CardContent>
