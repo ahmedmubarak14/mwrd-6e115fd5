@@ -101,14 +101,11 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
           title: formData.title.trim(),
           description: formData.description.trim(),
           price: parseFloat(formData.price),
-          currency: formData.currency,
+          currency: formData.currency || 'SAR',
           delivery_time_days: parseInt(formData.delivery_time_days),
-          delivery_time_unit: formData.delivery_time_unit,
-          terms_and_conditions: formData.terms_and_conditions.trim(),
-          warranty_period: formData.warranty_period.trim(),
-          payment_terms: formData.payment_terms,
           status: 'pending',
-          client_approval_status: 'pending'
+          client_approval_status: 'pending',
+          admin_approval_status: 'approved'
         })
         .select()
         .single();
