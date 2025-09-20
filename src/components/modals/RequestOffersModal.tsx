@@ -65,13 +65,12 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
   const loadOffers = async () => {
     setLoading(true);
     try {
-      // Fetch real offers from database
+      // Fetch offers with simple structure - we'll resolve vendor info separately
       const { data: offersData, error } = await supabase
         .from('offers')
         .select(`
           *,
-          requests(title, description, client_id, category, location),
-          user_profiles:vendor_id(full_name, company_name, email)
+          requests(title, description, client_id, category, location)
         `)
         .eq('request_id', requestId)
         .order('created_at', { ascending: false });
@@ -89,6 +88,12 @@ export const RequestOffersModal = ({ children, requestId, requestTitle }: Reques
       // Get the request owner ID from the first offer's request data
       if (offersData && offersData.length > 0 && offersData[0].requests) {
         setRequestOwnerId(offersData[0].requests.client_id);
+      }
+
+      // Get vendor profile IDs and fetch their info
+      const vendorIds = (offersData || []).map(offer => offer.vendor_id).filter(Boolean);
+      if (vendorIds.length > 0) {
+        await fetchMultipleProfiles(vendorIds);
       }
 
       setOffers((offersData || []) as OfferRow[]);

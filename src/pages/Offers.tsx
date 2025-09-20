@@ -17,6 +17,7 @@ import { RealTimeChatModal } from "@/components/modals/RealTimeChatModal";
 import { OfferComparisonModal } from "@/components/enhanced/OfferComparisonModal";
 import { useToast } from "@/hooks/use-toast";
 import { useOffers } from "@/hooks/useOffers";
+import { useUserProfiles } from "@/hooks/useUserProfiles";
 import { Checkbox } from "@/components/ui/checkbox";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -30,6 +31,7 @@ const OffersPage = memo(() => {
   const [selectedOffers, setSelectedOffers] = useState<string[]>([]);
 
   const { offers, loading: offersLoading, error: offersError, updateOfferStatus, refetch } = useOffers();
+  const { getProfile, fetchMultipleProfiles } = useUserProfiles();
 
   // Offer metrics
   const metrics = useMemo(() => {
@@ -42,6 +44,16 @@ const OffersPage = memo(() => {
       rejected: offers.filter(o => o.client_approval_status === 'rejected').length,
     };
   }, [offers]);
+
+  // Fetch vendor profiles when offers change
+  React.useEffect(() => {
+    if (offers && offers.length > 0) {
+      const vendorIds = offers.map(offer => offer.vendor_id).filter(Boolean);
+      if (vendorIds.length > 0) {
+        fetchMultipleProfiles(vendorIds);
+      }
+    }
+  }, [offers, fetchMultipleProfiles]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -62,10 +74,11 @@ const OffersPage = memo(() => {
   };
 
   const filteredOffers = offers.filter(offer => {
+    const vendor = getProfile(offer.vendor_id);
     const matchesSearch = offer.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          offer.request?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         offer.vendor?.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         offer.vendor?.company_name?.toLowerCase().includes(searchTerm.toLowerCase());
+                         vendor?.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         vendor?.company_name?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === "all" || offer.client_approval_status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -331,13 +344,16 @@ const OffersPage = memo(() => {
                       <div className={cn("flex-1", isRTL && "text-right")}>
                         <CardTitle className="text-lg mb-2">{offer.title}</CardTitle>
                         <CardDescription className="mb-2">
-                          {t('offers.forRequest')} {offer.request?.title}
+                         {t('offers.forRequest')} {offer.request?.title}
                         </CardDescription>
-                        {offer.vendor && (
-                          <p className="text-sm text-muted-foreground mb-2">
-                            {t('offers.vendor')} {offer.vendor.company_name || offer.vendor.full_name}
-                          </p>
-                        )}
+                        {(() => {
+                          const vendor = getProfile(offer.vendor_id);
+                          return vendor ? (
+                            <p className="text-sm text-muted-foreground mb-2">
+                              {t('offers.vendor')} {vendor.company_name || vendor.full_name}
+                            </p>
+                          ) : null;
+                        })()}
                       </div>
                     </div>
                     <div className={cn(
@@ -383,23 +399,26 @@ const OffersPage = memo(() => {
                       </Button>
                     </OfferDetailsModal>
                     
-                    {offer.vendor && (
-                      <RealTimeChatModal 
-                        recipientId={offer.vendor_id}
-                        recipientName={offer.vendor.company_name || offer.vendor.full_name}
-                        requestId={offer.request_id}
-                        offerId={offer.id}
-                      >
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          className="gap-2"
+                    {(() => {
+                      const vendor = getProfile(offer.vendor_id);
+                      return vendor ? (
+                        <RealTimeChatModal 
+                          recipientId={offer.vendor_id}
+                          recipientName={vendor.company_name || vendor.full_name}
+                          requestId={offer.request_id}
+                          offerId={offer.id}
                         >
-                          <MessageSquare className="h-4 w-4" />
-                          {t('offers.messageVendor')}
-                        </Button>
-                      </RealTimeChatModal>
-                    )}
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            className="gap-2"
+                          >
+                            <MessageSquare className="h-4 w-4" />
+                            {t('offers.messageVendor')}
+                          </Button>
+                        </RealTimeChatModal>
+                      ) : null;
+                    })()}
 
                     {userProfile?.role === 'client' && offer.client_approval_status === 'pending' && (
                       <>

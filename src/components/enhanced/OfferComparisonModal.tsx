@@ -143,7 +143,7 @@ export const OfferComparisonModal = ({ children, offers, onOfferAction }: OfferC
                       </Badge>
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      {offer.vendor?.company_name || offer.vendor?.full_name}
+                      Vendor #{offer.vendor_id.slice(0, 8)}
                     </p>
                   </CardHeader>
                   

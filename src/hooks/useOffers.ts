@@ -29,11 +29,6 @@ export interface Offer {
     category: string;
     location?: string;
   };
-  vendor?: {
-    full_name: string;
-    company_name?: string;
-    email: string;
-  };
 }
 
 export const useOffers = (requestId?: string) => {
@@ -64,11 +59,6 @@ export const useOffers = (requestId?: string) => {
             client_id,
             category,
             location
-          ),
-          user_profiles:vendor_id (
-            full_name,
-            company_name,
-            email
           )
         `)
         .order('created_at', { ascending: false });
@@ -106,7 +96,7 @@ export const useOffers = (requestId?: string) => {
         ...offer,
         currency: offer.currency || 'SAR',
         delivery_time_days: offer.delivery_time_days || offer.delivery_time || 0,
-        vendor: offer.user_profiles
+        request: offer.requests
       }));
 
       setOffers(transformedOffers as Offer[]);
