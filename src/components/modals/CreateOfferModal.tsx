@@ -130,7 +130,7 @@ export const CreateOfferModal = ({ children, requestId }: CreateOfferModalProps)
 
       console.log('Creating offer with data:', {
         request_id: formData.requestId,
-        vendor_id: authUserId,
+        vendor_id: vendorProfile.id,
         price: parseFloat(formData.price),
         delivery_time_days: parseInt(formData.deliveryTime)
       });
@@ -139,7 +139,7 @@ export const CreateOfferModal = ({ children, requestId }: CreateOfferModalProps)
         .from('offers')
         .insert([{
           request_id: formData.requestId,
-          vendor_id: authUserId,
+          vendor_id: vendorProfile.id,
           title: formData.title,
           description: formData.description,
           price: parseFloat(formData.price),

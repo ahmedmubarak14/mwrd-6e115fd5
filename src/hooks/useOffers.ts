@@ -40,7 +40,7 @@ export const useOffers = (requestId?: string) => {
   const [offers, setOffers] = useState<Offer[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { user } = useAuth();
+  const { user, userProfile } = useAuth();
   const { toast } = useToast();
   const logger = createLogger('useOffers');
 
@@ -78,10 +78,11 @@ export const useOffers = (requestId?: string) => {
         query = query.eq('request_id', requestId);
       } else {
         // If no requestId, show offers based on user role
-        if (user?.role === 'vendor') {
-          query = query.eq('vendor_id', user.id);
+        if (userProfile?.role === 'vendor' && userProfile?.id) {
+          // Vendors: see their own offers by vendor profile id
+          query = query.eq('vendor_id', userProfile.id);
         } else {
-          // For clients, show all offers for their requests
+          // For clients, show all offers for their requests (client_id stores auth.uid())
           const { data: userRequests } = await supabase
             .from('requests')
             .select('id')
@@ -214,14 +215,12 @@ export const useOffers = (requestId?: string) => {
     if (!user) throw new Error('User not authenticated');
 
     try {
-      const { data: authData } = await supabase.auth.getUser();
-      const authUserId = authData?.user?.id;
-      if (!authUserId) throw new Error('User not authenticated');
+      if (!userProfile?.id) throw new Error('Vendor profile not found');
 
       const { data, error } = await supabase
         .from('offers')
         .insert([{
-          vendor_id: authUserId,
+          vendor_id: userProfile.id,
           title: offerData.title,
           description: offerData.description,
           price: offerData.price,

@@ -93,16 +93,24 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
 
     setLoading(true);
     try {
-      // Ensure vendor_id uses auth user id for RLS
+      // Resolve vendor profile ID for correct linkage
       const { data: authData } = await supabase.auth.getUser();
       const authUserId = authData?.user?.id;
       if (!authUserId) throw new Error('Not authenticated');
+
+      const { data: vendorProfile, error: vpError } = await supabase
+        .from('user_profiles')
+        .select('id, role, status')
+        .eq('user_id', authUserId)
+        .single();
+      if (vpError || !vendorProfile) throw new Error('Vendor profile not found');
+      if (vendorProfile.role !== 'vendor' || vendorProfile.status !== 'approved') throw new Error('Vendor not approved');
 
       const { data: offer, error } = await supabase
         .from('offers')
         .insert({
           request_id: request.id,
-          vendor_id: authUserId,
+          vendor_id: vendorProfile.id,
           title: formData.title.trim(),
           description: formData.description.trim(),
           price: parseFloat(formData.price),
