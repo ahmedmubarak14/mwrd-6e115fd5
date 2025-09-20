@@ -62,6 +62,11 @@ export const OfferManagementSystem = () => {
   // Fetch vendor's offers
   const fetchOffers = async () => {
     if (!user) return;
+
+    // Always use auth user id for vendor_id filters
+    const { data: authData } = await supabase.auth.getUser();
+    const authUserId = authData?.user?.id;
+    if (!authUserId) return;
     
     try {
       const { data, error } = await supabase
@@ -74,7 +79,7 @@ export const OfferManagementSystem = () => {
             client_id
           )
         `)
-        .eq('vendor_id', user.id)
+        .eq('vendor_id', authUserId)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -110,8 +115,8 @@ export const OfferManagementSystem = () => {
             .from('offers')
             .select('id')
             .eq('request_id', request.id)
-            .eq('vendor_id', user.id)
-            .single();
+            .eq('vendor_id', (await supabase.auth.getUser()).data?.user?.id || '')
+            .maybeSingle();
             
           return existingOffer ? null : request;
         })
@@ -136,24 +141,28 @@ export const OfferManagementSystem = () => {
       return;
     }
 
-    setIsSubmitting(true);
-    
-    try {
-      const { data, error } = await supabase
-        .from('offers')
-        .insert([{
-          request_id: selectedRequest.id,
-          vendor_id: user.id,
-          title: offerForm.title,
-          description: offerForm.description,
-          price: parseFloat(offerForm.price),
-          currency: selectedRequest.currency || 'SAR',
-          delivery_time_days: parseInt(offerForm.delivery_time_days),
-          status: 'pending',
-          client_approval_status: 'pending'
-        }])
-        .select()
-        .single();
+  setIsSubmitting(true);
+  
+  try {
+    const { data: authData } = await supabase.auth.getUser();
+    const authUserId = authData?.user?.id;
+    if (!authUserId) throw new Error('Not authenticated');
+
+    const { data, error } = await supabase
+      .from('offers')
+      .insert([{
+        request_id: selectedRequest.id,
+        vendor_id: authUserId,
+        title: offerForm.title,
+        description: offerForm.description,
+        price: parseFloat(offerForm.price),
+        currency: selectedRequest.currency || 'SAR',
+        delivery_time_days: parseInt(offerForm.delivery_time_days),
+        status: 'pending',
+        client_approval_status: 'pending'
+      }])
+      .select()
+      .single();
 
       if (error) throw error;
 

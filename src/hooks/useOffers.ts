@@ -214,10 +214,14 @@ export const useOffers = (requestId?: string) => {
     if (!user) throw new Error('User not authenticated');
 
     try {
+      const { data: authData } = await supabase.auth.getUser();
+      const authUserId = authData?.user?.id;
+      if (!authUserId) throw new Error('User not authenticated');
+
       const { data, error } = await supabase
         .from('offers')
         .insert([{
-          vendor_id: user.id,
+          vendor_id: authUserId,
           title: offerData.title,
           description: offerData.description,
           price: offerData.price,

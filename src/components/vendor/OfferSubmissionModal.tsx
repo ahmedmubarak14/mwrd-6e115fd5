@@ -93,11 +93,16 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
 
     setLoading(true);
     try {
+      // Ensure vendor_id uses auth user id for RLS
+      const { data: authData } = await supabase.auth.getUser();
+      const authUserId = authData?.user?.id;
+      if (!authUserId) throw new Error('Not authenticated');
+
       const { data: offer, error } = await supabase
         .from('offers')
         .insert({
           request_id: request.id,
-          vendor_id: user.id,
+          vendor_id: authUserId,
           title: formData.title.trim(),
           description: formData.description.trim(),
           price: parseFloat(formData.price),
@@ -125,7 +130,7 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
           data: {
             offer_id: offer.id,
             request_id: request.id,
-            vendor_id: user.id
+            vendor_id: authUserId
           }
         });
 

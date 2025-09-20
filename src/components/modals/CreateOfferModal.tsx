@@ -121,9 +121,16 @@ export const CreateOfferModal = ({ children, requestId }: CreateOfferModalProps)
     setIsLoading(true);
     
     try {
+      // Use auth user id to satisfy RLS (vendor_id must equal auth.uid())
+      const { data: authData } = await supabase.auth.getUser();
+      const authUserId = authData?.user?.id;
+      if (!authUserId) {
+        throw new Error('Not authenticated');
+      }
+
       console.log('Creating offer with data:', {
         request_id: formData.requestId,
-        vendor_id: user.id,
+        vendor_id: authUserId,
         price: parseFloat(formData.price),
         delivery_time_days: parseInt(formData.deliveryTime)
       });
@@ -132,7 +139,7 @@ export const CreateOfferModal = ({ children, requestId }: CreateOfferModalProps)
         .from('offers')
         .insert([{
           request_id: formData.requestId,
-          vendor_id: user.id,
+          vendor_id: authUserId,
           title: formData.title,
           description: formData.description,
           price: parseFloat(formData.price),
