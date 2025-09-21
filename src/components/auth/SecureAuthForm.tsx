@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToastFeedback } from '@/hooks/useToastFeedback';
 import { Eye, EyeOff, Shield, Mail } from 'lucide-react';
 import { sanitizeInput } from '@/utils/security';
+import { useEmailVerification } from '@/hooks/useEmailVerification';
 
 interface SecureAuthFormProps {
   mode: 'signin' | 'signup' | 'reset';
@@ -23,10 +24,21 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
   const [role, setRole] = useState<'client' | 'vendor'>('client');
   const [showPassword, setShowPassword] = useState(false);
   const [resendingConfirmation, setResendingConfirmation] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [lastResendTime, setLastResendTime] = useState<number | null>(null);
   
   const { secureSignIn, securePasswordReset, secureSignUp, loading } = useSecureAuth();
   const { resendConfirmation } = useAuth();
   const { showError, showSuccess, showInfo } = useToastFeedback();
+  const { resendVerificationEmail, canResend, cooldownTime: emailCooldown } = useEmailVerification();
+
+  // Handle cooldown timer
+  useEffect(() => {
+    if (resendCooldown > 0) {
+      const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendCooldown]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,9 +78,15 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
       });
       
       if (error) {
-        showError(error.message);
+        if (error.message.includes('rate limit') || error.message.includes('429')) {
+          showError('Too many email requests. Please wait before trying again.');
+          setResendCooldown(60); // 1 minute cooldown
+        } else {
+          showError(error.message);
+        }
       } else {
-        showSuccess('Account created successfully! Please check your email.');
+        showSuccess('Account created successfully! Please check your email and spam folder.');
+        showInfo('If you don\'t receive the email, you can request a new one from the login page.');
       }
     } else if (mode === 'reset') {
       const { error } = await securePasswordReset(email);
@@ -85,18 +103,10 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
       return;
     }
 
-    setResendingConfirmation(true);
-    try {
-      const { error } = await resendConfirmation(email);
-      if (error) {
-        showError(error.message);
-      } else {
-        showSuccess('Confirmation email sent! Please check your inbox.');
-      }
-    } catch (error) {
-      showError('Failed to resend confirmation email. Please try again.');
-    } finally {
-      setResendingConfirmation(false);
+    const success = await resendVerificationEmail(email);
+    if (success) {
+      // Reset form-specific cooldown based on the email verification hook
+      setResendCooldown(Math.max(emailCooldown, 60));
     }
   };
 
@@ -256,13 +266,18 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
                       variant="outline"
                       size="sm"
                       onClick={handleResendConfirmation}
-                      disabled={resendingConfirmation}
-                      className="w-full bg-white/5 border-white/20 text-white hover:bg-white/10"
+                      disabled={resendingConfirmation || !canResend || resendCooldown > 0}
+                      className="w-full bg-white/5 border-white/20 text-white hover:bg-white/10 disabled:opacity-50"
                     >
                       {resendingConfirmation ? (
                         <>
                           <Mail className="h-3 w-3 mr-2 animate-pulse" />
                           Sending...
+                        </>
+                      ) : (resendCooldown > 0 || emailCooldown > 0) ? (
+                        <>
+                          <Mail className="h-3 w-3 mr-2" />
+                          Wait {Math.max(resendCooldown, emailCooldown)}s to Resend
                         </>
                       ) : (
                         <>

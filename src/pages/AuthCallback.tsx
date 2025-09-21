@@ -42,7 +42,13 @@ const AuthCallback = () => {
           if (error) {
             console.error('Exchange code error:', error);
             setStatus('error');
-            setMessage('Failed to confirm email. Please try again.');
+            if (error.message.includes('expired')) {
+              setMessage('Email confirmation link has expired. Please request a new one.');
+            } else if (error.message.includes('invalid')) {
+              setMessage('Invalid confirmation link. Please check your email or request a new link.');
+            } else {
+              setMessage('Failed to confirm email. Please try again.');
+            }
             showError('Email confirmation failed. Please try logging in again.');
           } else {
             setStatus('success');
@@ -64,7 +70,13 @@ const AuthCallback = () => {
           if (error) {
             console.error('Session error:', error);
             setStatus('error');
-            setMessage('Failed to confirm email. Please try again.');
+            if (error.message.includes('expired')) {
+              setMessage('Email confirmation session has expired. Please request a new confirmation email.');
+            } else if (error.message.includes('invalid')) {
+              setMessage('Invalid email confirmation session. Please request a new confirmation email.');
+            } else {
+              setMessage('Failed to confirm email. Please try again.');
+            }
             showError('Email confirmation failed. Please try logging in again.');
           } else {
             setStatus('success');
@@ -79,14 +91,20 @@ const AuthCallback = () => {
 
         if (errorParam) {
           setStatus('error');
-          setMessage(error_description || 'Email confirmation failed.');
+          if (error_description?.includes('expired')) {
+            setMessage('Email confirmation link has expired. Please request a new one from the login page.');
+          } else if (error_description?.includes('invalid')) {
+            setMessage('Invalid confirmation link. Please request a new one from the login page.');
+          } else {
+            setMessage(error_description || 'Email confirmation failed. Please request a new confirmation email.');
+          }
           showError(error_description || 'Email confirmation failed.');
           cleanupUrl();
           return;
         }
 
         setStatus('error');
-        setMessage('Invalid confirmation link or link has expired.');
+        setMessage('Invalid confirmation link or link has expired. Please request a new confirmation email from the login page.');
         showError('Invalid confirmation link or link has expired.');
         cleanupUrl();
       } catch (error) {
@@ -140,12 +158,17 @@ const AuthCallback = () => {
                 <div className="space-y-4">
                   <XCircle className="h-12 w-12 text-red-400 mx-auto" />
                   <p className="text-white font-medium">{message}</p>
-                  <Button 
-                    onClick={handleReturnToLogin}
-                    className="w-full bg-primary hover:bg-primary/90 text-white"
-                  >
-                    Return to Login
-                  </Button>
+                  <div className="space-y-2">
+                    <Button 
+                      onClick={handleReturnToLogin}
+                      className="w-full bg-primary hover:bg-primary/90 text-white"
+                    >
+                      Return to Login
+                    </Button>
+                    <p className="text-white/60 text-xs text-center">
+                      Need help? Check your spam folder or request a new confirmation email from the login page.
+                    </p>
+                  </div>
                 </div>
               )}
             </CardContent>

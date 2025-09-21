@@ -47,6 +47,26 @@ export const logSecurityEvent = async (event: string, details: any) => {
   }
 };
 
+// Email verification security events
+export const logEmailVerificationEvent = async (
+  eventType: 'requested' | 'rate_limited' | 'failed' | 'success',
+  email: string,
+  additionalDetails?: any
+) => {
+  const eventMap = {
+    requested: 'email_verification_requested',
+    rate_limited: 'email_verification_rate_limited', 
+    failed: 'email_verification_failed',
+    success: 'email_verification_success'
+  };
+
+  await logSecurityEvent(eventMap[eventType], {
+    email,
+    ...additionalDetails,
+    client_timestamp: new Date().toISOString()
+  });
+};
+
 // Rate limiting utility
 class RateLimiter {
   private attempts: Map<string, { count: number; resetTime: number }> = new Map();

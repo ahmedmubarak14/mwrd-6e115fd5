@@ -46,6 +46,18 @@ export const useSecureAuth = () => {
 
       if (error) {
         await logSecurityEvent('signup_failed', { email, error: error.message, ip: clientIP });
+        
+        // Enhanced error handling for rate limits and email issues
+        if (error.message.includes('rate limit') || 
+            error.message.includes('429') || 
+            error.message.includes('over_email_send_rate_limit')) {
+          showError('Email rate limit reached. Please wait before creating another account.');
+        } else if (error.message.includes('User already registered')) {
+          showError('This email is already registered. Try signing in instead.');
+        } else {
+          showError(error.message);
+        }
+        
         return { error };
       }
 
