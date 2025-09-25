@@ -87,7 +87,7 @@ const ProjectsPage = memo(() => {
 
   return (
     <ErrorBoundary>
-      <div className="p-6 space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className="p-6 pace-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
         
         {/* Header */}
         <div className={cn(

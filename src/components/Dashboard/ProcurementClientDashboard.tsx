@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from "react";
-import { AlertTriangle, Plus, Eye, MessageSquare, Package, TrendingUp, CheckCircle, Clock, FileText, ShoppingCart } from "lucide-react";
+import { AlertTriangle, Plus, Eye, MessageSquare, Package, TrendingUp, CheckCircle, Clock, FileText, ShoppingCart, FileClock,  } from "lucide-react";
 import { Alert } from "@/components/ui/alert";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -212,7 +212,7 @@ export const ProcurementClientDashboard = () => {
   }
 
   return (
-    <div className={`p-3 sm:p-4 md:p-6 space-y-4 md:space-y-6 ${isRTL ? 'rtl' : 'ltr'}`}>
+    <div className={`p-3  sm:p-4 md:p-6 space-y-4 md:space-y-6 ${isRTL ? 'rtl' : 'ltr'}`}>
       {/* Header Section */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
@@ -239,7 +239,7 @@ export const ProcurementClientDashboard = () => {
           title="Active Requests"
           value={formatNumber(stats.activeRequests)}
           description="Currently being processed"
-          icon={Clock}
+          icon={FileClock}
           loading={loading}
         />
         

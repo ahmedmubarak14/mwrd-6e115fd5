@@ -12,7 +12,7 @@
   .safe-area-pb { padding-bottom: env(safe-area-inset-bottom); }
   .safe-area-pl { padding-left: env(safe-area-inset-left); }
   .safe-area-pr { padding-right: env(safe-area-inset-right); }
-  
+
   .line-clamp-1 { 
     overflow: hidden; 
     display: -webkit-box; 
@@ -464,22 +464,6 @@ All colors MUST be HSL.
   body {
     font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     color: hsl(var(--foreground));
-  }
-
-  /* ========== TYPOGRAPHY & FORM VISIBILITY FIXES ========== */
-  
-  /* Base typography visibility */
-  * {
-    color: inherit;
-  }
-  
-  /* Form elements explicit visibility */
-  input, 
-  textarea, 
-  select, 
-  [contenteditable] {
-    color: hsl(var(--foreground)) !important;
-    caret-color: hsl(var(--input-caret)) !important;
   }
   
   /* Placeholder visibility with proper opacity */
