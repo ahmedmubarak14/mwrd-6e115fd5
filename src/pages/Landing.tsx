@@ -1017,7 +1017,7 @@ export const Landing = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/register">
-                <Button size="lg" animation="spring" className="px-8 py-3 bg-white text-[#004F54] hover:bg-gray-100 transition-all duration-300 text-lg font-semibold shadow-xl hover:shadow-2xl">
+                <Button size="lg" animation="spring" className="px-8 py-3 bg-white/95 text-accent-900 hover:bg-white hover:text-accent-800 transition-all duration-300 text-lg font-semibold shadow-xl hover:shadow-2xl border border-white/20 hover:border-white/40">
                   {language === 'ar' ? 'ابدأ رحلتك' : 'Start Your Journey'}
                 </Button>
               </Link>

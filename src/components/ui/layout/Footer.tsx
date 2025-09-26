@@ -55,13 +55,13 @@ export const Footer = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder={language === 'ar' ? 'البريد الإلكتروني' : 'Your email address'}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/30 backdrop-blur-sm transition-all duration-300"
+                  placeholder={language === 'ar' ? 'أدخل بريدك الإلكتروني' : 'Enter your email address'}
+                  className="w-full px-4 py-3 bg-white/15 border border-white/30 rounded-xl text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 backdrop-blur-sm transition-all duration-300 font-medium"
                   required
                 />
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-white/20 to-white/10 hover:from-white/30 hover:to-white/20 text-white font-medium py-3 px-4 rounded-xl border border-white/20 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-white/30"
+                  className="w-full bg-white/20 hover:bg-white/30 text-white font-semibold py-3 px-4 rounded-xl border border-white/30 hover:border-white/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-white/50"
                 >
                   {language === 'ar' ? 'اشتراك' : 'Subscribe'}
                 </button>
