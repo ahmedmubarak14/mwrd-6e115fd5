@@ -68,11 +68,11 @@ export const Landing = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 overflow-hidden">
       <SmoothScroll />
       
       {/* Ultra-Modern Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-white/10 bg-white/10">
+      <header className="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-gray-200/30 bg-white/90 shadow-sm">
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
           
           <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
@@ -87,16 +87,16 @@ export const Landing = () => {
 
           {/* Desktop Navigation Menu */}
           <nav className={`hidden lg:flex items-center gap-6 ${language === 'ar' ? 'order-1' : 'order-2'}`}>
-            <Link to="/why-start-with-mwrd" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+            <Link to="/why-start-with-mwrd" className="text-gray-700 hover:text-[#004F54] transition-colors text-sm font-medium">
               {language === 'ar' ? 'لماذا نبدأ معنا' : 'Why Start with Us'}
             </Link>
-            <Link to="/what-makes-us-unique" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+            <Link to="/what-makes-us-unique" className="text-gray-700 hover:text-[#004F54] transition-colors text-sm font-medium">
               {language === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
             </Link>
-            <Link to="/why-move-to-mwrd" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+            <Link to="/why-move-to-mwrd" className="text-gray-700 hover:text-[#004F54] transition-colors text-sm font-medium">
               {language === 'ar' ? 'لماذا الانتقال إلينا' : 'Why Move to Us'}
             </Link>
-            <Link to="/pricing" className="text-white/90 hover:text-white transition-colors text-sm font-medium">
+            <Link to="/pricing" className="text-gray-700 hover:text-[#004F54] transition-colors text-sm font-medium">
               {language === 'ar' ? 'الأسعار' : 'Pricing'}
             </Link>
           </nav>
@@ -107,19 +107,19 @@ export const Landing = () => {
             </div>
             {user && userProfile ? (
               <Link to="/dashboard" className="hidden md:block">
-                <Button size="lg" animation="lift" className="px-8 hover:shadow-2xl transition-all duration-500 bg-white/10 border border-white/30 text-white backdrop-blur-20">
+                <Button size="lg" animation="lift" className="px-8 hover:shadow-2xl transition-all duration-500 bg-[#004F54] hover:bg-[#004F54]/90 border border-[#004F54] text-white">
                   {language === 'ar' ? 'لوحة التحكم' : 'Dashboard'}
                 </Button>
               </Link>
             ) : (
               <>
                 <Link to="/login" className="hidden md:block">
-                  <Button variant="ghost" size="lg" animation="scale" className="px-6 bg-white/5 border border-white/20 text-white transition-all duration-300 backdrop-blur-15">
+                  <Button variant="ghost" size="lg" animation="scale" className="px-6 bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 transition-all duration-300">
                     {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
                   </Button>
                 </Link>
                 <Link to="/register" className="hidden md:block">
-                  <Button size="lg" animation="lift" className="px-8 hover:shadow-2xl transition-all duration-500 bg-white/10 border border-white/30 text-white backdrop-blur-20">
+                  <Button size="lg" animation="lift" className="px-8 hover:shadow-2xl transition-all duration-500 bg-[#004F54] hover:bg-[#004F54]/90 border border-[#004F54] text-white">
                     {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
                   </Button>
                 </Link>
@@ -140,7 +140,7 @@ export const Landing = () => {
               
               {/* Badge */}
               <div className="inline-block">
-                <div className="px-4 py-2 text-sm text-white rounded-full bg-white/10 border border-white/30 backdrop-blur-20">
+                <div className="px-4 py-2 text-sm text-[#004F54] rounded-full bg-[#004F54]/10 border border-[#004F54]/20 backdrop-blur-20">
                   {language === 'ar' ? '🚀 منصة المشتريات الذكية' : '🚀 Smart Procurement Platform'}
                 </div>
               </div>
@@ -148,20 +148,20 @@ export const Landing = () => {
               {/* Main Brand */}
               <div className="space-y-3">
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-black">
-                  <span className="text-white">MWRD</span>
-                  <span className="text-white"> | {language === 'ar' ? 'مورد' : 'مورد'}</span>
+                  <span className="text-[#004F54]">MWRD</span>
+                  <span className="text-gray-700"> | {language === 'ar' ? 'مورد' : 'مورد'}</span>
                 </h1>
-                <p className="text-base text-white font-medium">
+                <p className="text-base text-gray-600 font-medium">
                   {language === 'ar' ? 'منصة ذكية تربط الشركات بأفضل الموردين في المملكة العربية السعودية' : 'Smart platform connecting businesses with top suppliers in Saudi Arabia'}
                 </p>
               </div>
 
               {/* Hero Headline */}
               <div className="space-y-4">
-                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight">
                   {language === 'ar' ? 'تواصل. مصدر. وريد.' : 'Connect. Source. Supply.'}
                 </h2>
-                <p className="text-base text-white leading-relaxed max-w-2xl">
+                <p className="text-base text-gray-600 leading-relaxed max-w-2xl">
                   {language === 'ar' 
                     ? 'منصة B2B مهنية تربط العملاء بالموردين المؤهلين من خلال نظام طلب عروض الأسعار الذكي. احصل على عروض أسعار تنافسية، وقارن المقترحات، وأدر سلسلة التوريد الخاصة بك بكفاءة.'
                     : 'A professional B2B marketplace connecting clients with qualified vendors through our smart RFQ system. Get competitive quotes, compare proposals, and manage your supply chain efficiently.'}
@@ -171,7 +171,7 @@ export const Landing = () => {
               {/* Action Button */}
               <div className="flex justify-center sm:justify-start">
                 <Link to="/register" className="group">
-                  <Button size="lg" animation="spring" className="px-8 py-3 text-base font-semibold transition-all duration-300 bg-white/10 border border-white/30 text-white backdrop-blur-20">
+                  <Button size="lg" animation="spring" className="px-8 py-3 text-base font-semibold transition-all duration-300 bg-[#004F54] hover:bg-[#004F54]/90 border border-[#004F54] text-white shadow-lg hover:shadow-xl">
                     {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
                   </Button>
                 </Link>
@@ -185,15 +185,15 @@ export const Landing = () => {
                   { text: language === 'ar' ? 'معاملات آمنة وتتبع الطلبات' : 'Secure transactions and order tracking' }
                 ].map((feature, index) => (
                   <div key={index} className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-green-400 flex-shrink-0" />
-                    <span className="text-white">{feature.text}</span>
+                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                    <span className="text-gray-700">{feature.text}</span>
                   </div>
                 ))}
               </div>
 
               {/* Trust Badge */}
               <div className="pt-8">
-                <p className="text-white text-sm mb-2">
+                <p className="text-gray-600 text-sm mb-2">
                   {language === 'ar' ? 'موثوق من قبل أكثر من 500+ شركة' : 'Trusted by 500+ businesses'}
                 </p>
                 <div className="flex items-center gap-1">
@@ -245,23 +245,23 @@ export const Landing = () => {
                     progress: 70
                   }
                 ].map((stat, index) => (
-                  <Card key={index} hoverEffect="lift" className="p-3 transition-all duration-300 animate-fade-in bg-white/5 border border-white/20 backdrop-blur-20">
+                  <Card key={index} hoverEffect="lift" className="p-3 transition-all duration-300 animate-fade-in bg-white border border-gray-200 shadow-sm hover:shadow-md">
                     <div className="flex items-start gap-2">
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${stat.color}20`, border: `1px solid ${stat.color}40` }}>
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 border border-gray-200" style={{ backgroundColor: `${stat.color}10`, border: `1px solid ${stat.color}20` }}>
                         <stat.icon className="h-4 w-4" style={{ color: stat.color }} />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-1">
-                          <h3 className="font-semibold text-white text-sm">{stat.title}</h3>
+                          <h3 className="font-semibold text-gray-800 text-sm">{stat.title}</h3>
                         </div>
-                        <p className="text-xs text-white mb-1">{stat.subtitle}</p>
+                        <p className="text-xs text-gray-600 mb-1">{stat.subtitle}</p>
                         <div className="flex items-end justify-between">
                           <div>
-                            <div className="text-lg font-black text-white mb-1">{stat.count}</div>
-                            <div className="text-xs text-white">{stat.label}</div>
+                            <div className="text-lg font-black text-gray-800 mb-1">{stat.count}</div>
+                            <div className="text-xs text-gray-600">{stat.label}</div>
                           </div>
                         </div>
-                        <div className="w-full bg-white/10 rounded-full h-1 mt-2">
+                        <div className="w-full bg-gray-200 rounded-full h-1 mt-2">
                           <div 
                             className="h-1 rounded-full transition-all duration-1000" 
                             style={{ 
@@ -281,18 +281,18 @@ export const Landing = () => {
       </section>
 
       {/* Revolutionary Workflow Section */}
-      <section className="py-32 px-6 relative overflow-hidden">
+      <section className="py-32 px-6 relative overflow-hidden bg-gradient-to-br from-gray-50 to-white">
         {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0 opacity-20">
           <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, #004F54 2px, transparent 2px)`, backgroundSize: '50px 50px' }}></div>
         </div>
 
         <div className="container mx-auto relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
+            <h2 className="text-3xl md:text-4xl font-black mb-6 text-gray-800">
               {language === 'ar' ? 'كيف نعيد تشكيل المشتريات التجارية؟' : 'How We\'re Reshaping B2B Procurement'}
             </h2>
-            <p className="text-lg max-w-3xl mx-auto font-light text-white">
+            <p className="text-lg max-w-3xl mx-auto font-light text-gray-600">
               {language === 'ar' 
                 ? 'نظام ثوري يدمج الذكاء الاصطناعي مع سوق المشتريات التجارية لتقديم تجربة لا مثيل لها'
                 : 'A revolutionary system that merges AI with B2B procurement marketplace to deliver an unmatched experience'}
@@ -303,25 +303,25 @@ export const Landing = () => {
             {/* Revolutionary Step System */}
             <div className="relative">
               {/* Animated Connection Line */}
-              <div className="absolute left-1/2 top-0 bottom-0 w-2 bg-gradient-to-b from-[#102C33] via-[#004F54] to-[#765A3F] transform -translate-x-1/2 hidden lg:block rounded-full shadow-2xl"></div>
+              <div className="absolute left-1/2 top-0 bottom-0 w-2 bg-gradient-to-b from-[#004F54] via-[#102C33] to-[#765A3F] transform -translate-x-1/2 hidden lg:block rounded-full shadow-lg"></div>
 
               {/* Step 1: AI-Powered Discovery */}
               <div className="relative mb-32 group">
                 <div className="flex flex-col lg:flex-row items-center gap-16">
                   <div className="lg:w-1/2 lg:pr-16">
-                     <Card className="p-4 hover:shadow-2xl transition-all duration-700 rounded-2xl bg-white/5 border border-white/20 backdrop-blur-20" hoverEffect="tilt">
+                     <Card className="p-4 hover:shadow-2xl transition-all duration-700 rounded-2xl bg-white border border-gray-200 shadow-sm" hoverEffect="tilt">
                       <div className="flex items-center gap-4 mb-6">
-                        <div className="w-12 h-12 bg-gradient-to-br from-[#102C33] to-[#004F54] rounded-2xl flex items-center justify-center shadow-xl border border-white/20 backdrop-blur-20">
+                        <div className="w-12 h-12 bg-gradient-to-br from-[#004F54] to-[#102C33] rounded-2xl flex items-center justify-center shadow-lg">
                           <Search className="h-6 w-6 text-white" />
                         </div>
                         <div>
-                          <span className="text-2xl font-black text-white">01</span>
-                          <h3 className="text-xl font-bold text-white">
+                          <span className="text-2xl font-black text-[#004F54]">01</span>
+                          <h3 className="text-xl font-bold text-gray-800">
                             {language === 'ar' ? 'اكتشاف ذكي' : 'AI-Powered Discovery'}
                           </h3>
                         </div>
                       </div>
-                      <p className="text-base leading-relaxed font-medium text-white">
+                      <p className="text-base leading-relaxed font-medium text-gray-600">
                         {language === 'ar' 
                           ? 'تقنية الذكاء الاصطناعي تحلل احتياجاتك وتوصلك بأفضل الموردين في ثوانٍ. اكتشف فرصاً لم تتخيلها من قبل'
                           : 'AI technology analyzes your needs and connects you with the best vendors in seconds. Discover opportunities you never imagined'}
@@ -335,10 +335,10 @@ export const Landing = () => {
                         { icon: Zap, label: language === 'ar' ? 'استجابة فورية' : 'Instant Response', color: '#004F54' },
                         { icon: Eye, label: language === 'ar' ? 'رؤى متقدمة' : 'Advanced Insights', color: '#765A3F' },
                         { icon: TrendingUp, label: language === 'ar' ? 'نمو مضمون' : 'Guaranteed Growth', color: '#102C33' }
-                       ].map((feature, index) => (
-                        <Card key={index} hoverEffect="glow" className="p-3 hover:shadow-2xl transition-all duration-500 rounded-xl bg-white/5 border border-white/20 backdrop-blur-15">
+                        ].map((feature, index) => (
+                        <Card key={index} hoverEffect="glow" className="p-3 hover:shadow-lg transition-all duration-500 rounded-xl bg-white border border-gray-200 shadow-sm">
                           <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
-                          <div className="text-sm font-bold text-white">{feature.label}</div>
+                          <div className="text-sm font-bold text-gray-800">{feature.label}</div>
                         </Card>
                       ))}
                     </div>

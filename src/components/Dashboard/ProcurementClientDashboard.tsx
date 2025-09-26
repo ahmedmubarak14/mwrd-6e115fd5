@@ -212,7 +212,7 @@ export const ProcurementClientDashboard = () => {
   }
 
   return (
-    <div className={`p-3  sm:p-4 md:p-6 space-y-4 md:space-y-6 ${isRTL ? 'rtl' : 'ltr'}`}>
+    <div className={`p-3 sm:p-4 md:p-6 space-y-4 md:space-y-6 ${isRTL ? 'rtl' : 'ltr'}`}>
       {/* Header Section */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground">

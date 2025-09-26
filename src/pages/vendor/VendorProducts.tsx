@@ -3,7 +3,7 @@ import { OptimizedVendorProductCatalog } from "@/components/vendor/OptimizedVend
 
 export const VendorProducts = () => {
   return (
-    <VendorLayout backgroundClassName="bg-[#f7fafc]">
+    <VendorLayout>
       <OptimizedVendorProductCatalog />
     </VendorLayout>
   );
