@@ -131,7 +131,11 @@ export const Landing = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
+      <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-white via-purple-50 to-gray-50">
+        <div className="absolute inset-0">
+          <div className="absolute top-20 right-10 w-64 h-64 bg-gradient-to-br from-[#66023C]/20 to-purple-400/20 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 left-10 w-48 h-48 bg-gradient-to-tr from-[#004F54]/20 to-blue-400/20 rounded-full blur-2xl"></div>
+        </div>
         <div className="container mx-auto px-6 pt-20 pb-16 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto">
             
@@ -140,7 +144,7 @@ export const Landing = () => {
               
               {/* Badge */}
               <div className="inline-block">
-                <div className="px-4 py-2 text-sm text-[#004F54] rounded-full bg-[#004F54]/10 border border-[#004F54]/20 backdrop-blur-20">
+                <div className="px-4 py-2 text-sm text-[#66023C] rounded-full bg-gradient-to-r from-[#66023C]/10 to-purple-100 border border-[#66023C]/20">
                   {language === 'ar' ? '🚀 منصة المشتريات الذكية' : '🚀 Smart Procurement Platform'}
                 </div>
               </div>
@@ -148,7 +152,7 @@ export const Landing = () => {
               {/* Main Brand */}
               <div className="space-y-3">
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-black">
-                  <span className="text-[#004F54]">MWRD</span>
+                  <span className="bg-gradient-to-r from-[#004F54] to-[#66023C] bg-clip-text text-transparent">MWRD</span>
                   <span className="text-gray-700"> | {language === 'ar' ? 'مورد' : 'مورد'}</span>
                 </h1>
                 <p className="text-base text-gray-600 font-medium">
@@ -158,7 +162,7 @@ export const Landing = () => {
 
               {/* Hero Headline */}
               <div className="space-y-4">
-                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 leading-tight">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-gray-800 via-[#66023C] to-gray-800 bg-clip-text text-transparent leading-tight">
                   {language === 'ar' ? 'تواصل. مصدر. وريد.' : 'Connect. Source. Supply.'}
                 </h2>
                 <p className="text-base text-gray-600 leading-relaxed max-w-2xl">
@@ -171,7 +175,7 @@ export const Landing = () => {
               {/* Action Button */}
               <div className="flex justify-center sm:justify-start">
                 <Link to="/register" className="group">
-                  <Button size="lg" animation="spring" className="px-8 py-3 text-base font-semibold transition-all duration-300 bg-[#004F54] hover:bg-[#004F54]/90 border border-[#004F54] text-white shadow-lg hover:shadow-xl">
+                  <Button size="lg" animation="spring" className="px-8 py-3 text-base font-semibold transition-all duration-300 bg-gradient-to-r from-[#004F54] to-[#66023C] hover:from-[#004F54]/90 hover:to-[#66023C]/90 border-0 text-white shadow-lg hover:shadow-xl">
                     {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
                   </Button>
                 </Link>
@@ -185,7 +189,7 @@ export const Landing = () => {
                   { text: language === 'ar' ? 'معاملات آمنة وتتبع الطلبات' : 'Secure transactions and order tracking' }
                 ].map((feature, index) => (
                   <div key={index} className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                    <CheckCircle className="h-5 w-5 text-[#66023C] flex-shrink-0" />
                     <span className="text-gray-700">{feature.text}</span>
                   </div>
                 ))}
@@ -198,7 +202,7 @@ export const Landing = () => {
                 </p>
                 <div className="flex items-center gap-1">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                    <Star key={i} className="h-4 w-4 fill-[#66023C] text-[#66023C]" />
                   ))}
                 </div>
               </div>
