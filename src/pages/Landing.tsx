@@ -141,178 +141,232 @@ export const Landing = () => {
           <div className="max-w-7xl mx-auto">
             
             {/* Main Headline */}
-            <div className="text-center mb-16 animate-fade-in">
+            <div className="text-center mb-20 animate-fade-in">
               <div className="inline-block mb-6">
-                <div className="px-6 py-3 text-sm text-[#66023C] rounded-full bg-gradient-to-r from-[#66023C]/10 to-purple-100 border border-[#66023C]/20">
-                  {language === 'ar' ? '🚀 منصة المشتريات الذكية' : '🚀 Smart B2B Procurement Platform'}
+                <div className="px-6 py-3 text-sm text-[#66023C] rounded-full bg-gradient-to-r from-[#66023C]/10 to-purple-100 border border-[#66023C]/20 shadow-sm">
+                  {language === 'ar' ? '🚀 منصة المشتريات الذكية الرائدة في المملكة' : '🚀 Saudi Arabia\'s Leading Smart Procurement Platform'}
                 </div>
               </div>
               
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-7xl font-black leading-tight mb-8">
                 <span className="text-gray-800">
-                  {language === 'ar' ? 'منصة واحدة لكل' : 'One Platform for All Your'}
+                  {language === 'ar' ? 'نربط' : 'Connecting'}
                 </span>
                 <br />
-                <span className="bg-gradient-to-r from-[#004F54] to-[#66023C] bg-clip-text text-transparent">
-                  {language === 'ar' ? 'احتياجات المشتريات' : 'Procurement Needs'}
+                <span className="bg-gradient-to-r from-[#004F54] via-[#66023C] to-[#004F54] bg-clip-text text-transparent">
+                  {language === 'ar' ? 'الشركات بالموردين' : 'Businesses & Suppliers'}
                 </span>
               </h1>
               
-              <p className="text-xl text-gray-600 leading-relaxed max-w-4xl mx-auto font-medium">
+              <p className="text-xl text-gray-600 leading-relaxed max-w-4xl mx-auto font-medium mb-12">
                 {language === 'ar' 
-                  ? 'سواء كنت شركة تبحث عن موردين أو مورد يريد الوصول لعملاء جدد - نحن نربط بينكم بكفاءة وأمان'
-                  : 'Whether you\'re a company looking for suppliers or a vendor wanting to reach new customers - we connect you efficiently and securely'}
+                  ? 'منصة واحدة تجمع الشركات الباحثة عن موردين والموردين الباحثين عن فرص جديدة - بطريقة ذكية وآمنة ومضمونة'
+                  : 'One intelligent platform bringing together companies seeking suppliers and suppliers seeking new opportunities - smart, secure, and guaranteed'}
               </p>
+
+              {/* Quick Stats */}
+              <div className="flex flex-wrap justify-center gap-8 mb-16">
+                <div className="text-center">
+                  <div className="text-3xl font-black text-[#004F54] mb-1">500+</div>
+                  <div className="text-sm text-gray-600">{language === 'ar' ? 'شركة نشطة' : 'Active Companies'}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-black text-[#66023C] mb-1">1,200+</div>
+                  <div className="text-sm text-gray-600">{language === 'ar' ? 'مورد مؤهل' : 'Qualified Suppliers'}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-black text-[#004F54] mb-1">SAR 50M+</div>
+                  <div className="text-sm text-gray-600">{language === 'ar' ? 'قيمة الصفقات' : 'Deals Value'}</div>
+                </div>
+              </div>
             </div>
 
-            {/* Dual Value Propositions */}
-            <div className="grid lg:grid-cols-2 gap-12 mb-16">
+            {/* Dual Hero Cards with Photos */}
+            <div className="grid lg:grid-cols-2 gap-8 mb-20">
               
-              {/* For Buyers/Clients */}
-              <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 p-8 hover:shadow-3xl transition-all duration-500 animate-fade-in hover-scale">
-                <div className="text-center mb-8">
-                  <div className="w-16 h-16 bg-gradient-to-br from-[#004F54] to-[#66023C] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    <Building2 className="h-8 w-8 text-white" />
-                  </div>
-                  <h2 className="text-2xl md:text-3xl font-black text-gray-800 mb-2">
-                    {language === 'ar' ? 'للشركات والمؤسسات' : 'For Companies & Organizations'}
-                  </h2>
-                  <p className="text-gray-600 font-medium">
-                    {language === 'ar' ? 'تبحث عن موردين موثوقين؟' : 'Looking for reliable suppliers?'}
-                  </p>
-                </div>
-
-                <div className="space-y-4 mb-8">
-                  {[
-                    { 
-                      icon: Search, 
-                      text: language === 'ar' ? 'ابحث في آلاف الموردين المؤهلين' : 'Search thousands of qualified suppliers',
-                      color: '#004F54'
-                    },
-                    { 
-                      icon: Clock, 
-                      text: language === 'ar' ? 'احصل على عروض أسعار في دقائق' : 'Get quotes in minutes, not weeks',
-                      color: '#66023C'
-                    },
-                    { 
-                      icon: DollarSign, 
-                      text: language === 'ar' ? 'وفر 15-30% من تكاليف المشتريات' : 'Save 15-30% on procurement costs',
-                      color: '#004F54'
-                    },
-                    { 
-                      icon: Shield, 
-                      text: language === 'ar' ? 'معاملات آمنة ومضمونة 100%' : '100% secure and guaranteed transactions',
-                      color: '#66023C'
-                    }
-                  ].map((benefit, index) => (
-                    <div key={index} className="flex items-center gap-4 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${benefit.color}15` }}>
-                        <benefit.icon className="h-4 w-4" style={{ color: benefit.color }} />
+              {/* For Buyers/Companies */}
+              <div className="group relative overflow-hidden rounded-3xl bg-white shadow-2xl hover:shadow-3xl transition-all duration-700 animate-fade-in hover-scale">
+                {/* Hero Image */}
+                <div className="relative h-64 bg-gradient-to-br from-[#004F54] to-[#66023C] overflow-hidden">
+                  <div className="absolute inset-0 bg-black/20"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center text-white p-6">
+                      <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                        <Building2 className="h-10 w-10 text-white" />
                       </div>
-                      <span className="text-gray-800 font-medium text-sm">{benefit.text}</span>
+                      <h3 className="text-2xl font-bold mb-2">{language === 'ar' ? 'للشركات والمؤسسات' : 'For Companies'}</h3>
+                      <p className="text-white/90">{language === 'ar' ? 'تبحث عن موردين موثوقين؟' : 'Looking for reliable suppliers?'}</p>
                     </div>
-                  ))}
+                  </div>
+                  {/* Decorative elements */}
+                  <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full"></div>
+                  <div className="absolute -bottom-10 -left-10 w-24 h-24 bg-white/10 rounded-full"></div>
                 </div>
 
-                <div className="text-center">
-                  <Link to="/register">
-                    <Button size="lg" className="w-full bg-gradient-to-r from-[#004F54] to-[#66023C] hover:from-[#004F54]/90 hover:to-[#66023C]/90 text-white font-bold py-4 shadow-lg hover:shadow-xl transition-all duration-300">
-                      {language === 'ar' ? '🏢 ابدأ الشراء مجاناً' : '🏢 Start Buying Free'}
-                    </Button>
-                  </Link>
-                  <p className="text-xs text-gray-500 mt-2">
-                    {language === 'ar' ? 'مجاني تماماً • لا توجد رسوم خفية' : 'Completely free • No hidden fees'}
-                  </p>
+                <div className="p-8">
+                  <div className="space-y-6 mb-8">
+                    {[
+                      { 
+                        icon: Search, 
+                        title: language === 'ar' ? 'بحث ذكي' : 'Smart Search',
+                        text: language === 'ar' ? 'ابحث في آلاف الموردين المؤهلين' : 'Search thousands of qualified suppliers'
+                      },
+                      { 
+                        icon: Clock, 
+                        title: language === 'ar' ? 'استجابة سريعة' : 'Quick Response',
+                        text: language === 'ar' ? 'احصل على عروض أسعار في دقائق' : 'Get quotes in minutes, not weeks'
+                      },
+                      { 
+                        icon: DollarSign, 
+                        title: language === 'ar' ? 'توفير مضمون' : 'Guaranteed Savings',
+                        text: language === 'ar' ? 'وفر 15-30% من تكاليف المشتريات' : 'Save 15-30% on procurement costs'
+                      }
+                    ].map((benefit, index) => (
+                      <div key={index} className="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-[#004F54]/5 to-[#66023C]/5 border border-[#004F54]/10 hover:from-[#004F54]/10 hover:to-[#66023C]/10 transition-colors">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#004F54] to-[#66023C] flex items-center justify-center flex-shrink-0 shadow-md">
+                          <benefit.icon className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-gray-800 mb-1">{benefit.title}</h4>
+                          <p className="text-sm text-gray-600">{benefit.text}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="space-y-4">
+                    <Link to="/register" className="block">
+                      <Button size="lg" className="w-full bg-gradient-to-r from-[#004F54] to-[#66023C] hover:from-[#004F54]/90 hover:to-[#66023C]/90 text-white font-bold py-4 shadow-lg hover:shadow-xl transition-all duration-300 group">
+                        <Building2 className="mr-2 h-5 w-5" />
+                        {language === 'ar' ? 'ابدأ الشراء مجاناً' : 'Start Buying Free'}
+                        <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </Link>
+                    <p className="text-center text-xs text-gray-500">
+                      {language === 'ar' ? 'مجاني تماماً • لا توجد رسوم خفية • إلغاء في أي وقت' : 'Completely free • No hidden fees • Cancel anytime'}
+                    </p>
+                  </div>
                 </div>
               </div>
 
               {/* For Vendors/Suppliers */}
-              <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 p-8 hover:shadow-3xl transition-all duration-500 animate-fade-in hover-scale" style={{ animationDelay: '0.2s' }}>
-                <div className="text-center mb-8">
-                  <div className="w-16 h-16 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    <Briefcase className="h-8 w-8 text-white" />
-                  </div>
-                  <h2 className="text-2xl md:text-3xl font-black text-gray-800 mb-2">
-                    {language === 'ar' ? 'للموردين والتجار' : 'For Vendors & Suppliers'}
-                  </h2>
-                  <p className="text-gray-600 font-medium">
-                    {language === 'ar' ? 'تريد الوصول لعملاء جدد؟' : 'Want to reach new customers?'}
-                  </p>
-                </div>
-
-                <div className="space-y-4 mb-8">
-                  {[
-                    { 
-                      icon: Users, 
-                      text: language === 'ar' ? 'اوصل لأكثر من 500+ شركة نشطة' : 'Reach 500+ active companies',
-                      color: '#66023C'
-                    },
-                    { 
-                      icon: TrendingUp, 
-                      text: language === 'ar' ? 'زد مبيعاتك بـ 40% في المتوسط' : 'Increase sales by 40% on average',
-                      color: '#004F54'
-                    },
-                    { 
-                      icon: Target, 
-                      text: language === 'ar' ? 'احصل على طلبات مؤهلة ومناسبة' : 'Get qualified and relevant requests',
-                      color: '#66023C'
-                    },
-                    { 
-                      icon: Handshake, 
-                      text: language === 'ar' ? 'عمولة فقط عند إتمام الصفقة' : 'Commission only on successful deals',
-                      color: '#004F54'
-                    }
-                  ].map((benefit, index) => (
-                    <div key={index} className="flex items-center gap-4 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${benefit.color}15` }}>
-                        <benefit.icon className="h-4 w-4" style={{ color: benefit.color }} />
+              <div className="group relative overflow-hidden rounded-3xl bg-white shadow-2xl hover:shadow-3xl transition-all duration-700 animate-fade-in hover-scale" style={{ animationDelay: '0.2s' }}>
+                {/* Hero Image */}
+                <div className="relative h-64 bg-gradient-to-br from-[#66023C] to-[#004F54] overflow-hidden">
+                  <div className="absolute inset-0 bg-black/20"></div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center text-white p-6">
+                      <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                        <Briefcase className="h-10 w-10 text-white" />
                       </div>
-                      <span className="text-gray-800 font-medium text-sm">{benefit.text}</span>
+                      <h3 className="text-2xl font-bold mb-2">{language === 'ar' ? 'للموردين والتجار' : 'For Suppliers'}</h3>
+                      <p className="text-white/90">{language === 'ar' ? 'تريد الوصول لعملاء جدد؟' : 'Want to reach new customers?'}</p>
                     </div>
-                  ))}
+                  </div>
+                  {/* Decorative elements */}
+                  <div className="absolute -top-10 -left-10 w-32 h-32 bg-white/10 rounded-full"></div>
+                  <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-white/10 rounded-full"></div>
                 </div>
 
-                <div className="text-center">
-                  <Link to="/vendor/register">
-                    <Button size="lg" className="w-full bg-gradient-to-r from-[#66023C] to-[#004F54] hover:from-[#66023C]/90 hover:to-[#004F54]/90 text-white font-bold py-4 shadow-lg hover:shadow-xl transition-all duration-300">
-                      {language === 'ar' ? '🏭 انضم كمورد' : '🏭 Join as Vendor'}
-                    </Button>
-                  </Link>
-                  <p className="text-xs text-gray-500 mt-2">
-                    {language === 'ar' ? 'اشتراك مجاني • عمولة عند النجاح فقط' : 'Free signup • Success-based commission'}
-                  </p>
+                <div className="p-8">
+                  <div className="space-y-6 mb-8">
+                    {[
+                      { 
+                        icon: Users, 
+                        title: language === 'ar' ? 'شبكة واسعة' : 'Wide Network',
+                        text: language === 'ar' ? 'اوصل لأكثر من 500+ شركة نشطة' : 'Reach 500+ active companies'
+                      },
+                      { 
+                        icon: TrendingUp, 
+                        title: language === 'ar' ? 'نمو مضمون' : 'Guaranteed Growth',
+                        text: language === 'ar' ? 'زد مبيعاتك بـ 40% في المتوسط' : 'Increase sales by 40% on average'
+                      },
+                      { 
+                        icon: Target, 
+                        title: language === 'ar' ? 'فرص مؤهلة' : 'Qualified Leads',
+                        text: language === 'ar' ? 'احصل على طلبات مؤهلة ومناسبة' : 'Get qualified and relevant requests'
+                      }
+                    ].map((benefit, index) => (
+                      <div key={index} className="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-[#66023C]/5 to-[#004F54]/5 border border-[#66023C]/10 hover:from-[#66023C]/10 hover:to-[#004F54]/10 transition-colors">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#66023C] to-[#004F54] flex items-center justify-center flex-shrink-0 shadow-md">
+                          <benefit.icon className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-gray-800 mb-1">{benefit.title}</h4>
+                          <p className="text-sm text-gray-600">{benefit.text}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="space-y-4">
+                    <Link to="/vendor/register" className="block">
+                      <Button size="lg" className="w-full bg-gradient-to-r from-[#66023C] to-[#004F54] hover:from-[#66023C]/90 hover:to-[#004F54]/90 text-white font-bold py-4 shadow-lg hover:shadow-xl transition-all duration-300 group">
+                        <Briefcase className="mr-2 h-5 w-5" />
+                        {language === 'ar' ? 'انضم كمورد' : 'Join as Supplier'}
+                        <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </Link>
+                    <p className="text-center text-xs text-gray-500">
+                      {language === 'ar' ? 'اشتراك مجاني • عمولة عند النجاح فقط • دعم مستمر' : 'Free signup • Success-based commission • Ongoing support'}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Combined Social Proof */}
+            {/* Trust Indicators */}
             <div className="text-center animate-fade-in" style={{ animationDelay: '0.4s' }}>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                <div className="flex flex-col items-center">
-                  <div className="flex items-center gap-1 mb-2">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-[#66023C] text-[#66023C]" />
-                    ))}
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8 max-w-4xl mx-auto">
+                <h3 className="text-xl font-bold text-gray-800 mb-6">
+                  {language === 'ar' ? 'موثوق من قبل أفضل الشركات في المملكة' : 'Trusted by Leading Companies in Saudi Arabia'}
+                </h3>
+                
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+                  <div className="text-center">
+                    <div className="flex items-center justify-center gap-1 mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-[#66023C] text-[#66023C]" />
+                      ))}
+                    </div>
+                    <p className="text-2xl font-bold text-gray-800">4.9/5</p>
+                    <p className="text-sm text-gray-600">{language === 'ar' ? 'تقييم المستخدمين' : 'User Rating'}</p>
                   </div>
-                  <p className="text-2xl font-bold text-gray-800">4.9/5</p>
-                  <p className="text-sm text-gray-600">{language === 'ar' ? 'تقييم المستخدمين' : 'User Rating'}</p>
+                  <div className="text-center">
+                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                      <Shield className="h-4 w-4 text-green-600" />
+                    </div>
+                    <p className="text-2xl font-bold text-gray-800">99.9%</p>
+                    <p className="text-sm text-gray-600">{language === 'ar' ? 'معدل الأمان' : 'Security Rate'}</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                      <Clock className="h-4 w-4 text-blue-600" />
+                    </div>
+                    <p className="text-2xl font-bold text-gray-800">&lt; 2h</p>
+                    <p className="text-sm text-gray-600">{language === 'ar' ? 'متوسط الاستجابة' : 'Avg Response'}</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                      <Award className="h-4 w-4 text-purple-600" />
+                    </div>
+                    <p className="text-2xl font-bold text-gray-800">100%</p>
+                    <p className="text-sm text-gray-600">{language === 'ar' ? 'موردون معتمدون' : 'Verified Suppliers'}</p>
+                  </div>
                 </div>
-                <div className="flex flex-col items-center">
-                  <p className="text-2xl font-bold text-[#004F54] mb-2">500+</p>
-                  <p className="text-sm text-gray-600">{language === 'ar' ? 'شركة تثق بنا' : 'Companies Trust Us'}</p>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link to="/pricing">
+                    <Button variant="outline" size="lg" className="px-8 py-3 text-lg font-semibold border-2 border-[#004F54] text-[#004F54] hover:bg-[#004F54] hover:text-white transition-all duration-300">
+                      {language === 'ar' ? 'شاهد خطط الأسعار' : 'View Pricing Plans'}
+                    </Button>
+                  </Link>
+                  <Link to="/about">
+                    <Button variant="ghost" size="lg" className="px-8 py-3 text-lg font-semibold text-gray-700 hover:text-[#66023C] transition-all duration-300">
+                      {language === 'ar' ? 'تعرف على المنصة' : 'Learn More'}
+                    </Button>
+                  </Link>
                 </div>
-                <div className="flex flex-col items-center">
-                  <p className="text-2xl font-bold text-[#66023C] mb-2">1,200+</p>
-                  <p className="text-sm text-gray-600">{language === 'ar' ? 'مورد نشط' : 'Active Vendors'}</p>
-                </div>
-              </div>
-              
-              <div className="mt-8">
-                <Link to="/pricing">
-                  <Button variant="outline" size="lg" className="px-8 py-3 text-lg font-semibold border-2 border-gray-300 text-gray-700 hover:border-[#004F54] hover:text-[#004F54] transition-all duration-300">
-                    {language === 'ar' ? 'شاهد خطط الأسعار' : 'View Pricing Plans'}
-                  </Button>
-                </Link>
               </div>
             </div>
           </div>
