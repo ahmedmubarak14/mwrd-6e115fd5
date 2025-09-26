@@ -182,161 +182,188 @@ export const Landing = () => {
             </div>
 
             {/* Live Opportunities Section */}
-            <div className="bg-white rounded-3xl shadow-2xl p-8 mb-20 max-w-6xl mx-auto animate-fade-in border border-gray-100">
-              {/* Header */}
-              <div className="flex items-start justify-between mb-8">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
-                    <Briefcase className="h-8 w-8 text-white" />
+            <div className="relative bg-gradient-to-br from-white via-gray-50/50 to-white rounded-3xl shadow-2xl p-8 mb-20 max-w-6xl mx-auto animate-fade-in border border-gray-100 overflow-hidden">
+              {/* Background decorative elements */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-400/10 to-emerald-600/10 rounded-full blur-3xl"></div>
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-blue-400/10 to-blue-600/10 rounded-full blur-2xl"></div>
+              
+              <div className="relative z-10">
+                {/* Header */}
+                <div className="flex items-start justify-between mb-10">
+                  <div className="flex items-center gap-6">
+                    <div className="relative">
+                      <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-emerald-500/25">
+                        <Briefcase className="h-10 w-10 text-white" />
+                      </div>
+                      <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center shadow-lg">
+                        <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                      </div>
+                    </div>
+                    <div>
+                      <h2 className="text-4xl font-black bg-gradient-to-r from-gray-800 via-gray-900 to-gray-800 bg-clip-text text-transparent mb-2">
+                        {language === 'ar' ? 'الفرص الجديدة' : 'New Opportunities'}
+                      </h2>
+                      <p className="text-gray-500 font-medium">
+                        {language === 'ar' ? 'هذا الأسبوع' : 'This week'}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h2 className="text-3xl font-bold text-gray-800 mb-1">
-                      {language === 'ar' ? 'الفرص الجديدة' : 'New Opportunities'}
-                    </h2>
-                    <p className="text-gray-500">
-                      {language === 'ar' ? 'هذا الأسبوع' : 'This week'}
+                  <div className="text-right bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl p-6 border border-emerald-200 shadow-lg">
+                    <div className="text-3xl font-black bg-gradient-to-r from-emerald-600 to-emerald-700 bg-clip-text text-transparent mb-1">
+                      {language === 'ar' ? '٨٪' : '8%'}
+                    </div>
+                    <p className="text-sm text-emerald-700 font-semibold">
+                      {language === 'ar' ? 'متوسط العمولة' : 'Avg. Commission'}
                     </p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-emerald-600 mb-1">
-                    {language === 'ar' ? '٨٪' : '8%'}
-                  </div>
-                  <p className="text-sm text-gray-500">
-                    {language === 'ar' ? 'متوسط العمولة' : 'Avg. Commission'}
-                  </p>
-                </div>
-              </div>
 
-              {/* Opportunities List */}
-              <div className="space-y-6 mb-8">
-                {/* Electronics Opportunity */}
-                <div className="flex items-center justify-between p-6 rounded-2xl bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200 hover:shadow-md transition-all duration-300 group">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
-                      <Zap className="h-6 w-6 text-emerald-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-800">
-                        {language === 'ar' ? 'الإلكترونيات' : 'Electronics'}
-                      </h3>
+                {/* Opportunities List */}
+                <div className="space-y-4 mb-10">
+                  {/* Electronics Opportunity */}
+                  <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-r from-white via-gray-50 to-white border-2 border-gray-100 hover:border-emerald-200 hover:shadow-2xl transition-all duration-500">
+                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/0 via-emerald-500/0 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="relative p-8 flex items-center justify-between">
+                      <div className="flex items-center gap-6">
+                        <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 via-emerald-200 to-emerald-300 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-emerald-200 transition-shadow duration-300">
+                          <Zap className="h-8 w-8 text-emerald-700" />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-800 group-hover:text-emerald-700 transition-colors duration-300">
+                            {language === 'ar' ? 'الإلكترونيات' : 'Electronics'}
+                          </h3>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm text-gray-500 mb-1 font-medium">
+                          {language === 'ar' ? 'قيمة المشروع' : 'project value'}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-sm text-gray-500 mb-1">
-                      {language === 'ar' ? 'قيمة المشروع' : 'project value'}
+
+                  {/* Al-Riyadh Construction */}
+                  <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-r from-white via-blue-50/50 to-white border-2 border-gray-100 hover:border-blue-200 hover:shadow-2xl transition-all duration-500">
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 via-blue-500/0 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="relative p-8 flex items-center justify-between">
+                      <div className="flex items-center gap-6">
+                        <div className="w-16 h-16 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-blue-200 transition-shadow duration-300">
+                          <Building2 className="h-8 w-8 text-blue-700" />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-800 group-hover:text-blue-700 transition-colors duration-300">
+                            {language === 'ar' ? 'مقاولات الرياض' : 'Al-Riyadh Construction'}
+                          </h3>
+                          <p className="text-base text-gray-600 font-medium">
+                            {language === 'ar' ? 'المقاولات' : 'Construction'}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-2xl font-black text-gray-800 group-hover:text-blue-700 transition-colors duration-300">
+                          {language === 'ar' ? '٧٨٬٥٠٠ ر.س' : 'SAR 78,500'}
+                        </div>
+                        <div className="text-sm text-gray-500 font-medium">
+                          {language === 'ar' ? 'قيمة المشروع' : 'project value'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Modern Office Solutions */}
+                  <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-r from-white via-purple-50/50 to-white border-2 border-gray-100 hover:border-purple-200 hover:shadow-2xl transition-all duration-500">
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/0 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="relative p-8 flex items-center justify-between">
+                      <div className="flex items-center gap-6">
+                        <div className="w-16 h-16 bg-gradient-to-br from-purple-100 via-purple-200 to-purple-300 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-purple-200 transition-shadow duration-300">
+                          <Package className="h-8 w-8 text-purple-700" />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-800 group-hover:text-purple-700 transition-colors duration-300 flex items-center gap-3">
+                            {language === 'ar' ? 'حلول المكاتب الحديثة' : 'Modern Office Solutions'}
+                            <span className="px-3 py-1.5 bg-gradient-to-r from-red-100 to-red-200 text-red-700 text-xs font-bold rounded-full border border-red-200 shadow-sm">
+                              {language === 'ar' ? 'عاجل' : 'Urgent'}
+                            </span>
+                          </h3>
+                          <p className="text-base text-gray-600 font-medium">
+                            {language === 'ar' ? 'مستلزمات المكاتب' : 'Office Supplies'}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-2xl font-black text-gray-800 group-hover:text-purple-700 transition-colors duration-300">
+                          {language === 'ar' ? '٣٢٬٠٠٠ ر.س' : 'SAR 32,000'}
+                        </div>
+                        <div className="text-sm text-gray-500 font-medium">
+                          {language === 'ar' ? 'قيمة المشروع' : 'project value'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Advanced Tech Corp */}
+                  <div className="group relative overflow-hidden rounded-3xl bg-gradient-to-r from-white via-orange-50/50 to-white border-2 border-gray-100 hover:border-orange-200 hover:shadow-2xl transition-all duration-500">
+                    <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 via-orange-500/0 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="relative p-8 flex items-center justify-between">
+                      <div className="flex items-center gap-6">
+                        <div className="w-16 h-16 bg-gradient-to-br from-orange-100 via-orange-200 to-orange-300 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-orange-200 transition-shadow duration-300">
+                          <Rocket className="h-8 w-8 text-orange-700" />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold text-gray-800 group-hover:text-orange-700 transition-colors duration-300">
+                            {language === 'ar' ? 'شركة التقنية المتقدمة' : 'Advanced Tech Corp'}
+                          </h3>
+                          <p className="text-base text-gray-600 font-medium">
+                            {language === 'ar' ? 'التكنولوجيا' : 'Technology'}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-2xl font-black text-gray-800 group-hover:text-orange-700 transition-colors duration-300">
+                          {language === 'ar' ? '١٥٥٬٥٠٠ ر.س' : 'SAR 155,500'}
+                        </div>
+                        <div className="text-sm text-gray-500 font-medium">
+                          {language === 'ar' ? 'قيمة المشروع' : 'project value'}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Al-Riyadh Construction */}
-                <div className="flex items-center justify-between p-6 rounded-2xl bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 hover:shadow-md transition-all duration-300 group">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                      <Building2 className="h-6 w-6 text-blue-600" />
+                {/* Bottom Info */}
+                <div className="bg-gradient-to-r from-blue-50 via-white to-blue-50 rounded-2xl p-6 border-2 border-blue-100 shadow-lg">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4 text-blue-700">
+                      <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center shadow-md">
+                        <Clock className="h-6 w-6 text-blue-600" />
+                      </div>
+                      <span className="text-xl font-bold">
+                        {language === 'ar' ? 'وقت الموافقة' : 'Approval Time'}
+                      </span>
                     </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-800">
-                        {language === 'ar' ? 'مقاولات الرياض' : 'Al-Riyadh Construction'}
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        {language === 'ar' ? 'المقاولات' : 'Construction'}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-xl font-bold text-gray-800">
-                      {language === 'ar' ? '٧٨٬٥٠٠ ر.س' : 'SAR 78,500'}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      {language === 'ar' ? 'قيمة المشروع' : 'project value'}
+                    <div className="text-4xl font-black bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">
+                      {language === 'ar' ? '٢٤ ساعة' : '24h'}
                     </div>
                   </div>
                 </div>
 
-                {/* Modern Office Solutions */}
-                <div className="flex items-center justify-between p-6 rounded-2xl bg-gradient-to-r from-purple-50 to-purple-100 border border-purple-200 hover:shadow-md transition-all duration-300 group">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                      <Package className="h-6 w-6 text-purple-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-800 flex items-center gap-2">
-                        {language === 'ar' ? 'حلول المكاتب الحديثة' : 'Modern Office Solutions'}
-                        <span className="px-2 py-1 bg-red-100 text-red-600 text-xs font-medium rounded-full">
-                          {language === 'ar' ? 'عاجل' : 'Urgent'}
-                        </span>
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        {language === 'ar' ? 'مستلزمات المكاتب' : 'Office Supplies'}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-xl font-bold text-gray-800">
-                      {language === 'ar' ? '٣٢٬٠٠٠ ر.س' : 'SAR 32,000'}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      {language === 'ar' ? 'قيمة المشروع' : 'project value'}
-                    </div>
-                  </div>
+                {/* Action Buttons */}
+                <div className="grid md:grid-cols-2 gap-6 mt-10">
+                  <Link to="/register" className="block group">
+                    <Button size="lg" className="w-full bg-gradient-to-r from-[#004F54] via-[#005F64] to-[#66023C] hover:from-[#004F54]/90 hover:via-[#005F64]/90 hover:to-[#66023C]/90 text-white font-bold py-6 shadow-2xl hover:shadow-3xl transition-all duration-500 rounded-2xl border-2 border-white/20">
+                      <Building2 className="mr-3 h-6 w-6" />
+                      {language === 'ar' ? 'ابدأ الشراء مجاناً' : 'Start Buying Free'}
+                      <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform duration-300" />
+                    </Button>
+                  </Link>
+                  <Link to="/vendor/register" className="block group">
+                    <Button size="lg" variant="outline" className="w-full border-3 border-[#66023C] text-[#66023C] hover:bg-gradient-to-r hover:from-[#66023C] hover:to-[#004F54] hover:text-white font-bold py-6 transition-all duration-500 rounded-2xl shadow-xl hover:shadow-2xl">
+                      <Briefcase className="mr-3 h-6 w-6" />
+                      {language === 'ar' ? 'انضم كمورد' : 'Join as Supplier'}
+                      <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform duration-300" />
+                    </Button>
+                  </Link>
                 </div>
-
-                {/* Advanced Tech Corp */}
-                <div className="flex items-center justify-between p-6 rounded-2xl bg-gradient-to-r from-orange-50 to-orange-100 border border-orange-200 hover:shadow-md transition-all duration-300 group">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
-                      <Rocket className="h-6 w-6 text-orange-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-800">
-                        {language === 'ar' ? 'شركة التقنية المتقدمة' : 'Advanced Tech Corp'}
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        {language === 'ar' ? 'التكنولوجيا' : 'Technology'}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-xl font-bold text-gray-800">
-                      {language === 'ar' ? '١٥٥٬٥٠٠ ر.س' : 'SAR 155,500'}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      {language === 'ar' ? 'قيمة المشروع' : 'project value'}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Bottom Info */}
-              <div className="flex items-center justify-between pt-6 border-t border-gray-200">
-                <div className="flex items-center gap-3 text-blue-600">
-                  <Clock className="h-5 w-5" />
-                  <span className="font-semibold">
-                    {language === 'ar' ? 'وقت الموافقة' : 'Approval Time'}
-                  </span>
-                </div>
-                <div className="text-2xl font-bold text-blue-600">
-                  {language === 'ar' ? '٢٤ ساعة' : '24h'}
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="grid md:grid-cols-2 gap-4 mt-8">
-                <Link to="/register" className="block">
-                  <Button size="lg" className="w-full bg-gradient-to-r from-[#004F54] to-[#66023C] hover:from-[#004F54]/90 hover:to-[#66023C]/90 text-white font-bold py-4 shadow-lg hover:shadow-xl transition-all duration-300 group">
-                    <Building2 className="mr-2 h-5 w-5" />
-                    {language === 'ar' ? 'ابدأ الشراء مجاناً' : 'Start Buying Free'}
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-                <Link to="/vendor/register" className="block">
-                  <Button size="lg" variant="outline" className="w-full border-2 border-[#66023C] text-[#66023C] hover:bg-[#66023C] hover:text-white font-bold py-4 transition-all duration-300 group">
-                    <Briefcase className="mr-2 h-5 w-5" />
-                    {language === 'ar' ? 'انضم كمورد' : 'Join as Supplier'}
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
               </div>
             </div>
 
