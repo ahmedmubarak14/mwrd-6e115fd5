@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useOptionalAuth } from "@/contexts/useOptionalAuth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { StaggeredList } from "@/components/ui/animations/MicroInteractions";
 import { 
   ArrowRight, 
@@ -55,6 +55,15 @@ export const Landing = () => {
   const userProfile = auth?.userProfile;
   const loading = auth?.loading;
   const [activeAudience, setActiveAudience] = useState<'buyers' | 'vendors'>('buyers');
+
+  // Auto-switch between cards every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveAudience(prev => prev === 'buyers' ? 'vendors' : 'buyers');
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   if (loading) {
     return (
