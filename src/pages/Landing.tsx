@@ -373,152 +373,128 @@ export const Landing = () => {
         </div>
       </section>
 
-      {/* Revolutionary Workflow Section */}
-      <section className="py-32 px-6 relative overflow-hidden bg-gradient-to-br from-gray-50 to-white">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 w-full h-full" style={{ backgroundImage: `radial-gradient(circle at 25% 25%, #004F54 2px, transparent 2px)`, backgroundSize: '50px 50px' }}></div>
-        </div>
-
+      {/* How It Works - Redesigned Section */}
+      <section className="py-20 px-6 relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-purple-50">
         <div className="container mx-auto relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-black mb-6 text-gray-800">
-              {language === 'ar' ? 'كيف نعيد تشكيل المشتريات التجارية؟' : 'How We\'re Reshaping B2B Procurement'}
+            <div className="inline-block mb-6">
+              <div className="px-6 py-3 text-sm text-[#66023C] rounded-full bg-gradient-to-r from-[#66023C]/10 to-purple-100 border border-[#66023C]/20 shadow-sm">
+                {language === 'ar' ? '⚡ كيف نعمل' : '⚡ How It Works'}
+              </div>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-black mb-6 text-gray-800">
+              {language === 'ar' ? 'عملية بسيطة وذكية' : 'Simple & Smart Process'}
             </h2>
-            <p className="text-lg max-w-3xl mx-auto font-light text-gray-600">
+            <p className="text-lg max-w-3xl mx-auto font-medium text-gray-600">
               {language === 'ar' 
-                ? 'نظام ثوري يدمج الذكاء الاصطناعي مع سوق المشتريات التجارية لتقديم تجربة لا مثيل لها'
-                : 'A revolutionary system that merges AI with B2B procurement marketplace to deliver an unmatched experience'}
+                ? 'ثلاث خطوات فقط تفصلك عن إتمام صفقتك التالية بنجاح'
+                : 'Just three steps separate you from successfully completing your next deal'}
             </p>
           </div>
 
-          <div className="max-w-7xl mx-auto">
-            {/* Revolutionary Step System */}
-            <div className="relative">
-              {/* Animated Connection Line */}
-              <div className="absolute left-1/2 top-0 bottom-0 w-2 bg-gradient-to-b from-[#004F54] via-[#102C33] to-[#765A3F] transform -translate-x-1/2 hidden lg:block rounded-full shadow-lg"></div>
-
-              {/* Step 1: AI-Powered Discovery */}
-              <div className="relative mb-32 group">
-                <div className="flex flex-col lg:flex-row items-center gap-16">
-                  <div className="lg:w-1/2 lg:pr-16">
-                     <Card className="p-4 hover:shadow-2xl transition-all duration-700 rounded-2xl bg-white border border-gray-200 shadow-sm" hoverEffect="tilt">
-                      <div className="flex items-center gap-4 mb-6">
-                        <div className="w-12 h-12 bg-gradient-to-br from-[#004F54] to-[#102C33] rounded-2xl flex items-center justify-center shadow-lg">
-                          <Search className="h-6 w-6 text-white" />
-                        </div>
-                        <div>
-                          <span className="text-2xl font-black text-[#004F54]">01</span>
-                          <h3 className="text-xl font-bold text-gray-800">
-                            {language === 'ar' ? 'اكتشاف ذكي' : 'AI-Powered Discovery'}
-                          </h3>
-                        </div>
-                      </div>
-                      <p className="text-base leading-relaxed font-medium text-gray-600">
-                        {language === 'ar' 
-                          ? 'تقنية الذكاء الاصطناعي تحلل احتياجاتك وتوصلك بأفضل الموردين في ثوانٍ. اكتشف فرصاً لم تتخيلها من قبل'
-                          : 'AI technology analyzes your needs and connects you with the best vendors in seconds. Discover opportunities you never imagined'}
-                      </p>
-                    </Card>
+          <div className="max-w-6xl mx-auto">
+            {/* Process Steps */}
+            <div className="grid md:grid-cols-3 gap-8 relative">
+              
+              {/* Connecting Lines - Hidden on mobile */}
+              <div className="hidden md:block absolute top-20 left-1/6 right-1/6 h-0.5 bg-gradient-to-r from-[#004F54] via-[#66023C] to-[#004F54] opacity-30"></div>
+              
+              {/* Step 1: Connect */}
+              <div className="text-center group animate-fade-in">
+                <div className="relative mb-8">
+                  <div className="w-20 h-20 bg-gradient-to-br from-[#004F54] to-[#66023C] rounded-2xl flex items-center justify-center mx-auto shadow-xl group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110">
+                    <Search className="h-10 w-10 text-white" />
                   </div>
-                  <div className="lg:w-1/2 lg:pl-16">
-                    <div className="grid grid-cols-2 gap-6">
-                      {[
-                        { icon: Target, label: language === 'ar' ? 'دقة 99%' : '99% Accuracy', color: '#102C33' },
-                        { icon: Zap, label: language === 'ar' ? 'استجابة فورية' : 'Instant Response', color: '#004F54' },
-                        { icon: Eye, label: language === 'ar' ? 'رؤى متقدمة' : 'Advanced Insights', color: '#765A3F' },
-                        { icon: TrendingUp, label: language === 'ar' ? 'نمو مضمون' : 'Guaranteed Growth', color: '#102C33' }
-                        ].map((feature, index) => (
-                        <Card key={index} hoverEffect="glow" className="p-3 hover:shadow-lg transition-all duration-500 rounded-xl bg-white border border-gray-200 shadow-sm">
-                          <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
-                          <div className="text-sm font-bold text-gray-800">{feature.label}</div>
-                        </Card>
-                      ))}
-                    </div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg border-2 border-[#004F54]">
+                    <span className="text-sm font-black text-[#004F54]">1</span>
                   </div>
+                </div>
+                
+                <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200">
+                  <h3 className="text-xl font-black text-gray-800 mb-3">
+                    {language === 'ar' ? 'اربط واكتشف' : 'Connect & Discover'}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {language === 'ar' 
+                      ? 'ابحث عن الموردين المناسبين أو العملاء المهتمين بخدماتك بسهولة'
+                      : 'Easily find the right suppliers or customers interested in your services'}
+                  </p>
                 </div>
               </div>
 
-              {/* Step 2: Seamless Negotiation */}
-              <div className="relative mb-32 group">
-                 <div className="flex flex-col lg:flex-row-reverse items-center gap-16">
-                   <div className="lg:w-1/2 lg:pl-16">
-                     <Card className="p-4 hover:shadow-2xl transition-all duration-700 rounded-2xl bg-white border border-gray-200 shadow-sm" hoverEffect="tilt">
-                       <div className="flex items-center gap-4 mb-6">
-                         <div className="w-12 h-12 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-2xl flex items-center justify-center shadow-lg">
-                           <MessageSquare className="h-6 w-6 text-white" />
-                         </div>
-                         <div>
-                           <span className="text-2xl font-black text-[#66023C]">02</span>
-                           <h3 className="text-xl font-bold text-gray-800">
-                             {language === 'ar' ? 'تفاوض سلس' : 'Seamless Negotiation'}
-                           </h3>
-                         </div>
-                       </div>
-                       <p className="text-base leading-relaxed font-medium text-gray-600">
-                         {language === 'ar' 
-                           ? 'أدوات تفاوض متطورة تسهل التواصل المباشر مع الموردين وتضمن أفضل الصفقات'
-                           : 'Advanced negotiation tools facilitate direct communication with vendors and ensure the best deals'}
-                       </p>
-                     </Card>
-                   </div>
-                   <div className="lg:w-1/2 lg:pr-16">
-                     <div className="grid grid-cols-2 gap-6">
-                       {[
-                         { icon: MessageSquare, label: language === 'ar' ? 'دردشة مباشرة' : 'Real-time Chat', color: '#66023C' },
-                         { icon: FileText, label: language === 'ar' ? 'مشاركة المستندات' : 'Document Sharing', color: '#004F54' },
-                         { icon: BarChart3, label: language === 'ar' ? 'مقارنة الأسعار' : 'Price Comparison', color: '#765A3F' },
-                         { icon: Handshake, label: language === 'ar' ? 'اتفاقيات آمنة' : 'Secure Agreements', color: '#66023C' }
-                       ].map((feature, index) => (
-                         <Card key={index} hoverEffect="glow" className="p-3 hover:shadow-lg transition-all duration-500 rounded-xl bg-white border border-gray-200 shadow-sm">
-                           <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
-                           <div className="text-sm font-bold text-gray-800">{feature.label}</div>
-                         </Card>
-                       ))}
-                     </div>
-                   </div>
-                 </div>
+              {/* Step 2: Compare */}
+              <div className="text-center group animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                <div className="relative mb-8">
+                  <div className="w-20 h-20 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-2xl flex items-center justify-center mx-auto shadow-xl group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110">
+                    <BarChart3 className="h-10 w-10 text-white" />
+                  </div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg border-2 border-[#66023C]">
+                    <span className="text-sm font-black text-[#66023C]">2</span>
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200">
+                  <h3 className="text-xl font-black text-gray-800 mb-3">
+                    {language === 'ar' ? 'قارن واختر' : 'Compare & Choose'}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {language === 'ar' 
+                      ? 'احصل على عروض متعددة وقارن الأسعار والخدمات لاتخاذ أفضل قرار'
+                      : 'Get multiple offers and compare prices and services to make the best decision'}
+                  </p>
+                </div>
               </div>
 
-              {/* Step 3: Secure Completion */}
-              <div className="relative mb-16 group">
-                 <div className="flex flex-col lg:flex-row items-center gap-16">
-                   <div className="lg:w-1/2 lg:pr-16">
-                     <Card className="p-4 hover:shadow-2xl transition-all duration-700 rounded-2xl bg-white border border-gray-200 shadow-sm" hoverEffect="tilt">
-                       <div className="flex items-center gap-4 mb-6">
-                         <div className="w-12 h-12 bg-gradient-to-br from-[#004F54] to-[#66023C] rounded-2xl flex items-center justify-center shadow-lg">
-                           <Shield className="h-6 w-6 text-white" />
-                         </div>
-                         <div>
-                           <span className="text-2xl font-black text-[#004F54]">03</span>
-                           <h3 className="text-xl font-bold text-gray-800">
-                             {language === 'ar' ? 'إنجاز آمن' : 'Secure Completion'}
-                           </h3>
-                         </div>
-                       </div>
-                       <p className="text-base leading-relaxed font-medium text-gray-600">
-                         {language === 'ar' 
-                           ? 'نظام دفع آمن وتتبع الطلبات يضمن وصول منتجاتك في الوقت المحدد بأعلى جودة'
-                           : 'Secure payment system and order tracking ensures your products arrive on time with the highest quality'}
-                       </p>
-                     </Card>
-                   </div>
-                   <div className="lg:w-1/2 lg:pl-16">
-                     <div className="grid grid-cols-2 gap-6">
-                       {[
-                         { icon: CreditCard, label: language === 'ar' ? 'حماية الدفع' : 'Payment Protection', color: '#004F54' },
-                         { icon: Award, label: language === 'ar' ? 'ضمان الجودة' : 'Quality Assurance', color: '#66023C' },
-                         { icon: Package, label: language === 'ar' ? 'تتبع التسليم' : 'Delivery Tracking', color: '#765A3F' },
-                         { icon: ThumbsUp, label: language === 'ar' ? 'رضا مضمون' : 'Guaranteed Satisfaction', color: '#004F54' }
-                       ].map((feature, index) => (
-                         <Card key={index} hoverEffect="glow" className="p-3 hover:shadow-lg transition-all duration-500 rounded-xl bg-white border border-gray-200 shadow-sm">
-                           <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
-                           <div className="text-sm font-bold text-gray-800">{feature.label}</div>
-                         </Card>
-                       ))}
-                     </div>
-                   </div>
-                 </div>
+              {/* Step 3: Complete */}
+              <div className="text-center group animate-fade-in" style={{ animationDelay: '0.4s' }}>
+                <div className="relative mb-8">
+                  <div className="w-20 h-20 bg-gradient-to-br from-[#004F54] to-[#66023C] rounded-2xl flex items-center justify-center mx-auto shadow-xl group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110">
+                    <Handshake className="h-10 w-10 text-white" />
+                  </div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-lg border-2 border-[#004F54]">
+                    <span className="text-sm font-black text-[#004F54]">3</span>
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200">
+                  <h3 className="text-xl font-black text-gray-800 mb-3">
+                    {language === 'ar' ? 'اتفق وأنجز' : 'Agree & Complete'}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {language === 'ar' 
+                      ? 'أتم الصفقة بأمان مع ضمان حقوق جميع الأطراف'
+                      : 'Complete deals securely with guaranteed rights for all parties'}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Success Stories Preview */}
+            <div className="mt-20 text-center">
+              <div className="bg-gradient-to-r from-[#004F54]/5 via-[#66023C]/5 to-[#004F54]/5 rounded-3xl p-8 border border-[#004F54]/10">
+                <div className="grid md:grid-cols-3 gap-8">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <TrendingUp className="h-8 w-8 text-white" />
+                    </div>
+                    <div className="text-3xl font-black text-gray-800 mb-2">95%</div>
+                    <div className="text-sm text-gray-600">{language === 'ar' ? 'معدل نجاح الصفقات' : 'Deal Success Rate'}</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <Clock className="h-8 w-8 text-white" />
+                    </div>
+                    <div className="text-3xl font-black text-gray-800 mb-2">2.5h</div>
+                    <div className="text-sm text-gray-600">{language === 'ar' ? 'متوسط وقت الاستجابة' : 'Average Response Time'}</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <Award className="h-8 w-8 text-white" />
+                    </div>
+                    <div className="text-3xl font-black text-gray-800 mb-2">4.9★</div>
+                    <div className="text-sm text-gray-600">{language === 'ar' ? 'تقييم المستخدمين' : 'User Satisfaction'}</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
