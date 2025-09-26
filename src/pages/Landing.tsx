@@ -658,20 +658,20 @@ export const Landing = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 px-6 relative overflow-hidden bg-gradient-to-br from-[#66023C] via-purple-600 to-[#004F54]">
+      <section className="py-20 px-6 relative overflow-hidden bg-gradient-to-r from-[#004F54] via-[#102C33] to-[#66023C]">
         <div className="container mx-auto text-center relative z-10">
           <div className="max-w-4xl mx-auto space-y-8">
             <h2 className="text-3xl md:text-4xl font-black text-white">
               {language === 'ar' ? 'انضم إلى الثورة' : 'Join the Revolution'}
             </h2>
-            <p className="text-lg text-white font-light max-w-2xl mx-auto">
+            <p className="text-lg text-white/80 font-light max-w-2xl mx-auto">
               {language === 'ar' 
                 ? 'كن جزءاً من مستقبل التجارة الإلكترونية B2B وابدأ رحلتك معنا اليوم'
                 : 'Be part of the future of B2B e-commerce and start your journey with us today'}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/register">
-                <Button size="lg" animation="spring" className="px-8 py-3 bg-white text-[#66023C] hover:bg-gray-100 transition-all duration-300 text-lg font-semibold">
+                <Button size="lg" animation="spring" className="px-8 py-3 bg-white text-[#004F54] hover:bg-gray-100 transition-all duration-300 text-lg font-semibold shadow-xl hover:shadow-2xl">
                   {language === 'ar' ? 'ابدأ رحلتك' : 'Start Your Journey'}
                 </Button>
               </Link>
