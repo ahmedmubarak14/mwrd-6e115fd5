@@ -15,10 +15,11 @@ export const Footer = () => {
         {/* Main Footer Content */}
         <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 ${isRTL ? 'rtl-grid' : ''}`}>
           
-          {/* Column 1: Logo & Tagline */}
-          <div className="col-span-1 lg:col-span-1 space-y-8">
+          {/* Column 1: Logo, Tagline & Contact Info */}
+          <div className="col-span-1 lg:col-span-1">
             <AnimatedCard hoverEffect="lift" className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 shadow-2xl hover:shadow-white/5 transition-all duration-500">
-              <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
+              <div className={`${isRTL ? 'text-right' : 'text-left'} space-y-6`}>
+                {/* Logo and Company Name */}
                 <div className="flex items-center gap-3 mb-4">
                   <div className="relative">
                     <img 
@@ -29,33 +30,35 @@ export const Footer = () => {
                   </div>
                   <span className="text-2xl font-bold text-white drop-shadow-lg">MWRD</span>
                 </div>
-                <p className="text-white/90 text-sm leading-relaxed font-medium">
+                
+                {/* Tagline */}
+                <p className="text-white/90 text-sm leading-relaxed font-medium mb-6">
                   {t('landing.footer.taglineText')}
                 </p>
+                
+                {/* Contact Information */}
+                <div className="space-y-4 pt-4 border-t border-white/20">
+                  <div className="flex items-center gap-3 text-white/80 text-sm group hover:text-white transition-colors duration-300">
+                    <div className="p-2 bg-white/10 rounded-lg group-hover:bg-white/20 transition-colors duration-300">
+                      <Mail size={14} />
+                    </div>
+                    <span className="font-medium">info@mwrd.com</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-white/80 text-sm group hover:text-white transition-colors duration-300">
+                    <div className="p-2 bg-white/10 rounded-lg group-hover:bg-white/20 transition-colors duration-300">
+                      <Phone size={14} />
+                    </div>
+                    <span className="font-medium">+966 11 123 4567</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-white/80 text-sm group hover:text-white transition-colors duration-300">
+                    <div className="p-2 bg-white/10 rounded-lg group-hover:bg-white/20 transition-colors duration-300">
+                      <MapPin size={14} />
+                    </div>
+                    <span className="font-medium">{language === 'ar' ? 'الرياض، المملكة العربية السعودية' : 'Riyadh, Saudi Arabia'}</span>
+                  </div>
+                </div>
               </div>
             </AnimatedCard>
-
-            {/* Contact Info */}
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 space-y-4 shadow-lg">
-              <div className="flex items-center gap-3 text-white/80 text-sm group hover:text-white transition-colors duration-300">
-                <div className="p-2 bg-white/10 rounded-lg group-hover:bg-white/20 transition-colors duration-300">
-                  <Mail size={14} />
-                </div>
-                <span className="font-medium">info@mwrd.com</span>
-              </div>
-              <div className="flex items-center gap-3 text-white/80 text-sm group hover:text-white transition-colors duration-300">
-                <div className="p-2 bg-white/10 rounded-lg group-hover:bg-white/20 transition-colors duration-300">
-                  <Phone size={14} />
-                </div>
-                <span className="font-medium">+966 11 123 4567</span>
-              </div>
-              <div className="flex items-center gap-3 text-white/80 text-sm group hover:text-white transition-colors duration-300">
-                <div className="p-2 bg-white/10 rounded-lg group-hover:bg-white/20 transition-colors duration-300">
-                  <MapPin size={14} />
-                </div>
-                <span className="font-medium">{language === 'ar' ? 'الرياض، المملكة العربية السعودية' : 'Riyadh, Saudi Arabia'}</span>
-              </div>
-            </div>
           </div>
 
           {/* Column 2: Navigation Links */}
