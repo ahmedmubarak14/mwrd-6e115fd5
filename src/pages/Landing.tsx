@@ -190,98 +190,137 @@ export const Landing = () => {
               </div>
             </div>
 
-            {/* Animated Hero Card */}
-            <div className="max-w-4xl mx-auto mb-20">
-              <div className="relative overflow-hidden rounded-3xl bg-white shadow-2xl hover:shadow-3xl transition-all duration-700 animate-fade-in">
-                {/* Toggle Buttons */}
-                <div className="absolute top-6 left-6 z-20 flex gap-2">
+            {/* World-Class Hero Card */}
+            <div className="max-w-5xl mx-auto mb-20">
+              <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-white via-gray-50/50 to-white backdrop-blur-xl border border-white/20 shadow-[0_32px_64px_-12px_rgba(0,0,0,0.25)] hover:shadow-[0_48px_80px_-12px_rgba(0,0,0,0.35)] transition-all duration-700 animate-fade-in group">
+                
+                {/* Glassmorphism Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/5 pointer-events-none"></div>
+                
+                {/* Premium Toggle Buttons */}
+                <div className="absolute top-8 left-8 z-30 flex gap-3">
                   <button
                     onClick={() => setActiveAudience('buyers')}
                     className={cn(
-                      "px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 backdrop-blur-sm",
+                      "px-6 py-3 rounded-2xl text-sm font-semibold transition-all duration-500 backdrop-blur-md border",
                       activeAudience === 'buyers'
-                        ? "bg-white/90 text-[#004F54] shadow-md"
-                        : "bg-white/20 text-white/80 hover:bg-white/30"
+                        ? "bg-white/95 text-primary shadow-lg shadow-primary/20 border-primary/20 scale-105"
+                        : "bg-white/30 text-white/90 hover:bg-white/40 border-white/20 hover:scale-102"
                     )}
                   >
+                    <Building2 className="w-4 h-4 inline-block mr-2" />
                     {language === 'ar' ? 'للشركات' : 'Companies'}
                   </button>
                   <button
                     onClick={() => setActiveAudience('vendors')}
                     className={cn(
-                      "px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 backdrop-blur-sm",
+                      "px-6 py-3 rounded-2xl text-sm font-semibold transition-all duration-500 backdrop-blur-md border",
                       activeAudience === 'vendors'
-                        ? "bg-white/90 text-[#66023C] shadow-md"
-                        : "bg-white/20 text-white/80 hover:bg-white/30"
+                        ? "bg-white/95 text-secondary shadow-lg shadow-secondary/20 border-secondary/20 scale-105"
+                        : "bg-white/30 text-white/90 hover:bg-white/40 border-white/20 hover:scale-102"
                     )}
                   >
+                    <Briefcase className="w-4 h-4 inline-block mr-2" />
                     {language === 'ar' ? 'للموردين' : 'Suppliers'}
                   </button>
                 </div>
 
-                {/* Animated Content */}
-                <div className="relative">
+                {/* Dynamic Progress Indicator */}
+                <div className="absolute top-8 right-8 z-30">
+                  <div className="flex gap-2">
+                    <div className={cn(
+                      "w-3 h-3 rounded-full transition-all duration-300",
+                      activeAudience === 'buyers' ? "bg-white scale-125 shadow-lg" : "bg-white/40"
+                    )}></div>
+                    <div className={cn(
+                      "w-3 h-3 rounded-full transition-all duration-300",
+                      activeAudience === 'vendors' ? "bg-white scale-125 shadow-lg" : "bg-white/40"
+                    )}></div>
+                  </div>
+                </div>
+
+                {/* Animated Content Container */}
+                <div className="relative min-h-[600px]">
                   {/* Buyers Content */}
                   <div className={cn(
-                    "transition-all duration-700 ease-in-out",
-                    activeAudience === 'buyers' ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full absolute inset-0 pointer-events-none"
+                    "transition-all duration-700 ease-out",
+                    activeAudience === 'buyers' 
+                      ? "opacity-100 translate-x-0 scale-100" 
+                      : "opacity-0 translate-x-8 scale-95 absolute inset-0 pointer-events-none"
                   )}>
-                    {/* Hero Image */}
-                    <div className="relative h-80 bg-gradient-to-br from-[#004F54] to-[#66023C] overflow-hidden">
-                      <div className="absolute inset-0 bg-black/20"></div>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-center text-white p-6">
-                          <div className="w-24 h-24 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-6 backdrop-blur-sm transform hover:scale-110 transition-transform duration-300">
-                            <Building2 className="h-12 w-12 text-white" />
+                    {/* Premium Hero Section */}
+                    <div className="relative h-96 bg-gradient-to-br from-primary via-primary-glow to-accent overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+                      
+                      {/* Animated Background Pattern */}
+                      <div className="absolute inset-0 opacity-20">
+                        <div className="absolute top-16 right-16 w-40 h-40 bg-white/10 rounded-full blur-xl animate-float"></div>
+                        <div className="absolute bottom-20 left-20 w-32 h-32 bg-white/15 rounded-full blur-2xl animate-float" style={{animationDelay: '2s'}}></div>
+                        <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-white/5 rounded-full blur-xl animate-float" style={{animationDelay: '4s'}}></div>
+                      </div>
+                      
+                      <div className="relative z-10 flex items-center justify-center h-full">
+                        <div className="text-center text-white p-8">
+                          <div className="relative mb-8">
+                            <div className="w-32 h-32 bg-gradient-to-br from-white/20 to-white/10 rounded-3xl flex items-center justify-center mx-auto backdrop-blur-md border border-white/20 transform hover:scale-110 transition-all duration-500 shadow-2xl">
+                              <Building2 className="h-16 w-16 text-white drop-shadow-lg" />
+                            </div>
+                            <div className="absolute -top-2 -right-2 w-8 h-8 bg-accent rounded-full animate-pulse shadow-lg"></div>
                           </div>
-                          <h3 className="text-3xl font-bold mb-3">{language === 'ar' ? 'للشركات والمؤسسات' : 'For Companies'}</h3>
-                          <p className="text-xl text-white/90">{language === 'ar' ? 'تبحث عن موردين موثوقين؟' : 'Looking for reliable suppliers?'}</p>
+                          <h3 className="text-4xl font-bold mb-4 drop-shadow-lg">{language === 'ar' ? 'للشركات والمؤسسات' : 'For Companies & Enterprises'}</h3>
+                          <p className="text-xl text-white/90 font-medium drop-shadow">{language === 'ar' ? 'تبحث عن موردين موثوقين؟' : 'Looking for reliable suppliers?'}</p>
                         </div>
                       </div>
-                      {/* Floating Elements */}
-                      <div className="absolute top-10 right-10 w-32 h-32 bg-white/10 rounded-full animate-pulse"></div>
-                      <div className="absolute bottom-10 left-10 w-24 h-24 bg-white/10 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
-                      <div className="absolute top-1/2 left-20 w-16 h-16 bg-white/5 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
                     </div>
 
-                    <div className="p-10">
-                      <div className="grid md:grid-cols-3 gap-6 mb-10">
+                    {/* Enhanced Content Section */}
+                    <div className="p-12 bg-gradient-to-br from-white to-gray-50/80">
+                      <div className="grid md:grid-cols-3 gap-8 mb-12">
                         {[
                           { 
                             icon: Search, 
-                            title: language === 'ar' ? 'بحث ذكي' : 'Smart Search',
-                            text: language === 'ar' ? 'ابحث في آلاف الموردين المؤهلين' : 'Search thousands of qualified suppliers'
+                            title: language === 'ar' ? 'بحث ذكي' : 'AI-Powered Search',
+                            text: language === 'ar' ? 'ابحث في آلاف الموردين المؤهلين' : 'Search thousands of qualified suppliers instantly',
+                            gradient: 'from-blue-500 to-primary'
                           },
                           { 
                             icon: Clock, 
-                            title: language === 'ar' ? 'استجابة سريعة' : 'Quick Response',
-                            text: language === 'ar' ? 'احصل على عروض أسعار في دقائق' : 'Get quotes in minutes, not weeks'
+                            title: language === 'ar' ? 'استجابة سريعة' : 'Lightning Response',
+                            text: language === 'ar' ? 'احصل على عروض أسعار في دقائق' : 'Get quotes in minutes, not weeks',
+                            gradient: 'from-green-500 to-emerald-600'
                           },
                           { 
                             icon: DollarSign, 
                             title: language === 'ar' ? 'توفير مضمون' : 'Guaranteed Savings',
-                            text: language === 'ar' ? 'وفر 15-30% من تكاليف المشتريات' : 'Save 15-30% on procurement costs'
+                            text: language === 'ar' ? 'وفر 15-30% من تكاليف المشتريات' : 'Save 15-30% on procurement costs',
+                            gradient: 'from-amber-500 to-orange-600'
                           }
                         ].map((benefit, index) => (
-                          <div key={index} className="text-center group hover:scale-105 transition-transform duration-300">
-                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#004F54] to-[#66023C] flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-shadow">
-                              <benefit.icon className="h-7 w-7 text-white" />
+                          <div key={index} className="relative group">
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/50 to-transparent rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+                            <div className="relative text-center p-6 rounded-2xl bg-white/80 backdrop-blur-sm border border-white/50 hover:border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                              <div className={cn(
+                                "w-20 h-20 rounded-2xl bg-gradient-to-br flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-2xl transition-all duration-300",
+                                benefit.gradient
+                              )}>
+                                <benefit.icon className="h-9 w-9 text-white drop-shadow" />
+                              </div>
+                              <h4 className="font-bold text-lg text-gray-800 mb-3">{benefit.title}</h4>
+                              <p className="text-sm text-gray-600 leading-relaxed">{benefit.text}</p>
                             </div>
-                            <h4 className="font-bold text-gray-800 mb-2">{benefit.title}</h4>
-                            <p className="text-sm text-gray-600">{benefit.text}</p>
                           </div>
                         ))}
                       </div>
 
                       <div className="text-center">
-                        <Link to="/register">
-                          <Button size="lg" className="px-12 py-4 bg-gradient-to-r from-[#004F54] to-[#66023C] hover:from-[#004F54]/90 hover:to-[#66023C]/90 text-white font-bold shadow-xl hover:shadow-2xl transition-all duration-300 group text-lg">
-                            <Building2 className="mr-3 h-6 w-6" />
+                        <Link to="/register" className="inline-block">
+                          <Button size="lg" className="px-16 py-6 bg-gradient-to-r from-primary via-primary-glow to-accent hover:from-primary/90 hover:via-primary-glow/90 hover:to-accent/90 text-white font-bold shadow-2xl hover:shadow-3xl transition-all duration-500 group text-lg rounded-2xl border-0 hover:scale-105">
+                            <Building2 className="mr-3 h-6 w-6 drop-shadow" />
                             {language === 'ar' ? 'ابدأ الشراء مجاناً' : 'Start Buying Free'}
-                            <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform duration-300 drop-shadow" />
                           </Button>
                         </Link>
-                        <p className="mt-4 text-sm text-gray-500">
+                        <p className="mt-6 text-sm text-gray-500 font-medium">
                           {language === 'ar' ? 'مجاني تماماً • لا توجد رسوم خفية • إلغاء في أي وقت' : 'Completely free • No hidden fees • Cancel anytime'}
                         </p>
                       </div>
@@ -290,65 +329,83 @@ export const Landing = () => {
 
                   {/* Vendors Content */}
                   <div className={cn(
-                    "transition-all duration-700 ease-in-out",
-                    activeAudience === 'vendors' ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-full absolute inset-0 pointer-events-none"
+                    "transition-all duration-700 ease-out",
+                    activeAudience === 'vendors' 
+                      ? "opacity-100 translate-x-0 scale-100" 
+                      : "opacity-0 -translate-x-8 scale-95 absolute inset-0 pointer-events-none"
                   )}>
-                    {/* Hero Image */}
-                    <div className="relative h-80 bg-gradient-to-br from-[#66023C] to-[#004F54] overflow-hidden">
-                      <div className="absolute inset-0 bg-black/20"></div>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="text-center text-white p-6">
-                          <div className="w-24 h-24 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-6 backdrop-blur-sm transform hover:scale-110 transition-transform duration-300">
-                            <Briefcase className="h-12 w-12 text-white" />
+                    {/* Premium Hero Section */}
+                    <div className="relative h-96 bg-gradient-to-br from-secondary via-accent to-primary overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+                      
+                      {/* Animated Background Pattern */}
+                      <div className="absolute inset-0 opacity-20">
+                        <div className="absolute top-16 left-16 w-40 h-40 bg-white/10 rounded-full blur-xl animate-float"></div>
+                        <div className="absolute bottom-20 right-20 w-32 h-32 bg-white/15 rounded-full blur-2xl animate-float" style={{animationDelay: '2s'}}></div>
+                        <div className="absolute top-1/2 right-1/3 w-24 h-24 bg-white/5 rounded-full blur-xl animate-float" style={{animationDelay: '4s'}}></div>
+                      </div>
+                      
+                      <div className="relative z-10 flex items-center justify-center h-full">
+                        <div className="text-center text-white p-8">
+                          <div className="relative mb-8">
+                            <div className="w-32 h-32 bg-gradient-to-br from-white/20 to-white/10 rounded-3xl flex items-center justify-center mx-auto backdrop-blur-md border border-white/20 transform hover:scale-110 transition-all duration-500 shadow-2xl">
+                              <Briefcase className="h-16 w-16 text-white drop-shadow-lg" />
+                            </div>
+                            <div className="absolute -top-2 -right-2 w-8 h-8 bg-primary rounded-full animate-pulse shadow-lg"></div>
                           </div>
-                          <h3 className="text-3xl font-bold mb-3">{language === 'ar' ? 'للموردين والتجار' : 'For Suppliers'}</h3>
-                          <p className="text-xl text-white/90">{language === 'ar' ? 'تريد الوصول لعملاء جدد؟' : 'Want to reach new customers?'}</p>
+                          <h3 className="text-4xl font-bold mb-4 drop-shadow-lg">{language === 'ar' ? 'للموردين والتجار' : 'For Suppliers & Vendors'}</h3>
+                          <p className="text-xl text-white/90 font-medium drop-shadow">{language === 'ar' ? 'تريد الوصول لعملاء جدد؟' : 'Want to reach new customers?'}</p>
                         </div>
                       </div>
-                      {/* Floating Elements */}
-                      <div className="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full animate-pulse"></div>
-                      <div className="absolute bottom-10 right-10 w-24 h-24 bg-white/10 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
-                      <div className="absolute top-1/2 right-20 w-16 h-16 bg-white/5 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
                     </div>
 
-                    <div className="p-10">
-                      <div className="grid md:grid-cols-3 gap-6 mb-10">
+                    <div className="p-12 bg-gradient-to-br from-white to-gray-50/80">
+                      <div className="grid md:grid-cols-3 gap-8 mb-12">
                         {[
                           { 
                             icon: Users, 
-                            title: language === 'ar' ? 'شبكة واسعة' : 'Wide Network',
-                            text: language === 'ar' ? 'اوصل لأكثر من 500+ شركة نشطة' : 'Reach 500+ active companies'
+                            title: language === 'ar' ? 'شبكة واسعة' : 'Extensive Network',
+                            text: language === 'ar' ? 'اوصل لأكثر من 500+ شركة نشطة' : 'Reach 500+ active companies instantly',
+                            gradient: 'from-purple-500 to-secondary'
                           },
                           { 
                             icon: TrendingUp, 
                             title: language === 'ar' ? 'نمو مضمون' : 'Guaranteed Growth',
-                            text: language === 'ar' ? 'زد مبيعاتك بـ 40% في المتوسط' : 'Increase sales by 40% on average'
+                            text: language === 'ar' ? 'زد مبيعاتك بـ 40% في المتوسط' : 'Increase sales by 40% on average',
+                            gradient: 'from-emerald-500 to-green-600'
                           },
                           { 
                             icon: Target, 
-                            title: language === 'ar' ? 'فرص مؤهلة' : 'Qualified Leads',
-                            text: language === 'ar' ? 'احصل على طلبات مؤهلة ومناسبة' : 'Get qualified and relevant requests'
+                            title: language === 'ar' ? 'فرص مؤهلة' : 'Qualified Opportunities',
+                            text: language === 'ar' ? 'احصل على طلبات مؤهلة ومناسبة' : 'Get qualified and relevant requests',
+                            gradient: 'from-orange-500 to-red-600'
                           }
                         ].map((benefit, index) => (
-                          <div key={index} className="text-center group hover:scale-105 transition-transform duration-300">
-                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#66023C] to-[#004F54] flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-shadow">
-                              <benefit.icon className="h-7 w-7 text-white" />
+                          <div key={index} className="relative group">
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/50 to-transparent rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+                            <div className="relative text-center p-6 rounded-2xl bg-white/80 backdrop-blur-sm border border-white/50 hover:border-secondary/20 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                              <div className={cn(
+                                "w-20 h-20 rounded-2xl bg-gradient-to-br flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-2xl transition-all duration-300",
+                                benefit.gradient
+                              )}>
+                                <benefit.icon className="h-9 w-9 text-white drop-shadow" />
+                              </div>
+                              <h4 className="font-bold text-lg text-gray-800 mb-3">{benefit.title}</h4>
+                              <p className="text-sm text-gray-600 leading-relaxed">{benefit.text}</p>
                             </div>
-                            <h4 className="font-bold text-gray-800 mb-2">{benefit.title}</h4>
-                            <p className="text-sm text-gray-600">{benefit.text}</p>
                           </div>
                         ))}
                       </div>
 
                       <div className="text-center">
-                        <Link to="/vendor/register">
-                          <Button size="lg" className="px-12 py-4 bg-gradient-to-r from-[#66023C] to-[#004F54] hover:from-[#66023C]/90 hover:to-[#004F54]/90 text-white font-bold shadow-xl hover:shadow-2xl transition-all duration-300 group text-lg">
-                            <Briefcase className="mr-3 h-6 w-6" />
+                        <Link to="/vendor/register" className="inline-block">
+                          <Button size="lg" className="px-16 py-6 bg-gradient-to-r from-secondary via-accent to-primary hover:from-secondary/90 hover:via-accent/90 hover:to-primary/90 text-white font-bold shadow-2xl hover:shadow-3xl transition-all duration-500 group text-lg rounded-2xl border-0 hover:scale-105">
+                            <Briefcase className="mr-3 h-6 w-6 drop-shadow" />
                             {language === 'ar' ? 'انضم كمورد' : 'Join as Supplier'}
-                            <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform duration-300 drop-shadow" />
                           </Button>
                         </Link>
-                        <p className="mt-4 text-sm text-gray-500">
+                        <p className="mt-6 text-sm text-gray-500 font-medium">
                           {language === 'ar' ? 'اشتراك مجاني • عمولة عند النجاح فقط • دعم مستمر' : 'Free signup • Success-based commission • Ongoing support'}
                         </p>
                       </div>
