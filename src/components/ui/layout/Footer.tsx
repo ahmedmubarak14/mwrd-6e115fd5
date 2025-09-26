@@ -17,8 +17,8 @@ export const Footer = () => {
           
           {/* Column 1: Logo, Tagline & Contact Info */}
           <div className="col-span-1 lg:col-span-1">
-            <AnimatedCard hoverEffect="lift" className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 shadow-2xl hover:shadow-white/5 transition-all duration-500">
-              <div className={`${isRTL ? 'text-right' : 'text-left'} space-y-6`}>
+            <AnimatedCard hoverEffect="lift" className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 shadow-2xl hover:shadow-white/5 transition-all duration-500 h-full flex flex-col">
+              <div className={`${isRTL ? 'text-right' : 'text-left'} space-y-6 flex-1 flex flex-col`}>
                 {/* Logo and Company Name */}
                 <div className="flex items-center gap-3 mb-4">
                   <div className="relative">
@@ -37,7 +37,7 @@ export const Footer = () => {
                 </p>
                 
                 {/* Contact Information */}
-                <div className="space-y-4 pt-4 border-t border-white/20">
+                <div className="space-y-4 pt-4 border-t border-white/20 mt-auto">
                   <div className="flex items-center gap-3 text-white/80 text-sm group hover:text-white transition-colors duration-300">
                     <div className="p-2 bg-white/10 rounded-lg group-hover:bg-white/20 transition-colors duration-300">
                       <Mail size={14} />
@@ -63,13 +63,13 @@ export const Footer = () => {
 
           {/* Column 2: Navigation Links */}
           <div className="space-y-6">
-            <AnimatedCard hoverEffect="glow" className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 shadow-xl hover:shadow-white/5 transition-all duration-500">
-              <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
+            <AnimatedCard hoverEffect="glow" className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 shadow-xl hover:shadow-white/5 transition-all duration-500 h-full flex flex-col">
+              <div className={`${isRTL ? 'text-right' : 'text-left'} flex-1 flex flex-col`}>
                 <h3 className="text-white font-bold mb-6 text-lg flex items-center gap-2">
                   <Navigation size={18} className="text-white/80" />
                   {t('nav.navigation')}
                 </h3>
-                <ul className="space-y-4">
+                <ul className="space-y-4 flex-1">
                   <li>
                     <Link 
                       to="/why-start-with-mwrd" 
@@ -113,13 +113,13 @@ export const Footer = () => {
 
           {/* Column 3: Platform */}
           <div className="space-y-6">
-            <AnimatedCard hoverEffect="glow" className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 shadow-xl hover:shadow-white/5 transition-all duration-500">
-              <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
+            <AnimatedCard hoverEffect="glow" className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 shadow-xl hover:shadow-white/5 transition-all duration-500 h-full flex flex-col">
+              <div className={`${isRTL ? 'text-right' : 'text-left'} flex-1 flex flex-col`}>
                 <h3 className="text-white font-bold mb-6 text-lg flex items-center gap-2">
                   <Users size={18} className="text-white/80" />
                   {language === 'ar' ? 'المنصة' : 'Platform'}
                 </h3>
-                <ul className="space-y-4">
+                <ul className="space-y-4 flex-1">
                   <li>
                     <Link 
                       to="/register" 
@@ -163,13 +163,13 @@ export const Footer = () => {
 
           {/* Column 4: Legal & Support */}
           <div className="space-y-6">
-            <AnimatedCard hoverEffect="glow" className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 shadow-xl hover:shadow-white/5 transition-all duration-500">
-              <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
+            <AnimatedCard hoverEffect="glow" className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 shadow-xl hover:shadow-white/5 transition-all duration-500 h-full flex flex-col">
+              <div className={`${isRTL ? 'text-right' : 'text-left'} flex-1 flex flex-col`}>
                 <h3 className="text-white font-bold mb-6 text-lg flex items-center gap-2">
                   <HeadphonesIcon size={18} className="text-white/80" />
                   {t('landing.footer.support')}
                 </h3>
-                <ul className="space-y-4">
+                <ul className="space-y-4 flex-1">
                   <li>
                     <Link 
                       to="/support" 
