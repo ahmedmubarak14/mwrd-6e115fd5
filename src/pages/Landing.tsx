@@ -181,135 +181,169 @@ export const Landing = () => {
               </div>
             </div>
 
-            {/* Dual Hero Cards with Photos */}
-            <div className="grid lg:grid-cols-2 gap-8 mb-20">
-              
-              {/* For Buyers/Companies */}
-              <div className="group relative overflow-hidden rounded-3xl bg-white shadow-2xl hover:shadow-3xl transition-all duration-700 animate-fade-in hover-scale">
-                {/* Hero Image */}
-                <div className="relative h-64 bg-gradient-to-br from-[#004F54] to-[#66023C] overflow-hidden">
-                  <div className="absolute inset-0 bg-black/20"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center text-white p-6">
-                      <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-                        <Building2 className="h-10 w-10 text-white" />
+            {/* Animated Hero Card */}
+            <div className="max-w-4xl mx-auto mb-20">
+              <div className="relative overflow-hidden rounded-3xl bg-white shadow-2xl hover:shadow-3xl transition-all duration-700 animate-fade-in">
+                {/* Toggle Buttons */}
+                <div className="absolute top-6 left-6 z-20 flex gap-2">
+                  <button
+                    onClick={() => setActiveAudience('buyers')}
+                    className={cn(
+                      "px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 backdrop-blur-sm",
+                      activeAudience === 'buyers'
+                        ? "bg-white/90 text-[#004F54] shadow-md"
+                        : "bg-white/20 text-white/80 hover:bg-white/30"
+                    )}
+                  >
+                    {language === 'ar' ? 'للشركات' : 'Companies'}
+                  </button>
+                  <button
+                    onClick={() => setActiveAudience('vendors')}
+                    className={cn(
+                      "px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 backdrop-blur-sm",
+                      activeAudience === 'vendors'
+                        ? "bg-white/90 text-[#66023C] shadow-md"
+                        : "bg-white/20 text-white/80 hover:bg-white/30"
+                    )}
+                  >
+                    {language === 'ar' ? 'للموردين' : 'Suppliers'}
+                  </button>
+                </div>
+
+                {/* Animated Content */}
+                <div className="relative">
+                  {/* Buyers Content */}
+                  <div className={cn(
+                    "transition-all duration-700 ease-in-out",
+                    activeAudience === 'buyers' ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full absolute inset-0 pointer-events-none"
+                  )}>
+                    {/* Hero Image */}
+                    <div className="relative h-80 bg-gradient-to-br from-[#004F54] to-[#66023C] overflow-hidden">
+                      <div className="absolute inset-0 bg-black/20"></div>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center text-white p-6">
+                          <div className="w-24 h-24 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-6 backdrop-blur-sm transform hover:scale-110 transition-transform duration-300">
+                            <Building2 className="h-12 w-12 text-white" />
+                          </div>
+                          <h3 className="text-3xl font-bold mb-3">{language === 'ar' ? 'للشركات والمؤسسات' : 'For Companies'}</h3>
+                          <p className="text-xl text-white/90">{language === 'ar' ? 'تبحث عن موردين موثوقين؟' : 'Looking for reliable suppliers?'}</p>
+                        </div>
                       </div>
-                      <h3 className="text-2xl font-bold mb-2">{language === 'ar' ? 'للشركات والمؤسسات' : 'For Companies'}</h3>
-                      <p className="text-white/90">{language === 'ar' ? 'تبحث عن موردين موثوقين؟' : 'Looking for reliable suppliers?'}</p>
+                      {/* Floating Elements */}
+                      <div className="absolute top-10 right-10 w-32 h-32 bg-white/10 rounded-full animate-pulse"></div>
+                      <div className="absolute bottom-10 left-10 w-24 h-24 bg-white/10 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+                      <div className="absolute top-1/2 left-20 w-16 h-16 bg-white/5 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
+                    </div>
+
+                    <div className="p-10">
+                      <div className="grid md:grid-cols-3 gap-6 mb-10">
+                        {[
+                          { 
+                            icon: Search, 
+                            title: language === 'ar' ? 'بحث ذكي' : 'Smart Search',
+                            text: language === 'ar' ? 'ابحث في آلاف الموردين المؤهلين' : 'Search thousands of qualified suppliers'
+                          },
+                          { 
+                            icon: Clock, 
+                            title: language === 'ar' ? 'استجابة سريعة' : 'Quick Response',
+                            text: language === 'ar' ? 'احصل على عروض أسعار في دقائق' : 'Get quotes in minutes, not weeks'
+                          },
+                          { 
+                            icon: DollarSign, 
+                            title: language === 'ar' ? 'توفير مضمون' : 'Guaranteed Savings',
+                            text: language === 'ar' ? 'وفر 15-30% من تكاليف المشتريات' : 'Save 15-30% on procurement costs'
+                          }
+                        ].map((benefit, index) => (
+                          <div key={index} className="text-center group hover:scale-105 transition-transform duration-300">
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#004F54] to-[#66023C] flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-shadow">
+                              <benefit.icon className="h-7 w-7 text-white" />
+                            </div>
+                            <h4 className="font-bold text-gray-800 mb-2">{benefit.title}</h4>
+                            <p className="text-sm text-gray-600">{benefit.text}</p>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="text-center">
+                        <Link to="/register">
+                          <Button size="lg" className="px-12 py-4 bg-gradient-to-r from-[#004F54] to-[#66023C] hover:from-[#004F54]/90 hover:to-[#66023C]/90 text-white font-bold shadow-xl hover:shadow-2xl transition-all duration-300 group text-lg">
+                            <Building2 className="mr-3 h-6 w-6" />
+                            {language === 'ar' ? 'ابدأ الشراء مجاناً' : 'Start Buying Free'}
+                            <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
+                          </Button>
+                        </Link>
+                        <p className="mt-4 text-sm text-gray-500">
+                          {language === 'ar' ? 'مجاني تماماً • لا توجد رسوم خفية • إلغاء في أي وقت' : 'Completely free • No hidden fees • Cancel anytime'}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  {/* Decorative elements */}
-                  <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full"></div>
-                  <div className="absolute -bottom-10 -left-10 w-24 h-24 bg-white/10 rounded-full"></div>
-                </div>
 
-                <div className="p-8">
-                  <div className="space-y-6 mb-8">
-                    {[
-                      { 
-                        icon: Search, 
-                        title: language === 'ar' ? 'بحث ذكي' : 'Smart Search',
-                        text: language === 'ar' ? 'ابحث في آلاف الموردين المؤهلين' : 'Search thousands of qualified suppliers'
-                      },
-                      { 
-                        icon: Clock, 
-                        title: language === 'ar' ? 'استجابة سريعة' : 'Quick Response',
-                        text: language === 'ar' ? 'احصل على عروض أسعار في دقائق' : 'Get quotes in minutes, not weeks'
-                      },
-                      { 
-                        icon: DollarSign, 
-                        title: language === 'ar' ? 'توفير مضمون' : 'Guaranteed Savings',
-                        text: language === 'ar' ? 'وفر 15-30% من تكاليف المشتريات' : 'Save 15-30% on procurement costs'
-                      }
-                    ].map((benefit, index) => (
-                      <div key={index} className="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-[#004F54]/5 to-[#66023C]/5 border border-[#004F54]/10 hover:from-[#004F54]/10 hover:to-[#66023C]/10 transition-colors">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#004F54] to-[#66023C] flex items-center justify-center flex-shrink-0 shadow-md">
-                          <benefit.icon className="h-5 w-5 text-white" />
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-gray-800 mb-1">{benefit.title}</h4>
-                          <p className="text-sm text-gray-600">{benefit.text}</p>
+                  {/* Vendors Content */}
+                  <div className={cn(
+                    "transition-all duration-700 ease-in-out",
+                    activeAudience === 'vendors' ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-full absolute inset-0 pointer-events-none"
+                  )}>
+                    {/* Hero Image */}
+                    <div className="relative h-80 bg-gradient-to-br from-[#66023C] to-[#004F54] overflow-hidden">
+                      <div className="absolute inset-0 bg-black/20"></div>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="text-center text-white p-6">
+                          <div className="w-24 h-24 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-6 backdrop-blur-sm transform hover:scale-110 transition-transform duration-300">
+                            <Briefcase className="h-12 w-12 text-white" />
+                          </div>
+                          <h3 className="text-3xl font-bold mb-3">{language === 'ar' ? 'للموردين والتجار' : 'For Suppliers'}</h3>
+                          <p className="text-xl text-white/90">{language === 'ar' ? 'تريد الوصول لعملاء جدد؟' : 'Want to reach new customers?'}</p>
                         </div>
                       </div>
-                    ))}
-                  </div>
-
-                  <div className="space-y-4">
-                    <Link to="/register" className="block">
-                      <Button size="lg" className="w-full bg-gradient-to-r from-[#004F54] to-[#66023C] hover:from-[#004F54]/90 hover:to-[#66023C]/90 text-white font-bold py-4 shadow-lg hover:shadow-xl transition-all duration-300 group">
-                        <Building2 className="mr-2 h-5 w-5" />
-                        {language === 'ar' ? 'ابدأ الشراء مجاناً' : 'Start Buying Free'}
-                        <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                      </Button>
-                    </Link>
-                    <p className="text-center text-xs text-gray-500">
-                      {language === 'ar' ? 'مجاني تماماً • لا توجد رسوم خفية • إلغاء في أي وقت' : 'Completely free • No hidden fees • Cancel anytime'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* For Vendors/Suppliers */}
-              <div className="group relative overflow-hidden rounded-3xl bg-white shadow-2xl hover:shadow-3xl transition-all duration-700 animate-fade-in hover-scale" style={{ animationDelay: '0.2s' }}>
-                {/* Hero Image */}
-                <div className="relative h-64 bg-gradient-to-br from-[#66023C] to-[#004F54] overflow-hidden">
-                  <div className="absolute inset-0 bg-black/20"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center text-white p-6">
-                      <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-                        <Briefcase className="h-10 w-10 text-white" />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-2">{language === 'ar' ? 'للموردين والتجار' : 'For Suppliers'}</h3>
-                      <p className="text-white/90">{language === 'ar' ? 'تريد الوصول لعملاء جدد؟' : 'Want to reach new customers?'}</p>
+                      {/* Floating Elements */}
+                      <div className="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full animate-pulse"></div>
+                      <div className="absolute bottom-10 right-10 w-24 h-24 bg-white/10 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
+                      <div className="absolute top-1/2 right-20 w-16 h-16 bg-white/5 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
                     </div>
-                  </div>
-                  {/* Decorative elements */}
-                  <div className="absolute -top-10 -left-10 w-32 h-32 bg-white/10 rounded-full"></div>
-                  <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-white/10 rounded-full"></div>
-                </div>
 
-                <div className="p-8">
-                  <div className="space-y-6 mb-8">
-                    {[
-                      { 
-                        icon: Users, 
-                        title: language === 'ar' ? 'شبكة واسعة' : 'Wide Network',
-                        text: language === 'ar' ? 'اوصل لأكثر من 500+ شركة نشطة' : 'Reach 500+ active companies'
-                      },
-                      { 
-                        icon: TrendingUp, 
-                        title: language === 'ar' ? 'نمو مضمون' : 'Guaranteed Growth',
-                        text: language === 'ar' ? 'زد مبيعاتك بـ 40% في المتوسط' : 'Increase sales by 40% on average'
-                      },
-                      { 
-                        icon: Target, 
-                        title: language === 'ar' ? 'فرص مؤهلة' : 'Qualified Leads',
-                        text: language === 'ar' ? 'احصل على طلبات مؤهلة ومناسبة' : 'Get qualified and relevant requests'
-                      }
-                    ].map((benefit, index) => (
-                      <div key={index} className="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-[#66023C]/5 to-[#004F54]/5 border border-[#66023C]/10 hover:from-[#66023C]/10 hover:to-[#004F54]/10 transition-colors">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#66023C] to-[#004F54] flex items-center justify-center flex-shrink-0 shadow-md">
-                          <benefit.icon className="h-5 w-5 text-white" />
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-gray-800 mb-1">{benefit.title}</h4>
-                          <p className="text-sm text-gray-600">{benefit.text}</p>
-                        </div>
+                    <div className="p-10">
+                      <div className="grid md:grid-cols-3 gap-6 mb-10">
+                        {[
+                          { 
+                            icon: Users, 
+                            title: language === 'ar' ? 'شبكة واسعة' : 'Wide Network',
+                            text: language === 'ar' ? 'اوصل لأكثر من 500+ شركة نشطة' : 'Reach 500+ active companies'
+                          },
+                          { 
+                            icon: TrendingUp, 
+                            title: language === 'ar' ? 'نمو مضمون' : 'Guaranteed Growth',
+                            text: language === 'ar' ? 'زد مبيعاتك بـ 40% في المتوسط' : 'Increase sales by 40% on average'
+                          },
+                          { 
+                            icon: Target, 
+                            title: language === 'ar' ? 'فرص مؤهلة' : 'Qualified Leads',
+                            text: language === 'ar' ? 'احصل على طلبات مؤهلة ومناسبة' : 'Get qualified and relevant requests'
+                          }
+                        ].map((benefit, index) => (
+                          <div key={index} className="text-center group hover:scale-105 transition-transform duration-300">
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#66023C] to-[#004F54] flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-shadow">
+                              <benefit.icon className="h-7 w-7 text-white" />
+                            </div>
+                            <h4 className="font-bold text-gray-800 mb-2">{benefit.title}</h4>
+                            <p className="text-sm text-gray-600">{benefit.text}</p>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
 
-                  <div className="space-y-4">
-                    <Link to="/vendor/register" className="block">
-                      <Button size="lg" className="w-full bg-gradient-to-r from-[#66023C] to-[#004F54] hover:from-[#66023C]/90 hover:to-[#004F54]/90 text-white font-bold py-4 shadow-lg hover:shadow-xl transition-all duration-300 group">
-                        <Briefcase className="mr-2 h-5 w-5" />
-                        {language === 'ar' ? 'انضم كمورد' : 'Join as Supplier'}
-                        <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                      </Button>
-                    </Link>
-                    <p className="text-center text-xs text-gray-500">
-                      {language === 'ar' ? 'اشتراك مجاني • عمولة عند النجاح فقط • دعم مستمر' : 'Free signup • Success-based commission • Ongoing support'}
-                    </p>
+                      <div className="text-center">
+                        <Link to="/vendor/register">
+                          <Button size="lg" className="px-12 py-4 bg-gradient-to-r from-[#66023C] to-[#004F54] hover:from-[#66023C]/90 hover:to-[#004F54]/90 text-white font-bold shadow-xl hover:shadow-2xl transition-all duration-300 group text-lg">
+                            <Briefcase className="mr-3 h-6 w-6" />
+                            {language === 'ar' ? 'انضم كمورد' : 'Join as Supplier'}
+                            <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
+                          </Button>
+                        </Link>
+                        <p className="mt-4 text-sm text-gray-500">
+                          {language === 'ar' ? 'اشتراك مجاني • عمولة عند النجاح فقط • دعم مستمر' : 'Free signup • Success-based commission • Ongoing support'}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
