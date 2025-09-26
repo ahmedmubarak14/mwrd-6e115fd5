@@ -352,84 +352,84 @@ export const Landing = () => {
 
               {/* Step 2: Seamless Negotiation */}
               <div className="relative mb-32 group">
-                <div className="flex flex-col lg:flex-row-reverse items-center gap-16">
-                  <div className="lg:w-1/2 lg:pl-16">
-                    <Card className="p-4 hover:shadow-2xl transition-all duration-700 rounded-2xl bg-white/5 border border-white/20 backdrop-blur-20" hoverEffect="tilt">
-                      <div className="flex items-center gap-4 mb-6">
-                        <div className="w-12 h-12 bg-gradient-to-br from-[#102C33] to-[#004F54] rounded-2xl flex items-center justify-center shadow-xl border border-white/20 backdrop-blur-20">
-                          <MessageSquare className="h-6 w-6 text-white" />
-                        </div>
-                        <div>
-                          <span className="text-2xl font-black text-white">02</span>
-                          <h3 className="text-xl font-bold text-white">
-                            {language === 'ar' ? 'تفاوض سلس' : 'Seamless Negotiation'}
-                          </h3>
-                        </div>
-                      </div>
-                      <p className="text-base leading-relaxed font-medium text-white">
-                        {language === 'ar' 
-                          ? 'أدوات تفاوض متطورة تسهل التواصل المباشر مع الموردين وتضمن أفضل الصفقات'
-                          : 'Advanced negotiation tools facilitate direct communication with vendors and ensure the best deals'}
-                      </p>
-                    </Card>
-                  </div>
-                  <div className="lg:w-1/2 lg:pr-16">
-                    <div className="grid grid-cols-2 gap-6">
-                      {[
-                        { icon: MessageSquare, label: language === 'ar' ? 'دردشة مباشرة' : 'Real-time Chat', color: '#102C33' },
-                        { icon: FileText, label: language === 'ar' ? 'مشاركة المستندات' : 'Document Sharing', color: '#004F54' },
-                        { icon: BarChart3, label: language === 'ar' ? 'مقارنة الأسعار' : 'Price Comparison', color: '#765A3F' },
-                        { icon: Handshake, label: language === 'ar' ? 'اتفاقيات آمنة' : 'Secure Agreements', color: '#102C33' }
-                      ].map((feature, index) => (
-                        <Card key={index} hoverEffect="glow" className="p-3 hover:shadow-2xl transition-all duration-500 rounded-xl bg-white/5 border border-white/20 backdrop-blur-15">
-                          <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
-                          <div className="text-sm font-bold text-white">{feature.label}</div>
-                        </Card>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                 <div className="flex flex-col lg:flex-row-reverse items-center gap-16">
+                   <div className="lg:w-1/2 lg:pl-16">
+                     <Card className="p-4 hover:shadow-2xl transition-all duration-700 rounded-2xl bg-white border border-gray-200 shadow-sm" hoverEffect="tilt">
+                       <div className="flex items-center gap-4 mb-6">
+                         <div className="w-12 h-12 bg-gradient-to-br from-[#66023C] to-[#004F54] rounded-2xl flex items-center justify-center shadow-lg">
+                           <MessageSquare className="h-6 w-6 text-white" />
+                         </div>
+                         <div>
+                           <span className="text-2xl font-black text-[#66023C]">02</span>
+                           <h3 className="text-xl font-bold text-gray-800">
+                             {language === 'ar' ? 'تفاوض سلس' : 'Seamless Negotiation'}
+                           </h3>
+                         </div>
+                       </div>
+                       <p className="text-base leading-relaxed font-medium text-gray-600">
+                         {language === 'ar' 
+                           ? 'أدوات تفاوض متطورة تسهل التواصل المباشر مع الموردين وتضمن أفضل الصفقات'
+                           : 'Advanced negotiation tools facilitate direct communication with vendors and ensure the best deals'}
+                       </p>
+                     </Card>
+                   </div>
+                   <div className="lg:w-1/2 lg:pr-16">
+                     <div className="grid grid-cols-2 gap-6">
+                       {[
+                         { icon: MessageSquare, label: language === 'ar' ? 'دردشة مباشرة' : 'Real-time Chat', color: '#66023C' },
+                         { icon: FileText, label: language === 'ar' ? 'مشاركة المستندات' : 'Document Sharing', color: '#004F54' },
+                         { icon: BarChart3, label: language === 'ar' ? 'مقارنة الأسعار' : 'Price Comparison', color: '#765A3F' },
+                         { icon: Handshake, label: language === 'ar' ? 'اتفاقيات آمنة' : 'Secure Agreements', color: '#66023C' }
+                       ].map((feature, index) => (
+                         <Card key={index} hoverEffect="glow" className="p-3 hover:shadow-lg transition-all duration-500 rounded-xl bg-white border border-gray-200 shadow-sm">
+                           <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
+                           <div className="text-sm font-bold text-gray-800">{feature.label}</div>
+                         </Card>
+                       ))}
+                     </div>
+                   </div>
+                 </div>
               </div>
 
               {/* Step 3: Secure Completion */}
               <div className="relative mb-16 group">
-                <div className="flex flex-col lg:flex-row items-center gap-16">
-                  <div className="lg:w-1/2 lg:pr-16">
-                    <Card className="p-4 hover:shadow-2xl transition-all duration-700 rounded-2xl bg-white/5 border border-white/20 backdrop-blur-20" hoverEffect="tilt">
-                      <div className="flex items-center gap-4 mb-6">
-                        <div className="w-12 h-12 bg-gradient-to-br from-[#102C33] to-[#004F54] rounded-2xl flex items-center justify-center shadow-xl border border-white/20 backdrop-blur-20">
-                          <Shield className="h-6 w-6 text-white" />
-                        </div>
-                        <div>
-                          <span className="text-2xl font-black text-white">03</span>
-                          <h3 className="text-xl font-bold text-white">
-                            {language === 'ar' ? 'إنجاز آمن' : 'Secure Completion'}
-                          </h3>
-                        </div>
-                      </div>
-                      <p className="text-base leading-relaxed font-medium text-white">
-                        {language === 'ar' 
-                          ? 'نظام دفع آمن وتتبع الطلبات يضمن وصول منتجاتك في الوقت المحدد بأعلى جودة'
-                          : 'Secure payment system and order tracking ensures your products arrive on time with the highest quality'}
-                      </p>
-                    </Card>
-                  </div>
-                  <div className="lg:w-1/2 lg:pl-16">
-                    <div className="grid grid-cols-2 gap-6">
-                      {[
-                        { icon: CreditCard, label: language === 'ar' ? 'حماية الدفع' : 'Payment Protection', color: '#102C33' },
-                        { icon: Award, label: language === 'ar' ? 'ضمان الجودة' : 'Quality Assurance', color: '#004F54' },
-                        { icon: Package, label: language === 'ar' ? 'تتبع التسليم' : 'Delivery Tracking', color: '#765A3F' },
-                        { icon: ThumbsUp, label: language === 'ar' ? 'رضا مضمون' : 'Guaranteed Satisfaction', color: '#102C33' }
-                      ].map((feature, index) => (
-                        <Card key={index} hoverEffect="glow" className="p-3 hover:shadow-2xl transition-all duration-500 rounded-xl bg-white/5 border border-white/20 backdrop-blur-15">
-                          <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
-                          <div className="text-sm font-bold text-white">{feature.label}</div>
-                        </Card>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                 <div className="flex flex-col lg:flex-row items-center gap-16">
+                   <div className="lg:w-1/2 lg:pr-16">
+                     <Card className="p-4 hover:shadow-2xl transition-all duration-700 rounded-2xl bg-white border border-gray-200 shadow-sm" hoverEffect="tilt">
+                       <div className="flex items-center gap-4 mb-6">
+                         <div className="w-12 h-12 bg-gradient-to-br from-[#004F54] to-[#66023C] rounded-2xl flex items-center justify-center shadow-lg">
+                           <Shield className="h-6 w-6 text-white" />
+                         </div>
+                         <div>
+                           <span className="text-2xl font-black text-[#004F54]">03</span>
+                           <h3 className="text-xl font-bold text-gray-800">
+                             {language === 'ar' ? 'إنجاز آمن' : 'Secure Completion'}
+                           </h3>
+                         </div>
+                       </div>
+                       <p className="text-base leading-relaxed font-medium text-gray-600">
+                         {language === 'ar' 
+                           ? 'نظام دفع آمن وتتبع الطلبات يضمن وصول منتجاتك في الوقت المحدد بأعلى جودة'
+                           : 'Secure payment system and order tracking ensures your products arrive on time with the highest quality'}
+                       </p>
+                     </Card>
+                   </div>
+                   <div className="lg:w-1/2 lg:pl-16">
+                     <div className="grid grid-cols-2 gap-6">
+                       {[
+                         { icon: CreditCard, label: language === 'ar' ? 'حماية الدفع' : 'Payment Protection', color: '#004F54' },
+                         { icon: Award, label: language === 'ar' ? 'ضمان الجودة' : 'Quality Assurance', color: '#66023C' },
+                         { icon: Package, label: language === 'ar' ? 'تتبع التسليم' : 'Delivery Tracking', color: '#765A3F' },
+                         { icon: ThumbsUp, label: language === 'ar' ? 'رضا مضمون' : 'Guaranteed Satisfaction', color: '#004F54' }
+                       ].map((feature, index) => (
+                         <Card key={index} hoverEffect="glow" className="p-3 hover:shadow-lg transition-all duration-500 rounded-xl bg-white border border-gray-200 shadow-sm">
+                           <feature.icon className="h-5 w-5 mb-2" style={{ color: feature.color }} />
+                           <div className="text-sm font-bold text-gray-800">{feature.label}</div>
+                         </Card>
+                       ))}
+                     </div>
+                   </div>
+                 </div>
               </div>
             </div>
           </div>
@@ -437,13 +437,13 @@ export const Landing = () => {
       </section>
 
       {/* Our Smart Platform Section */}
-      <section className="py-32 px-6 relative overflow-hidden">
+      <section className="py-32 px-6 relative overflow-hidden bg-white">
         <div className="container mx-auto relative z-10">
           <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
+            <h2 className="text-3xl md:text-4xl font-black mb-6 text-gray-800">
               {language === 'ar' ? 'منصتنا الذكية' : 'Our Smart Platform'}
             </h2>
-            <p className="text-lg max-w-3xl mx-auto font-light text-white">
+            <p className="text-lg max-w-3xl mx-auto font-light text-gray-600">
               {language === 'ar' 
                 ? 'كل ما تحتاجه لإدارة المشتريات بكفاءة'
                 : 'Everything you need to manage procurement efficiently.'}
@@ -456,7 +456,7 @@ export const Landing = () => {
                 icon: Database,
                 title: language === 'ar' ? 'منصة شاملة' : 'All-in-One Platform',
                 desc: language === 'ar' ? 'إدارة الموردين والطلبات والمشاريع والمدفوعات في مكان واحد' : 'Manage suppliers, requests, projects, and payments in one place.',
-                color: '#102C33'
+                color: '#66023C'
               },
               {
                 icon: Workflow,
@@ -474,17 +474,17 @@ export const Landing = () => {
                 icon: Users2,
                 title: language === 'ar' ? 'تعاون سلس' : 'Seamless Collaboration',
                 desc: language === 'ar' ? 'تواصل وتعاون مع الموردين والعملاء بكفاءة' : 'Communicate and collaborate with suppliers and clients efficiently.',
-                color: '#102C33'
+                color: '#66023C'
               }
             ].map((feature, index) => (
-              <Card key={index} hoverEffect="scale" className="p-6 hover:shadow-2xl transition-all duration-500 bg-white/5 border border-white/20 backdrop-blur-20">
+              <Card key={index} hoverEffect="scale" className="p-6 hover:shadow-2xl transition-all duration-500 bg-white border border-gray-200 shadow-sm">
                 <div className="flex flex-col items-center text-center space-y-4">
-                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${feature.color}30` }}>
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center border border-gray-200" style={{ backgroundColor: `${feature.color}10` }}>
                     <feature.icon className="h-8 w-8" style={{ color: feature.color }} />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold mb-2 text-white">{feature.title}</h3>
-                    <p className="text-white font-light leading-relaxed">{feature.desc}</p>
+                    <h3 className="text-xl font-bold mb-2 text-gray-800">{feature.title}</h3>
+                    <p className="text-gray-600 font-light leading-relaxed">{feature.desc}</p>
                   </div>
                 </div>
               </Card>
@@ -494,13 +494,13 @@ export const Landing = () => {
       </section>
 
       {/* Enhanced Services & Benefits Section */}
-      <section className="py-32 px-6 relative overflow-hidden">
+      <section className="py-32 px-6 relative overflow-hidden bg-gradient-to-br from-gray-50 to-purple-50">
         <div className="container mx-auto relative z-10">
           <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-4xl font-black mb-6 text-white">
+            <h2 className="text-3xl md:text-4xl font-black mb-6 text-gray-800">
               {language === 'ar' ? 'خدماتنا ومزايانا' : 'Our Services & Benefits'}
             </h2>
-            <p className="text-lg max-w-3xl mx-auto font-light text-white">
+            <p className="text-lg max-w-3xl mx-auto font-light text-gray-600">
               {language === 'ar' 
                 ? 'نقدم مجموعة واسعة من الخدمات لتلبية احتياجات أعمالك'
                 : 'We offer a wide range of services to meet your business needs'}
@@ -511,10 +511,10 @@ export const Landing = () => {
             {/* Our Services */}
             <div className="space-y-8">
               <div className="text-center lg:text-left">
-                <h3 className="text-2xl font-black mb-4 text-white">
+                <h3 className="text-2xl font-black mb-4 text-gray-800">
                   {language === 'ar' ? 'خدماتنا' : 'Our Services'}
                 </h3>
-                <p className="text-white font-light">
+                <p className="text-gray-600 font-light">
                   {language === 'ar' ? 'نقدم مجموعة واسعة من الخدمات لتلبية احتياجات أعمالك' : 'We offer a wide range of services to meet your business needs.'}
                 </p>
               </div>
@@ -525,7 +525,7 @@ export const Landing = () => {
                     icon: Users,
                     title: language === 'ar' ? 'إدارة الموردين' : 'Supplier Management',
                     desc: language === 'ar' ? 'ابحث وأدر أفضل الموردين بكفاءة' : 'Find and manage top suppliers efficiently.',
-                    color: '#102C33'
+                    color: '#66023C'
                   },
                   {
                     icon: FileText,
@@ -543,17 +543,17 @@ export const Landing = () => {
                     icon: CreditCard,
                     title: language === 'ar' ? 'إدارة المدفوعات' : 'Payment Management',
                     desc: language === 'ar' ? 'أدر المدفوعات بأمان وكفاءة' : 'Manage payments securely and efficiently.',
-                    color: '#102C33'
+                    color: '#66023C'
                   }
                 ].map((service, index) => (
-                  <Card key={index} hoverEffect="lift" className="p-6 hover:shadow-2xl transition-all duration-500 bg-white/5 border border-white/20 backdrop-blur-20">
+                  <Card key={index} hoverEffect="lift" className="p-6 hover:shadow-2xl transition-all duration-500 bg-white border border-gray-200 shadow-sm">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${service.color}30` }}>
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 border border-gray-200" style={{ backgroundColor: `${service.color}10` }}>
                         <service.icon className="h-6 w-6" style={{ color: service.color }} />
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-lg font-bold mb-2 text-white">{service.title}</h4>
-                        <p className="text-white font-light">{service.desc}</p>
+                        <h4 className="text-lg font-bold mb-2 text-gray-800">{service.title}</h4>
+                        <p className="text-gray-600 font-light">{service.desc}</p>
                       </div>
                     </div>
                   </Card>
@@ -564,10 +564,10 @@ export const Landing = () => {
             {/* Benefits */}
             <div className="space-y-8">
               <div className="text-center lg:text-left">
-                <h3 className="text-2xl font-black mb-4 text-white">
+                <h3 className="text-2xl font-black mb-4 text-gray-800">
                   {language === 'ar' ? 'مزايا استخدام منصتنا' : 'Benefits of Using Our Platform'}
                 </h3>
-                <p className="text-white font-light">
+                <p className="text-gray-600 font-light">
                   {language === 'ar' ? 'اكتشف كيف يمكن لمنصتنا مساعدتك في تحقيق أهداف عملك' : 'Discover how our platform can help you achieve your business goals.'}
                 </p>
               </div>
@@ -578,13 +578,13 @@ export const Landing = () => {
                     icon: DollarSign,
                     title: language === 'ar' ? 'توفير التكاليف' : 'Cost Savings',
                     desc: language === 'ar' ? 'قلل من التكاليف التشغيلية وزد من الكفاءة' : 'Reduce operational costs and increase efficiency.',
-                    color: '#102C33'
+                    color: '#004F54'
                   },
                   {
                     icon: Clock,
                     title: language === 'ar' ? 'توفير الوقت' : 'Time Savings',
                     desc: language === 'ar' ? 'بسّط العمليات واحفظ وقتاً ثميناً' : 'Streamline processes and save valuable time.',
-                    color: '#004F54'
+                    color: '#66023C'
                   },
                   {
                     icon: TrendingUp,
@@ -596,17 +596,17 @@ export const Landing = () => {
                     icon: HeartHandshake,
                     title: language === 'ar' ? 'تحسين العلاقات' : 'Improved Relationships',
                     desc: language === 'ar' ? 'عزز العلاقات مع الموردين والعملاء' : 'Enhance relationships with suppliers and clients.',
-                    color: '#102C33'
+                    color: '#004F54'
                   }
                 ].map((benefit, index) => (
-                  <Card key={index} hoverEffect="lift" className="p-6 hover:shadow-2xl transition-all duration-500 bg-white/5 border border-white/20 backdrop-blur-20">
+                  <Card key={index} hoverEffect="lift" className="p-6 hover:shadow-2xl transition-all duration-500 bg-white border border-gray-200 shadow-sm">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 border border-white/20 backdrop-blur-15" style={{ backgroundColor: `${benefit.color}30` }}>
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 border border-gray-200" style={{ backgroundColor: `${benefit.color}10` }}>
                         <benefit.icon className="h-6 w-6" style={{ color: benefit.color }} />
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-lg font-bold mb-2 text-white">{benefit.title}</h4>
-                        <p className="text-white font-light">{benefit.desc}</p>
+                        <h4 className="text-lg font-bold mb-2 text-gray-800">{benefit.title}</h4>
+                        <p className="text-gray-600 font-light">{benefit.desc}</p>
                       </div>
                     </div>
                   </Card>
@@ -618,7 +618,7 @@ export const Landing = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 px-6 relative overflow-hidden">
+      <section className="py-20 px-6 relative overflow-hidden bg-gradient-to-br from-[#66023C] via-purple-600 to-[#004F54]">
         <div className="container mx-auto text-center relative z-10">
           <div className="max-w-4xl mx-auto space-y-8">
             <h2 className="text-3xl md:text-4xl font-black text-white">
@@ -631,7 +631,7 @@ export const Landing = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/register">
-                <Button size="lg" animation="spring" className="px-8 py-3 bg-gradient-to-r from-primary to-accent transition-transform text-lg text-white">
+                <Button size="lg" animation="spring" className="px-8 py-3 bg-white text-[#66023C] hover:bg-gray-100 transition-all duration-300 text-lg font-semibold">
                   {language === 'ar' ? 'ابدأ رحلتك' : 'Start Your Journey'}
                 </Button>
               </Link>
