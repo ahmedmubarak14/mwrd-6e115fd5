@@ -1004,23 +1004,67 @@ export const Landing = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 px-6 relative overflow-hidden bg-gradient-to-r from-[#004F54] via-[#102C33] to-[#66023C]">
+      <section className="py-20 px-6 relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100 border-t border-gray-200/30">
+        {/* Subtle background pattern */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width=%2760%27%20height=%2760%27%20viewBox=%270%200%2060%2060%27%20xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cg%20fill=%27none%27%20fill-rule=%27evenodd%27%3E%3Cg%20fill=%27%23f1f5f9%27%20fill-opacity=%270.5%27%3E%3Ccircle%20cx=%277%27%20cy=%277%27%20r=%271%27/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
+        
         <div className="container mx-auto text-center relative z-10">
           <div className="max-w-4xl mx-auto space-y-8">
-            <h2 className="text-3xl md:text-4xl font-black text-white">
-              {language === 'ar' ? 'انضم إلى الثورة' : 'Join the Revolution'}
-            </h2>
-            <p className="text-lg text-white/80 font-light max-w-2xl mx-auto">
-              {language === 'ar' 
-                ? 'كن جزءاً من مستقبل التجارة الإلكترونية B2B وابدأ رحلتك معنا اليوم'
-                : 'Be part of the future of B2B e-commerce and start your journey with us today'}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/register">
-                <Button size="lg" animation="spring" className="px-8 py-3 bg-white/95 text-accent-900 hover:bg-white hover:text-accent-800 transition-all duration-300 text-lg font-semibold shadow-xl hover:shadow-2xl border border-white/20 hover:border-white/40">
-                  {language === 'ar' ? 'ابدأ رحلتك' : 'Start Your Journey'}
-                </Button>
-              </Link>
+            {/* Main CTA Card */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-gray-200/50 p-12 md:p-16 relative overflow-hidden">
+              {/* Decorative elements */}
+              <div className="absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-primary-100 to-accent-100 rounded-full blur-3xl opacity-50"></div>
+              <div className="absolute bottom-0 right-0 w-24 h-24 bg-gradient-to-br from-accent-100 to-primary-100 rounded-full blur-2xl opacity-50"></div>
+              
+              <div className="relative z-10">
+                <h2 className="text-3xl md:text-5xl font-black bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent mb-6">
+                  {language === 'ar' ? 'انضم إلى الثورة' : 'Join the Revolution'}
+                </h2>
+                <p className="text-lg md:text-xl text-gray-600 font-medium max-w-2xl mx-auto mb-10 leading-relaxed">
+                  {language === 'ar' 
+                    ? 'كن جزءاً من مستقبل التجارة الإلكترونية B2B وابدأ رحلتك معنا اليوم'
+                    : 'Be part of the future of B2B e-commerce and start your journey with us today'}
+                </p>
+                
+                {/* Features row */}
+                <div className="grid md:grid-cols-3 gap-6 mb-10">
+                  {[
+                    { 
+                      icon: Rocket, 
+                      title: language === 'ar' ? 'نمو سريع' : 'Rapid Growth',
+                      desc: language === 'ar' ? 'نمو مؤكد' : 'Proven results'
+                    },
+                    { 
+                      icon: Shield, 
+                      title: language === 'ar' ? 'أمان تام' : 'Total Security',
+                      desc: language === 'ar' ? 'حماية كاملة' : 'Full protection'
+                    },
+                    { 
+                      icon: Users2, 
+                      title: language === 'ar' ? 'شبكة واسعة' : 'Wide Network',
+                      desc: language === 'ar' ? 'آلاف الشركات' : 'Thousands of companies'
+                    }
+                  ].map((feature, index) => (
+                    <div key={index} className="text-center">
+                      <div className="w-12 h-12 bg-gradient-to-br from-primary-100 to-accent-100 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <feature.icon className="h-6 w-6 text-primary-600" />
+                      </div>
+                      <h4 className="font-bold text-gray-800 mb-1">{feature.title}</h4>
+                      <p className="text-sm text-gray-500">{feature.desc}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link to="/register">
+                    <Button size="lg" animation="spring" className="px-8 py-4 bg-gradient-to-r from-primary-600 to-accent-600 hover:from-primary-700 hover:to-accent-700 text-white font-bold shadow-xl hover:shadow-2xl transition-all duration-300 text-lg rounded-2xl hover:scale-105">
+                      <Rocket className="mr-3 h-5 w-5" />
+                      {language === 'ar' ? 'ابدأ رحلتك' : 'Start Your Journey'}
+                      <ArrowRight className="ml-3 h-5 w-5" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>
