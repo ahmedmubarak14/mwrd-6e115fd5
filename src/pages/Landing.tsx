@@ -54,6 +54,7 @@ export const Landing = () => {
   const user = auth?.user;
   const userProfile = auth?.userProfile;
   const loading = auth?.loading;
+  const [activeAudience, setActiveAudience] = useState<'buyers' | 'vendors'>('buyers');
 
   if (loading) {
     return (
@@ -142,69 +143,165 @@ export const Landing = () => {
             {/* Left Content */}
             <div className={`${language === 'ar' ? 'lg:order-2 text-right' : 'lg:order-1'} space-y-8`}>
               
-              {/* Problem Statement Badge */}
-              <div className="inline-block animate-fade-in">
-                <div className="px-4 py-2 text-sm text-[#66023C] rounded-full bg-gradient-to-r from-[#66023C]/10 to-purple-100 border border-[#66023C]/20">
-                  {language === 'ar' ? '❌ تعاني من البحث عن موردين موثوقين؟' : '❌ Struggling to find reliable suppliers?'}
+              {/* Audience Toggle */}
+              <div className="flex items-center justify-center lg:justify-start mb-6 animate-fade-in">
+                <div className="bg-white rounded-full p-1 shadow-lg border border-gray-200">
+                  <div className="flex">
+                    <button 
+                      onClick={() => setActiveAudience('buyers')}
+                      className={`px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
+                        activeAudience === 'buyers'
+                          ? 'bg-gradient-to-r from-[#004F54] to-[#66023C] text-white shadow-md'
+                          : 'text-gray-600 hover:text-gray-800'
+                      }`}
+                    >
+                      {language === 'ar' ? '🏢 للشركات' : '🏢 For Buyers'}
+                    </button>
+                    <button 
+                      onClick={() => setActiveAudience('vendors')}
+                      className={`px-6 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
+                        activeAudience === 'vendors'
+                          ? 'bg-gradient-to-r from-[#004F54] to-[#66023C] text-white shadow-md'
+                          : 'text-gray-600 hover:text-gray-800'
+                      }`}
+                    >
+                      {language === 'ar' ? '🏭 للموردين' : '🏭 For Vendors'}
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              {/* Main Value Proposition */}
-              <div className="space-y-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight">
-                  <span className="text-gray-800">
-                    {language === 'ar' ? 'اربط مع' : 'Connect with'}
-                  </span>
-                  <br />
-                  <span className="bg-gradient-to-r from-[#004F54] to-[#66023C] bg-clip-text text-transparent">
-                    {language === 'ar' ? 'أفضل الموردين' : 'Top Suppliers'}
-                  </span>
-                  <br />
-                  <span className="text-gray-700 text-3xl md:text-4xl lg:text-5xl">
-                    {language === 'ar' ? 'في ثوانٍ' : 'in Seconds'}
-                  </span>
-                </h1>
-                
-                <p className="text-lg text-gray-600 leading-relaxed max-w-2xl font-medium">
-                  {language === 'ar' 
-                    ? 'منصة MWRD الذكية تحل مشكلة البحث عن الموردين. أرسل طلب واحد واحصل على عروض أسعار من موردين مؤهلين في دقائق - بدلاً من أسابيع.'
-                    : 'MWRD smart platform solves supplier sourcing. Send one request and get competitive quotes from qualified vendors in minutes - not weeks.'}
-                </p>
-              </div>
-
-              {/* Clear Benefits */}
-              <div className="space-y-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-                {[
-                  { 
-                    icon: Clock, 
-                    text: language === 'ar' ? 'وفر 80% من وقت البحث عن الموردين' : 'Save 80% of supplier search time',
-                    color: '#004F54'
-                  },
-                  { 
-                    icon: DollarSign, 
-                    text: language === 'ar' ? 'احصل على أسعار أفضل بـ 15-30%' : 'Get 15-30% better prices',
-                    color: '#66023C'
-                  },
-                  { 
-                    icon: Shield, 
-                    text: language === 'ar' ? 'موردون مؤهلون ومعتمدون 100%' : '100% verified & qualified suppliers',
-                    color: '#004F54'
-                  }
-                ].map((benefit, index) => (
-                  <div key={index} className="flex items-center gap-4 p-3 rounded-lg bg-white/80 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 hover-scale">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: `${benefit.color}15` }}>
-                      <benefit.icon className="h-5 w-5" style={{ color: benefit.color }} />
+              {/* Dynamic Content Based on Selected Audience */}
+              {activeAudience === 'buyers' ? (
+                <>
+                  {/* Buyers Problem Statement */}
+                  <div className="inline-block animate-fade-in">
+                    <div className="px-4 py-2 text-sm text-[#66023C] rounded-full bg-gradient-to-r from-[#66023C]/10 to-purple-100 border border-[#66023C]/20">
+                      {language === 'ar' ? '❌ تعاني من البحث عن موردين موثوقين؟' : '❌ Struggling to find reliable suppliers?'}
                     </div>
-                    <span className="text-gray-800 font-semibold">{benefit.text}</span>
                   </div>
-                ))}
-              </div>
 
-              {/* Strong CTA */}
+                  {/* Buyers Value Proposition */}
+                  <div className="space-y-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight">
+                      <span className="text-gray-800">
+                        {language === 'ar' ? 'اربط مع' : 'Connect with'}
+                      </span>
+                      <br />
+                      <span className="bg-gradient-to-r from-[#004F54] to-[#66023C] bg-clip-text text-transparent">
+                        {language === 'ar' ? 'أفضل الموردين' : 'Top Suppliers'}
+                      </span>
+                      <br />
+                      <span className="text-gray-700 text-3xl md:text-4xl lg:text-5xl">
+                        {language === 'ar' ? 'في ثوانٍ' : 'in Seconds'}
+                      </span>
+                    </h1>
+                    
+                    <p className="text-lg text-gray-600 leading-relaxed max-w-2xl font-medium">
+                      {language === 'ar' 
+                        ? 'أرسل طلب واحد واحصل على عروض أسعار من موردين مؤهلين في دقائق - بدلاً من أسابيع من البحث والمفاوضات.'
+                        : 'Send one request and get competitive quotes from qualified vendors in minutes - instead of weeks of searching and negotiations.'}
+                    </p>
+                  </div>
+
+                  {/* Buyers Benefits */}
+                  <div className="space-y-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+                    {[
+                      { 
+                        icon: Clock, 
+                        text: language === 'ar' ? 'وفر 80% من وقت البحث عن الموردين' : 'Save 80% of supplier search time',
+                        color: '#004F54'
+                      },
+                      { 
+                        icon: DollarSign, 
+                        text: language === 'ar' ? 'احصل على أسعار أفضل بـ 15-30%' : 'Get 15-30% better prices',
+                        color: '#66023C'
+                      },
+                      { 
+                        icon: Shield, 
+                        text: language === 'ar' ? 'موردون مؤهلون ومعتمدون 100%' : '100% verified & qualified suppliers',
+                        color: '#004F54'
+                      }
+                    ].map((benefit, index) => (
+                      <div key={index} className="flex items-center gap-4 p-3 rounded-lg bg-white/80 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 hover-scale">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: `${benefit.color}15` }}>
+                          <benefit.icon className="h-5 w-5" style={{ color: benefit.color }} />
+                        </div>
+                        <span className="text-gray-800 font-semibold">{benefit.text}</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* Vendors Problem Statement */}
+                  <div className="inline-block animate-fade-in">
+                    <div className="px-4 py-2 text-sm text-[#66023C] rounded-full bg-gradient-to-r from-[#66023C]/10 to-purple-100 border border-[#66023C]/20">
+                      {language === 'ar' ? '📈 تريد المزيد من العملاء المؤهلين؟' : '📈 Want more qualified customers?'}
+                    </div>
+                  </div>
+
+                  {/* Vendors Value Proposition */}
+                  <div className="space-y-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight">
+                      <span className="text-gray-800">
+                        {language === 'ar' ? 'اعرض على' : 'Reach'}
+                      </span>
+                      <br />
+                      <span className="bg-gradient-to-r from-[#004F54] to-[#66023C] bg-clip-text text-transparent">
+                        {language === 'ar' ? 'آلاف الشركات' : 'Thousands of'}
+                      </span>
+                      <br />
+                      <span className="text-gray-700 text-3xl md:text-4xl lg:text-5xl">
+                        {language === 'ar' ? 'بسهولة' : 'Businesses'}
+                      </span>
+                    </h1>
+                    
+                    <p className="text-lg text-gray-600 leading-relaxed max-w-2xl font-medium">
+                      {language === 'ar' 
+                        ? 'انضم لشبكة الموردين واحصل على طلبات مؤهلة من شركات تبحث عن خدماتك - بدون تكاليف تسويق عالية.'
+                        : 'Join our supplier network and receive qualified requests from companies actively looking for your services - without high marketing costs.'}
+                    </p>
+                  </div>
+
+                  {/* Vendors Benefits */}
+                  <div className="space-y-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+                    {[
+                      { 
+                        icon: TrendingUp, 
+                        text: language === 'ar' ? 'زد مبيعاتك بـ 40% في المتوسط' : 'Increase sales by 40% on average',
+                        color: '#004F54'
+                      },
+                      { 
+                        icon: Users, 
+                        text: language === 'ar' ? 'اوصل لـ 500+ شركة نشطة' : 'Access 500+ active companies',
+                        color: '#66023C'
+                      },
+                      { 
+                        icon: Handshake, 
+                        text: language === 'ar' ? 'عمولة فقط عند إتمام الصفقة' : 'Commission only on successful deals',
+                        color: '#004F54'
+                      }
+                    ].map((benefit, index) => (
+                      <div key={index} className="flex items-center gap-4 p-3 rounded-lg bg-white/80 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 hover-scale">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: `${benefit.color}15` }}>
+                          <benefit.icon className="h-5 w-5" style={{ color: benefit.color }} />
+                        </div>
+                        <span className="text-gray-800 font-semibold">{benefit.text}</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {/* Dynamic CTA Based on Audience */}
               <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-fade-in" style={{ animationDelay: '0.6s' }}>
-                <Link to="/register" className="group">
+                <Link to={activeAudience === 'buyers' ? '/register' : '/vendor/register'} className="group">
                   <Button size="lg" animation="spring" className="px-8 py-4 text-lg font-bold transition-all duration-300 bg-gradient-to-r from-[#004F54] to-[#66023C] hover:from-[#004F54]/90 hover:to-[#66023C]/90 border-0 text-white shadow-xl hover:shadow-2xl">
-                    {language === 'ar' ? '🚀 ابدأ مجاناً الآن' : '🚀 Start Free Now'}
+                    {activeAudience === 'buyers' 
+                      ? (language === 'ar' ? '🚀 ابدأ الشراء مجاناً' : '🚀 Start Buying Free')
+                      : (language === 'ar' ? '🚀 انضم كمورد' : '🚀 Join as Vendor')
+                    }
                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
@@ -215,7 +312,7 @@ export const Landing = () => {
                 </Link>
               </div>
 
-              {/* Social Proof */}
+              {/* Dynamic Social Proof */}
               <div className="pt-6 animate-fade-in" style={{ animationDelay: '0.8s' }}>
                 <div className="flex items-center gap-6 text-sm text-gray-600">
                   <div className="flex items-center gap-2">
@@ -227,82 +324,163 @@ export const Landing = () => {
                     <span className="font-semibold">4.9/5</span>
                   </div>
                   <div className="w-px h-4 bg-gray-300"></div>
-                  <span className="font-semibold">500+ {language === 'ar' ? 'شركة تثق بنا' : 'companies trust us'}</span>
+                  <span className="font-semibold">
+                    {activeAudience === 'buyers' 
+                      ? (language === 'ar' ? '500+ شركة تثق بنا' : '500+ companies trust us')
+                      : (language === 'ar' ? '1200+ مورد نشط' : '1200+ active vendors')
+                    }
+                  </span>
                   <div className="w-px h-4 bg-gray-300"></div>
-                  <span className="font-semibold">24h {language === 'ar' ? 'متوسط الاستجابة' : 'avg response'}</span>
+                  <span className="font-semibold">
+                    {activeAudience === 'buyers' 
+                      ? (language === 'ar' ? '24h متوسط الاستجابة' : '24h avg response')
+                      : (language === 'ar' ? '85% معدل نجاح الصفقات' : '85% deal success rate')
+                    }
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* Right Visual Proof */}
+            {/* Right Visual Proof - Dynamic */}
             <div className={`${language === 'ar' ? 'lg:order-1' : 'lg:order-2'} space-y-6`}>
               <div className="relative">
-                {/* Main Dashboard Preview Card */}
-                <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-gradient-to-r from-[#004F54] to-[#66023C] rounded-lg flex items-center justify-center">
-                        <FileText className="h-4 w-4 text-white" />
+                {activeAudience === 'buyers' ? (
+                  /* Buyers Dashboard Preview */
+                  <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 animate-fade-in">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-gradient-to-r from-[#004F54] to-[#66023C] rounded-lg flex items-center justify-center">
+                          <FileText className="h-4 w-4 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-gray-800">{language === 'ar' ? 'طلب عرض سعر' : 'RFQ Request'}</h3>
+                          <p className="text-xs text-gray-500">{language === 'ar' ? 'منذ دقيقتين' : '2 minutes ago'}</p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="font-bold text-gray-800">{language === 'ar' ? 'طلب عرض سعر' : 'RFQ Request'}</h3>
-                        <p className="text-xs text-gray-500">{language === 'ar' ? 'منذ دقيقتين' : '2 minutes ago'}</p>
+                      <div className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-semibold">
+                        {language === 'ar' ? '5 عروض جديدة' : '5 New Bids'}
                       </div>
                     </div>
-                    <div className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-semibold">
-                      {language === 'ar' ? '5 عروض جديدة' : '5 New Bids'}
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    {[
-                      { vendor: 'Tech Solutions Co.', price: 'SAR 15,750', rating: 4.9, response: '2h' },
-                      { vendor: 'Premier Supplies', price: 'SAR 16,200', rating: 4.8, response: '1h' },
-                      { vendor: 'Global Partners', price: 'SAR 14,990', rating: 4.7, response: '30m' }
-                    ].map((bid, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                            <Building2 className="h-4 w-4 text-blue-600" />
-                          </div>
-                          <div>
-                            <p className="font-semibold text-gray-800 text-sm">{bid.vendor}</p>
-                            <div className="flex items-center gap-2 text-xs">
-                              <div className="flex items-center gap-1">
-                                <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                                <span>{bid.rating}</span>
+                    
+                    <div className="space-y-3">
+                      {[
+                        { vendor: 'Tech Solutions Co.', price: 'SAR 15,750', rating: 4.9, response: '2h' },
+                        { vendor: 'Premier Supplies', price: 'SAR 16,200', rating: 4.8, response: '1h' },
+                        { vendor: 'Global Partners', price: 'SAR 14,990', rating: 4.7, response: '30m' }
+                      ].map((bid, index) => (
+                        <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                              <Building2 className="h-4 w-4 text-blue-600" />
+                            </div>
+                            <div>
+                              <p className="font-semibold text-gray-800 text-sm">{bid.vendor}</p>
+                              <div className="flex items-center gap-2 text-xs">
+                                <div className="flex items-center gap-1">
+                                  <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                                  <span>{bid.rating}</span>
+                                </div>
+                                <span className="text-gray-500">• {bid.response}</span>
                               </div>
-                              <span className="text-gray-500">• {bid.response}</span>
                             </div>
                           </div>
+                          <div className="text-right">
+                            <p className="font-bold text-[#004F54]">{bid.price}</p>
+                            <p className="text-xs text-gray-500">{language === 'ar' ? 'شامل الضريبة' : 'inc. VAT'}</p>
+                          </div>
                         </div>
-                        <div className="text-right">
-                          <p className="font-bold text-[#004F54]">{bid.price}</p>
-                          <p className="text-xs text-gray-500">{language === 'ar' ? 'شامل الضريبة' : 'inc. VAT'}</p>
-                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="mt-4 p-3 bg-gradient-to-r from-[#004F54]/10 to-[#66023C]/10 rounded-lg border border-[#004F54]/20">
+                      <div className="flex items-center gap-2 text-sm">
+                        <Sparkles className="h-4 w-4 text-[#66023C]" />
+                        <span className="font-semibold text-[#004F54]">
+                          {language === 'ar' ? 'توفير متوقع: 3,210 ريال (18%)' : 'Expected Savings: SAR 3,210 (18%)'}
+                        </span>
                       </div>
-                    ))}
-                  </div>
-                  
-                  <div className="mt-4 p-3 bg-gradient-to-r from-[#004F54]/10 to-[#66023C]/10 rounded-lg border border-[#004F54]/20">
-                    <div className="flex items-center gap-2 text-sm">
-                      <Sparkles className="h-4 w-4 text-[#66023C]" />
-                      <span className="font-semibold text-[#004F54]">
-                        {language === 'ar' ? 'توفير متوقع: 3,210 ريال (18%)' : 'Expected Savings: SAR 3,210 (18%)'}
-                      </span>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  /* Vendors Opportunity Preview */
+                  <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-6 animate-fade-in">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-gradient-to-r from-[#004F54] to-[#66023C] rounded-lg flex items-center justify-center">
+                          <Briefcase className="h-4 w-4 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-bold text-gray-800">{language === 'ar' ? 'فرص جديدة' : 'New Opportunities'}</h3>
+                          <p className="text-xs text-gray-500">{language === 'ar' ? 'هذا الأسبوع' : 'This week'}</p>
+                        </div>
+                      </div>
+                      <div className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-semibold">
+                        {language === 'ar' ? '12 فرصة متاحة' : '12 Available'}
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-3">
+                      {[
+                        { company: 'Saudi Electronics Co.', value: 'SAR 45,000', category: 'Electronics', urgent: true },
+                        { company: 'Al-Riyadh Construction', value: 'SAR 78,500', category: 'Construction', urgent: false },
+                        { company: 'Modern Office Solutions', value: 'SAR 32,000', category: 'Office Supplies', urgent: true }
+                      ].map((opportunity, index) => (
+                        <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                              <Building2 className="h-4 w-4 text-green-600" />
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <p className="font-semibold text-gray-800 text-sm">{opportunity.company}</p>
+                                {opportunity.urgent && (
+                                  <span className="text-xs bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full font-medium">
+                                    {language === 'ar' ? 'عاجل' : 'Urgent'}
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-xs text-gray-500">{opportunity.category}</p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-bold text-[#66023C]">{opportunity.value}</p>
+                            <p className="text-xs text-gray-500">{language === 'ar' ? 'قيمة المشروع' : 'project value'}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <div className="mt-4 p-3 bg-gradient-to-r from-[#66023C]/10 to-[#004F54]/10 rounded-lg border border-[#66023C]/20">
+                      <div className="flex items-center gap-2 text-sm">
+                        <TrendingUp className="h-4 w-4 text-[#66023C]" />
+                        <span className="font-semibold text-[#004F54]">
+                          {language === 'ar' ? 'إجمالي الفرص المتاحة: 155,500 ريال' : 'Total Available: SAR 155,500'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-                {/* Floating Stats */}
+                {/* Dynamic Floating Stats */}
                 <div className="absolute -top-4 -right-4 bg-white rounded-xl shadow-lg border border-gray-200 p-3 animate-fade-in" style={{ animationDelay: '0.5s' }}>
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                      <TrendingUp className="h-4 w-4 text-green-600" />
+                      {activeAudience === 'buyers' ? (
+                        <TrendingUp className="h-4 w-4 text-green-600" />
+                      ) : (
+                        <DollarSign className="h-4 w-4 text-green-600" />
+                      )}
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500">{language === 'ar' ? 'متوسط التوفير' : 'Avg. Savings'}</p>
-                      <p className="font-bold text-green-600">23%</p>
+                      <p className="text-xs text-gray-500">
+                        {activeAudience === 'buyers' 
+                          ? (language === 'ar' ? 'متوسط التوفير' : 'Avg. Savings')
+                          : (language === 'ar' ? 'متوسط العمولة' : 'Avg. Commission')
+                        }
+                      </p>
+                      <p className="font-bold text-green-600">
+                        {activeAudience === 'buyers' ? '23%' : '8%'}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -313,8 +491,15 @@ export const Landing = () => {
                       <Clock className="h-4 w-4 text-blue-600" />
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500">{language === 'ar' ? 'زمن الاستجابة' : 'Response Time'}</p>
-                      <p className="font-bold text-blue-600">&lt; 2h</p>
+                      <p className="text-xs text-gray-500">
+                        {activeAudience === 'buyers' 
+                          ? (language === 'ar' ? 'زمن الاستجابة' : 'Response Time')
+                          : (language === 'ar' ? 'زمن الموافقة' : 'Approval Time')
+                        }
+                      </p>
+                      <p className="font-bold text-blue-600">
+                        {activeAudience === 'buyers' ? '< 2h' : '24h'}
+                      </p>
                     </div>
                   </div>
                 </div>
