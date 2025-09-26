@@ -1,19 +1,10 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Twitter, Linkedin, Facebook, Instagram, Mail, Phone, MapPin, Navigation, Users, HeadphonesIcon, Send } from "lucide-react";
+import { Twitter, Linkedin, Facebook, Instagram, Mail, Phone, MapPin, Navigation, Users, HeadphonesIcon } from "lucide-react";
 import { AnimatedCard } from "@/components/ui/animations/MicroInteractions";
-import { useState } from "react";
 
 export const Footer = () => {
   const { language, t, isRTL } = useLanguage();
-  const [email, setEmail] = useState("");
-
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Newsletter subscription logic would go here
-    console.log("Newsletter subscription:", email);
-    setEmail("");
-  };
 
   return (
     <footer className="relative bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] backdrop-blur-xl border-t border-white/10 overflow-hidden">
@@ -24,7 +15,7 @@ export const Footer = () => {
         {/* Main Footer Content */}
         <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 ${isRTL ? 'rtl-grid' : ''}`}>
           
-          {/* Column 1: Logo, Tagline & Newsletter */}
+          {/* Column 1: Logo & Tagline */}
           <div className="col-span-1 lg:col-span-1 space-y-8">
             <AnimatedCard hoverEffect="lift" className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 shadow-2xl hover:shadow-white/5 transition-all duration-500">
               <div className={`${isRTL ? 'text-right' : 'text-left'}`}>
@@ -42,30 +33,6 @@ export const Footer = () => {
                   {t('landing.footer.taglineText')}
                 </p>
               </div>
-            </AnimatedCard>
-
-            {/* Newsletter Subscription */}
-            <AnimatedCard hoverEffect="glow" className="bg-gradient-to-r from-white/10 to-white/5 backdrop-blur-sm border border-white/20 rounded-2xl p-6 shadow-xl">
-              <h4 className="text-white font-semibold mb-4 flex items-center gap-2">
-                <Send size={18} className="text-white/80" />
-                {language === 'ar' ? 'النشرة الإخبارية' : 'Newsletter'}
-              </h4>
-              <form onSubmit={handleNewsletterSubmit} className="space-y-3">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder={language === 'ar' ? 'أدخل بريدك الإلكتروني' : 'Enter your email address'}
-                  className="w-full px-4 py-3 bg-white/15 border border-white/30 rounded-xl text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 backdrop-blur-sm transition-all duration-300 font-medium"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="w-full bg-white/20 hover:bg-white/30 text-white font-semibold py-3 px-4 rounded-xl border border-white/30 hover:border-white/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-white/50"
-                >
-                  {language === 'ar' ? 'اشتراك' : 'Subscribe'}
-                </button>
-              </form>
             </AnimatedCard>
 
             {/* Contact Info */}
