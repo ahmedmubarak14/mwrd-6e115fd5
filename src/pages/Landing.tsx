@@ -131,364 +131,6 @@ export const Landing = () => {
         </div>
       </header>
 
-      {/* Live Opportunities Visualization Section */}
-      <section className="py-20 px-6 relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-purple-50 pt-32">
-        
-        {/* New Opportunities Visualization */}
-        <div className="container mx-auto relative z-10 mb-20">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            
-            {/* Content Section */}
-            <div className="space-y-8 animate-fade-in">
-              <div className="space-y-6">
-                <div className="inline-block">
-                  <div className="px-4 py-2 text-sm text-green-700 rounded-full bg-green-100 border border-green-200 shadow-sm flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    {language === 'ar' ? 'فرص جديدة هذا الأسبوع' : 'New Opportunities This Week'}
-                  </div>
-                </div>
-                
-                <h2 className="text-4xl md:text-5xl font-black text-gray-800 leading-tight">
-                  {language === 'ar' ? (
-                    <>
-                      اوصل لآلاف <br />
-                      <span className="bg-gradient-to-r from-[#004F54] to-[#66023C] bg-clip-text text-transparent">
-                        الأعمال
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      Reach Thousands of <br />
-                      <span className="bg-gradient-to-r from-[#004F54] to-[#66023C] bg-clip-text text-transparent">
-                        Businesses
-                      </span>
-                    </>
-                  )}
-                </h2>
-                
-                <p className="text-lg text-gray-600 leading-relaxed max-w-md">
-                  {language === 'ar' 
-                    ? 'انضم إلى شبكة الموردين واحصل على طلبات مؤهلة من الشركات التي تبحث بنشاط عن خدماتك - بدون تكاليف تسويق عالية.'
-                    : 'Join our supplier network and receive qualified requests from companies actively looking for your services - without high marketing costs.'}
-                </p>
-              </div>
-
-              {/* Benefits List */}
-              <div className="space-y-4">
-                {[
-                  { 
-                    icon: TrendingUp, 
-                    text: language === 'ar' ? 'زيادة المبيعات بنسبة 60% في المتوسط' : 'Increase sales by 60% on average'
-                  },
-                  { 
-                    icon: Users, 
-                    text: language === 'ar' ? 'وصول لأكثر من 500+ شركة نشطة' : 'Access 500+ active companies'
-                  },
-                  { 
-                    icon: DollarSign, 
-                    text: language === 'ar' ? 'عمولة فقط عند نجاح الصفقة' : 'Commission only on successful deals'
-                  }
-                ].map((benefit, index) => (
-                  <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-white/50 border border-gray-200/50">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center flex-shrink-0">
-                      <benefit.icon className="h-4 w-4 text-white" />
-                    </div>
-                    <span className="text-sm font-medium text-gray-700">{benefit.text}</span>
-                  </div>
-                ))}
-              </div>
-
-              <Link to="/vendor/register">
-                <Button size="lg" className="bg-gradient-to-r from-[#004F54] to-[#66023C] hover:from-[#004F54]/90 hover:to-[#66023C]/90 text-white font-bold px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300 group">
-                  <Rocket className="mr-2 h-5 w-5" />
-                  {language === 'ar' ? 'انضم كمورد' : 'Join as Vendor'}
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-            </div>
-
-            {/* Live Opportunities Card */}
-            <div className="animate-fade-in" style={{ animationDelay: '0.3s' }}>
-              <div className="bg-white rounded-3xl shadow-2xl border border-gray-200/50 overflow-hidden">
-                {/* Card Header */}
-                <div className="p-6 border-b border-gray-100">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
-                        <Briefcase className="h-5 w-5 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-gray-800">
-                          {language === 'ar' ? 'فرص جديدة' : 'New Opportunities'}
-                        </h3>
-                        <p className="text-sm text-gray-500">
-                          {language === 'ar' ? 'هذا الأسبوع' : 'This week'}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm font-bold text-green-600">
-                        {language === 'ar' ? 'متوسط التوفير' : 'Avg. Commission'}
-                      </div>
-                      <div className="text-lg font-black text-green-700">8%</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Opportunities List */}
-                <div className="p-6 space-y-4 max-h-80 overflow-y-auto">
-                  {[
-                    {
-                      company: language === 'ar' ? 'شركة الإلكترونيات السعودية' : 'Saudi Electronics Co.',
-                      category: language === 'ar' ? 'الإلكترونيات' : 'Electronics',
-                      value: 'SAR 45,000',
-                      urgent: true,
-                      color: 'bg-green-100'
-                    },
-                    {
-                      company: language === 'ar' ? 'شركة الرياض للإنشاءات' : 'Al-Riyadh Construction',
-                      category: language === 'ar' ? 'الإنشاءات' : 'Construction', 
-                      value: 'SAR 78,500',
-                      urgent: false,
-                      color: 'bg-blue-100'
-                    },
-                    {
-                      company: language === 'ar' ? 'حلول المكاتب الحديثة' : 'Modern Office Solutions',
-                      category: language === 'ar' ? 'لوازم المكاتب' : 'Office Supplies',
-                      value: 'SAR 32,000',
-                      urgent: true,
-                      color: 'bg-purple-100'
-                    },
-                    {
-                      company: language === 'ar' ? 'الشركة التقنية المتطورة' : 'Advanced Tech Corp',
-                      category: language === 'ar' ? 'التقنية' : 'Technology',
-                      value: 'SAR 155,500',
-                      urgent: false,
-                      color: 'bg-orange-100'
-                    }
-                  ].map((opportunity, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 rounded-xl bg-gray-50/50 hover:bg-gray-100/50 transition-colors">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-lg ${opportunity.color} flex items-center justify-center`}>
-                          <Building2 className="h-5 w-5 text-gray-600" />
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <h4 className="font-semibold text-gray-800 text-sm">{opportunity.company}</h4>
-                            {opportunity.urgent && (
-                              <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full font-medium">
-                                {language === 'ar' ? 'عاجل' : 'Urgent'}
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-xs text-gray-500">{opportunity.category}</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-bold text-gray-800 text-sm">{opportunity.value}</div>
-                        <div className="text-xs text-gray-500">
-                          {language === 'ar' ? 'قيمة المشروع' : 'project value'}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Card Footer */}
-                <div className="px-6 py-4 bg-gray-50/50 border-t border-gray-100">
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-2 text-blue-600">
-                      <Clock className="h-4 w-4" />
-                      <span className="font-medium">
-                        {language === 'ar' ? 'وقت الموافقة' : 'Approval Time'}
-                      </span>
-                    </div>
-                    <div className="font-bold text-blue-700">
-                      {language === 'ar' ? '24 ساعة' : '24h'}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* RFQ Requests Visualization */}
-        <div className="container mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            
-            {/* Live RFQ Requests Card - Left Side */}
-            <div className="order-2 lg:order-1 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-              <div className="bg-white rounded-3xl shadow-2xl border border-gray-200/50 overflow-hidden">
-                {/* Card Header */}
-                <div className="p-6 border-b border-gray-100">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-[#66023C] to-purple-600 rounded-xl flex items-center justify-center">
-                        <FileText className="h-5 w-5 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-gray-800">
-                          {language === 'ar' ? 'طلبات عروض الأسعار' : 'RFQ Request'}
-                        </h3>
-                        <p className="text-sm text-gray-500">
-                          {language === 'ar' ? 'قبل دقائق' : '4 minutes ago'}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm font-bold text-green-600">
-                        {language === 'ar' ? 'متوسط التوفير' : 'Avg. Savings'}
-                      </div>
-                      <div className="text-lg font-black text-green-700">23%</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* RFQ List */}
-                <div className="p-6 space-y-4 max-h-80 overflow-y-auto">
-                  {[
-                    {
-                      company: language === 'ar' ? 'شركة الحلول التقنية' : 'Tech Solutions Co.',
-                      rating: '4.9',
-                      reviews: '+2k',
-                      value: 'SAR 15,750',
-                      category: language === 'ar' ? 'تطوير البرمجيات' : 'Software Development',
-                      color: 'bg-blue-100'
-                    },
-                    {
-                      company: language === 'ar' ? 'اللوازم المتميزة' : 'Premier Supplies',
-                      rating: '4.8',
-                      reviews: '+1k', 
-                      value: 'SAR 16,200',
-                      category: language === 'ar' ? 'اللوازم المكتبية' : 'Office Supplies',
-                      color: 'bg-green-100'
-                    },
-                    {
-                      company: language === 'ar' ? 'الشركاء العالميون' : 'Global Partners',
-                      rating: '4.7',
-                      reviews: '+30m',
-                      value: 'SAR 14,990',
-                      category: language === 'ar' ? 'الخدمات اللوجستية' : 'Logistics Services',
-                      color: 'bg-purple-100'
-                    }
-                  ].map((rfq, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 rounded-xl bg-gray-50/50 hover:bg-gray-100/50 transition-colors">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-lg ${rfq.color} flex items-center justify-center`}>
-                          <Building2 className="h-5 w-5 text-gray-600" />
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <h4 className="font-semibold text-gray-800 text-sm">{rfq.company}</h4>
-                            <div className="flex items-center gap-1">
-                              <Star className="h-3 w-3 text-yellow-400 fill-current" />
-                              <span className="text-xs font-medium text-gray-600">{rfq.rating}</span>
-                              <span className="text-xs text-gray-400">{rfq.reviews}</span>
-                            </div>
-                          </div>
-                          <p className="text-xs text-gray-500">{rfq.category}</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="font-bold text-gray-800 text-sm">{rfq.value}</div>
-                        <div className="text-xs text-gray-500">
-                          {language === 'ar' ? 'شامل الضريبة' : 'inc. VAT'}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Card Footer */}
-                <div className="px-6 py-4 bg-gray-50/50 border-t border-gray-100">
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-2 text-blue-600">
-                      <Clock className="h-4 w-4" />
-                      <span className="font-medium">
-                        {language === 'ar' ? 'وقت الاستجابة' : 'Response Time'}
-                      </span>
-                    </div>
-                    <div className="font-bold text-blue-700">
-                      {language === 'ar' ? '< ساعتان' : '< 2h'}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Content Section - Right Side */}
-            <div className="order-1 lg:order-2 space-y-8 animate-fade-in">
-              <div className="space-y-6">
-                <div className="inline-block">
-                  <div className="px-4 py-2 text-sm text-red-700 rounded-full bg-red-100 border border-red-200 shadow-sm flex items-center gap-2">
-                    <Eye className="h-4 w-4" />
-                    {language === 'ar' ? 'صعوبة في العثور على موردين موثوقين؟' : 'Struggling to find reliable suppliers?'}
-                  </div>
-                </div>
-                
-                <h2 className="text-4xl md:text-5xl font-black text-gray-800 leading-tight">
-                  {language === 'ar' ? (
-                    <>
-                      تواصل مع أفضل <br />
-                      <span className="bg-gradient-to-r from-[#66023C] to-[#004F54] bg-clip-text text-transparent">
-                        الموردين في ثواني
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      Connect with <br />
-                      <span className="bg-gradient-to-r from-[#66023C] to-[#004F54] bg-clip-text text-transparent">
-                        Top Suppliers in Seconds
-                      </span>
-                    </>
-                  )}
-                </h2>
-                
-                <p className="text-lg text-gray-600 leading-relaxed max-w-md">
-                  {language === 'ar' 
-                    ? 'أرسل طلباً واحداً واحصل على عروض أسعار تنافسية من موردين مؤهلين في دقائق - بدلاً من أسابيع من البحث والمفاوضات.'
-                    : 'Send one request and get competitive quotes from qualified vendors in minutes - instead of weeks of searching and negotiations.'}
-                </p>
-              </div>
-
-              {/* Benefits List */}
-              <div className="space-y-4">
-                {[
-                  { 
-                    icon: Clock, 
-                    text: language === 'ar' ? 'توفير 80% من وقت البحث عن الموردين' : 'Save 80% of supplier search time'
-                  },
-                  { 
-                    icon: DollarSign, 
-                    text: language === 'ar' ? 'احصل على أسعار أفضل بنسبة 15-30%' : 'Get 15-30% better prices'
-                  },
-                  { 
-                    icon: Shield, 
-                    text: language === 'ar' ? '100% موردون معتمدون ومؤهلون' : '100% verified & qualified suppliers'
-                  }
-                ].map((benefit, index) => (
-                  <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-white/50 border border-gray-200/50">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#66023C] to-purple-600 flex items-center justify-center flex-shrink-0">
-                      <benefit.icon className="h-4 w-4 text-white" />
-                    </div>
-                    <span className="text-sm font-medium text-gray-700">{benefit.text}</span>
-                  </div>
-                ))}
-              </div>
-
-              <Link to="/register">
-                <Button size="lg" className="bg-gradient-to-r from-[#66023C] to-[#004F54] hover:from-[#66023C]/90 hover:to-[#004F54]/90 text-white font-bold px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300 group">
-                  <Rocket className="mr-2 h-5 w-5" />
-                  {language === 'ar' ? 'ابدأ الشراء مجاناً' : 'Start Buying Free'}
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-white via-purple-50 to-gray-50">
         <div className="absolute inset-0">
@@ -730,6 +372,8 @@ export const Landing = () => {
           </div>
         </div>
       </section>
+
+      {/* Live Opportunities Visualization Section */}
       <section className="py-20 px-6 relative overflow-hidden bg-gradient-to-br from-gray-50 via-white to-purple-50">
         
         {/* New Opportunities Visualization */}
@@ -1083,6 +727,63 @@ export const Landing = () => {
                 </Button>
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Smart Platform Section */}
+      <section className="py-32 px-6 relative overflow-hidden bg-white">
+        <div className="container mx-auto relative z-10">
+          <div className="text-center mb-20">
+            <h2 className="text-3xl md:text-4xl font-black mb-6 text-gray-800">
+              {language === 'ar' ? 'منصتنا الذكية' : 'Our Smart Platform'}
+            </h2>
+            <p className="text-lg max-w-3xl mx-auto font-light text-gray-600">
+              {language === 'ar' 
+                ? 'كل ما تحتاجه لإدارة المشتريات بكفاءة'
+                : 'Everything you need to manage procurement efficiently.'}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+            {[
+              {
+                icon: Database,
+                title: language === 'ar' ? 'منصة شاملة' : 'All-in-One Platform',
+                desc: language === 'ar' ? 'إدارة الموردين والطلبات والمشاريع والمدفوعات في مكان واحد' : 'Manage suppliers, requests, projects, and payments in one place.',
+                color: '#66023C'
+              },
+              {
+                icon: Workflow,
+                title: language === 'ar' ? 'سير عمل آلي' : 'Automated Workflows',
+                desc: language === 'ar' ? 'تبسيط العمليات وتقليل الجهد اليدوي' : 'Streamline processes and reduce manual effort.',
+                color: '#004F54'
+              },
+              {
+                icon: PieChart,
+                title: language === 'ar' ? 'تحليلات متقدمة' : 'Advanced Analytics',
+                desc: language === 'ar' ? 'احصل على رؤى قيمة لتحسين الأداء واتخاذ قرارات مدروسة' : 'Gain valuable insights to improve performance and make informed decisions.',
+                color: '#765A3F'
+              },
+              {
+                icon: Users2,
+                title: language === 'ar' ? 'تعاون سلس' : 'Seamless Collaboration',
+                desc: language === 'ar' ? 'تواصل وتعاون مع الموردين والعملاء بكفاءة' : 'Communicate and collaborate with suppliers and clients efficiently.',
+                color: '#66023C'
+              }
+            ].map((feature, index) => (
+              <Card key={index} hoverEffect="scale" className="p-6 hover:shadow-2xl transition-all duration-500 bg-white border border-gray-200 shadow-sm">
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center border border-gray-200" style={{ backgroundColor: `${feature.color}10` }}>
+                    <feature.icon className="h-8 w-8" style={{ color: feature.color }} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-2 text-gray-800">{feature.title}</h3>
+                    <p className="text-gray-600 font-light leading-relaxed">{feature.desc}</p>
+                  </div>
+                </div>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
