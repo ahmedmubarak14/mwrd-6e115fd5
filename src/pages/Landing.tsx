@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/contexts/LanguageContext";
+import mwrdLogo from "@/assets/mwrd-logo.png";
 import { useOptionalAuth } from "@/contexts/useOptionalAuth";
 import { useState, useEffect } from "react";
 import { StaggeredList } from "@/components/ui/animations/MicroInteractions";
@@ -88,7 +89,7 @@ export const Landing = () => {
           <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
             <Link to={user && userProfile ? "/dashboard" : "/"} className="flex items-center gap-3 group">
               <img 
-                src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
+                src={mwrdLogo} 
                 alt="MWRD Logo" 
                 className="h-14 w-auto transition-all duration-500 group-hover:scale-110 drop-shadow-2xl" 
               />
