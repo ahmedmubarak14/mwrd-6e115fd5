@@ -83,10 +83,11 @@ export const Landing = () => {
       <SmoothScroll />
       
       {/* Ultra-Modern Header */}
-      <header className={`fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-gray-200/30 bg-white/90 shadow-sm ${isRTL ? 'rtl' : 'ltr'}`}>
-        <div className={`container mx-auto px-6 h-20 flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+      <header className="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-gray-200/30 bg-white/90 shadow-sm">
+        <div className={`container mx-auto px-6 h-20 flex items-center ${isRTL ? 'flex-row-reverse' : ''} justify-between`}>
           
-          <div className={`${isRTL ? 'order-1' : 'order-1'}`}>
+          {/* Logo - Right side in RTL, Left side in LTR */}
+          <div className="flex items-center">
             <Link to={user && userProfile ? "/dashboard" : "/"} className="flex items-center gap-3 group">
               <img 
                 src={mwrdLogo} 
@@ -96,8 +97,8 @@ export const Landing = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation Menu */}
-          <nav className={`hidden lg:flex items-center gap-6 order-2`}>
+          {/* Desktop Navigation Menu - Center */}
+          <nav className="hidden lg:flex items-center gap-6">
             <Link to="/why-start-with-mwrd" className="text-gray-700 hover:text-[#004F54] transition-colors text-sm font-medium">
               {language === 'ar' ? 'لماذا نبدأ معنا' : 'Why Start with Us'}
             </Link>
@@ -112,10 +113,8 @@ export const Landing = () => {
             </Link>
           </nav>
           
-          <div className={`flex items-center gap-4 order-3`}>
-            <div className="hidden md:block">
-              <LanguageSwitcher />
-            </div>
+          {/* Auth Buttons + Language Switcher - Left side in RTL, Right side in LTR */}
+          <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
             {user && userProfile ? (
               <Link to="/dashboard" className="hidden md:block">
                 <Button size="lg" animation="lift" className="px-8 hover:shadow-2xl transition-all duration-500 bg-[#004F54] hover:bg-[#004F54]/90 border border-[#004F54] text-white">
@@ -124,18 +123,21 @@ export const Landing = () => {
               </Link>
             ) : (
               <>
-                <Link to="/login" className="hidden md:block">
-                  <Button variant="ghost" size="lg" animation="scale" className="px-6 bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 transition-all duration-300">
-                    {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
-                  </Button>
-                </Link>
                 <Link to="/register" className="hidden md:block">
                   <Button size="lg" animation="lift" className="px-8 hover:shadow-2xl transition-all duration-500 bg-[#004F54] hover:bg-[#004F54]/90 border border-[#004F54] text-white">
                     {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
                   </Button>
                 </Link>
+                <Link to="/login" className="hidden md:block">
+                  <Button variant="ghost" size="lg" animation="scale" className="px-6 bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 transition-all duration-300">
+                    {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
+                  </Button>
+                </Link>
               </>
             )}
+            <div className="hidden md:block">
+              <LanguageSwitcher />
+            </div>
             <MobileNavigation />
           </div>
         </div>
