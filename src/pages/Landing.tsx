@@ -114,7 +114,7 @@ export const Landing = () => {
           </nav>
           
           {/* Auth Buttons + Language Switcher - Left side in RTL, Right side in LTR */}
-          <div className={`flex items-center gap-4 ${isRTL ? 'col-start-1 justify-start' : 'col-start-3 justify-end'}`} dir="ltr">
+          <div className={`flex items-center gap-4 ${isRTL ? 'col-start-1 justify-start' : 'col-start-3 justify-end'}`}>
             {user && userProfile ? (
               <Link to="/dashboard" className="hidden md:block">
                 <Button size="lg" animation="lift" className="px-8 hover:shadow-2xl transition-all duration-500 bg-[#004F54] hover:bg-[#004F54]/90 border border-[#004F54] text-white">
