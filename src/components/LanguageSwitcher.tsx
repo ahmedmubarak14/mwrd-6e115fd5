@@ -8,9 +8,6 @@ export const LanguageSwitcher = () => {
     setLanguage(language === 'en' ? 'ar' : 'en');
   };
 
-  // Show the target language (what user will switch TO)
-  const label = language === 'ar' ? 'EN' : 'AR';
-
   return (
     <Button
       variant="outline"
@@ -18,7 +15,7 @@ export const LanguageSwitcher = () => {
       onClick={toggleLanguage}
       className="px-3 py-1 h-8 min-w-[50px] border-muted-foreground/20 text-muted-foreground hover:text-foreground hover:border-foreground/30 rtl-transition font-medium hover:bg-accent"
     >
-      {label}
+      {language.toUpperCase()}
     </Button>
   );
 };

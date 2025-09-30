@@ -84,37 +84,38 @@ export const Landing = () => {
       
       {/* Ultra-Modern Header */}
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-gray-200/30 bg-white/90 shadow-sm">
-        <div className="container mx-auto px-6 h-20 grid grid-cols-[auto_1fr_auto] items-center gap-4">
+        <div className="container mx-auto px-6 h-20 flex items-center justify-between">
           
-          {/* Logo - Right side in RTL, Left side in LTR */}
-          <div className={`flex items-center ${isRTL ? 'col-start-3 justify-end' : 'col-start-1 justify-start'}`}>
+          <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
             <Link to={user && userProfile ? "/dashboard" : "/"} className="flex items-center gap-3 group">
               <img 
                 src={mwrdLogo} 
                 alt="MWRD Logo" 
-                className="h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-300" 
+                className="h-14 w-auto transition-all duration-500 group-hover:scale-110 drop-shadow-2xl" 
               />
             </Link>
           </div>
 
-          {/* Desktop Navigation Menu - Always Centered */}
-          <nav className="hidden lg:flex items-center gap-6 col-start-2 justify-center">
+          {/* Desktop Navigation Menu */}
+          <nav className={`hidden lg:flex items-center gap-6 ${language === 'ar' ? 'order-1' : 'order-2'}`}>
             <Link to="/why-start-with-mwrd" className="text-gray-700 hover:text-[#004F54] transition-colors text-sm font-medium">
               {language === 'ar' ? 'لماذا نبدأ معنا' : 'Why Start with Us'}
             </Link>
-            <Link to="/why-entrepreneurship" className="text-gray-700 hover:text-[#004F54] transition-colors text-sm font-medium">
-              {language === 'ar' ? 'لماذا ريادة الأعمال' : 'Why Entrepreneurship'}
+            <Link to="/what-makes-us-unique" className="text-gray-700 hover:text-[#004F54] transition-colors text-sm font-medium">
+              {language === 'ar' ? 'ما يميزنا' : 'What Makes Us Unique'}
             </Link>
-            <Link to="/our-services" className="text-gray-700 hover:text-[#004F54] transition-colors text-sm font-medium">
-              {language === 'ar' ? 'خدماتنا' : 'Our Services'}
+            <Link to="/why-move-to-mwrd" className="text-gray-700 hover:text-[#004F54] transition-colors text-sm font-medium">
+              {language === 'ar' ? 'لماذا الانتقال إلينا' : 'Why Move to Us'}
             </Link>
-            <Link to="/contact-us" className="text-gray-700 hover:text-[#004F54] transition-colors text-sm font-medium">
-              {language === 'ar' ? 'تواصل معنا' : 'Contact Us'}
+            <Link to="/pricing" className="text-gray-700 hover:text-[#004F54] transition-colors text-sm font-medium">
+              {language === 'ar' ? 'الأسعار' : 'Pricing'}
             </Link>
           </nav>
           
-          {/* Auth Buttons + Language Switcher - Left side in RTL, Right side in LTR */}
-          <div className={`flex items-center gap-4 ${isRTL ? 'col-start-1 justify-end' : 'col-start-3 justify-end'}`}>
+          <div className={`flex items-center gap-4 ${language === 'ar' ? 'flex-row-reverse order-2' : 'order-3'}`}>
+            <div className="hidden md:block">
+              <LanguageSwitcher />
+            </div>
             {user && userProfile ? (
               <Link to="/dashboard" className="hidden md:block">
                 <Button size="lg" animation="lift" className="px-8 hover:shadow-2xl transition-all duration-500 bg-[#004F54] hover:bg-[#004F54]/90 border border-[#004F54] text-white">
@@ -123,24 +124,19 @@ export const Landing = () => {
               </Link>
             ) : (
               <>
-                <Link to="/register" className="hidden md:block">
-                  <Button size="lg" animation="lift" className="px-8 hover:shadow-2xl transition-all duration-500 bg-[#004F54] hover:bg-[#004F54]/90 border border-[#004F54] text-white">
-                    {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
-                  </Button>
-                </Link>
                 <Link to="/login" className="hidden md:block">
                   <Button variant="ghost" size="lg" animation="scale" className="px-6 bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 transition-all duration-300">
                     {language === 'ar' ? 'تسجيل الدخول' : 'Login'}
                   </Button>
                 </Link>
+                <Link to="/register" className="hidden md:block">
+                  <Button size="lg" animation="lift" className="px-8 hover:shadow-2xl transition-all duration-500 bg-[#004F54] hover:bg-[#004F54]/90 border border-[#004F54] text-white">
+                    {language === 'ar' ? 'ابدأ الآن' : 'Get Started'}
+                  </Button>
+                </Link>
               </>
             )}
-            <div className="hidden md:block">
-              <LanguageSwitcher />
-            </div>
-            <div className="md:hidden">
-              <MobileNavigation />
-            </div>
+            <MobileNavigation />
           </div>
         </div>
       </header>
