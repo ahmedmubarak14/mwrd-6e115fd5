@@ -83,10 +83,10 @@ export const Landing = () => {
       <SmoothScroll />
       
       {/* Ultra-Modern Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-gray-200/30 bg-white/90 shadow-sm">
-        <div className="container mx-auto px-6 h-20 flex items-center justify-between">
+      <header className={`fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-gray-200/30 bg-white/90 shadow-sm ${isRTL ? 'rtl' : 'ltr'}`}>
+        <div className={`container mx-auto px-6 h-20 flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
           
-          <div className={`${language === 'ar' ? 'order-3' : 'order-1'}`}>
+          <div className={`${isRTL ? 'order-1' : 'order-1'}`}>
             <Link to={user && userProfile ? "/dashboard" : "/"} className="flex items-center gap-3 group">
               <img 
                 src={mwrdLogo} 
@@ -97,7 +97,7 @@ export const Landing = () => {
           </div>
 
           {/* Desktop Navigation Menu */}
-          <nav className={`hidden lg:flex items-center gap-6 ${language === 'ar' ? 'order-1' : 'order-2'}`}>
+          <nav className={`hidden lg:flex items-center gap-6 order-2`}>
             <Link to="/why-start-with-mwrd" className="text-gray-700 hover:text-[#004F54] transition-colors text-sm font-medium">
               {language === 'ar' ? 'لماذا نبدأ معنا' : 'Why Start with Us'}
             </Link>
@@ -112,7 +112,7 @@ export const Landing = () => {
             </Link>
           </nav>
           
-          <div className={`flex items-center gap-4 ${language === 'ar' ? 'flex-row-reverse order-2' : 'order-3'}`}>
+          <div className={`flex items-center gap-4 order-3`}>
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>
