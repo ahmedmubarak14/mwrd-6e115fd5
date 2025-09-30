@@ -84,7 +84,7 @@ export const Landing = () => {
       
       {/* Ultra-Modern Header */}
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-filter backdrop-blur-xl border-b border-gray-200/30 bg-white/90 shadow-sm">
-        <div className="container mx-auto px-6 h-20 grid grid-cols-3 items-center gap-4">
+        <div className="container mx-auto px-6 h-20 grid grid-cols-[auto_1fr_auto] items-center gap-4">
           
           {/* Logo - Right side in RTL, Left side in LTR */}
           <div className={`flex items-center ${isRTL ? 'col-start-3 justify-end' : 'col-start-1 justify-start'}`}>
@@ -114,7 +114,7 @@ export const Landing = () => {
           </nav>
           
           {/* Auth Buttons + Language Switcher - Left side in RTL, Right side in LTR */}
-          <div className={`flex items-center gap-4 ${isRTL ? 'col-start-1 justify-start' : 'col-start-3 justify-end'}`}>
+          <div className={`flex items-center gap-4 ${isRTL ? 'col-start-1 justify-end' : 'col-start-3 justify-end'}`}>
             {user && userProfile ? (
               <Link to="/dashboard" className="hidden md:block">
                 <Button size="lg" animation="lift" className="px-8 hover:shadow-2xl transition-all duration-500 bg-[#004F54] hover:bg-[#004F54]/90 border border-[#004F54] text-white">
@@ -138,7 +138,9 @@ export const Landing = () => {
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>
-            <MobileNavigation />
+            <div className="md:hidden">
+              <MobileNavigation />
+            </div>
           </div>
         </div>
       </header>
