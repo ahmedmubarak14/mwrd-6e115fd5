@@ -2479,6 +2479,14 @@ export type Database = {
         Args: { user_uuid: string }
         Returns: boolean
       }
+      create_security_alert: {
+        Args: {
+          alert_description: string
+          alert_title: string
+          severity_level?: string
+        }
+        Returns: undefined
+      }
       execute_workflow_rules: {
         Args: {
           trigger_data_param?: Json
