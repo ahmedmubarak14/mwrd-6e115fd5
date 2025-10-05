@@ -1995,6 +1995,30 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       vendor_categories: {
         Row: {
           category_id: string
@@ -2609,6 +2633,10 @@ export type Database = {
           verification_status: string
         }[]
       }
+      get_user_primary_role: {
+        Args: { _user_id: string }
+        Returns: Database["public"]["Enums"]["app_role"]
+      }
       get_user_role: {
         Args: { user_uuid: string }
         Returns: Database["public"]["Enums"]["user_role"]
@@ -2650,6 +2678,13 @@ export type Database = {
           verification_status: string
         }[]
       }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       log_document_access_attempt: {
         Args: {
           error_message?: string
@@ -2673,6 +2708,7 @@ export type Database = {
       }
     }
     Enums: {
+      app_role: "admin" | "client" | "vendor"
       order_status:
         | "pending"
         | "confirmed"
@@ -2842,6 +2878,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      app_role: ["admin", "client", "vendor"],
       order_status: [
         "pending",
         "confirmed",
