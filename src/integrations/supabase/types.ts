@@ -439,6 +439,68 @@ export type Database = {
           },
         ]
       }
+      client_credit_accounts: {
+        Row: {
+          account_status: string | null
+          activated_at: string | null
+          available_credit: number | null
+          created_at: string | null
+          credit_ceiling: number
+          credit_utilization: number
+          days_overdue: number | null
+          id: string
+          kyc_submission_id: string | null
+          last_reviewed_at: string | null
+          on_hold_reason: string | null
+          overdue_amount: number | null
+          payment_period_days: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          account_status?: string | null
+          activated_at?: string | null
+          available_credit?: number | null
+          created_at?: string | null
+          credit_ceiling?: number
+          credit_utilization?: number
+          days_overdue?: number | null
+          id?: string
+          kyc_submission_id?: string | null
+          last_reviewed_at?: string | null
+          on_hold_reason?: string | null
+          overdue_amount?: number | null
+          payment_period_days?: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          account_status?: string | null
+          activated_at?: string | null
+          available_credit?: number | null
+          created_at?: string | null
+          credit_ceiling?: number
+          credit_utilization?: number
+          days_overdue?: number | null
+          id?: string
+          kyc_submission_id?: string | null
+          last_reviewed_at?: string | null
+          on_hold_reason?: string | null
+          overdue_amount?: number | null
+          payment_period_days?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_credit_accounts_kyc_submission_id_fkey"
+            columns: ["kyc_submission_id"]
+            isOneToOne: false
+            referencedRelation: "kyc_submissions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       client_profiles_extended: {
         Row: {
           budget_range: string | null
@@ -600,6 +662,56 @@ export type Database = {
             columns: ["support_ticket_id"]
             isOneToOne: false
             referencedRelation: "support_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      credit_transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          created_by: string | null
+          credit_account_id: string
+          id: string
+          notes: string | null
+          reference_id: string | null
+          reference_type: string | null
+          transaction_type: string
+          utilization_after: number
+          utilization_before: number
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          created_by?: string | null
+          credit_account_id: string
+          id?: string
+          notes?: string | null
+          reference_id?: string | null
+          reference_type?: string | null
+          transaction_type: string
+          utilization_after: number
+          utilization_before: number
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          created_by?: string | null
+          credit_account_id?: string
+          id?: string
+          notes?: string | null
+          reference_id?: string | null
+          reference_type?: string | null
+          transaction_type?: string
+          utilization_after?: number
+          utilization_before?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credit_transactions_credit_account_id_fkey"
+            columns: ["credit_account_id"]
+            isOneToOne: false
+            referencedRelation: "client_credit_accounts"
             referencedColumns: ["id"]
           },
         ]
@@ -836,6 +948,138 @@ export type Database = {
             referencedColumns: ["user_id"]
           },
         ]
+      }
+      kyc_submissions: {
+        Row: {
+          account_type: string
+          address_area: string
+          address_building_number: string
+          address_certificate_url: string
+          address_city: string
+          address_postal_code: string
+          address_street_name: string
+          address_unit_number: string | null
+          company_legal_name: string
+          cr_document_url: string
+          cr_issuing_city: string
+          cr_issuing_date: string
+          cr_number: string
+          cr_validity_date: string
+          created_at: string | null
+          credit_ceiling: number | null
+          focal_designation: string
+          focal_email: string
+          focal_first_name: string
+          focal_last_name: string
+          focal_phone: string
+          focal_phone_verified: boolean | null
+          id: string
+          nature_of_business: string
+          organization_type: string
+          payment_period_days: number | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          reviewer_notes: string | null
+          service_categories: string[]
+          signatory_designation: string
+          signatory_email: string
+          signatory_first_name: string
+          signatory_last_name: string
+          signatory_phone: string
+          submission_status: string | null
+          submitted_at: string | null
+          updated_at: string | null
+          user_id: string
+          vat_certificate_url: string
+          vat_number: string
+        }
+        Insert: {
+          account_type?: string
+          address_area: string
+          address_building_number: string
+          address_certificate_url: string
+          address_city: string
+          address_postal_code: string
+          address_street_name: string
+          address_unit_number?: string | null
+          company_legal_name: string
+          cr_document_url: string
+          cr_issuing_city: string
+          cr_issuing_date: string
+          cr_number: string
+          cr_validity_date: string
+          created_at?: string | null
+          credit_ceiling?: number | null
+          focal_designation: string
+          focal_email: string
+          focal_first_name: string
+          focal_last_name: string
+          focal_phone: string
+          focal_phone_verified?: boolean | null
+          id?: string
+          nature_of_business: string
+          organization_type: string
+          payment_period_days?: number | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_notes?: string | null
+          service_categories?: string[]
+          signatory_designation: string
+          signatory_email: string
+          signatory_first_name: string
+          signatory_last_name: string
+          signatory_phone: string
+          submission_status?: string | null
+          submitted_at?: string | null
+          updated_at?: string | null
+          user_id: string
+          vat_certificate_url: string
+          vat_number: string
+        }
+        Update: {
+          account_type?: string
+          address_area?: string
+          address_building_number?: string
+          address_certificate_url?: string
+          address_city?: string
+          address_postal_code?: string
+          address_street_name?: string
+          address_unit_number?: string | null
+          company_legal_name?: string
+          cr_document_url?: string
+          cr_issuing_city?: string
+          cr_issuing_date?: string
+          cr_number?: string
+          cr_validity_date?: string
+          created_at?: string | null
+          credit_ceiling?: number | null
+          focal_designation?: string
+          focal_email?: string
+          focal_first_name?: string
+          focal_last_name?: string
+          focal_phone?: string
+          focal_phone_verified?: boolean | null
+          id?: string
+          nature_of_business?: string
+          organization_type?: string
+          payment_period_days?: number | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_notes?: string | null
+          service_categories?: string[]
+          signatory_designation?: string
+          signatory_email?: string
+          signatory_first_name?: string
+          signatory_last_name?: string
+          signatory_phone?: string
+          submission_status?: string | null
+          submitted_at?: string | null
+          updated_at?: string | null
+          user_id?: string
+          vat_certificate_url?: string
+          vat_number?: string
+        }
+        Relationships: []
       }
       messages: {
         Row: {
@@ -1138,6 +1382,42 @@ export type Database = {
             referencedColumns: ["user_id"]
           },
         ]
+      }
+      phone_verifications: {
+        Row: {
+          attempts: number | null
+          created_at: string | null
+          id: string
+          otp_code: string
+          otp_expires_at: string
+          phone_number: string
+          updated_at: string | null
+          user_id: string
+          verified_at: string | null
+        }
+        Insert: {
+          attempts?: number | null
+          created_at?: string | null
+          id?: string
+          otp_code: string
+          otp_expires_at: string
+          phone_number: string
+          updated_at?: string | null
+          user_id: string
+          verified_at?: string | null
+        }
+        Update: {
+          attempts?: number | null
+          created_at?: string | null
+          id?: string
+          otp_code?: string
+          otp_expires_at?: string
+          phone_number?: string
+          updated_at?: string | null
+          user_id?: string
+          verified_at?: string | null
+        }
+        Relationships: []
       }
       platform_settings: {
         Row: {
