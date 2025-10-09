@@ -143,6 +143,11 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle, onItemCli
           icon: UserCheck,
         },
         {
+          name: 'KYC Review',
+          href: "/admin/kyc-review",
+          icon: FileText,
+        },
+        {
           name: t('admin.navigation.automation'),
           href: "/admin/automation",
           icon: Bot,

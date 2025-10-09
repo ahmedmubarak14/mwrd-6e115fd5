@@ -54,6 +54,10 @@ import AdminCategoryManagement from './pages/admin/CategoryManagement';
 import { ExpertConsultations } from './pages/admin/ExpertConsultations';
 import AdminSettings from './pages/AdminSettings';
 import AdminProfile from './pages/AdminProfile';
+import MainInfo from './pages/kyc/MainInfo';
+import KYCForm from './pages/kyc/KYCForm';
+import AdminKYCReviewPage from './pages/admin/AdminKYCReview';
+import KYCStatus from './pages/client/KYCStatus';
 import Requests from './pages/Requests';
 import CreateSimpleRequest from './pages/CreateSimpleRequest';
 import { SearchPage } from './components/search/SearchPage';
@@ -126,6 +130,18 @@ function App() {
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/auth" element={<AuthCallback />} />
                     
+                    {/* KYC routes */}
+                    <Route path="/kyc/main-info" element={
+                      <RoleProtectedRoute allowedRoles={['client', 'vendor']}>
+                        <MainInfo />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/kyc/form" element={
+                      <RoleProtectedRoute allowedRoles={['client', 'vendor']}>
+                        <KYCForm />
+                      </RoleProtectedRoute>
+                    } />
+                    
                     {/* Multi-role dashboard route (will redirect based on role) */}
                     <Route path="/dashboard" element={
                       <RoleProtectedRoute allowedRoles={['client', 'vendor', 'admin']}>
@@ -153,6 +169,7 @@ function App() {
                       <Route path="offers" element={<Offers />} />
                       <Route path="orders" element={<Orders />} />
                       <Route path="projects" element={<Projects />} />
+                      <Route path="kyc-status" element={<KYCStatus />} />
                       <Route path="rfq-management" element={<RFQManagement />} />
                       <Route path="rfqs/:id" element={<RFQDetail />} />
                       <Route path="settings" element={<Settings />} />
@@ -301,6 +318,7 @@ function App() {
                       <Route path="communications" element={<AdminCommunications />} />
                       <Route path="category-management" element={<AdminCategoryManagement />} />
                       <Route path="expert-consultations" element={<ExpertConsultations />} />
+                      <Route path="kyc-review" element={<AdminKYCReviewPage />} />
                       <Route path="settings" element={<AdminSettings />} />
                       <Route path="profile" element={<AdminProfile />} />
                     </Route>

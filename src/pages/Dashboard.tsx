@@ -9,11 +9,35 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { CreditCardWidget } from "@/components/dashboard/CreditCardWidget";
+import { supabase } from "@/integrations/supabase/client";
 
 const Dashboard = () => {
   const { userProfile, loading } = useAuth();
   const navigate = useNavigate();
+  const [hasCreditAccount, setHasCreditAccount] = useState(false);
+  const [checkingCredit, setCheckingCredit] = useState(true);
+
+  // Check for credit account
+  useEffect(() => {
+    const checkCreditAccount = async () => {
+      if (userProfile?.user_id) {
+        const { data, error } = await supabase
+          .from('client_credit_accounts')
+          .select('id')
+          .eq('user_id', userProfile.user_id)
+          .single();
+        
+        setHasCreditAccount(!!data && !error);
+      }
+      setCheckingCredit(false);
+    };
+
+    if (!loading && userProfile) {
+      checkCreditAccount();
+    }
+  }, [loading, userProfile]);
 
   // Redirect based on user role
   useEffect(() => {
@@ -122,6 +146,12 @@ const Dashboard = () => {
     <ClientLayout>
       <div className="space-y-6">
         {renderVerificationBanner()}
+        
+        {/* Credit Account Widget */}
+        {!checkingCredit && hasCreditAccount && (
+          <CreditCardWidget />
+        )}
+        
         <ProcurementClientDashboard />
       </div>
     </ClientLayout>
