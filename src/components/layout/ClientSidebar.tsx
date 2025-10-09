@@ -145,6 +145,23 @@ export const ClientSidebar = ({ className, collapsed = false, onToggle }: Client
       ]
     },
     {
+      id: 'financial',
+      label: t('clientGroups.financial') || 'Financial',
+      priority: 'secondary',
+      items: [
+        {
+          name: t('nav.invoices') || 'Invoices',
+          href: "/client/invoices",
+          icon: FileText,
+        },
+        {
+          name: t('nav.manageSubscription'),
+          href: "/manage-subscription",
+          icon: CreditCard,
+        },
+      ]
+    },
+    {
       id: 'account',
       label: t('clientGroups.account'),
       priority: 'utility',
@@ -153,11 +170,6 @@ export const ClientSidebar = ({ className, collapsed = false, onToggle }: Client
           name: t('nav.profile'),
           href: "/profile",
           icon: User,
-        },
-        {
-          name: t('nav.manageSubscription'),
-          href: "/manage-subscription",
-          icon: CreditCard,
         },
         {
           name: t('nav.settings'),

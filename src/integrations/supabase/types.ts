@@ -949,6 +949,205 @@ export type Database = {
           },
         ]
       }
+      invoice_items: {
+        Row: {
+          created_at: string
+          description: string
+          discount_percent: number | null
+          id: string
+          invoice_id: string
+          notes: string | null
+          quantity: number
+          sort_order: number | null
+          subtotal: number
+          tax_amount: number
+          tax_rate: number
+          total: number
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          discount_percent?: number | null
+          id?: string
+          invoice_id: string
+          notes?: string | null
+          quantity?: number
+          sort_order?: number | null
+          subtotal: number
+          tax_amount: number
+          tax_rate?: number
+          total: number
+          unit_price: number
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          discount_percent?: number | null
+          id?: string
+          invoice_id?: string
+          notes?: string | null
+          quantity?: number
+          sort_order?: number | null
+          subtotal?: number
+          tax_amount?: number
+          tax_rate?: number
+          total?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoice_items_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "invoices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invoice_payments: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          invoice_id: string
+          notes: string | null
+          payment_date: string
+          payment_method: string
+          recorded_by: string | null
+          status: string
+          transaction_reference: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          invoice_id: string
+          notes?: string | null
+          payment_date?: string
+          payment_method: string
+          recorded_by?: string | null
+          status?: string
+          transaction_reference?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          invoice_id?: string
+          notes?: string | null
+          payment_date?: string
+          payment_method?: string
+          recorded_by?: string | null
+          status?: string
+          transaction_reference?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoice_payments_invoice_id_fkey"
+            columns: ["invoice_id"]
+            isOneToOne: false
+            referencedRelation: "invoices"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      invoices: {
+        Row: {
+          balance_due: number
+          client_id: string
+          created_at: string
+          currency: string
+          discount_amount: number | null
+          due_date: string
+          id: string
+          internal_notes: string | null
+          invoice_number: string
+          issue_date: string
+          notes: string | null
+          order_id: string | null
+          paid_amount: number
+          paid_date: string | null
+          payment_terms: string | null
+          purchase_order_id: string | null
+          status: string
+          subtotal: number
+          tax_amount: number
+          tax_rate: number
+          total_amount: number
+          updated_at: string
+          vendor_id: string
+        }
+        Insert: {
+          balance_due?: number
+          client_id: string
+          created_at?: string
+          currency?: string
+          discount_amount?: number | null
+          due_date: string
+          id?: string
+          internal_notes?: string | null
+          invoice_number: string
+          issue_date?: string
+          notes?: string | null
+          order_id?: string | null
+          paid_amount?: number
+          paid_date?: string | null
+          payment_terms?: string | null
+          purchase_order_id?: string | null
+          status?: string
+          subtotal?: number
+          tax_amount?: number
+          tax_rate?: number
+          total_amount: number
+          updated_at?: string
+          vendor_id: string
+        }
+        Update: {
+          balance_due?: number
+          client_id?: string
+          created_at?: string
+          currency?: string
+          discount_amount?: number | null
+          due_date?: string
+          id?: string
+          internal_notes?: string | null
+          invoice_number?: string
+          issue_date?: string
+          notes?: string | null
+          order_id?: string | null
+          paid_amount?: number
+          paid_date?: string | null
+          payment_terms?: string | null
+          purchase_order_id?: string | null
+          status?: string
+          subtotal?: number
+          tax_amount?: number
+          tax_rate?: number
+          total_amount?: number
+          updated_at?: string
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invoices_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_purchase_order_id_fkey"
+            columns: ["purchase_order_id"]
+            isOneToOne: false
+            referencedRelation: "purchase_orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       kyc_submissions: {
         Row: {
           account_type: string
@@ -2797,6 +2996,10 @@ export type Database = {
           trigger_type_param: Database["public"]["Enums"]["workflow_trigger_type"]
         }
         Returns: undefined
+      }
+      generate_invoice_number: {
+        Args: Record<PropertyKey, never>
+        Returns: string
       }
       get_admin_statistics: {
         Args: { admin_user_id: string }

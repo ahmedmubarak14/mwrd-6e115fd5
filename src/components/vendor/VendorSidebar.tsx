@@ -149,6 +149,11 @@ export const VendorSidebar = ({
       priority: 'secondary',
       items: [
         {
+          name: t('nav.invoices') || 'Invoices',
+          href: '/vendor/invoices',
+          icon: FileText,
+        },
+        {
           name: t('nav.subscription') || 'Subscription',
           href: '/vendor/subscription',
           icon: CreditCard,

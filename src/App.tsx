@@ -32,6 +32,7 @@ import { VendorBrowseRequests } from './pages/vendor/VendorBrowseRequests';
 import { VendorOffers } from './pages/vendor/VendorOffers';
 import { VendorOrders } from './pages/vendor/VendorOrders';
 import { VendorProfile } from './pages/vendor/VendorProfile';
+import { VendorInvoices } from './pages/vendor/VendorInvoices';
 import Profile from './pages/Profile';
 import { Landing } from './pages/Landing';
 import NotFound from './pages/NotFound';
@@ -81,6 +82,7 @@ import RFQDetail from './pages/RFQDetail';
 import Settings from './pages/Settings';
 import Support from './pages/Support';
 import Vendors from './pages/Vendors';
+import { ClientInvoices } from './pages/client/ClientInvoices';
 
 const RoleProtectedRoute: React.FC<{
   children: React.ReactNode;
@@ -176,6 +178,7 @@ function App() {
                       <Route path="support" element={<Support />} />
                       <Route path="vendor-rfqs" element={<VendorRFQs />} />
                       <Route path="vendors" element={<Vendors />} />
+                      <Route path="invoices" element={<ClientInvoices />} />
                     </Route>
                     
                     {/* Legacy client routes (redirect to new structure) */}
@@ -290,6 +293,11 @@ function App() {
                     <Route path="/vendor/notifications" element={
                       <RoleProtectedRoute allowedRoles={['vendor']}>
                         <VendorNotifications />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/invoices" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <VendorInvoices />
                       </RoleProtectedRoute>
                     } />
                     
