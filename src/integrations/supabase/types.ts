@@ -2978,6 +2978,10 @@ export type Database = {
         Args: { user_uuid: string }
         Returns: boolean
       }
+      check_profile_query_rate_limit: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       check_support_ticket_rate_limit: {
         Args: { user_uuid: string }
         Returns: boolean
@@ -3184,6 +3188,14 @@ export type Database = {
           target_user_id?: string
         }
         Returns: undefined
+      }
+      test_rls_policies: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          message: string
+          passed: boolean
+          test_name: string
+        }[]
       }
       update_vendor_performance_metrics: {
         Args: { p_category?: string; p_vendor_id: string }
