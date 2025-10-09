@@ -20,7 +20,7 @@ export const createMockRequest = (clientId: string, overrides = {}) => ({
   budget_min: 1000,
   budget_max: 5000,
   deadline: faker.date.future().toISOString(),
-  status: 'open' as const,
+  status: 'new' as const,
   urgency: 'medium' as const,
   created_at: new Date().toISOString(),
   ...overrides,
