@@ -42,13 +42,22 @@ serve(async (req) => {
 
     console.log('User authenticated:', user.id);
 
-    // Store OTP in database
+    // Hash the OTP before storing using database function
+    const { data: hashedCode, error: hashError } = await supabaseClient
+      .rpc('hash_otp_code', { otp_code: otpCode });
+
+    if (hashError || !hashedCode) {
+      console.error('Error hashing OTP:', hashError);
+      throw new Error('Failed to generate OTP');
+    }
+
+    // Store hashed OTP in database
     const { error: insertError } = await supabaseClient
       .from('phone_verifications')
       .insert({
         user_id: user.id,
         phone_number: phoneNumber,
-        otp_code: otpCode,
+        hashed_code: hashedCode,
         otp_expires_at: expiresAt.toISOString()
       });
 
@@ -61,15 +70,13 @@ serve(async (req) => {
 
     // TODO: Integrate with SMS gateway (Twilio, AWS SNS, or local Saudi provider)
     // For now, log OTP (DEVELOPMENT ONLY - REMOVE IN PRODUCTION)
-    console.log(`OTP for ${phoneNumber}: ${otpCode}`);
+    console.log(`OTP sent for ${phoneNumber}. Expires at: ${expiresAt.toISOString()}`);
 
     return new Response(
       JSON.stringify({ 
         success: true, 
         message: 'OTP sent successfully',
-        expiresAt: expiresAt.toISOString(),
-        // REMOVE IN PRODUCTION:
-        devOtp: otpCode 
+        expiresAt: expiresAt.toISOString()
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

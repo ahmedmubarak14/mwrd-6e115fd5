@@ -64,8 +64,14 @@ serve(async (req) => {
       throw new Error('Maximum verification attempts exceeded. Please request a new OTP.');
     }
 
-    // Verify OTP
-    if (verification.otp_code !== otpCode) {
+    // Verify OTP using secure database function
+    const { data: isValid, error: verifyError } = await supabaseClient
+      .rpc('verify_otp_code', { 
+        stored_hash: verification.hashed_code,
+        otp_input: otpCode 
+      });
+
+    if (verifyError || !isValid) {
       console.log('Invalid OTP provided');
       // Increment attempts
       await supabaseClient
