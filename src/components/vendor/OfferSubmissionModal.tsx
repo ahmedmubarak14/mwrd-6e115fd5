@@ -98,7 +98,6 @@ export const OfferSubmissionModal = ({ isOpen, onClose, request, onSuccess }: Of
       const authUserId = authData?.user?.id;
       if (!authUserId) throw new Error('Not authenticated');
 
-    try {
       const { data: vendorProfile, error: vpError } = await supabase
         .from('user_profiles_with_roles')
         .select('id, role, status')

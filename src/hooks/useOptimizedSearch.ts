@@ -336,7 +336,7 @@ export const useOptimizedSearch = () => {
     // Apply user role-based filtering
     if (user) {
       const { data: userProfile } = await supabase
-        .from('user_profiles')
+        .from('user_profiles_with_roles')
         .select('role')
         .eq('user_id', user.id)
         .single();
@@ -451,7 +451,7 @@ export const useOptimizedSearch = () => {
 
   const searchVendors = useCallback(async (filters: EnhancedSearchFilters, page: number, limit: number) => {
     let query = supabase
-      .from('user_profiles')
+      .from('user_profiles_with_roles')
       .select(`
         id, full_name, company_name, bio, avatar_url, address,
         verification_status, status, created_at, updated_at, categories

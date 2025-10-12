@@ -118,7 +118,7 @@ export const useRealTimeAnalytics = () => {
 
       // User types distribution
       const { data: userRoles } = await supabase
-        .from('user_profiles')
+        .from('user_profiles_with_roles')
         .select('role');
 
       const roleCount = userRoles?.reduce((acc: any, user) => {

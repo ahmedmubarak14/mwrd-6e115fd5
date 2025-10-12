@@ -68,7 +68,7 @@ export default function AdminUsers() {
       
       // Fetch real users from Supabase
       const { data, error } = await supabase
-        .from('user_profiles')
+        .from('user_profiles_with_roles')
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -208,10 +208,23 @@ export default function AdminUsers() {
 
     setBulkLoading(true);
     try {
-      const { error } = await supabase
+      // First get user_ids from user_profiles
+      const { data: profiles, error: profileError } = await supabase
         .from('user_profiles')
-        .update({ role: bulkRole as 'admin' | 'client' | 'vendor' })
+        .select('user_id')
         .in('id', selectedUsers);
+
+      if (profileError || !profiles) {
+        throw new Error('Failed to fetch user profiles');
+      }
+
+      const userIds = profiles.map(p => p.user_id);
+
+      // Update role in user_roles table
+      const { error } = await supabase
+        .from('user_roles')
+        .update({ role: bulkRole as 'admin' | 'client' | 'vendor' })
+        .in('user_id', userIds);
 
       if (error) throw error;
 

@@ -79,7 +79,7 @@ export const useSearch = () => {
     // Only show approved requests for vendors, all for admins/clients
     if (user) {
       const { data: userProfile } = await supabase
-        .from('user_profiles')
+        .from('user_profiles_with_roles')
         .select('role')
         .eq('user_id', user.id)
         .single();
@@ -176,7 +176,7 @@ export const useSearch = () => {
 
   const searchVendors = async (filters: SearchFilters, page = 1, limit = 20) => {
     let query = supabase
-      .from('user_profiles')
+      .from('user_profiles_with_roles')
       .select(`
         id, full_name, company_name, bio, avatar_url, address,
         verification_status, status, created_at, updated_at, categories

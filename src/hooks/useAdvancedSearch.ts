@@ -152,7 +152,7 @@ export const useAdvancedSearch = () => {
       setLoading(true);
       
       let query = supabase
-        .from('user_profiles')
+        .from('user_profiles_with_roles')
         .select('*')
         .eq('role', 'vendor')
         .eq('verification_status', 'approved')

@@ -78,7 +78,7 @@ export const CreateBidModal: React.FC<CreateBidModalProps> = ({ rfq, children })
     try {
       // Get vendor profile
       const { data: vendorProfile, error: profileError } = await supabase
-        .from('user_profiles')
+        .from('user_profiles_with_roles')
         .select('id, role, status, verification_status')
         .eq('user_id', user.id)
         .single();

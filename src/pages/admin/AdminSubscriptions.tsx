@@ -64,7 +64,7 @@ export default function AdminSubscriptions() {
     try {
       setLoading(true);
       const { data, error } = await supabase
-        .from('user_profiles')
+        .from('user_profiles_with_roles')
         .select('*')
         .order('created_at', { ascending: false });
 

@@ -77,7 +77,7 @@ export const CreateOfferModal = ({ children, requestId }: CreateOfferModalProps)
 
     // Get the user's profile ID for vendor_id
     const { data: vendorProfile, error: profileError } = await supabase
-      .from('user_profiles')
+      .from('user_profiles_with_roles')
       .select('id, role, status')
       .eq('user_id', user.id)
       .single();
