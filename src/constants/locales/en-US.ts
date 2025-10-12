@@ -73,6 +73,19 @@ export const enUS = {
       quickActionsDesc: "Fast access to essential admin functions"
     },
     
+    // Admin branding
+    adminPortal: "MWRD Admin",
+    adminRole: "Admin",
+    
+    // Navigation groups
+    groups: {
+      overview: "Overview",
+      management: "Management",
+      business: "Business Operations",
+      system: "System & Tools",
+      communication: "Communication"
+    },
+    
     // Navigation & Sidebar
     usersTitle: "Users",
     requestsTitle: "Requests",

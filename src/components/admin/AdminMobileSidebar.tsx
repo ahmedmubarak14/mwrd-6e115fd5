@@ -38,95 +38,95 @@ export const AdminMobileSidebar = ({ isOpen, onOpenChange }: AdminMobileSidebarP
 
   const navigationItems = [
     {
-      section: t('admin.groups.overview') || "Overview",
+      section: t('admin.groups.overview'),
       items: [
         {
-          name: t('admin.dashboard') || "Dashboard",
+          name: t('admin.dashboard'),
           href: "/admin/dashboard",
           icon: LayoutDashboard,
         },
         {
-          name: t('admin.sidebarAnalytics') || "Analytics",
+          name: t('admin.sidebarAnalytics'),
           href: "/admin/analytics",
           icon: BarChart3,
         },
         {
-          name: t('admin.performanceMonitor') || "Performance Monitor",
+          name: t('admin.performanceMonitor'),
           href: "/admin/performance-monitor",
           icon: Activity,
         },
       ]
     },
     {
-      section: t('admin.groups.management') || "Management",
+      section: t('admin.groups.management'),
       items: [
         {
-          name: t('admin.sidebarUsers') || "Users",
+          name: t('admin.sidebarUsers'),
           href: "/admin/users",
           icon: Users,
         },
         {
-          name: t('admin.sidebarRequests') || "Requests",
+          name: t('admin.sidebarRequests'),
           href: "/admin/requests",
           icon: FileText,
         },
         {
-          name: t('admin.offers') || "Offers",
+          name: t('admin.offers'),
           href: "/admin/offers",
           icon: Package,
         },
         {
-          name: t('admin.orders') || "Orders",
+          name: t('admin.orders'),
           href: "/admin/orders",
           icon: ShoppingCart,
         },
         {
-          name: t('admin.messages') || "Messages",
+          name: t('admin.messages'),
           href: "/admin/messages",
           icon: MessageSquare,
         },
       ]
     },
     {
-      section: t('admin.groups.communication') || "Communication",
+      section: t('admin.groups.communication'),
       items: [
         {
-          name: t('admin.notifications') || "Notifications",
+          name: t('admin.notifications'),
           href: "/admin/notifications",
           icon: Bell,
         },
         {
-          name: t('admin.emailCampaigns') || "Email Campaigns",
+          name: t('admin.emailCampaigns'),
           href: "/admin/email-campaigns",
           icon: Mail,
         },
         {
-          name: t('admin.expertConsultations') || "Expert Consultations",
+          name: t('admin.expertConsultations'),
           href: "/admin/expert-consultations",
           icon: UserCheck,
         },
       ]
     },
     {
-      section: t('admin.groups.system') || "System",
+      section: t('admin.groups.system'),
       items: [
         {
-          name: t('admin.security') || "Security",
+          name: t('admin.security'),
           href: "/admin/security",
           icon: Shield,
         },
         {
-          name: t('admin.systemHealth') || "System Health",
+          name: t('admin.systemHealth'),
           href: "/admin/system-health",
           icon: Database,
         },
         {
-          name: t('admin.settings') || "Settings",
+          name: t('admin.settings'),
           href: "/admin/settings",
           icon: Settings,
         },
         {
-          name: t('admin.support') || "Support",
+          name: t('admin.support'),
           href: "/admin/support",
           icon: HelpCircle,
         },
@@ -161,9 +161,9 @@ export const AdminMobileSidebar = ({ isOpen, onOpenChange }: AdminMobileSidebarP
                 className="h-8 w-auto"
               />
               <div className="flex flex-col">
-                <span className="font-semibold text-foreground">MWRD Admin</span>
+                <span className="font-semibold text-foreground">{t('admin.adminPortal')}</span>
                 <span className="text-xs text-muted-foreground capitalize">
-                  {userProfile?.role || 'Admin'}
+                  {userProfile?.role || t('admin.adminRole')}
                 </span>
               </div>
             </Link>

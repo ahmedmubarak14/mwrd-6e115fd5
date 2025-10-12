@@ -76,6 +76,19 @@ export const arSA = {
       quickActionsDesc: "وصول سريع للوظائف الإدارية الأساسية"
     },
     
+    // Admin branding
+    adminPortal: "إدارة MWRD",
+    adminRole: "مسؤول",
+    
+    // Navigation groups
+    groups: {
+      overview: "نظرة عامة",
+      management: "الإدارة",
+      business: "العمليات التجارية",
+      system: "النظام والأدوات",
+      communication: "التواصل"
+    },
+    
     // Navigation & Sidebar
     usersTitle: "المستخدمون",
     requestsTitle: "الطلبات",
