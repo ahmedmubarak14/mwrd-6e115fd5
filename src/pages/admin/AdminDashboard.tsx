@@ -30,10 +30,10 @@ export const AdminDashboard = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Monitor className="h-5 w-5" />
-            System Health & Quality Monitoring
+            {t('admin.systemHealth.title')}
           </CardTitle>
           <CardDescription>
-            Real-time performance monitoring, automated testing, and quality assurance tools
+            {t('admin.systemHealth.description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -41,15 +41,15 @@ export const AdminDashboard = () => {
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="performance" className="flex items-center gap-2">
                 <Activity className="h-4 w-4" />
-                Performance
+                {t('admin.systemHealth.performanceTab')}
               </TabsTrigger>
               <TabsTrigger value="testing" className="flex items-center gap-2">
                 <TestTube className="h-4 w-4" />
-                Testing Suite
+                {t('admin.systemHealth.testingTab')}
               </TabsTrigger>
               <TabsTrigger value="quality" className="flex items-center gap-2">
                 <Monitor className="h-4 w-4" />
-                Quality Checks
+                {t('admin.systemHealth.qualityTab')}
               </TabsTrigger>
             </TabsList>
 

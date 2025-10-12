@@ -30,7 +30,7 @@ interface KYCSubmission {
 }
 
 export const AdminKYCReview = () => {
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const [submissions, setSubmissions] = useState<KYCSubmission[]>([]);
   const [selectedSubmission, setSelectedSubmission] = useState<KYCSubmission | null>(null);
   const [reviewNotes, setReviewNotes] = useState('');
@@ -52,8 +52,8 @@ export const AdminKYCReview = () => {
 
     if (error) {
       toast({
-        title: "Error",
-        description: "Failed to fetch KYC submissions",
+        title: t('admin.kyc.fetchError'),
+        description: t('admin.kyc.fetchErrorDesc'),
         variant: "destructive"
       });
       return;
@@ -161,8 +161,8 @@ export const AdminKYCReview = () => {
       }
 
       toast({
-        title: "Success",
-        description: "KYC approved successfully!"
+        title: t('admin.kyc.approveSuccess'),
+        description: t('admin.kyc.approveSuccessDesc')
       });
       
       fetchSubmissions();
@@ -182,8 +182,8 @@ export const AdminKYCReview = () => {
   const handleReject = async () => {
     if (!selectedSubmission || !reviewNotes.trim()) {
       toast({
-        title: "Error",
-        description: "Please provide rejection reason",
+        title: t('admin.kyc.reviewNotesRequired'),
+        description: t('admin.kyc.reviewNotesRequiredDesc'),
         variant: "destructive"
       });
       return;
@@ -214,8 +214,8 @@ export const AdminKYCReview = () => {
       if (profileError) throw profileError;
 
       toast({
-        title: "KYC Rejected",
-        description: "KYC submission has been rejected"
+        title: t('admin.kyc.rejectSuccess'),
+        description: t('admin.kyc.rejectSuccessDesc')
       });
       
       fetchSubmissions();
@@ -244,8 +244,8 @@ export const AdminKYCReview = () => {
       window.open(result.signedUrl, '_blank');
     } catch (error: any) {
       toast({
-        title: "Error",
-        description: error.message || "Failed to view document",
+        title: t('admin.kyc.viewError'),
+        description: error.message || t('admin.kyc.viewErrorDesc'),
         variant: "destructive"
       });
     }
@@ -269,35 +269,35 @@ export const AdminKYCReview = () => {
       document.body.removeChild(a);
 
       toast({
-        title: "Success",
-        description: "Document download started"
+        title: t('admin.kyc.downloadSuccess'),
+        description: t('admin.kyc.downloadSuccessDesc')
       });
     } catch (error: any) {
       toast({
-        title: "Error",
-        description: "Failed to download document",
+        title: t('admin.kyc.downloadError'),
+        description: t('admin.kyc.downloadErrorDesc'),
         variant: "destructive"
       });
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
       <Card>
         <CardHeader>
-          <CardTitle>KYC Submissions Review</CardTitle>
+          <CardTitle>{t('admin.kyc.submissionsReview')}</CardTitle>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Company Name</TableHead>
-                <TableHead>CR Number</TableHead>
-                <TableHead>VAT Number</TableHead>
-                <TableHead>Account Type</TableHead>
-                <TableHead>Submitted At</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t('admin.kyc.companyName')}</TableHead>
+                <TableHead>{t('admin.kyc.crNumber')}</TableHead>
+                <TableHead>{t('admin.kyc.vatNumber')}</TableHead>
+                <TableHead>{t('admin.kyc.accountType')}</TableHead>
+                <TableHead>{t('admin.kyc.submittedAt')}</TableHead>
+                <TableHead>{t('common.status')}</TableHead>
+                <TableHead>{t('admin.kyc.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -329,7 +329,7 @@ export const AdminKYCReview = () => {
                         verifySubmissionDocuments(submission);
                       }}
                     >
-                      Review
+                      {t('admin.kyc.review')}
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -342,28 +342,28 @@ export const AdminKYCReview = () => {
       {selectedSubmission && (
         <Card className="border-2 border-primary">
           <CardHeader>
-            <CardTitle>Review KYC Submission: {selectedSubmission.company_legal_name}</CardTitle>
+            <CardTitle>{t('admin.kyc.reviewSubmission')}: {selectedSubmission.company_legal_name}</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
             {submissionHistory.count > 1 && (
               <Alert className="mb-4 border-orange-500 bg-orange-50">
                 <AlertTriangle className="w-4 h-4 text-orange-600" />
                 <AlertDescription>
-                  <strong>Multiple Submissions Detected:</strong> This user has {submissionHistory.count} submissions in total.
-                  {submissionHistory.hasRejected && ' Previous submissions were rejected.'}
-                  {submissionHistory.hasApproved && ' Previous submissions were approved.'}
+                  <strong>{t('admin.kyc.multipleSubmissions')}:</strong> {t('admin.kyc.multipleSubmissionsDesc').replace('{count}', submissionHistory.count.toString())}.
+                  {submissionHistory.hasRejected && ` ${t('admin.kyc.previousRejected')}.`}
+                  {submissionHistory.hasApproved && ` ${t('admin.kyc.previousApproved')}.`}
                   <br />
-                  <span className="text-sm text-muted-foreground">You are reviewing the LATEST submission.</span>
+                  <span className="text-sm text-muted-foreground">{t('admin.kyc.reviewingLatest')}.</span>
                 </AlertDescription>
               </Alert>
             )}
             <Tabs defaultValue="company">
               <TabsList className="grid w-full grid-cols-5">
-                <TabsTrigger value="company">Company</TabsTrigger>
-                <TabsTrigger value="tax">Tax</TabsTrigger>
-                <TabsTrigger value="address">Address</TabsTrigger>
-                <TabsTrigger value="signatory">Signatory</TabsTrigger>
-                <TabsTrigger value="credit">Credit</TabsTrigger>
+                <TabsTrigger value="company">{t('admin.kyc.companyTab')}</TabsTrigger>
+                <TabsTrigger value="tax">{t('admin.kyc.taxTab')}</TabsTrigger>
+                <TabsTrigger value="address">{t('admin.kyc.addressTab')}</TabsTrigger>
+                <TabsTrigger value="signatory">{t('admin.kyc.signatoryTab')}</TabsTrigger>
+                <TabsTrigger value="credit">{t('admin.kyc.creditTab')}</TabsTrigger>
               </TabsList>
 
               <TabsContent value="company" className="space-y-4">
@@ -371,26 +371,26 @@ export const AdminKYCReview = () => {
                   <Alert variant="destructive" className="mb-4">
                     <AlertTriangle className="w-4 h-4" />
                     <AlertDescription>
-                      <strong>Warning:</strong> CR document file is missing from storage. 
-                      The path exists in database but file may have been deleted or upload failed.
+                      <strong>{t('admin.kyc.warning')}:</strong> {t('admin.kyc.warningCRMissing')}. 
+                      {t('admin.kyc.warningStorageNote')}.
                     </AlertDescription>
                   </Alert>
                 )}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm text-muted-foreground">Legal Name</p>
+                    <p className="text-sm text-muted-foreground">{t('admin.kyc.legalName')}</p>
                     <p className="font-semibold">{selectedSubmission.company_legal_name}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">CR Number</p>
+                    <p className="text-sm text-muted-foreground">{t('admin.kyc.crNumber')}</p>
                     <p className="font-semibold">{selectedSubmission.cr_number}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">CR Issuing Date</p>
+                    <p className="text-sm text-muted-foreground">{t('admin.kyc.crIssuingDate')}</p>
                     <p className="font-semibold">{selectedSubmission.cr_issuing_date}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">CR Validity</p>
+                    <p className="text-sm text-muted-foreground">{t('admin.kyc.crValidity')}</p>
                     <p className="font-semibold">{selectedSubmission.cr_validity_date}</p>
                   </div>
                 </div>
@@ -402,7 +402,7 @@ export const AdminKYCReview = () => {
                     className="flex-1"
                   >
                     <Eye className="w-4 h-4 mr-2" />
-                    View CR Document
+                    {t('admin.kyc.viewCRDocument')}
                   </Button>
                   <Button 
                     onClick={() => downloadDocument(selectedSubmission.cr_document_url, 'CR-Certificate.pdf')} 
@@ -411,7 +411,7 @@ export const AdminKYCReview = () => {
                     className="flex-1"
                   >
                     <Download className="w-4 h-4 mr-2" />
-                    Download
+                    {t('admin.kyc.downloadDocument')}
                   </Button>
                 </div>
               </TabsContent>
@@ -421,13 +421,13 @@ export const AdminKYCReview = () => {
                   <Alert variant="destructive" className="mb-4">
                     <AlertTriangle className="w-4 h-4" />
                     <AlertDescription>
-                      <strong>Warning:</strong> VAT document file is missing from storage. 
-                      The path exists in database but file may have been deleted or upload failed.
+                      <strong>{t('admin.kyc.warning')}:</strong> {t('admin.kyc.warningVATMissing')}. 
+                      {t('admin.kyc.warningStorageNote')}.
                     </AlertDescription>
                   </Alert>
                 )}
                 <div>
-                  <p className="text-sm text-muted-foreground">VAT Number</p>
+                  <p className="text-sm text-muted-foreground">{t('admin.kyc.vatNumber')}</p>
                   <p className="font-semibold">{selectedSubmission.vat_number}</p>
                 </div>
                 <div className="flex gap-2">
@@ -438,7 +438,7 @@ export const AdminKYCReview = () => {
                     className="flex-1"
                   >
                     <Eye className="w-4 h-4 mr-2" />
-                    View VAT Document
+                    {t('admin.kyc.viewVATDocument')}
                   </Button>
                   <Button 
                     onClick={() => downloadDocument(selectedSubmission.vat_certificate_url, 'VAT-Certificate.pdf')} 
@@ -447,7 +447,7 @@ export const AdminKYCReview = () => {
                     className="flex-1"
                   >
                     <Download className="w-4 h-4 mr-2" />
-                    Download
+                    {t('admin.kyc.downloadDocument')}
                   </Button>
                 </div>
               </TabsContent>
@@ -457,26 +457,26 @@ export const AdminKYCReview = () => {
                   <Alert variant="destructive" className="mb-4">
                     <AlertTriangle className="w-4 h-4" />
                     <AlertDescription>
-                      <strong>Warning:</strong> Address document file is missing from storage. 
-                      The path exists in database but file may have been deleted or upload failed.
+                      <strong>{t('admin.kyc.warning')}:</strong> {t('admin.kyc.warningAddressMissing')}. 
+                      {t('admin.kyc.warningStorageNote')}.
                     </AlertDescription>
                   </Alert>
                 )}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm text-muted-foreground">City</p>
+                    <p className="text-sm text-muted-foreground">{t('admin.kyc.city')}</p>
                     <p className="font-semibold">{selectedSubmission.address_city}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Area</p>
+                    <p className="text-sm text-muted-foreground">{t('admin.kyc.area')}</p>
                     <p className="font-semibold">{selectedSubmission.address_area}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Postal Code</p>
+                    <p className="text-sm text-muted-foreground">{t('admin.kyc.postalCode')}</p>
                     <p className="font-semibold">{selectedSubmission.address_postal_code}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Building Number</p>
+                    <p className="text-sm text-muted-foreground">{t('admin.kyc.buildingNumber')}</p>
                     <p className="font-semibold">{selectedSubmission.address_building_number}</p>
                   </div>
                 </div>
@@ -488,7 +488,7 @@ export const AdminKYCReview = () => {
                     className="flex-1"
                   >
                     <Eye className="w-4 h-4 mr-2" />
-                    View Address Document
+                    {t('admin.kyc.viewAddressDocument')}
                   </Button>
                   <Button 
                     onClick={() => downloadDocument(selectedSubmission.address_certificate_url, 'Address-Certificate.pdf')} 
@@ -497,7 +497,7 @@ export const AdminKYCReview = () => {
                     className="flex-1"
                   >
                     <Download className="w-4 h-4 mr-2" />
-                    Download
+                    {t('admin.kyc.downloadDocument')}
                   </Button>
                 </div>
               </TabsContent>
@@ -505,19 +505,19 @@ export const AdminKYCReview = () => {
               <TabsContent value="signatory" className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm text-muted-foreground">Name</p>
+                    <p className="text-sm text-muted-foreground">{t('admin.kyc.signatoryName')}</p>
                     <p className="font-semibold">{selectedSubmission.signatory_first_name} {selectedSubmission.signatory_last_name}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Designation</p>
+                    <p className="text-sm text-muted-foreground">{t('admin.kyc.signatoryDesignation')}</p>
                     <p className="font-semibold">{selectedSubmission.signatory_designation}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Email</p>
+                    <p className="text-sm text-muted-foreground">{t('admin.kyc.signatoryEmail')}</p>
                     <p className="font-semibold">{selectedSubmission.signatory_email}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Phone</p>
+                    <p className="text-sm text-muted-foreground">{t('admin.kyc.signatoryPhone')}</p>
                     <p className="font-semibold">{selectedSubmission.signatory_phone}</p>
                   </div>
                 </div>
@@ -526,18 +526,18 @@ export const AdminKYCReview = () => {
               <TabsContent value="credit" className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm text-muted-foreground">Account Type</p>
+                    <p className="text-sm text-muted-foreground">{t('admin.kyc.accountType')}</p>
                     <Badge>{selectedSubmission.account_type.toUpperCase()}</Badge>
                   </div>
                   {selectedSubmission.account_type === 'credit' && (
                     <>
                       <div>
-                        <p className="text-sm text-muted-foreground">Credit Ceiling</p>
+                        <p className="text-sm text-muted-foreground">{t('admin.kyc.creditCeiling')}</p>
                         <p className="font-semibold">SAR {selectedSubmission.credit_ceiling?.toLocaleString()}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-muted-foreground">Payment Period</p>
-                        <p className="font-semibold">{selectedSubmission.payment_period_days} days</p>
+                        <p className="text-sm text-muted-foreground">{t('admin.kyc.paymentPeriod')}</p>
+                        <p className="font-semibold">{selectedSubmission.payment_period_days} {t('admin.kyc.days')}</p>
                       </div>
                     </>
                   )}
@@ -548,7 +548,7 @@ export const AdminKYCReview = () => {
             {/* Review Actions */}
             <div className="space-y-4 pt-6 border-t">
               <Textarea
-                placeholder="Review notes (required for rejection)"
+                placeholder={t('admin.kyc.reviewNotesPlaceholder')}
                 value={reviewNotes}
                 onChange={(e) => setReviewNotes(e.target.value)}
                 rows={3}
@@ -560,7 +560,7 @@ export const AdminKYCReview = () => {
                   className="flex-1 bg-green-600 hover:bg-green-700"
                 >
                   <CheckCircle className="w-4 h-4 mr-2" />
-                  Approve KYC
+                  {t('admin.kyc.approveKYC')}
                 </Button>
                 <Button
                   onClick={handleReject}
@@ -569,7 +569,7 @@ export const AdminKYCReview = () => {
                   className="flex-1"
                 >
                   <XCircle className="w-4 h-4 mr-2" />
-                  Reject KYC
+                  {t('admin.kyc.rejectKYC')}
                 </Button>
               </div>
             </div>
