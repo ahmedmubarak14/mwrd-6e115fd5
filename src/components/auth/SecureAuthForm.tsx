@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,6 +11,7 @@ import { useToastFeedback } from '@/hooks/useToastFeedback';
 import { Eye, EyeOff, Shield, Mail } from 'lucide-react';
 import { sanitizeInput } from '@/utils/security';
 import { useEmailVerification } from '@/hooks/useEmailVerification';
+import { supabase } from '@/integrations/supabase/client';
 
 interface SecureAuthFormProps {
   mode: 'signin' | 'signup' | 'reset';
@@ -31,6 +32,7 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
   const { resendConfirmation } = useAuth();
   const { showError, showSuccess, showInfo } = useToastFeedback();
   const { resendVerificationEmail, canResend, cooldownTime: emailCooldown } = useEmailVerification();
+  const navigate = useNavigate();
 
   // Handle cooldown timer
   useEffect(() => {
@@ -64,6 +66,34 @@ export const SecureAuthForm = ({ mode }: SecureAuthFormProps) => {
         }
       } else {
         showSuccess('Welcome back!');
+        
+        // Check if user needs to complete KYC
+        const { data: session } = await supabase.auth.getSession();
+        if (session?.session?.user) {
+          const userId = session.session.user.id;
+          
+          // Check user role
+          const { data: userRole } = await supabase
+            .from('user_roles')
+            .select('role')
+            .eq('user_id', userId)
+            .limit(1)
+            .maybeSingle();
+          
+          if (userRole?.role === 'client') {
+            const { data: kycSubmission } = await supabase
+              .from('kyc_submissions')
+              .select('id, submission_status')
+              .eq('user_id', userId)
+              .maybeSingle();
+            
+            if (!kycSubmission || kycSubmission.submission_status === 'rejected') {
+              // Redirect to KYC immediately
+              navigate('/kyc/main-info', { replace: true });
+              return;
+            }
+          }
+        }
       }
     } else if (mode === 'signup') {
       if (!password || !fullName) {

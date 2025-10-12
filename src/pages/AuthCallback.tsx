@@ -52,8 +52,41 @@ const AuthCallback = () => {
             showError('Email confirmation failed. Please try logging in again.');
           } else {
             setStatus('success');
-            setMessage('Email confirmed successfully! You can now access your account.');
+            setMessage('Email confirmed successfully! Redirecting to complete your profile...');
             showSuccess('Email confirmed successfully!');
+            
+            // Check if user needs KYC
+            const { data: session } = await supabase.auth.getSession();
+            if (session?.session?.user) {
+              const userId = session.session.user.id;
+              
+              // Check user role
+              const { data: userRole } = await supabase
+                .from('user_roles')
+                .select('role')
+                .eq('user_id', userId)
+                .limit(1)
+                .maybeSingle();
+
+              // If client role, check KYC status
+              if (userRole?.role === 'client') {
+                const { data: kycSubmission } = await supabase
+                  .from('kyc_submissions')
+                  .select('id, submission_status')
+                  .eq('user_id', userId)
+                  .maybeSingle();
+
+                // If no KYC or rejected, redirect to KYC Main Info
+                if (!kycSubmission || kycSubmission.submission_status === 'rejected') {
+                  setTimeout(() => {
+                    navigate('/kyc/main-info', { replace: true });
+                  }, 2000);
+                  return;
+                }
+              }
+            }
+
+            // Otherwise, redirect to login
             setTimeout(() => {
               navigate('/login', { replace: true });
             }, 2000);
@@ -80,8 +113,41 @@ const AuthCallback = () => {
             showError('Email confirmation failed. Please try logging in again.');
           } else {
             setStatus('success');
-            setMessage('Email confirmed successfully! You can now access your account.');
+            setMessage('Email confirmed successfully! Redirecting to complete your profile...');
             showSuccess('Email confirmed successfully!');
+            
+            // Check if user needs KYC
+            const { data: session } = await supabase.auth.getSession();
+            if (session?.session?.user) {
+              const userId = session.session.user.id;
+              
+              // Check user role
+              const { data: userRole } = await supabase
+                .from('user_roles')
+                .select('role')
+                .eq('user_id', userId)
+                .limit(1)
+                .maybeSingle();
+
+              // If client role, check KYC status
+              if (userRole?.role === 'client') {
+                const { data: kycSubmission } = await supabase
+                  .from('kyc_submissions')
+                  .select('id, submission_status')
+                  .eq('user_id', userId)
+                  .maybeSingle();
+
+                // If no KYC or rejected, redirect to KYC Main Info
+                if (!kycSubmission || kycSubmission.submission_status === 'rejected') {
+                  setTimeout(() => {
+                    navigate('/kyc/main-info', { replace: true });
+                  }, 2000);
+                  return;
+                }
+              }
+            }
+
+            // Otherwise, redirect to login
             setTimeout(() => {
               navigate('/login', { replace: true });
             }, 2000);

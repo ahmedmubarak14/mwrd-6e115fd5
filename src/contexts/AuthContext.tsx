@@ -97,7 +97,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       if (data) {
-        setUserProfile(data as UserProfile);
+        // Fetch role from user_roles table (secure)
+        const { data: roleData } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', userId)
+          .limit(1)
+          .maybeSingle();
+        
+        // Add role to profile object for backward compatibility
+        const profileWithRole = {
+          ...data,
+          role: (roleData?.role as 'client' | 'vendor' | 'admin') || 'client'
+        };
+        
+        setUserProfile(profileWithRole as UserProfile);
         return;
       }
 
@@ -105,14 +119,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const { data: userRes } = await supabase.auth.getUser();
       const authUser = userRes.user;
       const email = authUser?.email ?? '';
-      const role = (authUser?.user_metadata?.role as 'client' | 'vendor' | 'admin') ?? 'client';
 
+      // SECURITY: Do NOT trust user_metadata.role - it can be manipulated
+      // The role is set by the handle_new_user() trigger which defaults to 'client'
       const { data: created, error: insertError } = await supabase
         .from('user_profiles')
         .insert({
           user_id: userId,
           email,
-          role: role,
+          // role is NOT set here - managed by user_roles table via trigger
           full_name: authUser?.user_metadata?.full_name ?? null,
           company_name: authUser?.user_metadata?.company_name ?? null,
         })
@@ -126,7 +141,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           error: insertError.message 
         });
       } else if (created) {
-        setUserProfile(created as UserProfile);
+        // Fetch role from user_roles table
+        const { data: roleData } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', userId)
+          .limit(1)
+          .maybeSingle();
+        
+        const profileWithRole = {
+          ...created,
+          role: (roleData?.role as 'client' | 'vendor' | 'admin') || 'client'
+        };
+        
+        setUserProfile(profileWithRole as UserProfile);
         logSecurityEvent('profile_created', { user_id: userId });
         noHooksToast.showInfo('Your profile was created successfully.');
       }

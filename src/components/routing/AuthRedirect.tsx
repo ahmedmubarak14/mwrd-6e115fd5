@@ -21,28 +21,38 @@ export const AuthRedirect = () => {
 
     // Check if user needs KYC
     const checkKYCStatus = async () => {
-      if (user && userProfile && userProfile.role === 'client') {
-        // Check if user has completed KYC
-        const { data, error } = await supabase
-          .from('kyc_submissions')
-          .select('id, submission_status')
+      if (user && userProfile) {
+        // Fetch role from user_roles table (secure)
+        const { data: userRole } = await supabase
+          .from('user_roles')
+          .select('role')
           .eq('user_id', user.id)
+          .limit(1)
           .maybeSingle();
 
-        // If no KYC submission exists, redirect to KYC flow
-        if (!data && !error) {
-          logger.debug('No KYC submission found, redirecting to KYC');
-          navigate('/kyc/main-info', { replace: true });
-          setCheckingKYC(false);
-          return;
-        }
+        if (userRole?.role === 'client') {
+          // Check if user has completed KYC
+          const { data, error } = await supabase
+            .from('kyc_submissions')
+            .select('id, submission_status')
+            .eq('user_id', user.id)
+            .maybeSingle();
 
-        // If KYC is rejected, redirect to KYC form to resubmit
-        if (data && data.submission_status === 'rejected') {
-          logger.debug('KYC rejected, redirecting to KYC form');
-          navigate('/kyc/form', { replace: true });
-          setCheckingKYC(false);
-          return;
+          // If no KYC submission exists, redirect to KYC flow
+          if (!data && !error) {
+            logger.debug('No KYC submission found, redirecting to KYC Main Info');
+            navigate('/kyc/main-info', { replace: true });
+            setCheckingKYC(false);
+            return;
+          }
+
+          // If KYC is rejected, redirect to KYC form to resubmit
+          if (data && data.submission_status === 'rejected') {
+            logger.debug('KYC rejected, redirecting to KYC form');
+            navigate('/kyc/form', { replace: true });
+            setCheckingKYC(false);
+            return;
+          }
         }
       }
       setCheckingKYC(false);

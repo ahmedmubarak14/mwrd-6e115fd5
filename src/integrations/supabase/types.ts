@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.4"
+    PostgrestVersion: "13.0.5"
   }
   public: {
     Tables: {
@@ -2399,7 +2399,6 @@ export type Database = {
           legacy_category: string | null
           phone: string | null
           portfolio_url: string | null
-          role: Database["public"]["Enums"]["user_role"]
           status: Database["public"]["Enums"]["user_status"]
           subscription_expires_at: string | null
           subscription_plan: string | null
@@ -2429,7 +2428,6 @@ export type Database = {
           legacy_category?: string | null
           phone?: string | null
           portfolio_url?: string | null
-          role?: Database["public"]["Enums"]["user_role"]
           status?: Database["public"]["Enums"]["user_status"]
           subscription_expires_at?: string | null
           subscription_plan?: string | null
@@ -2459,7 +2457,6 @@ export type Database = {
           legacy_category?: string | null
           phone?: string | null
           portfolio_url?: string | null
-          role?: Database["public"]["Enums"]["user_role"]
           status?: Database["public"]["Enums"]["user_status"]
           subscription_expires_at?: string | null
           subscription_plan?: string | null
@@ -3040,7 +3037,6 @@ export type Database = {
           legacy_category: string | null
           phone: string | null
           portfolio_url: string | null
-          role: Database["public"]["Enums"]["user_role"]
           status: Database["public"]["Enums"]["user_status"]
           subscription_expires_at: string | null
           subscription_plan: string | null
@@ -3075,6 +3071,14 @@ export type Database = {
           total_users: number
           total_vendors: number
           users_growth: number
+        }[]
+      }
+      get_kyc_status: {
+        Args: { user_uuid: string }
+        Returns: {
+          kyc_exists: boolean
+          kyc_required: boolean
+          submission_status: string
         }[]
       }
       get_platform_statistics: {
@@ -3127,6 +3131,10 @@ export type Database = {
       get_user_role: {
         Args: { user_uuid: string }
         Returns: Database["public"]["Enums"]["user_role"]
+      }
+      get_user_role_secure: {
+        Args: { user_uuid: string }
+        Returns: string
       }
       get_user_statistics: {
         Args: Record<PropertyKey, never>
