@@ -62,10 +62,9 @@ export const useVendorProfile = (vendorId: string) => {
 
       // Fetch basic profile data
       const { data: profileData, error: profileError } = await supabase
-        .from('user_profiles')
+        .from('user_profiles_with_roles')
         .select('*')
         .eq('id', vendorId)
-        .eq('role', 'vendor')
         .single();
 
       if (profileError) throw profileError;

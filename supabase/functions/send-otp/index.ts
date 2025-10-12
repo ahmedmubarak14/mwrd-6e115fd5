@@ -1,12 +1,10 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
-
-// In-memory store for OTP codes (in production, use Redis or database)
-const otpStore = new Map<string, { code: string; expiresAt: number }>();
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -22,12 +20,46 @@ serve(async (req) => {
 
     console.log('Generating OTP for phone:', phoneNumber);
 
+    // Initialize Supabase client
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
+
+    // Check rate limiting - max 3 OTPs per phone per hour
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const { data: recentOtps, error: countError } = await supabaseClient
+      .from('otp_verifications')
+      .select('id')
+      .eq('phone_number', phoneNumber)
+      .gte('created_at', oneHourAgo);
+
+    if (countError) {
+      console.error('Error checking rate limit:', countError);
+    }
+
+    if (recentOtps && recentOtps.length >= 3) {
+      throw new Error('Too many OTP requests. Please try again later.');
+    }
+
     // Generate 6-digit OTP
     const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
     
     // Store OTP with 5-minute expiration
-    const expiresAt = Date.now() + 5 * 60 * 1000;
-    otpStore.set(phoneNumber, { code: otpCode, expiresAt });
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000).toISOString();
+    
+    const { error: insertError } = await supabaseClient
+      .from('otp_verifications')
+      .insert({
+        phone_number: phoneNumber,
+        otp_code: otpCode,
+        expires_at: expiresAt
+      });
+
+    if (insertError) {
+      console.error('Error storing OTP:', insertError);
+      throw new Error('Failed to generate OTP');
+    }
 
     console.log('OTP generated and stored:', otpCode);
 

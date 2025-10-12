@@ -118,8 +118,8 @@ export const ExpertConsultations = () => {
   const fetchAdminUsers = async () => {
     try {
       const { data, error } = await supabase
-        .from('user_profiles')
-        .select('id, user_id, full_name, email, avatar_url')
+        .from('user_profiles_with_roles')
+        .select('id, user_id, full_name, email, avatar_url, role')
         .eq('role', 'admin')
         .eq('status', 'approved');
       
