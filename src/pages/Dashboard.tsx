@@ -59,6 +59,16 @@ const Dashboard = () => {
     );
   }
 
+  // CRITICAL: Wait for role to be loaded before rendering
+  // This prevents race condition where admin sees client dashboard briefly
+  if (userProfile && !userProfile.role) {
+    return (
+      <div className="flex justify-center items-center min-h-[400px]">
+        <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
+
   // Only render for client users
   if (userProfile?.role !== 'client') {
     return (
@@ -146,8 +156,8 @@ const Dashboard = () => {
   return (
     <ClientLayout>
       <div className="space-y-6">
-        {/* KYC Status Widget - New comprehensive KYC status display */}
-        <KYCStatusWidget />
+        {/* KYC Status Widget - Only for clients (defensive check) */}
+        {userProfile?.role === 'client' && <KYCStatusWidget />}
         
         {/* Credit Account Widget */}
         {!checkingCredit && hasCreditAccount && (

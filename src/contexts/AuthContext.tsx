@@ -97,7 +97,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       if (data) {
-        // Fetch role from user_roles table (secure)
+        // CRITICAL: Fetch role from user_roles table BEFORE setting profile
+        // This ensures userProfile.role is ALWAYS defined when components render
         const { data: roleData } = await supabase
           .from('user_roles')
           .select('role')
@@ -105,12 +106,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           .limit(1)
           .maybeSingle();
         
-        // Add role to profile object for backward compatibility
+        // Add role to profile object
         const profileWithRole = {
           ...data,
           role: (roleData?.role as 'client' | 'vendor' | 'admin') || 'client'
         };
         
+        // Only set profile after role is confirmed
         setUserProfile(profileWithRole as UserProfile);
         return;
       }
