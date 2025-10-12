@@ -99,7 +99,7 @@ export const AdminHeader = ({ onMobileMenuOpen, onSidebarToggle, sidebarOpen }: 
                     variant="destructive" 
                     className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-xs animate-pulse"
                   >
-                    {unreadCount > 99 ? "99+" : unreadCount}
+                    {unreadCount > 99 ? t('admin.badgeMax') : unreadCount}
                   </Badge>
                 )}
               </Button>

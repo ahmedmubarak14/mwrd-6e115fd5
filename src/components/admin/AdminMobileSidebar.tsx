@@ -157,7 +157,7 @@ export const AdminMobileSidebar = ({ isOpen, onOpenChange }: AdminMobileSidebarP
             >
               <img 
                 src="/lovable-uploads/9a6215a4-31ff-4f7d-a55b-1cbecc47ec33.png" 
-                alt="MWRD Logo"
+                alt={t('admin.logoAlt')}
                 className="h-8 w-auto"
               />
               <div className="flex flex-col">

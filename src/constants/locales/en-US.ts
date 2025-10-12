@@ -77,6 +77,15 @@ export const enUS = {
     adminPortal: "MWRD Admin",
     adminRole: "Admin",
     
+    // Header actions
+    openMobileMenu: "Open mobile menu",
+    collapseSidebar: "Collapse sidebar",
+    expandSidebar: "Expand sidebar",
+    goToAdminDashboard: "Go to admin dashboard",
+    logoAlt: "MWRD Logo",
+    managementPortal: "Management Portal",
+    viewNotifications: "View notifications",
+    
     // Navigation groups
     groups: {
       overview: "Overview",
@@ -90,10 +99,15 @@ export const enUS = {
     usersTitle: "Users",
     requestsTitle: "Requests",
     offersTitle: "Offers", 
+    offers: "Offers",
     ordersTitle: "Orders",
+    orders: "Orders",
     communicationsTitle: "Communications",
+    communications: "Communications",
     settingsTitle: "Settings",
+    settings: "Settings",
     profileTitle: "Profile",
+    profile: "Profile",
     sidebarAnalytics: "Analytics",
     sidebarUsers: "User Management",
     sidebarRequests: "Request Management",
@@ -101,6 +115,22 @@ export const enUS = {
     sidebarOrders: "Order Management",
     sidebarCommunications: "Communication Center",
     sidebarSettings: "System Settings",
+    sidebarExpertConsultations: "Expert Consultations",
+    
+    // Additional sidebar items
+    performanceMonitor: "Performance Monitor",
+    financialTransactions: "Financial Transactions",
+    subscriptions: "Subscriptions",
+    supportTickets: "Support Tickets",
+    messagesNav: "Messages",
+    notificationsNav: "Notifications",
+    emailCampaigns: "Email Campaigns",
+    expertConsultations: "Expert Consultations",
+    securityNav: "Security Center",
+    systemHealthNav: "System Health",
+    supportNav: "Support",
+    projectsNav: "Projects",
+    categoryManagementNav: "Category Management",
     
     // Breadcrumbs
     breadcrumbs: {
@@ -133,7 +163,10 @@ export const enUS = {
       totalRevenue: "Total Revenue", 
       pendingApprovals: "Pending Approvals",
       platformActivity: "Platform Activity",
-      platformActivityDesc: "User activity and transaction trends over time"
+      platformActivityDesc: "User activity and transaction trends over time",
+      recentActivity: "Recent Activity",
+      recentActivityDescription: "Latest platform activities and user actions",
+      activityOn: "on"
     },
     
     // System Health & Status
@@ -253,7 +286,10 @@ export const enUS = {
     
     // User Management
     users: {
-      activeThisMonth: "active this month"
+      activeThisMonth: "active this month",
+      unknownAdmin: "Unknown Admin",
+      admin: "Admin",
+      adminOnline: "Admin (Online)"
     },
     
     // Request Management  
@@ -398,12 +434,56 @@ export const enUS = {
       signatoryDocument: "Signatory Document"
     },
     
+    // Header
+    header: {
+      openMobileMenu: "Open mobile menu",
+      collapseSidebar: "Collapse sidebar",
+      expandSidebar: "Expand sidebar",
+      goToAdminDashboard: "Go to admin dashboard",
+      logoAlt: "MWRD Logo",
+      managementPortal: "Management Portal",
+      viewNotifications: "View notifications"
+    },
+    
+    // Search
+    search: "Search",
+    searchPlaceholder: "Search admin panel...",
+    searchAdvancedPlaceholder: "Search users, requests, offers...",
+    searchResults: "Search Results",
+    noSearchResults: "No search results found",
+    tryDifferentSearch: "Try a different search term",
+    searchFailed: "Search failed",
+    searchingFor: "Searching for",
+    recentSearches: "Recent Searches",
+    tryAgain: "Try again",
+    
     // Navigation
     navigation: {
+      dashboard: "Dashboard",
+      analytics: "Analytics",
+      performanceMonitor: "Performance Monitor",
+      users: "User Management",
+      requests: "Request Management",
+      offers: "Offer Management",
+      orders: "Order Management",
+      messages: "Messages",
+      notifications: "Notifications",
+      emailCampaigns: "Email Campaigns",
+      expertConsultations: "Expert Consultations",
+      security: "Security Center",
+      systemHealth: "System Health",
+      settings: "Settings",
+      support: "Support",
+      projects: "Projects",
+      categoryManagement: "Category Management",
       kycReview: "KYC Review",
       verificationQueue: "Verification Queue",
       automation: "Automation"
     },
+    
+    // Sidebar
+    navigateTo: "Navigate to",
+    badgeMax: "99+",
     
     // System Health
     systemHealth: {

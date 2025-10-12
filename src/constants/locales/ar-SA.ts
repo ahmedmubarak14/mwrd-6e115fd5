@@ -80,6 +80,15 @@ export const arSA = {
     adminPortal: "إدارة MWRD",
     adminRole: "مسؤول",
     
+    // Header actions
+    openMobileMenu: "فتح القائمة المحمولة",
+    collapseSidebar: "طي الشريط الجانبي",
+    expandSidebar: "توسيع الشريط الجانبي",
+    goToAdminDashboard: "الانتقال إلى لوحة المدير",
+    logoAlt: "شعار MWRD",
+    managementPortal: "بوابة الإدارة",
+    viewNotifications: "عرض الإشعارات",
+    
     // Navigation groups
     groups: {
       overview: "نظرة عامة",
@@ -93,10 +102,15 @@ export const arSA = {
     usersTitle: "المستخدمون",
     requestsTitle: "الطلبات",
     offersTitle: "العروض", 
+    offers: "العروض",
     ordersTitle: "الطلبيات",
+    orders: "الطلبيات",
     communicationsTitle: "الاتصالات",
+    communications: "الاتصالات",
     settingsTitle: "الإعدادات",
+    settings: "الإعدادات",
     profileTitle: "الملف الشخصي",
+    profile: "الملف الشخصي",
     sidebarAnalytics: "التحليلات",
     sidebarUsers: "إدارة المستخدمين",
     sidebarRequests: "إدارة الطلبات",
@@ -104,6 +118,22 @@ export const arSA = {
     sidebarOrders: "إدارة الطلبيات",
     sidebarCommunications: "مركز الاتصالات",
     sidebarSettings: "إعدادات النظام",
+    sidebarExpertConsultations: "الاستشارات الخبيرة",
+    
+    // Additional sidebar items
+    performanceMonitor: "مراقب الأداء",
+    financialTransactions: "المعاملات المالية",
+    subscriptions: "الاشتراكات",
+    supportTickets: "تذاكر الدعم",
+    messagesNav: "الرسائل",
+    notificationsNav: "الإشعارات",
+    emailCampaigns: "حملات البريد الإلكتروني",
+    expertConsultations: "الاستشارات الخبيرة",
+    securityNav: "مركز الأمان",
+    systemHealthNav: "صحة النظام",
+    supportNav: "الدعم",
+    projectsNav: "المشاريع",
+    categoryManagementNav: "إدارة الفئات",
     
     // Breadcrumbs
     breadcrumbs: {
@@ -136,7 +166,10 @@ export const arSA = {
       totalRevenue: "إجمالي الإيرادات", 
       pendingApprovals: "الموافقات المعلقة",
       platformActivity: "نشاط المنصة",
-      platformActivityDesc: "نشاط المستخدمين واتجاهات المعاملات عبر الوقت"
+      platformActivityDesc: "نشاط المستخدمين واتجاهات المعاملات عبر الوقت",
+      recentActivity: "النشاط الأخير",
+      recentActivityDescription: "أحدث أنشطة المنصة وإجراءات المستخدمين",
+      activityOn: "على"
     },
     
     // System Health & Status
@@ -256,7 +289,10 @@ export const arSA = {
     
     // User Management
     users: {
-      activeThisMonth: "نشط هذا الشهر"
+      activeThisMonth: "نشط هذا الشهر",
+      unknownAdmin: "مسؤول غير معروف",
+      admin: "مسؤول",
+      adminOnline: "مسؤول (متصل)"
     },
     
     // Request Management  
@@ -401,12 +437,56 @@ export const arSA = {
       signatoryDocument: "وثيقة المفوض بالتوقيع"
     },
     
+    // Header
+    header: {
+      openMobileMenu: "فتح القائمة المحمولة",
+      collapseSidebar: "طي الشريط الجانبي",
+      expandSidebar: "توسيع الشريط الجانبي",
+      goToAdminDashboard: "الانتقال إلى لوحة المدير",
+      logoAlt: "شعار MWRD",
+      managementPortal: "بوابة الإدارة",
+      viewNotifications: "عرض الإشعارات"
+    },
+    
+    // Search
+    search: "بحث",
+    searchPlaceholder: "البحث في لوحة الإدارة...",
+    searchAdvancedPlaceholder: "البحث في المستخدمين والطلبات والعروض...",
+    searchResults: "نتائج البحث",
+    noSearchResults: "لم يتم العثور على نتائج بحث",
+    tryDifferentSearch: "جرب مصطلح بحث مختلف",
+    searchFailed: "فشل البحث",
+    searchingFor: "البحث عن",
+    recentSearches: "عمليات البحث الأخيرة",
+    tryAgain: "حاول مرة أخرى",
+    
     // Navigation
     navigation: {
+      dashboard: "لوحة التحكم",
+      analytics: "التحليلات",
+      performanceMonitor: "مراقب الأداء",
+      users: "إدارة المستخدمين",
+      requests: "إدارة الطلبات",
+      offers: "إدارة العروض",
+      orders: "إدارة الطلبيات",
+      messages: "الرسائل",
+      notifications: "الإشعارات",
+      emailCampaigns: "حملات البريد الإلكتروني",
+      expertConsultations: "الاستشارات الخبيرة",
+      security: "مركز الأمان",
+      systemHealth: "صحة النظام",
+      settings: "الإعدادات",
+      support: "الدعم",
+      projects: "المشاريع",
+      categoryManagement: "إدارة الفئات",
       kycReview: "مراجعة التحقق من الهوية",
       verificationQueue: "قائمة انتظار التحقق",
       automation: "الأتمتة"
     },
+    
+    // Sidebar
+    navigateTo: "انتقل إلى",
+    badgeMax: "99+",
     
     // System Health
     systemHealth: {
