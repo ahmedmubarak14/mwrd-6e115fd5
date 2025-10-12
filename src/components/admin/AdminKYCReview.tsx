@@ -5,10 +5,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { CheckCircle, XCircle, Download, Building2 } from 'lucide-react';
+import { CheckCircle, XCircle, Download, Building2, Eye, AlertTriangle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { generateDocumentSignedUrl } from '@/utils/documentStorage';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { generateDocumentSignedUrl, verifyFileExists, extractFilePath } from '@/utils/documentStorage';
 
 interface KYCSubmission {
   id: string;
@@ -32,6 +33,7 @@ export const AdminKYCReview = () => {
   const [selectedSubmission, setSelectedSubmission] = useState<KYCSubmission | null>(null);
   const [reviewNotes, setReviewNotes] = useState('');
   const [processing, setProcessing] = useState(false);
+  const [documentStatus, setDocumentStatus] = useState<{ [key: string]: 'checking' | 'available' | 'missing' }>({});
   const { toast } = useToast();
 
   useEffect(() => {
@@ -54,6 +56,26 @@ export const AdminKYCReview = () => {
       return;
     }
     setSubmissions(data || []);
+  };
+
+  const verifySubmissionDocuments = async (submission: KYCSubmission) => {
+    // Verify CR document
+    setDocumentStatus(prev => ({ ...prev, [submission.id + '_cr']: 'checking' }));
+    const crPath = extractFilePath(submission.cr_document_url);
+    const crResult = await verifyFileExists(crPath);
+    setDocumentStatus(prev => ({ ...prev, [submission.id + '_cr']: crResult.success ? 'available' : 'missing' }));
+
+    // Verify VAT document
+    setDocumentStatus(prev => ({ ...prev, [submission.id + '_vat']: 'checking' }));
+    const vatPath = extractFilePath(submission.vat_certificate_url);
+    const vatResult = await verifyFileExists(vatPath);
+    setDocumentStatus(prev => ({ ...prev, [submission.id + '_vat']: vatResult.success ? 'available' : 'missing' }));
+
+    // Verify Address document
+    setDocumentStatus(prev => ({ ...prev, [submission.id + '_address']: 'checking' }));
+    const addressPath = extractFilePath(submission.address_certificate_url);
+    const addressResult = await verifyFileExists(addressPath);
+    setDocumentStatus(prev => ({ ...prev, [submission.id + '_address']: addressResult.success ? 'available' : 'missing' }));
   };
 
   const handleApprove = async () => {
@@ -174,9 +196,29 @@ export const AdminKYCReview = () => {
     }
   };
 
+  const viewDocument = async (documentUrl: string) => {
+    try {
+      const filePath = extractFilePath(documentUrl);
+      const result = await generateDocumentSignedUrl(filePath);
+      
+      if (!result.success || !result.signedUrl) {
+        throw new Error(result.error || 'Failed to generate view URL');
+      }
+
+      window.open(result.signedUrl, '_blank');
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to view document",
+        variant: "destructive"
+      });
+    }
+  };
+
   const downloadDocument = async (documentUrl: string, fileName: string) => {
     try {
-      const result = await generateDocumentSignedUrl(documentUrl);
+      const filePath = extractFilePath(documentUrl);
+      const result = await generateDocumentSignedUrl(filePath);
       
       if (!result.success || !result.signedUrl) {
         throw new Error('Failed to generate download URL');
@@ -246,7 +288,10 @@ export const AdminKYCReview = () => {
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => setSelectedSubmission(submission)}
+                      onClick={() => {
+                        setSelectedSubmission(submission);
+                        verifySubmissionDocuments(submission);
+                      }}
                     >
                       Review
                     </Button>
@@ -274,6 +319,15 @@ export const AdminKYCReview = () => {
               </TabsList>
 
               <TabsContent value="company" className="space-y-4">
+                {documentStatus[selectedSubmission.id + '_cr'] === 'missing' && (
+                  <Alert variant="destructive" className="mb-4">
+                    <AlertTriangle className="w-4 h-4" />
+                    <AlertDescription>
+                      <strong>Warning:</strong> CR document file is missing from storage. 
+                      The path exists in database but file may have been deleted or upload failed.
+                    </AlertDescription>
+                  </Alert>
+                )}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-muted-foreground">Legal Name</p>
@@ -292,24 +346,74 @@ export const AdminKYCReview = () => {
                     <p className="font-semibold">{selectedSubmission.cr_validity_date}</p>
                   </div>
                 </div>
-                <Button onClick={() => downloadDocument(selectedSubmission.cr_document_url, 'CR-Certificate.pdf')} variant="outline">
-                  <Download className="w-4 h-4 mr-2" />
-                  Download CR Certificate
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    onClick={() => viewDocument(selectedSubmission.cr_document_url)} 
+                    disabled={documentStatus[selectedSubmission.id + '_cr'] === 'missing'}
+                    variant="outline"
+                    className="flex-1"
+                  >
+                    <Eye className="w-4 h-4 mr-2" />
+                    View CR Document
+                  </Button>
+                  <Button 
+                    onClick={() => downloadDocument(selectedSubmission.cr_document_url, 'CR-Certificate.pdf')} 
+                    disabled={documentStatus[selectedSubmission.id + '_cr'] === 'missing'}
+                    variant="outline"
+                    className="flex-1"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download
+                  </Button>
+                </div>
               </TabsContent>
 
               <TabsContent value="tax" className="space-y-4">
+                {documentStatus[selectedSubmission.id + '_vat'] === 'missing' && (
+                  <Alert variant="destructive" className="mb-4">
+                    <AlertTriangle className="w-4 h-4" />
+                    <AlertDescription>
+                      <strong>Warning:</strong> VAT document file is missing from storage. 
+                      The path exists in database but file may have been deleted or upload failed.
+                    </AlertDescription>
+                  </Alert>
+                )}
                 <div>
                   <p className="text-sm text-muted-foreground">VAT Number</p>
                   <p className="font-semibold">{selectedSubmission.vat_number}</p>
                 </div>
-                <Button onClick={() => downloadDocument(selectedSubmission.vat_certificate_url, 'VAT-Certificate.pdf')} variant="outline">
-                  <Download className="w-4 h-4 mr-2" />
-                  Download VAT Certificate
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    onClick={() => viewDocument(selectedSubmission.vat_certificate_url)} 
+                    disabled={documentStatus[selectedSubmission.id + '_vat'] === 'missing'}
+                    variant="outline"
+                    className="flex-1"
+                  >
+                    <Eye className="w-4 h-4 mr-2" />
+                    View VAT Document
+                  </Button>
+                  <Button 
+                    onClick={() => downloadDocument(selectedSubmission.vat_certificate_url, 'VAT-Certificate.pdf')} 
+                    disabled={documentStatus[selectedSubmission.id + '_vat'] === 'missing'}
+                    variant="outline"
+                    className="flex-1"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download
+                  </Button>
+                </div>
               </TabsContent>
 
               <TabsContent value="address" className="space-y-4">
+                {documentStatus[selectedSubmission.id + '_address'] === 'missing' && (
+                  <Alert variant="destructive" className="mb-4">
+                    <AlertTriangle className="w-4 h-4" />
+                    <AlertDescription>
+                      <strong>Warning:</strong> Address document file is missing from storage. 
+                      The path exists in database but file may have been deleted or upload failed.
+                    </AlertDescription>
+                  </Alert>
+                )}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-muted-foreground">City</p>
@@ -328,10 +432,26 @@ export const AdminKYCReview = () => {
                     <p className="font-semibold">{selectedSubmission.address_building_number}</p>
                   </div>
                 </div>
-                <Button onClick={() => downloadDocument(selectedSubmission.address_certificate_url, 'Address-Certificate.pdf')} variant="outline">
-                  <Download className="w-4 h-4 mr-2" />
-                  Download Address Certificate
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    onClick={() => viewDocument(selectedSubmission.address_certificate_url)} 
+                    disabled={documentStatus[selectedSubmission.id + '_address'] === 'missing'}
+                    variant="outline"
+                    className="flex-1"
+                  >
+                    <Eye className="w-4 h-4 mr-2" />
+                    View Address Document
+                  </Button>
+                  <Button 
+                    onClick={() => downloadDocument(selectedSubmission.address_certificate_url, 'Address-Certificate.pdf')} 
+                    disabled={documentStatus[selectedSubmission.id + '_address'] === 'missing'}
+                    variant="outline"
+                    className="flex-1"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download
+                  </Button>
+                </div>
               </TabsContent>
 
               <TabsContent value="signatory" className="space-y-4">
