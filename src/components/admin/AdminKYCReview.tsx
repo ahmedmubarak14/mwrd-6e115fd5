@@ -29,6 +29,7 @@ interface KYCSubmission {
 }
 
 export const AdminKYCReview = () => {
+  const { t } = useLanguage();
   const [submissions, setSubmissions] = useState<KYCSubmission[]>([]);
   const [selectedSubmission, setSelectedSubmission] = useState<KYCSubmission | null>(null);
   const [reviewNotes, setReviewNotes] = useState('');
