@@ -11,6 +11,7 @@ import { Clock, AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { CreditCardWidget } from "@/components/dashboard/CreditCardWidget";
+import { KYCStatusWidget } from "@/components/dashboard/KYCStatusWidget";
 import { supabase } from "@/integrations/supabase/client";
 
 const Dashboard = () => {
@@ -145,7 +146,8 @@ const Dashboard = () => {
   return (
     <ClientLayout>
       <div className="space-y-6">
-        {renderVerificationBanner()}
+        {/* KYC Status Widget - New comprehensive KYC status display */}
+        <KYCStatusWidget />
         
         {/* Credit Account Widget */}
         {!checkingCredit && hasCreditAccount && (

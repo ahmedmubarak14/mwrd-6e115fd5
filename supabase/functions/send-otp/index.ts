@@ -1,10 +1,12 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// In-memory store for OTP codes (in production, use Redis or database)
+const otpStore = new Map<string, { code: string; expiresAt: number }>();
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -13,74 +15,60 @@ serve(async (req) => {
 
   try {
     const { phoneNumber } = await req.json();
-    
-    console.log('OTP request for phone:', phoneNumber);
-    
-    // Validate Saudi phone format
-    if (!/^\+966[0-9]{9}$/.test(phoneNumber)) {
-      throw new Error('Invalid Saudi phone number format. Must be +966XXXXXXXXX');
+
+    if (!phoneNumber || !phoneNumber.match(/^\+966[0-9]{9}$/)) {
+      throw new Error('Invalid Saudi phone number format. Expected +966XXXXXXXXX');
     }
+
+    console.log('Generating OTP for phone:', phoneNumber);
 
     // Generate 6-digit OTP
     const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
-
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
-
-    // Get user
-    const authHeader = req.headers.get('Authorization')!;
-    const token = authHeader.replace('Bearer ', '');
-    const { data: { user }, error: userError } = await supabaseClient.auth.getUser(token);
     
-    if (userError || !user) {
-      console.error('Auth error:', userError);
-      throw new Error('Unauthorized');
+    // Store OTP with 5-minute expiration
+    const expiresAt = Date.now() + 5 * 60 * 1000;
+    otpStore.set(phoneNumber, { code: otpCode, expiresAt });
+
+    console.log('OTP generated and stored:', otpCode);
+
+    // TODO: In production, integrate with SMS provider
+    // Example providers:
+    // - Twilio: https://www.twilio.com/docs/sms
+    // - Unifonic (Saudi-based): https://www.unifonic.com/
+    // - AWS SNS: https://aws.amazon.com/sns/
+    
+    // For now, we'll simulate sending (DEV mode)
+    console.log(`[DEV] OTP ${otpCode} would be sent to ${phoneNumber}`);
+
+    // In production, uncomment and configure your SMS provider:
+    /*
+    const smsResponse = await fetch('https://api.sms-provider.com/send', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${Deno.env.get('SMS_API_KEY')}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        to: phoneNumber,
+        message: `Your verification code is: ${otpCode}. Valid for 5 minutes.`
+      })
+    });
+
+    if (!smsResponse.ok) {
+      throw new Error('Failed to send SMS');
     }
-
-    console.log('User authenticated:', user.id);
-
-    // Hash the OTP before storing using database function
-    const { data: hashedCode, error: hashError } = await supabaseClient
-      .rpc('hash_otp_code', { otp_code: otpCode });
-
-    if (hashError || !hashedCode) {
-      console.error('Error hashing OTP:', hashError);
-      throw new Error('Failed to generate OTP');
-    }
-
-    // Store hashed OTP in database
-    const { error: insertError } = await supabaseClient
-      .from('phone_verifications')
-      .insert({
-        user_id: user.id,
-        phone_number: phoneNumber,
-        hashed_code: hashedCode,
-        otp_expires_at: expiresAt.toISOString()
-      });
-
-    if (insertError) {
-      console.error('Insert error:', insertError);
-      throw insertError;
-    }
-
-    console.log('OTP stored successfully');
-
-    // TODO: Integrate with SMS gateway (Twilio, AWS SNS, or local Saudi provider)
-    // For now, log OTP (DEVELOPMENT ONLY - REMOVE IN PRODUCTION)
-    console.log(`OTP sent for ${phoneNumber}. Expires at: ${expiresAt.toISOString()}`);
+    */
 
     return new Response(
       JSON.stringify({ 
-        success: true, 
+        success: true,
         message: 'OTP sent successfully',
-        expiresAt: expiresAt.toISOString()
+        // Only include devOtp in development
+        devOtp: Deno.env.get('ENVIRONMENT') === 'production' ? undefined : otpCode
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error in send-otp:', error);
     return new Response(
       JSON.stringify({ success: false, error: error.message }),

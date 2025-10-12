@@ -1,0 +1,1 @@
+export { KYCStatusWidget } from './KYCStatusWidget';
