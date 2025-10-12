@@ -17,6 +17,7 @@ import {
   CheckCircle
 } from 'lucide-react';
 import { PerformanceOptimizer } from '@/utils/performanceUtils';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface PerformanceMetrics {
   // Core Web Vitals
@@ -39,6 +40,7 @@ interface PerformanceMetrics {
 }
 
 export const PerformanceDashboard = () => {
+  const { t, isRTL } = useLanguage();
   const [metrics, setMetrics] = useState<PerformanceMetrics | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [autoRefresh, setAutoRefresh] = useState(false);
@@ -150,8 +152,8 @@ export const PerformanceDashboard = () => {
       <Card>
         <CardContent className="p-6">
           <div className="flex items-center justify-center">
-            <RefreshCw className="h-6 w-6 animate-spin mr-2" />
-            <span>Loading performance metrics...</span>
+            <RefreshCw className={`h-6 w-6 animate-spin ${isRTL ? 'ml-2' : 'mr-2'}`} />
+            <span>{t('admin.performance.loading')}</span>
           </div>
         </CardContent>
       </Card>
@@ -161,13 +163,13 @@ export const PerformanceDashboard = () => {
   const performanceScore = calculatePerformanceScore(metrics);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Performance Dashboard</h2>
+          <h2 className="text-2xl font-bold">{t('admin.performance.title')}</h2>
           <p className="text-muted-foreground">
-            Monitor your application's real-time performance metrics
+            {t('admin.performance.subtitle')}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -177,8 +179,8 @@ export const PerformanceDashboard = () => {
             onClick={() => setAutoRefresh(!autoRefresh)}
             className={autoRefresh ? 'bg-green-50' : ''}
           >
-            <Activity className="h-4 w-4 mr-2" />
-            Auto Refresh {autoRefresh ? 'ON' : 'OFF'}
+            <Activity className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+            {t('admin.performance.autoRefresh')} {autoRefresh ? t('admin.performance.on') : t('admin.performance.off')}
           </Button>
           <Button
             variant="outline"
@@ -186,8 +188,8 @@ export const PerformanceDashboard = () => {
             onClick={refreshMetrics}
             disabled={isLoading}
           >
-            <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-            Refresh
+            <RefreshCw className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'} ${isLoading ? 'animate-spin' : ''}`} />
+            {t('admin.performance.refresh')}
           </Button>
         </div>
       </div>
@@ -197,7 +199,7 @@ export const PerformanceDashboard = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             {getScoreIcon(performanceScore)}
-            Overall Performance Score
+            {t('admin.performance.overallScore')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -209,7 +211,7 @@ export const PerformanceDashboard = () => {
               <Progress value={performanceScore} className="h-3" />
             </div>
             <Badge variant={performanceScore >= 90 ? 'default' : performanceScore >= 70 ? 'secondary' : 'destructive'}>
-              {performanceScore >= 90 ? 'Excellent' : performanceScore >= 70 ? 'Good' : 'Needs Improvement'}
+              {performanceScore >= 90 ? t('admin.performance.excellent') : performanceScore >= 70 ? t('admin.performance.good') : t('admin.performance.needsImprovement')}
             </Badge>
           </div>
         </CardContent>
@@ -221,7 +223,7 @@ export const PerformanceDashboard = () => {
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <Zap className="h-4 w-4" />
-              Largest Contentful Paint
+              {t('admin.performance.largestContentfulPaint')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -234,7 +236,7 @@ export const PerformanceDashboard = () => {
                 className="h-2"
               />
               <div className="text-xs text-muted-foreground">
-                Target: &lt; 2.5s
+                {t('admin.performance.targetLcp')}
               </div>
             </div>
           </CardContent>
@@ -244,7 +246,7 @@ export const PerformanceDashboard = () => {
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <Monitor className="h-4 w-4" />
-              First Input Delay
+              {t('admin.performance.firstInputDelay')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -257,7 +259,7 @@ export const PerformanceDashboard = () => {
                 className="h-2"
               />
               <div className="text-xs text-muted-foreground">
-                Target: &lt; 100ms
+                {t('admin.performance.targetFid')}
               </div>
             </div>
           </CardContent>
@@ -267,7 +269,7 @@ export const PerformanceDashboard = () => {
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <TrendingUp className="h-4 w-4" />
-              Cumulative Layout Shift
+              {t('admin.performance.cumulativeLayoutShift')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -280,7 +282,7 @@ export const PerformanceDashboard = () => {
                 className="h-2"
               />
               <div className="text-xs text-muted-foreground">
-                Target: &lt; 0.1
+                {t('admin.performance.targetCls')}
               </div>
             </div>
           </CardContent>
@@ -293,7 +295,7 @@ export const PerformanceDashboard = () => {
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <Globe className="h-4 w-4" />
-              Load Time
+              {t('admin.performance.loadTime')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -301,7 +303,7 @@ export const PerformanceDashboard = () => {
               {(metrics.loadTime / 1000).toFixed(2)}s
             </div>
             <div className="text-xs text-muted-foreground mt-1">
-              Total page load time
+              {t('admin.performance.totalPageLoadTime')}
             </div>
           </CardContent>
         </Card>
@@ -310,7 +312,7 @@ export const PerformanceDashboard = () => {
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium flex items-center gap-2">
               <Database className="h-4 w-4" />
-              Bundle Size
+              {t('admin.performance.bundleSize')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -318,7 +320,7 @@ export const PerformanceDashboard = () => {
               {metrics.bundleSize.toFixed(0)} KB
             </div>
             <div className="text-xs text-muted-foreground mt-1">
-              JavaScript + CSS
+              {t('admin.performance.jsCssSize')}
             </div>
           </CardContent>
         </Card>
@@ -326,7 +328,7 @@ export const PerformanceDashboard = () => {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">
-              Memory Usage
+              {t('admin.performance.memoryUsage')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -342,7 +344,7 @@ export const PerformanceDashboard = () => {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">
-              Cache Hit Rate
+              {t('admin.performance.cacheHitRate')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -359,7 +361,7 @@ export const PerformanceDashboard = () => {
       {/* Performance Recommendations */}
       <Card>
         <CardHeader>
-          <CardTitle>Performance Recommendations</CardTitle>
+          <CardTitle>{t('admin.performance.recommendations')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {performanceScore < 90 && (
@@ -367,31 +369,31 @@ export const PerformanceDashboard = () => {
               {metrics.lcp > 2500 && (
                 <div className="flex items-center gap-2 text-sm">
                   <TrendingDown className="h-4 w-4 text-red-500" />
-                  <span>Optimize image loading and reduce server response times to improve LCP</span>
+                  <span>{t('admin.performance.optimizeLcp')}</span>
                 </div>
               )}
               {metrics.fid > 100 && (
                 <div className="flex items-center gap-2 text-sm">
                   <TrendingDown className="h-4 w-4 text-red-500" />
-                  <span>Reduce JavaScript execution time to improve FID</span>
+                  <span>{t('admin.performance.reduceFid')}</span>
                 </div>
               )}
               {metrics.cls > 0.1 && (
                 <div className="flex items-center gap-2 text-sm">
                   <TrendingDown className="h-4 w-4 text-red-500" />
-                  <span>Add size attributes to images and reserve space for dynamic content</span>
+                  <span>{t('admin.performance.fixCls')}</span>
                 </div>
               )}
               {metrics.bundleSize > 500 && (
                 <div className="flex items-center gap-2 text-sm">
                   <TrendingDown className="h-4 w-4 text-amber-500" />
-                  <span>Consider code splitting to reduce bundle size</span>
+                  <span>{t('admin.performance.reduceBundleSize')}</span>
                 </div>
               )}
               {metrics.memoryUsage > 80 && (
                 <div className="flex items-center gap-2 text-sm">
                   <TrendingDown className="h-4 w-4 text-amber-500" />
-                  <span>Monitor for memory leaks and optimize component re-renders</span>
+                  <span>{t('admin.performance.fixMemoryLeaks')}</span>
                 </div>
               )}
             </div>
@@ -400,7 +402,7 @@ export const PerformanceDashboard = () => {
           {performanceScore >= 90 && (
             <div className="flex items-center gap-2 text-sm text-green-600">
               <CheckCircle className="h-4 w-4" />
-              <span>Great job! Your application is performing excellently.</span>
+              <span>{t('admin.performance.excellentPerformance')}</span>
             </div>
           )}
         </CardContent>

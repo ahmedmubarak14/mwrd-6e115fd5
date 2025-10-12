@@ -21,6 +21,7 @@ import {
   Bug
 } from 'lucide-react';
 import { TestingAndRefinementSuite, TestResult } from '@/utils/testingAndRefinement';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface TestSuite {
   id: string;
@@ -32,6 +33,7 @@ interface TestSuite {
 }
 
 export const TestRunner = () => {
+  const { t, isRTL } = useLanguage();
   const [testSuites, setTestSuites] = useState<TestSuite[]>([]);
   const [activeTab, setActiveTab] = useState('overview');
   const [isRunning, setIsRunning] = useState(false);
@@ -44,38 +46,38 @@ export const TestRunner = () => {
     setTestSuites([
       {
         id: 'mobile',
-        name: 'Mobile Responsiveness',
-        description: 'Tests mobile viewport, touch targets, and responsive design',
+        name: t('admin.testing.mobileResponsiveness'),
+        description: t('admin.testing.mobileResponsivenessDesc'),
         tests: [],
         status: 'pending',
         progress: 0
       },
       {
         id: 'pwa',
-        name: 'PWA Functionality',
-        description: 'Tests Progressive Web App features and service worker',
+        name: t('admin.testing.pwaFunctionality'),
+        description: t('admin.testing.pwaFunctionalityDesc'),
         tests: [],
         status: 'pending',
         progress: 0
       },
       {
         id: 'performance',
-        name: 'Performance',
-        description: 'Tests Core Web Vitals and loading performance',
+        name: t('admin.testing.performance'),
+        description: t('admin.testing.performanceDesc'),
         tests: [],
         status: 'pending',
         progress: 0
       },
       {
         id: 'accessibility',
-        name: 'Accessibility',
-        description: 'Tests WCAG compliance and accessibility features',
+        name: t('admin.testing.accessibility'),
+        description: t('admin.testing.accessibilityDesc'),
         tests: [],
         status: 'pending',
         progress: 0
       }
     ]);
-  }, []);
+  }, [t]);
 
   // Run individual test suite
   const runTestSuite = async (suiteId: string) => {
@@ -157,13 +159,13 @@ export const TestRunner = () => {
   const getSuiteStatusBadge = (status: TestSuite['status']) => {
     switch (status) {
       case 'completed':
-        return <Badge className="bg-green-100 text-green-800">Completed</Badge>;
+        return <Badge className="bg-green-100 text-green-800">{t('admin.testing.completed')}</Badge>;
       case 'running':
-        return <Badge className="bg-blue-100 text-blue-800">Running</Badge>;
+        return <Badge className="bg-blue-100 text-blue-800">{t('admin.testing.running')}</Badge>;
       case 'failed':
-        return <Badge variant="destructive">Failed</Badge>;
+        return <Badge variant="destructive">{t('admin.testing.failed')}</Badge>;
       default:
-        return <Badge variant="outline">Pending</Badge>;
+        return <Badge variant="outline">{t('admin.testing.pending')}</Badge>;
     }
   };
 
@@ -181,13 +183,13 @@ export const TestRunner = () => {
   const stats = getTestStats();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Quality Assurance Testing</h2>
+          <h2 className="text-2xl font-bold">{t('admin.testing.title')}</h2>
           <p className="text-muted-foreground">
-            Automated testing suite for MVP validation
+            {t('admin.testing.subtitle')}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -201,7 +203,7 @@ export const TestRunner = () => {
             ) : (
               <PlayCircle className="h-4 w-4" />
             )}
-            {isRunning ? 'Running Tests...' : 'Run All Tests'}
+            {isRunning ? t('admin.testing.runningTests') : t('admin.testing.runAllTests')}
           </Button>
         </div>
       </div>
@@ -212,7 +214,7 @@ export const TestRunner = () => {
           <CardContent className="p-6">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Overall Progress</span>
+                <span className="text-sm font-medium">{t('admin.testing.overallProgress')}</span>
                 <span className="text-sm text-muted-foreground">
                   {Math.round(overallProgress)}%
                 </span>
@@ -231,7 +233,7 @@ export const TestRunner = () => {
               <FileText className="h-5 w-5 text-blue-600" />
               <div>
                 <div className="text-2xl font-bold">{stats.total}</div>
-                <div className="text-sm text-muted-foreground">Total Tests</div>
+                <div className="text-sm text-muted-foreground">{t('admin.testing.totalTests')}</div>
               </div>
             </div>
           </CardContent>
@@ -243,7 +245,7 @@ export const TestRunner = () => {
               <CheckCircle className="h-5 w-5 text-green-600" />
               <div>
                 <div className="text-2xl font-bold text-green-600">{stats.passed}</div>
-                <div className="text-sm text-muted-foreground">Passed</div>
+                <div className="text-sm text-muted-foreground">{t('admin.testing.passed')}</div>
               </div>
             </div>
           </CardContent>
@@ -255,7 +257,7 @@ export const TestRunner = () => {
               <AlertTriangle className="h-5 w-5 text-yellow-600" />
               <div>
                 <div className="text-2xl font-bold text-yellow-600">{stats.warnings}</div>
-                <div className="text-sm text-muted-foreground">Warnings</div>
+                <div className="text-sm text-muted-foreground">{t('admin.testing.warnings')}</div>
               </div>
             </div>
           </CardContent>
@@ -267,7 +269,7 @@ export const TestRunner = () => {
               <XCircle className="h-5 w-5 text-red-600" />
               <div>
                 <div className="text-2xl font-bold text-red-600">{stats.failed}</div>
-                <div className="text-sm text-muted-foreground">Failed</div>
+                <div className="text-sm text-muted-foreground">{t('admin.testing.failed')}</div>
               </div>
             </div>
           </CardContent>
@@ -277,22 +279,22 @@ export const TestRunner = () => {
       {/* Test Suites */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="overview">{t('admin.testing.overview')}</TabsTrigger>
           <TabsTrigger value="mobile" className="flex items-center gap-2">
             <Smartphone className="h-4 w-4" />
-            Mobile
+            {t('admin.testing.mobile')}
           </TabsTrigger>
           <TabsTrigger value="pwa" className="flex items-center gap-2">
             <Globe className="h-4 w-4" />
-            PWA
+            {t('admin.testing.pwa')}
           </TabsTrigger>
           <TabsTrigger value="performance" className="flex items-center gap-2">
             <Zap className="h-4 w-4" />
-            Performance
+            {t('admin.testing.performance')}
           </TabsTrigger>
           <TabsTrigger value="accessibility" className="flex items-center gap-2">
             <Shield className="h-4 w-4" />
-            Accessibility
+            {t('admin.testing.accessibility')}
           </TabsTrigger>
         </TabsList>
 
@@ -329,8 +331,8 @@ export const TestRunner = () => {
                   <div className="space-y-2">
                     <Progress value={suite.progress} className="h-2" />
                     <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>{suite.tests.length} tests</span>
-                      <span>{suite.progress}% complete</span>
+                      <span>{suite.tests.length} {t('admin.testing.tests')}</span>
+                      <span>{suite.progress}% {t('admin.testing.complete')}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -344,7 +346,7 @@ export const TestRunner = () => {
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle>{suite.name} Test Results</CardTitle>
+                  <CardTitle>{suite.name} {t('admin.testing.testResults')}</CardTitle>
                   <Button
                     variant="outline"
                     size="sm"
@@ -356,14 +358,14 @@ export const TestRunner = () => {
                     ) : (
                       <PlayCircle className="h-4 w-4" />
                     )}
-                    Run Tests
+                    {t('admin.testing.runTests')}
                   </Button>
                 </div>
               </CardHeader>
               <CardContent>
                 {suite.tests.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
-                    No tests run yet. Click "Run Tests" to start.
+                    {t('admin.testing.noTestsRun')}
                   </div>
                 ) : (
                   <ScrollArea className="h-96">

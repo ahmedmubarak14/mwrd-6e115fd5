@@ -19,8 +19,10 @@ import {
 import { TestingAndRefinementSuite, type TestResult } from '@/utils/testingAndRefinement';
 import { useMobileDetection } from '@/hooks/useMobileDetection';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const TestingDashboard = () => {
+  const { t, isRTL } = useLanguage();
   const [testResults, setTestResults] = useState<TestResult[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [lastRun, setLastRun] = useState<Date | null>(null);
@@ -90,22 +92,22 @@ export const TestingDashboard = () => {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           {isMobile ? <Smartphone className="h-5 w-5" /> : <Monitor className="h-5 w-5" />}
-          Current Device
+          {t('admin.testingDashboard.currentDevice')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
         <div className="flex justify-between">
-          <span>Device Type:</span>
+          <span>{t('admin.testingDashboard.deviceType')}:</span>
           <Badge variant="outline">
-            {isMobile ? 'Mobile' : isTablet ? 'Tablet' : 'Desktop'}
+            {isMobile ? t('admin.testingDashboard.mobile') : isTablet ? t('admin.testingDashboard.tablet') : t('admin.testingDashboard.desktop')}
           </Badge>
         </div>
         <div className="flex justify-between">
-          <span>Screen Size:</span>
+          <span>{t('admin.testingDashboard.screenSize')}:</span>
           <Badge variant="outline">{screenSize.toUpperCase()}</Badge>
         </div>
         <div className="flex justify-between">
-          <span>Orientation:</span>
+          <span>{t('admin.testingDashboard.orientation')}:</span>
           <Badge variant="outline">{orientation}</Badge>
         </div>
       </CardContent>
@@ -139,7 +141,7 @@ export const TestingDashboard = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
-            <span className="text-sm">Progress</span>
+            <span className="text-sm">{t('admin.testingDashboard.progress')}</span>
             <span className="text-sm font-medium">{passed}/{total}</span>
           </div>
           <Progress value={percentage} className="h-2" />
@@ -156,7 +158,7 @@ export const TestingDashboard = () => {
             ))}
             {tests.length === 0 && (
               <p className="text-sm text-muted-foreground italic">
-                No tests run yet. Click "Run All Tests" to start.
+                {t('admin.testingDashboard.noTestsMessage')}
               </p>
             )}
           </div>
@@ -166,12 +168,12 @@ export const TestingDashboard = () => {
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
+    <div className="p-6 max-w-7xl mx-auto space-y-6" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Testing & Quality Assurance</h1>
+          <h1 className="text-3xl font-bold">{t('admin.testingDashboard.title')}</h1>
           <p className="text-muted-foreground">
-            Comprehensive testing suite for mobile and desktop optimization
+            {t('admin.testingDashboard.subtitle')}
           </p>
         </div>
         
@@ -182,7 +184,7 @@ export const TestingDashboard = () => {
           className="gap-2"
         >
           <RefreshCw className={cn("h-4 w-4", isRunning && "animate-spin")} />
-          {isRunning ? 'Running Tests...' : 'Run All Tests'}
+          {isRunning ? t('admin.testing.runningTests') : t('admin.testing.runAllTests')}
         </Button>
       </div>
 
@@ -190,8 +192,8 @@ export const TestingDashboard = () => {
         <Alert>
           <CheckCircle className="h-4 w-4" />
           <AlertDescription>
-            Last test run: {lastRun.toLocaleString()} • 
-            Overall Score: {getOverallScore()}%
+            {t('admin.testingDashboard.lastTestRun')} {lastRun.toLocaleString()} • 
+            {t('admin.testingDashboard.overallScoreLabel')} {getOverallScore()}%
           </AlertDescription>
         </Alert>
       )}
@@ -201,7 +203,7 @@ export const TestingDashboard = () => {
         
         <Card>
           <CardHeader>
-            <CardTitle>Overall Score</CardTitle>
+            <CardTitle>{t('admin.testingDashboard.overallScore')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-center">
@@ -215,23 +217,23 @@ export const TestingDashboard = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Test Summary</CardTitle>
+            <CardTitle>{t('admin.testingDashboard.testSummary')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="flex justify-between">
-              <span>Passed:</span>
+              <span>{t('admin.testing.passed')}:</span>
               <Badge variant="default">
                 {testResults.filter(r => r.status === 'pass').length}
               </Badge>
             </div>
             <div className="flex justify-between">
-              <span>Warnings:</span>
+              <span>{t('admin.testing.warnings')}:</span>
               <Badge variant="secondary">
                 {testResults.filter(r => r.status === 'warning').length}
               </Badge>
             </div>
             <div className="flex justify-between">
-              <span>Failed:</span>
+              <span>{t('admin.testing.failed')}:</span>
               <Badge variant="destructive">
                 {testResults.filter(r => r.status === 'fail').length}
               </Badge>
@@ -241,20 +243,20 @@ export const TestingDashboard = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
+            <CardTitle>{t('admin.testingDashboard.quickActions')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             <Button variant="outline" size="sm" className="w-full justify-start">
-              <Smartphone className="h-4 w-4 mr-2" />
-              Test Mobile Layout
+              <Smartphone className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('admin.testingDashboard.testMobileLayout')}
             </Button>
             <Button variant="outline" size="sm" className="w-full justify-start">
-              <Zap className="h-4 w-4 mr-2" />
-              Performance Check
+              <Zap className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('admin.testingDashboard.performanceCheck')}
             </Button>
             <Button variant="outline" size="sm" className="w-full justify-start">
-              <Shield className="h-4 w-4 mr-2" />
-              Security Scan
+              <Shield className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('admin.testingDashboard.securityScan')}
             </Button>
           </CardContent>
         </Card>
@@ -262,45 +264,45 @@ export const TestingDashboard = () => {
 
       <Tabs defaultValue="mobile" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="mobile">Mobile</TabsTrigger>
-          <TabsTrigger value="pwa">PWA</TabsTrigger>
-          <TabsTrigger value="performance">Performance</TabsTrigger>
-          <TabsTrigger value="accessibility">A11y</TabsTrigger>
+          <TabsTrigger value="mobile">{t('admin.testing.mobile')}</TabsTrigger>
+          <TabsTrigger value="pwa">{t('admin.testing.pwa')}</TabsTrigger>
+          <TabsTrigger value="performance">{t('admin.testing.performance')}</TabsTrigger>
+          <TabsTrigger value="accessibility">{t('admin.testingDashboard.a11y')}</TabsTrigger>
         </TabsList>
         
         <TabsContent value="mobile" className="mt-6">
           <TestCategory
-            title="Mobile Responsiveness"
+            title={t('admin.testingDashboard.mobileResponsiveness')}
             icon={Smartphone}
             category="mobile"
-            description="Tests for mobile-friendly design and touch interactions"
+            description={t('admin.testingDashboard.mobileResponsivenessDesc')}
           />
         </TabsContent>
         
         <TabsContent value="pwa" className="mt-6">
           <TestCategory
-            title="Progressive Web App"
+            title={t('admin.testingDashboard.progressiveWebApp')}
             icon={Monitor}
             category="pwa"
-            description="PWA features like manifest, service worker, and installability"
+            description={t('admin.testingDashboard.pwaDesc')}
           />
         </TabsContent>
         
         <TabsContent value="performance" className="mt-6">
           <TestCategory
-            title="Performance Metrics"
+            title={t('admin.testingDashboard.performanceMetrics')}
             icon={Zap}
             category="performance"
-            description="Core Web Vitals and loading performance measurements"
+            description={t('admin.testingDashboard.performanceMetricsDesc')}
           />
         </TabsContent>
         
         <TabsContent value="accessibility" className="mt-6">
           <TestCategory
-            title="Accessibility"
+            title={t('admin.testingDashboard.accessibility')}
             icon={Eye}
             category="accessibility"
-            description="WCAG compliance and screen reader compatibility"
+            description={t('admin.testingDashboard.accessibilityDesc')}
           />
         </TabsContent>
       </Tabs>
