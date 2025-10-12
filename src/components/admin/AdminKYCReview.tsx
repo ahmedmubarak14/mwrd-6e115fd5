@@ -34,6 +34,7 @@ export const AdminKYCReview = () => {
   const [reviewNotes, setReviewNotes] = useState('');
   const [processing, setProcessing] = useState(false);
   const [documentStatus, setDocumentStatus] = useState<{ [key: string]: 'checking' | 'available' | 'missing' }>({});
+  const [submissionHistory, setSubmissionHistory] = useState<{ count: number; hasRejected: boolean; hasApproved: boolean }>({ count: 0, hasRejected: false, hasApproved: false });
   const { toast } = useToast();
 
   useEffect(() => {
@@ -41,11 +42,11 @@ export const AdminKYCReview = () => {
   }, []);
 
   const fetchSubmissions = async () => {
-    const { data, error } = await supabase
+    // Fetch all submissions to find the latest per user
+    const { data: allSubmissions, error } = await supabase
       .from('kyc_submissions')
       .select('*')
-      .in('submission_status', ['submitted', 'under_review'])
-      .order('submitted_at', { ascending: false });
+      .order('created_at', { ascending: false });
 
     if (error) {
       toast({
@@ -55,10 +56,43 @@ export const AdminKYCReview = () => {
       });
       return;
     }
-    setSubmissions(data || []);
+
+    // Group by user_id and keep only the latest submission per user
+    const latestSubmissionsMap = new Map<string, KYCSubmission>();
+    allSubmissions?.forEach((submission) => {
+      if (!latestSubmissionsMap.has(submission.user_id)) {
+        latestSubmissionsMap.set(submission.user_id, submission);
+      }
+    });
+
+    // Filter to show only submitted or under_review submissions (latest per user)
+    const latestSubmissions = Array.from(latestSubmissionsMap.values())
+      .filter(s => ['submitted', 'under_review'].includes(s.submission_status))
+      .sort((a, b) => new Date(b.submitted_at || b.created_at).getTime() - new Date(a.submitted_at || a.created_at).getTime());
+
+    setSubmissions(latestSubmissions);
   };
 
   const verifySubmissionDocuments = async (submission: KYCSubmission) => {
+    // Check submission history for this user
+    const { data: allUserSubmissions } = await supabase
+      .from('kyc_submissions')
+      .select('id, submission_status, created_at')
+      .eq('user_id', submission.user_id)
+      .order('created_at', { ascending: false });
+
+    if (allUserSubmissions && allUserSubmissions.length > 1) {
+      const hasRejected = allUserSubmissions.some(s => s.submission_status === 'rejected');
+      const hasApproved = allUserSubmissions.some(s => s.submission_status === 'approved');
+      setSubmissionHistory({ 
+        count: allUserSubmissions.length, 
+        hasRejected,
+        hasApproved
+      });
+    } else {
+      setSubmissionHistory({ count: allUserSubmissions?.length || 1, hasRejected: false, hasApproved: false });
+    }
+
     // Verify CR document
     setDocumentStatus(prev => ({ ...prev, [submission.id + '_cr']: 'checking' }));
     const crPath = extractFilePath(submission.cr_document_url);
@@ -309,6 +343,18 @@ export const AdminKYCReview = () => {
             <CardTitle>Review KYC Submission: {selectedSubmission.company_legal_name}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
+            {submissionHistory.count > 1 && (
+              <Alert className="mb-4 border-orange-500 bg-orange-50">
+                <AlertTriangle className="w-4 h-4 text-orange-600" />
+                <AlertDescription>
+                  <strong>Multiple Submissions Detected:</strong> This user has {submissionHistory.count} submissions in total.
+                  {submissionHistory.hasRejected && ' Previous submissions were rejected.'}
+                  {submissionHistory.hasApproved && ' Previous submissions were approved.'}
+                  <br />
+                  <span className="text-sm text-muted-foreground">You are reviewing the LATEST submission.</span>
+                </AlertDescription>
+              </Alert>
+            )}
             <Tabs defaultValue="company">
               <TabsList className="grid w-full grid-cols-5">
                 <TabsTrigger value="company">Company</TabsTrigger>
