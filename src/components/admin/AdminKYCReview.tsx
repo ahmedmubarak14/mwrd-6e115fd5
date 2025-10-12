@@ -10,6 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { generateDocumentSignedUrl, verifyFileExists, extractFilePath } from '@/utils/documentStorage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface KYCSubmission {
   id: string;
