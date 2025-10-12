@@ -59,7 +59,7 @@ export const AdminVerificationWorkflow = () => {
   const fetchPendingVerifications = async () => {
     try {
       const { data, error } = await supabase
-        .from('user_profiles')
+        .from('user_profiles_with_roles')
         .select('*')
         .in('verification_status', ['pending', 'under_review'])
         .order('created_at', { ascending: false });

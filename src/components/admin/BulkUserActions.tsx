@@ -51,10 +51,23 @@ export const BulkUserActions = ({
 
     setLoading(true);
     try {
-      const { error } = await supabase
+      // First get user_ids from user_profiles
+      const { data: profiles, error: profileError } = await supabase
         .from('user_profiles')
-        .update({ role: bulkRole as 'admin' | 'client' | 'vendor' })
+        .select('user_id')
         .in('id', selectedUsers);
+
+      if (profileError || !profiles) {
+        throw new Error('Failed to fetch user profiles');
+      }
+
+      const userIds = profiles.map(p => p.user_id);
+
+      // Update role in user_roles table
+      const { error } = await supabase
+        .from('user_roles')
+        .update({ role: bulkRole as 'admin' | 'client' | 'vendor' })
+        .in('user_id', userIds);
 
       if (error) throw error;
 
@@ -84,7 +97,7 @@ export const BulkUserActions = ({
     try {
       const { error } = await supabase
         .from('user_profiles')
-        .update({ role: bulkStatus as any })
+        .update({ status: bulkStatus as any })
         .in('id', selectedUsers);
 
       if (error) throw error;

@@ -131,7 +131,7 @@ export const generateDocumentSignedUrl = async (
     
     if (user) {
       const { data: profile } = await supabase
-        .from('user_profiles')
+        .from('user_profiles_with_roles')
         .select('role')
         .eq('user_id', user.id)
         .single();
@@ -193,7 +193,7 @@ const logDocumentAccessAttempt = async (
     if (!user) return;
 
     const { data: profile } = await supabase
-      .from('user_profiles')
+      .from('user_profiles_with_roles')
       .select('role')
       .eq('user_id', user.id)
       .single();

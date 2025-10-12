@@ -14,7 +14,7 @@ export const useUserProfiles = () => {
     try {
       setLoading(true);
       const { data, error } = await supabase
-        .from('user_profiles')
+        .from('user_profiles_with_roles')
         .select('*')
         .eq('id', userId)
         .single();
@@ -67,7 +67,7 @@ export const useUserProfiles = () => {
     try {
       setLoading(true);
       const { data, error } = await supabase
-        .from('user_profiles')
+        .from('user_profiles_with_roles')
         .select('*')
         .in('id', missingIds);
 

@@ -68,7 +68,7 @@ export const MetricsDetailModal = ({ isOpen, onClose, metricType, metricTitle }:
 
   const fetchUsersDetail = async () => {
     const { data, error } = await supabase
-      .from('user_profiles')
+      .from('user_profiles_with_roles')
       .select('*')
       .order('created_at', { ascending: false })
       .limit(100);

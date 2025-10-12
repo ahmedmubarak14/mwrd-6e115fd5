@@ -92,7 +92,7 @@ export const useVendors = () => {
       setLoading(true);
       
       let query = supabase
-        .from('user_profiles')
+        .from('user_profiles_with_roles')
         .select(`*`, { count: 'exact' })
         .eq('role', 'vendor')
         .eq('status', 'approved')
@@ -182,7 +182,7 @@ export const useVendors = () => {
   const getVendorById = async (id: string): Promise<VendorWithCategories | null> => {
     try {
       const { data, error } = await supabase
-        .from('user_profiles')
+        .from('user_profiles_with_roles')
         .select('*')
         .eq('id', id)
         .eq('role', 'vendor')
@@ -263,7 +263,7 @@ export const useVendors = () => {
   const getVendorsByCategory = async (categoryId: string) => {
     try {
       const { data, error } = await supabase
-        .from('user_profiles')
+        .from('user_profiles_with_roles')
         .select(`
           *,
           vendor_categories!inner(category_id)
@@ -306,7 +306,7 @@ export const useSuppliers = () => {
 
       // Fetch approved vendors from user_profiles
       const { data, error } = await supabase
-        .from('user_profiles')
+        .from('user_profiles_with_roles')
         .select('*')
         .eq('role', 'vendor')
         .eq('status', 'approved')

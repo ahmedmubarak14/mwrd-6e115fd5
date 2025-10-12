@@ -126,7 +126,7 @@ export const AdvancedUserManagement = () => {
     try {
       const { error } = await supabase
         .from('user_profiles')
-        .update({ role: newStatus as any })
+        .update({ status: newStatus })
         .eq('id', userId);
 
       if (error) {
@@ -158,10 +158,22 @@ export const AdvancedUserManagement = () => {
 
   const updateUserRole = async (userId: string, newRole: 'admin' | 'client' | 'vendor') => {
     try {
-      const { error } = await supabase
+      // First get the user_id from user_profiles
+      const { data: profile, error: profileError } = await supabase
         .from('user_profiles')
+        .select('user_id')
+        .eq('id', userId)
+        .single();
+
+      if (profileError || !profile) {
+        throw new Error('User profile not found');
+      }
+
+      // Update role in user_roles table
+      const { error } = await supabase
+        .from('user_roles')
         .update({ role: newRole })
-        .eq('id', userId);
+        .eq('user_id', profile.user_id);
 
       if (error) {
         console.error('Error updating user role:', error);

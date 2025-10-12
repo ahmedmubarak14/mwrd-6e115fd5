@@ -5,7 +5,7 @@ export const getAvailableAdmins = async () => {
   try {
     console.log('Fetching available admins...');
     const { data: admins, error } = await supabase
-      .from('user_profiles')
+      .from('user_profiles_with_roles')
       .select('id, user_id, full_name, email')
       .eq('role', 'admin')
       .eq('status', 'approved')

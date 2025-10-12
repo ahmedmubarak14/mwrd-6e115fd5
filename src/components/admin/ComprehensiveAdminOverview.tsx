@@ -157,7 +157,7 @@ export const ComprehensiveAdminOverview = () => {
         transactionsResponse,
         auditLogsResponse
       ] = await Promise.all([
-        supabase.from('user_profiles').select('id, role, created_at, updated_at'),
+        supabase.from('user_profiles_with_roles').select('id, role, created_at, updated_at'),
         supabase.from('requests').select('id, admin_approval_status, created_at'),
         supabase.from('offers').select('id, admin_approval_status, client_approval_status, created_at'),
         supabase.from('orders').select('id, amount, status, created_at'),

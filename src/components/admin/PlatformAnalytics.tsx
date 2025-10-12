@@ -60,7 +60,7 @@ export const PlatformAnalytics = () => {
     try {
       // Fetch real data from multiple tables
       const [usersResponse, requestsResponse, offersResponse, ordersResponse] = await Promise.all([
-        supabase.from('user_profiles').select('id, role, created_at'),
+        supabase.from('user_profiles_with_roles').select('id, role, created_at'),
         supabase.from('requests').select('id, created_at'),
         supabase.from('offers').select('id, created_at'),
         supabase.from('orders').select('id, amount, status, created_at')
