@@ -12,7 +12,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToastFeedback } from "@/hooks/useToastFeedback";
 import { useAuth } from "@/contexts/AuthContext";
 import { UserProfile } from "@/types/database";
-import { CRDocumentUpload } from "@/components/verification/CRDocumentUpload";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle, Info } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +25,6 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
   const navigate = useNavigate();
   const logger = consoleCleanupGuide.createLogger('AuthForm');
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
-  const [registrationStep, setRegistrationStep] = useState<'details' | 'verification'>('details');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -35,8 +33,6 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
     role: 'client' as 'client' | 'vendor' | 'admin'
   });
   const [loading, setLoading] = useState(false);
-  const [registeredUserId, setRegisteredUserId] = useState<string | null>(null);
-  const [crUploaded, setCrUploaded] = useState(false);
   const { showSuccess, showError, showInfo } = useToastFeedback();
   const { user, userProfile } = useAuth();
 
@@ -79,14 +75,11 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
       if (error) throw error;
 
       if (data.user) {
-        setRegisteredUserId(data.user.id);
-        if (formData.role === 'client') {
-          showInfo('Account created! Please upload your Commercial Registration to complete verification.');
-          setRegistrationStep('verification');
-        } else {
-          showSuccess('Account created successfully! Please check your email for verification.');
-          // Don't redirect immediately for non-client users, let the useEffect handle it
-        }
+        showSuccess('Account created successfully! Redirecting to KYC verification...');
+        // Redirect to KYC form for all new users
+        setTimeout(() => {
+          navigate('/kyc/form');
+        }, 1500);
       }
     } catch (error: any) {
       logger.error('Sign up error:', error);
@@ -96,90 +89,9 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
     }
   };
 
-  const handleCRUploadSuccess = () => {
-    setCrUploaded(true);
-    showSuccess('Commercial Registration uploaded successfully! Your account will be reviewed within 24-48 hours.');
-  };
-
-  const completeRegistration = () => {
-    showInfo('Registration complete! You can now sign in. Your account will be activated after document verification.');
-    setMode('signin');
-    setRegistrationStep('details');
-    setCrUploaded(false);
-    setRegisteredUserId(null);
-  };
-
   const handleLogoClick = () => {
     navigate('/landing');
   };
-
-  // Client CR Upload Flow
-  if (mode === 'signup' && registrationStep === 'verification' && formData.role === 'client') {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
-        <div className="w-full max-w-md space-y-6">
-          <div className="text-center space-y-4">
-            <div 
-              onClick={handleLogoClick}
-              className="inline-block cursor-pointer"
-            >
-              <img 
-                src="/lovable-uploads/1dd4b232-845d-46eb-9f67-b752fce1ac3b.png" 
-                alt="MWRD Logo" 
-                className="h-16 w-auto mx-auto transition-transform duration-200 hover:scale-105 drop-shadow-lg cursor-pointer"
-              />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-white">Complete Your Registration</h1>
-              <p className="text-white/80">Upload your Commercial Registration to activate your account</p>
-            </div>
-          </div>
-          <Card className="bg-white/5 border border-white/20 backdrop-blur-20">
-            <CardContent className="space-y-6 pt-6">
-              <Alert className="bg-white/10 border-white/20">
-                <Info className="h-4 w-4 text-white" />
-                <AlertDescription className="text-white/90">
-                  Your account has been created for <strong>{formData.email}</strong>.
-                  Please upload your Commercial Registration to complete the verification process.
-                </AlertDescription>
-              </Alert>
-
-              <CRDocumentUpload
-                onUploadSuccess={handleCRUploadSuccess}
-                isRequired={true}
-              />
-
-              {crUploaded && (
-                <Alert className="bg-green-500/20 border-green-400/30">
-                  <CheckCircle className="h-4 w-4 text-green-400" />
-                  <AlertDescription className="text-white/90">
-                    Document uploaded successfully! Your account will be reviewed within 24-48 hours.
-                  </AlertDescription>
-                </Alert>
-              )}
-
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setRegistrationStep('details')}
-                  className="flex-1 bg-white/10 border-white/20 text-white hover:bg-white/20"
-                >
-                  Back
-                </Button>
-                <Button
-                  onClick={completeRegistration}
-                  disabled={!crUploaded}
-                  className="flex-1 bg-primary hover:bg-primary/90 text-white"
-                >
-                  Complete Registration
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#004F54] via-[#102C33] to-[#66023C] p-4">
@@ -329,14 +241,12 @@ export const AuthForm = ({ onAuthSuccess }: AuthFormProps) => {
                     </Select>
                   </div>
 
-                  {formData.role === 'client' && (
-                    <Alert className="bg-white/10 border-white/20 rounded-xl">
-                      <Info className="h-4 w-4 text-white" />
-                      <AlertDescription className="text-white/90">
-                        As a client, you'll need to upload your Commercial Registration for account verification after registration.
-                      </AlertDescription>
-                    </Alert>
-                  )}
+                  <Alert className="bg-white/10 border-white/20 rounded-xl">
+                    <Info className="h-4 w-4 text-white" />
+                    <AlertDescription className="text-white/90">
+                      After registration, you'll complete a KYC (Know Your Customer) verification to access all platform features.
+                    </AlertDescription>
+                  </Alert>
 
                   <Button 
                     type="submit" 

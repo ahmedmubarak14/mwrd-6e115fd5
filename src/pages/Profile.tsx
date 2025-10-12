@@ -29,12 +29,11 @@ import {
   Save,
   X
 } from "lucide-react";
-import { CRDocumentUpload } from "@/components/verification/CRDocumentUpload";
 import { UnifiedVerificationStatus } from "@/components/verification/UnifiedVerificationStatus";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { AvatarUpload } from "@/components/profile/AvatarUpload";
-import { CompanyProfileSetupModal } from "@/components/onboarding/CompanyProfileSetupModal";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 
 const ProfilePage = memo(() => {
@@ -43,9 +42,9 @@ const ProfilePage = memo(() => {
   const { categories, loading: categoriesLoading } = useCategories();
   // Get service categories from database
   const serviceCategories = categories.map(cat => cat.name_en).filter(Boolean);
+  const navigate = useNavigate();
   const [isSaving, setIsSaving] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [showSetupModal, setShowSetupModal] = useState(false);
   const { showSuccess } = useToastFeedback();
 
   const [formData, setFormData] = useState({
@@ -169,24 +168,14 @@ const ProfilePage = memo(() => {
           )}>
             {getVerificationBadge()}
             {!isEditing && (
-              <div className="flex gap-2">
-                <Button 
-                  onClick={() => setShowSetupModal(true)}
-                  variant="default"
-                  className="w-full md:w-auto"
-                >
-                  <Building className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
-                  Company Setup
-                </Button>
-                <Button 
-                  onClick={() => setIsEditing(true)}
-                  variant="outline"
-                  className="w-full md:w-auto"
-                >
-                  <Edit className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
-                  {t('profile.editProfile')}
-                </Button>
-              </div>
+              <Button 
+                onClick={() => setIsEditing(true)}
+                variant="outline"
+                className="w-full md:w-auto"
+              >
+                <Edit className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
+                {t('profile.editProfile')}
+              </Button>
             )}
           </div>
         </div>
@@ -456,28 +445,33 @@ const ProfilePage = memo(() => {
           <TabsContent value="verification" className="space-y-6">
             <UnifiedVerificationStatus showActions={true} compact={false} />
             
-            {/* Allow document upload for non-verified users */}
+            {/* Redirect to KYC form for verification */}
             {(userProfile.verification_status === 'pending' || 
               userProfile.verification_status === 'rejected' || 
               !userProfile.verification_status) && (
-              <div className="mt-6">
-                <CRDocumentUpload
-                  onUploadSuccess={() => window.location.reload()}
-                  isRequired={true}
-                />
-              </div>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="h-5 w-5" />
+                    Complete KYC Verification
+                  </CardTitle>
+                  <CardDescription>
+                    Complete your Know Your Customer (KYC) verification to unlock all platform features.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button 
+                    onClick={() => navigate('/kyc/form')}
+                    className="w-full"
+                  >
+                    <Shield className={cn("h-4 w-4", isRTL ? "ml-2" : "mr-2")} />
+                    Complete KYC Form
+                  </Button>
+                </CardContent>
+              </Card>
             )}
           </TabsContent>
         </Tabs>
-
-        <CompanyProfileSetupModal 
-          open={showSetupModal}
-          onOpenChange={setShowSetupModal}
-          onComplete={() => {
-            setShowSetupModal(false);
-            window.location.reload();
-          }}
-        />
       </div>
     </ErrorBoundary>
   );

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { VendorSidebar } from "./VendorSidebar";
 import { VendorHeader } from "./VendorHeader";
 import { VendorMobileSidebar } from "./VendorMobileSidebar";
-import { VerificationBanner } from "../verification/VerificationBanner";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { useAuth } from "@/contexts/AuthContext";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -62,10 +61,6 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
               localStorage.setItem('vendorSidebarOpen', JSON.stringify(newState));
             }}
           />
-          {userProfile.verification_status && 
-           userProfile.verification_status !== 'approved' && (
-            <VerificationBanner />
-          )}
           <main className="flex-1 overflow-auto bg-muted/20 p-4 sm:p-6 min-h-[calc(100vh-8rem)] pb-20 safe-area-inset-bottom">
             <div className="max-w-7xl mx-auto">
               {children}
@@ -92,10 +87,6 @@ export const VendorLayout = ({ children }: VendorLayoutProps) => {
               }}
               sidebarOpen={sidebarOpen}
             />
-            {userProfile.verification_status && 
-             userProfile.verification_status !== 'approved' && (
-              <VerificationBanner />
-            )}
             <main className="flex-1 overflow-auto bg-muted/20 p-6 min-h-[calc(100vh-4rem)]">
               <div className="max-w-7xl mx-auto">
                 {children}

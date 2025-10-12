@@ -8,7 +8,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle, ArrowRight, ArrowLeft, X, FileText, Clock, Shield } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { CRDocumentUpload } from "@/components/verification/CRDocumentUpload";
+import { useNavigate } from "react-router-dom";
 
 interface OnboardingStep {
   id: string;
@@ -83,9 +83,9 @@ interface OnboardingFlowProps {
 
 export const OnboardingFlow = ({ onComplete, onSkip }: OnboardingFlowProps) => {
   const { userProfile } = useAuth();
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useLocalStorage<string[]>("onboarding-completed", []);
-  const [crUploaded, setCrUploaded] = useState(false);
   
   const onboardingSteps = getOnboardingSteps(userProfile?.role || 'client');
   const currentStepData = onboardingSteps[currentStep];
@@ -114,22 +114,20 @@ export const OnboardingFlow = ({ onComplete, onSkip }: OnboardingFlowProps) => {
   const handleActionClick = (stepId: string) => {
     switch (stepId) {
       case "profile":
-        window.location.href = "/profile";
+        navigate("/profile");
+        break;
+      case "verification":
+        navigate("/kyc/form");
         break;
       case "first-request":
-        window.location.href = "/create-request";
+        navigate("/create-request");
         break;
       case "first-offer":
-        window.location.href = "/browse-requests";
+        navigate("/browse-requests");
         break;
       default:
         markStepCompleted(stepId);
     }
-  };
-
-  const handleCRUploadSuccess = () => {
-    setCrUploaded(true);
-    markStepCompleted("verification");
   };
 
   useEffect(() => {
@@ -141,10 +139,6 @@ export const OnboardingFlow = ({ onComplete, onSkip }: OnboardingFlowProps) => {
 
   // Check if current step can proceed
   const canProceed = () => {
-    if (currentStepData.id === "verification" && userProfile?.role === 'client') {
-      return crUploaded || completedSteps.includes("verification") || 
-             ((userProfile as any)?.verification_status === 'approved');
-    }
     return true;
   };
 
@@ -164,8 +158,7 @@ export const OnboardingFlow = ({ onComplete, onSkip }: OnboardingFlowProps) => {
             <Badge variant="secondary">
               Step {currentStep + 1} of {onboardingSteps.length}
             </Badge>
-            {(completedSteps.includes(currentStepData.id) || 
-              (currentStepData.id === "verification" && crUploaded)) && (
+            {completedSteps.includes(currentStepData.id) && (
               <CheckCircle className="h-5 w-5 text-primary" />
             )}
           </div>
@@ -205,7 +198,7 @@ export const OnboardingFlow = ({ onComplete, onSkip }: OnboardingFlowProps) => {
                   <FileText className="text-2xl text-primary-foreground" />
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Upload your Commercial Registration to verify your company and unlock full platform features.
+                  Complete your KYC verification to unlock full platform features.
                 </p>
               </div>
               
@@ -220,26 +213,12 @@ export const OnboardingFlow = ({ onComplete, onSkip }: OnboardingFlowProps) => {
                 </AlertDescription>
               </Alert>
 
-              {((userProfile as any)?.verification_status === 'approved') ? (
-                <Alert>
-                  <CheckCircle className="h-4 w-4" />
-                  <AlertDescription>
-                    Your account has been verified! You have full access to all platform features.
-                  </AlertDescription>
-                </Alert>
-              ) : ((userProfile as any)?.verification_status === 'under_review') ? (
-                <Alert>
-                  <Clock className="h-4 w-4" />
-                  <AlertDescription>
-                    Your Commercial Registration is under review. You'll be notified once verification is complete.
-                  </AlertDescription>
-                </Alert>
-              ) : (
-                <CRDocumentUpload
-                  onUploadSuccess={handleCRUploadSuccess}
-                  isRequired={true}
-                />
-              )}
+              <Button
+                onClick={() => handleActionClick("verification")}
+                className="w-full"
+              >
+                Complete KYC Verification
+              </Button>
             </div>
           )}
 
