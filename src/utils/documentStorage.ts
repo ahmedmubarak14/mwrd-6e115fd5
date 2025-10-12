@@ -42,13 +42,20 @@ export const uploadDocument = async (
 
     console.log('Upload successful, verifying file exists:', data.path);
 
-    // Verify the file actually exists
-    const verificationResult = await verifyFileExists(data.path);
+    // Verify the file actually exists (with retries for race condition)
+    let verificationResult: { success: boolean; error?: string } = { success: false, error: '' };
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      await new Promise(resolve => setTimeout(resolve, 500 * attempt)); // 500ms, 1s, 1.5s delays
+      verificationResult = await verifyFileExists(data.path);
+      if (verificationResult.success) break;
+      console.log(`Verification attempt ${attempt} failed, retrying...`);
+    }
+    
     if (!verificationResult.success) {
-      console.error('File verification failed:', verificationResult.error);
+      console.error('File verification failed after 3 attempts:', verificationResult.error);
       // Clean up the potentially failed upload
       await supabase.storage.from('chat-files').remove([data.path]);
-      return { success: false, error: 'File upload verification failed' };
+      return { success: false, error: 'File upload verification failed after multiple attempts' };
     }
 
     console.log('File verified successfully');

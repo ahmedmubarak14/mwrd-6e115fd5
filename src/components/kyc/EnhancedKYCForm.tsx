@@ -152,13 +152,24 @@ export const EnhancedKYCForm = ({ onComplete }: { onComplete: () => void }) => {
       const mainInfoStr = sessionStorage.getItem('mainInfoData');
       const mainInfo = mainInfoStr ? JSON.parse(mainInfoStr) : {};
 
-      // Upload documents
+      // Upload documents with detailed error logging
       const crUpload = await uploadDocument(formData.crDocumentFile!, user.id, 'cr-documents');
+      if (!crUpload.success) {
+        console.error('CR upload failed:', crUpload.error);
+      }
+      
       const vatUpload = await uploadDocument(formData.vatCertificateFile!, user.id, 'vat-documents');
+      if (!vatUpload.success) {
+        console.error('VAT upload failed:', vatUpload.error);
+      }
+      
       const addressUpload = await uploadDocument(formData.addressCertificateFile!, user.id, 'address-documents');
+      if (!addressUpload.success) {
+        console.error('Address upload failed:', addressUpload.error);
+      }
 
       if (!crUpload.success || !vatUpload.success || !addressUpload.success) {
-        throw new Error('Failed to upload documents');
+        throw new Error(`Document upload failed: CR=${crUpload.error || 'OK'}, VAT=${vatUpload.error || 'OK'}, Address=${addressUpload.error || 'OK'}`);
       }
 
       // Insert KYC submission
