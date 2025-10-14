@@ -43,11 +43,18 @@ export const MainInfoForm = ({ onComplete }: { onComplete: () => void }) => {
     }
 
     try {
+      console.log('🚀 Attempting to invoke send-otp edge function...');
+      
       const { data, error } = await supabase.functions.invoke('send-otp', {
         body: { phoneNumber: formData.phoneNumber }
       });
 
-      if (error) throw error;
+      console.log('📡 Edge function response:', { data, error });
+
+      if (error) {
+        console.error('❌ Edge function error:', error);
+        throw error;
+      }
       
       setOtpSent(true);
       toast({
@@ -57,12 +64,32 @@ export const MainInfoForm = ({ onComplete }: { onComplete: () => void }) => {
       
       // DEV ONLY - show OTP in console
       if (data?.devOtp) {
-        console.log('DEV OTP:', data.devOtp);
+        console.log('🔐 DEV OTP:', data.devOtp);
       }
     } catch (error: any) {
+      console.error('💥 Full error object:', error);
+      
+      let errorMessage = 'Failed to send OTP';
+      let errorDetails = '';
+      
+      if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      // Check for specific error types
+      if (error.message?.includes('Failed to send a request to the Edge Function')) {
+        errorDetails = 'The OTP service is currently unavailable. The edge functions may need to be deployed.';
+        console.error('🔴 DEPLOYMENT ISSUE: Edge functions are not accessible. Check Supabase dashboard.');
+      } else if (error.message?.includes('CORS')) {
+        errorDetails = 'CORS error - please check edge function configuration.';
+        console.error('🔴 CORS ISSUE: Check edge function CORS headers.');
+      } else if (error.message?.includes('network')) {
+        errorDetails = 'Network error - please check your internet connection.';
+      }
+      
       toast({
-        title: "Error",
-        description: error.message || 'Failed to send OTP',
+        title: "OTP Service Error",
+        description: errorDetails || errorMessage,
         variant: "destructive"
       });
     }
@@ -80,6 +107,8 @@ export const MainInfoForm = ({ onComplete }: { onComplete: () => void }) => {
 
     setVerifying(true);
     try {
+      console.log('🔍 Attempting to verify OTP...');
+      
       const { data, error } = await supabase.functions.invoke('verify-otp', {
         body: { 
           phoneNumber: formData.phoneNumber,
@@ -87,7 +116,12 @@ export const MainInfoForm = ({ onComplete }: { onComplete: () => void }) => {
         }
       });
 
-      if (error) throw error;
+      console.log('📡 Verify OTP response:', { data, error });
+
+      if (error) {
+        console.error('❌ Verification error:', error);
+        throw error;
+      }
 
       setPhoneVerified(true);
       toast({
@@ -95,9 +129,18 @@ export const MainInfoForm = ({ onComplete }: { onComplete: () => void }) => {
         description: "Phone number verified successfully!"
       });
     } catch (error: any) {
+      console.error('💥 Verification error:', error);
+      
+      let errorMessage = error.message || 'Failed to verify OTP';
+      
+      if (error.message?.includes('Failed to send a request to the Edge Function')) {
+        errorMessage = 'OTP verification service is unavailable. Edge functions may need to be deployed.';
+        console.error('🔴 DEPLOYMENT ISSUE: verify-otp edge function not accessible.');
+      }
+      
       toast({
         title: "Verification Failed",
-        description: error.message || 'Failed to verify OTP',
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
