@@ -130,16 +130,24 @@ export const generateDocumentSignedUrl = async (
         bucket = 'chat-files';
         console.log('Extracted file path from chat-files URL:', actualFilePath);
       } else {
-        // Try kyv-documents bucket (signed URLs)
-        urlParts = filePath.split('/storage/v1/object/sign/kyv-documents/');
+        // Try chat-images bucket
+        urlParts = filePath.split('/storage/v1/object/public/chat-images/');
         if (urlParts.length === 2) {
-          actualFilePath = urlParts[1].split('?')[0]; // Remove query params
-          bucket = 'kyv-documents';
-          console.log('Extracted file path from kyv-documents URL:', actualFilePath);
+          actualFilePath = urlParts[1];
+          bucket = 'chat-images';
+          console.log('Extracted file path from chat-images URL:', actualFilePath);
         } else {
-          console.error('Unable to extract file path from URL:', filePath);
-          await logDocumentAccessAttempt(filePath, false, 'Invalid document URL format');
-          return { success: false, error: 'Invalid document URL format' };
+          // Try kyv-documents bucket (signed URLs)
+          urlParts = filePath.split('/storage/v1/object/sign/kyv-documents/');
+          if (urlParts.length === 2) {
+            actualFilePath = urlParts[1].split('?')[0]; // Remove query params
+            bucket = 'kyv-documents';
+            console.log('Extracted file path from kyv-documents URL:', actualFilePath);
+          } else {
+            console.error('Unable to extract file path from URL:', filePath);
+            await logDocumentAccessAttempt(filePath, false, 'Invalid document URL format');
+            return { success: false, error: 'Invalid document URL format' };
+          }
         }
       }
     } else {
@@ -162,20 +170,10 @@ export const generateDocumentSignedUrl = async (
       userRole = profile?.role || 'unknown';
     }
 
-    // First verify the file exists (with enhanced logging for admins)
-    const verificationResult = await verifyFileExists(actualFilePath, bucket);
-    if (!verificationResult.success) {
-      console.error('File does not exist:', actualFilePath, 'in bucket:', bucket);
-      const errorMsg = userRole === 'admin' 
-        ? `Admin access: Document not found in storage at path: ${actualFilePath} in bucket: ${bucket}. File may have been deleted or path is incorrect.`
-        : 'Document not found in storage. The file may have been deleted or corrupted.';
-      
-      await logDocumentAccessAttempt(actualFilePath, false, errorMsg);
-      return { success: false, error: errorMsg };
-    }
-
-    // Generate signed URL with longer expiry for admins
+    // Generate signed URL with longer expiry for admins (skip verification for faster access)
     const adminExpiresIn = userRole === 'admin' ? Math.max(expiresIn, 7200) : expiresIn; // Min 2 hours for admins
+    
+    console.log(`Generating signed URL for ${userRole}:`, actualFilePath, 'from bucket:', bucket);
     
     const { data, error } = await supabase.storage
       .from(bucket)
