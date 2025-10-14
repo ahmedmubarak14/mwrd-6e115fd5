@@ -668,6 +668,120 @@ export const arSA = {
       signatoryDocument: "وثيقة المفوض بالتوقيع"
     },
     
+    // KYV Review (Vendor Verification)
+    kyv: {
+      title: "التحقق من الموردين (KYV)",
+      subtitle: "أكمل ملف الموّرد الخاص بك لبدء تلقي الفرص",
+      basicInfo: {
+        title: "معلومات العمل الإضافية",
+        description: "قدم تفاصيل إضافية عن عملك",
+        tradeName: "الاسم التجاري",
+        tradeNameDescription: "الاسم الذي تمارس به العمل",
+        numberOfEmployees: "عدد الموظفين",
+        selectCompanySize: "اختر حجم الشركة",
+        zakatCertificate: "شهادة الزكاة",
+        zakatDescription: "قم بتحميل شهادة هيئة الزكاة والضريبة والجمارك",
+        chamberCertificate: "شهادة الغرفة التجارية",
+        chamberDescription: "قم بتحميل شهادة عضوية الغرفة التجارية",
+        companyLogo: "شعار الشركة",
+        logoDescription: "قم بتحميل شعار شركتك الرسمي"
+      },
+      banking: {
+        title: "التفاصيل المصرفية",
+        description: "قدم معلوماتك المصرفية لمعالجة الدفع",
+        bankName: "اسم البنك",
+        selectBank: "اختر البنك",
+        accountHolderName: "اسم صاحب الحساب",
+        accountHolderDescription: "كما هو موضح في سجلات البنك",
+        ibanNumber: "رقم الآيبان",
+        ibanPlaceholder: "SA0000000000000000000000",
+        ibanDescription: "أدخل رقم الآيبان المكون من 24 حرفًا يبدأ بـ SA",
+        bankBranch: "فرع البنك",
+        bankBranchDescription: "اسم أو رمز الفرع",
+        confirmationLetter: "خطاب تأكيد البنك",
+        confirmationDescription: "قم بتحميل خطاب رسمي من البنك يؤكد تفاصيل الحساب"
+      },
+      products: {
+        title: "تفاصيل المنتجات والخدمات",
+        description: "أخبرنا عن منتجاتك وخدماتك وشروط عملك",
+        catalog: "كتالوج المنتجات",
+        catalogDescription: "قم بتحميل كتالوج المنتجات أو الخدمات الكامل",
+        priceList: "قائمة الأسعار",
+        priceListDescription: "قم بتحميل قائمة الأسعار الحالية لجميع المنتجات/الخدمات",
+        minimumOrderValue: "الحد الأدنى لقيمة الطلب (ريال)",
+        deliverySLA: "مدة التسليم (أيام)",
+        deliverySLAPlaceholder: "مثال: 7",
+        paymentTerms: "شروط الدفع",
+        selectPaymentTerms: "اختر شروط الدفع",
+        cash: "نقدًا عند التسليم",
+        net30: "صافي 30 يومًا",
+        net60: "صافي 60 يومًا",
+        net90: "صافي 90 يومًا",
+        consignment: "أمانة"
+      },
+      compliance: {
+        title: "الامتثال والشهادات",
+        description: "قم بتحميل شهادات الجودة والسلامة والتنظيمية",
+        qualityCertificates: "شهادات الجودة (ISO/SASO/GSO)",
+        qualityDescription: "قم بتحميل شهادات ISO 9001 أو SASO أو GSO أو شهادات الجودة الأخرى",
+        safetyCertificates: "شهادات سلامة المنتج / الحلال",
+        safetyDescription: "قم بتحميل شهادات سلامة المنتج أو شهادات الحلال أو مستندات الامتثال",
+        insuranceLicenses: "التأمين / GOSI / الرخصة البلدية",
+        insuranceDescription: "قم بتحميل تأمين الأعمال أو تسجيل GOSI أو الرخصة البلدية أو تصاريح التجارة"
+      },
+      declaration: {
+        title: "إقرار الموّرد",
+        description: "أكد دقة جميع المعلومات المقدمة",
+        statement: "بيان الإقرار",
+        statementText: "أنا، الموقع أدناه، أؤكد أن جميع المعلومات المقدمة في نموذج التحقق من الموّرد هذا صحيحة وكاملة ودقيقة على حد علمي. أفهم أن:",
+        point1: "تقديم معلومات كاذبة أو مضللة قد يؤدي إلى الاستبعاد الفوري من برنامج الموردين",
+        point2: "تحتفظ NGS بالحق في التحقق من جميع المعلومات والمستندات المقدمة",
+        point3: "يجب إبلاغ أي تغييرات في المعلومات المقدمة على الفور",
+        point4: "القبول كمورّد يخضع لموافقة NGS والامتثال المستمر",
+        signature: "التوقيع المعتمد",
+        signatureDescription: "قم بتحميل مستند يحمل توقيع المفوض بالتوقيع",
+        companyStamp: "ختم الشركة",
+        stampDescription: "قم بتحميل صورة واضحة لختم شركتك الرسمي",
+        accept: "أقر بموجب هذا أن: جميع المعلومات المقدمة في هذا النموذج صحيحة ودقيقة. أقبل الشروط والأحكام الموضحة أعلاه وأفوض NGS بالتحقق من المعلومات المقدمة."
+      },
+      steps: {
+        basicInfo: "المعلومات الأساسية",
+        banking: "التفاصيل المصرفية",
+        products: "المنتجات والخدمات",
+        compliance: "الامتثال",
+        declaration: "الإقرار",
+        complete: "إكمال"
+      },
+      progress: {
+        step: "الخطوة",
+        of: "من"
+      },
+      buttons: {
+        back: "رجوع",
+        next: "التالي",
+        submit: "إرسال التحقق",
+        submitting: "جاري الإرسال...",
+        goToDashboard: "الذهاب إلى لوحة التحكم"
+      },
+      success: {
+        title: "تم إرسال التحقق من الموّرد!",
+        description: "تم إرسال التحقق من الموّرد بنجاح",
+        message: "سيقوم فريقنا بمراجعة طلبك والرد عليك خلال 3-5 أيام عمل. ستتلقى إشعارًا عبر البريد الإلكتروني بمجرد تحديث حالة التحقق."
+      },
+      validation: {
+        incomplete: "معلومات غير مكتملة",
+        incompleteDescription: "يرجى ملء جميع الحقول المطلوبة قبل المتابعة",
+        cannotSubmit: "لا يمكن الإرسال",
+        completeRequired: "يرجى إكمال جميع الحقول المطلوبة"
+      },
+      fileUpload: {
+        uploaded: "تم تحميل الملف",
+        uploadedDescription: "تم تحميل {fileName} بنجاح",
+        failed: "فشل التحميل",
+        failedDescription: "فشل تحميل الملف. يرجى المحاولة مرة أخرى."
+      }
+    },
+    
     // إدارة الفئات (المرحلة 2)
     categoryManagement: {
       title: "إدارة الفئات",

@@ -71,10 +71,12 @@ export const EnhancedAuthForm = ({ onAuthSuccess }: EnhancedAuthFormProps) => {
     }
 
     if (data?.user) {
-      showSuccess('Account created successfully! Redirecting to KYC verification...');
-      // Redirect to KYC form for all new users
+      // Redirect based on role
+      const redirectPath = formData.role === 'vendor' ? '/kyv/main-info' : '/kyc/main-info';
+      showSuccess(`Account created successfully! Redirecting to ${formData.role === 'vendor' ? 'vendor' : 'client'} verification...`);
+      
       setTimeout(() => {
-        navigate('/kyc/form');
+        navigate(redirectPath);
       }, 1500);
     }
   };

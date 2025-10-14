@@ -1308,6 +1308,119 @@ export type Database = {
         }
         Relationships: []
       }
+      kyv_submissions: {
+        Row: {
+          account_holder_name: string
+          bank_branch: string | null
+          bank_confirmation_letter_url: string
+          bank_name: string
+          chamber_commerce_certificate_url: string | null
+          company_logo_url: string | null
+          company_stamp_url: string | null
+          created_at: string | null
+          declaration_accepted: boolean
+          declaration_date: string | null
+          delivery_sla_days: number
+          iban_number: string
+          id: string
+          insurance_license_urls: string[] | null
+          kyc_submission_id: string | null
+          minimum_order_value: number | null
+          number_of_employees: string
+          payment_terms: string
+          price_list_url: string | null
+          product_catalog_url: string | null
+          quality_certificates_urls: string[] | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          reviewer_notes: string | null
+          safety_certificates_urls: string[] | null
+          submission_status: string
+          submitted_at: string | null
+          trade_name: string | null
+          updated_at: string | null
+          user_id: string
+          vendor_signature_url: string | null
+          zakat_certificate_url: string | null
+        }
+        Insert: {
+          account_holder_name: string
+          bank_branch?: string | null
+          bank_confirmation_letter_url: string
+          bank_name: string
+          chamber_commerce_certificate_url?: string | null
+          company_logo_url?: string | null
+          company_stamp_url?: string | null
+          created_at?: string | null
+          declaration_accepted?: boolean
+          declaration_date?: string | null
+          delivery_sla_days: number
+          iban_number: string
+          id?: string
+          insurance_license_urls?: string[] | null
+          kyc_submission_id?: string | null
+          minimum_order_value?: number | null
+          number_of_employees: string
+          payment_terms: string
+          price_list_url?: string | null
+          product_catalog_url?: string | null
+          quality_certificates_urls?: string[] | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_notes?: string | null
+          safety_certificates_urls?: string[] | null
+          submission_status?: string
+          submitted_at?: string | null
+          trade_name?: string | null
+          updated_at?: string | null
+          user_id: string
+          vendor_signature_url?: string | null
+          zakat_certificate_url?: string | null
+        }
+        Update: {
+          account_holder_name?: string
+          bank_branch?: string | null
+          bank_confirmation_letter_url?: string
+          bank_name?: string
+          chamber_commerce_certificate_url?: string | null
+          company_logo_url?: string | null
+          company_stamp_url?: string | null
+          created_at?: string | null
+          declaration_accepted?: boolean
+          declaration_date?: string | null
+          delivery_sla_days?: number
+          iban_number?: string
+          id?: string
+          insurance_license_urls?: string[] | null
+          kyc_submission_id?: string | null
+          minimum_order_value?: number | null
+          number_of_employees?: string
+          payment_terms?: string
+          price_list_url?: string | null
+          product_catalog_url?: string | null
+          quality_certificates_urls?: string[] | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_notes?: string | null
+          safety_certificates_urls?: string[] | null
+          submission_status?: string
+          submitted_at?: string | null
+          trade_name?: string | null
+          updated_at?: string | null
+          user_id?: string
+          vendor_signature_url?: string | null
+          zakat_certificate_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kyv_submissions_kyc_submission_id_fkey"
+            columns: ["kyc_submission_id"]
+            isOneToOne: false
+            referencedRelation: "kyc_submissions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           attachment_url: string | null

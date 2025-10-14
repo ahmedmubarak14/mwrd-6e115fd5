@@ -57,6 +57,8 @@ import AdminSettings from './pages/AdminSettings';
 import AdminProfile from './pages/AdminProfile';
 import MainInfo from './pages/kyc/MainInfo';
 import KYCForm from './pages/kyc/KYCForm';
+import VendorMainInfo from './pages/kyv/MainInfo';
+import KYVForm from './pages/kyv/KYVForm';
 import AdminKYCReviewPage from './pages/admin/AdminKYCReview';
 import KYCStatus from './pages/client/KYCStatus';
 import Requests from './pages/Requests';
@@ -132,15 +134,27 @@ function App() {
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/auth" element={<AuthCallback />} />
                     
-                    {/* KYC routes */}
+                    {/* KYC routes (Clients) */}
                     <Route path="/kyc/main-info" element={
-                      <RoleProtectedRoute allowedRoles={['client', 'vendor']}>
+                      <RoleProtectedRoute allowedRoles={['client']}>
                         <MainInfo />
                       </RoleProtectedRoute>
                     } />
                     <Route path="/kyc/form" element={
-                      <RoleProtectedRoute allowedRoles={['client', 'vendor']}>
+                      <RoleProtectedRoute allowedRoles={['client']}>
                         <KYCForm />
+                      </RoleProtectedRoute>
+                    } />
+                    
+                    {/* KYV routes (Vendors) */}
+                    <Route path="/kyv/main-info" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <VendorMainInfo />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/kyv/form" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <KYVForm />
                       </RoleProtectedRoute>
                     } />
                     

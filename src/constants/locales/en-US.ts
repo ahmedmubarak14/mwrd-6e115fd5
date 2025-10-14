@@ -665,6 +665,120 @@ export const enUS = {
       signatoryDocument: "Signatory Document"
     },
     
+    // KYV Review (Vendor Verification)
+    kyv: {
+      title: "Vendor Verification (KYV)",
+      subtitle: "Complete your vendor profile to start receiving opportunities",
+      basicInfo: {
+        title: "Additional Business Information",
+        description: "Provide additional details about your business",
+        tradeName: "Trade Name",
+        tradeNameDescription: "The name under which you conduct business",
+        numberOfEmployees: "Number of Employees",
+        selectCompanySize: "Select company size",
+        zakatCertificate: "Zakat Certificate",
+        zakatDescription: "Upload your Zakat, Tax and Customs Authority certificate",
+        chamberCertificate: "Chamber of Commerce Certificate",
+        chamberDescription: "Upload your Chamber of Commerce membership certificate",
+        companyLogo: "Company Logo",
+        logoDescription: "Upload your official company logo (PNG, JPG, or SVG)"
+      },
+      banking: {
+        title: "Banking Details",
+        description: "Provide your banking information for payment processing",
+        bankName: "Bank Name",
+        selectBank: "Select your bank",
+        accountHolderName: "Account Holder Name",
+        accountHolderDescription: "As shown in bank records",
+        ibanNumber: "IBAN Number",
+        ibanPlaceholder: "SA0000000000000000000000",
+        ibanDescription: "Enter your 24-character IBAN starting with SA",
+        bankBranch: "Bank Branch",
+        bankBranchDescription: "Branch name or code",
+        confirmationLetter: "Bank Confirmation Letter",
+        confirmationDescription: "Upload an official letter from your bank confirming account details"
+      },
+      products: {
+        title: "Product & Service Details",
+        description: "Tell us about your products, services, and business terms",
+        catalog: "Product Catalog",
+        catalogDescription: "Upload your complete product or service catalog",
+        priceList: "Price List",
+        priceListDescription: "Upload your current price list with all products/services",
+        minimumOrderValue: "Minimum Order Value (SAR)",
+        deliverySLA: "Delivery SLA (Days)",
+        deliverySLAPlaceholder: "e.g., 7",
+        paymentTerms: "Payment Terms",
+        selectPaymentTerms: "Select payment terms",
+        cash: "Cash on Delivery",
+        net30: "Net 30 Days",
+        net60: "Net 60 Days",
+        net90: "Net 90 Days",
+        consignment: "Consignment"
+      },
+      compliance: {
+        title: "Compliance & Certification",
+        description: "Upload quality, safety, and regulatory certificates",
+        qualityCertificates: "Quality Certificates (ISO/SASO/GSO)",
+        qualityDescription: "Upload ISO 9001, SASO, GSO or other quality certifications (multiple files allowed)",
+        safetyCertificates: "Product Safety / Halal Certificates",
+        safetyDescription: "Upload product safety certifications, Halal certificates, or compliance documents",
+        insuranceLicenses: "Insurance / GOSI / Municipal License",
+        insuranceDescription: "Upload business insurance, GOSI registration, municipal license, or trade permits"
+      },
+      declaration: {
+        title: "Vendor Declaration",
+        description: "Confirm the accuracy of all provided information",
+        statement: "Declaration Statement",
+        statementText: "I, the undersigned, confirm that all information provided in this vendor verification form is true, complete, and accurate to the best of my knowledge. I understand that:",
+        point1: "Providing false or misleading information may result in immediate disqualification from the vendor program",
+        point2: "NGS reserves the right to verify all submitted information and documents",
+        point3: "Any changes to the information provided must be communicated immediately",
+        point4: "Acceptance as a vendor is subject to NGS approval and ongoing compliance",
+        signature: "Authorized Signature",
+        signatureDescription: "Upload a document with the authorized signatory's signature",
+        companyStamp: "Company Stamp",
+        stampDescription: "Upload a clear image of your official company stamp",
+        accept: "I hereby declare that: All information provided in this form is true and accurate. I accept the terms and conditions outlined above and authorize NGS to verify the information submitted."
+      },
+      steps: {
+        basicInfo: "Basic Information",
+        banking: "Banking Details",
+        products: "Products & Services",
+        compliance: "Compliance",
+        declaration: "Declaration",
+        complete: "Complete"
+      },
+      progress: {
+        step: "Step",
+        of: "of"
+      },
+      buttons: {
+        back: "Back",
+        next: "Next",
+        submit: "Submit Verification",
+        submitting: "Submitting...",
+        goToDashboard: "Go to Dashboard"
+      },
+      success: {
+        title: "Vendor Verification Submitted!",
+        description: "Your vendor verification has been submitted successfully",
+        message: "Our team will review your submission and get back to you within 3-5 business days. You will receive an email notification once your verification status is updated."
+      },
+      validation: {
+        incomplete: "Incomplete information",
+        incompleteDescription: "Please fill in all required fields before continuing",
+        cannotSubmit: "Cannot submit",
+        completeRequired: "Please complete all required fields"
+      },
+      fileUpload: {
+        uploaded: "File uploaded",
+        uploadedDescription: "{fileName} uploaded successfully",
+        failed: "Upload failed",
+        failedDescription: "Failed to upload file. Please try again."
+      }
+    },
+    
     // Category Management (Phase 2)
     categoryManagement: {
       title: "Category Management",
