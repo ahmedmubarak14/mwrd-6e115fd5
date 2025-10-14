@@ -1,6 +1,4 @@
 import { ProcurementClientDashboard } from "@/components/Dashboard/ProcurementClientDashboard";
-import { OfferReviewSystem } from "@/components/client/OfferReviewSystem";
-import { OrderManagementSystem } from "@/components/orders/OrderManagementSystem";
 import { ClientLayout } from "@/components/layout/ClientLayout";
 import { useAuth } from "@/contexts/AuthContext";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";

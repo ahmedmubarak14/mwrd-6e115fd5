@@ -116,7 +116,7 @@ export const LazyAdminCommunicationCenter = lazy(() =>
 
 // Vendor-specific lazy loading components
 export const LazyVendorDashboard = lazy(() => 
-  import('@/components/vendor/CleanVendorDashboard').then(m => ({ default: m.CleanVendorDashboard }))
+  import('@/components/vendor/OptimizedVendorDashboard').then(m => ({ default: m.OptimizedVendorDashboard }))
 );
 
 export const LazyOfferManagementSystem = lazy(() => 
