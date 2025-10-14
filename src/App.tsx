@@ -60,6 +60,7 @@ import KYCForm from './pages/kyc/KYCForm';
 import VendorMainInfo from './pages/kyv/MainInfo';
 import KYVForm from './pages/kyv/KYVForm';
 import AdminKYCReviewPage from './pages/admin/AdminKYCReview';
+import AdminKYVReviewPage from './pages/admin/AdminKYVReview';
 import KYCStatus from './pages/client/KYCStatus';
 import Requests from './pages/Requests';
 import CreateSimpleRequest from './pages/CreateSimpleRequest';
@@ -341,6 +342,7 @@ function App() {
                       <Route path="category-management" element={<AdminCategoryManagement />} />
                       <Route path="expert-consultations" element={<ExpertConsultations />} />
                       <Route path="kyc-review" element={<AdminKYCReviewPage />} />
+                      <Route path="kyv-review" element={<AdminKYVReviewPage />} />
                       <Route path="settings" element={<AdminSettings />} />
                       <Route path="profile" element={<AdminProfile />} />
                     </Route>

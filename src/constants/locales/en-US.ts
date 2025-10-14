@@ -131,6 +131,8 @@ export const enUS = {
     supportNav: "Support",
     projectsNav: "Projects",
     categoryManagementNav: "Category Management",
+    kycReview: "KYC Review",
+    kyvReview: "KYV Review",
     
     // Breadcrumbs
     breadcrumbs: {

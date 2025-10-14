@@ -134,6 +134,8 @@ export const arSA = {
     supportNav: "الدعم",
     projectsNav: "المشاريع",
     categoryManagementNav: "إدارة الفئات",
+    kycReview: "مراجعة التحقق من هوية العملاء",
+    kyvReview: "مراجعة التحقق من هوية الموردين",
     
     // Breadcrumbs
     breadcrumbs: {
