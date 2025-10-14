@@ -22,9 +22,7 @@ const breadcrumbKeys: Record<string, string> = {
   "/admin/analytics": "admin.breadcrumbs.platformAnalytics",
   "/admin/subscriptions": "admin.breadcrumbs.subscriptionManagement",
   "/admin/support": "admin.breadcrumbs.supportCenter",
-  "/admin/verification-queue": "admin.breadcrumbs.verificationQueue",
   "/admin/category-management": "admin.breadcrumbs.categoryManagement",
-  "/admin/expert-consultations": "admin.breadcrumbs.expertConsultations",
   "/admin/financial-transactions": "admin.breadcrumbs.financialTransactions",
   "/admin/security": "admin.breadcrumbs.securityMonitoring",
   "/admin/communications": "admin.breadcrumbs.communicationCenter"

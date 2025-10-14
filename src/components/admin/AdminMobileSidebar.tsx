@@ -50,11 +50,6 @@ export const AdminMobileSidebar = ({ isOpen, onOpenChange }: AdminMobileSidebarP
           href: "/admin/analytics",
           icon: BarChart3,
         },
-        {
-          name: t('admin.performanceMonitor'),
-          href: "/admin/performance-monitor",
-          icon: Activity,
-        },
       ]
     },
     {
@@ -99,11 +94,6 @@ export const AdminMobileSidebar = ({ isOpen, onOpenChange }: AdminMobileSidebarP
           name: t('admin.emailCampaigns'),
           href: "/admin/email-campaigns",
           icon: Mail,
-        },
-        {
-          name: t('admin.expertConsultations'),
-          href: "/admin/expert-consultations",
-          icon: UserCheck,
         },
       ]
     },

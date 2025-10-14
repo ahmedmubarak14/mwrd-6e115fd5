@@ -107,14 +107,6 @@ export const ComprehensiveAdminOverview = () => {
       color: 'bg-green-500'
     },
     {
-      title: t('navigation.systemHealth'),
-      description: t('navigation.systemHealthDescription'),
-      icon: Server,
-      link: '/admin/performance-monitor',
-      color: systemMetrics?.overallStatus === 'healthy' ? 'bg-green-500' : 
-             systemMetrics?.overallStatus === 'warning' ? 'bg-yellow-500' : 'bg-red-500'
-    },
-    {
       title: t('navigation.securityCenter'),
       description: t('navigation.securityCenterDescription'),
       icon: Shield,
@@ -134,13 +126,6 @@ export const ComprehensiveAdminOverview = () => {
       icon: BarChart3,
       link: '/admin/analytics',
       color: 'bg-teal-500'
-    },
-    {
-      title: t('navigation.automation'),
-      description: t('navigation.automationDescription'),
-      icon: Zap,
-      link: '/admin/automation',
-      color: 'bg-yellow-500'
     }
   ];
 
@@ -278,7 +263,7 @@ export const ComprehensiveAdminOverview = () => {
                 </p>
               </div>
               <Button variant="outline" size="sm" asChild className="ml-auto">
-                <Link to="/admin/performance-monitor">{t('admin.actions.viewDetails')}</Link>
+                <Link to="/admin/security">{t('admin.actions.viewDetails')}</Link>
               </Button>
             </div>
           </CardContent>

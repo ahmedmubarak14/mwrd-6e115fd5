@@ -114,10 +114,6 @@ export const LazyAdminCommunicationCenter = lazy(() =>
   import('@/components/admin/AdminCommunicationCenter').then(m => ({ default: m.AdminCommunicationCenter }))
 );
 
-export const LazyPerformanceMonitor = lazy(() => 
-  import('@/components/admin/PerformanceMonitor').then(m => ({ default: m.PerformanceMonitor }))
-);
-
 // Vendor-specific lazy loading components
 export const LazyVendorDashboard = lazy(() => 
   import('@/components/vendor/CleanVendorDashboard').then(m => ({ default: m.CleanVendorDashboard }))

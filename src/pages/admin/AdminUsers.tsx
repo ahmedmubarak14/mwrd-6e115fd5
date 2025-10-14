@@ -16,7 +16,6 @@ import { format } from "date-fns";
 import { Users, UserCheck, Clock, TrendingUp, Download, RefreshCw, UserPlus, Mail, Shield, FileCheck, UserCog, Edit, Trash2, BarChart3, Activity } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { VerificationQueue } from "@/components/admin/VerificationQueue";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
@@ -727,10 +726,6 @@ export default function AdminUsers() {
               <Users className="h-4 w-4" />
               {t('admin.usersTab')}
             </TabsTrigger>
-            <TabsTrigger value="verification" className="flex items-center gap-2">
-              <FileCheck className="h-4 w-4" />
-              {t('admin.verificationQueueTab')}
-            </TabsTrigger>
             <TabsTrigger value="analytics" className="flex items-center gap-2">
               <BarChart3 className="h-4 w-4" />
               {t('admin.analyticsTab')}
@@ -840,10 +835,6 @@ export default function AdminUsers() {
                 ))
               )}
             </div>
-          </TabsContent>
-
-          <TabsContent value="verification">
-            <VerificationQueue />
           </TabsContent>
 
           <TabsContent value="analytics">

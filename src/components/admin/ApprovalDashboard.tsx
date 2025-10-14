@@ -20,7 +20,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { format, subDays, startOfDay, endOfDay } from 'date-fns';
 import { BulkApprovalActions } from './BulkApprovalActions';
-import { WorkflowAutomation } from './WorkflowAutomation';
 import { RequestApprovalCard } from './RequestApprovalCard';
 import { OfferApprovalCard } from './OfferApprovalCard';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -446,11 +445,10 @@ export const ApprovalDashboard = () => {
 
       {/* Main Content Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="overview">{t('admin.approvals.queue')} ({pendingItems.length})</TabsTrigger>
           <TabsTrigger value="requests">{t('admin.approvals.requests')} ({metrics.pendingRequests})</TabsTrigger>
           <TabsTrigger value="offers">{t('admin.approvals.offers')} ({metrics.pendingOffers})</TabsTrigger>
-          <TabsTrigger value="automation">{t('admin.approvals.automation')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -549,10 +547,6 @@ export const ApprovalDashboard = () => {
             <MessageSquare className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <p className="text-lg font-medium mb-2">{t('admin.approvals.offerInterface')}</p>
           </div>
-        </TabsContent>
-
-        <TabsContent value="automation">
-          <WorkflowAutomation />
         </TabsContent>
       </Tabs>
     </div>

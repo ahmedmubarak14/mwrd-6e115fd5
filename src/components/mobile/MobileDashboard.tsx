@@ -21,7 +21,6 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNotifications } from '@/hooks/useNotifications';
-import { useAutomatedTasks } from '@/hooks/useWorkflowAutomation';
 import { useMobileDetection } from '@/hooks/useMobileDetection';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
@@ -38,7 +37,6 @@ interface QuickStat {
 export const MobileDashboard = () => {
   const { userProfile } = useAuth();
   const { notifications, loading: notificationsLoading } = useNotifications();
-  const { tasks, loading: tasksLoading } = useAutomatedTasks();
   const { isMobile } = useMobileDetection();
   const logger = consoleCleanupGuide.createLogger('MobileDashboard');
 
@@ -53,8 +51,8 @@ export const MobileDashboard = () => {
       return [
         { label: 'Active Users', value: '2.4K', change: '+12%', icon: Users, color: 'text-blue-500' },
         { label: 'Total Revenue', value: '$125K', change: '+8%', icon: DollarSign, color: 'text-green-500' },
-        { label: 'Pending Tasks', value: tasks.filter(t => t.status === 'pending').length, icon: Clock, color: 'text-orange-500' },
-        { label: 'Completed', value: tasks.filter(t => t.status === 'completed').length, icon: CheckCircle, color: 'text-green-500' }
+        { label: 'Pending Tasks', value: '0', icon: Clock, color: 'text-orange-500' },
+        { label: 'Completed', value: '0', icon: CheckCircle, color: 'text-green-500' }
       ];
     } else if ((userProfile as any)?.role === 'supplier') {
       return [
@@ -75,7 +73,6 @@ export const MobileDashboard = () => {
 
   const quickStats = getQuickStats();
   const recentNotifications = notifications.slice(0, 5);
-  const pendingTasks = tasks.filter(t => t.status === 'pending').slice(0, 3);
 
   const overviewContent = (
     <div className="space-y-4">
@@ -160,55 +157,6 @@ export const MobileDashboard = () => {
     </div>
   );
 
-  const tasksContent = (
-    <div className="space-y-3">
-      {tasksLoading ? (
-        <div className="flex items-center justify-center py-8">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-        </div>
-      ) : pendingTasks.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">
-          <CheckCircle className="h-12 w-12 mx-auto mb-4 opacity-50" />
-          <p>No pending tasks</p>
-        </div>
-      ) : (
-        pendingTasks.map((task) => (
-          <SwipeableCard
-            key={task.id}
-            rightActions={[
-              {
-                icon: CheckCircle,
-                label: 'Complete',
-                color: 'success',
-                onClick: () => logger.debug('Complete task:', task.id)
-              }
-            ]}
-          >
-            <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 shrink-0" />
-              <div className="flex-1 min-w-0">
-                <h4 className="font-medium text-sm mb-1">{task.title}</h4>
-                {task.description && (
-                  <p className="text-sm text-muted-foreground mb-2 line-clamp-2">
-                    {task.description}
-                  </p>
-                )}
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Badge variant="outline" className="text-xs">
-                    {task.priority}
-                  </Badge>
-                  {task.due_date && (
-                    <span>Due: {format(new Date(task.due_date), 'MMM d')}</span>
-                  )}
-                </div>
-              </div>
-            </div>
-          </SwipeableCard>
-        ))
-      )}
-    </div>
-  );
-
   const tabs = [
     {
       id: 'overview',
@@ -222,13 +170,6 @@ export const MobileDashboard = () => {
       icon: MessageSquare,
       content: notificationsContent,
       badge: notifications.filter(n => !n.read_at).length
-    },
-    {
-      id: 'tasks',
-      label: 'Tasks',
-      icon: Clock,
-      content: tasksContent,
-      badge: pendingTasks.length
     }
   ];
 

@@ -41,20 +41,14 @@ import AdminUsers from './pages/admin/AdminUsers';
 import AdminRequests from './pages/admin/AdminRequests';
 import AdminOffers from './pages/admin/AdminOffers';
 import AdminAnalytics from './pages/admin/AdminAnalytics';
-
-import AdminPerformanceMonitor from './pages/admin/AdminPerformanceMonitor';
 import AdminProjects from './pages/admin/AdminProjects';
 import AdminOrders from './pages/admin/AdminOrders';
-import AdminVerificationQueue from './pages/admin/AdminVerificationQueue';
-import WorkflowAutomation from './pages/admin/WorkflowAutomation';
 import AdminFinancialTransactions from './pages/admin/AdminFinancialTransactions';
 import AdminSubscriptions from './pages/admin/AdminSubscriptions';
 import AdminSupport from './pages/admin/AdminSupport';
 import AdminCommunications from './pages/admin/AdminCommunications';
 import AdminCategoryManagement from './pages/admin/CategoryManagement';
-import { ExpertConsultations } from './pages/admin/ExpertConsultations';
 import AdminSettings from './pages/AdminSettings';
-import AdminProfile from './pages/AdminProfile';
 import MainInfo from './pages/kyc/MainInfo';
 import KYCForm from './pages/kyc/KYCForm';
 import VendorMainInfo from './pages/kyv/MainInfo';
@@ -331,21 +325,16 @@ function App() {
                       <Route path="requests" element={<AdminRequests />} />
                       <Route path="offers" element={<AdminOffers />} />
                       <Route path="analytics" element={<AdminAnalytics />} />
-                      <Route path="performance-monitor" element={<AdminPerformanceMonitor />} />
                       <Route path="projects" element={<AdminProjects />} />
                       <Route path="orders" element={<AdminOrders />} />
-                      <Route path="verification" element={<AdminVerificationQueue />} />
-                      <Route path="automation" element={<WorkflowAutomation />} />
                       <Route path="financial-transactions" element={<AdminFinancialTransactions />} />
                       <Route path="subscriptions" element={<AdminSubscriptions />} />
                       <Route path="support" element={<AdminSupport />} />
                       <Route path="communications" element={<AdminCommunications />} />
                       <Route path="category-management" element={<AdminCategoryManagement />} />
-                      <Route path="expert-consultations" element={<ExpertConsultations />} />
                       <Route path="kyc-review" element={<AdminKYCReviewPage />} />
                       <Route path="kyv-review" element={<AdminKYVReviewPage />} />
                       <Route path="settings" element={<AdminSettings />} />
-                      <Route path="profile" element={<AdminProfile />} />
                     </Route>
                     
                     {/* Vendor index redirect */}
