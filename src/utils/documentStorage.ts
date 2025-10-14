@@ -54,8 +54,8 @@ export const uploadDocument = async (
     
     if (!verificationResult.success) {
       console.error('File verification failed after 3 attempts:', verificationResult.error);
-      // Clean up the potentially failed upload
-      await supabase.storage.from('chat-files').remove([data.path]);
+      // Clean up the potentially failed upload (use the correct bucket variable)
+      await supabase.storage.from(bucket).remove([data.path]);
       return { success: false, error: 'File upload verification failed after multiple attempts' };
     }
 
@@ -70,18 +70,41 @@ export const uploadDocument = async (
 
 /**
  * Verifies that a file exists in storage with enhanced admin diagnostics
+ * Auto-detects bucket from file path prefix
  */
 export const verifyFileExists = async (filePath: string, bucket: string = 'chat-files'): Promise<{ success: boolean; error?: string }> => {
   try {
-    const pathParts = filePath.split('/');
+    let actualFilePath = filePath;
+    let detectedBucket = bucket;
+
+    // Auto-detect bucket from path prefix and strip it
+    if (filePath.startsWith('chat-files/')) {
+      detectedBucket = 'chat-files';
+      actualFilePath = filePath.replace(/^chat-files\//, '');
+    } else if (filePath.startsWith('chat-images/')) {
+      detectedBucket = 'chat-images';
+      actualFilePath = filePath.replace(/^chat-images\//, '');
+    } else if (filePath.startsWith('kyv-documents/')) {
+      detectedBucket = 'kyv-documents';
+      actualFilePath = filePath.replace(/^kyv-documents\//, '');
+    } else if (filePath.includes('/kyv/')) {
+      detectedBucket = 'kyv-documents';
+    }
+
+    const pathParts = actualFilePath.split('/');
     const fileName = pathParts.pop();
     const folderPath = pathParts.join('/');
 
-    // Production logging with proper error handling
-    console.log('Document verification check:', { filePath, folderPath, fileName, bucket });
+    console.log('Document verification check:', { 
+      originalPath: filePath, 
+      actualFilePath, 
+      folderPath, 
+      fileName, 
+      bucket: detectedBucket 
+    });
 
     const { data, error } = await supabase.storage
-      .from(bucket)
+      .from(detectedBucket)
       .list(folderPath, {
         search: fileName
       });
@@ -94,14 +117,20 @@ export const verifyFileExists = async (filePath: string, bucket: string = 'chat-
     const fileExists = data && data.length > 0;
     
     if (!fileExists) {
-      console.warn('File not found in storage:', { filePath, folderPath, fileName, availableFiles: data?.map(f => f.name) });
+      console.warn('File not found in bucket:', { 
+        bucket: detectedBucket, 
+        filePath: actualFilePath, 
+        folderPath, 
+        fileName, 
+        availableFiles: data?.map(f => f.name) 
+      });
     } else {
-      console.log('File verification successful:', fileName);
+      console.log('File verification successful:', fileName, 'in bucket:', detectedBucket);
     }
     
     return { 
       success: fileExists, 
-      error: fileExists ? undefined : `File not found in storage at path: ${folderPath}/${fileName}` 
+      error: fileExists ? undefined : `File not found in ${detectedBucket} at path: ${folderPath}/${fileName}` 
     };
 
   } catch (error: any) {
@@ -151,8 +180,17 @@ export const generateDocumentSignedUrl = async (
         }
       }
     } else {
-      // Determine bucket from file path structure
-      if (filePath.includes('/kyv/')) {
+      // Detect bucket from path prefix and strip it
+      if (filePath.startsWith('chat-files/')) {
+        bucket = 'chat-files';
+        actualFilePath = filePath.replace(/^chat-files\//, '');
+      } else if (filePath.startsWith('chat-images/')) {
+        bucket = 'chat-images';
+        actualFilePath = filePath.replace(/^chat-images\//, '');
+      } else if (filePath.startsWith('kyv-documents/')) {
+        bucket = 'kyv-documents';
+        actualFilePath = filePath.replace(/^kyv-documents\//, '');
+      } else if (filePath.includes('/kyv/')) {
         bucket = 'kyv-documents';
       }
     }
@@ -241,24 +279,45 @@ const logDocumentAccessAttempt = async (
 
 /**
  * Extracts the actual file path from various URL formats
+ * Handles all buckets: chat-files, chat-images, kyv-documents
  */
 export const extractFilePath = (url: string): string => {
   if (!url.startsWith('http')) {
     return url; // Already a file path
   }
 
-  // Handle public URL format
-  const publicUrlParts = url.split('/storage/v1/object/public/chat-files/');
-  if (publicUrlParts.length === 2) {
-    return publicUrlParts[1];
+  // Handle public URL formats for all buckets
+  const buckets = ['chat-files', 'chat-images', 'kyv-documents'];
+  for (const bucket of buckets) {
+    const publicUrlParts = url.split(`/storage/v1/object/public/${bucket}/`);
+    if (publicUrlParts.length === 2) {
+      return publicUrlParts[1];
+    }
   }
 
-  // Handle signed URL format (extract from the path)
+  // Handle signed URL formats for all buckets
+  for (const bucket of buckets) {
+    const signedUrlParts = url.split(`/storage/v1/object/sign/${bucket}/`);
+    if (signedUrlParts.length === 2) {
+      // Remove query parameters (token)
+      return signedUrlParts[1].split('?')[0];
+    }
+  }
+
+  // Fallback: try to parse as URL and extract path
   try {
     const urlObj = new URL(url);
     const pathParts = urlObj.pathname.split('/object/');
     if (pathParts.length === 2) {
-      return pathParts[1].replace('chat-files/', '');
+      // Remove any bucket prefix from the path
+      let path = pathParts[1];
+      for (const bucket of buckets) {
+        if (path.startsWith(`${bucket}/`)) {
+          path = path.replace(`${bucket}/`, '');
+          break;
+        }
+      }
+      return path;
     }
   } catch (error) {
     console.error('Error parsing URL:', error);

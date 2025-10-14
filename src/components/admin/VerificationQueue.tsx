@@ -270,41 +270,49 @@ export const VerificationQueue = () => {
   };
 
   const handleViewDocument = async (filePath: string, requestId: string) => {
-    const status = documentStatus[requestId];
+    console.log('Viewing document:', { filePath, requestId });
     
-    if (status === 'missing') {
-      showError(t('admin.verification.documentNotFound'));
-      return;
-    }
-
-    // Extract file path before generating signed URL
-    const actualFilePath = extractFilePath(filePath);
-    const result = await generateDocumentSignedUrl(actualFilePath);
-    if (result.success && result.signedUrl) {
-      window.open(result.signedUrl, '_blank');
-    } else {
-      showError(result.error || t('admin.verification.failedAccessDocument'));
+    try {
+      // Extract file path before generating signed URL
+      const actualFilePath = extractFilePath(filePath);
+      console.log('Resolved file path:', actualFilePath);
+      
+      const result = await generateDocumentSignedUrl(actualFilePath);
+      
+      if (result.success && result.signedUrl) {
+        console.log('Opening signed URL:', result.signedUrl);
+        window.open(result.signedUrl, '_blank');
+      } else {
+        showError(result.error || t('admin.verification.failedAccessDocument'));
+      }
+    } catch (error: any) {
+      console.error('Error viewing document:', error);
+      showError(error.message || t('admin.verification.failedAccessDocument'));
     }
   };
 
   const handleDownloadDocument = async (filePath: string, companyName?: string, requestId?: string) => {
-    const status = requestId ? documentStatus[requestId] : undefined;
+    console.log('Downloading document:', { filePath, companyName, requestId });
     
-    if (status === 'missing') {
-      showError(t('admin.verification.cannotDownloadMissing'));
-      return;
-    }
-
-    // Extract file path before generating signed URL
-    const actualFilePath = extractFilePath(filePath);
-    const result = await generateDocumentSignedUrl(actualFilePath, 300); // 5 minutes for download
-    if (result.success && result.signedUrl) {
-      const link = document.createElement('a');
-      link.href = result.signedUrl;
-      link.download = `CR_${companyName || 'document'}.pdf`;
-      link.click();
-    } else {
-      showError(result.error || t('admin.verification.failedDownloadDocument'));
+    try {
+      // Extract file path before generating signed URL
+      const actualFilePath = extractFilePath(filePath);
+      console.log('Resolved file path for download:', actualFilePath);
+      
+      const result = await generateDocumentSignedUrl(actualFilePath, 300); // 5 minutes for download
+      
+      if (result.success && result.signedUrl) {
+        const link = document.createElement('a');
+        link.href = result.signedUrl;
+        link.download = `CR_${companyName || 'document'}.pdf`;
+        link.click();
+        showSuccess(t('admin.verification.downloadSuccess'));
+      } else {
+        showError(result.error || t('admin.verification.failedDownloadDocument'));
+      }
+    } catch (error: any) {
+      console.error('Error downloading document:', error);
+      showError(error.message || t('admin.verification.failedDownloadDocument'));
     }
   };
 
@@ -429,7 +437,6 @@ export const VerificationQueue = () => {
               variant="outline"
               size="sm"
               onClick={() => handleViewDocument(request.document_url, request.id)}
-              disabled={documentStatus[request.id] === 'missing'}
               className="flex-1"
             >
               <Eye className="h-4 w-4 mr-2" />
@@ -444,7 +451,6 @@ export const VerificationQueue = () => {
                 request.user_profiles?.company_name,
                 request.id
               )}
-              disabled={documentStatus[request.id] === 'missing'}
               className="flex-1"
             >
               <Download className="h-4 w-4 mr-2" />

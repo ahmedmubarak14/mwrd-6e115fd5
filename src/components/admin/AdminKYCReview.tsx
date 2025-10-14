@@ -233,16 +233,22 @@ export const AdminKYCReview = () => {
   };
 
   const viewDocument = async (documentUrl: string) => {
+    console.log('Viewing document:', documentUrl);
+    
     try {
       const filePath = extractFilePath(documentUrl);
+      console.log('Resolved file path:', filePath);
+      
       const result = await generateDocumentSignedUrl(filePath);
       
       if (!result.success || !result.signedUrl) {
         throw new Error(result.error || 'Failed to generate view URL');
       }
 
+      console.log('Opening signed URL:', result.signedUrl);
       window.open(result.signedUrl, '_blank');
     } catch (error: any) {
+      console.error('Error viewing document:', error);
       toast({
         title: t('admin.kyc.viewError'),
         description: error.message || t('admin.kyc.viewErrorDesc'),
@@ -397,7 +403,6 @@ export const AdminKYCReview = () => {
                 <div className="flex gap-2">
                   <Button 
                     onClick={() => viewDocument(selectedSubmission.cr_document_url)} 
-                    disabled={documentStatus[selectedSubmission.id + '_cr'] === 'missing'}
                     variant="outline"
                     className="flex-1"
                   >
@@ -406,7 +411,6 @@ export const AdminKYCReview = () => {
                   </Button>
                   <Button 
                     onClick={() => downloadDocument(selectedSubmission.cr_document_url, 'CR-Certificate.pdf')} 
-                    disabled={documentStatus[selectedSubmission.id + '_cr'] === 'missing'}
                     variant="outline"
                     className="flex-1"
                   >
@@ -433,7 +437,6 @@ export const AdminKYCReview = () => {
                 <div className="flex gap-2">
                   <Button 
                     onClick={() => viewDocument(selectedSubmission.vat_certificate_url)} 
-                    disabled={documentStatus[selectedSubmission.id + '_vat'] === 'missing'}
                     variant="outline"
                     className="flex-1"
                   >
@@ -442,7 +445,6 @@ export const AdminKYCReview = () => {
                   </Button>
                   <Button 
                     onClick={() => downloadDocument(selectedSubmission.vat_certificate_url, 'VAT-Certificate.pdf')} 
-                    disabled={documentStatus[selectedSubmission.id + '_vat'] === 'missing'}
                     variant="outline"
                     className="flex-1"
                   >
@@ -483,16 +485,14 @@ export const AdminKYCReview = () => {
                 <div className="flex gap-2">
                   <Button 
                     onClick={() => viewDocument(selectedSubmission.address_certificate_url)} 
-                    disabled={documentStatus[selectedSubmission.id + '_address'] === 'missing'}
                     variant="outline"
                     className="flex-1"
                   >
                     <Eye className="w-4 h-4 mr-2" />
                     {t('admin.kyc.viewAddressDocument')}
                   </Button>
-                  <Button 
+                  <Button
                     onClick={() => downloadDocument(selectedSubmission.address_certificate_url, 'Address-Certificate.pdf')} 
-                    disabled={documentStatus[selectedSubmission.id + '_address'] === 'missing'}
                     variant="outline"
                     className="flex-1"
                   >
