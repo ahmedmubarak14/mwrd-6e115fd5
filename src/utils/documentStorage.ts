@@ -189,11 +189,19 @@ export const generateDocumentSignedUrl = async (
       return { success: false, error: errorMsg };
     }
 
+    // Convert relative signed URL to absolute URL
+    const baseUrl = 'https://jpxqywtitjjphkiuokov.supabase.co';
+    const absoluteSignedUrl = data.signedUrl.startsWith('http') 
+      ? data.signedUrl 
+      : `${baseUrl}/storage/v1${data.signedUrl}`;
+
+    console.log('Generated absolute signed URL:', absoluteSignedUrl);
+
     // Log successful access
     await logDocumentAccessAttempt(actualFilePath, true);
     console.log(`Document access granted for ${userRole}:`, actualFilePath, 'from bucket:', bucket);
     
-    return { success: true, signedUrl: data.signedUrl };
+    return { success: true, signedUrl: absoluteSignedUrl };
 
   } catch (error: any) {
     console.error('Error generating signed URL:', error);
