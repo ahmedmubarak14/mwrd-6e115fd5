@@ -23,7 +23,10 @@ export const useFileUpload = () => {
     return 'chat-files';
   };
 
-  const uploadFile = async (file: File): Promise<{ id: string; url: string; metadata: any } | null> => {
+  const uploadFile = async (
+    file: File, 
+    bucketOverride?: 'chat-files' | 'chat-images' | 'voice-messages' | 'kyv-documents'
+  ): Promise<{ id: string; url: string; metadata: any } | null> => {
     setUploading(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -32,9 +35,11 @@ export const useFileUpload = () => {
         return null;
       }
 
-      const bucket = getBucketForFileType(file.type);
+      const bucket = bucketOverride || getBucketForFileType(file.type);
       const fileExt = file.name.split('.').pop();
-      const fileName = `${user.id}/${Date.now()}.${fileExt}`;
+      const fileName = bucketOverride === 'kyv-documents' 
+        ? `${user.id}/kyv/${Date.now()}.${fileExt}`
+        : `${user.id}/${Date.now()}.${fileExt}`;
       
       const { data, error } = await supabase.storage
         .from(bucket)

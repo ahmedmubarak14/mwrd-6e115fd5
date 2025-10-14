@@ -46,8 +46,8 @@ export const EnhancedKYVForm: React.FC<EnhancedKYVFormProps> = ({ onComplete }) 
   const handleFileUpload = async (field: string, file: File | File[]) => {
     try {
       if (Array.isArray(file)) {
-        // Multiple files
-        const uploadPromises = file.map((f) => uploadFile(f));
+        // Multiple files - upload to kyv-documents bucket
+        const uploadPromises = file.map((f) => uploadFile(f, 'kyv-documents'));
         const results = await Promise.all(uploadPromises);
         const urls = results.filter((r) => r?.url).map((r) => r!.url);
         
@@ -59,8 +59,8 @@ export const EnhancedKYVForm: React.FC<EnhancedKYVFormProps> = ({ onComplete }) 
           handleChange('insuranceLicenseUrls', urls);
         }
       } else {
-        // Single file
-        const result = await uploadFile(file);
+        // Single file - upload to kyv-documents bucket
+        const result = await uploadFile(file, 'kyv-documents');
         if (result?.url) {
           const fieldMap: Record<string, string> = {
             zakatCertificate: 'zakatCertificateUrl',

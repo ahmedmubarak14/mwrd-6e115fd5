@@ -19,17 +19,18 @@ export interface SignedUrlResult {
 export const uploadDocument = async (
   file: File,
   userId: string,
-  documentType: string = 'commercial_registration'
+  documentType: string = 'commercial_registration',
+  bucket: string = 'chat-files'
 ): Promise<DocumentUploadResult> => {
   try {
     const fileExt = file.name.split('.').pop();
     const fileName = `${userId}/${documentType}/${Date.now()}.${fileExt}`;
 
-    console.log('Starting document upload:', fileName);
+    console.log('Starting document upload:', fileName, 'to bucket:', bucket);
 
     // Upload file to storage
     const { data, error } = await supabase.storage
-      .from('chat-files')
+      .from(bucket)
       .upload(fileName, file, {
         cacheControl: '3600',
         upsert: false
@@ -70,17 +71,17 @@ export const uploadDocument = async (
 /**
  * Verifies that a file exists in storage with enhanced admin diagnostics
  */
-export const verifyFileExists = async (filePath: string): Promise<{ success: boolean; error?: string }> => {
+export const verifyFileExists = async (filePath: string, bucket: string = 'chat-files'): Promise<{ success: boolean; error?: string }> => {
   try {
     const pathParts = filePath.split('/');
     const fileName = pathParts.pop();
     const folderPath = pathParts.join('/');
 
     // Production logging with proper error handling
-    console.log('Document verification check:', { filePath, folderPath, fileName });
+    console.log('Document verification check:', { filePath, folderPath, fileName, bucket });
 
     const { data, error } = await supabase.storage
-      .from('chat-files')
+      .from(bucket)
       .list(folderPath, {
         search: fileName
       });
@@ -118,17 +119,33 @@ export const generateDocumentSignedUrl = async (
 ): Promise<SignedUrlResult> => {
   try {
     let actualFilePath = filePath;
+    let bucket = 'chat-files'; // default
 
-    // Handle legacy public URLs - extract file path
+    // Handle legacy public URLs - extract file path and determine bucket
     if (filePath.startsWith('http')) {
-      const urlParts = filePath.split('/storage/v1/object/public/chat-files/');
+      // Try chat-files bucket
+      let urlParts = filePath.split('/storage/v1/object/public/chat-files/');
       if (urlParts.length === 2) {
         actualFilePath = urlParts[1];
-        console.log('Extracted file path from public URL:', actualFilePath);
+        bucket = 'chat-files';
+        console.log('Extracted file path from chat-files URL:', actualFilePath);
       } else {
-        console.error('Unable to extract file path from URL:', filePath);
-        await logDocumentAccessAttempt(filePath, false, 'Invalid document URL format');
-        return { success: false, error: 'Invalid document URL format' };
+        // Try kyv-documents bucket (signed URLs)
+        urlParts = filePath.split('/storage/v1/object/sign/kyv-documents/');
+        if (urlParts.length === 2) {
+          actualFilePath = urlParts[1].split('?')[0]; // Remove query params
+          bucket = 'kyv-documents';
+          console.log('Extracted file path from kyv-documents URL:', actualFilePath);
+        } else {
+          console.error('Unable to extract file path from URL:', filePath);
+          await logDocumentAccessAttempt(filePath, false, 'Invalid document URL format');
+          return { success: false, error: 'Invalid document URL format' };
+        }
+      }
+    } else {
+      // Determine bucket from file path structure
+      if (filePath.includes('/kyv/')) {
+        bucket = 'kyv-documents';
       }
     }
 
@@ -146,11 +163,11 @@ export const generateDocumentSignedUrl = async (
     }
 
     // First verify the file exists (with enhanced logging for admins)
-    const verificationResult = await verifyFileExists(actualFilePath);
+    const verificationResult = await verifyFileExists(actualFilePath, bucket);
     if (!verificationResult.success) {
-      console.error('File does not exist:', actualFilePath);
+      console.error('File does not exist:', actualFilePath, 'in bucket:', bucket);
       const errorMsg = userRole === 'admin' 
-        ? `Admin access: Document not found in storage at path: ${actualFilePath}. File may have been deleted or path is incorrect.`
+        ? `Admin access: Document not found in storage at path: ${actualFilePath} in bucket: ${bucket}. File may have been deleted or path is incorrect.`
         : 'Document not found in storage. The file may have been deleted or corrupted.';
       
       await logDocumentAccessAttempt(actualFilePath, false, errorMsg);
@@ -161,7 +178,7 @@ export const generateDocumentSignedUrl = async (
     const adminExpiresIn = userRole === 'admin' ? Math.max(expiresIn, 7200) : expiresIn; // Min 2 hours for admins
     
     const { data, error } = await supabase.storage
-      .from('chat-files')
+      .from(bucket)
       .createSignedUrl(actualFilePath, adminExpiresIn);
 
     if (error) {
@@ -176,7 +193,7 @@ export const generateDocumentSignedUrl = async (
 
     // Log successful access
     await logDocumentAccessAttempt(actualFilePath, true);
-    console.log(`Document access granted for ${userRole}:`, actualFilePath);
+    console.log(`Document access granted for ${userRole}:`, actualFilePath, 'from bucket:', bucket);
     
     return { success: true, signedUrl: data.signedUrl };
 

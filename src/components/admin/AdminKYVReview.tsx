@@ -9,6 +9,7 @@ import { CheckCircle2, XCircle, Eye, Download, AlertTriangle, FileText, Loader2 
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { generateDocumentSignedUrl, extractFilePath } from '@/utils/documentStorage';
 
 interface KYVSubmission {
   id: string;
@@ -95,15 +96,12 @@ export const AdminKYVReview = () => {
     }
   };
 
-  const verifyFileExists = async (path: string | null): Promise<boolean> => {
-    if (!path) return false;
+  const checkDocumentExists = async (url: string | null): Promise<boolean> => {
+    if (!url) return false;
     try {
-      const { data, error } = await supabase.storage
-        .from('kyv-documents')
-        .list(path.split('/').slice(0, -1).join('/'), {
-          search: path.split('/').pop(),
-        });
-      return !error && data && data.length > 0;
+      const filePath = extractFilePath(url);
+      const result = await generateDocumentSignedUrl(filePath, 60);
+      return result.success;
     } catch {
       return false;
     }
@@ -113,26 +111,26 @@ export const AdminKYVReview = () => {
     const status: Record<string, boolean> = {};
     
     // Required documents
-    status.bank_confirmation = await verifyFileExists(submission.bank_confirmation_letter_url);
+    status.bank_confirmation = await checkDocumentExists(submission.bank_confirmation_letter_url);
     
     // Optional documents
     if (submission.zakat_certificate_url) {
-      status.zakat = await verifyFileExists(submission.zakat_certificate_url);
+      status.zakat = await checkDocumentExists(submission.zakat_certificate_url);
     }
     if (submission.chamber_commerce_certificate_url) {
-      status.chamber = await verifyFileExists(submission.chamber_commerce_certificate_url);
+      status.chamber = await checkDocumentExists(submission.chamber_commerce_certificate_url);
     }
     if (submission.product_catalog_url) {
-      status.catalog = await verifyFileExists(submission.product_catalog_url);
+      status.catalog = await checkDocumentExists(submission.product_catalog_url);
     }
     if (submission.price_list_url) {
-      status.price_list = await verifyFileExists(submission.price_list_url);
+      status.price_list = await checkDocumentExists(submission.price_list_url);
     }
     if (submission.vendor_signature_url) {
-      status.signature = await verifyFileExists(submission.vendor_signature_url);
+      status.signature = await checkDocumentExists(submission.vendor_signature_url);
     }
     if (submission.company_stamp_url) {
-      status.stamp = await verifyFileExists(submission.company_stamp_url);
+      status.stamp = await checkDocumentExists(submission.company_stamp_url);
     }
 
     setDocumentStatus(status);
@@ -254,17 +252,25 @@ export const AdminKYVReview = () => {
     }
   };
 
-  const viewDocument = async (path: string | null, filename: string) => {
-    if (!path) return;
+  const viewDocument = async (url: string | null, filename: string) => {
+    if (!url) return;
     
     try {
-      const { data, error } = await supabase.storage
-        .from('kyv-documents')
-        .createSignedUrl(path, 3600);
+      const filePath = extractFilePath(url);
+      const result = await generateDocumentSignedUrl(filePath, 3600);
 
-      if (error) throw error;
-      if (data?.signedUrl) {
-        window.open(data.signedUrl, '_blank');
+      if (result.success && result.signedUrl) {
+        window.open(result.signedUrl, '_blank');
+        toast({
+          title: 'Success',
+          description: `Opening ${filename}`,
+        });
+      } else {
+        toast({
+          title: 'Error',
+          description: result.error || `Failed to view ${filename}`,
+          variant: 'destructive',
+        });
       }
     } catch (error) {
       console.error('Error viewing document:', error);
@@ -276,22 +282,30 @@ export const AdminKYVReview = () => {
     }
   };
 
-  const downloadDocument = async (path: string | null, filename: string) => {
-    if (!path) return;
+  const downloadDocument = async (url: string | null, filename: string) => {
+    if (!url) return;
     
     try {
-      const { data, error } = await supabase.storage
-        .from('kyv-documents')
-        .createSignedUrl(path, 60);
+      const filePath = extractFilePath(url);
+      const result = await generateDocumentSignedUrl(filePath, 60);
 
-      if (error) throw error;
-      if (data?.signedUrl) {
+      if (result.success && result.signedUrl) {
         const link = document.createElement('a');
-        link.href = data.signedUrl;
+        link.href = result.signedUrl;
         link.download = filename;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        toast({
+          title: 'Success',
+          description: `Downloading ${filename}`,
+        });
+      } else {
+        toast({
+          title: 'Error',
+          description: result.error || `Failed to download ${filename}`,
+          variant: 'destructive',
+        });
       }
     } catch (error) {
       console.error('Error downloading document:', error);
