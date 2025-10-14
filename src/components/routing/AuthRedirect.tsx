@@ -13,15 +13,16 @@ export const AuthRedirect = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const logger = consoleCleanupGuide.createLogger('AuthRedirect');
-  const [checkingKYC, setCheckingKYC] = useState(true);
 
   useEffect(() => {
     // Don't redirect while still loading auth state
     if (loading) return;
 
-    // Check if user needs KYC
-    const checkKYCStatus = async () => {
+    const handleRedirect = async () => {
+      // If user is authenticated and we have their profile
       if (user && userProfile) {
+        logger.debug('User authenticated, checking role and redirect');
+
         // Fetch role from user_roles table (secure)
         const { data: userRole } = await supabase
           .from('user_roles')
@@ -30,59 +31,82 @@ export const AuthRedirect = () => {
           .limit(1)
           .maybeSingle();
 
-        if (userRole?.role === 'client') {
-          // Check if user has completed KYC
-          const { data, error } = await supabase
+        const role = userRole?.role || userProfile.role;
+
+        // Admin users - redirect to admin dashboard immediately
+        if (role === 'admin') {
+          logger.debug('Admin user, redirecting to admin dashboard');
+          navigate('/admin/dashboard', { replace: true });
+          return;
+        }
+
+        // Vendor users - check KYV status
+        if (role === 'vendor') {
+          const { data: kyvSubmission } = await supabase
+            .from('kyv_submissions')
+            .select('id, submission_status')
+            .eq('user_id', user.id)
+            .maybeSingle();
+
+          // If no KYV submission exists, redirect to KYV flow
+          if (!kyvSubmission) {
+            logger.debug('No KYV submission found, redirecting to KYV Main Info');
+            navigate('/kyv/main-info', { replace: true });
+            return;
+          }
+
+          // If KYV is rejected, redirect to KYV form to resubmit
+          if (kyvSubmission.submission_status === 'rejected') {
+            logger.debug('KYV rejected, redirecting to KYV form');
+            navigate('/kyv/form', { replace: true });
+            return;
+          }
+
+          // Otherwise go to vendor dashboard
+          navigate('/vendor-dashboard', { replace: true });
+          return;
+        }
+
+        // Client users - check KYC status
+        if (role === 'client') {
+          const { data: kycSubmission } = await supabase
             .from('kyc_submissions')
             .select('id, submission_status')
             .eq('user_id', user.id)
             .maybeSingle();
 
           // If no KYC submission exists, redirect to KYC flow
-          if (!data && !error) {
+          if (!kycSubmission) {
             logger.debug('No KYC submission found, redirecting to KYC Main Info');
             navigate('/kyc/main-info', { replace: true });
-            setCheckingKYC(false);
             return;
           }
 
           // If KYC is rejected, redirect to KYC form to resubmit
-          if (data && data.submission_status === 'rejected') {
+          if (kycSubmission.submission_status === 'rejected') {
             logger.debug('KYC rejected, redirecting to KYC form');
             navigate('/kyc/form', { replace: true });
-            setCheckingKYC(false);
             return;
           }
+
+          // Otherwise go to client dashboard
+          navigate('/dashboard', { replace: true });
+          return;
         }
+
+        // Default fallback
+        navigate('/dashboard', { replace: true });
+        return;
       }
-      setCheckingKYC(false);
+
+      // Only redirect to landing from root path if not authenticated
+      if (location.pathname === '/' && !user) {
+        navigate('/landing', { replace: true });
+      }
     };
 
-    if (user && userProfile && !checkingKYC) {
-      checkKYCStatus();
-      return;
-    }
-
-    // If user is authenticated and we have their profile, redirect based on role
-    if (user && userProfile && !checkingKYC) {
-      logger.debug('User authenticated, redirecting based on role');
-      
-      // Role-based redirection
-      if (userProfile.role === 'admin') {
-        navigate('/admin/dashboard', { replace: true });
-      } else if (userProfile.role === 'vendor') {
-        navigate('/vendor-dashboard', { replace: true });
-      } else {
-        navigate('/dashboard', { replace: true });
-      }
-      return;
-    }
-
-    // Only redirect to landing from root path if not authenticated
-    if (location.pathname === '/' && !user) {
-      navigate('/landing', { replace: true });
-    }
-  }, [user, userProfile, loading, navigate, location.pathname, checkingKYC]);
+    handleRedirect();
+  }, [user, userProfile, loading, navigate, location.pathname, logger]);
 
   return null;
 };

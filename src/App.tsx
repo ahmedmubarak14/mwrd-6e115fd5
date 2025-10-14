@@ -325,6 +325,7 @@ function App() {
                         <AdminLayout />
                       </RoleProtectedRoute>
                     }>
+                      <Route index element={<Navigate to="/admin/dashboard" replace />} />
                       <Route path="dashboard" element={<AdminDashboard />} />
                       <Route path="users" element={<AdminUsers />} />
                       <Route path="requests" element={<AdminRequests />} />
