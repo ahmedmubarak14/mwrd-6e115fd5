@@ -34,9 +34,9 @@ export const KYVDeclaration: React.FC<KYVDeclarationProps> = ({
             I, the undersigned, confirm that all information provided in this vendor verification form is true, complete, and accurate to the best of my knowledge. I understand that:
             <ul className="list-disc list-inside mt-2 space-y-1">
               <li>Providing false or misleading information may result in immediate disqualification from the vendor program</li>
-              <li>NGS reserves the right to verify all submitted information and documents</li>
+              <li>MWRD reserves the right to verify all submitted information and documents</li>
               <li>Any changes to the information provided must be communicated immediately</li>
-              <li>Acceptance as a vendor is subject to NGS approval and ongoing compliance</li>
+              <li>Acceptance as a vendor is subject to MWRD approval and ongoing compliance</li>
             </ul>
           </AlertDescription>
         </Alert>
@@ -74,7 +74,7 @@ export const KYVDeclaration: React.FC<KYVDeclarationProps> = ({
             onCheckedChange={(checked) => onChange('declarationAccepted', checked)}
           />
           <label htmlFor="declaration" className="text-sm leading-tight cursor-pointer">
-            <strong>I hereby declare that:</strong> All information provided in this form is true and accurate. I accept the terms and conditions outlined above and authorize NGS to verify the information submitted. *
+            <strong>I hereby declare that:</strong> All information provided in this form is true and accurate. I accept the terms and conditions outlined above and authorize MWRD to verify the information submitted. *
           </label>
         </div>
       </CardContent>
