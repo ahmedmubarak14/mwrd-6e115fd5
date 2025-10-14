@@ -7,15 +7,13 @@ import {
   ShoppingCart,
   CreditCard,
   Settings,
-  HelpCircle,
   MessageSquare,
   BarChart3,
-  UserCheck,
   FolderOpen,
   Building2,
   Ticket,
   Crown,
-  User
+  ShieldCheck
 } from "lucide-react";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -81,9 +79,14 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
           icon: ShoppingCart,
         },
         {
-          name: t('admin.navigation.verificationQueue'),
-          href: "/admin/verification",
-          icon: UserCheck,
+          name: t('admin.kycReview'),
+          href: "/admin/kyc-review",
+          icon: FileText,
+        },
+        {
+          name: t('admin.kyvReview'),
+          href: "/admin/kyv-review",
+          icon: ShieldCheck,
         },
       ]
     },
@@ -125,19 +128,9 @@ export const AdminMobileSidebarContent = ({ onItemClick }: AdminMobileSidebarCon
           icon: FolderOpen,
         },
         {
-          name: t('admin.expertConsultations.title'),
-          href: "/admin/content/consultations",
-          icon: HelpCircle,
-        },
-        {
           name: t('admin.settings'),
           href: "/admin/settings",
           icon: Settings,
-        },
-        {
-          name: t('admin.profile'),
-          href: "/admin/profile",
-          icon: User,
         },
       ]
     },

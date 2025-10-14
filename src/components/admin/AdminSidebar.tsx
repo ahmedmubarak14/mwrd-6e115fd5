@@ -11,21 +11,15 @@ import {
   ShoppingCart,
   CreditCard,
   Settings,
-  HelpCircle,
   MessageSquare,
   BarChart3,
-  UserCheck,
   FolderOpen,
   Building2,
   Ticket,
   Crown,
-  User,
   ChevronDown,
   ChevronRight,
-  Menu,
-  Activity,
-  Bot,
-  Zap
+  ShieldCheck
 } from "lucide-react";
 import { useSupportTickets } from "@/hooks/useSupportTickets";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -100,11 +94,6 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle, onItemCli
           href: "/admin/analytics",
           icon: BarChart3,
         },
-        {
-          name: t('admin.performanceMonitor'),
-          href: "/admin/performance-monitor",
-          icon: Activity,
-        },
       ]
     },
     {
@@ -138,19 +127,14 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle, onItemCli
           icon: ShoppingCart,
         },
         {
-          name: t('admin.navigation.verificationQueue'),
-          href: "/admin/verification",
-          icon: UserCheck,
-        },
-        {
-          name: t('admin.navigation.kycReview'),
+          name: t('admin.kycReview'),
           href: "/admin/kyc-review",
           icon: FileText,
         },
         {
-          name: t('admin.navigation.automation'),
-          href: "/admin/automation",
-          icon: Bot,
+          name: t('admin.kyvReview'),
+          href: "/admin/kyv-review",
+          icon: ShieldCheck,
         },
       ]
     },
@@ -194,19 +178,9 @@ export const AdminSidebar = ({ className, collapsed = false, onToggle, onItemCli
           icon: FolderOpen,
         },
         {
-          name: t('admin.sidebarExpertConsultations'),
-          href: "/admin/expert-consultations",
-          icon: HelpCircle,
-        },
-        {
           name: t('admin.settings'),
           href: "/admin/settings",
           icon: Settings,
-        },
-        {
-          name: t('admin.profile'),
-          href: "/admin/profile",
-          icon: User,
         },
       ]
     },
