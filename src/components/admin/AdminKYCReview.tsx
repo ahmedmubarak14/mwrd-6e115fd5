@@ -235,6 +235,17 @@ export const AdminKYCReview = () => {
   const viewDocument = async (documentUrl: string) => {
     console.log('Viewing document:', documentUrl);
     
+    // Pre-open tab synchronously to avoid popup blockers
+    const newWindow = window.open('about:blank', '_blank');
+    if (!newWindow) {
+      toast({
+        title: t('admin.kyc.viewError'),
+        description: 'Failed to open new tab. Please allow popups for this site.',
+        variant: "destructive"
+      });
+      return;
+    }
+    
     try {
       const filePath = extractFilePath(documentUrl);
       console.log('Resolved file path:', filePath);
@@ -242,13 +253,15 @@ export const AdminKYCReview = () => {
       const result = await generateDocumentSignedUrl(filePath);
       
       if (!result.success || !result.signedUrl) {
+        newWindow.close();
         throw new Error(result.error || 'Failed to generate view URL');
       }
 
       console.log('Opening signed URL:', result.signedUrl);
-      window.open(result.signedUrl, '_blank');
+      newWindow.location.href = result.signedUrl;
     } catch (error: any) {
       console.error('Error viewing document:', error);
+      newWindow.close();
       toast({
         title: t('admin.kyc.viewError'),
         description: error.message || t('admin.kyc.viewErrorDesc'),

@@ -77,17 +77,23 @@ export const verifyFileExists = async (filePath: string, bucket: string = 'chat-
     let actualFilePath = filePath;
     let detectedBucket = bucket;
 
+    // If filePath is a full URL, normalize it first
+    if (filePath.startsWith('http')) {
+      actualFilePath = extractFilePath(filePath);
+      console.log('Normalized HTTP URL to path:', actualFilePath);
+    }
+
     // Auto-detect bucket from path prefix and strip it
-    if (filePath.startsWith('chat-files/')) {
+    if (actualFilePath.startsWith('chat-files/')) {
       detectedBucket = 'chat-files';
-      actualFilePath = filePath.replace(/^chat-files\//, '');
-    } else if (filePath.startsWith('chat-images/')) {
+      actualFilePath = actualFilePath.replace(/^chat-files\//, '');
+    } else if (actualFilePath.startsWith('chat-images/')) {
       detectedBucket = 'chat-images';
-      actualFilePath = filePath.replace(/^chat-images\//, '');
-    } else if (filePath.startsWith('kyv-documents/')) {
+      actualFilePath = actualFilePath.replace(/^chat-images\//, '');
+    } else if (actualFilePath.startsWith('kyv-documents/')) {
       detectedBucket = 'kyv-documents';
-      actualFilePath = filePath.replace(/^kyv-documents\//, '');
-    } else if (filePath.includes('/kyv/')) {
+      actualFilePath = actualFilePath.replace(/^kyv-documents\//, '');
+    } else if (actualFilePath.includes('/kyv/')) {
       detectedBucket = 'kyv-documents';
     }
 

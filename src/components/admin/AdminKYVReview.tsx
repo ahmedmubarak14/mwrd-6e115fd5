@@ -255,17 +255,31 @@ export const AdminKYVReview = () => {
   const viewDocument = async (url: string | null, filename: string) => {
     if (!url) return;
     
+    // Pre-open tab synchronously to avoid popup blockers
+    const newWindow = window.open('about:blank', '_blank');
+    if (!newWindow) {
+      toast({
+        title: 'Error',
+        description: 'Failed to open new tab. Please allow popups for this site.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    
     try {
       const filePath = extractFilePath(url);
+      console.log('Viewing document:', filePath);
       const result = await generateDocumentSignedUrl(filePath, 3600);
 
       if (result.success && result.signedUrl) {
-        window.open(result.signedUrl, '_blank');
+        console.log('Opening signed URL:', result.signedUrl);
+        newWindow.location.href = result.signedUrl;
         toast({
           title: 'Success',
           description: `Opening ${filename}`,
         });
       } else {
+        newWindow.close();
         toast({
           title: 'Error',
           description: result.error || `Failed to view ${filename}`,
@@ -274,6 +288,7 @@ export const AdminKYVReview = () => {
       }
     } catch (error) {
       console.error('Error viewing document:', error);
+      newWindow.close();
       toast({
         title: 'Error',
         description: `Failed to view ${filename}`,
@@ -318,7 +333,7 @@ export const AdminKYVReview = () => {
   };
 
   if (selectedSubmission) {
-    const missingDocs = !documentStatus.bank_confirmation;
+    const missingDocs = documentStatus.bank_confirmation === false;
 
     return (
       <div className="space-y-6">
