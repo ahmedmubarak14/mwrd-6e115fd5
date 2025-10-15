@@ -26,7 +26,6 @@ export const arSA = {
     notifications: "الإشعارات",
     documents: "المستندات",
     reports: "التقارير",
-    crManagement: "إدارة السجل التجاري",
     projects: "المشاريع",
     analytics: "التحليلات",
     messages: "الرسائل",
@@ -1409,10 +1408,9 @@ export const arSA = {
     businessInfo: 'معلومات الأعمال'
   },
 
-  // Vendor Dashboard & CR Management
+  // Vendor Dashboard
   vendor: {
     navigation: {
-      crManagement: 'إدارة السجل التجاري',
       projectsManagement: 'إدارة المشاريع',
       portfolioManagement: 'إدارة المحفظة',
       dashboard: 'لوحة التحكم',
@@ -1521,37 +1519,6 @@ export const arSA = {
       subscription: 'اشتراك',
       fee: 'رسوم',
       fromCompletedOrders: 'من الطلبات المكتملة'
-    },
-    cr: {
-      title: "إدارة السجل التجاري",
-      verificationRequired: "مطلوب التحقق من السجل التجاري",
-      verified: "موثق",
-      pending: "قيد الانتظار", 
-      rejected: "مرفوض",
-      unverified: "غير موثق",
-      status: "حالة التحقق",
-      statusApproved: "تم الموافقة على سجلك التجاري",
-      statusPending: "سجلك التجاري قيد المراجعة",
-      statusRejected: "تم رفض سجلك التجاري",
-      statusDefault: "يرجى تقديم سجلك التجاري للتحقق",
-      businessSize: "حجم الأعمال",
-      smallMediumLarge: "صغير، متوسط، كبير",
-      establishedYear: "سنة التأسيس",
-      experienceYears: "سنوات الخبرة",
-      employeeCount: "عدد الموظفين",
-      oneToTenEmployees: "1-10 موظفين",
-      teamSize: "حجم الفريق",
-      smallLargeTeam: "فريق صغير/كبير",
-      businessDocuments: "وثائق العمل",
-      upload: "ارفع وثائق السجل التجاري",
-      documentUpload: "ارفع الوثائق هنا",
-      updateCR: "تم تحديث معلومات السجل التجاري بنجاح",
-      completeVerification: 'يرجى إكمال التحقق من سجلك التجاري',
-      approved: 'معتمد'
-    },
-    crManagement: {
-      title: 'إدارة السجل التجاري',
-      subtitle: 'إدارة تفاصيل وحالة سجلك التجاري'
     },
     projectsManagement: {
       title: 'إدارة المشاريع',

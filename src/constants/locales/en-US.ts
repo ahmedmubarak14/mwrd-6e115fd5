@@ -26,7 +26,6 @@ export const enUS = {
     notifications: "Notifications",
     documents: "Documents",
     reports: "Reports",
-    crManagement: "CR Management",
     projects: "Projects",
     analytics: "Analytics",
     messages: "Messages",
@@ -1101,10 +1100,9 @@ export const enUS = {
     automationDescription: "Configure automated workflows and rules"
   },
 
-  // Vendor Dashboard & CR Management
+  // Vendor Dashboard
   vendor: {
     navigation: {
-      crManagement: 'CR Management',
       projectsManagement: 'Projects Management',
       portfolioManagement: 'Portfolio Management',
       dashboard: 'Dashboard',
@@ -1213,37 +1211,6 @@ export const enUS = {
       subscription: 'Subscription',
       fee: 'Fee',
       fromCompletedOrders: 'From completed orders'
-    },
-    cr: {
-      title: "CR Management",
-      verificationRequired: "Commercial Registration verification required",
-      verified: "Verified",
-      pending: "Pending",
-      rejected: "Rejected", 
-      unverified: "Unverified",
-      status: "Verification Status",
-      statusApproved: "Your CR has been approved",
-      statusPending: "Your CR is under review",
-      statusRejected: "Your CR was rejected",
-      statusDefault: "Please submit your CR for verification",
-      businessSize: "Business Size",
-      smallMediumLarge: "Small, Medium, Large",
-      establishedYear: "Established Year",
-      experienceYears: "Years of Experience", 
-      employeeCount: "Employee Count",
-      oneToTenEmployees: "1-10 employees",
-      teamSize: "Team Size",
-      smallLargeTeam: "Small/Large team",
-      businessDocuments: "Business Documents",
-      upload: "Upload your CR documents",
-      documentUpload: "Upload documents here",
-      updateCR: "CR information updated successfully",
-      completeVerification: 'Please complete your commercial registration verification',
-      approved: 'Approved'
-    },
-    crManagement: {
-      title: 'Commercial Registration Management',
-      subtitle: 'Manage your commercial registration details and status'
     },
     projectsManagement: {
       title: 'Projects Management',

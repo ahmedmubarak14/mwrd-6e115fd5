@@ -77,18 +77,6 @@ export const OptimizedVendorDashboard: React.FC = React.memo(() => {
 
     return [
       {
-        id: 'cr-status',
-        title: t('vendor.dashboard.crVerificationStatus'),
-        value: t(`vendor.cr.${stats.crStatus}`),
-        description: t('vendor.dashboard.crVerificationDesc'),
-        icon: stats.crStatus === 'approved' ? CheckCircle : 
-              stats.crStatus === 'pending' ? Activity : AlertCircle,
-        variant: stats.crStatus === 'approved' ? 'success' : 
-                 stats.crStatus === 'pending' ? 'warning' : 'destructive',
-        actionUrl: stats.crStatus !== 'approved' ? '/vendor/cr-management' : undefined,
-        actionLabel: stats.crStatus !== 'approved' ? t('vendor.cr.updateCR') : undefined
-      },
-      {
         id: 'profile-completion',
         title: t('vendor.dashboard.profileCompletionTitle'),
         value: `${stats.profileCompletion}%`,
@@ -288,9 +276,6 @@ export const OptimizedVendorDashboard: React.FC = React.memo(() => {
                   {t('vendor.cr.completeVerification')}
                 </p>
               </div>
-              <Button variant="outline" size="sm" asChild className={cn(isRTL ? "mr-auto" : "ml-auto")}>
-                <Link to="/vendor/cr-management">{t('vendor.cr.updateCR')}</Link>
-              </Button>
             </div>
           </CardContent>
         </Card>

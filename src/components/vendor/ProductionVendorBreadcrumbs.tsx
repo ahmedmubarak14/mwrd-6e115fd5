@@ -24,8 +24,7 @@ const VENDOR_ROUTE_MAP: Record<string, string> = {
   '/vendor/messages': 'vendor.navigation.breadcrumbs.messages',
   '/vendor/profile': 'vendor.navigation.breadcrumbs.profile',
   '/vendor/settings': 'vendor.navigation.breadcrumbs.settings',
-  '/vendor/support': 'vendor.navigation.breadcrumbs.support',
-  '/vendor/cr-management': 'vendor.crManagement.title'
+  '/vendor/support': 'vendor.navigation.breadcrumbs.support'
 };
 
 export const ProductionVendorBreadcrumbs = () => {

@@ -144,21 +144,7 @@ export const VendorHeaderUserMenu = ({ userProfile }: VendorHeaderUserMenuProps)
           {t('nav.profile')}
         </DropdownMenuItem>
 
-        <DropdownMenuItem 
-          onClick={() => {
-            navigate('/vendor/cr-management');
-            setIsOpen(false);
-          }}
-          className={cn(
-            "cursor-pointer gap-2 p-2",
-            isRTL && "flex-row-reverse"
-          )}
-        >
-          <FileText className="h-4 w-4" />
-          {t('vendor.navigation.crManagement')}
-        </DropdownMenuItem>
-
-        <DropdownMenuItem 
+        <DropdownMenuItem
           onClick={() => {
             navigate('/settings');
             setIsOpen(false);

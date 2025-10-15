@@ -28,7 +28,6 @@ export const VendorBreadcrumbs = () => {
     const segmentMap: Record<string, string> = {
       'dashboard': t('nav.dashboard'),
       'projects-management': t('vendor.navigation.projectsManagement'),
-      'cr-management': t('vendor.navigation.crManagement'),
       'portfolio-management': t('vendor.navigation.portfolioManagement'),
       'browse-requests': t('nav.browseRequests'),
       'my-offers': t('nav.myOffers'),

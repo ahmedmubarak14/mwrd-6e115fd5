@@ -17,7 +17,6 @@ import AuthCallback from './pages/AuthCallback';
 import Dashboard from './pages/Dashboard';
 import { VendorDashboard } from './pages/VendorDashboard';
 import { VendorProducts } from './pages/vendor/VendorProducts';
-import { CRManagementPage } from './pages/vendor/CRManagement';
 import { ProjectsManagementPage } from './pages/vendor/ProjectsManagement';
 import { PortfolioManagementPage } from './pages/vendor/PortfolioManagement';
 import { VendorSubscription } from './pages/vendor/VendorSubscription';
@@ -277,11 +276,6 @@ function App() {
                     <Route path="/vendor/support" element={
                       <RoleProtectedRoute allowedRoles={['vendor']}>
                         <VendorSupport />
-                      </RoleProtectedRoute>
-                    } />
-                    <Route path="/vendor/cr-management" element={
-                      <RoleProtectedRoute allowedRoles={['vendor']}>
-                        <CRManagementPage />
                       </RoleProtectedRoute>
                     } />
                     <Route path="/vendor/subscription" element={

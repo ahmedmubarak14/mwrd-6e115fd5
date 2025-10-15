@@ -67,14 +67,6 @@ export const EnhancedVendorDashboard = memo(() => {
 
   const quickActions = useMemo(() => [
     {
-      title: t('vendor.cr.updateCR'),
-      description: t('vendor.cr.verificationRequired'),
-      icon: FileText,
-      href: "/vendor/cr-management",
-      color: "bg-primary",
-      count: stats.crStatus === 'pending' ? 1 : undefined
-    },
-    {
       title: t('vendor.projects.add'),
       description: t('vendor.projects.addFirst'),
       icon: Plus,
@@ -147,9 +139,6 @@ export const EnhancedVendorDashboard = memo(() => {
                     {t('vendor.cr.completeVerification')}
                   </p>
                 </div>
-                <Button variant="outline" size="sm" asChild className={cn(isRTL ? "mr-auto" : "ml-auto")}>
-                  <Link to="/vendor/cr-management">{t('vendor.cr.updateCR')}</Link>
-                </Button>
               </div>
             </CardContent>
           </Card>
@@ -335,9 +324,6 @@ export const EnhancedVendorDashboard = memo(() => {
                       {t('vendor.dashboard.completeCRDesc')}
                     </p>
                   </div>
-                  <Link to="/vendor/cr-management">
-                    <Button size="sm" variant="outline">{t('common.update')}</Button>
-                  </Link>
                 </div>
               )}
               
