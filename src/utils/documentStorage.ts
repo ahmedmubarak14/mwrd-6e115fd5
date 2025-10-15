@@ -93,7 +93,8 @@ export const verifyFileExists = async (filePath: string, bucket: string = 'chat-
     } else if (actualFilePath.startsWith('kyv-documents/')) {
       detectedBucket = 'kyv-documents';
       actualFilePath = actualFilePath.replace(/^kyv-documents\//, '');
-    } else if (actualFilePath.includes('/kyv/')) {
+    } else if (actualFilePath.includes('/kyv/') || actualFilePath.includes('/cr/') || actualFilePath.includes('/vat/') || actualFilePath.includes('/address/')) {
+      // Default KYC/KYV documents to kyv-documents bucket
       detectedBucket = 'kyv-documents';
     }
 
@@ -130,6 +131,19 @@ export const verifyFileExists = async (filePath: string, bucket: string = 'chat-
         fileName, 
         availableFiles: data?.map(f => f.name) 
       });
+      
+      // RETRY LOGIC: If file not found in chat-files, try kyv-documents
+      if (detectedBucket === 'chat-files') {
+        console.log('File not found in chat-files, retrying with kyv-documents bucket...');
+        const { data: retryData, error: retryError } = await supabase.storage
+          .from('kyv-documents')
+          .list(folderPath, { search: fileName });
+        
+        if (!retryError && retryData && retryData.length > 0) {
+          console.log('File found in kyv-documents bucket on retry:', fileName);
+          return { success: true };
+        }
+      }
     } else {
       console.log('File verification successful:', fileName, 'in bucket:', detectedBucket);
     }

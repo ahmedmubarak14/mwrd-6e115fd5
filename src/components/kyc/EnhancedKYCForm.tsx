@@ -152,21 +152,29 @@ export const EnhancedKYCForm = ({ onComplete }: { onComplete: () => void }) => {
       const mainInfoStr = sessionStorage.getItem('mainInfoData');
       const mainInfo = mainInfoStr ? JSON.parse(mainInfoStr) : {};
 
-      // Upload documents with detailed error logging
-      const crUpload = await uploadDocument(formData.crDocumentFile!, user.id, 'cr-documents');
+      // Upload documents with detailed error logging - ALL to kyv-documents bucket
+      console.log('=== KYC DOCUMENT UPLOAD DEBUG ===');
+      console.log('CR File:', formData.crDocumentFile?.name, 'Size:', formData.crDocumentFile?.size);
+      const crUpload = await uploadDocument(formData.crDocumentFile!, user.id, 'cr', 'kyv-documents');
+      console.log('CR Upload result:', { success: crUpload.success, filePath: crUpload.filePath, error: crUpload.error });
       if (!crUpload.success) {
         console.error('CR upload failed:', crUpload.error);
       }
       
-      const vatUpload = await uploadDocument(formData.vatCertificateFile!, user.id, 'vat-documents');
+      console.log('VAT File:', formData.vatCertificateFile?.name, 'Size:', formData.vatCertificateFile?.size);
+      const vatUpload = await uploadDocument(formData.vatCertificateFile!, user.id, 'vat', 'kyv-documents');
+      console.log('VAT Upload result:', { success: vatUpload.success, filePath: vatUpload.filePath, error: vatUpload.error });
       if (!vatUpload.success) {
         console.error('VAT upload failed:', vatUpload.error);
       }
       
-      const addressUpload = await uploadDocument(formData.addressCertificateFile!, user.id, 'address-documents');
+      console.log('Address File:', formData.addressCertificateFile?.name, 'Size:', formData.addressCertificateFile?.size);
+      const addressUpload = await uploadDocument(formData.addressCertificateFile!, user.id, 'address', 'kyv-documents');
+      console.log('Address Upload result:', { success: addressUpload.success, filePath: addressUpload.filePath, error: addressUpload.error });
       if (!addressUpload.success) {
         console.error('Address upload failed:', addressUpload.error);
       }
+      console.log('=================================');
 
       if (!crUpload.success || !vatUpload.success || !addressUpload.success) {
         throw new Error(`Document upload failed: CR=${crUpload.error || 'OK'}, VAT=${vatUpload.error || 'OK'}, Address=${addressUpload.error || 'OK'}`);
@@ -190,10 +198,10 @@ export const EnhancedKYCForm = ({ onComplete }: { onComplete: () => void }) => {
           cr_issuing_date: formData.crIssuingDate,
           cr_issuing_city: formData.crIssuingCity,
           cr_validity_date: formData.crValidityDate,
-          cr_document_url: crUpload.filePath!,
+          cr_document_url: `kyv-documents/${crUpload.filePath!}`,
           // Tax
           vat_number: formData.vatNumber,
-          vat_certificate_url: vatUpload.filePath!,
+          vat_certificate_url: `kyv-documents/${vatUpload.filePath!}`,
           // Address
           address_city: formData.addressCity,
           address_area: formData.addressArea,
@@ -201,7 +209,7 @@ export const EnhancedKYCForm = ({ onComplete }: { onComplete: () => void }) => {
           address_street_name: formData.addressStreetName,
           address_building_number: formData.addressBuildingNumber,
           address_unit_number: formData.addressUnitNumber,
-          address_certificate_url: addressUpload.filePath!,
+          address_certificate_url: `kyv-documents/${addressUpload.filePath!}`,
           // Organization
           organization_type: formData.organizationType,
           nature_of_business: formData.natureOfBusiness,
