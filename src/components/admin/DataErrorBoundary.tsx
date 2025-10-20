@@ -72,7 +72,9 @@ export class DataErrorBoundary extends Component<Props, State> {
       onRetry();
     }
     
-    toast.info(`Retrying... (Attempt ${newRetryCount})`);
+    const currentLanguage = localStorage.getItem('language') as 'en' | 'ar' || 'en';
+    const message = getTranslation('common.errors.retryingAttempt', currentLanguage).replace('{count}', String(newRetryCount));
+    toast.info(message);
   };
 
   getErrorType = () => {
@@ -124,13 +126,13 @@ export class DataErrorBoundary extends Component<Props, State> {
         };
       case 'parse':
         return {
-          title: 'Data Format Error',
-          description: 'The server returned invalid data. Please try again or contact support.'
+          title: getTranslation('common.errors.dataFormatError', currentLanguage),
+          description: getTranslation('common.errors.dataFormatErrorDescription', currentLanguage)
         };
       default:
         return {
           title,
-          description: 'An unexpected error occurred while loading data. Please try again.'
+          description: getTranslation('common.errors.unexpectedError', currentLanguage)
         };
     }
   };
@@ -175,19 +177,19 @@ export class DataErrorBoundary extends Component<Props, State> {
                 disabled={retryCount >= 3}
               >
                 <RefreshCw className="h-4 w-4 mr-2" />
-                {retryCount >= 3 ? getTranslation('common.errors.maxRetriesReached', currentLanguage) : getTranslation('common.actions.tryAgain', currentLanguage)}
+                {retryCount >= 3 ? getTranslation('common.errors.maxRetriesReached', currentLanguage) : getTranslation('common.tryAgain', currentLanguage)}
               </Button>
               <Button 
                 onClick={() => window.location.reload()} 
                 className="flex-1"
               >
-                {getTranslation('common.actions.refreshPage', currentLanguage)}
+                {getTranslation('common.refreshPage', currentLanguage)}
               </Button>
             </div>
             
             {retryCount > 0 && (
               <p className="text-xs text-muted-foreground text-center">
-                Retry attempts: {retryCount}/3
+                {getTranslation('common.errors.retryAttempts', currentLanguage)}: {retryCount}/3
               </p>
             )}
           </CardContent>

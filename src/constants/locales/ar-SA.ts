@@ -1178,7 +1178,23 @@ export const arSA = {
     completeRegistrationButton: "إكمال التسجيل",
     registrationComplete: "اكتمل التسجيل! يمكنك الآن تسجيل الدخول. سيتم تفعيل حسابك بعد التحقق من الوثائق.",
     clientCRNotice: "كعميل، ستحتاج إلى رفع سجلك التجاري للتحقق من الحساب بعد التسجيل.",
-    createAdminUser: "إنشاء مستخدم مدير (مؤقت)"
+    createAdminUser: "إنشاء مستخدم مدير (مؤقت)",
+    resetPassword: {
+      mismatch: "كلمات المرور غير متطابقة",
+      mismatchDesc: "يرجى إعادة إدخال كلمات مرور متطابقة.",
+      updated: "تم تحديث كلمة المرور",
+      updatedDesc: "يمكنك الآن تسجيل الدخول باستخدام كلمة المرور الجديدة.",
+      failed: "فشل إعادة التعيين"
+    },
+    placeholders: {
+      email: "أدخل بريدك الإلكتروني",
+      password: "أدخل كلمة المرور",
+      fullName: "أدخل اسمك الكامل",
+      companyName: "أدخل اسم شركتك",
+      confirmPassword: "تأكيد كلمة المرور"
+    },
+    selectRole: "اختر دورك",
+    secureLogin: "تسجيل دخول آمن"
   },
 
   // KYC Form
@@ -1307,7 +1323,19 @@ export const arSA = {
     errors: {
       networkConnection: 'خطأ في الاتصال بالشبكة. يرجى التحقق من اتصال الإنترنت.',
       requestTimeout: 'انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.',
+      requestTimeoutDescription: 'استغرق الخادم وقتًا طويلاً للاستجابة. يرجى التحقق من اتصالك والمحاولة مرة أخرى.',
       dataLoading: 'فشل في تحميل البيانات. يرجى تحديث الصفحة.',
+      dataLoadingError: 'خطأ في تحميل البيانات',
+      connectionError: 'خطأ في الاتصال',
+      connectionErrorDescription: 'تعذر الاتصال بالخادم. يرجى التحقق من اتصالك بالإنترنت.',
+      accessDenied: 'تم رفض الوصول',
+      accessDeniedDescription: 'ليس لديك إذن للوصول إلى هذا المورد.',
+      dataFormatError: 'خطأ في تنسيق البيانات',
+      dataFormatErrorDescription: 'أرجع الخادم بيانات غير صالحة. يرجى المحاولة مرة أخرى أو الاتصال بالدعم.',
+      unexpectedError: 'حدث خطأ غير متوقع أثناء تحميل البيانات. يرجى المحاولة مرة أخرى.',
+      retryAttempts: 'محاولات إعادة المحاولة',
+      retryingAttempt: 'إعادة المحاولة... (المحاولة {count})',
+      maxRetriesReached: 'تم الوصول إلى الحد الأقصى للمحاولات',
       unauthorized: 'غير مخول للقيام بهذا الإجراء.',
       forbidden: 'الوصول محظور. يرجى الاتصال بالمسؤول.',
       notFound: 'المورد المطلوب غير موجود.',
@@ -1315,6 +1343,8 @@ export const arSA = {
       validationFailed: 'يرجى التحقق من المدخلات والمحاولة مرة أخرى.',
       unexpected: 'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.'
     },
+    tryAgain: 'حاول مرة أخرى',
+    refreshPage: 'تحديث الصفحة',
     placeholders: {
       searchLogs: 'البحث في السجلات...',
       filterByAction: 'تصفية حسب الإجراء...',
@@ -1390,7 +1420,6 @@ export const arSA = {
     failedToSubmit: 'فشل في تقديم طلب التحقق',
     failedToFetch: 'فشل في جلب بيانات العملاء',
     accessDenied: 'الوصول مرفوض',
-    tryAgain: 'حاول مرة أخرى',
     selectAll: 'تحديد الكل',
     deselectAll: 'إلغاء تحديد الكل',
     categories: {

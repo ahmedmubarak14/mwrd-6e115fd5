@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
@@ -15,6 +16,7 @@ const ResetPassword = () => {
   const [hasSession, setHasSession] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   useEffect(() => {
     document.title = 'Reset Password | MWRD';
@@ -50,17 +52,28 @@ const ResetPassword = () => {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirm) {
-      toast({ variant: 'destructive', title: 'Passwords do not match', description: 'Please re-enter matching passwords.' });
+      toast({ 
+        variant: 'destructive', 
+        title: t('auth.resetPassword.mismatch'), 
+        description: t('auth.resetPassword.mismatchDesc')
+      });
       return;
     }
     setLoading(true);
     try {
       const { error } = await supabase.auth.updateUser({ password });
       if (error) throw error;
-      toast({ title: 'Password updated', description: 'You can now sign in with your new password.' });
+      toast({ 
+        title: t('auth.resetPassword.updated'), 
+        description: t('auth.resetPassword.updatedDesc')
+      });
       navigate('/auth');
     } catch (err: any) {
-      toast({ variant: 'destructive', title: 'Reset failed', description: err.message });
+      toast({ 
+        variant: 'destructive', 
+        title: t('auth.resetPassword.failed'), 
+        description: err.message 
+      });
     } finally {
       setLoading(false);
     }

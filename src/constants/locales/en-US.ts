@@ -1817,7 +1817,23 @@ export const enUS = {
     completeRegistrationButton: "Complete Registration",
     registrationComplete: "Registration complete! You can now sign in. Your account will be activated after document verification.",
     clientCRNotice: "As a client, you'll need to upload your Commercial Registration for account verification after registration.",
-    createAdminUser: "Create Admin User (Temporary)"
+    createAdminUser: "Create Admin User (Temporary)",
+    resetPassword: {
+      mismatch: "Passwords do not match",
+      mismatchDesc: "Please re-enter matching passwords.",
+      updated: "Password updated",
+      updatedDesc: "You can now sign in with your new password.",
+      failed: "Reset failed"
+    },
+    placeholders: {
+      email: "Enter your email",
+      password: "Enter your password",
+      fullName: "Enter your full name",
+      companyName: "Enter your company name",
+      confirmPassword: "Confirm your password"
+    },
+    selectRole: "Select your role",
+    secureLogin: "Secure Login"
   },
 
   // KYC Form
@@ -1947,7 +1963,19 @@ export const enUS = {
     errors: {
       networkConnection: 'Network connection error. Please check your internet connection.',
       requestTimeout: 'Request timeout. Please try again.',
+      requestTimeoutDescription: 'The server took too long to respond. Please check your connection and try again.',
       dataLoading: 'Failed to load data. Please refresh the page.',
+      dataLoadingError: 'Data Loading Error',
+      connectionError: 'Connection Error',
+      connectionErrorDescription: 'Unable to connect to the server. Please check your internet connection.',
+      accessDenied: 'Access Denied',
+      accessDeniedDescription: "You don't have permission to access this resource.",
+      dataFormatError: 'Data Format Error',
+      dataFormatErrorDescription: 'The server returned invalid data. Please try again or contact support.',
+      unexpectedError: 'An unexpected error occurred while loading data. Please try again.',
+      retryAttempts: 'Retry attempts',
+      retryingAttempt: 'Retrying... (Attempt {count})',
+      maxRetriesReached: 'Max retries reached',
       unauthorized: 'You are not authorized to perform this action.',
       forbidden: 'Access forbidden. Please contact your administrator.',
       notFound: 'The requested resource was not found.',
@@ -1955,6 +1983,8 @@ export const enUS = {
       validationFailed: 'Please check your input and try again.',
       unexpected: 'An unexpected error occurred. Please try again.'
     },
+    tryAgain: 'Try Again',
+    refreshPage: 'Refresh Page',
     placeholders: {
       email: 'Enter your email address',
       password: 'Enter your password',
