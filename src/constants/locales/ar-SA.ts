@@ -1181,6 +1181,53 @@ export const arSA = {
     createAdminUser: "إنشاء مستخدم مدير (مؤقت)"
   },
 
+  // KYC Form
+  kyc: {
+    placeholders: {
+      vatNumber: "300000000000003",
+      phone: "+966 5X XXX XXXX",
+      serviceCategories: "قائمة فئات الخدمات التي تهتم بها (مفصولة بفاصلة)",
+      organizationType: "اختر النوع",
+      natureOfBusiness: "مثال: تجارة، تصنيع، خدمات",
+      designation: "مثال: الرئيس التنفيذي، المدير العام"
+    },
+    errors: {
+      invalidFileType: "نوع ملف غير صالح",
+      pdfOnly: "يُسمح فقط بملفات PDF للوثائق الرسمية",
+      companyNameRequired: "اسم الشركة القانوني مطلوب",
+      crNumberRequired: "رقم السجل التجاري مطلوب",
+      crIssuingDateRequired: "تاريخ إصدار السجل التجاري مطلوب",
+      crIssuingCityRequired: "مدينة إصدار السجل التجاري مطلوبة",
+      crValidityDateRequired: "تاريخ صلاحية السجل التجاري مطلوب",
+      crDocumentRequired: "يجب تحميل شهادة السجل التجاري",
+      vatNumberRequired: "يجب أن يكون الرقم الضريبي 15 رقمًا بالضبط",
+      vatCertificateRequired: "يجب تحميل شهادة ضريبة القيمة المضافة",
+      addressRequired: "جميع حقول العنوان مطلوبة",
+      addressCertificateRequired: "يجب تحميل شهادة العنوان الوطني",
+      signatoryRequired: "جميع معلومات المفوض بالتوقيع مطلوبة",
+      validationFailed: "يرجى إكمال جميع الحقول المطلوبة قبل المتابعة"
+    },
+    success: {
+      title: "نجح",
+      description: "تم إرسال طلب التحقق من الهوية! ستتم مراجعة مستنداتك خلال 24-48 ساعة."
+    },
+    submitting: "جاري إرسال طلب التحقق...",
+    uploadError: "فشل تحميل المستند"
+  },
+
+  // KYV Form
+  kyv: {
+    fileUploaded: "تم تحميل الملف",
+    fileUploadedDesc: "تم تحميل {fileName} بنجاح",
+    uploadFailed: "فشل التحميل",
+    uploadFailedDesc: "فشل تحميل الملف. يرجى المحاولة مرة أخرى.",
+    submitting: "جاري إرسال التحقق...",
+    success: "تم إرسال التحقق بنجاح!",
+    successDesc: "سيتم مراجعة طلبك خلال 3-5 أيام عمل.",
+    validationFailed: "لا يمكن الإرسال",
+    completeRequired: "يرجى إكمال جميع الحقول المطلوبة"
+  },
+
   // Common translations
   common: {
     save: 'حفظ',

@@ -13,6 +13,7 @@ import { KYVBankingDetails } from './KYVBankingDetails';
 import { KYVProductDetails } from './KYVProductDetails';
 import { KYVCompliance } from './KYVCompliance';
 import { KYVDeclaration } from './KYVDeclaration';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface EnhancedKYVFormProps {
   onComplete?: () => void;
@@ -24,6 +25,7 @@ export const EnhancedKYVForm: React.FC<EnhancedKYVFormProps> = ({ onComplete }) 
   const { toast } = useToast();
   const { uploadFile } = useFileUpload();
   const { submitKYV, loading } = useKYV();
+  const { t } = useLanguage();
 
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<KYVFormData>({
@@ -77,16 +79,16 @@ export const EnhancedKYVForm: React.FC<EnhancedKYVFormProps> = ({ onComplete }) 
           handleChange(targetField, result.url);
           
           toast({
-            title: 'File uploaded',
-            description: `${file.name} uploaded successfully`,
+            title: t('kyv.fileUploaded'),
+            description: t('kyv.fileUploadedDesc').replace('{fileName}', file.name),
           });
         }
       }
     } catch (error) {
       console.error('File upload error:', error);
       toast({
-        title: 'Upload failed',
-        description: 'Failed to upload file. Please try again.',
+        title: t('kyv.uploadFailed'),
+        description: t('kyv.uploadFailedDesc'),
         variant: 'destructive',
       });
     }

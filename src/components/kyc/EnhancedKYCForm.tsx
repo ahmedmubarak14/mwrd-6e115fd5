@@ -11,6 +11,7 @@ import { FileText, Building2, CreditCard, MapPin, User, AlertTriangle } from 'lu
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { uploadDocument } from '@/utils/documentStorage';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface KYCFormData {
   companyLegalName: string;
@@ -45,6 +46,7 @@ export const EnhancedKYCForm = ({ onComplete }: { onComplete: () => void }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
+  const { t } = useLanguage();
   
   const [formData, setFormData] = useState<KYCFormData>({
     companyLegalName: '',
@@ -79,8 +81,8 @@ export const EnhancedKYCForm = ({ onComplete }: { onComplete: () => void }) => {
   const handleFileChange = (field: 'crDocumentFile' | 'vatCertificateFile' | 'addressCertificateFile', file: File | null) => {
     if (file && file.type !== 'application/pdf') {
       toast({
-        title: "Invalid File Type",
-        description: "Only PDF files are allowed for official documents",
+        title: t('kyc.errors.invalidFileType'),
+        description: t('kyc.errors.pdfOnly'),
         variant: "destructive"
       });
       return;
@@ -92,12 +94,12 @@ export const EnhancedKYCForm = ({ onComplete }: { onComplete: () => void }) => {
     const validationErrors: string[] = [];
 
     // Comprehensive validation
-    if (!formData.companyLegalName) validationErrors.push('Company legal name is required');
-    if (!formData.crNumber) validationErrors.push('CR number is required');
-    if (!formData.crIssuingDate) validationErrors.push('CR issuing date is required');
-    if (!formData.crIssuingCity) validationErrors.push('CR issuing city is required');
-    if (!formData.crValidityDate) validationErrors.push('CR validity date is required');
-    if (!formData.crDocumentFile) validationErrors.push('CR certificate must be uploaded');
+    if (!formData.companyLegalName) validationErrors.push(t('kyc.errors.companyNameRequired'));
+    if (!formData.crNumber) validationErrors.push(t('kyc.errors.crNumberRequired'));
+    if (!formData.crIssuingDate) validationErrors.push(t('kyc.errors.crIssuingDateRequired'));
+    if (!formData.crIssuingCity) validationErrors.push(t('kyc.errors.crIssuingCityRequired'));
+    if (!formData.crValidityDate) validationErrors.push(t('kyc.errors.crValidityDateRequired'));
+    if (!formData.crDocumentFile) validationErrors.push(t('kyc.errors.crDocumentRequired'));
     
     if (new Date(formData.crIssuingDate) > new Date()) {
       validationErrors.push('CR issuing date cannot be in the future');
@@ -107,22 +109,22 @@ export const EnhancedKYCForm = ({ onComplete }: { onComplete: () => void }) => {
     }
 
     if (!formData.vatNumber || !/^[0-9]{15}$/.test(formData.vatNumber)) {
-      validationErrors.push('VAT number must be exactly 15 digits');
+      validationErrors.push(t('kyc.errors.vatNumberRequired'));
     }
-    if (!formData.vatCertificateFile) validationErrors.push('VAT certificate must be uploaded');
+    if (!formData.vatCertificateFile) validationErrors.push(t('kyc.errors.vatCertificateRequired'));
 
     if (!formData.addressCity || !formData.addressArea || !formData.addressPostalCode ||
         !formData.addressStreetName || !formData.addressBuildingNumber) {
-      validationErrors.push('All address fields are required');
+      validationErrors.push(t('kyc.errors.addressRequired'));
     }
-    if (!formData.addressCertificateFile) validationErrors.push('National Address certificate must be uploaded');
+    if (!formData.addressCertificateFile) validationErrors.push(t('kyc.errors.addressCertificateRequired'));
 
     if (!formData.organizationType) validationErrors.push('Organization type is required');
     if (!formData.natureOfBusiness) validationErrors.push('Nature of business is required');
 
     if (!formData.signatoryFirstName || !formData.signatoryLastName ||
         !formData.signatoryDesignation || !formData.signatoryEmail || !formData.signatoryPhone) {
-      validationErrors.push('All authorized signatory fields are required');
+      validationErrors.push(t('kyc.errors.signatoryRequired'));
     }
 
     if (formData.accountType === 'credit') {
@@ -136,7 +138,7 @@ export const EnhancedKYCForm = ({ onComplete }: { onComplete: () => void }) => {
 
     if (validationErrors.length > 0) {
       toast({
-        title: "Validation Errors",
+        title: t('kyc.errors.validationFailed'),
         description: validationErrors.join('; '),
         variant: "destructive"
       });
@@ -242,15 +244,15 @@ export const EnhancedKYCForm = ({ onComplete }: { onComplete: () => void }) => {
       sessionStorage.removeItem('mainInfoData');
 
       toast({
-        title: "Success",
-        description: "KYC submission complete! Your documents will be reviewed within 24-48 hours."
+        title: t('kyc.success.title'),
+        description: t('kyc.success.description')
       });
       
       onComplete();
     } catch (error: any) {
       toast({
-        title: "Submission Failed",
-        description: error.message || 'Failed to submit KYC',
+        title: t('common.error'),
+        description: error.message || t('kyc.uploadError'),
         variant: "destructive"
       });
     } finally {
@@ -369,7 +371,7 @@ export const EnhancedKYCForm = ({ onComplete }: { onComplete: () => void }) => {
                   id="vatNumber"
                   value={formData.vatNumber}
                   onChange={(e) => setFormData({ ...formData, vatNumber: e.target.value.replace(/\D/g, '').slice(0, 15) })}
-                  placeholder="300000000000003"
+                  placeholder={t('kyc.placeholders.vatNumber')}
                   maxLength={15}
                   required
                 />
@@ -503,7 +505,7 @@ export const EnhancedKYCForm = ({ onComplete }: { onComplete: () => void }) => {
                   <Label htmlFor="organizationType">Organization Type *</Label>
                   <Select value={formData.organizationType} onValueChange={(value) => setFormData({ ...formData, organizationType: value })}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select type" />
+                      <SelectValue placeholder={t('kyc.placeholders.organizationType')} />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="llc">Limited Liability Company</SelectItem>
@@ -519,7 +521,7 @@ export const EnhancedKYCForm = ({ onComplete }: { onComplete: () => void }) => {
                     id="natureOfBusiness"
                     value={formData.natureOfBusiness}
                     onChange={(e) => setFormData({ ...formData, natureOfBusiness: e.target.value })}
-                    placeholder="e.g., Trading, Manufacturing, Services"
+                    placeholder={t('kyc.placeholders.natureOfBusiness')}
                     required
                   />
                 </div>
@@ -554,7 +556,7 @@ export const EnhancedKYCForm = ({ onComplete }: { onComplete: () => void }) => {
                     id="signatoryDesignation"
                     value={formData.signatoryDesignation}
                     onChange={(e) => setFormData({ ...formData, signatoryDesignation: e.target.value })}
-                    placeholder="e.g., CEO, Managing Director"
+                    placeholder={t('kyc.placeholders.designation')}
                     required
                   />
                 </div>
@@ -576,7 +578,7 @@ export const EnhancedKYCForm = ({ onComplete }: { onComplete: () => void }) => {
                       id="signatoryPhone"
                       value={formData.signatoryPhone}
                       onChange={(e) => setFormData({ ...formData, signatoryPhone: e.target.value })}
-                      placeholder="+966512345678"
+                      placeholder={t('kyc.placeholders.phone')}
                       required
                     />
                   </div>
@@ -642,7 +644,7 @@ export const EnhancedKYCForm = ({ onComplete }: { onComplete: () => void }) => {
               <div className="space-y-2">
                 <Label>Service Categories *</Label>
                 <Textarea
-                  placeholder="List the service categories you're interested in (comma-separated)"
+                  placeholder={t('kyc.placeholders.serviceCategories')}
                   value={formData.serviceCategories.join(', ')}
                   onChange={(e) => setFormData({ ...formData, serviceCategories: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
                   rows={3}

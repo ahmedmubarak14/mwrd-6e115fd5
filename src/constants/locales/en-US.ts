@@ -1820,6 +1820,53 @@ export const enUS = {
     createAdminUser: "Create Admin User (Temporary)"
   },
 
+  // KYC Form
+  kyc: {
+    placeholders: {
+      vatNumber: "300000000000003",
+      phone: "+966 5X XXX XXXX",
+      serviceCategories: "List the service categories you're interested in (comma-separated)",
+      organizationType: "Select type",
+      natureOfBusiness: "e.g., Trading, Manufacturing, Services",
+      designation: "e.g., CEO, Managing Director"
+    },
+    errors: {
+      invalidFileType: "Invalid File Type",
+      pdfOnly: "Only PDF files are allowed for official documents",
+      companyNameRequired: "Company legal name is required",
+      crNumberRequired: "CR number is required",
+      crIssuingDateRequired: "CR issuing date is required",
+      crIssuingCityRequired: "CR issuing city is required",
+      crValidityDateRequired: "CR validity date is required",
+      crDocumentRequired: "CR certificate must be uploaded",
+      vatNumberRequired: "VAT number must be exactly 15 digits",
+      vatCertificateRequired: "VAT certificate must be uploaded",
+      addressRequired: "All address fields are required",
+      addressCertificateRequired: "National Address certificate must be uploaded",
+      signatoryRequired: "All signatory information is required",
+      validationFailed: "Please complete all required fields before continuing"
+    },
+    success: {
+      title: "Success",
+      description: "KYC submission complete! Your documents will be reviewed within 24-48 hours."
+    },
+    submitting: "Submitting KYC application...",
+    uploadError: "Failed to upload document"
+  },
+
+  // KYV Form
+  kyv: {
+    fileUploaded: "File uploaded",
+    fileUploadedDesc: "{fileName} uploaded successfully",
+    uploadFailed: "Upload failed",
+    uploadFailedDesc: "Failed to upload file. Please try again.",
+    submitting: "Submitting verification...",
+    success: "Verification submitted successfully!",
+    successDesc: "Your application will be reviewed within 3-5 business days.",
+    validationFailed: "Cannot submit",
+    completeRequired: "Please complete all required fields"
+  },
+
   // Common translations
   common: {
     save: 'Save',
