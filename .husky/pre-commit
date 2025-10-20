@@ -1,4 +1,21 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+echo "🔍 Running i18n validation..."
+
+# Run i18n validation
+npm run validate:i18n
+
+if [ $? -ne 0 ]; then
+  echo "❌ i18n validation failed. Please fix the issues before committing."
+  echo "💡 Common issues:"
+  echo "   - Hardcoded strings in JSX (use t('key') instead)"
+  echo "   - Fallback anti-pattern (remove === 'key' ? 'fallback' checks)"
+  echo "   - Missing translation keys"
+  exit 1
+fi
+
+echo "✅ i18n validation passed!"
+
+# Run lint-staged for other checks
 npm run lint-staged
