@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowUp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const BackToTop = () => {
+  const { t } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export const BackToTop = () => {
         onClick={scrollToTop}
         size="icon"
         className="h-12 w-12 rounded-full shadow-lg hover:shadow-xl bg-gradient-to-r from-primary to-accent hover-scale"
-        aria-label="Back to top"
+        aria-label={t('common.backToTop')}
       >
         <ArrowUp className="h-5 w-5" />
       </Button>

@@ -2,6 +2,7 @@ import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
+import { useLanguage } from "@/contexts/LanguageContext"
 
 const spinnerVariants = cva(
   "animate-spin rounded-full border-2 border-current border-t-transparent",
@@ -39,7 +40,8 @@ export interface LoadingSpinnerProps
 
 const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerProps>(
   ({ className, size, variant, label, text, ...props }, ref) => {
-    const displayText = label || text; // Use label first, fallback to text for compatibility
+    const { t } = useLanguage();
+    const displayText = label || text || t('common.loading');
     
     return (
       <div
@@ -49,7 +51,7 @@ const LoadingSpinner = React.forwardRef<HTMLDivElement, LoadingSpinnerProps>(
       >
         <div 
           className={cn(spinnerVariants({ size, variant }))}
-          aria-label={displayText || "Loading"}
+          aria-label={displayText}
         />
         {displayText && (
           <span className="text-sm text-muted-foreground animate-pulse">

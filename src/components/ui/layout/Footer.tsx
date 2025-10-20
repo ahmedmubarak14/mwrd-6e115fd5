@@ -228,39 +228,39 @@ export const Footer = () => {
             <div className={`flex items-center gap-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <span className="text-white/70 text-sm font-medium">{t('landing.footer.followUs')}</span>
               <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <a 
-                  href="https://twitter.com" 
+                <a
+                  href="https://twitter.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group p-3 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 rounded-xl text-white/70 hover:text-white transition-all duration-300 hover:scale-110 transform hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-white/30"
-                  aria-label="Twitter"
+                  aria-label={t('common.social.twitter')}
                 >
                   <Twitter size={18} className="group-hover:drop-shadow-lg" />
                 </a>
-                <a 
-                  href="https://linkedin.com" 
+                <a
+                  href="https://linkedin.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group p-3 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 rounded-xl text-white/70 hover:text-white transition-all duration-300 hover:scale-110 transform hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-white/30"
-                  aria-label="LinkedIn"
+                  aria-label={t('common.social.linkedin')}
                 >
                   <Linkedin size={18} className="group-hover:drop-shadow-lg" />
                 </a>
-                <a 
-                  href="https://facebook.com" 
+                <a
+                  href="https://facebook.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group p-3 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 rounded-xl text-white/70 hover:text-white transition-all duration-300 hover:scale-110 transform hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-white/30"
-                  aria-label="Facebook"
+                  aria-label={t('common.social.facebook')}
                 >
                   <Facebook size={18} className="group-hover:drop-shadow-lg" />
                 </a>
-                <a 
-                  href="https://instagram.com" 
+                <a
+                  href="https://instagram.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group p-3 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 rounded-xl text-white/70 hover:text-white transition-all duration-300 hover:scale-110 transform hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-white/30"
-                  aria-label="Instagram"
+                  aria-label={t('common.social.instagram')}
                 >
                   <Instagram size={18} className="group-hover:drop-shadow-lg" />
                 </a>

@@ -1469,6 +1469,17 @@ export const arSA = {
     lastMonth: 'الشهر الماضي',
     thisYear: 'هذا العام',
     lastYear: 'العام الماضي',
+    noData: 'لا توجد بيانات متاحة',
+    backToTop: 'العودة للأعلى',
+    toggleSidebar: 'تبديل الشريط الجانبي',
+    exporting: 'جاري التصدير...',
+    sort: 'ترتيب',
+    social: {
+      twitter: 'تويتر',
+      linkedin: 'لينكد إن',
+      facebook: 'فيسبوك',
+      instagram: 'إنستغرام'
+    },
     errors: {
       networkConnection: 'خطأ في الاتصال بالشبكة. يرجى التحقق من اتصال الإنترنت.',
       requestTimeout: 'انتهت مهلة الطلب. يرجى المحاولة مرة أخرى.',

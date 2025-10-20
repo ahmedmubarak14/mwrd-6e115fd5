@@ -2109,6 +2109,17 @@ export const enUS = {
     thisYear: 'This Year',
     lastYear: 'Last Year',
     vsLastMonth: 'vs last month',
+    noData: 'No data available',
+    backToTop: 'Back to top',
+    toggleSidebar: 'Toggle Sidebar',
+    exporting: 'Exporting...',
+    sort: 'Sort',
+    social: {
+      twitter: 'Twitter',
+      linkedin: 'LinkedIn',
+      facebook: 'Facebook',
+      instagram: 'Instagram'
+    },
     errors: {
       networkConnection: 'Network connection error. Please check your internet connection.',
       requestTimeout: 'Request timeout. Please try again.',
