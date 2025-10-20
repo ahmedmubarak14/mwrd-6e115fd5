@@ -44,16 +44,18 @@ export const ClientLayout = ({ children }: ClientLayoutProps) => {
     );
   }
 
+  const { t } = useLanguage();
+  
   if (!userProfile || !['client', 'vendor', 'admin'].includes(userProfile.role)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <Card className="p-8 max-w-md mx-auto">
           <CardHeader>
             <CardTitle className="text-2xl text-center text-destructive">
-              Access Denied
+              {t('common.errors.accessDenied')}
             </CardTitle>
             <CardDescription className="text-center">
-              Please log in to access your dashboard.
+              {t('common.errors.accessDeniedDesc')}
             </CardDescription>
           </CardHeader>
         </Card>

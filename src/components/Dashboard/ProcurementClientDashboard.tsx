@@ -167,8 +167,8 @@ export const ProcurementClientDashboard = () => {
     } catch (error) {
       console.error('Error fetching client stats:', error);
       toast({
-        title: "Error",
-        description: "Failed to load dashboard statistics",
+        title: t('common.error'),
+        description: t('common.errors.loadFailed'),
         variant: "destructive"
       });
       
@@ -226,34 +226,34 @@ export const ProcurementClientDashboard = () => {
       {/* Core Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <MetricCard
-          title="Total Requests"
+          title={t('dashboard.metrics.totalRequests.title')}
           value={formatNumber(stats.totalRequests)}
-          description="Procurement requests created"
+          description={t('dashboard.metrics.totalRequests.description')}
           icon={FileText}
           loading={loading}
         />
         
         <MetricCard
-          title="Active Requests"
+          title={t('dashboard.metrics.activeRequests.title')}
           value={formatNumber(stats.activeRequests)}
-          description="Currently being processed"
+          description={t('dashboard.metrics.activeRequests.description')}
           icon={FileClock}
           loading={loading}
         />
         
         <MetricCard
-          title="Pending Offers"
+          title={t('dashboard.metrics.pendingOffers.title')}
           value={formatNumber(stats.pendingOffers)}
-          description="Awaiting your review"
+          description={t('dashboard.metrics.pendingOffers.description')}
           icon={Package}
           variant="warning"
           loading={loading}
         />
         
         <MetricCard
-          title="Completed Orders"
+          title={t('dashboard.metrics.completedOrders.title')}
           value={formatNumber(stats.completedOrders)}
-          description="Successfully delivered"
+          description={t('dashboard.metrics.completedOrders.description')}
           icon={CheckCircle}
           variant="success"
           loading={loading}
@@ -263,34 +263,34 @@ export const ProcurementClientDashboard = () => {
       {/* Performance & Financial Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <MetricCard
-          title="Total Spent"
+          title={t('dashboard.metrics.totalSpent.title')}
           value={formatCurrency(stats.totalSpent)}
-          description="Total procurement value"
+          description={t('dashboard.metrics.totalSpent.description')}
           icon={ShoppingCart}
           loading={loading}
         />
         
         <MetricCard
-          title="Success Rate"
+          title={t('dashboard.metrics.successRate.title')}
           value={`${stats.totalRequests ? Math.round((stats.completedRequests / stats.totalRequests) * 100) : 0}%`}
-          description="Request completion rate"
+          description={t('dashboard.metrics.successRate.description')}
           icon={TrendingUp}
           variant="success"
           loading={loading}
         />
         
         <MetricCard
-          title="Average Response"
+          title={t('dashboard.metrics.averageResponse.title')}
           value={`${stats.avgResponseTime}h`}
-          description="Vendor response time"
+          description={t('dashboard.metrics.averageResponse.description')}
           icon={Clock}
           loading={loading}
         />
         
         <MetricCard
-          title="Offers Received"
+          title={t('dashboard.metrics.offersReceived.title')}
           value={formatNumber(stats.totalOffers)}
-          description="Total vendor proposals"
+          description={t('dashboard.metrics.offersReceived.description')}
           icon={Package}
           loading={loading}
         />
@@ -302,20 +302,20 @@ export const ProcurementClientDashboard = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-warning" />
-              Action Required
+              {t('dashboard.actions.title')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {stats.pendingOffers > 0 && (
               <div className="flex items-center justify-between p-4 bg-warning/10 border border-warning/20 rounded-lg">
                 <div>
-                  <p className="font-medium">Pending Offer Reviews</p>
+                  <p className="font-medium">{t('dashboard.actions.pendingOfferReviews')}</p>
                   <p className="text-sm text-foreground opacity-75">
-                    {formatNumber(stats.pendingOffers)} offers need your decision
+                    {formatNumber(stats.pendingOffers)} {t('dashboard.actions.offersNeedDecision')}
                   </p>
                 </div>
                 <Link to="/offers">
-                  <Button size="sm" variant="outline">Review</Button>
+                  <Button size="sm" variant="outline">{t('dashboard.actions.review')}</Button>
                 </Link>
               </div>
             )}
@@ -323,13 +323,13 @@ export const ProcurementClientDashboard = () => {
             {stats.activeRequests > 0 && (
               <div className="flex items-center justify-between p-4 bg-primary/10 border border-primary/20 rounded-lg">
                 <div>
-                  <p className="font-medium">Active Requests</p>
+                  <p className="font-medium">{t('dashboard.actions.activeRequests')}</p>
                   <p className="text-sm text-foreground opacity-75">
-                    {formatNumber(stats.activeRequests)} requests in progress
+                    {formatNumber(stats.activeRequests)} {t('dashboard.actions.requestsInProgress')}
                   </p>
                 </div>
                 <Link to="/requests">
-                  <Button size="sm" variant="outline">Monitor</Button>
+                  <Button size="sm" variant="outline">{t('dashboard.actions.monitor')}</Button>
                 </Link>
               </div>
             )}
@@ -337,7 +337,7 @@ export const ProcurementClientDashboard = () => {
             {stats.pendingOffers === 0 && stats.activeRequests === 0 && (
               <div className="text-center py-6 text-foreground opacity-75">
                 <CheckCircle className="h-8 w-8 mx-auto mb-2 text-success" />
-                <p>All caught up! No pending actions.</p>
+                <p>{t('dashboard.actions.allCaughtUp')}</p>
               </div>
             )}
           </CardContent>
@@ -347,7 +347,7 @@ export const ProcurementClientDashboard = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-success" />
-              Quick Actions
+              {t('dashboard.actions.quickActions')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -355,24 +355,24 @@ export const ProcurementClientDashboard = () => {
               <Button onClick={() => navigate('/requests/create')} className="h-auto p-4 justify-start">
                 <Plus className="h-5 w-5 mr-3" />
                 <div className="text-left">
-                  <div className="font-medium">Create New Request</div>
-                  <div className="text-xs opacity-75">Start a new procurement request</div>
+                  <div className="font-medium">{t('dashboard.actions.createNewRequest')}</div>
+                  <div className="text-xs opacity-75">{t('dashboard.actions.createNewRequestDesc')}</div>
                 </div>
               </Button>
               
               <Button variant="outline" onClick={() => navigate('/vendors')} className="h-auto p-4 justify-start">
                 <Eye className="h-5 w-5 mr-3" />
                 <div className="text-left">
-                  <div className="font-medium">Browse Vendors</div>
-                  <div className="text-xs opacity-75">Find qualified suppliers</div>
+                  <div className="font-medium">{t('dashboard.actions.browseVendors')}</div>
+                  <div className="text-xs opacity-75">{t('dashboard.actions.browseVendorsDesc')}</div>
                 </div>
               </Button>
 
               <Button variant="outline" onClick={() => navigate('/messages')} className="h-auto p-4 justify-start">
                 <MessageSquare className="h-5 w-5 mr-3" />
                 <div className="text-left">
-                  <div className="font-medium">Messages</div>
-                  <div className="text-xs opacity-75">Communicate with vendors</div>
+                  <div className="font-medium">{t('dashboard.actions.messages')}</div>
+                  <div className="text-xs opacity-75">{t('dashboard.actions.messagesDesc')}</div>
                 </div>
               </Button>
             </div>
@@ -383,14 +383,14 @@ export const ProcurementClientDashboard = () => {
       {/* Progress Overview */}
       <Card className="hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle>Procurement Performance</CardTitle>
-          <CardDescription>Your procurement activity overview</CardDescription>
+          <CardTitle>{t('dashboard.performance.title')}</CardTitle>
+          <CardDescription>{t('dashboard.performance.description')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Request Success Rate</span>
+                <span className="text-sm font-medium">{t('dashboard.performance.requestSuccessRate')}</span>
                 <span className="text-sm text-success">
                   {stats.totalRequests ? Math.round((stats.completedRequests / stats.totalRequests) * 100) : 0}%
                 </span>
@@ -403,7 +403,7 @@ export const ProcurementClientDashboard = () => {
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Offer Acceptance Rate</span>
+                <span className="text-sm font-medium">{t('dashboard.performance.offerAcceptanceRate')}</span>
                 <span className="text-sm text-primary">
                   {stats.totalOffers ? Math.round((stats.acceptedOffers / stats.totalOffers) * 100) : 0}%
                 </span>
@@ -416,7 +416,7 @@ export const ProcurementClientDashboard = () => {
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Order Completion</span>
+                <span className="text-sm font-medium">{t('dashboard.performance.orderCompletion')}</span>
                 <span className="text-sm text-success">
                   {stats.totalOrders ? Math.round((stats.completedOrders / stats.totalOrders) * 100) : 0}%
                 </span>

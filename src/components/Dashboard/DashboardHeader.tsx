@@ -17,12 +17,10 @@ export const DashboardHeader = ({ onRefresh, onExport, isRefreshing, isExporting
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
-          {t('dashboard.title') === 'dashboard.title' ? 'Dashboard' : t('dashboard.title')}
+          {t('dashboard.title')}
         </h1>
         <p className="text-muted-foreground mt-1">
-          {t('dashboard.welcomeMessage') === 'dashboard.welcomeMessage' 
-            ? 'Welcome to your procurement dashboard' 
-            : t('dashboard.welcomeMessage')}
+          {t('dashboard.welcomeMessage')}
         </p>
       </div>
       
@@ -36,7 +34,7 @@ export const DashboardHeader = ({ onRefresh, onExport, isRefreshing, isExporting
         >
           <Clock className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
           <span className="hidden sm:inline">
-            {t('common.refresh') === 'common.refresh' ? 'Refresh' : t('common.refresh')}
+            {t('common.refresh')}
           </span>
         </Button>
         
@@ -53,10 +51,7 @@ export const DashboardHeader = ({ onRefresh, onExport, isRefreshing, isExporting
             <FileText className="h-4 w-4" />
           )}
           <span className="hidden sm:inline">
-            {isExporting 
-              ? (t('common.exporting') === 'common.exporting' ? 'Exporting...' : t('common.exporting'))
-              : (t('analytics.export') === 'analytics.export' ? 'Export' : t('analytics.export'))
-            }
+            {isExporting ? t('common.exporting') : t('analytics.export')}
           </span>
         </Button>
       </div>

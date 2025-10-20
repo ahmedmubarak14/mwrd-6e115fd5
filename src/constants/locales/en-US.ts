@@ -6,7 +6,140 @@ export const enUS = {
     overview: "Overview",
     rfqPerformance: "RFQ Performance",
     recentActivity: "Recent RFQ activity and status",
-    noDataAvailable: "No data available for RFQ performance."
+    noDataAvailable: "No data available for RFQ performance.",
+    
+    metrics: {
+      totalRequests: {
+        title: "Total Requests",
+        description: "Procurement requests created"
+      },
+      activeRequests: {
+        title: "Active Requests",
+        description: "Currently being processed"
+      },
+      pendingOffers: {
+        title: "Pending Offers",
+        description: "Awaiting your review"
+      },
+      completedOrders: {
+        title: "Completed Orders",
+        description: "Successfully delivered"
+      },
+      totalSpent: {
+        title: "Total Spent",
+        description: "Total procurement value"
+      },
+      successRate: {
+        title: "Success Rate",
+        description: "Request completion rate"
+      },
+      averageResponse: {
+        title: "Average Response",
+        description: "Vendor response time"
+      },
+      offersReceived: {
+        title: "Offers Received",
+        description: "Total vendor proposals"
+      }
+    },
+    
+    actions: {
+      title: "Action Required",
+      quickActions: "Quick Actions",
+      pendingOfferReviews: "Pending Offer Reviews",
+      offersNeedDecision: "offers need your decision",
+      review: "Review",
+      activeRequests: "Active Requests",
+      requestsInProgress: "requests in progress",
+      monitor: "Monitor",
+      allCaughtUp: "All caught up! No pending actions.",
+      createNewRequest: "Create New Request",
+      createNewRequestDesc: "Start a new procurement request",
+      browseVendors: "Browse Vendors",
+      browseVendorsDesc: "Find qualified suppliers",
+      messages: "Messages",
+      messagesDesc: "Communicate with vendors"
+    },
+    
+    performance: {
+      title: "Procurement Performance",
+      description: "Your procurement activity overview",
+      requestSuccessRate: "Request Success Rate",
+      offerAcceptanceRate: "Offer Acceptance Rate",
+      orderCompletion: "Order Completion"
+    },
+    
+    verificationBanner: {
+      rejected: {
+        title: "Account Verification Rejected",
+        description: "Your Commercial Registration was rejected. Please review the feedback and resubmit your documents.",
+        action: "Review & Resubmit",
+        badge: "Rejected",
+        reasonLabel: "Rejection Reason:"
+      },
+      pending: {
+        title: "Account Verification Pending",
+        description: "Your Commercial Registration is under review. Some features are temporarily restricted.",
+        action: "View Status",
+        badge: "Under Review"
+      },
+      required: {
+        title: "Account Verification Required",
+        description: "Upload your Commercial Registration to access RFQ creation, orders, and vendor interactions.",
+        action: "Upload Documents",
+        badge: "Pending"
+      }
+    }
+  },
+  
+  widgets: {
+    kyc: {
+      required: {
+        title: "KYC Required",
+        description: "Complete your KYC verification to access full features",
+        badge: "Incomplete",
+        action: "Start KYC"
+      },
+      draft: {
+        title: "KYC Draft Saved",
+        description: "Complete and submit your KYC application",
+        badge: "Draft",
+        action: "Complete KYC"
+      },
+      underReview: {
+        title: "KYC Under Review",
+        description: "Your KYC submission is being reviewed. This typically takes 24-48 hours.",
+        badge: "Under Review"
+      },
+      approved: {
+        title: "KYC Verified",
+        description: "Your KYC verification is complete. You have full access to all features.",
+        badge: "Approved"
+      },
+      rejected: {
+        title: "KYC Rejected",
+        description: "Your KYC submission was rejected. Please review the feedback and resubmit.",
+        badge: "Rejected",
+        action: "Resubmit KYC"
+      },
+      unknown: {
+        title: "KYC Status Unknown",
+        description: "Please contact support for assistance",
+        badge: "Unknown"
+      }
+    },
+    credit: {
+      title: "Credit Account",
+      loading: "Loading credit info...",
+      creditLimit: "Credit Limit",
+      used: "Used",
+      available: "Available",
+      paymentPeriod: "Payment Period",
+      days: "days",
+      approachingLimit: "Approaching credit limit",
+      daysOverdue: "days overdue",
+      accountOnHold: "Account on hold - contact support to resolve"
+    }
   },
 
   // Suppliers

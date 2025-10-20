@@ -7,6 +7,7 @@ import { CheckCircle, XCircle, Clock, AlertTriangle, FileText } from 'lucide-rea
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface KYCStatus {
   kyc_required: boolean;
@@ -19,6 +20,7 @@ export const KYCStatusWidget = () => {
   const [kycStatus, setKycStatus] = useState<KYCStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const { userProfile } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -65,12 +67,12 @@ export const KYCStatusWidget = () => {
     if (!kycStatus.kyc_exists) {
       return {
         icon: <AlertTriangle className="w-5 h-5 text-yellow-500" />,
-        title: 'KYC Required',
-        description: 'Complete your KYC verification to access full features',
-        badge: <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300">Incomplete</Badge>,
+        title: t('widgets.kyc.required.title'),
+        description: t('widgets.kyc.required.description'),
+        badge: <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300">{t('widgets.kyc.required.badge')}</Badge>,
         action: (
           <Button onClick={() => navigate('/kyc/main-info')} size="sm">
-            Start KYC
+            {t('widgets.kyc.required.action')}
           </Button>
         ),
         alertVariant: 'default' as const
@@ -81,12 +83,12 @@ export const KYCStatusWidget = () => {
       case 'draft':
         return {
           icon: <FileText className="w-5 h-5 text-blue-500" />,
-          title: 'KYC Draft Saved',
-          description: 'Complete and submit your KYC application',
-          badge: <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">Draft</Badge>,
+          title: t('widgets.kyc.draft.title'),
+          description: t('widgets.kyc.draft.description'),
+          badge: <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">{t('widgets.kyc.draft.badge')}</Badge>,
           action: (
             <Button onClick={() => navigate('/kyc/form')} size="sm">
-              Complete KYC
+              {t('widgets.kyc.draft.action')}
             </Button>
           ),
           alertVariant: 'default' as const
@@ -96,9 +98,9 @@ export const KYCStatusWidget = () => {
       case 'under_review':
         return {
           icon: <Clock className="w-5 h-5 text-blue-500" />,
-          title: 'KYC Under Review',
-          description: 'Your KYC submission is being reviewed. This typically takes 24-48 hours.',
-          badge: <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">Under Review</Badge>,
+          title: t('widgets.kyc.underReview.title'),
+          description: t('widgets.kyc.underReview.description'),
+          badge: <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-300">{t('widgets.kyc.underReview.badge')}</Badge>,
           action: null,
           alertVariant: 'default' as const
         };
@@ -106,9 +108,9 @@ export const KYCStatusWidget = () => {
       case 'approved':
         return {
           icon: <CheckCircle className="w-5 h-5 text-green-500" />,
-          title: 'KYC Verified',
-          description: 'Your KYC verification is complete. You have full access to all features.',
-          badge: <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">Approved</Badge>,
+          title: t('widgets.kyc.approved.title'),
+          description: t('widgets.kyc.approved.description'),
+          badge: <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300">{t('widgets.kyc.approved.badge')}</Badge>,
           action: null,
           alertVariant: 'default' as const
         };
@@ -116,12 +118,12 @@ export const KYCStatusWidget = () => {
       case 'rejected':
         return {
           icon: <XCircle className="w-5 h-5 text-red-500" />,
-          title: 'KYC Rejected',
-          description: kycStatus.reviewer_notes || 'Your KYC submission was rejected. Please review the feedback and resubmit.',
-          badge: <Badge variant="outline" className="bg-red-50 text-red-700 border-red-300">Rejected</Badge>,
+          title: t('widgets.kyc.rejected.title'),
+          description: kycStatus.reviewer_notes || t('widgets.kyc.rejected.description'),
+          badge: <Badge variant="outline" className="bg-red-50 text-red-700 border-red-300">{t('widgets.kyc.rejected.badge')}</Badge>,
           action: (
             <Button onClick={() => navigate('/kyc/form')} size="sm" variant="destructive">
-              Resubmit KYC
+              {t('widgets.kyc.rejected.action')}
             </Button>
           ),
           alertVariant: 'destructive' as const
@@ -130,9 +132,9 @@ export const KYCStatusWidget = () => {
       default:
         return {
           icon: <AlertTriangle className="w-5 h-5 text-gray-500" />,
-          title: 'KYC Status Unknown',
-          description: 'Please contact support for assistance',
-          badge: <Badge variant="outline">Unknown</Badge>,
+          title: t('widgets.kyc.unknown.title'),
+          description: t('widgets.kyc.unknown.description'),
+          badge: <Badge variant="outline">{t('widgets.kyc.unknown.badge')}</Badge>,
           action: null,
           alertVariant: 'default' as const
         };

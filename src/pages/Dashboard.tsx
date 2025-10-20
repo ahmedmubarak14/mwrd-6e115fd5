@@ -11,9 +11,11 @@ import { useEffect, useState } from "react";
 import { CreditCardWidget } from "@/components/dashboard/CreditCardWidget";
 import { KYCStatusWidget } from "@/components/dashboard/KYCStatusWidget";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Dashboard = () => {
   const { userProfile, loading } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [hasCreditAccount, setHasCreditAccount] = useState(false);
   const [checkingCredit, setCheckingCredit] = useState(true);
@@ -90,10 +92,10 @@ const Dashboard = () => {
         return {
           variant: 'destructive' as const,
           icon: <AlertTriangle className="h-4 w-4" />,
-          title: 'Account Verification Rejected',
-          description: 'Your Commercial Registration was rejected. Please review the feedback and resubmit your documents.',
-          action: 'Review & Resubmit',
-          badge: <Badge variant="destructive">Rejected</Badge>
+          title: t('dashboard.verificationBanner.rejected.title'),
+          description: t('dashboard.verificationBanner.rejected.description'),
+          action: t('dashboard.verificationBanner.rejected.action'),
+          badge: <Badge variant="destructive">{t('dashboard.verificationBanner.rejected.badge')}</Badge>
         };
       }
       
@@ -101,20 +103,20 @@ const Dashboard = () => {
         return {
           variant: 'default' as const,
           icon: <Clock className="h-4 w-4" />,
-          title: 'Account Verification Pending',
-          description: 'Your Commercial Registration is under review. Some features are temporarily restricted.',
-          action: 'View Status',
-          badge: <Badge variant="outline">Under Review</Badge>
+          title: t('dashboard.verificationBanner.pending.title'),
+          description: t('dashboard.verificationBanner.pending.description'),
+          action: t('dashboard.verificationBanner.pending.action'),
+          badge: <Badge variant="outline">{t('dashboard.verificationBanner.pending.badge')}</Badge>
         };
       }
 
       return {
         variant: 'default' as const,
         icon: <AlertTriangle className="h-4 w-4" />,
-        title: 'Account Verification Required',
-        description: 'Upload your Commercial Registration to access RFQ creation, orders, and vendor interactions.',
-        action: 'Upload Documents',
-        badge: <Badge variant="secondary">Pending</Badge>
+        title: t('dashboard.verificationBanner.required.title'),
+        description: t('dashboard.verificationBanner.required.description'),
+        action: t('dashboard.verificationBanner.required.action'),
+        badge: <Badge variant="secondary">{t('dashboard.verificationBanner.required.badge')}</Badge>
       };
     };
 
@@ -133,7 +135,7 @@ const Dashboard = () => {
               {content.description}
               {userProfile.verification_notes && isRejected && (
                 <div className="mt-2 p-3 bg-destructive/10 rounded border border-destructive/20">
-                  <strong>Rejection Reason:</strong><br />
+                  <strong>{t('dashboard.verificationBanner.rejected.reasonLabel')}</strong><br />
                   <span className="text-sm">{userProfile.verification_notes}</span>
                 </div>
               )}

@@ -6,7 +6,140 @@ export const arSA = {
     overview: "نظرة عامة",
     rfqPerformance: "أداء طلبات التسعير",
     recentActivity: "النشاط الأخير وحالة طلبات التسعير",
-    noDataAvailable: "لا توجد بيانات متاحة لأداء طلبات التسعير."
+    noDataAvailable: "لا توجد بيانات متاحة لأداء طلبات التسعير.",
+    
+    metrics: {
+      totalRequests: {
+        title: "إجمالي الطلبات",
+        description: "طلبات المشتريات المُنشأة"
+      },
+      activeRequests: {
+        title: "الطلبات النشطة",
+        description: "قيد المعالجة حالياً"
+      },
+      pendingOffers: {
+        title: "العروض المعلقة",
+        description: "في انتظار مراجعتك"
+      },
+      completedOrders: {
+        title: "الطلبات المكتملة",
+        description: "تم التسليم بنجاح"
+      },
+      totalSpent: {
+        title: "إجمالي الإنفاق",
+        description: "القيمة الإجمالية للمشتريات"
+      },
+      successRate: {
+        title: "معدل النجاح",
+        description: "معدل إتمام الطلبات"
+      },
+      averageResponse: {
+        title: "متوسط الاستجابة",
+        description: "وقت استجابة المورد"
+      },
+      offersReceived: {
+        title: "العروض المستلمة",
+        description: "إجمالي عروض الموردين"
+      }
+    },
+    
+    actions: {
+      title: "إجراء مطلوب",
+      quickActions: "إجراءات سريعة",
+      pendingOfferReviews: "مراجعة العروض المعلقة",
+      offersNeedDecision: "عروض تحتاج قرارك",
+      review: "مراجعة",
+      activeRequests: "الطلبات النشطة",
+      requestsInProgress: "طلبات قيد التنفيذ",
+      monitor: "مراقبة",
+      allCaughtUp: "كل شيء محدث! لا توجد إجراءات معلقة.",
+      createNewRequest: "إنشاء طلب جديد",
+      createNewRequestDesc: "ابدأ طلب مشتريات جديد",
+      browseVendors: "تصفح الموردين",
+      browseVendorsDesc: "ابحث عن موردين مؤهلين",
+      messages: "الرسائل",
+      messagesDesc: "تواصل مع الموردين"
+    },
+    
+    performance: {
+      title: "أداء المشتريات",
+      description: "نظرة عامة على نشاط المشتريات الخاص بك",
+      requestSuccessRate: "معدل نجاح الطلبات",
+      offerAcceptanceRate: "معدل قبول العروض",
+      orderCompletion: "إتمام الطلبات"
+    },
+    
+    verificationBanner: {
+      rejected: {
+        title: "تم رفض التحقق من الحساب",
+        description: "تم رفض السجل التجاري الخاص بك. يرجى مراجعة الملاحظات وإعادة تقديم المستندات.",
+        action: "مراجعة وإعادة التقديم",
+        badge: "مرفوض",
+        reasonLabel: "سبب الرفض:"
+      },
+      pending: {
+        title: "التحقق من الحساب قيد المراجعة",
+        description: "السجل التجاري الخاص بك قيد المراجعة. بعض الميزات محدودة مؤقتاً.",
+        action: "عرض الحالة",
+        badge: "قيد المراجعة"
+      },
+      required: {
+        title: "التحقق من الحساب مطلوب",
+        description: "قم بتحميل السجل التجاري الخاص بك للوصول إلى إنشاء طلبات التسعير والطلبات والتفاعل مع الموردين.",
+        action: "تحميل المستندات",
+        badge: "معلق"
+      }
+    }
+  },
+  
+  widgets: {
+    kyc: {
+      required: {
+        title: "التحقق من الهوية مطلوب",
+        description: "أكمل التحقق من هويتك للوصول إلى جميع الميزات",
+        badge: "غير مكتمل",
+        action: "بدء التحقق"
+      },
+      draft: {
+        title: "تم حفظ مسودة التحقق",
+        description: "أكمل وأرسل طلب التحقق من هويتك",
+        badge: "مسودة",
+        action: "إكمال التحقق"
+      },
+      underReview: {
+        title: "التحقق قيد المراجعة",
+        description: "طلب التحقق الخاص بك قيد المراجعة. عادة ما يستغرق هذا 24-48 ساعة.",
+        badge: "قيد المراجعة"
+      },
+      approved: {
+        title: "تم التحقق من الهوية",
+        description: "اكتمل التحقق من هويتك. لديك وصول كامل إلى جميع الميزات.",
+        badge: "معتمد"
+      },
+      rejected: {
+        title: "تم رفض التحقق",
+        description: "تم رفض طلب التحقق الخاص بك. يرجى مراجعة الملاحظات وإعادة التقديم.",
+        badge: "مرفوض",
+        action: "إعادة تقديم التحقق"
+      },
+      unknown: {
+        title: "حالة التحقق غير معروفة",
+        description: "يرجى الاتصال بالدعم للحصول على المساعدة",
+        badge: "غير معروف"
+      }
+    },
+    credit: {
+      title: "الحساب الائتماني",
+      loading: "جار تحميل معلومات الائتمان...",
+      creditLimit: "الحد الائتماني",
+      used: "مستخدم",
+      available: "متاح",
+      paymentPeriod: "فترة السداد",
+      days: "يوم",
+      approachingLimit: "الاقتراب من الحد الائتماني",
+      daysOverdue: "يوم متأخر",
+      accountOnHold: "الحساب معلق - اتصل بالدعم للحل"
+    }
   },
 
   // Suppliers
