@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface AccessibleLoadingSpinnerProps {
   size?: "sm" | "default" | "lg";
@@ -11,9 +12,11 @@ interface AccessibleLoadingSpinnerProps {
 export const AccessibleLoadingSpinner = ({ 
   size = "default", 
   className,
-  label = "Loading",
+  label,
   description
 }: AccessibleLoadingSpinnerProps) => {
+  const { t } = useLanguage();
+  const displayLabel = label || t('common.loading');
   const sizeClasses = {
     sm: "h-4 w-4",
     default: "h-6 w-6", 
@@ -24,7 +27,7 @@ export const AccessibleLoadingSpinner = ({
     <div
       role="status"
       aria-live="polite"
-      aria-label={label}
+      aria-label={displayLabel}
       aria-describedby={description ? "loading-description" : undefined}
       className={cn("flex items-center justiy-center", className)}
     >
@@ -35,7 +38,7 @@ export const AccessibleLoadingSpinner = ({
         )}
         aria-hidden="true"
       />
-      <span className="sr-only">{label}</span>
+      <span className="sr-only">{displayLabel}</span>
       {description && (
         <span id="loading-description" className="sr-only">
           {description}

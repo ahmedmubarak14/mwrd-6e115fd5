@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import { ProductionLoadingSpinner } from './ProductionLoadingSpinner';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface InfiniteScrollProps {
   children: React.ReactNode;
@@ -23,6 +24,7 @@ export const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
   loadingComponent,
   endMessage
 }) => {
+  const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   const loadingRef = useRef(false);
 
@@ -79,13 +81,13 @@ export const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
 
   const defaultLoadingComponent = (
     <div className="flex justify-center py-4">
-      <ProductionLoadingSpinner size="sm" text="Loading more..." />
+      <ProductionLoadingSpinner size="sm" text={t('common.loading')} />
     </div>
   );
 
   const defaultEndMessage = (
     <div className="text-center py-4 text-muted-foreground text-sm">
-      No more items to load
+      {t('common.noData')}
     </div>
   );
 

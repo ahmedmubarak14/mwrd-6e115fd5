@@ -1479,9 +1479,11 @@ export const arSA = {
       connectionErrorDescription: 'تعذر الاتصال بالخادم. يرجى التحقق من اتصالك بالإنترنت.',
       accessDenied: 'تم رفض الوصول',
       accessDeniedDescription: 'ليس لديك إذن للوصول إلى هذا المورد.',
+      accessDeniedDesc: 'يرجى تسجيل الدخول للوصول إلى لوحة التحكم الخاصة بك.',
       dataFormatError: 'خطأ في تنسيق البيانات',
       dataFormatErrorDescription: 'أرجع الخادم بيانات غير صالحة. يرجى المحاولة مرة أخرى أو الاتصال بالدعم.',
       unexpectedError: 'حدث خطأ غير متوقع أثناء تحميل البيانات. يرجى المحاولة مرة أخرى.',
+      loadFailed: 'فشل تحميل البيانات',
       retryAttempts: 'محاولات إعادة المحاولة',
       retryingAttempt: 'إعادة المحاولة... (المحاولة {count})',
       maxRetriesReached: 'تم الوصول إلى الحد الأقصى للمحاولات',
@@ -1491,6 +1493,9 @@ export const arSA = {
       serverError: 'خطأ في الخادم. يرجى المحاولة لاحقاً.',
       validationFailed: 'يرجى التحقق من المدخلات والمحاولة مرة أخرى.',
       unexpected: 'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.'
+    },
+    auth: {
+      signInPrompt: 'تسجيل الدخول'
     },
     tryAgain: 'حاول مرة أخرى',
     refreshPage: 'تحديث الصفحة',

@@ -1,5 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ChartSkeletonProps {
   title?: string;
@@ -10,12 +11,15 @@ interface ChartSkeletonProps {
 }
 
 export const ChartSkeleton = ({ 
-  title = "Loading Chart...",
-  description = "Please wait while we fetch the data",
+  title,
+  description,
   height = "h-80",
   showLegend = false,
   type = 'bar'
 }: ChartSkeletonProps) => {
+  const { t } = useLanguage();
+  const displayTitle = title || t('common.loading');
+  const displayDescription = description || t('common.loading');
   const renderChartSkeleton = () => {
     switch (type) {
       case 'pie':
@@ -116,10 +120,10 @@ export const ChartSkeleton = ({
         <div className="flex items-center justify-between">
           <div className="space-y-2">
             <CardTitle>
-              {title ? title : <Skeleton className="h-5 w-40" />}
+              {displayTitle}
             </CardTitle>
             <CardDescription>
-              {description ? description : <Skeleton className="h-4 w-60" />}
+              {displayDescription}
             </CardDescription>
           </div>
           {showLegend && (

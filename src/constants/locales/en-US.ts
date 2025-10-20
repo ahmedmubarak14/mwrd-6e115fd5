@@ -2119,9 +2119,11 @@ export const enUS = {
       connectionErrorDescription: 'Unable to connect to the server. Please check your internet connection.',
       accessDenied: 'Access Denied',
       accessDeniedDescription: "You don't have permission to access this resource.",
+      accessDeniedDesc: "Please log in to access your dashboard.",
       dataFormatError: 'Data Format Error',
       dataFormatErrorDescription: 'The server returned invalid data. Please try again or contact support.',
       unexpectedError: 'An unexpected error occurred while loading data. Please try again.',
+      loadFailed: 'Failed to load data',
       retryAttempts: 'Retry attempts',
       retryingAttempt: 'Retrying... (Attempt {count})',
       maxRetriesReached: 'Max retries reached',
@@ -2131,6 +2133,9 @@ export const enUS = {
       serverError: 'Server error. Please try again later.',
       validationFailed: 'Please check your input and try again.',
       unexpected: 'An unexpected error occurred. Please try again.'
+    },
+    auth: {
+      signInPrompt: 'Sign In'
     },
     tryAgain: 'Try Again',
     refreshPage: 'Refresh Page',
