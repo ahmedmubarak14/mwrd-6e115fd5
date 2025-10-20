@@ -1836,6 +1836,22 @@ export const enUS = {
     secureLogin: "Secure Login"
   },
 
+  // Email templates
+  email: {
+    offer: {
+      subject: "New Offer Received",
+      body: "You have received a new offer for your request!"
+    },
+    request: {
+      subject: "Request Status Update",
+      statusChanged: "Your procurement request status has been updated"
+    },
+    offerStatus: {
+      subject: "Offer Status Update",
+      body: "There's an update on your offer status"
+    }
+  },
+
   // KYC Form
   kyc: {
     placeholders: {

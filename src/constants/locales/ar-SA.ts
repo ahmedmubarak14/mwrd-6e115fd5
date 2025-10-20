@@ -1197,6 +1197,22 @@ export const arSA = {
     secureLogin: "تسجيل دخول آمن"
   },
 
+  // Email templates
+  email: {
+    offer: {
+      subject: "عرض جديد تم استلامه",
+      body: "لقد تلقيت عرضًا جديدًا لطلبك!"
+    },
+    request: {
+      subject: "تحديث حالة الطلب",
+      statusChanged: "تم تحديث حالة طلب المشتريات الخاص بك"
+    },
+    offerStatus: {
+      subject: "تحديث حالة العرض",
+      body: "هناك تحديث على حالة عرضك"
+    }
+  },
+
   // KYC Form
   kyc: {
     placeholders: {
