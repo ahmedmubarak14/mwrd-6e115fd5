@@ -2,7 +2,24 @@ export const enUS = {
   // Client Dashboard
   dashboard: {
     title: "Client Dashboard",
-    welcomeMessage: "Welcome to your procurement dashboard"
+    welcomeMessage: "Welcome to your procurement dashboard",
+    overview: "Overview",
+    rfqPerformance: "RFQ Performance",
+    recentActivity: "Recent RFQ activity and status",
+    noDataAvailable: "No data available for RFQ performance."
+  },
+
+  // Suppliers
+  suppliers: {
+    title: "Suppliers",
+    findManage: "Find and manage your preferred suppliers",
+    noSuppliers: "No suppliers found."
+  },
+
+  // Analytics
+  analytics: {
+    fromLastMonth: "from last month",
+    fromLastWeek: "from last week"
   },
 
   // Client Groups
@@ -66,6 +83,9 @@ export const enUS = {
   admin: {
     // Dashboard
     dashboard: "Admin Dashboard",
+    totalUsers: "Total Users",
+    activeRequests: "Active Requests",
+    revenue: "Revenue",
     dashboardData: {
       description: "Comprehensive overview of platform metrics and system health",
       quickActions: "Quick Actions", 
@@ -1652,6 +1672,14 @@ export const enUS = {
     yearsAgo: "y ago"
   },
 
+  // Requests System - English
+  requests: {
+    title: "Requests",
+    manageRequests: "Manage and track your service requests",
+    noRequests: "No requests found.",
+    createRequest: "Create Request"
+  },
+
   // Orders System - English
   orders: {
     title: "Orders",
@@ -1659,6 +1687,7 @@ export const enUS = {
     noOrders: "No orders yet",
     noOrdersDesc: "Orders from accepted proposals will appear here.",
     browseRequests: "Browse Requests",
+    trackManage: "Track and manage your orders",
     totalOrders: "Total Orders",
     pending: "Pending",
     confirmed: "Confirmed",

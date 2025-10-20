@@ -216,12 +216,10 @@ export const ProcurementClientDashboard = () => {
       {/* Header Section */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
-          {t('dashboard.title') === 'dashboard.title' ? 'Client Dashboard' : t('dashboard.title')}
+          {t('dashboard.title')}
         </h1>
         <p className="text-muted-foreground mt-1">
-          {t('dashboard.welcomeMessage') === 'dashboard.welcomeMessage' 
-            ? 'Welcome to your procurement dashboard' 
-            : t('dashboard.welcomeMessage')}
+          {t('dashboard.welcomeMessage')}
         </p>
       </div>
 

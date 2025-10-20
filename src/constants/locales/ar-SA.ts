@@ -2,7 +2,24 @@ export const arSA = {
   // Client Dashboard
   dashboard: {
     title: "لوحة تحكم العميل",
-    welcomeMessage: "مرحباً بك في لوحة تحكم المشتريات"
+    welcomeMessage: "مرحباً بك في لوحة تحكم المشتريات",
+    overview: "نظرة عامة",
+    rfqPerformance: "أداء طلبات التسعير",
+    recentActivity: "النشاط الأخير وحالة طلبات التسعير",
+    noDataAvailable: "لا توجد بيانات متاحة لأداء طلبات التسعير."
+  },
+
+  // Suppliers
+  suppliers: {
+    title: "الموردين",
+    findManage: "البحث عن وإدارة الموردين المفضلين لديك",
+    noSuppliers: "لم يتم العثور على موردين."
+  },
+
+  // Analytics
+  analytics: {
+    fromLastMonth: "من الشهر الماضي",
+    fromLastWeek: "من الأسبوع الماضي"
   },
 
   // Client Groups
@@ -69,6 +86,9 @@ export const arSA = {
   admin: {
     // Dashboard
     dashboard: "لوحة تحكم المدير",
+    totalUsers: "إجمالي المستخدمين",
+    activeRequests: "الطلبات النشطة",
+    revenue: "الإيرادات",
     dashboardData: {
       description: "نظرة شاملة على مقاييس المنصة وحالة النظام",
       quickActions: "الإجراءات السريعة", 
@@ -1967,6 +1987,7 @@ export const arSA = {
     noOrders: "لا توجد طلبات بعد",
     noOrdersDesc: "ستظهر الطلبات من العروض المقبولة هنا.",
     browseRequests: "تصفح الطلبات",
+    trackManage: "تتبع وإدارة طلباتك",
     totalOrders: "إجمالي الطلبات",
     pending: "قيد الانتظار",
     confirmed: "مؤكد",
@@ -2041,8 +2062,12 @@ export const arSA = {
   },
 
   requests: {
+    title: "الطلبات",
     description: "إدارة وتتبع طلبات الشراء الخاصة بك",
     createNew: "إنشاء طلب جديد",
+    manageRequests: "إدارة وتتبع طلبات الخدمة الخاصة بك",
+    noRequests: "لم يتم العثور على طلبات.",
+    createRequest: "إنشاء طلب",
     metrics: {
       total: "إجمالي الطلبات",
       active: "الطلبات النشطة",

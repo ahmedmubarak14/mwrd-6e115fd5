@@ -45,41 +45,41 @@ export const MetricsCards = ({ metrics, onCardClick }: MetricsCardsProps) => {
 
   const cards = [
     {
-      title: t('admin.totalUsers') === 'admin.totalUsers' ? 'Total Users' : t('admin.totalUsers'),
+      title: t('admin.totalUsers'),
       value: formatNumber(metrics?.totalUsers || 0),
       change: `+${metrics?.userGrowth || '0'}%`,
       trend: 'up' as const,
-      period: t('analytics.fromLastMonth') === 'analytics.fromLastMonth' ? 'from last month' : t('analytics.fromLastMonth'),
+      period: t('analytics.fromLastMonth'),
       icon: Users,
       color: 'text-blue-600',
       metricType: 'users' as const
     },
     {
-      title: t('admin.activeRequests') === 'admin.activeRequests' ? 'Active Requests' : t('admin.activeRequests'),
+      title: t('admin.activeRequests'),
       value: formatNumber(metrics?.activeRequests || 0),
       change: `+${metrics?.requestGrowth || '0'}%`,
       trend: 'up' as const,
-      period: t('analytics.fromLastWeek') === 'analytics.fromLastWeek' ? 'from last week' : t('analytics.fromLastWeek'),
+      period: t('analytics.fromLastWeek'),
       icon: Activity,
       color: 'text-green-600',
       metricType: 'requests' as const
     },
     {
-      title: t('admin.revenue') === 'admin.revenue' ? 'Revenue' : t('admin.revenue'),
+      title: t('admin.revenue'),
       value: formatCurrency(metrics?.totalRevenue || 0),
       change: `+${metrics?.revenueGrowth || '0'}%`,
       trend: 'up' as const,
-      period: t('analytics.fromLastMonth') === 'analytics.fromLastMonth' ? 'from last month' : t('analytics.fromLastMonth'),
+      period: t('analytics.fromLastMonth'),
       icon: DollarSign,
       color: 'text-purple-600',
       metricType: 'revenue' as const
     },
     {
-      title: t('orders.title') === 'orders.title' ? 'Orders' : t('orders.title'),
+      title: t('orders.title'),
       value: formatNumber(metrics?.totalOrders || 0),
       change: `-${metrics?.orderDecline || '0'}%`,
       trend: 'down' as const,
-      period: t('analytics.fromLastWeek') === 'analytics.fromLastWeek' ? 'from last week' : t('analytics.fromLastWeek'),
+      period: t('analytics.fromLastWeek'),
       icon: ShoppingCart,
       color: 'text-orange-600',
       metricType: 'orders' as const

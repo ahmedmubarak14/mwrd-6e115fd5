@@ -11,6 +11,7 @@ import { SecureForm } from '@/components/security/SecureForm';
 import { SecureInput } from '@/components/security/SecureInput';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const signInSchema = z.object({
   email: z.string().email('Invalid email format'),
@@ -62,6 +63,7 @@ export const EnhancedSecureAuthForm: React.FC<EnhancedSecureAuthFormProps> = ({
 
   const { secureSignUp, secureSignIn, securePasswordReset, loading, validatePassword } = useEnhancedSecureAuth();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const handleSignIn = async (data: FormData, csrfToken: string) => {
     const email = data.get('email') as string;
@@ -113,7 +115,7 @@ export const EnhancedSecureAuthForm: React.FC<EnhancedSecureAuthFormProps> = ({
       <SecureInput
         type="email"
         name="email"
-        placeholder="Email"
+        placeholder={t('auth.placeholders.email')}
         value={formData.email}
         onChange={(value) => setFormData(prev => ({ ...prev, email: value }))}
         required
@@ -124,7 +126,7 @@ export const EnhancedSecureAuthForm: React.FC<EnhancedSecureAuthFormProps> = ({
         <SecureInput
           type={showPassword ? 'text' : 'password'}
           name="password"
-          placeholder="Password"
+          placeholder={t('auth.placeholders.password')}
           value={formData.password}
           onChange={(value) => setFormData(prev => ({ ...prev, password: value }))}
           required
@@ -142,7 +144,7 @@ export const EnhancedSecureAuthForm: React.FC<EnhancedSecureAuthFormProps> = ({
 
       <Button type="submit" className="w-full" disabled={loading}>
         <Shield className="w-4 h-4 mr-2" />
-        {loading ? 'Signing In...' : 'Sign In Securely'}
+        {loading ? t('auth.signingIn') : t('auth.signInSecurely')}
       </Button>
     </SecureForm>
   );
@@ -161,7 +163,7 @@ export const EnhancedSecureAuthForm: React.FC<EnhancedSecureAuthFormProps> = ({
         <SecureInput
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder={t('auth.placeholders.email')}
           value={formData.email}
           onChange={(value) => setFormData(prev => ({ ...prev, email: value }))}
           required
@@ -171,7 +173,7 @@ export const EnhancedSecureAuthForm: React.FC<EnhancedSecureAuthFormProps> = ({
         <SecureInput
           type="text"
           name="full_name"
-          placeholder="Full Name"
+          placeholder={t('auth.placeholders.fullName')}
           value={formData.full_name}
           onChange={(value) => setFormData(prev => ({ ...prev, full_name: value }))}
           required
@@ -181,7 +183,7 @@ export const EnhancedSecureAuthForm: React.FC<EnhancedSecureAuthFormProps> = ({
         <SecureInput
           type="text"
           name="company_name"
-          placeholder="Company Name"
+          placeholder={t('auth.placeholders.companyName')}
           value={formData.company_name}
           onChange={(value) => setFormData(prev => ({ ...prev, company_name: value }))}
           required
@@ -194,11 +196,11 @@ export const EnhancedSecureAuthForm: React.FC<EnhancedSecureAuthFormProps> = ({
           onValueChange={(value: 'client' | 'vendor') => setFormData(prev => ({ ...prev, role: value }))}
         >
           <SelectTrigger>
-            <SelectValue placeholder="Select your role" />
+            <SelectValue placeholder={t('auth.selectRole')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="client">Client</SelectItem>
-            <SelectItem value="vendor">Vendor</SelectItem>
+            <SelectItem value="client">{t('auth.roleClient')}</SelectItem>
+            <SelectItem value="vendor">{t('auth.roleVendor')}</SelectItem>
           </SelectContent>
         </Select>
 
@@ -207,7 +209,7 @@ export const EnhancedSecureAuthForm: React.FC<EnhancedSecureAuthFormProps> = ({
             <SecureInput
               type={showPassword ? 'text' : 'password'}
               name="password"
-              placeholder="Password"
+              placeholder={t('auth.placeholders.password')}
               value={formData.password}
               onChange={(value) => setFormData(prev => ({ ...prev, password: value }))}
               required
@@ -257,7 +259,7 @@ export const EnhancedSecureAuthForm: React.FC<EnhancedSecureAuthFormProps> = ({
           <SecureInput
             type={showConfirmPassword ? 'text' : 'password'}
             name="confirmPassword"
-            placeholder="Confirm Password"
+            placeholder={t('auth.placeholders.confirmPassword')}
             value={formData.confirmPassword}
             onChange={(value) => setFormData(prev => ({ ...prev, confirmPassword: value }))}
             required
@@ -275,7 +277,7 @@ export const EnhancedSecureAuthForm: React.FC<EnhancedSecureAuthFormProps> = ({
 
         <Button type="submit" className="w-full" disabled={loading}>
           <Shield className="w-4 h-4 mr-2" />
-          {loading ? 'Creating Account...' : 'Create Secure Account'}
+          {loading ? t('auth.creatingAccount') : t('auth.createSecureAccount')}
         </Button>
       </SecureForm>
     );
@@ -292,7 +294,7 @@ export const EnhancedSecureAuthForm: React.FC<EnhancedSecureAuthFormProps> = ({
       <SecureInput
         type="email"
         name="email"
-        placeholder="Email"
+        placeholder={t('auth.placeholders.email')}
         value={formData.email}
         onChange={(value) => setFormData(prev => ({ ...prev, email: value }))}
         required
@@ -301,7 +303,7 @@ export const EnhancedSecureAuthForm: React.FC<EnhancedSecureAuthFormProps> = ({
 
       <Button type="submit" className="w-full" disabled={loading}>
         <Shield className="w-4 h-4 mr-2" />
-        {loading ? 'Sending Reset Link...' : 'Send Reset Link'}
+        {loading ? t('auth.sendingResetLink') : t('auth.sendResetLink')}
       </Button>
     </SecureForm>
   );
@@ -312,26 +314,25 @@ export const EnhancedSecureAuthForm: React.FC<EnhancedSecureAuthFormProps> = ({
         <CardHeader className="text-center">
           <div className="flex items-center justify-center gap-2 mb-2">
             <Shield className="h-6 w-6 text-primary" />
-            <CardTitle>Secure Authentication</CardTitle>
+            <CardTitle>{t('auth.secureAuth')}</CardTitle>
           </div>
           <CardDescription>
-            Protected by advanced security measures
+            {t('auth.protectedBy')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Alert className="mb-6">
             <Shield className="h-4 w-4" />
             <AlertDescription>
-              Your data is protected with enterprise-grade security including rate limiting, 
-              input validation, and secure transmission.
+              {t('auth.securityNotice')}
             </AlertDescription>
           </Alert>
 
           <Tabs value={currentMode} onValueChange={(value) => setCurrentMode(value as any)}>
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
-              <TabsTrigger value="reset">Reset</TabsTrigger>
+              <TabsTrigger value="signin">{t('auth.signIn')}</TabsTrigger>
+              <TabsTrigger value="signup">{t('auth.signUp')}</TabsTrigger>
+              <TabsTrigger value="reset">{t('auth.reset')}</TabsTrigger>
             </TabsList>
             
             <TabsContent value="signin" className="mt-6">
