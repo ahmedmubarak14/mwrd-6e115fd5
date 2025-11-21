@@ -8,6 +8,7 @@ import { ProductionErrorBoundary } from './components/common/ProductionErrorBoun
 import { Toaster } from '@/components/ui/toaster';
 import { GlobalErrorHandler } from '@/components/ui/GlobalErrorHandler';
 import { MobileAppShell } from './components/mobile/MobileAppShell';
+import { QueryClient } from '@/integrations/react-query/client';
 import { ClientLayout } from './components/layout/ClientLayout';
 import { AdminLayout } from './components/admin/AdminLayout';
 import Login from './pages/Login';
@@ -112,18 +113,19 @@ function App() {
   return (
     <ProductionErrorBoundary showDetails={process.env.NODE_ENV === 'development'} showHomeButton={true}>
       <GlobalErrorHandler />
-      <AuthProvider>
-        <LanguageProvider>
-          <Router>
-            <RouteAwareThemeProvider>
-              <ProductionMonitoringProvider>
-                <MobileAppShell>
-                <Suspense fallback={
-                  <div className="min-h-screen flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                  </div>
-                }>
-                  <Routes>
+      <QueryClient>
+        <AuthProvider>
+          <LanguageProvider>
+            <Router>
+              <RouteAwareThemeProvider>
+                <ProductionMonitoringProvider>
+                  <MobileAppShell>
+                  <Suspense fallback={
+                    <div className="min-h-screen flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                    </div>
+                  }>
+                    <Routes>
                     {/* Public routes */}
                     <Route path="/landing" element={<Landing />} />
                     <Route path="/login" element={<Login />} />
@@ -360,6 +362,7 @@ function App() {
           </Router>
         </LanguageProvider>
       </AuthProvider>
+      </QueryClient>
     </ProductionErrorBoundary>
   );
 }
