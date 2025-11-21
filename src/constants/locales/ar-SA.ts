@@ -1504,6 +1504,9 @@ export const arSA = {
     toggleSidebar: 'تبديل الشريط الجانبي',
     exporting: 'جاري التصدير...',
     sort: 'ترتيب',
+    selectAll: 'تحديد الكل',
+    deselectAll: 'إلغاء تحديد الكل',
+    searchPlaceholder: 'بحث...',
     social: {
       twitter: 'تويتر',
       linkedin: 'لينكد إن',

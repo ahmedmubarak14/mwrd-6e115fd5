@@ -2336,6 +2336,9 @@ export const enUS = {
     toggleSidebar: 'Toggle Sidebar',
     exporting: 'Exporting...',
     sort: 'Sort',
+    selectAll: 'Select All',
+    deselectAll: 'Deselect All',
+    searchPlaceholder: 'Search...',
     social: {
       twitter: 'Twitter',
       linkedin: 'LinkedIn',

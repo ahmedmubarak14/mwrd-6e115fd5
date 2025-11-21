@@ -2127,7 +2127,7 @@ export type Database = {
           attempt_count: number | null
           created_at: string | null
           id: string
-          ip_address: unknown | null
+          ip_address: unknown
           user_id: string | null
           window_start: string | null
         }
@@ -2136,7 +2136,7 @@ export type Database = {
           attempt_count?: number | null
           created_at?: string | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           user_id?: string | null
           window_start?: string | null
         }
@@ -2145,7 +2145,7 @@ export type Database = {
           attempt_count?: number | null
           created_at?: string | null
           id?: string
-          ip_address?: unknown | null
+          ip_address?: unknown
           user_id?: string | null
           window_start?: string | null
         }
@@ -2328,7 +2328,7 @@ export type Database = {
           created_at: string
           currency: string
           delivery_location: string | null
-          delivery_location_coordinates: unknown | null
+          delivery_location_coordinates: unknown
           description: string
           evaluation_criteria: Json
           id: string
@@ -2354,7 +2354,7 @@ export type Database = {
           created_at?: string
           currency?: string
           delivery_location?: string | null
-          delivery_location_coordinates?: unknown | null
+          delivery_location_coordinates?: unknown
           description: string
           evaluation_criteria?: Json
           id?: string
@@ -2380,7 +2380,7 @@ export type Database = {
           created_at?: string
           currency?: string
           delivery_location?: string | null
-          delivery_location_coordinates?: unknown | null
+          delivery_location_coordinates?: unknown
           description?: string
           evaluation_criteria?: Json
           id?: string
@@ -3251,18 +3251,12 @@ export type Database = {
         Args: { user_uuid: string }
         Returns: boolean
       }
-      check_profile_query_rate_limit: {
-        Args: Record<PropertyKey, never>
-        Returns: boolean
-      }
+      check_profile_query_rate_limit: { Args: never; Returns: boolean }
       check_support_ticket_rate_limit: {
         Args: { user_uuid: string }
         Returns: boolean
       }
-      cleanup_expired_otps: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
+      cleanup_expired_otps: { Args: never; Returns: undefined }
       create_security_alert: {
         Args: {
           alert_description: string
@@ -3278,16 +3272,10 @@ export type Database = {
         }
         Returns: undefined
       }
-      generate_invoice_number: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
-      get_admin_statistics: {
-        Args: { admin_user_id: string }
-        Returns: Json
-      }
+      generate_invoice_number: { Args: never; Returns: string }
+      get_admin_statistics: { Args: { admin_user_id: string }; Returns: Json }
       get_analytics_data: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           active_users: number
           success_rate: number
@@ -3299,7 +3287,7 @@ export type Database = {
         }[]
       }
       get_current_user_profile: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           address: string | null
           avatar_url: string | null
@@ -3329,13 +3317,16 @@ export type Database = {
           verified_at: string | null
           verified_by: string | null
         }[]
+        SetofOptions: {
+          from: "*"
+          to: "user_profiles"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
-      get_current_user_role: {
-        Args: Record<PropertyKey, never>
-        Returns: string
-      }
+      get_current_user_role: { Args: never; Returns: string }
       get_growth_statistics: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           active_subscriptions: number
           offers_growth: number
@@ -3362,7 +3353,7 @@ export type Database = {
         }[]
       }
       get_platform_statistics: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           total_admins: number
           total_clients: number
@@ -3412,12 +3403,9 @@ export type Database = {
         Args: { user_uuid: string }
         Returns: Database["public"]["Enums"]["user_role"]
       }
-      get_user_role_secure: {
-        Args: { user_uuid: string }
-        Returns: string
-      }
+      get_user_role_secure: { Args: { user_uuid: string }; Returns: string }
       get_user_statistics: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           total_admins: number
           total_clients: number
@@ -3425,20 +3413,35 @@ export type Database = {
           total_vendors: number
         }[]
       }
-      get_vendor_business_info: {
-        Args: Record<PropertyKey, never> | { vendor_user_id: string }
-        Returns: {
-          avatar_url: string
-          bio: string
-          categories: string[]
-          company_name: string
-          created_at: string
-          full_name: string
-          id: string
-          portfolio_url: string
-          verification_status: string
-        }[]
-      }
+      get_vendor_business_info:
+        | {
+            Args: { vendor_user_id: string }
+            Returns: {
+              avatar_url: string
+              bio: string
+              categories: string[]
+              company_name: string
+              created_at: string
+              full_name: string
+              id: string
+              portfolio_url: string
+              verification_status: string
+            }[]
+          }
+        | {
+            Args: never
+            Returns: {
+              avatar_url: string
+              bio: string
+              categories: string[]
+              company_name: string
+              created_at: string
+              full_name: string
+              id: string
+              portfolio_url: string
+              verification_status: string
+            }[]
+          }
       get_vendor_public_info: {
         Args: { vendor_user_id: string }
         Returns: {
@@ -3478,7 +3481,7 @@ export type Database = {
         Returns: undefined
       }
       test_rls_policies: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           message: string
           passed: boolean
