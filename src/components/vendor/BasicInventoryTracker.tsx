@@ -170,12 +170,20 @@ export const BasicInventoryTracker = () => {
       return;
     }
 
-    if (data?.success) {
+    const result = data as { 
+      success: boolean; 
+      total_items: number; 
+      low_stock_items: number; 
+      out_of_stock_items: number; 
+      total_inventory_value: number;
+    };
+
+    if (result?.success) {
       setSummary({
-        total_items: data.total_items,
-        low_stock_items: data.low_stock_items,
-        out_of_stock_items: data.out_of_stock_items,
-        total_inventory_value: data.total_inventory_value,
+        total_items: result.total_items,
+        low_stock_items: result.low_stock_items,
+        out_of_stock_items: result.out_of_stock_items,
+        total_inventory_value: result.total_inventory_value,
       });
     }
   };
@@ -334,21 +342,22 @@ export const BasicInventoryTracker = () => {
         p_inventory_item_id: selectedItem.id,
         p_movement_type: movementForm.movement_type,
         p_quantity: movementForm.quantity,
-        p_reason: movementForm.reason || null,
         p_notes: movementForm.notes || null,
       });
 
       if (error) throw error;
 
-      if (!data?.success) {
-        throw new Error(data?.error || 'Failed to record movement');
+      const result = data as { success: boolean; error?: string; previous_stock: number; new_stock: number };
+
+      if (!result?.success) {
+        throw new Error(result?.error || 'Failed to record movement');
       }
 
       toast({
         title: isRTL ? 'تم التسجيل' : 'Movement Recorded',
         description: isRTL
-          ? `تم تحديث المخزون من ${data.previous_stock} إلى ${data.new_stock}`
-          : `Stock updated from ${data.previous_stock} to ${data.new_stock}`,
+          ? `تم تحديث المخزون من ${result.previous_stock} إلى ${result.new_stock}`
+          : `Stock updated from ${result.previous_stock} to ${result.new_stock}`,
       });
 
       setShowMovementDialog(false);

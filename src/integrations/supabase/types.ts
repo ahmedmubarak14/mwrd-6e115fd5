@@ -1010,6 +1010,175 @@ export type Database = {
           },
         ]
       }
+      inventory_alerts: {
+        Row: {
+          alert_type: string
+          created_at: string
+          id: string
+          inventory_item_id: string | null
+          is_read: boolean
+          message: string
+          metadata: Json | null
+          resolved_at: string | null
+          severity: string
+          vendor_id: string
+        }
+        Insert: {
+          alert_type: string
+          created_at?: string
+          id?: string
+          inventory_item_id?: string | null
+          is_read?: boolean
+          message: string
+          metadata?: Json | null
+          resolved_at?: string | null
+          severity?: string
+          vendor_id: string
+        }
+        Update: {
+          alert_type?: string
+          created_at?: string
+          id?: string
+          inventory_item_id?: string | null
+          is_read?: boolean
+          message?: string
+          metadata?: Json | null
+          resolved_at?: string | null
+          severity?: string
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_alerts_inventory_item_id_fkey"
+            columns: ["inventory_item_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inventory_items: {
+        Row: {
+          category: string | null
+          created_at: string
+          current_stock: number
+          description: string | null
+          id: string
+          last_restock_date: string | null
+          location: string | null
+          max_stock_level: number | null
+          metadata: Json | null
+          min_stock_level: number
+          name: string
+          reorder_point: number | null
+          sku: string
+          status: string | null
+          supplier_name: string | null
+          unit_cost: number | null
+          unit_of_measure: string
+          unit_price: number | null
+          updated_at: string
+          vendor_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          current_stock?: number
+          description?: string | null
+          id?: string
+          last_restock_date?: string | null
+          location?: string | null
+          max_stock_level?: number | null
+          metadata?: Json | null
+          min_stock_level?: number
+          name: string
+          reorder_point?: number | null
+          sku: string
+          status?: string | null
+          supplier_name?: string | null
+          unit_cost?: number | null
+          unit_of_measure: string
+          unit_price?: number | null
+          updated_at?: string
+          vendor_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          current_stock?: number
+          description?: string | null
+          id?: string
+          last_restock_date?: string | null
+          location?: string | null
+          max_stock_level?: number | null
+          metadata?: Json | null
+          min_stock_level?: number
+          name?: string
+          reorder_point?: number | null
+          sku?: string
+          status?: string | null
+          supplier_name?: string | null
+          unit_cost?: number | null
+          unit_of_measure?: string
+          unit_price?: number | null
+          updated_at?: string
+          vendor_id?: string
+        }
+        Relationships: []
+      }
+      inventory_movements: {
+        Row: {
+          created_at: string
+          id: string
+          inventory_item_id: string
+          movement_type: string
+          new_stock: number
+          notes: string | null
+          performed_by: string | null
+          previous_stock: number
+          quantity: number
+          reference_id: string | null
+          reference_type: string | null
+          vendor_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          inventory_item_id: string
+          movement_type: string
+          new_stock: number
+          notes?: string | null
+          performed_by?: string | null
+          previous_stock: number
+          quantity: number
+          reference_id?: string | null
+          reference_type?: string | null
+          vendor_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          inventory_item_id?: string
+          movement_type?: string
+          new_stock?: number
+          notes?: string | null
+          performed_by?: string | null
+          previous_stock?: number
+          quantity?: number
+          reference_id?: string | null
+          reference_type?: string | null
+          vendor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_movements_inventory_item_id_fkey"
+            columns: ["inventory_item_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       invoice_items: {
         Row: {
           created_at: string
@@ -1814,6 +1983,162 @@ export type Database = {
           phone_number?: string
           verified?: boolean | null
           verified_at?: string | null
+        }
+        Relationships: []
+      }
+      payment_methods: {
+        Row: {
+          billing_address: Json | null
+          card_brand: string | null
+          card_expiry: string | null
+          card_last_four: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          is_default: boolean
+          metadata: Json | null
+          payment_type: string
+          provider: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          billing_address?: Json | null
+          card_brand?: string | null
+          card_expiry?: string | null
+          card_last_four?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          is_default?: boolean
+          metadata?: Json | null
+          payment_type: string
+          provider: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          billing_address?: Json | null
+          card_brand?: string | null
+          card_expiry?: string | null
+          card_last_four?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          is_default?: boolean
+          metadata?: Json | null
+          payment_type?: string
+          provider?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      payment_settings: {
+        Row: {
+          api_key_live: string | null
+          api_key_test: string | null
+          created_at: string
+          id: string
+          is_enabled: boolean
+          is_test_mode: boolean
+          metadata: Json | null
+          provider: string
+          publishable_key_live: string | null
+          publishable_key_test: string | null
+          supported_payment_methods: string[] | null
+          updated_at: string
+          webhook_secret: string | null
+        }
+        Insert: {
+          api_key_live?: string | null
+          api_key_test?: string | null
+          created_at?: string
+          id?: string
+          is_enabled?: boolean
+          is_test_mode?: boolean
+          metadata?: Json | null
+          provider: string
+          publishable_key_live?: string | null
+          publishable_key_test?: string | null
+          supported_payment_methods?: string[] | null
+          updated_at?: string
+          webhook_secret?: string | null
+        }
+        Update: {
+          api_key_live?: string | null
+          api_key_test?: string | null
+          created_at?: string
+          id?: string
+          is_enabled?: boolean
+          is_test_mode?: boolean
+          metadata?: Json | null
+          provider?: string
+          publishable_key_live?: string | null
+          publishable_key_test?: string | null
+          supported_payment_methods?: string[] | null
+          updated_at?: string
+          webhook_secret?: string | null
+        }
+        Relationships: []
+      }
+      payment_transactions: {
+        Row: {
+          amount: number
+          card_brand: string | null
+          card_last_four: string | null
+          created_at: string
+          currency: string
+          description: string | null
+          failure_reason: string | null
+          id: string
+          invoice_id: string | null
+          metadata: Json | null
+          moyasar_payment_id: string | null
+          moyasar_status: string | null
+          payment_type: string | null
+          processed_at: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          card_brand?: string | null
+          card_last_four?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          failure_reason?: string | null
+          id?: string
+          invoice_id?: string | null
+          metadata?: Json | null
+          moyasar_payment_id?: string | null
+          moyasar_status?: string | null
+          payment_type?: string | null
+          processed_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          card_brand?: string | null
+          card_last_four?: string | null
+          created_at?: string
+          currency?: string
+          description?: string | null
+          failure_reason?: string | null
+          id?: string
+          invoice_id?: string | null
+          metadata?: Json | null
+          moyasar_payment_id?: string | null
+          moyasar_status?: string | null
+          payment_type?: string | null
+          processed_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -2772,6 +3097,63 @@ export type Database = {
         }
         Relationships: []
       }
+      vendor_branding: {
+        Row: {
+          address: string | null
+          company_name: string | null
+          created_at: string
+          email: string | null
+          footer_text: string | null
+          id: string
+          logo_url: string | null
+          payment_terms: string | null
+          phone: string | null
+          primary_color: string | null
+          secondary_color: string | null
+          tax_id: string | null
+          terms_conditions: string | null
+          updated_at: string
+          vendor_id: string
+          website: string | null
+        }
+        Insert: {
+          address?: string | null
+          company_name?: string | null
+          created_at?: string
+          email?: string | null
+          footer_text?: string | null
+          id?: string
+          logo_url?: string | null
+          payment_terms?: string | null
+          phone?: string | null
+          primary_color?: string | null
+          secondary_color?: string | null
+          tax_id?: string | null
+          terms_conditions?: string | null
+          updated_at?: string
+          vendor_id: string
+          website?: string | null
+        }
+        Update: {
+          address?: string | null
+          company_name?: string | null
+          created_at?: string
+          email?: string | null
+          footer_text?: string | null
+          id?: string
+          logo_url?: string | null
+          payment_terms?: string | null
+          phone?: string | null
+          primary_color?: string | null
+          secondary_color?: string | null
+          tax_id?: string | null
+          terms_conditions?: string | null
+          updated_at?: string
+          vendor_id?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
       vendor_categories: {
         Row: {
           category_id: string
@@ -3319,6 +3701,10 @@ export type Database = {
         Args: { p_notes?: string; p_request_id: string }
         Returns: Json
       }
+      calculate_vendor_performance_metrics: {
+        Args: { p_vendor_id: string }
+        Returns: Json
+      }
       check_consultation_rate_limit: {
         Args: { user_uuid: string }
         Returns: boolean
@@ -3329,6 +3715,10 @@ export type Database = {
         Returns: boolean
       }
       cleanup_expired_otps: { Args: never; Returns: undefined }
+      create_payment_transaction: {
+        Args: { p_amount: number; p_description: string; p_invoice_id: string }
+        Returns: Json
+      }
       create_security_alert: {
         Args: {
           alert_description: string
@@ -3383,6 +3773,10 @@ export type Database = {
           vendor_id: string
           vendor_name: string
         }[]
+      }
+      get_competition_insights: {
+        Args: { p_category?: string; p_vendor_id: string }
+        Returns: Json
       }
       get_current_user_profile: {
         Args: never
@@ -3442,6 +3836,7 @@ export type Database = {
           users_growth: number
         }[]
       }
+      get_inventory_summary: { Args: { p_vendor_id?: string }; Returns: Json }
       get_kyc_status: {
         Args: { user_uuid: string }
         Returns: {
@@ -3476,6 +3871,11 @@ export type Database = {
           total_vendors: number
         }[]
       }
+      get_popular_specifications: {
+        Args: { p_category: string }
+        Returns: Json
+      }
+      get_pricing_bands: { Args: { p_category: string }; Returns: Json }
       get_safe_user_display_info: {
         Args: { target_user_id: string }
         Returns: {
@@ -3554,6 +3954,14 @@ export type Database = {
               verification_status: string
             }[]
           }
+      get_vendor_demand_trends: {
+        Args: { p_category?: string; p_vendor_id?: string }
+        Returns: Json
+      }
+      get_vendor_market_position: {
+        Args: { p_vendor_id: string }
+        Returns: Json
+      }
       get_vendor_public_info: {
         Args: { vendor_user_id: string }
         Returns: {
@@ -3592,12 +4000,25 @@ export type Database = {
         }
         Returns: undefined
       }
+      record_inventory_movement: {
+        Args: {
+          p_inventory_item_id: string
+          p_movement_type: string
+          p_notes?: string
+          p_quantity: number
+        }
+        Returns: Json
+      }
       reject_internal_request: {
         Args: { p_notes: string; p_request_id: string }
         Returns: Json
       }
       request_changes_internal_request: {
         Args: { p_notes: string; p_request_id: string }
+        Returns: Json
+      }
+      submit_request_for_internal_approval: {
+        Args: { p_approver_ids: string[]; p_request_id: string }
         Returns: Json
       }
       test_rls_policies: {
