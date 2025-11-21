@@ -81,6 +81,7 @@ import Settings from './pages/Settings';
 import Support from './pages/Support';
 import Vendors from './pages/Vendors';
 import { ClientInvoices } from './pages/client/ClientInvoices';
+import PayInvoicePage from './pages/PayInvoicePage';
 
 const RoleProtectedRoute: React.FC<{
   children: React.ReactNode;
@@ -189,6 +190,7 @@ function App() {
                       <Route path="vendor-rfqs" element={<VendorRFQs />} />
                       <Route path="vendors" element={<Vendors />} />
                       <Route path="invoices" element={<ClientInvoices />} />
+                      <Route path="pay-invoice/:invoiceId" element={<PayInvoicePage />} />
                     </Route>
                     
                     {/* Legacy client routes (redirect to new structure) */}
