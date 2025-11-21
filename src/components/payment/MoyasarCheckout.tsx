@@ -74,8 +74,10 @@ export const MoyasarCheckout = ({
           p_description: description,
         });
 
-      if (txError || !transactionResult?.success) {
-        throw new Error(transactionResult?.error || t('payment.failedToProcess'));
+      const result = transactionResult as { success: boolean; error?: string; transaction_id?: string };
+      
+      if (txError || !result?.success) {
+        throw new Error(result?.error || t('payment.failedToProcess'));
       }
 
       // Initialize Moyasar checkout
@@ -87,7 +89,7 @@ export const MoyasarCheckout = ({
         methods: supportedMethods as any,
         metadata: {
           invoice_id: invoiceId,
-          transaction_id: transactionResult.transaction_id,
+          transaction_id: result.transaction_id,
           user_id: userProfile?.id,
         },
         on_completed: handlePaymentCompleted,

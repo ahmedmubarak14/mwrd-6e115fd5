@@ -112,10 +112,10 @@ export const MarketIntelligenceDashboard = () => {
     setLoading(true);
     try {
       const [trendsRes, pricingRes, specsRes, competitionRes, positionRes] = await Promise.all([
-        supabase.rpc('get_vendor_demand_trends', { p_vendor_id: userProfile.id, p_months: 6 }),
-        supabase.rpc('get_pricing_bands', { p_vendor_id: userProfile.id, p_months: 3 }),
-        supabase.rpc('get_popular_specifications', { p_vendor_id: userProfile.id, p_months: 3 }),
-        supabase.rpc('get_competition_insights', { p_vendor_id: userProfile.id, p_months: 3 }),
+        supabase.rpc('get_vendor_demand_trends', { p_vendor_id: userProfile.id }),
+        supabase.rpc('get_pricing_bands', { p_category: '' }),
+        supabase.rpc('get_popular_specifications', { p_category: '' }),
+        supabase.rpc('get_competition_insights', { p_vendor_id: userProfile.id }),
         supabase.rpc('get_vendor_market_position', { p_vendor_id: userProfile.id }),
       ]);
 
@@ -125,11 +125,11 @@ export const MarketIntelligenceDashboard = () => {
       if (competitionRes.error) throw competitionRes.error;
       if (positionRes.error) throw positionRes.error;
 
-      setDemandTrends(trendsRes.data || []);
-      setPricingBands(pricingRes.data || []);
-      setPopularSpecs(specsRes.data || []);
-      setCompetition(competitionRes.data || []);
-      setMarketPosition(positionRes.data);
+      setDemandTrends(trendsRes.data as any[] || []);
+      setPricingBands(pricingRes.data as any[] || []);
+      setPopularSpecs(specsRes.data as any[] || []);
+      setCompetition(competitionRes.data as any[] || []);
+      setMarketPosition(positionRes.data as any);
     } catch (error) {
       console.error('Error fetching market intelligence:', error);
       toast({
