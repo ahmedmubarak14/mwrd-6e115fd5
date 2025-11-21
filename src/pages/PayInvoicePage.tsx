@@ -78,7 +78,7 @@ export const PayInvoicePage = () => {
         return;
       }
 
-      setInvoice(data);
+      setInvoice({ ...data, amount: data.total_amount } as any);
     } catch (error: any) {
       console.error('Error loading invoice:', error);
       setError(error.message || t('payment.failedToLoad'));
