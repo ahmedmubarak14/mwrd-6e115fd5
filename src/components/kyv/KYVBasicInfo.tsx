@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface KYVBasicInfoProps {
   formData: any;
@@ -15,47 +16,49 @@ export const KYVBasicInfo: React.FC<KYVBasicInfoProps> = ({
   onChange,
   onFileUpload,
 }) => {
+  const { t } = useLanguage();
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Additional Business Information</CardTitle>
+        <CardTitle>{t('kyvForms.basicInfo.title')}</CardTitle>
         <CardDescription>
-          Provide additional details about your business
+          {t('kyvForms.basicInfo.description')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="tradeName">Trade Name (if different from legal name)</Label>
+          <Label htmlFor="tradeName">{t('kyvForms.basicInfo.labels.tradeName')}</Label>
           <Input
             id="tradeName"
             value={formData.tradeName || ''}
             onChange={(e) => onChange('tradeName', e.target.value)}
-            placeholder="Enter your trade name"
+            placeholder={t('kyvForms.basicInfo.placeholders.tradeName')}
           />
           <p className="text-xs text-muted-foreground">
-            The name under which you conduct business, if different from legal name
+            {t('kyvForms.basicInfo.helpText.tradeName')}
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="numberOfEmployees">Number of Employees *</Label>
+          <Label htmlFor="numberOfEmployees">{t('kyvForms.basicInfo.labels.numberOfEmployees')}</Label>
           <Select value={formData.numberOfEmployees} onValueChange={(v) => onChange('numberOfEmployees', v)}>
             <SelectTrigger id="numberOfEmployees">
-              <SelectValue placeholder="Select company size" />
+              <SelectValue placeholder={t('kyvForms.basicInfo.placeholders.companySize')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="1-10">1-10 employees</SelectItem>
-              <SelectItem value="11-50">11-50 employees</SelectItem>
-              <SelectItem value="51-100">51-100 employees</SelectItem>
-              <SelectItem value="101-250">101-250 employees</SelectItem>
-              <SelectItem value="251-500">251-500 employees</SelectItem>
-              <SelectItem value="500+">500+ employees</SelectItem>
+              <SelectItem value="1-10">{t('kyvForms.basicInfo.companySizes.small')}</SelectItem>
+              <SelectItem value="11-50">{t('kyvForms.basicInfo.companySizes.small_medium')}</SelectItem>
+              <SelectItem value="51-100">{t('kyvForms.basicInfo.companySizes.medium')}</SelectItem>
+              <SelectItem value="101-250">{t('kyvForms.basicInfo.companySizes.medium_large')}</SelectItem>
+              <SelectItem value="251-500">{t('kyvForms.basicInfo.companySizes.large')}</SelectItem>
+              <SelectItem value="500+">{t('kyvForms.basicInfo.companySizes.xlarge')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="zakatCert">Zakat Certificate (PDF)</Label>
+          <Label htmlFor="zakatCert">{t('kyvForms.basicInfo.labels.zakatCertificate')}</Label>
           <Input
             id="zakatCert"
             type="file"
@@ -63,12 +66,12 @@ export const KYVBasicInfo: React.FC<KYVBasicInfoProps> = ({
             onChange={(e) => e.target.files?.[0] && onFileUpload('zakatCertificate', e.target.files[0])}
           />
           <p className="text-xs text-muted-foreground">
-            Upload your Zakat, Tax and Customs Authority certificate
+            {t('kyvForms.basicInfo.helpText.zakat')}
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="chamberCert">Chamber of Commerce Certificate (PDF)</Label>
+          <Label htmlFor="chamberCert">{t('kyvForms.basicInfo.labels.chamberCertificate')}</Label>
           <Input
             id="chamberCert"
             type="file"
@@ -76,12 +79,12 @@ export const KYVBasicInfo: React.FC<KYVBasicInfoProps> = ({
             onChange={(e) => e.target.files?.[0] && onFileUpload('chamberCommerceCertificate', e.target.files[0])}
           />
           <p className="text-xs text-muted-foreground">
-            Upload your Chamber of Commerce membership certificate
+            {t('kyvForms.basicInfo.helpText.chamber')}
           </p>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="companyLogo">Company Logo (Image)</Label>
+          <Label htmlFor="companyLogo">{t('kyvForms.basicInfo.labels.companyLogo')}</Label>
           <Input
             id="companyLogo"
             type="file"
@@ -89,7 +92,7 @@ export const KYVBasicInfo: React.FC<KYVBasicInfoProps> = ({
             onChange={(e) => e.target.files?.[0] && onFileUpload('companyLogo', e.target.files[0])}
           />
           <p className="text-xs text-muted-foreground">
-            Upload your official company logo (PNG, JPG, or SVG)
+            {t('kyvForms.basicInfo.helpText.logo')}
           </p>
         </div>
       </CardContent>
