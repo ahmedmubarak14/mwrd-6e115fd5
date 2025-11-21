@@ -55,19 +55,17 @@ export const SubmitForApprovalButton = ({
             disabled={disabled || submitting}
           >
             <UserCheck className="h-4 w-4 mr-2" />
-            {isRTL ? 'إرسال للموافقة' : 'Submit for Approval'}
+            {t('approval.submitForApproval')}
           </Button>
         </DialogTrigger>
 
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {isRTL ? 'إرسال للموافقة الداخلية' : 'Submit for Internal Approval'}
+              {t('approval.submitForInternalApproval')}
             </DialogTitle>
             <DialogDescription>
-              {isRTL
-                ? 'سيتم إرسال هذا الطلب إلى مدير في مؤسستك للمراجعة قبل نشره في السوق.'
-                : 'This request will be sent to an admin in your organization for review before being posted to the marketplace.'}
+              {t('approval.description')}
             </DialogDescription>
           </DialogHeader>
 
@@ -76,38 +74,20 @@ export const SubmitForApprovalButton = ({
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-primary" />
                 <p className="text-sm font-medium">
-                  {isRTL ? 'ما سيحدث بعد ذلك:' : 'What happens next:'}
+                  {t('approval.whatHappensNext')}
                 </p>
               </div>
               <ul className="space-y-2 text-sm text-muted-foreground ml-6">
-                <li>
-                  {isRTL
-                    ? '• سيتم إخطار مدير في مؤسستك'
-                    : '• An admin in your organization will be notified'}
-                </li>
-                <li>
-                  {isRTL
-                    ? '• سيقوم بمراجعة الطلب والموافقة عليه أو رفضه أو طلب تغييرات'
-                    : '• They will review and approve, reject, or request changes'}
-                </li>
-                <li>
-                  {isRTL
-                    ? '• بعد الموافقة، سيتم نشر الطلب تلقائياً في السوق'
-                    : '• Once approved, the request will be automatically posted to the marketplace'}
-                </li>
-                <li>
-                  {isRTL
-                    ? '• ستتلقى إشعاراً بالقرار'
-                    : '• You will be notified of the decision'}
-                </li>
+                <li>{t('approval.adminWillBeNotified')}</li>
+                <li>{t('approval.adminWillReview')}</li>
+                <li>{t('approval.autoPostedAfterApproval')}</li>
+                <li>{t('approval.youWillBeNotified')}</li>
               </ul>
             </div>
 
             <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg">
               <p className="text-sm text-blue-800 dark:text-blue-200">
-                💡 {isRTL
-                  ? 'نصيحة: تأكد من أن جميع تفاصيل طلبك كاملة ودقيقة قبل الإرسال للموافقة.'
-                  : 'Tip: Make sure all your request details are complete and accurate before submitting for approval.'}
+                💡 {t('approval.tip')}
               </p>
             </div>
           </div>
@@ -118,18 +98,18 @@ export const SubmitForApprovalButton = ({
               onClick={() => setShowDialog(false)}
               disabled={submitting}
             >
-              {isRTL ? 'إلغاء' : 'Cancel'}
+              {t('approval.cancel')}
             </Button>
             <Button onClick={handleSubmit} disabled={submitting}>
               {submitting ? (
                 <>
                   <LoadingSpinner size="sm" className="mr-2" />
-                  {isRTL ? 'جاري الإرسال...' : 'Submitting...'}
+                  {t('approval.submitting')}
                 </>
               ) : (
                 <>
                   <UserCheck className="h-4 w-4 mr-2" />
-                  {isRTL ? 'إرسال للموافقة' : 'Submit for Approval'}
+                  {t('approval.submitForApproval')}
                 </>
               )}
             </Button>

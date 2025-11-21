@@ -1510,6 +1510,30 @@ export const arSA = {
     },
     tryAgain: 'حاول مرة أخرى',
     refreshPage: 'تحديث الصفحة',
+
+  // سير عمل الموافقة
+  approval: {
+    submitForApproval: 'إرسال للموافقة',
+    submitForInternalApproval: 'إرسال للموافقة الداخلية',
+    description: 'سيتم إرسال هذا الطلب إلى مدير في مؤسستك للمراجعة قبل نشره في السوق.',
+    whatHappensNext: 'ما سيحدث بعد ذلك:',
+    adminWillBeNotified: '• سيتم إخطار مدير في مؤسستك',
+    adminWillReview: '• سيقوم بمراجعة الطلب والموافقة عليه أو رفضه أو طلب تغييرات',
+    autoPostedAfterApproval: '• بعد الموافقة، سيتم نشر الطلب تلقائياً في السوق',
+    youWillBeNotified: '• ستتلقى إشعاراً بالقرار',
+    tip: 'نصيحة: تأكد من أن جميع تفاصيل طلبك كاملة ودقيقة قبل الإرسال للموافقة.',
+    submitting: 'جاري الإرسال...',
+    cancel: 'إلغاء'
+  },
+
+  // إدارة الإنفاق
+  spendManagement: {
+    failedToLoadData: 'فشل تحميل بيانات الإنفاق',
+    failedToSaveBudget: 'فشل حفظ إعدادات الميزانية',
+    budgetSavedSuccessfully: 'تم حفظ إعدادات الميزانية',
+    reportExported: 'تم تصدير التقرير'
+  },
+
     placeholders: {
       searchLogs: 'البحث في السجلات...',
       filterByAction: 'تصفية حسب الإجراء...',

@@ -2187,6 +2187,30 @@ export const enUS = {
     },
     tryAgain: 'Try Again',
     refreshPage: 'Refresh Page',
+
+  // Approval Workflow
+  approval: {
+    submitForApproval: 'Submit for Approval',
+    submitForInternalApproval: 'Submit for Internal Approval',
+    description: 'This request will be sent to an admin in your organization for review before being posted to the marketplace.',
+    whatHappensNext: 'What happens next:',
+    adminWillBeNotified: 'An admin in your organization will be notified',
+    adminWillReview: 'They will review and approve, reject, or request changes',
+    autoPostedAfterApproval: 'Once approved, the request will be automatically posted to the marketplace',
+    youWillBeNotified: 'You will be notified of the decision',
+    tip: 'Tip: Make sure all your request details are complete and accurate before submitting for approval.',
+    submitting: 'Submitting...',
+    cancel: 'Cancel'
+  },
+
+  // Spend Management
+  spendManagement: {
+    failedToLoadData: 'Failed to load spending data',
+    failedToSaveBudget: 'Failed to save budget settings',
+    budgetSavedSuccessfully: 'Budget settings saved successfully',
+    reportExported: 'Report exported successfully'
+  },
+
     placeholders: {
       email: 'Enter your email address',
       password: 'Enter your password',
