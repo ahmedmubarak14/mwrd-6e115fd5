@@ -133,8 +133,8 @@ export const MarketIntelligenceDashboard = () => {
     } catch (error) {
       console.error('Error fetching market intelligence:', error);
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل تحميل بيانات السوق' : 'Failed to load market intelligence',
+        title: t('vendor.marketIntelligence.error'),
+        description: t('vendor.marketIntelligence.loadError'),
         variant: 'destructive',
       });
     } finally {
@@ -156,11 +156,11 @@ export const MarketIntelligenceDashboard = () => {
 
   const getPerformanceLabel = (performance: string) => {
     const labels = {
-      better: isRTL ? 'أفضل من السوق' : 'Better than Market',
-      below: isRTL ? 'أقل من السوق' : 'Below Market',
-      average: isRTL ? 'متوسط السوق' : 'Market Average',
-      above_average: isRTL ? 'أعلى من المتوسط' : 'Above Average',
-      below_average: isRTL ? 'أقل من المتوسط' : 'Below Average',
+      better: t('vendor.marketIntelligence.betterThanMarket'),
+      below: t('vendor.marketIntelligence.belowMarket'),
+      average: t('vendor.marketIntelligence.marketAverage'),
+      above_average: t('vendor.marketIntelligence.aboveAverage'),
+      below_average: t('vendor.marketIntelligence.belowAverage'),
     };
     return labels[performance as keyof typeof labels] || performance;
   };
@@ -168,7 +168,7 @@ export const MarketIntelligenceDashboard = () => {
   if (loading) {
     return (
       <div className="p-6">
-        <LoadingSpinner size="lg" text={isRTL ? 'جاري تحميل رؤى السوق...' : 'Loading market insights...'} />
+        <LoadingSpinner size="lg" text={t('vendor.marketIntelligence.loading')} />
       </div>
     );
   }
@@ -179,12 +179,10 @@ export const MarketIntelligenceDashboard = () => {
       <div>
         <h1 className="text-3xl font-bold flex items-center gap-2">
           <BarChart3 className="h-8 w-8 text-primary" />
-          {isRTL ? 'تقارير ذكاء السوق' : 'Market Intelligence Reports'}
+          {t('vendor.marketIntelligence.title')}
         </h1>
         <p className="text-muted-foreground mt-1">
-          {isRTL
-            ? 'رؤى مجهولة المصدر حول السوق لمساعدتك على المنافسة بفعالية'
-            : 'Anonymized market insights to help you compete effectively'}
+          {t('vendor.marketIntelligence.subtitle')}
         </p>
       </div>
 
@@ -195,12 +193,10 @@ export const MarketIntelligenceDashboard = () => {
             <Eye className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
             <div>
               <h3 className="font-semibold mb-1">
-                {isRTL ? '🔒 بيانات مجهولة المصدر تماماً' : '🔒 Fully Anonymized Data'}
+                {t('vendor.marketIntelligence.anonymityNotice')}
               </h3>
               <p className="text-sm text-muted-foreground">
-                {isRTL
-                  ? 'جميع البيانات المعروضة هنا مجهولة المصدر ومجمعة. لن يتم الكشف عن هويات المنافسين أو العملاء الأفراد أبداً.'
-                  : 'All data shown here is anonymized and aggregated. Individual competitor or client identities are never revealed.'}
+                {t('vendor.marketIntelligence.anonymityDescription')}
               </p>
             </div>
           </div>
@@ -213,10 +209,10 @@ export const MarketIntelligenceDashboard = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Award className="h-5 w-5" />
-              {isRTL ? 'أدائك مقابل السوق' : 'Your Performance vs Market'}
+              {t('vendor.marketIntelligence.performanceVsMarket')}
             </CardTitle>
             <CardDescription>
-              {isRTL ? 'آخر 3 أشهر' : 'Last 3 months'}
+              {t('vendor.marketIntelligence.lastThreeMonths')}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -227,7 +223,7 @@ export const MarketIntelligenceDashboard = () => {
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4 text-muted-foreground" />
                     <span className="text-sm font-medium">
-                      {isRTL ? 'وقت الاستجابة' : 'Response Time'}
+                      {t('vendor.marketIntelligence.responseTime')}
                     </span>
                   </div>
                   <Badge
@@ -240,13 +236,13 @@ export const MarketIntelligenceDashboard = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-muted-foreground">{isRTL ? 'أنت' : 'You'}</p>
+                    <p className="text-muted-foreground">{t('vendor.marketIntelligence.you')}</p>
                     <p className="font-bold">
                       {marketPosition.your_stats.avg_response_time_hours.toFixed(1)}h
                     </p>
                   </div>
                   <div>
-                    <p className="text-muted-foreground">{isRTL ? 'السوق' : 'Market'}</p>
+                    <p className="text-muted-foreground">{t('vendor.marketIntelligence.market')}</p>
                     <p className="font-bold">
                       {marketPosition.market_benchmarks.avg_response_time_hours.toFixed(1)}h
                     </p>
@@ -260,17 +256,17 @@ export const MarketIntelligenceDashboard = () => {
                   <div className="flex items-center gap-2">
                     <Target className="h-4 w-4 text-muted-foreground" />
                     <span className="text-sm font-medium">
-                      {isRTL ? 'معدل الفوز' : 'Win Rate'}
+                      {t('vendor.marketIntelligence.winRate')}
                     </span>
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-muted-foreground">{isRTL ? 'أنت' : 'You'}</p>
+                    <p className="text-muted-foreground">{t('vendor.marketIntelligence.you')}</p>
                     <p className="font-bold">{marketPosition.your_stats.win_rate.toFixed(1)}%</p>
                   </div>
                   <div>
-                    <p className="text-muted-foreground">{isRTL ? 'السوق' : 'Market'}</p>
+                    <p className="text-muted-foreground">{t('vendor.marketIntelligence.market')}</p>
                     <p className="font-bold">{marketPosition.market_benchmarks.avg_win_rate.toFixed(1)}%</p>
                   </div>
                 </div>
@@ -282,7 +278,7 @@ export const MarketIntelligenceDashboard = () => {
                   <div className="flex items-center gap-2">
                     <Activity className="h-4 w-4 text-muted-foreground" />
                     <span className="text-sm font-medium">
-                      {isRTL ? 'مستوى النشاط' : 'Activity Level'}
+                      {t('vendor.marketIntelligence.activityLevel')}
                     </span>
                   </div>
                   <Badge
@@ -295,11 +291,11 @@ export const MarketIntelligenceDashboard = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-muted-foreground">{isRTL ? 'أنت' : 'You'}</p>
+                    <p className="text-muted-foreground">{t('vendor.marketIntelligence.you')}</p>
                     <p className="font-bold">{marketPosition.your_stats.offers_submitted}</p>
                   </div>
                   <div>
-                    <p className="text-muted-foreground">{isRTL ? 'المتوسط' : 'Average'}</p>
+                    <p className="text-muted-foreground">{t('vendor.marketIntelligence.average')}</p>
                     <p className="font-bold">
                       {marketPosition.market_benchmarks.avg_offers_per_vendor.toFixed(0)}
                     </p>
@@ -316,19 +312,19 @@ export const MarketIntelligenceDashboard = () => {
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
           <TabsTrigger value="demand">
             <TrendingUp className="h-4 w-4 mr-2" />
-            {isRTL ? 'الطلب' : 'Demand'}
+            {t('vendor.marketIntelligence.demand')}
           </TabsTrigger>
           <TabsTrigger value="pricing">
             <DollarSign className="h-4 w-4 mr-2" />
-            {isRTL ? 'الأسعار' : 'Pricing'}
+            {t('vendor.marketIntelligence.pricing')}
           </TabsTrigger>
           <TabsTrigger value="specs">
             <Lightbulb className="h-4 w-4 mr-2" />
-            {isRTL ? 'المواصفات' : 'Specs'}
+            {t('vendor.marketIntelligence.specs')}
           </TabsTrigger>
           <TabsTrigger value="competition">
             <Users className="h-4 w-4 mr-2" />
-            {isRTL ? 'المنافسة' : 'Competition'}
+            {t('vendor.marketIntelligence.competition')}
           </TabsTrigger>
         </TabsList>
 
@@ -336,15 +332,15 @@ export const MarketIntelligenceDashboard = () => {
         <TabsContent value="demand" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>{isRTL ? 'اتجاهات الطلب' : 'Demand Trends'}</CardTitle>
+              <CardTitle>{t('vendor.marketIntelligence.demandTrends')}</CardTitle>
               <CardDescription>
-                {isRTL ? 'حجم طلبات عروض الأسعار والميزانيات على مدى 6 أشهر' : 'RFQ volume and budgets over 6 months'}
+                {t('vendor.marketIntelligence.demandTrendsDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               {demandTrends.length === 0 ? (
                 <div className="text-center py-12 text-muted-foreground">
-                  {isRTL ? 'لا توجد بيانات كافية' : 'Insufficient data available'}
+                  {t('vendor.marketIntelligence.insufficientData')}
                 </div>
               ) : (
                 <ResponsiveContainer width="100%" height={300}>
@@ -359,7 +355,7 @@ export const MarketIntelligenceDashboard = () => {
                       yAxisId="left"
                       type="monotone"
                       dataKey="rfq_count"
-                      name={isRTL ? 'عدد طلبات عروض الأسعار' : 'RFQ Count'}
+                      name={t('vendor.marketIntelligence.rfqCount')}
                       stroke="#004F54"
                       strokeWidth={2}
                     />
@@ -367,7 +363,7 @@ export const MarketIntelligenceDashboard = () => {
                       yAxisId="right"
                       type="monotone"
                       dataKey="avg_budget"
-                      name={isRTL ? 'متوسط الميزانية' : 'Avg Budget'}
+                      name={t('vendor.marketIntelligence.avgBudget')}
                       stroke="#66023C"
                       strokeWidth={2}
                     />
@@ -382,17 +378,15 @@ export const MarketIntelligenceDashboard = () => {
         <TabsContent value="pricing" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>{isRTL ? 'نطاقات الأسعار الفائزة' : 'Winning Bid Price Bands'}</CardTitle>
+              <CardTitle>{t('vendor.marketIntelligence.winningPriceBands')}</CardTitle>
               <CardDescription>
-                {isRTL ? 'نطاقات الأسعار للعروض الفائزة في فئاتك' : 'Price ranges for winning bids in your categories'}
+                {t('vendor.marketIntelligence.winningPriceBandsDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               {pricingBands.length === 0 ? (
                 <div className="text-center py-12 text-muted-foreground">
-                  {isRTL
-                    ? 'لا توجد بيانات كافية (يتطلب 3 عروض على الأقل)'
-                    : 'Insufficient data (requires at least 3 bids)'}
+                  {t('vendor.marketIntelligence.insufficientData')}
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -401,23 +395,23 @@ export const MarketIntelligenceDashboard = () => {
                       <CardContent className="pt-6">
                         <div className="flex items-center justify-between mb-4">
                           <h3 className="font-semibold">{band.category}</h3>
-                          <Badge variant="outline">{band.bid_count} {isRTL ? 'عرض' : 'bids'}</Badge>
+                          <Badge variant="outline">{band.bid_count} {t('vendor.marketIntelligence.bids')}</Badge>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                           <div>
-                            <p className="text-muted-foreground">{isRTL ? 'الحد الأدنى' : 'Min'}</p>
+                            <p className="text-muted-foreground">{t('vendor.marketIntelligence.min')}</p>
                             <p className="font-bold">{band.min_price.toLocaleString()} SAR</p>
                           </div>
                           <div>
-                            <p className="text-muted-foreground">{isRTL ? 'الوسيط' : 'Median'}</p>
+                            <p className="text-muted-foreground">{t('vendor.marketIntelligence.median')}</p>
                             <p className="font-bold">{band.median_price.toLocaleString()} SAR</p>
                           </div>
                           <div>
-                            <p className="text-muted-foreground">{isRTL ? 'المتوسط' : 'Average'}</p>
+                            <p className="text-muted-foreground">{t('vendor.marketIntelligence.average')}</p>
                             <p className="font-bold">{band.avg_price.toLocaleString()} SAR</p>
                           </div>
                           <div>
-                            <p className="text-muted-foreground">{isRTL ? 'الحد الأقصى' : 'Max'}</p>
+                            <p className="text-muted-foreground">{t('vendor.marketIntelligence.max')}</p>
                             <p className="font-bold">{band.max_price.toLocaleString()} SAR</p>
                           </div>
                         </div>
@@ -434,17 +428,15 @@ export const MarketIntelligenceDashboard = () => {
         <TabsContent value="specs" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>{isRTL ? 'المواصفات الشائعة' : 'Popular Specifications'}</CardTitle>
+              <CardTitle>{t('vendor.marketIntelligence.popularSpecs')}</CardTitle>
               <CardDescription>
-                {isRTL
-                  ? 'الكلمات الأكثر طلباً في طلبات عروض الأسعار'
-                  : 'Most frequently requested keywords in RFQs'}
+                {t('vendor.marketIntelligence.popularSpecsDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               {popularSpecs.length === 0 ? (
                 <div className="text-center py-12 text-muted-foreground">
-                  {isRTL ? 'لا توجد بيانات كافية' : 'Insufficient data available'}
+                  {t('vendor.marketIntelligence.insufficientData')}
                 </div>
               ) : (
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -469,17 +461,15 @@ export const MarketIntelligenceDashboard = () => {
         <TabsContent value="competition" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>{isRTL ? 'رؤى المنافسة' : 'Competition Insights'}</CardTitle>
+              <CardTitle>{t('vendor.marketIntelligence.competitionInsights')}</CardTitle>
               <CardDescription>
-                {isRTL ? 'مقاييس السوق المجمعة' : 'Aggregated market metrics'}
+                {t('vendor.marketIntelligence.competitionInsightsDesc')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               {competition.length === 0 ? (
                 <div className="text-center py-12 text-muted-foreground">
-                  {isRTL
-                    ? 'لا توجد بيانات كافية (يتطلب 5 طلبات على الأقل)'
-                    : 'Insufficient data (requires at least 5 RFQs)'}
+                  {t('vendor.marketIntelligence.insufficientData')}
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -492,7 +482,7 @@ export const MarketIntelligenceDashboard = () => {
                             <div className="flex items-center gap-2 mb-1">
                               <Users className="h-4 w-4 text-muted-foreground" />
                               <p className="text-xs text-muted-foreground">
-                                {isRTL ? 'متوسط العروض' : 'Avg Offers'}
+                                {t('vendor.marketIntelligence.avgOffers')}
                               </p>
                             </div>
                             <p className="text-2xl font-bold">{comp.avg_offers_per_rfq.toFixed(1)}</p>
@@ -501,7 +491,7 @@ export const MarketIntelligenceDashboard = () => {
                             <div className="flex items-center gap-2 mb-1">
                               <Clock className="h-4 w-4 text-muted-foreground" />
                               <p className="text-xs text-muted-foreground">
-                                {isRTL ? 'وقت الاستجابة' : 'Response Time'}
+                                {t('vendor.marketIntelligence.responseTime')}
                               </p>
                             </div>
                             <p className="text-2xl font-bold">{comp.avg_response_time_hours.toFixed(1)}h</p>
@@ -510,7 +500,7 @@ export const MarketIntelligenceDashboard = () => {
                             <div className="flex items-center gap-2 mb-1">
                               <Target className="h-4 w-4 text-muted-foreground" />
                               <p className="text-xs text-muted-foreground">
-                                {isRTL ? 'معدل الفوز' : 'Win Rate'}
+                                {t('vendor.marketIntelligence.winRate')}
                               </p>
                             </div>
                             <p className="text-2xl font-bold">{comp.win_rate_benchmark.toFixed(1)}%</p>
@@ -519,7 +509,7 @@ export const MarketIntelligenceDashboard = () => {
                             <div className="flex items-center gap-2 mb-1">
                               <BarChart3 className="h-4 w-4 text-muted-foreground" />
                               <p className="text-xs text-muted-foreground">
-                                {isRTL ? 'إجمالي طلبات عروض الأسعار' : 'Total RFQs'}
+                                {t('vendor.marketIntelligence.totalRFQs')}
                               </p>
                             </div>
                             <p className="text-2xl font-bold">{comp.total_rfqs}</p>
@@ -542,7 +532,7 @@ export const MarketIntelligenceDashboard = () => {
             <Lightbulb className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
             <div>
               <h3 className="font-semibold mb-1 text-blue-900 dark:text-blue-100">
-                {isRTL ? '💡 كيفية استخدام هذه البيانات' : '💡 How to Use This Data'}
+                {t('vendor.marketIntelligence.howToUse')}
               </h3>
               <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
                 <li>
