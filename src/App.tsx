@@ -32,6 +32,8 @@ import { VendorOffers } from './pages/vendor/VendorOffers';
 import { VendorOrders } from './pages/vendor/VendorOrders';
 import { VendorProfile } from './pages/vendor/VendorProfile';
 import { VendorInvoices } from './pages/vendor/VendorInvoices';
+import { QuoteGeneratorPage } from './pages/vendor/QuoteGeneratorPage';
+import { InventoryTrackerPage } from './pages/vendor/InventoryTrackerPage';
 import Profile from './pages/Profile';
 import { Landing } from './pages/Landing';
 import NotFound from './pages/NotFound';
@@ -79,6 +81,7 @@ import Settings from './pages/Settings';
 import Support from './pages/Support';
 import Vendors from './pages/Vendors';
 import { ClientInvoices } from './pages/client/ClientInvoices';
+import PayInvoicePage from './pages/PayInvoicePage';
 
 const RoleProtectedRoute: React.FC<{
   children: React.ReactNode;
@@ -187,6 +190,7 @@ function App() {
                       <Route path="vendor-rfqs" element={<VendorRFQs />} />
                       <Route path="vendors" element={<Vendors />} />
                       <Route path="invoices" element={<ClientInvoices />} />
+                      <Route path="pay-invoice/:invoiceId" element={<PayInvoicePage />} />
                     </Route>
                     
                     {/* Legacy client routes (redirect to new structure) */}
@@ -303,7 +307,17 @@ function App() {
                         <VendorInvoices />
                       </RoleProtectedRoute>
                     } />
-                    
+                    <Route path="/vendor/quote-generator" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <QuoteGeneratorPage />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/inventory" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <InventoryTrackerPage />
+                      </RoleProtectedRoute>
+                    } />
+
                     {/* Legacy vendor dashboard route (redirect to new structure) */}
                     <Route path="/vendor-dashboard" element={<Navigate to="/vendor/dashboard" replace />} />
                     

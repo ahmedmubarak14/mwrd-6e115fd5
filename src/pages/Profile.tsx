@@ -32,6 +32,7 @@ import {
 import { UnifiedVerificationStatus } from "@/components/verification/UnifiedVerificationStatus";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { AvatarUpload } from "@/components/profile/AvatarUpload";
+import { SupplierPerformanceScorecard } from "@/components/vendor/SupplierPerformanceScorecard";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 
@@ -181,9 +182,12 @@ const ProfilePage = memo(() => {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 lg:w-[400px]">
-            <TabsTrigger 
-              value="profile" 
+          <TabsList className={cn(
+            "grid w-full lg:w-[600px]",
+            userProfile.role === 'vendor' ? "grid-cols-3" : "grid-cols-2"
+          )}>
+            <TabsTrigger
+              value="profile"
               className={cn(
                 "flex items-center gap-2",
                 isRTL && "flex-row-reverse"
@@ -192,8 +196,8 @@ const ProfilePage = memo(() => {
               <User className="h-4 w-4" />
               {t('profile.title')}
             </TabsTrigger>
-            <TabsTrigger 
-              value="verification" 
+            <TabsTrigger
+              value="verification"
               className={cn(
                 "flex items-center gap-2",
                 isRTL && "flex-row-reverse"
@@ -202,6 +206,18 @@ const ProfilePage = memo(() => {
               <Shield className="h-4 w-4" />
               {t('profile.verification')}
             </TabsTrigger>
+            {userProfile.role === 'vendor' && (
+              <TabsTrigger
+                value="performance"
+                className={cn(
+                  "flex items-center gap-2",
+                  isRTL && "flex-row-reverse"
+                )}
+              >
+                <FileText className="h-4 w-4" />
+                {isRTL ? 'بطاقة الأداء' : 'Performance'}
+              </TabsTrigger>
+            )}
           </TabsList>
 
           <TabsContent value="profile" className="space-y-6">
@@ -471,6 +487,94 @@ const ProfilePage = memo(() => {
               </Card>
             )}
           </TabsContent>
+
+          {/* Performance Scorecard Tab - Only for Vendors */}
+          {userProfile.role === 'vendor' && (
+            <TabsContent value="performance" className="space-y-6">
+              <SupplierPerformanceScorecard
+                vendorId={userProfile.id}
+                className="max-w-4xl"
+              />
+
+              <Card className="max-w-4xl">
+                <CardHeader>
+                  <CardTitle>{isRTL ? 'حول بطاقة الأداء' : 'About Performance Scorecard'}</CardTitle>
+                  <CardDescription>
+                    {isRTL
+                      ? 'يتم حساب هذه المقاييس تلقائياً من قبل منصة MWRD بناءً على نشاطك الفعلي على المنصة. لا يمكن تعديل هذه المقاييس يدوياً.'
+                      : 'These metrics are automatically calculated by the MWRD platform based on your actual activity. These metrics cannot be manually edited.'}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-3">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
+                      <div>
+                        <h4 className="font-medium text-sm">
+                          {isRTL ? 'معدل إتمام الطلبات' : 'Order Completion Rate'}
+                        </h4>
+                        <p className="text-sm text-muted-foreground">
+                          {isRTL
+                            ? 'نسبة الطلبات المقبولة التي أتممتها بنجاح من إجمالي الطلبات'
+                            : 'Percentage of accepted orders you successfully completed'}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
+                      <div>
+                        <h4 className="font-medium text-sm">
+                          {isRTL ? 'معدل التسليم في الوقت المحدد' : 'On-Time Delivery Rate'}
+                        </h4>
+                        <p className="text-sm text-muted-foreground">
+                          {isRTL
+                            ? 'نسبة الطلبات التي تم تسليمها في الموعد المحدد أو قبله'
+                            : 'Percentage of orders delivered on or before the agreed date'}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
+                      <div>
+                        <h4 className="font-medium text-sm">
+                          {isRTL ? 'متوسط وقت الرد' : 'Average Quote Response Time'}
+                        </h4>
+                        <p className="text-sm text-muted-foreground">
+                          {isRTL
+                            ? 'المتوسط الزمني لتقديم عروض الأسعار بعد استلام طلب عرض السعر'
+                            : 'Your average time to submit quotes after receiving an RFQ'}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
+                      <div>
+                        <h4 className="font-medium text-sm">
+                          {isRTL ? 'معدل تكرار الأعمال' : 'Repeat Business Rate'}
+                        </h4>
+                        <p className="text-sm text-muted-foreground">
+                          {isRTL
+                            ? 'نسبة العملاء الذين عادوا للعمل معك مرة أخرى'
+                            : 'Percentage of clients who have placed more than one order with you'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-muted rounded-lg border">
+                    <p className="text-sm">
+                      {isRTL
+                        ? '💡 نصيحة: حافظ على معدلات أداء عالية لزيادة فرصك في الفوز بعقود جديدة. العملاء يمكنهم رؤية بطاقة أدائك عند البحث عن الموردين.'
+                        : '💡 Tip: Maintain high performance rates to increase your chances of winning new contracts. Clients can see your scorecard when searching for suppliers.'}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          )}
         </Tabs>
       </div>
     </ErrorBoundary>
