@@ -2413,7 +2413,7 @@ export const arSA = {
       whyStart: "لماذا تبدأ مع MWRD",
       whyMove: "لماذا تنتقل إلى MWRD",
       pricingSection: "التسعير",
-      supportSection: "الدعم", 
+      supportSection: "الدعم",
       support: "الدعم",
       helpCenterLink: "مركز المساعدة",
       documentation: "التوثيق",
@@ -2423,5 +2423,136 @@ export const arSA = {
       rights: "جميع الحقوق محفوظة",
       followUs: "تابعنا"
     }
+  },
+
+  // نظام الدفع
+  payment: {
+    // عام
+    title: "الدفع",
+    subtitle: "إدارة المدفوعات والفواتير",
+    paymentGateway: "بوابة الدفع",
+    securePayment: "دفع آمن",
+
+    // ملخص الدفع
+    paymentSummary: "ملخص الدفع",
+    payInvoice: "دفع الفاتورة",
+    completePayment: "أكمل الدفع بشكل آمن باستخدام Moyasar",
+
+    // طرق الدفع
+    paymentMethods: "طرق الدفع",
+    availablePaymentMethods: "طرق الدفع المتاحة",
+    addPaymentMethod: "إضافة طريقة دفع",
+    deletePaymentMethod: "حذف طريقة الدفع",
+    setDefaultPaymentMethod: "تعيين كافتراضي",
+    defaultPaymentMethod: "طريقة الدفع الافتراضية",
+    creditCard: "بطاقة ائتمان",
+    fastAndSecure: "دفع سريع وآمن",
+    payWith: "الدفع عبر",
+
+    // حالة الدفع
+    paymentSuccessful: "تمت العملية بنجاح",
+    paymentSuccessfulDesc: "تم استلام دفعتك وسيتم معالجة طلبك قريباً",
+    paymentFailed: "فشل الدفع",
+    paymentFailedDesc: "فشلت عملية الدفع",
+    paymentProcessing: "جاري معالجة الدفع...",
+    paymentComplete: "اكتملت عملية الدفع!",
+
+    // حالة المعاملة
+    pending: "قيد الانتظار",
+    completed: "مكتمل",
+    processing: "قيد المعالجة",
+    failed: "فشل",
+    refunded: "مسترد",
+    cancelled: "ملغى",
+
+    // الفاتورة
+    invoice: "فاتورة",
+    invoiceNumber: "رقم الفاتورة",
+    invoices: "الفواتير",
+    invoiceNotFound: "الفاتورة غير موجودة",
+    backToInvoices: "العودة إلى الفواتير",
+    vendor: "المورد",
+    dueDate: "تاريخ الاستحقاق",
+    overdue: "متأخرة",
+    subtotal: "المبلغ الأساسي",
+    tax: "الضريبة",
+    taxAmount: "الضريبة (15%)",
+    total: "المجموع",
+    amount: "المبلغ",
+
+    // إجراءات الدفع
+    pay: "دفع",
+    payNow: "ادفع الآن",
+    refund: "استرداد",
+    processRefund: "معالجة الاسترداد",
+    refundAmount: "مبلغ الاسترداد",
+    refundReason: "سبب الاسترداد",
+
+    // الأمان
+    secureAndEncrypted: "دفع آمن ومشفر",
+    securityNotice: "جميع المعاملات محمية بتشفير SSL. لا نقوم بتخزين بيانات بطاقتك.",
+    pciCompliant: "متوافق مع PCI DSS",
+
+    // رسائل الخطأ والنجاح
+    error: "خطأ",
+    success: "نجح",
+    failedToInitialize: "فشل تهيئة بوابة الدفع",
+    failedToProcess: "فشل معالجة الدفع",
+    failedToUpdate: "فشل تحديث حالة الدفع",
+    failedToLoad: "فشل التحميل",
+    paymentMethodAdded: "تمت إضافة طريقة الدفع بنجاح",
+    paymentMethodRemoved: "تم حذف طريقة الدفع",
+    paymentMethodUpdated: "تم تحديث طريقة الدفع الافتراضية",
+    failedToAddMethod: "فشلت إضافة طريقة الدفع",
+    failedToRemoveMethod: "فشل حذف طريقة الدفع",
+    failedToUpdateMethod: "فشل تحديث طريقة الدفع الافتراضية",
+    failedToLoadMethods: "فشل تحميل طرق الدفع",
+    failedToLoadTransactions: "فشل تحميل المعاملات",
+    failedToLoadStatistics: "فشل تحميل الإحصائيات",
+    refundProcessed: "تمت معالجة الاسترداد بنجاح",
+    failedToProcessRefund: "فشلت معالجة الاسترداد",
+
+    // المبالغ والعملة
+    sar: "ر.س",
+    riyal: "ريال",
+    halalas: "هللة",
+    currency: "العملة",
+
+    // بوابة الدفع
+    gatewayNotConfigured: "بوابة الدفع غير مهيأة",
+    publishableKeyNotConfigured: "المفتاح القابل للنشر غير مهيأ",
+
+    // المعاملات
+    transactions: "المعاملات",
+    transactionId: "معرف المعاملة",
+    transactionHistory: "سجل المعاملات",
+    paymentTransactions: "معاملات الدفع",
+    recentTransactions: "المعاملات الأخيرة",
+    viewTransactions: "عرض المعاملات",
+    noTransactions: "لا توجد معاملات متاحة",
+
+    // الإحصائيات
+    statistics: "إحصائيات الدفع",
+    totalAmount: "المبلغ الإجمالي",
+    successRate: "معدل النجاح",
+    averageAmount: "المتوسط",
+
+    // حالات التحميل
+    loading: "جاري التحميل...",
+    loadingPaymentInfo: "جاري تحميل معلومات الدفع...",
+    initializingPayment: "جاري تهيئة الدفع...",
+
+    // تفاصيل البطاقة
+    cardBrand: "نوع البطاقة",
+    cardLastFour: "آخر 4 أرقام",
+    cardName: "اسم حامل البطاقة",
+    expiryDate: "تاريخ الانتهاء",
+
+    // ميزات بوابة الدفع
+    applePay: "Apple Pay",
+    stcPay: "STC Pay",
+    mada: "مدى",
+    visa: "فيزا",
+    mastercard: "ماستركارد",
   }
 };

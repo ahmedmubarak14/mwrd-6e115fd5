@@ -2220,7 +2220,7 @@ export const enUS = {
     footer: {
       taglineText: "Your trusted partner for procurement and supply chain management",
       whyStart: "Why Start with MWRD",
-      whyMove: "Why Move to MWRD", 
+      whyMove: "Why Move to MWRD",
       pricingSection: "Pricing",
       supportSection: "Support",
       support: "Support",
@@ -2232,5 +2232,136 @@ export const enUS = {
       rights: "All rights reserved",
       followUs: "Follow Us"
     }
+  },
+
+  // Payment System
+  payment: {
+    // General
+    title: "Payment",
+    subtitle: "Manage your payments and invoices",
+    paymentGateway: "Payment Gateway",
+    securePayment: "Secure Payment",
+
+    // Payment Summary
+    paymentSummary: "Payment Summary",
+    payInvoice: "Pay Invoice",
+    completePayment: "Complete your payment securely with Moyasar",
+
+    // Payment Methods
+    paymentMethods: "Payment Methods",
+    availablePaymentMethods: "Available Payment Methods",
+    addPaymentMethod: "Add Payment Method",
+    deletePaymentMethod: "Delete Payment Method",
+    setDefaultPaymentMethod: "Set as Default",
+    defaultPaymentMethod: "Default Payment Method",
+    creditCard: "Credit Card",
+    fastAndSecure: "Fast & Secure",
+    payWith: "Pay with",
+
+    // Payment Status
+    paymentSuccessful: "Payment Successful",
+    paymentSuccessfulDesc: "Your payment has been received and your order will be processed soon",
+    paymentFailed: "Payment Failed",
+    paymentFailedDesc: "Payment failed",
+    paymentProcessing: "Processing payment...",
+    paymentComplete: "Payment Complete!",
+
+    // Transaction Status
+    pending: "Pending",
+    completed: "Completed",
+    processing: "Processing",
+    failed: "Failed",
+    refunded: "Refunded",
+    cancelled: "Cancelled",
+
+    // Invoice
+    invoice: "Invoice",
+    invoiceNumber: "Invoice Number",
+    invoices: "Invoices",
+    invoiceNotFound: "Invoice not found",
+    backToInvoices: "Back to Invoices",
+    vendor: "Vendor",
+    dueDate: "Due Date",
+    overdue: "Overdue",
+    subtotal: "Subtotal",
+    tax: "Tax",
+    taxAmount: "Tax (15%)",
+    total: "Total",
+    amount: "Amount",
+
+    // Payment Actions
+    pay: "Pay",
+    payNow: "Pay Now",
+    refund: "Refund",
+    processRefund: "Process Refund",
+    refundAmount: "Refund Amount",
+    refundReason: "Refund Reason",
+
+    // Security
+    secureAndEncrypted: "Secure & Encrypted Payment",
+    securityNotice: "All transactions are protected with SSL encryption. We never store your card details.",
+    pciCompliant: "PCI DSS Compliant",
+
+    // Errors and Success Messages
+    error: "Error",
+    success: "Success",
+    failedToInitialize: "Failed to initialize payment gateway",
+    failedToProcess: "Failed to process payment",
+    failedToUpdate: "Failed to update payment status",
+    failedToLoad: "Failed to load",
+    paymentMethodAdded: "Payment method added successfully",
+    paymentMethodRemoved: "Payment method removed",
+    paymentMethodUpdated: "Default payment method updated",
+    failedToAddMethod: "Failed to add payment method",
+    failedToRemoveMethod: "Failed to remove payment method",
+    failedToUpdateMethod: "Failed to update default payment method",
+    failedToLoadMethods: "Failed to load payment methods",
+    failedToLoadTransactions: "Failed to load transactions",
+    failedToLoadStatistics: "Failed to load statistics",
+    refundProcessed: "Refund processed successfully",
+    failedToProcessRefund: "Failed to process refund",
+
+    // Amounts and Currency
+    sar: "SAR",
+    riyal: "Riyal",
+    halalas: "Halalas",
+    currency: "Currency",
+
+    // Payment Gateway
+    gatewayNotConfigured: "Payment gateway not configured",
+    publishableKeyNotConfigured: "Publishable key not configured",
+
+    // Transactions
+    transactions: "Transactions",
+    transactionId: "Transaction ID",
+    transactionHistory: "Transaction History",
+    paymentTransactions: "Payment Transactions",
+    recentTransactions: "Recent Transactions",
+    viewTransactions: "View Transactions",
+    noTransactions: "No transactions available",
+
+    // Statistics
+    statistics: "Payment Statistics",
+    totalAmount: "Total Amount",
+    successRate: "Success Rate",
+    averageAmount: "Average Amount",
+
+    // Loading States
+    loading: "Loading...",
+    loadingPaymentInfo: "Loading payment information...",
+    initializingPayment: "Initializing payment...",
+
+    // Card Details
+    cardBrand: "Card Brand",
+    cardLastFour: "Last 4 Digits",
+    cardName: "Cardholder Name",
+    expiryDate: "Expiry Date",
+
+    // Payment Gateway Features
+    applePay: "Apple Pay",
+    stcPay: "STC Pay",
+    mada: "Mada",
+    visa: "Visa",
+    mastercard: "Mastercard",
   }
 };
