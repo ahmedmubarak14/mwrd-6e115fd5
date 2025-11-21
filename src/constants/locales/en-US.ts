@@ -1330,7 +1330,42 @@ export const enUS = {
       clientRatingDesc: 'Average client rating',
       accessRequired: 'Access to this page is restricted to verified vendors only',
       performanceOverview: 'Performance Overview',
-      completeVerification: 'Complete verification to access all features'
+      completeVerification: 'Complete verification to access all features',
+      actionRequired: 'Actions Required',
+      activeOffersTitle: 'Active Offers',
+      activeOffersDesc: 'pending action',
+      allSetReady: 'All set! You\'re ready to receive requests',
+      browseRequestsTitle: 'Browse Requests',
+      browseRequestsDesc: 'Find new opportunities',
+      businessPerformance: 'Business Performance',
+      businessPerformanceDesc: 'Track your key performance metrics',
+      clientSatisfactionRate: 'Client Satisfaction',
+      completeCRTitle: 'Complete CR Verification',
+      completeCRDesc: 'Verify your commercial registration',
+      completeProfileTitle: 'Complete Your Profile',
+      completeProfileDesc: '% more to complete',
+      manageProjectsTitle: 'Manage Projects',
+      manageProjectsDesc: 'View and update your projects',
+      messagesTitle: 'Messages',
+      messagesDesc: 'Check your messages',
+      offerSuccessRate: 'Offer Success Rate',
+      offerTrends: 'Offer Trends',
+      offerTrendsDesc: 'Your offer submission and acceptance trends over time',
+      viewProjects: 'View Projects',
+      viewAllOffers: 'View All Offers',
+      responseRate: 'Response Rate',
+      clientSatisfaction: 'Client Satisfaction'
+    },
+    cr: {
+      verificationRequired: 'CR Verification Required',
+      completeVerification: 'Complete your commercial registration verification to access all features',
+      approved: 'Approved',
+      pending: 'Pending',
+      rejected: 'Rejected'
+    },
+    projects: {
+      add: 'Add Project',
+      addFirst: 'Add your first project'
     },
     transactions: {
       title: 'Financial Transactions',
@@ -1645,10 +1680,12 @@ export const enUS = {
     },
     categories: {
       construction: 'Construction',
-      engineering: 'Engineering', 
+      engineering: 'Engineering',
       consulting: 'Consulting',
       technology: 'Technology',
-      other: 'Other'
+      other: 'Other',
+      manage: 'Manage Categories',
+      select: 'Select your service categories'
     },
     months: {
       jan: 'Jan',

@@ -1746,7 +1746,42 @@ export const arSA = {
       clientRatingDesc: 'متوسط تقييم العملاء',
       accessRequired: 'الوصول إلى هذه الصفحة مقتصر على الموردين المعتمدين فقط',
       performanceOverview: 'نظرة عامة على الأداء',
-      completeVerification: 'أكمل التحقق للوصول إلى جميع الميزات'
+      completeVerification: 'أكمل التحقق للوصول إلى جميع الميزات',
+      actionRequired: 'الإجراءات المطلوبة',
+      activeOffersTitle: 'العروض النشطة',
+      activeOffersDesc: 'في انتظار الإجراء',
+      allSetReady: 'كل شيء جاهز! أنت مستعد لتلقي الطلبات',
+      browseRequestsTitle: 'تصفح الطلبات',
+      browseRequestsDesc: 'اكتشف فرص جديدة',
+      businessPerformance: 'أداء الأعمال',
+      businessPerformanceDesc: 'تتبع مؤشرات الأداء الرئيسية',
+      clientSatisfactionRate: 'رضا العملاء',
+      completeCRTitle: 'إكمال التحقق من السجل التجاري',
+      completeCRDesc: 'تحقق من سجلك التجاري',
+      completeProfileTitle: 'أكمل ملفك الشخصي',
+      completeProfileDesc: '% متبقية للإكمال',
+      manageProjectsTitle: 'إدارة المشاريع',
+      manageProjectsDesc: 'عرض وتحديث مشاريعك',
+      messagesTitle: 'الرسائل',
+      messagesDesc: 'تحقق من رسائلك',
+      offerSuccessRate: 'معدل نجاح العروض',
+      offerTrends: 'اتجاهات العروض',
+      offerTrendsDesc: 'اتجاهات تقديم وقبول عروضك مع مرور الوقت',
+      viewProjects: 'عرض المشاريع',
+      viewAllOffers: 'عرض جميع العروض',
+      responseRate: 'معدل الاستجابة',
+      clientSatisfaction: 'رضا العملاء'
+    },
+    cr: {
+      verificationRequired: 'التحقق من السجل التجاري مطلوب',
+      completeVerification: 'أكمل التحقق من سجلك التجاري للوصول إلى جميع الميزات',
+      approved: 'معتمد',
+      pending: 'قيد المراجعة',
+      rejected: 'مرفوض'
+    },
+    projects: {
+      add: 'إضافة مشروع',
+      addFirst: 'أضف مشروعك الأول'
     },
     transactions: {
       title: 'المعاملات المالية',
@@ -2062,9 +2097,11 @@ export const arSA = {
     categories: {
       construction: 'الإنشاءات',
       engineering: 'الهندسة',
-      consulting: 'الاستشارات', 
+      consulting: 'الاستشارات',
       technology: 'التكنولوجيا',
-      other: 'أخرى'
+      other: 'أخرى',
+      manage: 'إدارة الفئات',
+      select: 'اختر فئات خدماتك'
     },
     months: {
       jan: 'يناير',
