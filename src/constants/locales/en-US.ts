@@ -1975,7 +1975,13 @@ export const enUS = {
       // Common
       insufficientData: "Insufficient data available",
       howToUse: "💡 How to Use This Data",
-      hours: "hours"
+      hours: "hours",
+
+      // How to Use Tips
+      tipPricingBands: "Use pricing bands to submit competitive bids",
+      tipPopularSpecs: "Review popular specs to understand market needs",
+      tipComparePerformance: "Compare your performance to market benchmarks to identify improvement areas",
+      tipDemandTrends: "Monitor demand trends to plan your capacity"
     }
   },
 
@@ -2594,7 +2600,9 @@ export const enUS = {
     stcPay: "STC Pay",
     mada: "Mada",
     visa: "Visa",
-    mastercard: "Mastercard",
+    mastercard: "Mastercard"
+  },
+
   // Modals
   modals: {
     editRequest: {

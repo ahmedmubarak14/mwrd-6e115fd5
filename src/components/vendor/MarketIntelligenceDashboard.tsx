@@ -535,26 +535,10 @@ export const MarketIntelligenceDashboard = () => {
                 {t('vendor.marketIntelligence.howToUse')}
               </h3>
               <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
-                <li>
-                  • {isRTL
-                    ? 'استخدم نطاقات الأسعار لتقديم عروض تنافسية'
-                    : 'Use pricing bands to submit competitive bids'}
-                </li>
-                <li>
-                  • {isRTL
-                    ? 'اطلع على المواصفات الشائعة لفهم احتياجات السوق'
-                    : 'Review popular specs to understand market needs'}
-                </li>
-                <li>
-                  • {isRTL
-                    ? 'قارن أدائك بمعايير السوق لتحديد مجالات التحسين'
-                    : 'Compare your performance to market benchmarks to identify improvement areas'}
-                </li>
-                <li>
-                  • {isRTL
-                    ? 'راقب اتجاهات الطلب لتخطيط قدرتك الإنتاجية'
-                    : 'Monitor demand trends to plan your capacity'}
-                </li>
+                <li>• {t('vendor.marketIntelligence.tipPricingBands')}</li>
+                <li>• {t('vendor.marketIntelligence.tipPopularSpecs')}</li>
+                <li>• {t('vendor.marketIntelligence.tipComparePerformance')}</li>
+                <li>• {t('vendor.marketIntelligence.tipDemandTrends')}</li>
               </ul>
             </div>
           </div>
