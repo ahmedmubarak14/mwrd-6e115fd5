@@ -56,7 +56,7 @@ export const OptimizedVendorProductCatalog = () => {
   };
 
   const handleDeleteProduct = async (productId: string) => {
-    if (window.confirm(t('products.confirmDelete') || 'Are you sure you want to delete this product?')) {
+    if (window.confirm(t('products.confirmDelete'))) {
       await deleteProduct(productId);
     }
   };
@@ -65,19 +65,19 @@ export const OptimizedVendorProductCatalog = () => {
   const getProductActions = (product: any) => [
     {
       id: 'view',
-      label: t('products.viewImages') || 'View Images',
+      label: t('products.viewImages'),
       icon: Eye,
       onClick: () => setShowImageDialog(product.id),
     },
     {
       id: 'edit',
-      label: t('products.edit') || 'Edit',
+      label: t('products.edit'),
       icon: Edit,
       onClick: () => setEditingProduct(product),
     },
     {
       id: 'delete',
-      label: t('products.delete') || 'Delete',
+      label: t('products.delete'),
       icon: Trash2,
       onClick: () => handleDeleteProduct(product.id),
       variant: 'destructive' as const,
@@ -127,20 +127,20 @@ export const OptimizedVendorProductCatalog = () => {
       {/* Header */}
       <div className={cn("flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center", isRTL && "flex-row-reverse")}>
         <div>
-          <h1 className="text-2xl font-bold">{t('products.catalog') || 'Product Catalog'}</h1>
-          <p className="text-muted-foreground">{t('products.catalogDesc') || 'Manage your product inventory and showcase your offerings'}</p>
+          <h1 className="text-2xl font-bold">{t('products.catalog')}</h1>
+          <p className="text-muted-foreground">{t('products.catalogDesc')}</p>
         </div>
         
         <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
           <DialogTrigger asChild>
             <Button className="gap-2">
               <Plus className="h-4 w-4" />
-              {t('products.addProduct') || 'Add Product'}
+              {t('products.addProduct')}
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{t('products.addNewProduct') || 'Add New Product'}</DialogTitle>
+              <DialogTitle>{t('products.addNewProduct')}</DialogTitle>
             </DialogHeader>
             <EnhancedProductForm
               onSuccess={() => setShowAddDialog(false)}
@@ -155,7 +155,7 @@ export const OptimizedVendorProductCatalog = () => {
         <div className="relative">
           <Search className={cn("absolute top-3 h-4 w-4 text-muted-foreground", isRTL ? "right-3" : "left-3")} />
           <MobileOptimizedInput
-            placeholder={t('products.searchPlaceholder') || 'Search products...'}
+            placeholder={t('products.searchPlaceholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={cn(isRTL ? "pr-10" : "pl-10")}
@@ -168,7 +168,7 @@ export const OptimizedVendorProductCatalog = () => {
             onChange={(e) => setSelectedCategory(e.target.value)}
             className="flex-1 h-12 px-4 text-base border-2 rounded-xl bg-background"
           >
-            <option value="all">{t('products.allCategories') || 'All Categories'}</option>
+            <option value="all">{t('products.allCategories')}</option>
             {categories.map((category) => (
               <option key={category.id} value={category.name_en}>
                 {isRTL ? category.name_ar : category.name_en}
@@ -204,18 +204,18 @@ export const OptimizedVendorProductCatalog = () => {
                 <Package className="h-8 w-8 text-muted-foreground" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold">{t('products.noProducts') || 'No Products Found'}</h3>
+                <h3 className="text-lg font-semibold">{t('products.noProducts')}</h3>
                 <p className="text-muted-foreground">
                   {searchTerm || selectedCategory !== 'all' 
-                    ? (t('products.noMatchingProducts') || 'No products match your current filters')
-                    : (t('products.addFirstProduct') || 'Add your first product to get started')
+                    ? t('products.noMatchingProducts')
+                    : t('products.addFirstProduct')
                   }
                 </p>
               </div>
               {!searchTerm && selectedCategory === 'all' && (
                 <Button onClick={() => setShowAddDialog(true)} className="gap-2">
                   <Plus className="h-4 w-4" />
-                  {t('products.addFirstProduct') || 'Add Your First Product'}
+                  {t('products.addFirstProduct')}
                 </Button>
               )}
             </div>
@@ -245,7 +245,7 @@ export const OptimizedVendorProductCatalog = () => {
                     )}
                     {product.featured && (
                       <Badge className="absolute top-2 left-2 bg-primary">
-                        {t('products.featured') || 'Featured'}
+                        {t('products.featured')}
                       </Badge>
                     )}
                   </div>
@@ -255,7 +255,7 @@ export const OptimizedVendorProductCatalog = () => {
                       <div className={cn("flex justify-between items-start", isRTL && "flex-row-reverse")}>
                         <h3 className="font-semibold line-clamp-1">{product.name}</h3>
                         <Badge className={getStatusColor(product.status)}>
-                          {t(`products.status.${product.status}`) || product.status}
+                          {t(`products.status.${product.status}`)}
                         </Badge>
                       </div>
                       
@@ -266,7 +266,7 @@ export const OptimizedVendorProductCatalog = () => {
                           {formatPrice(product.price, product.currency)}
                         </span>
                         <span className="text-sm text-muted-foreground">
-                          {t('products.stock') || 'Stock'}: {product.stock_quantity}
+                          {t('products.stock')}: {product.stock_quantity}
                         </span>
                       </div>
                       
@@ -275,7 +275,7 @@ export const OptimizedVendorProductCatalog = () => {
                           actions={getProductActions(product)}
                           trigger={
                             <Button variant="outline" className="w-full">
-                              {t('products.actions') || 'Actions'}
+                              {t('products.actions')}
                             </Button>
                           }
                         />
@@ -336,11 +336,11 @@ export const OptimizedVendorProductCatalog = () => {
                         </div>
                         <div className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
                           <Badge className={getStatusColor(product.status)}>
-                            {t(`products.status.${product.status}`) || product.status}
+                            {t(`products.status.${product.status}`)}
                           </Badge>
                           {product.featured && (
                             <Badge className="bg-primary">
-                              {t('products.featured') || 'Featured'}
+                              {t('products.featured')}
                             </Badge>
                           )}
                         </div>
@@ -358,7 +358,7 @@ export const OptimizedVendorProductCatalog = () => {
                             actions={getProductActions(product)}
                             trigger={
                               <Button size="sm" variant="outline">
-                                {t('products.actions') || 'Actions'}
+                                {t('products.actions')}
                               </Button>
                             }
                           />
@@ -394,7 +394,7 @@ export const OptimizedVendorProductCatalog = () => {
       <Dialog open={!!editingProduct} onOpenChange={() => setEditingProduct(null)}>
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>{t('products.editProduct') || 'Edit Product'}</DialogTitle>
+            <DialogTitle>{t('products.editProduct')}</DialogTitle>
           </DialogHeader>
           {editingProduct && (
             <EnhancedProductForm
@@ -410,7 +410,7 @@ export const OptimizedVendorProductCatalog = () => {
       <Dialog open={!!showImageDialog} onOpenChange={() => setShowImageDialog(null)}>
         <DialogContent className="max-w-4xl">
           <DialogHeader>
-            <DialogTitle>{t('products.productImages') || 'Product Images'}</DialogTitle>
+            <DialogTitle>{t('products.productImages')}</DialogTitle>
           </DialogHeader>
           {showImageDialog && (
             <ProductImageGallery
