@@ -226,7 +226,22 @@ export const arSA = {
     noOffers: "لا توجد عروض حتى الآن",
     noOffersDesc: "لم تقدم أي عروض بعد. تصفح الطلبات لبدء إنشاء العروض.",
     offerNumber: "العرض",
-    noDescription: "لا يوجد وصف"
+    noDescription: "لا يوجد وصف",
+    metrics: {
+      total: "إجمالي العروض",
+      pending: "معلق",
+      approved: "معتمد",
+      rejected: "مرفوض"
+    },
+    labels: {
+      offerNumber: "رقم العرض #{id}",
+      daysRemaining: "الأيام المتبقية",
+      clientResponse: "استجابة العميل:",
+      submitted: "تم التقديم"
+    },
+    emptyState: {
+      action: "تصفح الطلبات"
+    }
   },
   // Admin Dashboard & Management
   admin: {
@@ -1309,7 +1324,11 @@ export const arSA = {
     validationError: "خطأ في التحقق",
     fillRequiredFields: "يرجى ملء جميع الحقول المطلوبة",
     requestCreated: "تم إنشاء الطلب بنجاح!",
-    requestCreateError: "فشل في إنشاء الطلب. يرجى المحاولة مرة أخرى."
+    requestCreateError: "فشل في إنشاء الطلب. يرجى المحاولة مرة أخرى.",
+    simpleRequest: {
+      createButton: "إنشاء طلب",
+      creating: "جاري الإنشاء..."
+    }
   },
 
   // Authentication
@@ -1648,8 +1667,6 @@ export const arSA = {
     failedToSubmit: 'فشل في تقديم طلب التحقق',
     failedToFetch: 'فشل في جلب بيانات العملاء',
     accessDenied: 'الوصول مرفوض',
-    selectAll: 'تحديد الكل',
-    deselectAll: 'إلغاء تحديد الكل',
     categories: {
       construction: "البناء",
       engineering: "الهندسة",
@@ -3066,25 +3083,6 @@ export const arSA = {
     }
   },
 
-  // Offers Page
-  myOffers: {
-    metrics: {
-      total: "إجمالي العروض",
-      pending: "معلق",
-      approved: "معتمد",
-      rejected: "مرفوض"
-    },
-    labels: {
-      offerNumber: "رقم العرض #{id}",
-      daysRemaining: "الأيام المتبقية",
-      clientResponse: "استجابة العميل:",
-      submitted: "تم التقديم"
-    },
-    emptyState: {
-      action: "تصفح الطلبات"
-    }
-  },
-
   // Categories
   categories: {
     constructionMaterials: "مواد البناء",
@@ -3164,14 +3162,6 @@ export const arSA = {
         description: "صف العنصر...",
         unit: "اختر الوحدة"
       }
-    }
-  },
-
-  // Forms
-  forms: {
-    simpleRequest: {
-      createButton: "إنشاء طلب",
-      creating: "جاري الإنشاء..."
     }
   },
 

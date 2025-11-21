@@ -108,10 +108,12 @@ export const usePayments = () => {
 
       const { data, error } = await supabase
         .from('payment_methods')
-        .insert({
+        .insert([{
           user_id: userProfile!.id,
+          payment_type: 'card',
+          provider: 'moyasar',
           ...params,
-        })
+        }])
         .select()
         .single();
 
@@ -273,7 +275,7 @@ export const usePayments = () => {
       });
 
       if (error) throw error;
-      return data;
+      return data as unknown as PaymentStatistics;
     } catch (error: any) {
       console.error('Error fetching statistics:', error);
       toast({
@@ -302,8 +304,10 @@ export const usePayments = () => {
         p_reason: params.reason,
       });
 
-      if (error || !data?.success) {
-        throw new Error(data?.error || t('payment.failedToProcessRefund'));
+      const result = data as { success: boolean; error?: string };
+
+      if (error || !result?.success) {
+        throw new Error(result?.error || t('payment.failedToProcessRefund'));
       }
 
       toast({

@@ -61,8 +61,9 @@ export const SupplierPerformanceScorecard = ({
 
       if (fetchError) throw fetchError;
 
-      if (data && data.length > 0) {
-        setMetrics(data[0]);
+      const metricsArray = data as any[];
+      if (metricsArray && metricsArray.length > 0) {
+        setMetrics(metricsArray[0]);
       } else {
         // No data yet - vendor is new
         setMetrics({

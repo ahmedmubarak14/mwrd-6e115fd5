@@ -25,12 +25,12 @@ export const useApprovalWorkflow = () => {
     try {
       const { data, error } = await supabase.rpc('submit_request_for_internal_approval', {
         p_request_id: requestId,
-        p_approver_id: approverId || null,
+        p_approver_ids: approverId ? [approverId] : [],
       });
 
       if (error) throw error;
 
-      const result = data as ApprovalResult;
+      const result = data as unknown as ApprovalResult;
 
       if (!result.success) {
         throw new Error(result.error || 'Failed to submit for approval');
@@ -77,7 +77,7 @@ export const useApprovalWorkflow = () => {
 
       if (error) throw error;
 
-      const result = data as ApprovalResult;
+      const result = data as unknown as ApprovalResult;
 
       if (!result.success) {
         throw new Error(result.error || 'Failed to approve request');
@@ -137,7 +137,7 @@ export const useApprovalWorkflow = () => {
 
       if (error) throw error;
 
-      const result = data as ApprovalResult;
+      const result = data as unknown as ApprovalResult;
 
       if (!result.success) {
         throw new Error(result.error || 'Failed to reject request');
@@ -197,7 +197,7 @@ export const useApprovalWorkflow = () => {
 
       if (error) throw error;
 
-      const result = data as ApprovalResult;
+      const result = data as unknown as ApprovalResult;
 
       if (!result.success) {
         throw new Error(result.error || 'Failed to request changes');

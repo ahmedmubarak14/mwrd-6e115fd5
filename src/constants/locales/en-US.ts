@@ -2140,7 +2140,11 @@ export const enUS = {
     validationError: "Validation Error",
     fillRequiredFields: "Please fill in all required fields",
     requestCreated: "Request created successfully!",
-    requestCreateError: "Failed to create request. Please try again."
+    requestCreateError: "Failed to create request. Please try again.",
+    simpleRequest: {
+      createButton: "Create Request",
+      creating: "Creating..."
+    }
   },
 
   // Authentication
@@ -2876,27 +2880,6 @@ export const enUS = {
     }
   },
 
-  // Offers Page
-  offers: {
-    myOffers: {
-      metrics: {
-        total: "Total Offers",
-        pending: "Pending",
-        approved: "Approved",
-        rejected: "Rejected"
-      },
-      labels: {
-        offerNumber: "Offer Number #{id}",
-        daysRemaining: "Days Remaining",
-        clientResponse: "Client Response:",
-        submitted: "Submitted"
-      },
-      emptyState: {
-        action: "Browse Requests"
-      }
-    }
-  },
-
   // Categories
   categories: {
     constructionMaterials: "Construction Materials",
@@ -2976,14 +2959,6 @@ export const enUS = {
         description: "Describe the item...",
         unit: "Select unit"
       }
-    }
-  },
-
-  // Forms
-  forms: {
-    simpleRequest: {
-      createButton: "Create Request",
-      creating: "Creating..."
     }
   },
 
