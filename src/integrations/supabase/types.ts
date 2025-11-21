@@ -446,6 +446,39 @@ export type Database = {
           },
         ]
       }
+      client_budget_settings: {
+        Row: {
+          alert_threshold_100: boolean
+          alert_threshold_80: boolean
+          client_id: string
+          created_at: string
+          id: string
+          monthly_budget: number
+          quarterly_budget: number
+          updated_at: string
+        }
+        Insert: {
+          alert_threshold_100?: boolean
+          alert_threshold_80?: boolean
+          client_id: string
+          created_at?: string
+          id?: string
+          monthly_budget?: number
+          quarterly_budget?: number
+          updated_at?: string
+        }
+        Update: {
+          alert_threshold_100?: boolean
+          alert_threshold_80?: boolean
+          client_id?: string
+          created_at?: string
+          id?: string
+          monthly_budget?: number
+          quarterly_budget?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       client_credit_accounts: {
         Row: {
           account_status: string | null
@@ -2151,6 +2184,41 @@ export type Database = {
         }
         Relationships: []
       }
+      request_approval_history: {
+        Row: {
+          action: string
+          actor_id: string
+          created_at: string
+          id: string
+          notes: string | null
+          request_id: string
+        }
+        Insert: {
+          action: string
+          actor_id: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          request_id: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          request_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "request_approval_history_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       request_categories: {
         Row: {
           category_id: string
@@ -3247,6 +3315,10 @@ export type Database = {
       }
     }
     Functions: {
+      approve_internal_request: {
+        Args: { p_notes?: string; p_request_id: string }
+        Returns: Json
+      }
       check_consultation_rate_limit: {
         Args: { user_uuid: string }
         Returns: boolean
@@ -3284,6 +3356,32 @@ export type Database = {
           total_requests: number
           total_revenue: number
           total_users: number
+        }[]
+      }
+      get_client_spending_by_category: {
+        Args: { p_client_id: string; p_timeframe?: string }
+        Returns: {
+          category: string
+          percentage: number
+          total_spent: number
+        }[]
+      }
+      get_client_spending_by_period: {
+        Args: { p_client_id: string; p_timeframe?: string }
+        Returns: {
+          avg_order_value: number
+          order_count: number
+          period: string
+          total_spent: number
+        }[]
+      }
+      get_client_spending_by_vendor: {
+        Args: { p_client_id: string; p_timeframe?: string }
+        Returns: {
+          order_count: number
+          total_spent: number
+          vendor_id: string
+          vendor_name: string
         }[]
       }
       get_current_user_profile: {
@@ -3350,6 +3448,20 @@ export type Database = {
           kyc_exists: boolean
           kyc_required: boolean
           submission_status: string
+        }[]
+      }
+      get_pending_approvals_for_user: {
+        Args: { p_user_id: string }
+        Returns: {
+          budget: number
+          category: string
+          description: string
+          request_id: string
+          submitted_at: string
+          submitted_by: string
+          submitter_name: string
+          title: string
+          urgency: string
         }[]
       }
       get_platform_statistics: {
@@ -3479,6 +3591,14 @@ export type Database = {
           target_user_id?: string
         }
         Returns: undefined
+      }
+      reject_internal_request: {
+        Args: { p_notes: string; p_request_id: string }
+        Returns: Json
+      }
+      request_changes_internal_request: {
+        Args: { p_notes: string; p_request_id: string }
+        Returns: Json
       }
       test_rls_policies: {
         Args: never
