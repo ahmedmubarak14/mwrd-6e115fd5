@@ -2220,7 +2220,7 @@ export const enUS = {
     footer: {
       taglineText: "Your trusted partner for procurement and supply chain management",
       whyStart: "Why Start with MWRD",
-      whyMove: "Why Move to MWRD", 
+      whyMove: "Why Move to MWRD",
       pricingSection: "Pricing",
       supportSection: "Support",
       support: "Support",
@@ -2232,5 +2232,388 @@ export const enUS = {
       rights: "All rights reserved",
       followUs: "Follow Us"
     }
+  },
+
+  // Modals
+  modals: {
+    editRequest: {
+      title: "Edit Request",
+      deleteConfirmTitle: "Are you sure?",
+      deleteConfirmDescription: "This action cannot be undone. This will permanently delete the request and all associated offers.",
+      deleteButton: "Delete Request",
+      cancelButton: "Cancel",
+      updateButton: "Update Request",
+      updating: "Updating...",
+      labels: {
+        title: "Title *",
+        description: "Description *",
+        category: "Category *",
+        budgetMin: "Minimum Budget",
+        budgetMax: "Maximum Budget",
+        location: "Location",
+        deadline: "Deadline",
+        urgency: "Urgency"
+      },
+      placeholders: {
+        title: "Enter request title",
+        description: "Detailed description of what you need",
+        category: "Select a category",
+        location: "Project location (optional)",
+        deadline: "Pick a date"
+      },
+      urgencyLevels: {
+        low: "Low",
+        medium: "Medium",
+        high: "High",
+        urgent: "Urgent"
+      },
+      validation: {
+        requiredFields: "Please fill in all required fields"
+      },
+      success: {
+        updated: "Request updated successfully!",
+        deleted: "Request deleted successfully!"
+      },
+      errors: {
+        updateFailed: "Failed to update request. Please try again.",
+        deleteFailed: "Failed to delete request. Please try again."
+      }
+    },
+    createProject: {
+      title: "Create New Project",
+      createButton: "Create Project",
+      cancelButton: "Cancel",
+      labels: {
+        projectTitle: "Project Title *",
+        category: "Category",
+        description: "Description",
+        budgetTotal: "Budget Total (SAR)",
+        priority: "Priority",
+        location: "Location",
+        startDate: "Start Date",
+        endDate: "End Date",
+        tags: "Tags"
+      },
+      placeholders: {
+        title: "Enter project title",
+        category: "Select category",
+        description: "Describe your project...",
+        budgetTotal: "Enter total budget",
+        location: "Project location",
+        startDate: "Select start date",
+        endDate: "Select end date",
+        tags: "Add a tag..."
+      },
+      priorityLevels: {
+        low: "Low",
+        medium: "Medium",
+        high: "High",
+        urgent: "Urgent"
+      },
+      validation: {
+        titleRequired: "Project title is required"
+      },
+      success: {
+        created: "Project created successfully"
+      },
+      errors: {
+        createFailed: "Failed to create project",
+        loadingCategories: "Loading categories..."
+      }
+    }
+  },
+
+  // Chat
+  chat: {
+    interface: {
+      searchPlaceholder: "Search messages...",
+      typePlaceholder: "Type a message...",
+      loading: "Loading conversations...",
+      noSearchResults: "No messages found matching your search.",
+      noMessages: "No messages yet. Start the conversation!",
+      selectConversation: "Select a Conversation",
+      selectConversationDesc: "Choose a conversation from the list to start messaging",
+      roleLabels: {
+        vendor: "Vendor",
+        client: "Client"
+      },
+      menu: {
+        archive: "Archive Conversation"
+      },
+      fileMessages: {
+        image: "📷 Image",
+        file: "📎 {fileName}",
+        voice: "🎵 Voice message"
+      },
+      errors: {
+        startConversation: "Failed to start conversation",
+        sendMessage: "Failed to send message",
+        sendFile: "Failed to send file",
+        sendVoice: "Failed to send voice message"
+      }
+    },
+    messageSearch: {
+      title: "Search Messages",
+      placeholder: "Search in your conversations...",
+      filters: {
+        all: "All Messages",
+        text: "Text",
+        images: "Images",
+        files: "Files"
+      },
+      noResults: "No messages found for \"{query}\"",
+      noResultsDesc: "Try different keywords or adjust filters"
+    },
+    communicationHub: {
+      headings: {
+        noConversations: "No Conversations",
+        conversations: "Conversations",
+        selectConversation: "Select a Conversation"
+      },
+      messages: {
+        startConversation: "Start a conversation with a client or vendor.",
+        noMessages: "No messages yet. Start the conversation!",
+        selectToStart: "Choose a conversation from the list to start messaging."
+      },
+      placeholder: "Type your message...",
+      conversationLabel: "Conversation #{id}"
+    }
+  },
+
+  // KYV Additional Forms
+  kyvForms: {
+    basicInfo: {
+      title: "Additional Business Information",
+      description: "Provide additional details about your business",
+      labels: {
+        tradeName: "Trade Name (if different from legal name)",
+        numberOfEmployees: "Number of Employees *",
+        zakatCertificate: "Zakat Certificate (PDF)",
+        chamberCertificate: "Chamber of Commerce Certificate (PDF)",
+        companyLogo: "Company Logo (Image)"
+      },
+      placeholders: {
+        tradeName: "Enter your trade name",
+        companySize: "Select company size"
+      },
+      companySizes: {
+        small: "1-10 employees",
+        small_medium: "11-50 employees",
+        medium: "51-100 employees",
+        medium_large: "101-250 employees",
+        large: "251-500 employees",
+        xlarge: "500+ employees"
+      },
+      helpText: {
+        tradeName: "The name under which you conduct business, if different from legal name",
+        zakat: "Upload your Zakat, Tax and Customs Authority certificate",
+        chamber: "Upload your Chamber of Commerce membership certificate",
+        logo: "Upload your official company logo (PNG, JPG, or SVG)"
+      }
+    },
+    productDetails: {
+      paymentTermsPlaceholder: "Select payment terms"
+    },
+    bankingDetails: {
+      placeholders: {
+        accountName: "As shown in bank records",
+        iban: "SA0000000000000000000000",
+        branchName: "Branch name or code"
+      }
+    }
+  },
+
+  // Vendor Directory & Pages
+  vendors: {
+    directory: {
+      title: "Vendor Directory",
+      metrics: {
+        totalVendors: {
+          title: "Total Vendors",
+          description: "Registered vendors"
+        },
+        verifiedVendors: {
+          title: "Verified Vendors",
+          description: "Quality assured partners"
+        },
+        availableNow: {
+          title: "Available Now",
+          description: "Ready for new projects"
+        },
+        serviceCategories: {
+          title: "Service Categories",
+          description: "Different specializations"
+        }
+      },
+      labels: {
+        specialties: "Specialties",
+        joined: "Joined",
+        portfolio: "Portfolio"
+      },
+      buttons: {
+        viewProfile: "View Profile",
+        message: "Message",
+        privateRequest: "Private Request",
+        publicRequest: "Public Request"
+      },
+      filters: {
+        title: "Filter Results",
+        sortBy: "Sort by",
+        budgetRange: "Budget Range (SAR)",
+        categories: "Categories",
+        clearAll: "Clear All Filters"
+      },
+      sortOptions: {
+        newest: "Newest",
+        rating: "Rating",
+        companyName: "Company Name"
+      },
+      placeholders: {
+        search: "Search vendors...",
+        minBudget: "Min",
+        maxBudget: "Max"
+      },
+      pagination: {
+        previous: "Previous",
+        next: "Next",
+        pageInfo: "Page {page} of {total}"
+      },
+      emptyState: {
+        title: "No vendors found",
+        description: "Try adjusting your search criteria",
+        clearFilters: "Clear Filters"
+      },
+      status: {
+        verified: "Verified",
+        available: "Available"
+      }
+    }
+  },
+
+  // Offers Page
+  offers: {
+    myOffers: {
+      metrics: {
+        total: "Total Offers",
+        pending: "Pending",
+        approved: "Approved",
+        rejected: "Rejected"
+      },
+      labels: {
+        offerNumber: "Offer Number #{id}",
+        daysRemaining: "Days Remaining",
+        clientResponse: "Client Response:",
+        submitted: "Submitted"
+      },
+      emptyState: {
+        action: "Browse Requests"
+      }
+    }
+  },
+
+  // Categories
+  categories: {
+    constructionMaterials: "Construction Materials",
+    itEquipment: "IT Equipment",
+    officeSupplies: "Office Supplies",
+    industrialEquipment: "Industrial Equipment",
+    medicalEquipment: "Medical Equipment",
+    transportation: "Transportation",
+    cateringServices: "Catering Services",
+    maintenanceServices: "Maintenance Services",
+    consultingServices: "Consulting Services",
+    securityServices: "Security Services"
+  },
+
+  // Subscription Management
+  subscription: {
+    management: {
+      title: "Subscription Management",
+      currentPlan: "Current Plan",
+      daysRemaining: "Days Remaining",
+      monthlyCost: "Monthly Cost",
+      status: "Status",
+      processing: "Processing..."
+    }
+  },
+
+  // Hooks Error Messages
+  hooks: {
+    errors: {
+      userNotAuthenticated: "User not authenticated",
+      vendorProfileNotFound: "Vendor profile not found",
+      offerNotFound: "Offer not found",
+      currentUserProfileNotFound: "Current user profile not found",
+      recipientProfileNotFound: "Recipient profile not found",
+      missingRequiredFields: "Missing required fields: title, description, or category",
+      userMustBeAuthenticated: "User must be authenticated to create tickets"
+    }
+  },
+
+  // Advanced Search
+  search: {
+    advanced: {
+      placeholders: {
+        search: "Search suppliers, services, or keywords...",
+        location: "City, Country",
+        rating: "Any rating",
+        urgency: "Any urgency",
+        tags: "Add tag..."
+      }
+    }
+  },
+
+  // RFQ & Bids
+  rfq: {
+    bidSubmission: {
+      placeholders: {
+        bidAmount: "Enter your total bid amount",
+        deliveryDays: "Number of days for completion",
+        warrantyMonths: "Warranty period in months"
+      }
+    }
+  },
+
+  // Offer Review
+  offerReview: {
+    placeholders: {
+      notes: "Any additional notes or requirements...",
+      feedback: "Please provide feedback for the vendor..."
+    }
+  },
+
+  // BOQ
+  boq: {
+    createItem: {
+      placeholders: {
+        category: "Select category",
+        description: "Describe the item...",
+        unit: "Select unit"
+      }
+    }
+  },
+
+  // Forms
+  forms: {
+    simpleRequest: {
+      createButton: "Create Request",
+      creating: "Creating..."
+    }
+  },
+
+  // Loading & Processing States
+  states: {
+    loading: "Loading...",
+    processing: "Processing...",
+    updating: "Updating...",
+    creating: "Creating...",
+    deleting: "Deleting...",
+    saving: "Saving...",
+    submitting: "Submitting..."
+  },
+
+  // NotFound
+  notFound: {
+    consoleMessage: "404 Error: User attempted to access non-existent route:"
   }
 };
