@@ -28,7 +28,7 @@ export interface SupplierPerformanceMetrics {
   last_updated: string;
 }
 
-interface SupplierPerformanceScorecard Props {
+interface SupplierPerformanceScorecardProps {
   vendorId: string;
   compact?: boolean;
   className?: string;

@@ -32,6 +32,8 @@ import { VendorOffers } from './pages/vendor/VendorOffers';
 import { VendorOrders } from './pages/vendor/VendorOrders';
 import { VendorProfile } from './pages/vendor/VendorProfile';
 import { VendorInvoices } from './pages/vendor/VendorInvoices';
+import { QuoteGeneratorPage } from './pages/vendor/QuoteGeneratorPage';
+import { InventoryTrackerPage } from './pages/vendor/InventoryTrackerPage';
 import Profile from './pages/Profile';
 import { Landing } from './pages/Landing';
 import NotFound from './pages/NotFound';
@@ -303,7 +305,17 @@ function App() {
                         <VendorInvoices />
                       </RoleProtectedRoute>
                     } />
-                    
+                    <Route path="/vendor/quote-generator" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <QuoteGeneratorPage />
+                      </RoleProtectedRoute>
+                    } />
+                    <Route path="/vendor/inventory" element={
+                      <RoleProtectedRoute allowedRoles={['vendor']}>
+                        <InventoryTrackerPage />
+                      </RoleProtectedRoute>
+                    } />
+
                     {/* Legacy vendor dashboard route (redirect to new structure) */}
                     <Route path="/vendor-dashboard" element={<Navigate to="/vendor/dashboard" replace />} />
                     
