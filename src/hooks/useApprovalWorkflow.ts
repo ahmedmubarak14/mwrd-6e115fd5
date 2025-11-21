@@ -11,7 +11,7 @@ interface ApprovalResult {
 
 export const useApprovalWorkflow = () => {
   const { toast } = useToast();
-  const { isRTL } = useLanguage();
+  const { isRTL, t } = useLanguage();
   const [submitting, setSubmitting] = useState(false);
 
   /**
@@ -37,7 +37,7 @@ export const useApprovalWorkflow = () => {
       }
 
       toast({
-        title: isRTL ? 'تم الإرسال للموافقة' : 'Submitted for Approval',
+        title: t('approval.submitted'),
         description: result.message,
       });
 
@@ -46,7 +46,7 @@ export const useApprovalWorkflow = () => {
       const errorMessage = error instanceof Error ? error.message : 'Failed to submit for approval';
 
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
+        title: t('common.error'),
         description: errorMessage,
         variant: 'destructive',
       });
@@ -59,7 +59,7 @@ export const useApprovalWorkflow = () => {
     } finally {
       setSubmitting(false);
     }
-  }, [toast, isRTL]);
+  }, [toast, isRTL, t]);
 
   /**
    * Approve a request
@@ -84,7 +84,7 @@ export const useApprovalWorkflow = () => {
       }
 
       toast({
-        title: isRTL ? 'تمت الموافقة' : 'Approved',
+        title: t('approval.approved'),
         description: result.message,
       });
 
@@ -93,7 +93,7 @@ export const useApprovalWorkflow = () => {
       const errorMessage = error instanceof Error ? error.message : 'Failed to approve request';
 
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
+        title: t('common.error'),
         description: errorMessage,
         variant: 'destructive',
       });
@@ -106,7 +106,7 @@ export const useApprovalWorkflow = () => {
     } finally {
       setSubmitting(false);
     }
-  }, [toast, isRTL]);
+  }, [toast, isRTL, t]);
 
   /**
    * Reject a request
@@ -117,8 +117,8 @@ export const useApprovalWorkflow = () => {
   ): Promise<ApprovalResult> => {
     if (!notes || !notes.trim()) {
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'يرجى تقديم سبب الرفض' : 'Please provide a rejection reason',
+        title: t('common.error'),
+        description: t('approval.rejectionReasonRequired'),
         variant: 'destructive',
       });
       return {
@@ -144,7 +144,7 @@ export const useApprovalWorkflow = () => {
       }
 
       toast({
-        title: isRTL ? 'تم الرفض' : 'Rejected',
+        title: t('approval.rejected'),
         description: result.message,
       });
 
@@ -153,7 +153,7 @@ export const useApprovalWorkflow = () => {
       const errorMessage = error instanceof Error ? error.message : 'Failed to reject request';
 
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
+        title: t('common.error'),
         description: errorMessage,
         variant: 'destructive',
       });
@@ -166,7 +166,7 @@ export const useApprovalWorkflow = () => {
     } finally {
       setSubmitting(false);
     }
-  }, [toast, isRTL]);
+  }, [toast, isRTL, t]);
 
   /**
    * Request changes to a request
@@ -177,8 +177,8 @@ export const useApprovalWorkflow = () => {
   ): Promise<ApprovalResult> => {
     if (!notes || !notes.trim()) {
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'يرجى تقديم التغييرات المطلوبة' : 'Please provide change details',
+        title: t('common.error'),
+        description: t('approval.changeDetailsRequired'),
         variant: 'destructive',
       });
       return {
@@ -204,7 +204,7 @@ export const useApprovalWorkflow = () => {
       }
 
       toast({
-        title: isRTL ? 'تم طلب التغييرات' : 'Changes Requested',
+        title: t('approval.changesRequested'),
         description: result.message,
       });
 
@@ -213,7 +213,7 @@ export const useApprovalWorkflow = () => {
       const errorMessage = error instanceof Error ? error.message : 'Failed to request changes';
 
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
+        title: t('common.error'),
         description: errorMessage,
         variant: 'destructive',
       });
@@ -226,7 +226,7 @@ export const useApprovalWorkflow = () => {
     } finally {
       setSubmitting(false);
     }
-  }, [toast, isRTL]);
+  }, [toast, isRTL, t]);
 
   /**
    * Get pending approvals for the current user

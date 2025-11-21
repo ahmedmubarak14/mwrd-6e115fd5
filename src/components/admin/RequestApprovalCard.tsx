@@ -133,14 +133,14 @@ export const RequestApprovalCard = ({ request, onApprove, onReject }: RequestApp
           
           <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm">{isRTL ? 'الميزانية:' : 'Budget:'} {formatBudget()}</span>
+            <span className="text-sm">{t('admin.approvals.budget')} {formatBudget()}</span>
           </div>
-          
+
           {request.deadline && (
             <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <Calendar className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">
-                {isRTL ? 'الموعد النهائي:' : 'Deadline:'} {format(new Date(request.deadline), 'MMM dd, yyyy')}
+                {t('admin.approvals.deadline')} {format(new Date(request.deadline), 'MMM dd, yyyy')}
               </span>
             </div>
           )}
@@ -150,20 +150,20 @@ export const RequestApprovalCard = ({ request, onApprove, onReject }: RequestApp
         <div className={`flex items-center gap-2 text-xs text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
           <Clock className="h-3 w-3" />
           <span>
-            {isRTL ? 'تم الإنشاء:' : 'Created:'} {format(new Date(request.created_at), 'MMM dd, yyyy HH:mm')}
+            {t('admin.approvals.created')} {format(new Date(request.created_at), 'MMM dd, yyyy HH:mm')}
           </span>
         </div>
 
         {/* Approval Notes */}
         <div className="space-y-2">
           <Label htmlFor={`notes-${request.id}`} className={isRTL ? 'text-right' : ''}>
-            {t('admin.approvals.approvalNotes') || 'Approval Notes'}
+            {t('admin.approvals.approvalNotes')}
           </Label>
           <Textarea
             id={`notes-${request.id}`}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder={isRTL ? 'أضف ملاحظات حول قرار الموافقة...' : 'Add notes about the approval decision...'}
+            placeholder={t('admin.approvals.notesPlaceholder')}
             className={`min-h-20 ${isRTL ? 'text-right' : ''}`}
             disabled={request.admin_approval_status !== 'pending'}
           />
@@ -179,7 +179,7 @@ export const RequestApprovalCard = ({ request, onApprove, onReject }: RequestApp
               variant="default"
             >
               <CheckCircle className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {isRTL ? 'موافقة' : 'Approve'}
+              {t('admin.approvals.approve')}
             </Button>
             <Button
               onClick={handleReject}
@@ -188,7 +188,7 @@ export const RequestApprovalCard = ({ request, onApprove, onReject }: RequestApp
               variant="destructive"
             >
               <XCircle className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {isRTL ? 'رفض' : 'Reject'}
+              {t('admin.approvals.reject')}
             </Button>
           </div>
         )}
@@ -197,11 +197,11 @@ export const RequestApprovalCard = ({ request, onApprove, onReject }: RequestApp
         {request.admin_approval_status !== 'pending' && request.admin_approval_date && (
           <div className={`p-3 rounded-lg bg-muted/50 ${isRTL ? 'text-right' : ''}`}>
             <div className="text-sm font-medium mb-1">
-              {isRTL ? 'تمت المعالجة في:' : 'Processed on:'} {format(new Date(request.admin_approval_date), 'MMM dd, yyyy HH:mm')}
+              {t('admin.approvals.processedOn')} {format(new Date(request.admin_approval_date), 'MMM dd, yyyy HH:mm')}
             </div>
             {request.admin_approval_notes && (
               <div className="text-xs text-muted-foreground">
-                {isRTL ? 'الملاحظات:' : 'Notes:'} {request.admin_approval_notes}
+                {t('admin.approvals.notes')} {request.admin_approval_notes}
               </div>
             )}
           </div>

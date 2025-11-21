@@ -122,8 +122,8 @@ export const SpendManagementDashboard = () => {
     } catch (error) {
       console.error('Error fetching spend management data:', error);
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل تحميل بيانات الإنفاق' : 'Failed to load spending data',
+        title: t('common.error'),
+        description: t('spendManagement.failedToLoadData'),
         variant: 'destructive',
       });
     } finally {
@@ -221,8 +221,8 @@ export const SpendManagementDashboard = () => {
     if (error) {
       console.error('Error saving budget settings:', error);
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل حفظ إعدادات الميزانية' : 'Failed to save budget settings',
+        title: t('common.error'),
+        description: t('spendManagement.failedToSaveBudget'),
         variant: 'destructive',
       });
       return;
@@ -231,8 +231,8 @@ export const SpendManagementDashboard = () => {
     setBudgetSettings(data);
     setShowBudgetDialog(false);
     toast({
-      title: isRTL ? 'نجح' : 'Success',
-      description: isRTL ? 'تم حفظ إعدادات الميزانية' : 'Budget settings saved successfully',
+      title: t('common.success'),
+      description: t('spendManagement.budgetSavedSuccessfully'),
     });
   };
 
@@ -311,8 +311,8 @@ export const SpendManagementDashboard = () => {
     document.body.removeChild(link);
 
     toast({
-      title: isRTL ? 'نجح' : 'Success',
-      description: isRTL ? 'تم تصدير التقرير' : 'Report exported successfully',
+      title: t('common.success'),
+      description: t('spendManagement.reportExported'),
     });
   };
 

@@ -37,7 +37,7 @@ interface Invoice {
 export const PayInvoicePage = () => {
   const { invoiceId } = useParams<{ invoiceId: string }>();
   const navigate = useNavigate();
-  const { isRTL } = useLanguage();
+  const { isRTL, t } = useLanguage();
   const { userProfile } = useAuth();
 
   const [loading, setLoading] = useState(true);
@@ -69,7 +69,7 @@ export const PayInvoicePage = () => {
       if (error) throw error;
 
       if (!data) {
-        throw new Error('Invoice not found');
+        throw new Error(t('payment.invoiceNotFound'));
       }
 
       // Check if already paid
@@ -81,7 +81,7 @@ export const PayInvoicePage = () => {
       setInvoice(data);
     } catch (error: any) {
       console.error('Error loading invoice:', error);
-      setError(error.message || 'Failed to load invoice');
+      setError(error.message || t('payment.failedToLoad'));
     } finally {
       setLoading(false);
     }
@@ -111,7 +111,7 @@ export const PayInvoicePage = () => {
         <Card className="border-red-200 bg-red-50 dark:bg-red-950">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <p className="text-red-900 dark:text-red-100 text-center">
-              {error || (isRTL ? 'الفاتورة غير موجودة' : 'Invoice not found')}
+              {error || t('payment.invoiceNotFound')}
             </p>
             <Button
               variant="outline"
@@ -119,7 +119,7 @@ export const PayInvoicePage = () => {
               onClick={() => navigate('/client/invoices')}
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
-              {isRTL ? 'العودة إلى الفواتير' : 'Back to Invoices'}
+              {t('payment.backToInvoices')}
             </Button>
           </CardContent>
         </Card>
@@ -139,14 +139,14 @@ export const PayInvoicePage = () => {
           className="mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
-          {isRTL ? 'العودة إلى الفواتير' : 'Back to Invoices'}
+          {t('payment.backToInvoices')}
         </Button>
 
         <h1 className="text-3xl font-bold mb-2">
-          {isRTL ? 'دفع الفاتورة' : 'Pay Invoice'}
+          {t('payment.payInvoice')}
         </h1>
         <p className="text-muted-foreground">
-          {isRTL ? 'أكمل الدفع بشكل آمن باستخدام Moyasar' : 'Complete your payment securely with Moyasar'}
+          {t('payment.completePayment')}
         </p>
       </div>
 
@@ -160,12 +160,12 @@ export const PayInvoicePage = () => {
             </CardTitle>
             <Badge variant={isOverdue ? 'destructive' : 'secondary'}>
               {isOverdue
-                ? (isRTL ? 'متأخرة' : 'Overdue')
-                : (isRTL ? 'مستحقة' : invoice.status)}
+                ? t('payment.overdue')
+                : invoice.status}
             </Badge>
           </div>
           <CardDescription>
-            {invoice.orders?.title || (isRTL ? 'طلب' : 'Order')} #{invoice.order_id.slice(0, 8)}
+            {invoice.orders?.title || t('orders.title')} #{invoice.order_id.slice(0, 8)}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -173,7 +173,7 @@ export const PayInvoicePage = () => {
             {/* Vendor */}
             <div>
               <p className="text-sm text-muted-foreground mb-1">
-                {isRTL ? 'المورد' : 'Vendor'}
+                {t('payment.vendor')}
               </p>
               <p className="font-medium">
                 {invoice.user_profiles?.company_name || invoice.user_profiles?.full_name || 'N/A'}
@@ -183,7 +183,7 @@ export const PayInvoicePage = () => {
             {/* Due Date */}
             <div>
               <p className="text-sm text-muted-foreground mb-1">
-                {isRTL ? 'تاريخ الاستحقاق' : 'Due Date'}
+                {t('payment.dueDate')}
               </p>
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
@@ -198,20 +198,20 @@ export const PayInvoicePage = () => {
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">
-                    {isRTL ? 'المبلغ الأساسي' : 'Subtotal'}
+                    {t('payment.subtotal')}
                   </span>
                   <span>{invoice.amount.toLocaleString()} {invoice.currency}</span>
                 </div>
 
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">
-                    {isRTL ? 'الضريبة (15%)' : 'Tax (15%)'}
+                    {t('payment.taxAmount')}
                   </span>
                   <span>{invoice.tax_amount.toLocaleString()} {invoice.currency}</span>
                 </div>
 
                 <div className="flex justify-between text-lg font-bold border-t pt-2">
-                  <span>{isRTL ? 'المجموع' : 'Total'}</span>
+                  <span>{t('payment.total')}</span>
                   <div className="flex items-center gap-2">
                     <DollarSign className="h-5 w-5" />
                     <span>{invoice.total_amount.toLocaleString()} {invoice.currency}</span>
@@ -227,7 +227,7 @@ export const PayInvoicePage = () => {
       <MoyasarCheckout
         invoiceId={invoice.id}
         amount={invoice.total_amount}
-        description={`${invoice.invoice_number} - ${invoice.orders?.title || 'Order'}`}
+        description={`${invoice.invoice_number} - ${invoice.orders?.title || t('orders.title')}`}
         onSuccess={handlePaymentSuccess}
         onError={handlePaymentError}
       />

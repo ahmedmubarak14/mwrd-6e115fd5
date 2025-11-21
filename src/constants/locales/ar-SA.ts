@@ -463,6 +463,23 @@ export const arSA = {
       databaseOptimizationDescription: "أضف فهارس مناسبة وحسّن أنماط الاستعلام"
     },
 
+    // Approvals Management
+    approvals: {
+      budget: "الميزانية:",
+      deadline: "الموعد النهائي:",
+      created: "تم الإنشاء:",
+      approvalNotes: "ملاحظات الموافقة",
+      notesPlaceholder: "أضف ملاحظات...",
+      approve: "موافقة",
+      reject: "رفض",
+      processedOn: "تمت المعالجة في:",
+      notes: "الملاحظات:",
+      forRequest: "للطلب:",
+      days: "أيام",
+      acceptOffer: "قبول العرض",
+      rejectOffer: "رفض العرض"
+    },
+
     // Testing Suite
     testing: {
       title: "اختبار ضمان الجودة",
@@ -1510,6 +1527,36 @@ export const arSA = {
     },
     tryAgain: 'حاول مرة أخرى',
     refreshPage: 'تحديث الصفحة',
+
+  // سير عمل الموافقة
+  approval: {
+    submitForApproval: 'إرسال للموافقة',
+    submitForInternalApproval: 'إرسال للموافقة الداخلية',
+    description: 'سيتم إرسال هذا الطلب إلى مدير في مؤسستك للمراجعة قبل نشره في السوق.',
+    whatHappensNext: 'ما سيحدث بعد ذلك:',
+    adminWillBeNotified: '• سيتم إخطار مدير في مؤسستك',
+    adminWillReview: '• سيقوم بمراجعة الطلب والموافقة عليه أو رفضه أو طلب تغييرات',
+    autoPostedAfterApproval: '• بعد الموافقة، سيتم نشر الطلب تلقائياً في السوق',
+    youWillBeNotified: '• ستتلقى إشعاراً بالقرار',
+    tip: 'نصيحة: تأكد من أن جميع تفاصيل طلبك كاملة ودقيقة قبل الإرسال للموافقة.',
+    submitting: 'جاري الإرسال...',
+    cancel: 'إلغاء',
+    submitted: 'تم الإرسال للموافقة',
+    approved: 'تمت الموافقة',
+    rejected: 'تم الرفض',
+    rejectionReasonRequired: 'يرجى تقديم سبب الرفض',
+    changeDetailsRequired: 'يرجى تقديم التغييرات المطلوبة',
+    changesRequested: 'تم طلب التغييرات'
+  },
+
+  // إدارة الإنفاق
+  spendManagement: {
+    failedToLoadData: 'فشل تحميل بيانات الإنفاق',
+    failedToSaveBudget: 'فشل حفظ إعدادات الميزانية',
+    budgetSavedSuccessfully: 'تم حفظ إعدادات الميزانية',
+    reportExported: 'تم تصدير التقرير'
+  },
+
     placeholders: {
       searchLogs: 'البحث في السجلات...',
       filterByAction: 'تصفية حسب الإجراء...',
@@ -1746,7 +1793,125 @@ export const arSA = {
       clientRatingDesc: 'متوسط تقييم العملاء',
       accessRequired: 'الوصول إلى هذه الصفحة مقتصر على الموردين المعتمدين فقط',
       performanceOverview: 'نظرة عامة على الأداء',
-      completeVerification: 'أكمل التحقق للوصول إلى جميع الميزات'
+      completeVerification: 'أكمل التحقق للوصول إلى جميع الميزات',
+      actionRequired: 'الإجراءات المطلوبة',
+      activeOffersTitle: 'العروض النشطة',
+      activeOffersDesc: 'في انتظار الإجراء',
+      allSetReady: 'كل شيء جاهز! أنت مستعد لتلقي الطلبات',
+      browseRequestsTitle: 'تصفح الطلبات',
+      browseRequestsDesc: 'اكتشف فرص جديدة',
+      businessPerformance: 'أداء الأعمال',
+      businessPerformanceDesc: 'تتبع مؤشرات الأداء الرئيسية',
+      clientSatisfactionRate: 'رضا العملاء',
+      completeCRTitle: 'إكمال التحقق من السجل التجاري',
+      completeCRDesc: 'تحقق من سجلك التجاري',
+      completeProfileTitle: 'أكمل ملفك الشخصي',
+      completeProfileDesc: '% متبقية للإكمال',
+      manageProjectsTitle: 'إدارة المشاريع',
+      manageProjectsDesc: 'عرض وتحديث مشاريعك',
+      messagesTitle: 'الرسائل',
+      messagesDesc: 'تحقق من رسائلك',
+      offerSuccessRate: 'معدل نجاح العروض',
+      offerTrends: 'اتجاهات العروض',
+      offerTrendsDesc: 'اتجاهات تقديم وقبول عروضك مع مرور الوقت',
+      viewProjects: 'عرض المشاريع',
+      viewAllOffers: 'عرض جميع العروض',
+      responseRate: 'معدل الاستجابة',
+      clientSatisfaction: 'رضا العملاء'
+    },
+    cr: {
+      verificationRequired: 'التحقق من السجل التجاري مطلوب',
+      completeVerification: 'أكمل التحقق من سجلك التجاري للوصول إلى جميع الميزات',
+      approved: 'معتمد',
+      pending: 'قيد المراجعة',
+      rejected: 'مرفوض'
+    },
+    performance: {
+      title: 'تتبع الأداء',
+      subtitle: 'راقب وحسّن أداء عملك',
+      overallScore: 'التقييم الإجمالي',
+      performanceTrends: 'اتجاهات الأداء',
+      performanceGoals: 'أهداف الأداء',
+      performanceInsights: 'رؤى الأداء',
+      trends: 'الاتجاهات',
+      insights: 'الرؤى',
+      goals: 'الأهداف',
+      current: 'الحالي',
+      target: 'المستهدف',
+      complete: 'مكتمل',
+      offerAcceptance: 'قبول العروض',
+      responseTime: 'وقت الاستجابة',
+      clientSatisfaction: 'رضا العملاء',
+      projectCompletion: 'إتمام المشاريع',
+      revenueGrowth: 'نمو الإيرادات',
+      clientRetention: 'الاحتفاظ بالعملاء',
+      strengths: 'نقاط القوة',
+      strengthsDesc: 'المجالات التي تتفوق فيها',
+      improvements: 'مجالات التحسين',
+      improvementsDesc: 'مجالات التركيز للنمو',
+      recommendations: 'التوصيات',
+      recommendationsDesc: 'اقتراحات قابلة للتنفيذ لتحسين الأداء'
+    },
+    projects: {
+      title: 'إدارة المشاريع',
+      unifiedSubtitle: 'إدارة وتتبع محفظة مشاريعك',
+      add: 'إضافة مشروع',
+      addFirst: 'أضف مشروعك الأول',
+      addNewProject: 'إضافة مشروع جديد',
+      newProject: 'مشروع جديد',
+      projectTitle: 'عنوان المشروع',
+      description: 'الوصف',
+      startDate: 'تاريخ البدء',
+      endDate: 'تاريخ الانتهاء',
+      status: 'الحالة',
+      type: 'النوع',
+      value: 'القيمة',
+      location: 'الموقع',
+      clientName: 'اسم العميل',
+      clientType: 'نوع العميل',
+      visibility: 'الظهور',
+      portfolio: 'المحفظة',
+      totalProjects: 'إجمالي المشاريع',
+      activeProjects: 'المشاريع النشطة',
+      completedProjects: 'المشاريع المكتملة',
+      thisWeek: 'هذا الأسبوع',
+      vsLastMonth: 'مقارنة بالشهر الماضي',
+      searchAndFilter: 'البحث والتصفية',
+      searchProjects: 'البحث في المشاريع...',
+      allStatus: 'جميع الحالات',
+      allPriority: 'جميع الأولويات',
+      active: 'نشط',
+      completed: 'مكتمل',
+      pending: 'قيد الانتظار',
+      ongoing: 'جاري التنفيذ',
+      draft: 'مسودة',
+      cancelled: 'ملغي',
+      urgent: 'عاجل',
+      high: 'مرتفع',
+      medium: 'متوسط',
+      low: 'منخفض',
+      public: 'عام',
+      private: 'خاص',
+      confidential: 'سري',
+      featured: 'مميز',
+      government: 'حكومي',
+      privateCompany: 'شركة خاصة',
+      commercial: 'تجاري',
+      individual: 'فردي',
+      edit: 'تعديل',
+      delete: 'حذف',
+      noProjects: 'لم يتم العثور على مشاريع',
+      noProjectsFound: 'لا توجد مشاريع مطابقة لمعايير التصفية',
+      showingResults: 'عرض {count} نتيجة',
+      tryAdjusting: 'حاول تعديل معايير التصفية',
+      clearFilters: 'مسح المرشحات',
+      createFirstProject: 'إنشاء مشروعك الأول',
+      createYourFirst: 'قم بإنشاء أول',
+      startFirstProject: 'ابدأ بإنشاء مشروعك الأول',
+      showcasePortfolio: 'اعرض أعمالك المكتملة',
+      updateProjectInfo: 'تحديث معلومات المشروع',
+      projectDeleted: 'تم حذف المشروع بنجاح',
+      deleteFailed: 'فشل حذف المشروع'
     },
     transactions: {
       title: 'المعاملات المالية',
@@ -2042,8 +2207,12 @@ export const arSA = {
       subtitle: 'تحليلات متقدمة ورؤى الأداء لعملك'
     },
     analytics: {
+      title: 'تحليلات الموردين',
+      subtitle: 'رؤى الأداء وتحليلات الأعمال',
       overview: 'نظرة عامة',
       offers: 'العروض',
+      revenue: 'الإيرادات',
+      revenueGrowth: 'نمو الإيرادات',
       categories: 'الفئات',
       offerAcceptanceRate: 'معدل قبول العروض',
       averageResponseTime: 'متوسط وقت الاستجابة',
@@ -2062,9 +2231,11 @@ export const arSA = {
     categories: {
       construction: 'الإنشاءات',
       engineering: 'الهندسة',
-      consulting: 'الاستشارات', 
+      consulting: 'الاستشارات',
       technology: 'التكنولوجيا',
-      other: 'أخرى'
+      other: 'أخرى',
+      manage: 'إدارة الفئات',
+      select: 'اختر فئات خدماتك'
     },
     months: {
       jan: 'يناير',
@@ -2425,6 +2596,135 @@ export const arSA = {
     }
   },
 
+  // نظام الدفع
+  payment: {
+    // عام
+    title: "الدفع",
+    subtitle: "إدارة المدفوعات والفواتير",
+    paymentGateway: "بوابة الدفع",
+    securePayment: "دفع آمن",
+
+    // ملخص الدفع
+    paymentSummary: "ملخص الدفع",
+    payInvoice: "دفع الفاتورة",
+    completePayment: "أكمل الدفع بشكل آمن باستخدام Moyasar",
+
+    // طرق الدفع
+    paymentMethods: "طرق الدفع",
+    availablePaymentMethods: "طرق الدفع المتاحة",
+    addPaymentMethod: "إضافة طريقة دفع",
+    deletePaymentMethod: "حذف طريقة الدفع",
+    setDefaultPaymentMethod: "تعيين كافتراضي",
+    defaultPaymentMethod: "طريقة الدفع الافتراضية",
+    creditCard: "بطاقة ائتمان",
+    fastAndSecure: "دفع سريع وآمن",
+    payWith: "الدفع عبر",
+
+    // حالة الدفع
+    paymentSuccessful: "تمت العملية بنجاح",
+    paymentSuccessfulDesc: "تم استلام دفعتك وسيتم معالجة طلبك قريباً",
+    paymentFailed: "فشل الدفع",
+    paymentFailedDesc: "فشلت عملية الدفع",
+    paymentProcessing: "جاري معالجة الدفع...",
+    paymentComplete: "اكتملت عملية الدفع!",
+
+    // حالة المعاملة
+    pending: "قيد الانتظار",
+    completed: "مكتمل",
+    processing: "قيد المعالجة",
+    failed: "فشل",
+    refunded: "مسترد",
+    cancelled: "ملغى",
+
+    // الفاتورة
+    invoice: "فاتورة",
+    invoiceNumber: "رقم الفاتورة",
+    invoices: "الفواتير",
+    invoiceNotFound: "الفاتورة غير موجودة",
+    backToInvoices: "العودة إلى الفواتير",
+    vendor: "المورد",
+    dueDate: "تاريخ الاستحقاق",
+    overdue: "متأخرة",
+    subtotal: "المبلغ الأساسي",
+    tax: "الضريبة",
+    taxAmount: "الضريبة (15%)",
+    total: "المجموع",
+    amount: "المبلغ",
+
+    // إجراءات الدفع
+    pay: "دفع",
+    payNow: "ادفع الآن",
+    refund: "استرداد",
+    processRefund: "معالجة الاسترداد",
+    refundAmount: "مبلغ الاسترداد",
+    refundReason: "سبب الاسترداد",
+
+    // الأمان
+    secureAndEncrypted: "دفع آمن ومشفر",
+    securityNotice: "جميع المعاملات محمية بتشفير SSL. لا نقوم بتخزين بيانات بطاقتك.",
+    pciCompliant: "متوافق مع PCI DSS",
+
+    // رسائل الخطأ والنجاح
+    error: "خطأ",
+    success: "نجح",
+    failedToInitialize: "فشل تهيئة بوابة الدفع",
+    failedToProcess: "فشل معالجة الدفع",
+    failedToUpdate: "فشل تحديث حالة الدفع",
+    failedToLoad: "فشل التحميل",
+    paymentMethodAdded: "تمت إضافة طريقة الدفع بنجاح",
+    paymentMethodRemoved: "تم حذف طريقة الدفع",
+    paymentMethodUpdated: "تم تحديث طريقة الدفع الافتراضية",
+    failedToAddMethod: "فشلت إضافة طريقة الدفع",
+    failedToRemoveMethod: "فشل حذف طريقة الدفع",
+    failedToUpdateMethod: "فشل تحديث طريقة الدفع الافتراضية",
+    failedToLoadMethods: "فشل تحميل طرق الدفع",
+    failedToLoadTransactions: "فشل تحميل المعاملات",
+    failedToLoadStatistics: "فشل تحميل الإحصائيات",
+    refundProcessed: "تمت معالجة الاسترداد بنجاح",
+    failedToProcessRefund: "فشلت معالجة الاسترداد",
+
+    // المبالغ والعملة
+    sar: "ر.س",
+    riyal: "ريال",
+    halalas: "هللة",
+    currency: "العملة",
+
+    // بوابة الدفع
+    gatewayNotConfigured: "بوابة الدفع غير مهيأة",
+    publishableKeyNotConfigured: "المفتاح القابل للنشر غير مهيأ",
+
+    // المعاملات
+    transactions: "المعاملات",
+    transactionId: "معرف المعاملة",
+    transactionHistory: "سجل المعاملات",
+    paymentTransactions: "معاملات الدفع",
+    recentTransactions: "المعاملات الأخيرة",
+    viewTransactions: "عرض المعاملات",
+    noTransactions: "لا توجد معاملات متاحة",
+
+    // الإحصائيات
+    statistics: "إحصائيات الدفع",
+    totalAmount: "المبلغ الإجمالي",
+    successRate: "معدل النجاح",
+    averageAmount: "المتوسط",
+
+    // حالات التحميل
+    loading: "جاري التحميل...",
+    loadingPaymentInfo: "جاري تحميل معلومات الدفع...",
+    initializingPayment: "جاري تهيئة الدفع...",
+
+    // تفاصيل البطاقة
+    cardBrand: "نوع البطاقة",
+    cardLastFour: "آخر 4 أرقام",
+    cardName: "اسم حامل البطاقة",
+    expiryDate: "تاريخ الانتهاء",
+
+    // ميزات بوابة الدفع
+    applePay: "Apple Pay",
+    stcPay: "STC Pay",
+    mada: "مدى",
+    visa: "فيزا",
+    mastercard: "ماستركارد",
   // Modals
   modals: {
     editRequest: {

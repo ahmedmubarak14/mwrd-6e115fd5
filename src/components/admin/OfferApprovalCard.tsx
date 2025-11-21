@@ -81,7 +81,7 @@ export const OfferApprovalCard = ({ offer, onApprove, onReject, userRole }: Offe
             </CardDescription>
             {offer.request && (
               <div className="mt-2 text-xs text-muted-foreground">
-                {isRTL ? 'للطلب:' : 'For request:'} {offer.request.title}
+                {t('admin.approvals.forRequest')} {offer.request.title}
               </div>
             )}
           </div>
@@ -92,7 +92,7 @@ export const OfferApprovalCard = ({ offer, onApprove, onReject, userRole }: Offe
           </div>
         </div>
       </CardHeader>
-      
+
       <CardContent className="space-y-4">
         {/* Offer Details */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -102,11 +102,11 @@ export const OfferApprovalCard = ({ offer, onApprove, onReject, userRole }: Offe
               {offer.price.toLocaleString()} {offer.currency}
             </span>
           </div>
-          
+
           <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <Truck className="h-4 w-4 text-muted-foreground" />
             <span className="text-sm">
-              {offer.delivery_time_days} {isRTL ? 'أيام' : 'days'}
+              {offer.delivery_time_days} {t('admin.approvals.days')}
             </span>
           </div>
         </div>
@@ -115,7 +115,7 @@ export const OfferApprovalCard = ({ offer, onApprove, onReject, userRole }: Offe
         <div className={`flex items-center gap-2 text-xs text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
           <Clock className="h-3 w-3" />
           <span>
-            {isRTL ? 'تم الإنشاء:' : 'Created:'} {format(new Date(offer.created_at), 'MMM dd, yyyy HH:mm')}
+            {t('admin.approvals.created')} {format(new Date(offer.created_at), 'MMM dd, yyyy HH:mm')}
           </span>
         </div>
 
@@ -123,13 +123,13 @@ export const OfferApprovalCard = ({ offer, onApprove, onReject, userRole }: Offe
         {canModifyOffer && (
           <div className="space-y-2">
             <Label htmlFor={`notes-${offer.id}`} className={isRTL ? 'text-right' : ''}>
-              {t('admin.approvals.approvalNotes') || 'Approval Notes'}
+              {t('admin.approvals.approvalNotes')}
             </Label>
             <Textarea
               id={`notes-${offer.id}`}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder={isRTL ? 'أضف ملاحظات حول قرار الموافقة...' : 'Add notes about the approval decision...'}
+              placeholder={t('admin.approvals.notesPlaceholder')}
               className={`min-h-20 ${isRTL ? 'text-right' : ''}`}
               disabled={offer.client_approval_status !== 'pending'}
             />
@@ -164,11 +164,11 @@ export const OfferApprovalCard = ({ offer, onApprove, onReject, userRole }: Offe
         {offer.client_approval_status !== 'pending' && offer.client_approval_date && (
           <div className={`p-3 rounded-lg bg-muted/50 ${isRTL ? 'text-right' : ''}`}>
             <div className="text-sm font-medium mb-1">
-              {isRTL ? 'تمت المعالجة في:' : 'Processed on:'} {format(new Date(offer.client_approval_date), 'MMM dd, yyyy HH:mm')}
+              {t('admin.approvals.processedOn')} {format(new Date(offer.client_approval_date), 'MMM dd, yyyy HH:mm')}
             </div>
             {offer.client_approval_notes && (
               <div className="text-xs text-muted-foreground">
-                {isRTL ? 'الملاحظات:' : 'Notes:'} {offer.client_approval_notes}
+                {t('admin.approvals.notes')} {offer.client_approval_notes}
               </div>
             )}
           </div>

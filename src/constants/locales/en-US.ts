@@ -460,6 +460,23 @@ export const enUS = {
       databaseOptimizationDescription: "Add proper indexes and optimize query patterns"
     },
 
+    // Approvals Management
+    approvals: {
+      budget: "Budget:",
+      deadline: "Deadline:",
+      created: "Created:",
+      approvalNotes: "Approval Notes",
+      notesPlaceholder: "Add notes...",
+      approve: "Approve",
+      reject: "Reject",
+      processedOn: "Processed on:",
+      notes: "Notes:",
+      forRequest: "For request:",
+      days: "days",
+      acceptOffer: "Accept Offer",
+      rejectOffer: "Reject Offer"
+    },
+
     // Testing Suite
     testing: {
       title: "Quality Assurance Testing",
@@ -1330,7 +1347,99 @@ export const enUS = {
       clientRatingDesc: 'Average client rating',
       accessRequired: 'Access to this page is restricted to verified vendors only',
       performanceOverview: 'Performance Overview',
-      completeVerification: 'Complete verification to access all features'
+      completeVerification: 'Complete verification to access all features',
+      actionRequired: 'Actions Required',
+      activeOffersTitle: 'Active Offers',
+      activeOffersDesc: 'pending action',
+      allSetReady: 'All set! You\'re ready to receive requests',
+      browseRequestsTitle: 'Browse Requests',
+      browseRequestsDesc: 'Find new opportunities',
+      businessPerformance: 'Business Performance',
+      businessPerformanceDesc: 'Track your key performance metrics',
+      clientSatisfactionRate: 'Client Satisfaction',
+      completeCRTitle: 'Complete CR Verification',
+      completeCRDesc: 'Verify your commercial registration',
+      completeProfileTitle: 'Complete Your Profile',
+      completeProfileDesc: '% more to complete',
+      manageProjectsTitle: 'Manage Projects',
+      manageProjectsDesc: 'View and update your projects',
+      messagesTitle: 'Messages',
+      messagesDesc: 'Check your messages',
+      offerSuccessRate: 'Offer Success Rate',
+      offerTrends: 'Offer Trends',
+      offerTrendsDesc: 'Your offer submission and acceptance trends over time',
+      viewProjects: 'View Projects',
+      viewAllOffers: 'View All Offers',
+      responseRate: 'Response Rate',
+      clientSatisfaction: 'Client Satisfaction'
+    },
+    cr: {
+      verificationRequired: 'CR Verification Required',
+      completeVerification: 'Complete your commercial registration verification to access all features',
+      approved: 'Approved',
+      pending: 'Pending',
+      rejected: 'Rejected'
+    },
+    projects: {
+      title: 'Projects Management',
+      unifiedSubtitle: 'Manage and track your project portfolio',
+      add: 'Add Project',
+      addFirst: 'Add your first project',
+      addNewProject: 'Add New Project',
+      newProject: 'New Project',
+      projectTitle: 'Project Title',
+      description: 'Description',
+      startDate: 'Start Date',
+      endDate: 'End Date',
+      status: 'Status',
+      type: 'Type',
+      value: 'Value',
+      location: 'Location',
+      clientName: 'Client Name',
+      clientType: 'Client Type',
+      visibility: 'Visibility',
+      portfolio: 'Portfolio',
+      totalProjects: 'Total Projects',
+      activeProjects: 'Active Projects',
+      completedProjects: 'Completed Projects',
+      thisWeek: 'This week',
+      vsLastMonth: 'vs last month',
+      searchAndFilter: 'Search & Filter',
+      searchProjects: 'Search projects...',
+      allStatus: 'All Status',
+      allPriority: 'All Priority',
+      active: 'Active',
+      completed: 'Completed',
+      pending: 'Pending',
+      ongoing: 'Ongoing',
+      draft: 'Draft',
+      cancelled: 'Cancelled',
+      urgent: 'Urgent',
+      high: 'High',
+      medium: 'Medium',
+      low: 'Low',
+      public: 'Public',
+      private: 'Private',
+      confidential: 'Confidential',
+      featured: 'Featured',
+      government: 'Government',
+      privateCompany: 'Private Company',
+      commercial: 'Commercial',
+      individual: 'Individual',
+      edit: 'Edit',
+      delete: 'Delete',
+      noProjects: 'No projects found',
+      noProjectsFound: 'No projects match your filters',
+      showingResults: 'Showing {count} results',
+      tryAdjusting: 'Try adjusting your filters',
+      clearFilters: 'Clear Filters',
+      createFirstProject: 'Create your first project',
+      createYourFirst: 'Create your first',
+      startFirstProject: 'Start by creating your first project',
+      showcasePortfolio: 'Showcase your completed work',
+      updateProjectInfo: 'Update project information',
+      projectDeleted: 'Project deleted successfully',
+      deleteFailed: 'Failed to delete project'
     },
     transactions: {
       title: 'Financial Transactions',
@@ -1626,8 +1735,12 @@ export const enUS = {
       subtitle: 'Advanced analytics and performance insights for your business'
     },
     analytics: {
+      title: 'Vendor Analytics',
+      subtitle: 'Performance insights and business analytics',
       overview: 'Overview',
       offers: 'Offers',
+      revenue: 'Revenue',
+      revenueGrowth: 'Revenue Growth',
       categories: 'Categories',
       offerAcceptanceRate: 'Offer Acceptance Rate',
       averageResponseTime: 'Average Response Time',
@@ -1645,10 +1758,12 @@ export const enUS = {
     },
     categories: {
       construction: 'Construction',
-      engineering: 'Engineering', 
+      engineering: 'Engineering',
       consulting: 'Consulting',
       technology: 'Technology',
-      other: 'Other'
+      other: 'Other',
+      manage: 'Manage Categories',
+      select: 'Select your service categories'
     },
     months: {
       jan: 'Jan',
@@ -1721,6 +1836,32 @@ export const enUS = {
       removeAvatar: "Remove Profile Picture",
       profileCompletion: "Profile Completion",
       completeProfile: "Complete your profile to unlock all features"
+    },
+    performance: {
+      title: 'Performance Tracking',
+      subtitle: 'Monitor and improve your business performance',
+      overallScore: 'Overall Score',
+      performanceTrends: 'Performance Trends',
+      performanceGoals: 'Performance Goals',
+      performanceInsights: 'Performance Insights',
+      trends: 'Trends',
+      insights: 'Insights',
+      goals: 'Goals',
+      current: 'Current',
+      target: 'Target',
+      complete: 'Complete',
+      offerAcceptance: 'Offer Acceptance',
+      responseTime: 'Response Time',
+      clientSatisfaction: 'Client Satisfaction',
+      projectCompletion: 'Project Completion',
+      revenueGrowth: 'Revenue Growth',
+      clientRetention: 'Client Retention',
+      strengths: 'Strengths',
+      strengthsDesc: 'Areas where you excel',
+      improvements: 'Areas for Improvement',
+      improvementsDesc: 'Focus areas for growth',
+      recommendations: 'Recommendations',
+      recommendationsDesc: 'Actionable suggestions to improve performance'
     },
     rfqs: {
       title: "Available RFQs",
@@ -2150,6 +2291,36 @@ export const enUS = {
     },
     tryAgain: 'Try Again',
     refreshPage: 'Refresh Page',
+
+  // Approval Workflow
+  approval: {
+    submitForApproval: 'Submit for Approval',
+    submitForInternalApproval: 'Submit for Internal Approval',
+    description: 'This request will be sent to an admin in your organization for review before being posted to the marketplace.',
+    whatHappensNext: 'What happens next:',
+    adminWillBeNotified: 'An admin in your organization will be notified',
+    adminWillReview: 'They will review and approve, reject, or request changes',
+    autoPostedAfterApproval: 'Once approved, the request will be automatically posted to the marketplace',
+    youWillBeNotified: 'You will be notified of the decision',
+    tip: 'Tip: Make sure all your request details are complete and accurate before submitting for approval.',
+    submitting: 'Submitting...',
+    cancel: 'Cancel',
+    submitted: 'Submitted for Approval',
+    approved: 'Approved',
+    rejected: 'Rejected',
+    rejectionReasonRequired: 'Please provide a rejection reason',
+    changeDetailsRequired: 'Please provide change details',
+    changesRequested: 'Changes Requested'
+  },
+
+  // Spend Management
+  spendManagement: {
+    failedToLoadData: 'Failed to load spending data',
+    failedToSaveBudget: 'Failed to save budget settings',
+    budgetSavedSuccessfully: 'Budget settings saved successfully',
+    reportExported: 'Report exported successfully'
+  },
+
     placeholders: {
       email: 'Enter your email address',
       password: 'Enter your password',
@@ -2234,6 +2405,135 @@ export const enUS = {
     }
   },
 
+  // Payment System
+  payment: {
+    // General
+    title: "Payment",
+    subtitle: "Manage your payments and invoices",
+    paymentGateway: "Payment Gateway",
+    securePayment: "Secure Payment",
+
+    // Payment Summary
+    paymentSummary: "Payment Summary",
+    payInvoice: "Pay Invoice",
+    completePayment: "Complete your payment securely with Moyasar",
+
+    // Payment Methods
+    paymentMethods: "Payment Methods",
+    availablePaymentMethods: "Available Payment Methods",
+    addPaymentMethod: "Add Payment Method",
+    deletePaymentMethod: "Delete Payment Method",
+    setDefaultPaymentMethod: "Set as Default",
+    defaultPaymentMethod: "Default Payment Method",
+    creditCard: "Credit Card",
+    fastAndSecure: "Fast & Secure",
+    payWith: "Pay with",
+
+    // Payment Status
+    paymentSuccessful: "Payment Successful",
+    paymentSuccessfulDesc: "Your payment has been received and your order will be processed soon",
+    paymentFailed: "Payment Failed",
+    paymentFailedDesc: "Payment failed",
+    paymentProcessing: "Processing payment...",
+    paymentComplete: "Payment Complete!",
+
+    // Transaction Status
+    pending: "Pending",
+    completed: "Completed",
+    processing: "Processing",
+    failed: "Failed",
+    refunded: "Refunded",
+    cancelled: "Cancelled",
+
+    // Invoice
+    invoice: "Invoice",
+    invoiceNumber: "Invoice Number",
+    invoices: "Invoices",
+    invoiceNotFound: "Invoice not found",
+    backToInvoices: "Back to Invoices",
+    vendor: "Vendor",
+    dueDate: "Due Date",
+    overdue: "Overdue",
+    subtotal: "Subtotal",
+    tax: "Tax",
+    taxAmount: "Tax (15%)",
+    total: "Total",
+    amount: "Amount",
+
+    // Payment Actions
+    pay: "Pay",
+    payNow: "Pay Now",
+    refund: "Refund",
+    processRefund: "Process Refund",
+    refundAmount: "Refund Amount",
+    refundReason: "Refund Reason",
+
+    // Security
+    secureAndEncrypted: "Secure & Encrypted Payment",
+    securityNotice: "All transactions are protected with SSL encryption. We never store your card details.",
+    pciCompliant: "PCI DSS Compliant",
+
+    // Errors and Success Messages
+    error: "Error",
+    success: "Success",
+    failedToInitialize: "Failed to initialize payment gateway",
+    failedToProcess: "Failed to process payment",
+    failedToUpdate: "Failed to update payment status",
+    failedToLoad: "Failed to load",
+    paymentMethodAdded: "Payment method added successfully",
+    paymentMethodRemoved: "Payment method removed",
+    paymentMethodUpdated: "Default payment method updated",
+    failedToAddMethod: "Failed to add payment method",
+    failedToRemoveMethod: "Failed to remove payment method",
+    failedToUpdateMethod: "Failed to update default payment method",
+    failedToLoadMethods: "Failed to load payment methods",
+    failedToLoadTransactions: "Failed to load transactions",
+    failedToLoadStatistics: "Failed to load statistics",
+    refundProcessed: "Refund processed successfully",
+    failedToProcessRefund: "Failed to process refund",
+
+    // Amounts and Currency
+    sar: "SAR",
+    riyal: "Riyal",
+    halalas: "Halalas",
+    currency: "Currency",
+
+    // Payment Gateway
+    gatewayNotConfigured: "Payment gateway not configured",
+    publishableKeyNotConfigured: "Publishable key not configured",
+
+    // Transactions
+    transactions: "Transactions",
+    transactionId: "Transaction ID",
+    transactionHistory: "Transaction History",
+    paymentTransactions: "Payment Transactions",
+    recentTransactions: "Recent Transactions",
+    viewTransactions: "View Transactions",
+    noTransactions: "No transactions available",
+
+    // Statistics
+    statistics: "Payment Statistics",
+    totalAmount: "Total Amount",
+    successRate: "Success Rate",
+    averageAmount: "Average Amount",
+
+    // Loading States
+    loading: "Loading...",
+    loadingPaymentInfo: "Loading payment information...",
+    initializingPayment: "Initializing payment...",
+
+    // Card Details
+    cardBrand: "Card Brand",
+    cardLastFour: "Last 4 Digits",
+    cardName: "Cardholder Name",
+    expiryDate: "Expiry Date",
+
+    // Payment Gateway Features
+    applePay: "Apple Pay",
+    stcPay: "STC Pay",
+    mada: "Mada",
+    visa: "Visa",
+    mastercard: "Mastercard",
   // Modals
   modals: {
     editRequest: {

@@ -25,7 +25,7 @@ export const MoyasarCheckout = ({
   onSuccess,
   onError,
 }: MoyasarCheckoutProps) => {
-  const { isRTL } = useLanguage();
+  const { isRTL, t } = useLanguage();
   const { userProfile } = useAuth();
   const { toast } = useToast();
 
@@ -52,7 +52,7 @@ export const MoyasarCheckout = ({
         .single();
 
       if (error || !settings) {
-        throw new Error('Payment gateway not configured');
+        throw new Error(t('payment.gatewayNotConfigured'));
       }
 
       const pubKey = settings.is_test_mode
@@ -60,7 +60,7 @@ export const MoyasarCheckout = ({
         : settings.publishable_key_live;
 
       if (!pubKey) {
-        throw new Error('Publishable key not configured');
+        throw new Error(t('payment.publishableKeyNotConfigured'));
       }
 
       setPublishableKey(pubKey);
@@ -75,7 +75,7 @@ export const MoyasarCheckout = ({
         });
 
       if (txError || !transactionResult?.success) {
-        throw new Error(transactionResult?.error || 'Failed to create transaction');
+        throw new Error(transactionResult?.error || t('payment.failedToProcess'));
       }
 
       // Initialize Moyasar checkout
@@ -96,8 +96,8 @@ export const MoyasarCheckout = ({
     } catch (error: any) {
       console.error('Failed to initialize payment gateway:', error);
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: error.message || (isRTL ? 'فشل تهيئة بوابة الدفع' : 'Failed to initialize payment gateway'),
+        title: t('payment.error'),
+        description: error.message || t('payment.failedToInitialize'),
         variant: 'destructive',
       });
       if (onError) onError(error);
@@ -142,18 +142,16 @@ export const MoyasarCheckout = ({
       setPaymentComplete(true);
 
       toast({
-        title: isRTL ? 'تمت العملية بنجاح' : 'Payment Successful',
-        description: isRTL
-          ? `تم دفع ${moyasarService.formatAmount(payment.amount)} ر.س بنجاح`
-          : `Successfully paid ${moyasarService.formatAmount(payment.amount)} SAR`,
+        title: t('payment.paymentSuccessful'),
+        description: `${t('payment.paymentSuccessfulDesc')} - ${moyasarService.formatAmount(payment.amount)} ${t('payment.sar')}`,
       });
 
       if (onSuccess) onSuccess(payment);
     } catch (error: any) {
       console.error('Failed to update payment status:', error);
       toast({
-        title: isRTL ? 'خطأ' : 'Error',
-        description: isRTL ? 'فشل تحديث حالة الدفع' : 'Failed to update payment status',
+        title: t('payment.error'),
+        description: t('payment.failedToUpdate'),
         variant: 'destructive',
       });
     } finally {
@@ -168,7 +166,7 @@ export const MoyasarCheckout = ({
         .from('payment_transactions')
         .update({
           status: 'failed',
-          failure_reason: error.message || 'Payment failed',
+          failure_reason: error.message || t('payment.paymentFailed'),
           updated_at: new Date().toISOString(),
         })
         .eq('invoice_id', invoiceId)
@@ -177,8 +175,8 @@ export const MoyasarCheckout = ({
         .limit(1);
 
       toast({
-        title: isRTL ? 'فشل الدفع' : 'Payment Failed',
-        description: error.message || (isRTL ? 'فشلت عملية الدفع' : 'Payment failed'),
+        title: t('payment.paymentFailed'),
+        description: error.message || t('payment.paymentFailedDesc'),
         variant: 'destructive',
       });
 
@@ -205,12 +203,10 @@ export const MoyasarCheckout = ({
           <CheckCircle className="h-16 w-16 text-green-600" />
           <div className="text-center">
             <h3 className="text-xl font-bold text-green-900 dark:text-green-100">
-              {isRTL ? 'تمت العملية بنجاح!' : 'Payment Successful!'}
+              {t('payment.paymentComplete')}
             </h3>
             <p className="text-sm text-green-700 dark:text-green-300 mt-2">
-              {isRTL
-                ? 'تم استلام دفعتك وسيتم معالجة طلبك قريباً'
-                : 'Your payment has been received and your order will be processed soon'}
+              {t('payment.paymentSuccessfulDesc')}
             </p>
           </div>
         </CardContent>
@@ -224,9 +220,9 @@ export const MoyasarCheckout = ({
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
-            <span>{isRTL ? 'ملخص الدفع' : 'Payment Summary'}</span>
+            <span>{t('payment.paymentSummary')}</span>
             <Badge variant="outline" className="text-lg">
-              {amount.toLocaleString()} {isRTL ? 'ر.س' : 'SAR'}
+              {amount.toLocaleString()} {t('payment.sar')}
             </Badge>
           </CardTitle>
           <CardDescription>{description}</CardDescription>
@@ -236,7 +232,7 @@ export const MoyasarCheckout = ({
       {/* Payment Methods */}
       <Card>
         <CardHeader>
-          <CardTitle>{isRTL ? 'طرق الدفع المتاحة' : 'Available Payment Methods'}</CardTitle>
+          <CardTitle>{t('payment.availablePaymentMethods')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -244,10 +240,10 @@ export const MoyasarCheckout = ({
               <div className="flex flex-col items-center p-4 border rounded-lg hover:bg-accent transition-colors">
                 <CreditCard className="h-8 w-8 mb-2" />
                 <span className="text-sm font-medium">
-                  {isRTL ? 'بطاقة ائتمان' : 'Credit Card'}
+                  {t('payment.creditCard')}
                 </span>
                 <span className="text-xs text-muted-foreground mt-1">
-                  Visa, Mastercard, Mada
+                  {t('payment.visa')}, {t('payment.mastercard')}, {t('payment.mada')}
                 </span>
               </div>
             )}
@@ -255,9 +251,9 @@ export const MoyasarCheckout = ({
             {supportedMethods.includes('applepay') && (
               <div className="flex flex-col items-center p-4 border rounded-lg hover:bg-accent transition-colors">
                 <Apple className="h-8 w-8 mb-2" />
-                <span className="text-sm font-medium">Apple Pay</span>
+                <span className="text-sm font-medium">{t('payment.applePay')}</span>
                 <span className="text-xs text-muted-foreground mt-1">
-                  {isRTL ? 'دفع سريع وآمن' : 'Fast & Secure'}
+                  {t('payment.fastAndSecure')}
                 </span>
               </div>
             )}
@@ -265,9 +261,9 @@ export const MoyasarCheckout = ({
             {supportedMethods.includes('stcpay') && (
               <div className="flex flex-col items-center p-4 border rounded-lg hover:bg-accent transition-colors">
                 <Smartphone className="h-8 w-8 mb-2" />
-                <span className="text-sm font-medium">STC Pay</span>
+                <span className="text-sm font-medium">{t('payment.stcPay')}</span>
                 <span className="text-xs text-muted-foreground mt-1">
-                  {isRTL ? 'الدفع عبر stc' : 'Pay with STC'}
+                  {t('payment.payWith')} STC
                 </span>
               </div>
             )}
@@ -280,7 +276,7 @@ export const MoyasarCheckout = ({
             <div className="flex items-center justify-center py-8">
               <LoadingSpinner size="lg" />
               <span className="ml-3 text-muted-foreground">
-                {isRTL ? 'جاري معالجة الدفع...' : 'Processing payment...'}
+                {t('payment.paymentProcessing')}
               </span>
             </div>
           )}
@@ -293,12 +289,10 @@ export const MoyasarCheckout = ({
           <AlertCircle className="h-5 w-5 text-blue-600 mt-0.5" />
           <div className="text-sm text-blue-900 dark:text-blue-100">
             <p className="font-medium mb-1">
-              {isRTL ? 'دفع آمن ومشفر' : 'Secure & Encrypted Payment'}
+              {t('payment.secureAndEncrypted')}
             </p>
             <p className="text-blue-700 dark:text-blue-300">
-              {isRTL
-                ? 'جميع المعاملات محمية بتشفير SSL. لا نقوم بتخزين بيانات بطاقتك.'
-                : 'All transactions are protected with SSL encryption. We never store your card details.'}
+              {t('payment.securityNotice')}
             </p>
           </div>
         </CardContent>

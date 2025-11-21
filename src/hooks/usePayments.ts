@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { getTranslation } from '@/constants/translations';
 
 export interface PaymentMethod {
   id: string;
@@ -55,6 +56,9 @@ export const usePayments = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
+  // Get translation function - defaults to 'en' for hooks
+  const t = (key: string) => getTranslation(key, 'en');
+
   /**
    * Get user's payment methods
    */
@@ -73,8 +77,8 @@ export const usePayments = () => {
     } catch (error: any) {
       console.error('Error fetching payment methods:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to load payment methods',
+        title: t('payment.error'),
+        description: t('payment.failedToLoadMethods'),
         variant: 'destructive',
       });
       return [];
@@ -114,16 +118,16 @@ export const usePayments = () => {
       if (error) throw error;
 
       toast({
-        title: 'Success',
-        description: 'Payment method added successfully',
+        title: t('payment.success'),
+        description: t('payment.paymentMethodAdded'),
       });
 
       return data;
     } catch (error: any) {
       console.error('Error adding payment method:', error);
       toast({
-        title: 'Error',
-        description: error.message || 'Failed to add payment method',
+        title: t('payment.error'),
+        description: error.message || t('payment.failedToAddMethod'),
         variant: 'destructive',
       });
       return null;
@@ -155,16 +159,16 @@ export const usePayments = () => {
       if (error) throw error;
 
       toast({
-        title: 'Success',
-        description: 'Default payment method updated',
+        title: t('payment.success'),
+        description: t('payment.paymentMethodUpdated'),
       });
 
       return true;
     } catch (error: any) {
       console.error('Error setting default payment method:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to update default payment method',
+        title: t('payment.error'),
+        description: t('payment.failedToUpdateMethod'),
         variant: 'destructive',
       });
       return false;
@@ -189,16 +193,16 @@ export const usePayments = () => {
       if (error) throw error;
 
       toast({
-        title: 'Success',
-        description: 'Payment method removed',
+        title: t('payment.success'),
+        description: t('payment.paymentMethodRemoved'),
       });
 
       return true;
     } catch (error: any) {
       console.error('Error deleting payment method:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to remove payment method',
+        title: t('payment.error'),
+        description: t('payment.failedToRemoveMethod'),
         variant: 'destructive',
       });
       return false;
@@ -246,8 +250,8 @@ export const usePayments = () => {
     } catch (error: any) {
       console.error('Error fetching transactions:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to load transactions',
+        title: t('payment.error'),
+        description: t('payment.failedToLoadTransactions'),
         variant: 'destructive',
       });
       return [];
@@ -273,8 +277,8 @@ export const usePayments = () => {
     } catch (error: any) {
       console.error('Error fetching statistics:', error);
       toast({
-        title: 'Error',
-        description: 'Failed to load statistics',
+        title: t('payment.error'),
+        description: t('payment.failedToLoadStatistics'),
         variant: 'destructive',
       });
       return null;
@@ -299,20 +303,20 @@ export const usePayments = () => {
       });
 
       if (error || !data?.success) {
-        throw new Error(data?.error || 'Refund request failed');
+        throw new Error(data?.error || t('payment.failedToProcessRefund'));
       }
 
       toast({
-        title: 'Success',
-        description: 'Refund processed successfully',
+        title: t('payment.success'),
+        description: t('payment.refundProcessed'),
       });
 
       return true;
     } catch (error: any) {
       console.error('Error processing refund:', error);
       toast({
-        title: 'Error',
-        description: error.message || 'Failed to process refund',
+        title: t('payment.error'),
+        description: error.message || t('payment.failedToProcessRefund'),
         variant: 'destructive',
       });
       return false;
