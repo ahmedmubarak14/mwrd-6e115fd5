@@ -182,6 +182,7 @@ export const arSA = {
     orders: "الطلبات",
     settings: "الإعدادات",
     subscription: "الاشتراك",
+    invoices: "الفواتير",
     browseRequests: "تصفح الطلبات",
     myOffers: "عروضي",
     rfqs: "طلبات التسعير",

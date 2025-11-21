@@ -182,6 +182,7 @@ export const enUS = {
     orders: "Orders",
     settings: "Settings",
     subscription: "Subscription",
+    invoices: "Invoices",
     browseRequests: "Browse Requests",
     myOffers: "My Offers",
     rfqs: "RFQs",

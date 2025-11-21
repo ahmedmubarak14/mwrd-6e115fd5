@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { FileText, Plus, Search, Filter, Download } from 'lucide-react';
+import { FileText, Plus, Search, Filter, Download, AlertCircle, RefreshCw } from 'lucide-react';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 
@@ -32,7 +32,7 @@ export const InvoiceList = ({ userRole }: InvoiceListProps) => {
   const { language } = useLanguage();
   const isRTL = language === 'ar';
   const navigate = useNavigate();
-  const { invoices, isLoading } = useInvoices(userRole);
+  const { invoices, isLoading, isError, error } = useInvoices(userRole);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
@@ -73,6 +73,34 @@ export const InvoiceList = ({ userRole }: InvoiceListProps) => {
       <Card>
         <CardContent className="p-8 text-center">
           <div className="animate-pulse">{isRTL ? 'جاري التحميل...' : 'Loading...'}</div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Card>
+        <CardContent className="p-8 text-center">
+          <div className="flex flex-col items-center gap-4">
+            <AlertCircle className="h-12 w-12 text-destructive opacity-50" />
+            <div>
+              <p className="font-medium text-destructive">
+                {isRTL ? 'حدث خطأ أثناء تحميل الفواتير' : 'Error loading invoices'}
+              </p>
+              <p className="text-sm text-muted-foreground mt-1">
+                {isRTL ? 'يرجى المحاولة مرة أخرى لاحقاً' : 'Please try again later'}
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              onClick={() => window.location.reload()}
+              className="mt-2"
+            >
+              <RefreshCw className="h-4 w-4 mr-2" />
+              {isRTL ? 'إعادة المحاولة' : 'Try Again'}
+            </Button>
+          </div>
         </CardContent>
       </Card>
     );
