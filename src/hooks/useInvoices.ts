@@ -44,16 +44,27 @@ export const useInvoices = (userRole?: 'client' | 'vendor') => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data: invoices, isLoading } = useQuery({
+  const { data: invoices, isLoading, error, isError } = useQuery({
     queryKey: ['invoices', userRole],
     queryFn: async () => {
-      let query = supabase.from('invoices').select('*').order('created_at', { ascending: false });
-      
-      const { data, error } = await query;
-      
-      if (error) throw error;
-      return data as Invoice[];
+      try {
+        let query = supabase.from('invoices').select('*').order('created_at', { ascending: false });
+
+        const { data, error } = await query;
+
+        if (error) {
+          console.error('Error fetching invoices:', error);
+          throw error;
+        }
+        return data as Invoice[];
+      } catch (err) {
+        console.error('Failed to fetch invoices:', err);
+        // Return empty array instead of throwing to prevent crashes
+        return [] as Invoice[];
+      }
     },
+    retry: 1,
+    staleTime: 30000, // 30 seconds
   });
 
   const createInvoice = useMutation({
@@ -136,6 +147,8 @@ export const useInvoices = (userRole?: 'client' | 'vendor') => {
   return {
     invoices,
     isLoading,
+    error,
+    isError,
     createInvoice,
     updateInvoice,
   };

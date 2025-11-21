@@ -182,6 +182,7 @@ export const enUS = {
     orders: "Orders",
     settings: "Settings",
     subscription: "Subscription",
+    invoices: "Invoices",
     browseRequests: "Browse Requests",
     myOffers: "My Offers",
     rfqs: "RFQs",
@@ -205,14 +206,27 @@ export const enUS = {
   vendorGroups: {
     overview: "Overview",
     workspace: "Business",
-    portfolio: "Portfolio", 
+    portfolio: "Portfolio",
     account: "Account",
     financial: "Financial",
     businessIntelligence: "Business Intelligence",
     projectManagement: "Project Management",
     businessOperations: "Business Operations"
   },
-  // Admin Dashboard & Management  
+  // Products
+  products: {
+    noProducts: "No Products Found",
+    noMatchingProducts: "No products match your current filters",
+    addFirstProduct: "Add your first product to get started"
+  },
+  // My Offers (vendor)
+  myOffers: {
+    noOffers: "No offers yet",
+    noOffersDesc: "You haven't submitted any offers yet. Browse requests to start creating offers.",
+    offerNumber: "Offer",
+    noDescription: "No description provided"
+  },
+  // Admin Dashboard & Management
   admin: {
     // Dashboard
     dashboard: "Admin Dashboard",

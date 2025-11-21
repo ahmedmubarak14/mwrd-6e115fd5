@@ -182,6 +182,7 @@ export const arSA = {
     orders: "الطلبات",
     settings: "الإعدادات",
     subscription: "الاشتراك",
+    invoices: "الفواتير",
     browseRequests: "تصفح الطلبات",
     myOffers: "عروضي",
     rfqs: "طلبات التسعير",
@@ -206,7 +207,7 @@ export const arSA = {
   // Vendor Groups
   vendorGroups: {
     overview: "نظرة عامة",
-    workspace: "الأعمال", 
+    workspace: "الأعمال",
     portfolio: "المحفظة",
     account: "الحساب",
     financial: "المالية",
@@ -214,8 +215,20 @@ export const arSA = {
     projectManagement: "إدارة المشاريع",
     businessOperations: "العمليات التجارية"
   },
-
-  // Admin Dashboard & Management  
+  // Products
+  products: {
+    noProducts: "لا توجد منتجات",
+    noMatchingProducts: "لا توجد منتجات تطابق معايير البحث",
+    addFirstProduct: "أضف منتجك الأول للبدء"
+  },
+  // My Offers (vendor)
+  myOffers: {
+    noOffers: "لا توجد عروض حتى الآن",
+    noOffersDesc: "لم تقدم أي عروض بعد. تصفح الطلبات لبدء إنشاء العروض.",
+    offerNumber: "العرض",
+    noDescription: "لا يوجد وصف"
+  },
+  // Admin Dashboard & Management
   admin: {
     // Dashboard
     dashboard: "لوحة تحكم المدير",
