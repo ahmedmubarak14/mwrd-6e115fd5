@@ -463,6 +463,23 @@ export const arSA = {
       databaseOptimizationDescription: "أضف فهارس مناسبة وحسّن أنماط الاستعلام"
     },
 
+    // Approvals Management
+    approvals: {
+      budget: "الميزانية:",
+      deadline: "الموعد النهائي:",
+      created: "تم الإنشاء:",
+      approvalNotes: "ملاحظات الموافقة",
+      notesPlaceholder: "أضف ملاحظات...",
+      approve: "موافقة",
+      reject: "رفض",
+      processedOn: "تمت المعالجة في:",
+      notes: "الملاحظات:",
+      forRequest: "للطلب:",
+      days: "أيام",
+      acceptOffer: "قبول العرض",
+      rejectOffer: "رفض العرض"
+    },
+
     // Testing Suite
     testing: {
       title: "اختبار ضمان الجودة",

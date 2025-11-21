@@ -460,6 +460,23 @@ export const enUS = {
       databaseOptimizationDescription: "Add proper indexes and optimize query patterns"
     },
 
+    // Approvals Management
+    approvals: {
+      budget: "Budget:",
+      deadline: "Deadline:",
+      created: "Created:",
+      approvalNotes: "Approval Notes",
+      notesPlaceholder: "Add notes...",
+      approve: "Approve",
+      reject: "Reject",
+      processedOn: "Processed on:",
+      notes: "Notes:",
+      forRequest: "For request:",
+      days: "days",
+      acceptOffer: "Accept Offer",
+      rejectOffer: "Reject Offer"
+    },
+
     // Testing Suite
     testing: {
       title: "Quality Assurance Testing",
