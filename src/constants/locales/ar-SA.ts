@@ -1523,7 +1523,13 @@ export const arSA = {
     youWillBeNotified: '• ستتلقى إشعاراً بالقرار',
     tip: 'نصيحة: تأكد من أن جميع تفاصيل طلبك كاملة ودقيقة قبل الإرسال للموافقة.',
     submitting: 'جاري الإرسال...',
-    cancel: 'إلغاء'
+    cancel: 'إلغاء',
+    submitted: 'تم الإرسال للموافقة',
+    approved: 'تمت الموافقة',
+    rejected: 'تم الرفض',
+    rejectionReasonRequired: 'يرجى تقديم سبب الرفض',
+    changeDetailsRequired: 'يرجى تقديم التغييرات المطلوبة',
+    changesRequested: 'تم طلب التغييرات'
   },
 
   // إدارة الإنفاق

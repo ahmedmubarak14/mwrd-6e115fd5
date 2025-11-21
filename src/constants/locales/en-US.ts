@@ -2287,7 +2287,13 @@ export const enUS = {
     youWillBeNotified: 'You will be notified of the decision',
     tip: 'Tip: Make sure all your request details are complete and accurate before submitting for approval.',
     submitting: 'Submitting...',
-    cancel: 'Cancel'
+    cancel: 'Cancel',
+    submitted: 'Submitted for Approval',
+    approved: 'Approved',
+    rejected: 'Rejected',
+    rejectionReasonRequired: 'Please provide a rejection reason',
+    changeDetailsRequired: 'Please provide change details',
+    changesRequested: 'Changes Requested'
   },
 
   // Spend Management
