@@ -1915,6 +1915,67 @@ export const enUS = {
       deadline: "Deadline",
       requirements: "Requirements",
       submitResponse: "Submit Response"
+    },
+
+    // Market Intelligence
+    marketIntelligence: {
+      title: "Market Intelligence Reports",
+      subtitle: "Anonymized market insights to help you compete effectively",
+      loading: "Loading market insights...",
+      error: "Error",
+      loadError: "Failed to load market intelligence",
+      anonymityNotice: "🔒 Fully Anonymized Data",
+      anonymityDescription: "All data shown here is anonymized and aggregated. Individual competitor or client identities are never revealed.",
+      performanceVsMarket: "Your Performance vs Market",
+      lastThreeMonths: "Last 3 months",
+      responseTime: "Response Time",
+      you: "You",
+      market: "Market",
+      winRate: "Win Rate",
+      activityLevel: "Activity Level",
+      average: "Average",
+
+      // Performance labels
+      betterThanMarket: "Better than Market",
+      belowMarket: "Below Market",
+      marketAverage: "Market Average",
+      aboveAverage: "Above Average",
+      belowAverage: "Below Average",
+
+      // Tabs
+      demand: "Demand",
+      pricing: "Pricing",
+      specs: "Specs",
+      competition: "Competition",
+
+      // Demand
+      demandTrends: "Demand Trends",
+      demandTrendsDesc: "RFQ volume and budgets over 6 months",
+      rfqCount: "RFQ Count",
+      avgBudget: "Avg Budget",
+
+      // Pricing
+      winningPriceBands: "Winning Bid Price Bands",
+      winningPriceBandsDesc: "Price ranges for winning bids in your categories",
+      bids: "bids",
+      min: "Min",
+      median: "Median",
+      max: "Max",
+
+      // Specs
+      popularSpecs: "Popular Specifications",
+      popularSpecsDesc: "Most requested features in your categories",
+
+      // Competition
+      competitionInsights: "Competition Insights",
+      competitionInsightsDesc: "Aggregated market metrics",
+      avgOffers: "Avg Offers",
+      totalRFQs: "Total RFQs",
+
+      // Common
+      insufficientData: "Insufficient data available",
+      howToUse: "💡 How to Use This Data",
+      hours: "hours"
     }
   },
 
